@@ -99,3 +99,22 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# ------------------------------------------------------------------------------
+# compas
+# ------------------------------------------------------------------------------
+
+*.3dmbak
+
+data/**
+!data/PLACEHOLDER
+
+docs/\.source
+
+examples/**
+!examples/PLACEHOLDER
+
+libs/**
+!libs/PLACEHOLDER
+
+src/_build/**
