@@ -58,12 +58,12 @@ def network_smooth_mixed(network,
             :include-source:
 
             import compas
-            from compas.datastructures.network import Network
+            from compas.datastructures import FaceNetwork
             from compas.visualization.plotters import NetworkPlotter
             from compas.datastructures.network.algorithms import network_smooth_mixed
             from compas.datastructures.network.algorithms import network_find_faces
 
-            network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
             smooth = network.copy()
 
             network_find_faces(smooth, breakpoints=smooth.leaves())
@@ -273,12 +273,12 @@ def network_smooth_area(network, fixed=None, kmax=1, d=0.5, callback=None, callb
             :include-source:
 
             import compas
-            from compas.datastructures.network import Network
+            from compas.datastructures.network import FaceNetwork
             from compas.visualization.plotters import NetworkPlotter
             from compas.datastructures.network.algorithms import network_find_faces
             from compas.datastructures.network.algorithms import network_smooth_area
 
-            network  = Network.from_obj(compas.get_data('grid_irregular.obj'))
+            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
             network_find_faces(network, network.leaves())
             network_smooth_area(network, fixed=network.leaves(), kmax=10)
@@ -372,12 +372,12 @@ def network_smooth_mass(network, fixed=None, kmax=1, d=0.5, callback=None, callb
             :include-source:
 
             import compas
-            from compas.datastructures.network import Network
+            from compas.datastructures import FaceNetwork
             from compas.visualization.plotters import NetworkPlotter
             from compas.datastructures.network.algorithms import network_find_faces
             from compas.datastructures.network.algorithms import network_smooth_mass
 
-            network  = Network.from_obj(compas.get_data('grid_irregular.obj'))
+            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
             network_find_faces(network, network.leaves())
             network_smooth_mass(network, fixed=network.leaves(), kmax=10)
@@ -463,7 +463,6 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures.network import Network
-    from compas.datastructures.network.algorithms import network_find_faces
 
     from compas.visualization.plotters.networkplotter import NetworkPlotter
 
@@ -472,9 +471,7 @@ if __name__ == '__main__':
 
     fixed = smooth.leaves()
 
-    # find_network_faces(smooth, breakpoints=fixed)
-
-    plotter = NetworkPlotter(smooth)
+    plotter = NetworkPlotter(smooth, figsize=(10, 7))
 
     # draw the orginal network
     plotter.draw_xlines([{'start': network.vertex_coordinates(u, 'xy'),
@@ -490,7 +487,7 @@ if __name__ == '__main__':
     plotter.draw_edges()
 
     def callback(network, k, args):
-        plotter, = args
+        plotter = args[0]
         plotter.update_vertices()
         plotter.update_edges()
         plotter.update(0.1)
