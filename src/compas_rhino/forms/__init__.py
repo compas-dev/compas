@@ -1,11 +1,11 @@
 """
-.. _compas_compas_rhino.forms:
+.. _compas_rhino.forms:
 
 ********************************************************************************
 forms
 ********************************************************************************
 
-.. module:: compas_compas_rhino.forms
+.. module:: compas_rhino.forms
 
 
 Windows forms for ...
@@ -83,3 +83,5 @@ from .settings import SettingsForm
 from .slider import SliderForm
 from .table import TableForm
 from .text import TextForm
+
+__all__ = ['AttributesForm', 'BrowserForm', 'ChartForm', 'ImageForm', 'MultiPageForm', 'SettingsForm', 'SliderForm', 'TableForm', 'TextForm']

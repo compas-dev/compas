@@ -1,5 +1,3 @@
-"""compas.cad.blender.helpers.mesh : Functions for Mesh datastructures in Blender."""
-
 from compas.datastructures.mesh import Mesh
 
 from compas.geometry import centroid_points

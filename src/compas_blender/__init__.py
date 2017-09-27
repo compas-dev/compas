@@ -1,15 +1,33 @@
 """
-.. _compas.cad.blender:
+.. _compas_blender:
 
 ********************************************************************************
-compas.cad.blender
+compas_blender
 ********************************************************************************
 
-.. module:: compas.cad.blender
+.. module:: compas_blender
 
+.. toctree::
+    :maxdepth: 1
 
-A package with utility functions for integration of the framework with
-`Blender <https://www.blender.org/>`_.
-
+    compas_blender.forms
+    compas_blender.geometry
+    compas_blender.helpers
+    compas_blender.ui
+    compas_blender.utilities
 
 """
+
+from .utilities import *
+from .geometry import *
+from .helpers import *
+from .forms import *
+from .ui import *
+
+from .utilities import __all__ as a
+from .geometry import __all__ as c
+from .helpers import __all__ as b
+from .forms import __all__ as d
+from .ui import __all__ as e
+
+__all__ = a + b + c + d + e

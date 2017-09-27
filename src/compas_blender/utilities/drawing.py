@@ -1,5 +1,3 @@
-"""compas.cad.blender.utilities.drawing : Functions for drawing in Blender."""
-
 from math import atan2
 from math import acos
 

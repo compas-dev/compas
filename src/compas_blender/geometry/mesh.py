@@ -1,5 +1,3 @@
-"""compas.cad.blender.geometry.mesh : Manipulating Blender meshes."""
-
 from compas.geometry import area_polygon
 from compas.geometry import distance_point_point
 from compas.geometry import normal_polygon

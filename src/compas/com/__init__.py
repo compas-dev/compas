@@ -32,15 +32,6 @@ MatlabEngine  All operating systems. Matlab version is 2014b or above. No shared
 MatlabSession All operating systems. Matlab version is 2014b or above. A shared Matlab session is already available.
 ============= ============
 
-
-Rhino
-=====
-
-.. autosummary::
-    :toctree: generated/
-
-    RhinoClient
-
 """
 
 

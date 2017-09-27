@@ -1,11 +1,11 @@
 """
-.. _compas_compas_rhino.helpers:
+.. _compas_rhino.helpers:
 
 ********************************************************************************
 helpers
 ********************************************************************************
 
-.. module:: compas_compas_rhino.helpers
+.. module:: compas_rhino.helpers
 
 
 Helpers make it easier to work with datastructures in Rhino.
@@ -13,10 +13,6 @@ Helpers make it easier to work with datastructures in Rhino.
 
 mesh
 ====
-
-.. currentmodule:: compas_compas_rhino.helpers.mesh
-
-:mod:`compas_compas_rhino.helpers.mesh`
 
 .. autosummary::
     :toctree: generated/
@@ -26,16 +22,24 @@ mesh
     mesh_from_surface_uv
     mesh_from_surface_heightfield
     draw_mesh
-    display_mesh_vertex_normals
-    display_mesh_face_normals
+    draw_mesh_as_faces
+    select_mesh_vertices
+    select_mesh_vertex
+    select_mesh_edges
+    select_mesh_edge
+    select_mesh_faces
+    select_mesh_face
+    update_mesh_vertex_attributes
+    update_mesh_edge_attributes
+    update_mesh_face_attributes
+    display_mesh_vertex_labels
+    display_mesh_edge_labels
+    display_mesh_face_labels
+    move_mesh_vertex
 
 
 network
 =======
-
-.. currentmodule:: compas_compas_rhino.helpers.network
-
-:mod:`compas_compas_rhino.helpers.network`
 
 .. autosummary::
     :toctree: generated/
@@ -49,21 +53,24 @@ network
     select_network_face
     update_network_attributes
     update_network_vertex_attributes
+    update_network_from_points
     update_network_edge_attributes
+    update_network_from_lines
     update_network_face_attributes
     display_network_vertex_labels
     display_network_edge_labels
     display_network_face_labels
     move_network
     move_network_vertex
+    display_network_axial_forces
+    display_network_reaction_forces
+    display_network_residual_forces
+    display_network_selfweight
+    display_network_applied_loads
 
 
 volmesh
 =======
-
-.. currentmodule:: compas_compas_rhino.helpers.volmesh
-
-:mod:`compas_compas_rhino.helpers.volmesh`
 
 .. autosummary::
     :toctree: generated/
@@ -78,3 +85,8 @@ from .mesh import *
 from .network import *
 from .volmesh import *
 
+from .mesh import __all__ as a
+from .network import __all__ as b
+from .volmesh import __all__ as c
+
+__all__ = a + b + c

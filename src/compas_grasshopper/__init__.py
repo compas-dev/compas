@@ -8,8 +8,8 @@ compas_grasshopper
 .. module:: compas_grasshopper
 
 
-A package with utility functions for integration of the framework with
-`Grasshopper <http://www.grasshopper3d.com/>`_.
+.. toctree::
+    :maxdepth: 1
 
 
 """

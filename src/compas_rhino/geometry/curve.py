@@ -1,5 +1,3 @@
-from compas_rhino.exceptions import RhinoCurveError
-
 try:
     from Rhino.Geometry import Point3d
 
@@ -18,6 +16,9 @@ __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
+
+
+__all__ = ['RhinoCurve', ]
 
 
 class RhinoCurve(object):
@@ -71,7 +72,7 @@ class RhinoCurve(object):
             rs.DeleteObjects(segments)
             rs.EnableRedraw(True)
         else:
-            raise RhinoCurveError('object is not a curve')
+            raise Exception('Object is not a curve.')
         return space
 
     def heightfield(self, density):
@@ -95,7 +96,7 @@ class RhinoCurve(object):
                 vector = list(rs.CurveTangent(self.guid, param))
                 tangents.append((point, vector))
         else:
-            raise RhinoCurveError('object is not a curve')
+            raise Exception('Object is not a curve.')
         return tangents
 
     def descent(self, points):

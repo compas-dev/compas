@@ -8,23 +8,26 @@ compas_rhino
 .. module:: compas_rhino
 
 
-Package for the integration of the framework in the Rhino CAD modeling environment.
-
-
-.. rubric:: Submodules
-
 .. toctree::
     :maxdepth: 1
 
-    compas_compas_rhino.conduits
-    compas_compas_rhino.forms
-    compas_compas_rhino.geometry
-    compas_compas_rhino.helpers
-    compas_compas_rhino.numerical
-    compas_compas_rhino.ui
-    compas_compas_rhino.utilities
+    compas_rhino.artists
+    compas_rhino.conduits
+    compas_rhino.forms
+    compas_rhino.geometry
+    compas_rhino.helpers
+    compas_rhino.ui
+    compas_rhino.utilities
 
 """
 
 from .utilities import *
 from .helpers import *
+
+from .ui import *
+
+from .utilities import __all__ as a
+from .helpers import __all__ as b
+from .ui import __all__ as c
+
+__all__ = a + b + c

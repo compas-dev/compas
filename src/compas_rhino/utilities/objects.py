@@ -27,31 +27,24 @@ __email__      = 'vanmelet@ethz.ch'
 
 __all__ = [
     'get_objects',
-
     'get_object_names',
     'get_object_attributes',
     'get_object_attributes_from_name',
-
     'delete_object',
     'delete_objects',
-
     'purge_objects',
-
     'is_curve_line',
     'is_curve_polyline',
     'is_curve_polygon',
-
     'get_points',
     'get_curves',
     'get_lines',
     'get_polylines',
     'get_polygons',
-
     'get_point_coordinates',
     'get_line_coordinates',
     'get_polyline_coordinates',
     'get_polygon_coordinates',
-
     'get_meshes',
     'get_mesh_face_vertices',
     'get_mesh_vertex_coordinates',
@@ -61,7 +54,6 @@ __all__ = [
     'get_mesh_vertex_index',
     'get_mesh_face_index',
     'get_mesh_edge_index',
-
     'select_point',
     'select_points',
     'select_curve',

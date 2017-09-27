@@ -1,5 +1,3 @@
-"""compas.cad.blender.utilities.objects : Selecting or editing Blender objects."""
-
 try:
     import bpy
 except ImportError:
@@ -129,7 +127,7 @@ def get_objects_attributes_from_name(objects):
         names.append(name.replace("'", '"'))
     try:
         return [json.loads(name) for name in names]
-    except:
+    except Exception:
         print('Error reading object names with JSON')
 
 

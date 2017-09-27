@@ -251,7 +251,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
             viewer.show()
 
 
-    .. image:: /_images/subdivide_catmullclark-screenshot.*
+    .. image:: /_images/subdivide_mesh_catmullclark-screenshot.*
 
     .. note::
 
