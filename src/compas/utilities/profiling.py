@@ -11,7 +11,7 @@ except ImportError:
 try:
     import cProfile as Profile
 except ImportError:
-    import Profile
+    import profile as Profile
 
 import pstats
 
