@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<!-- Required meta tags -->
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<!-- compas meta tags -->
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<!-- Bootstrap CSS -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<!-- highlight CSS -->
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<!-- compas CSS -->
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="generated/compas.hpc.cuda_diag.html" rel="next" title="cuda_diag"/>
+<link href="generated/compas.geometry.Vector.html" rel="prev" title="Vector"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<!-- main navigation bar -->
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/index.html">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" href="/index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link active" href="/core/index.html">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages/index.html">Additional Packages</a>
+</li>
+</ul>
+</header>
+<!-- page container -->
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<!-- main page content -->
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/core">main library</a>
+<a class="breadcrumb-item" href="../reference.html">reference</a>
+<a accesskey="U" class="breadcrumb-item" href="compas.html">compas</a>
+</nav>
+<div class="section">
+<span id="hpc"></span><span id="compas-hpc"></span><h1>hpc</h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The functionality provided by this package is experimental and subject to frequent change.
+For now, don’t use it for anything important :)</p>
+</div>
+<div class="section">
+<h2>cuda</h2>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_diag.html" title="compas.hpc.cuda_diag"><code class="xref py py-obj docutils literal">cuda_diag</code></a>(a)</td>
+<td>Construct or extract GPUArray diagonal.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_eye.html" title="compas.hpc.cuda_eye"><code class="xref py py-obj docutils literal">cuda_eye</code></a>(n[, bit])</td>
+<td>Create GPUArray identity matrix (ones on diagonal) of size (n x n).</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_get.html" title="compas.hpc.cuda_get"><code class="xref py py-obj docutils literal">cuda_get</code></a>(a)</td>
+<td>Get back GPUArray from GPU memory as NumPy array.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_give.html" title="compas.hpc.cuda_give"><code class="xref py py-obj docutils literal">cuda_give</code></a>(a[, bit, type])</td>
+<td>Give a list or an array to GPU memory.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_ones.html" title="compas.hpc.cuda_ones"><code class="xref py py-obj docutils literal">cuda_ones</code></a>(shape[, bit])</td>
+<td>Create GPUArray of ones directly on GPU memory.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_random.html" title="compas.hpc.cuda_random"><code class="xref py py-obj docutils literal">cuda_random</code></a>(shape[, bit])</td>
+<td>Create random values in the range [0, 1] as GPUArray.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_real.html" title="compas.hpc.cuda_real"><code class="xref py py-obj docutils literal">cuda_real</code></a>(a)</td>
+<td>Return the real parts of GPUArray.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_reshape.html" title="compas.hpc.cuda_reshape"><code class="xref py py-obj docutils literal">cuda_reshape</code></a>(a, shape)</td>
+<td>Reshape a GPUArray.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_flatten.html" title="compas.hpc.cuda_flatten"><code class="xref py py-obj docutils literal">cuda_flatten</code></a>(a)</td>
+<td>Flatten/ravel out a GPUArray.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_tile.html" title="compas.hpc.cuda_tile"><code class="xref py py-obj docutils literal">cuda_tile</code></a>(a, shape)</td>
+<td>Horizontally and vertically tile a GPUArray.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_zeros.html" title="compas.hpc.cuda_zeros"><code class="xref py py-obj docutils literal">cuda_zeros</code></a>(shape[, bit])</td>
+<td>Create GPUArray of zeros directly on GPU memory.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_conj.html" title="compas.hpc.cuda_conj"><code class="xref py py-obj docutils literal">cuda_conj</code></a>(a)</td>
+<td>Complex conjugate of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_cross.html" title="compas.hpc.cuda_cross"><code class="xref py py-obj docutils literal">cuda_cross</code></a>(a, b, bsize)</td>
+<td>Cross-product of two GPUArrays (row by row).</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_det.html" title="compas.hpc.cuda_det"><code class="xref py py-obj docutils literal">cuda_det</code></a>(a)</td>
+<td>GPUArray square matrix determinant.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_dot.html" title="compas.hpc.cuda_dot"><code class="xref py py-obj docutils literal">cuda_dot</code></a>(a, b)</td>
+<td>Matrix multiplication of two GPUArrays.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_eig.html" title="compas.hpc.cuda_eig"><code class="xref py py-obj docutils literal">cuda_eig</code></a>(a)</td>
+<td>Matrix Eigenvectors and Eigenvalues of GPUArray.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_hermitian.html" title="compas.hpc.cuda_hermitian"><code class="xref py py-obj docutils literal">cuda_hermitian</code></a>(a)</td>
+<td>Hermitian conjugate transpose of GPUArray.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_inv.html" title="compas.hpc.cuda_inv"><code class="xref py py-obj docutils literal">cuda_inv</code></a>(a)</td>
+<td>Inverse of GPUArray matrix.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_normrow.html" title="compas.hpc.cuda_normrow"><code class="xref py py-obj docutils literal">cuda_normrow</code></a>(a)</td>
+<td>GPUArray of vectors norm.2 (row by row).</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_pinv.html" title="compas.hpc.cuda_pinv"><code class="xref py py-obj docutils literal">cuda_pinv</code></a>(a)</td>
+<td>Moore-Penrose pseudo inverse of the GPUArray.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_svd.html" title="compas.hpc.cuda_svd"><code class="xref py py-obj docutils literal">cuda_svd</code></a>(a[, jobu, jobvt])</td>
+<td>GPUArray Singular Value Decomposition.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_trace.html" title="compas.hpc.cuda_trace"><code class="xref py py-obj docutils literal">cuda_trace</code></a>(a)</td>
+<td>GPUArray trace, the sum along the main diagonal.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_transpose.html" title="compas.hpc.cuda_transpose"><code class="xref py py-obj docutils literal">cuda_transpose</code></a>(a)</td>
+<td>Transpose a GPUArray.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_abs.html" title="compas.hpc.cuda_abs"><code class="xref py py-obj docutils literal">cuda_abs</code></a>(a)</td>
+<td>Absolute values of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_argmax.html" title="compas.hpc.cuda_argmax"><code class="xref py py-obj docutils literal">cuda_argmax</code></a>(a, axis)</td>
+<td>Location of maximum GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_argmin.html" title="compas.hpc.cuda_argmin"><code class="xref py py-obj docutils literal">cuda_argmin</code></a>(a, axis)</td>
+<td>Location of minimum GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_acos.html" title="compas.hpc.cuda_acos"><code class="xref py py-obj docutils literal">cuda_acos</code></a>(a)</td>
+<td>Trigonometric arccosine of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_asin.html" title="compas.hpc.cuda_asin"><code class="xref py py-obj docutils literal">cuda_asin</code></a>(a)</td>
+<td>Trigonometric arcsine of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_atan.html" title="compas.hpc.cuda_atan"><code class="xref py py-obj docutils literal">cuda_atan</code></a>(a)</td>
+<td>Trigonometric arctangent of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_ceil.html" title="compas.hpc.cuda_ceil"><code class="xref py py-obj docutils literal">cuda_ceil</code></a>(a)</td>
+<td>Ceiling of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_cos.html" title="compas.hpc.cuda_cos"><code class="xref py py-obj docutils literal">cuda_cos</code></a>(a)</td>
+<td>Trigonometric cosine of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_cosh.html" title="compas.hpc.cuda_cosh"><code class="xref py py-obj docutils literal">cuda_cosh</code></a>(a)</td>
+<td>Hyperbolic cosine of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_exp.html" title="compas.hpc.cuda_exp"><code class="xref py py-obj docutils literal">cuda_exp</code></a>(a)</td>
+<td>Exponential of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_floor.html" title="compas.hpc.cuda_floor"><code class="xref py py-obj docutils literal">cuda_floor</code></a>(a)</td>
+<td>Floor of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_log.html" title="compas.hpc.cuda_log"><code class="xref py py-obj docutils literal">cuda_log</code></a>(a)</td>
+<td>Natural logarithm of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_max.html" title="compas.hpc.cuda_max"><code class="xref py py-obj docutils literal">cuda_max</code></a>(a, axis)</td>
+<td>Maximum values of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_min.html" title="compas.hpc.cuda_min"><code class="xref py py-obj docutils literal">cuda_min</code></a>(a, axis)</td>
+<td>Minimum values of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_mean.html" title="compas.hpc.cuda_mean"><code class="xref py py-obj docutils literal">cuda_mean</code></a>(a, axis)</td>
+<td>Mean of GPUArray elements in a given axis direction.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_sin.html" title="compas.hpc.cuda_sin"><code class="xref py py-obj docutils literal">cuda_sin</code></a>(a)</td>
+<td>Trigonometric sine of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_sinh.html" title="compas.hpc.cuda_sinh"><code class="xref py py-obj docutils literal">cuda_sinh</code></a>(a)</td>
+<td>Hyperbolic sine of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_sqrt.html" title="compas.hpc.cuda_sqrt"><code class="xref py py-obj docutils literal">cuda_sqrt</code></a>(a)</td>
+<td>Square-root of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_sum.html" title="compas.hpc.cuda_sum"><code class="xref py py-obj docutils literal">cuda_sum</code></a>(a, axis)</td>
+<td>Sum of GPUArray elements in a given axis direction.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_tan.html" title="compas.hpc.cuda_tan"><code class="xref py py-obj docutils literal">cuda_tan</code></a>(a)</td>
+<td>Trigonometric tangent of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_tanh.html" title="compas.hpc.cuda_tanh"><code class="xref py py-obj docutils literal">cuda_tanh</code></a>(a)</td>
+<td>Hyperbolic tangent of GPUArray elements.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.cuda_device.html" title="compas.hpc.cuda_device"><code class="xref py py-obj docutils literal">cuda_device</code></a>()</td>
+<td>Displays the CUDA GPU device details.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<h2>euler</h2>
+</div>
+<div class="section">
+<h2>geometry</h2>
+</div>
+<div class="section">
+<h2>numba</h2>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.numba_devo.html" title="compas.hpc.numba_devo"><code class="xref py py-obj docutils literal">numba_devo</code></a></td>
+<td>Call the Numba accelerated differential evolution solver.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.numba_drx.html" title="compas.hpc.numba_drx"><code class="xref py py-obj docutils literal">numba_drx</code></a></td>
+<td>Numba accelerated dynamic relaxation solver.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.numba_cross.html" title="compas.hpc.numba_cross"><code class="xref py py-obj docutils literal">numba_cross</code></a></td>
+<td>The cross-product of vectors.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.numba_vdot.html" title="compas.hpc.numba_vdot"><code class="xref py py-obj docutils literal">numba_vdot</code></a></td>
+<td>The dot-product of vectors.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.numba_dot.html" title="compas.hpc.numba_dot"><code class="xref py py-obj docutils literal">numba_dot</code></a></td>
+<td>The multiplication of matrices.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.numba_length.html" title="compas.hpc.numba_length"><code class="xref py py-obj docutils literal">numba_length</code></a></td>
+<td>The length of vector.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<h2>opencl</h2>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+</tbody>
+</table>
+</div>
+</div>
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="generated/compas.geometry.Vector.html" role="button">Vector</a>
+<a class="btn btn-primary compas-next" href="generated/compas.hpc.cuda_diag.html" role="button">cuda_diag</a>
+</nav>
+</main>
+<!-- sidebar navigation -->
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../reference.html">Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="compas.html">compas</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="compas.com.html">com</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.datastructures.html">datastructures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.files.html">files</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.geometry.html">geometry</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">hpc</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.interop.html">interop</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.numerical.html">numerical</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.visualization.html">visualization</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_maya.html">compas_maya</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_grasshopper.html">compas_grasshopper</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_dynamo.html">compas_dynamo</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- toc of current page -->
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">hpc</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#cuda">cuda</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#euler">euler</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#geometry">geometry</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#numba">numba</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#opencl">opencl</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Sep 28, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+              var DOCUMENTATION_OPTIONS = {
+                URL_ROOT:    '',
+                VERSION:     '',
+                COLLAPSE_INDEX: false,
+                FILE_SUFFIX: '.html',
+                HAS_SOURCE:  true,
+                SOURCELINK_SUFFIX: '.txt'
+              };
+            </script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/core/static/underscore.js"></script>
+<script src="/core/static/doctools.js"></script>
+<!-- <script src="/core/static/websupport.js"></script> -->
+<script src="/core/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

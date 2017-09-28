@@ -1,0 +1,742 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<!-- Required meta tags -->
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<!-- compas meta tags -->
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<!-- Bootstrap CSS -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<!-- highlight CSS -->
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<!-- compas CSS -->
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="compas.datastructures.mesh_collapse_edge.html" rel="next" title="mesh_collapse_edge"/>
+<link href="compas.datastructures.network_vertex_coloring.html" rel="prev" title="network_vertex_coloring"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<!-- main navigation bar -->
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/index.html">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" href="/index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link active" href="/core/index.html">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages/index.html">Additional Packages</a>
+</li>
+</ul>
+</header>
+<!-- page container -->
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<!-- main page content -->
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/core">main library</a>
+<a class="breadcrumb-item" href="../../reference.html">reference</a>
+<a class="breadcrumb-item" href="../compas.html">compas</a>
+<a accesskey="U" class="breadcrumb-item" href="../compas.datastructures.html">datastructures</a>
+</nav>
+<div class="section">
+<h1>Mesh</h1>
+<dl class="class">
+<dt id="compas.datastructures.Mesh">
+<em class="property">class </em><code class="descclassname">compas.datastructures.</code><code class="descname">Mesh</code><a class="reference internal" href="../../_modules/compas/datastructures/mesh/mesh.html#Mesh"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal">compas.datastructures.mixins.MagicMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.ConversionMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.FactoryMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.FaceHelpersMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.FaceAttributesMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.EdgeGeometryMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.EdgeHelpersMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.EdgeAttributesMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.VertexCoordinatesDescriptorsMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.VertexHelpersMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.VertexAttributesMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.Datastructure</code></p>
+<p>Class representing a mesh.</p>
+<p>The datastructure of the mesh is implemented as a half-edge.</p>
+<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
+<col class="field-name"/>
+<col class="field-body"/>
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last">
+<li><p class="first"><strong>vertices</strong> (<code class="xref py py-obj docutils literal">list</code> of <a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal">dict</code></a>) – Optional. A sequence of vertices to add to the mesh.
+Each vertex should be a dictionary of vertex attributes.</p>
+</li>
+<li><p class="first"><strong>faces</strong> (<code class="xref py py-obj docutils literal">list</code> of <code class="xref py py-obj docutils literal">list</code>) – Optional. A sequence of faces to add to the mesh.
+Each face should be a list of vertex keys.</p>
+</li>
+<li><p class="first"><strong>dva</strong> (<em>dict</em>) – Optional. A dictionary of default vertex attributes.</p>
+</li>
+<li><p class="first"><strong>dfa</strong> (<em>dict</em>) – Optional. A dictionary of default face attributes.</p>
+</li>
+<li><p class="first"><strong>dea</strong> (<em>dict</em>) – Optional. A dictionary of default edge attributes.</p>
+</li>
+<li><p class="first"><strong>kwargs</strong> (<em>dict</em>) – The remaining named parameters. These are added to the attributes
+dictionary of the instance.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="compas.datastructures.Mesh.vertex">
+<code class="descname">vertex</code></dt>
+<dd><p><em>dict</em> – The vertex dictionary.
+With every key in the dictionary corresponds a dictionary of attributes.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.datastructures.Mesh.face">
+<code class="descname">face</code></dt>
+<dd><p><em>dict</em> – The face dictionary.
+With every key in the dictionary corresponds a dictionary of half-edges.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.datastructures.Mesh.halfedge">
+<code class="descname">halfedge</code></dt>
+<dd><p><em>dict</em> – The half-edge dictionary.
+Every key in the dictionary corresponds to a vertex of the mesh.
+With every key corresponds a dictionary of neighbours pointing to face keys.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.datastructures.Mesh.edge">
+<code class="descname">edge</code></dt>
+<dd><p><em>dict</em> – The edge dictionary.
+Every key in the dictionary corresponds to a vertex.
+With every key corresponds a dictionary of neighbours pointing to attribute dictionaries.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.datastructures.Mesh.attributes">
+<code class="descname">attributes</code></dt>
+<dd><p><em>dict</em> – General mesh attributes.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.datastructures.Mesh.facedata">
+<code class="descname">facedata</code></dt>
+<dd><p><em>Mesh, optional</em> – A <code class="docutils literal">Mesh</code> object for keeping track of face attributes
+by storing them on dual vertices.</p>
+</dd></dl>
+<p class="rubric">Examples</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<figure class="figure">
+<img alt="../../images/compas-datastructures-Mesh-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Mesh-1.png"/>
+</figure>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()},</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<figure class="figure">
+<img alt="../../images/compas-datastructures-Mesh-2.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Mesh-2.png"/>
+</figure>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">fkey</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()})</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<figure class="figure">
+<img alt="../../images/compas-datastructures-Mesh-3.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Mesh-3.png"/>
+</figure>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="gp">...</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+<span class="gp">...</span>
+</code></pre></div>
+
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><code class="xref py py-obj docutils literal">__init__</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">add_face</code>(vertices[, fkey, attr_dict])</td>
+<td>Add a face and specify its attributes (optional).</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">add_faces</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">add_vertex</code>([key, attr_dict])</td>
+<td>Add a vertex and specify its attributes (optional).</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">clear</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">clear_edgedict</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">clear_facedict</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">clear_halfedgedict</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">clear_vertexdict</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">copy</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">cull_unused_edges</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">cull_unused_vertices</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">delete_face</code>(fkey)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">delete_vertex</code>(key)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edge_connected_edges</code>(u, v)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edge_coordinates</code>(u, v[, axes])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edge_direction</code>(u, v)</td>
+<td>Return the direction vector of an edge.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edge_faces</code>(u, v)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edge_label_name</code>(u, v)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edge_length</code>(u, v)</td>
+<td>Return the length of an edge.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edge_midpoint</code>(u, v)</td>
+<td>Return the location of the midpoint of an edge.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edge_name</code>(u, v)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edge_point</code>(u, v[, t])</td>
+<td>Return the location of a point along an edge.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edge_vector</code>(u, v)</td>
+<td>Return the vector of an edge.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edges</code>([data])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edges_on_boundary</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">edges_where</code>(conditions)</td>
+<td>Get edges for which a certain condition or set of conditions is <code class="docutils literal">True</code>.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_adjacency</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_adjacency_edge</code>(f1, f2)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_area</code>(fkey)</td>
+<td>Return the area of a face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_center</code>(fkey)</td>
+<td>Return the location of the center of mass of a face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_centroid</code>(fkey)</td>
+<td>Return the location of the centroid of a face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_coordinates</code>(fkey[, axes])</td>
+<td>Return the coordinates of the vertices of a face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_corners</code>(fkey)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_edges</code>(fkey)</td>
+<td>Return the edges corresponding to the halfedges of a face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_halfedges</code>(fkey)</td>
+<td>Return the halfedges of a face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_label_name</code>(fkey)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_name</code>(fkey)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_neighbourhood</code>(fkey)</td>
+<td>Return the neighbours of a face across both edges and corners.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_neighbours</code>(fkey)</td>
+<td>Return the neighbours of a face across its edges.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_normal</code>(fkey[, normalised])</td>
+<td>Return the normal of a face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_vertex_ancestor</code>(fkey, key)</td>
+<td>Return the vertex before the specified vertex in a specific face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_vertex_descendant</code>(fkey, key)</td>
+<td>Return the vertex after the specified vertex in a specific face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_vertex_neighbours</code>(fkey)</td>
+<td>Return the neighbours of a face across its corners.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">face_vertices</code>(fkey[, ordered])</td>
+<td>Return the vertices of the face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">faces</code>([data])</td>
+<td>Return an iterator for the faces and their attributes (optional).</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">faces_on_boundary</code>()</td>
+<td>Return the faces on the boundary.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">faces_where</code>(conditions)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">from_data</code>(data)</td>
+<td>Construct a mesh from actual mesh data.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">from_json</code>(filepath)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">from_obj</code>(filepath, \*\*kwargs)</td>
+<td>Initialise a mesh from the data described in an obj file.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">from_ply</code>(filepath, \*\*kwargs)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">from_vertices_and_faces</code>(vertices, faces, ...)</td>
+<td>Initialise a mesh from a list of vertices and faces.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_any_edge</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_any_face</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_any_face_vertex</code>(fkey)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_any_vertex</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_any_vertices</code>(n[, exclude_leaves])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_edge_attribute</code>(u, v, name[, value])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_edge_attributes</code>(u, v, names[, values])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_edges_attribute</code>(name[, value, keys])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_edges_attributes</code>(names[, values, keys])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_face_attribute</code>(fkey, name[, value])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_face_attributes</code>(fkey, names[, values])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_faces_attribute</code>(name[, value, fkeys])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_faces_attributes</code>(names[, values, fkeys])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_vertex_attribute</code>(key, name[, value])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_vertex_attributes</code>(key, names[, values])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_vertices_attribute</code>(name[, value, keys])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_vertices_attributes</code>(names[, values, keys])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">halfedges</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">has_edge</code>(u, v[, directed])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">has_vertex</code>(key)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">index_key</code>()</td>
+<td>Returns an <em>index-to-key</em> map.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">index_uv</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">indexed_edges</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">indexed_face_vertices</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">insert_vertex</code>(fkey[, key, xyz, return_key])</td>
+<td>Insert a vertex in the specified face.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_closed</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_connected</code>()</td>
+<td>Return True if for every two vertices a path exists connecting them.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_edge_naked</code>(u, v)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_manifold</code>()</td>
+<td>Return True if each edge is incident to only one or two faces, and the faces incident to a vertex form a closed or an open fan.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_orientable</code>()</td>
+<td>A manifold mesh is orientable if any two adjacent faces have compatible orientation (i.e.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_quadmesh</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_regular</code>()</td>
+<td>Return True if all faces have the same number of edges, and all vertices have the same degree (i.e.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_trimesh</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_valid</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_vertex_connected</code>(key)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_vertex_extraordinary</code>(key[, mtype])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_vertex_leaf</code>(key)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_vertex_on_boundary</code>(key)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_vertex_orphan</code>(key)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">key_index</code>()</td>
+<td>Returns a <em>key-to-index</em> map.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">leaves</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">max_vertex_attribute_value</code>(name)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">min_vertex_attribute_value</code>(name)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">number_of_edges</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">number_of_faces</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">number_of_halfedges</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">number_of_vertices</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">remove_vertex</code>(key)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_edge_attribute</code>(u, v, name, value)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_edge_attributes</code>(u, v[, attr_dict])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_edges_attribute</code>(name, value[, keys])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_edges_attributes</code>([keys, attr_dict])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_face_attribute</code>(fkey, name, value)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_face_attributes</code>(fkey[, attr_dict])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_faces_attribute</code>(name, value[, fkeys])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_faces_attributes</code>([fkeys, attr_dict])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_vertex_attribute</code>(key, name, value)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_vertex_attributes</code>(key[, attr_dict])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_vertices_attribute</code>(name, value[, keys])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_vertices_attributes</code>([keys, attr_dict])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">to_data</code>()</td>
+<td>Return the data dict that represents the mesh, and from which it can be reconstructed.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">to_json</code>([filepath])</td>
+<td>Serialize the mesh data to a JSON file.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">to_obj</code>(filepath)</td>
+<td>Write the mesh to an OBJ file.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">to_vertices_and_faces</code>()</td>
+<td>Return the vertices and faces of a mesh.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">update_default_edge_attributes</code>([attr_dict])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">update_default_face_attributes</code>([attr_dict])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">update_default_vertex_attributes</code>([attr_dict])</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">uv_index</code>()</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_area</code>(key)</td>
+<td>Return the tributary area of a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_connected_edges</code>(key)</td>
+<td>Return the edges connected to a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_coordinates</code>(key[, axes])</td>
+<td>Return the coordinates of a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_degree</code>(key)</td>
+<td>Return the number of neighbours of a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_degree_in</code>(key)</td>
+<td>Return the numer of incoming neighbours of a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_degree_out</code>(key)</td>
+<td>Return the number of outgoing neighbours of a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_faces</code>(key[, ordered, include_None])</td>
+<td>Return the faces connected to a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_label_name</code>(key)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_laplacian</code>(key)</td>
+<td>Return the vector from the vertex to the centroid of its 1-ring neighbourhood.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_name</code>(key)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbourhood</code>(key[, ring])</td>
+<td>Return the vertices in the neighbourhood of a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbourhood_centroid</code>(key)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbours</code>(key[, ordered])</td>
+<td>Return the neighbours of a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbours_in</code>(key)</td>
+<td>Return the incoming neighbours of a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbours_out</code>(key)</td>
+<td>Return the outgoing neighbours of a vertex.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertex_normal</code>(key)</td>
+<td>Return the normal vector at the vertex as the weighted average of the normals of the neighbouring faces.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertices</code>([data])</td>
+<td>Return an iterator for the vertices and their attributes (optional).</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertices_on_boundary</code>([ordered])</td>
+<td>Return the vertices on the boundary.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">vertices_where</code>(conditions)</td>
+<td>Get vertices for which a certain condition or set of conditions is <code class="docutils literal">True</code>.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">wireframe</code>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><code class="xref py py-obj docutils literal">data</code></td>
+<td>Return a data dict of this data structure for serialisation.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">name</code></td>
+<td><a class="reference external" href="https://docs.python.org/2/library/functions.html" title="(in Python v2.7)"><code class="xref py py-obj docutils literal">str</code></a> – The name of the data structure.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">x</code></td>
+<td><code class="xref py py-obj docutils literal">list</code> – The <cite>x</cite> coordinates of the vertices.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">xy</code></td>
+<td><code class="xref py py-obj docutils literal">list</code> – The <cite>xy</cite> coordinates of the vertices.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">xyz</code></td>
+<td><code class="xref py py-obj docutils literal">list</code> – The <cite>xyz</cite> coordinates of the vertices.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">y</code></td>
+<td><code class="xref py py-obj docutils literal">list</code> – The <cite>y</cite> coordinates of the vertices.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">z</code></td>
+<td><code class="xref py py-obj docutils literal">list</code> – The <cite>z</cite> coordinates of the vertices.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+</div>
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="compas.datastructures.network_vertex_coloring.html" role="button">network_vertex_coloring</a>
+<a class="btn btn-primary compas-next" href="compas.datastructures.mesh_collapse_edge.html" role="button">mesh_collapse_edge</a>
+</nav>
+</main>
+<!-- sidebar navigation -->
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.com.html">com</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.hpc.html">hpc</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_maya.html">compas_maya</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_grasshopper.html">compas_grasshopper</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- toc of current page -->
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Mesh</a></li>
+</ul>
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Sep 28, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+              var DOCUMENTATION_OPTIONS = {
+                URL_ROOT:    '',
+                VERSION:     '',
+                COLLAPSE_INDEX: false,
+                FILE_SUFFIX: '.html',
+                HAS_SOURCE:  true,
+                SOURCELINK_SUFFIX: '.txt'
+              };
+            </script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/core/static/underscore.js"></script>
+<script src="/core/static/doctools.js"></script>
+<!-- <script src="/core/static/websupport.js"></script> -->
+<script src="/core/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

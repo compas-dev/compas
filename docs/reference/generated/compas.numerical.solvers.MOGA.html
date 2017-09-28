@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<!-- Required meta tags -->
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<!-- compas meta tags -->
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<!-- Bootstrap CSS -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<!-- highlight CSS -->
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<!-- compas CSS -->
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="../compas.utilities.html" rel="next" title="utilities"/>
+<link href="compas.numerical.solvers.mma.html" rel="prev" title="mma"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<!-- main navigation bar -->
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/index.html">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" href="/index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link active" href="/core/index.html">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages/index.html">Additional Packages</a>
+</li>
+</ul>
+</header>
+<!-- page container -->
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<!-- main page content -->
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/core">main library</a>
+<a class="breadcrumb-item" href="../../reference.html">reference</a>
+<a class="breadcrumb-item" href="../compas.html">compas</a>
+<a accesskey="U" class="breadcrumb-item" href="../compas.numerical.html">numerical</a>
+</nav>
+<div class="section">
+<h1>MOGA</h1>
+<dl class="class">
+<dt id="compas.numerical.solvers.MOGA">
+<em class="property">class </em><code class="descclassname">compas.numerical.solvers.</code><code class="descname">MOGA</code><a class="reference internal" href="../../_modules/compas/numerical/solvers/moga.html#MOGA"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This class contains a binary coded, multiple objective genetic algorithm called
+NSGA-II (ref to K. Deb). NSGA-II uses the concept of non-domination, or Pareto-domination to
+classify solutions and optimize as a genetic algorith. NSGA-II also employs a crowding distance
+operator especially designed to distribute individuals in the population allong the Pareto
+front, and this avoid crowding in small areas. The main function is <code class="docutils literal">MOGA.moga</code>, calling
+this starts the multi objective optimization process.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><code class="xref py py-obj docutils literal">__init__</code>()</td>
+<td>Populations are kept in dictionaries with the following data structure_ansys:</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">calculate_crowding_distance</code>()</td>
+<td>This function calculates the crowding distance for all inividuals in the population.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">code_decoded</code>(decoded_pop)</td>
+<td>Returns a binary coded population from a decoded population</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">combine_populations</code>()</td>
+<td>This function combines the parent population with the current population to create a 2 x <code class="docutils literal">MOGA.num_pop</code> long current population.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">create_fixed_start_pop</code>([scaled, binary])</td>
+<td>This function creates a population to start the MOGA from a given scaled or binary populaiton.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">create_mating_pool</code>()</td>
+<td>Creates two lists of cromosomes to be used by the crossover operator.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">crowding_distance_sorting</code>()</td>
+<td>This function sorts the individuals in the population according to their crowding distance.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">decode_binary_pop</code>(bin_pop)</td>
+<td>This function decodes the given binary population</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">extract_pareto_front</code>(u)</td>
+<td>Adds each new level of pareto front individuals to the <code class="docutils literal">MOGA.i_pareto_front</code> list.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">generate_random_bin_pop</code>()</td>
+<td>This function generates a random binary population</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_max_value_from_bin_big</code>(bin_dig)</td>
+<td>Returns the highest number described by a <code class="docutils literal">GA.bin_dig</code> long binary number.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_pop_from_pf_file</code>()</td>
+<td>Reads the pareto front file corresponding to the <code class="docutils literal">MOGA.start_from_gen</code> generation and returns the saved population data.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_sorting_indices</code>(l[, reverse])</td>
+<td>Reurns the indices that would sort a list of floats.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">make_gen_data</code>()</td>
+<td>Returns a dictionary containing the most relavant genetic data present in the instance of <code class="docutils literal">MOGA</code> for the current generation only.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">make_moga_input_data</code>()</td>
+<td>Returns a dictionary containing the most relavant genetic data present in the instance of <code class="docutils literal">MOGA</code>.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">make_pop_pf_dict</code>()</td>
+<td>This function returns a dictionary containing the pareto front level of</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">moga</code>()</td>
+<td>This is the main optimization function, this function permorms the multi objective GA optimization, performing all genetic operators.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">non_dom_sort</code>()</td>
+<td>This function performs the non dominated sorting operator of the NSGA-II algorithm.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">nsga_tournament</code>()</td>
+<td>This function performs the tournament selection operator of the NSGA-II algorithm.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">parent_reseting</code>()</td>
+<td>This function updates the patent population, selecting the individuals that are higher in the pareto front level, and have the largest crowding distance.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">random_mutation</code>()</td>
+<td>This mutation operator replaces a gene from 0 to 1 or viceversa with a probability of <code class="docutils literal">MOGA.mutation_probability</code>.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">scale_population</code>(decoded_pop)</td>
+<td>Scales the decoded population, variable values are scaled according to each of their bounds contained in <code class="docutils literal">GA.boundaries</code>.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">simple_crossover</code>()</td>
+<td>Performs the simple crossover operator.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">unscale_pop</code>(scaled_pop)</td>
+<td>Returns an unscaled population from a scaled one.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">write_gen_json_file</code>(generation)</td>
+<td>Writes a JSON file containing the most relevant data for MOGA optimization and visualization using <code class="docutils literal">compas_ga.visualization.ga_visualization</code> for the given generation <code class="docutils literal">generation</code>.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">write_moga_json_file</code>()</td>
+<td>Writes a JSON file containing the most relevant data for MOGA optimization and visualization using <code class="docutils literal">compas_ga.visualization.moga_visualization</code>.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">write_out_file</code>(generation)</td>
+<td>This function writes a file containing all of the population data for the given <code class="docutils literal">generation</code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+</div>
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="compas.numerical.solvers.mma.html" role="button">mma</a>
+<a class="btn btn-primary compas-next" href="../compas.utilities.html" role="button">utilities</a>
+</nav>
+</main>
+<!-- sidebar navigation -->
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.com.html">com</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.hpc.html">hpc</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_maya.html">compas_maya</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_grasshopper.html">compas_grasshopper</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- toc of current page -->
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">MOGA</a></li>
+</ul>
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Sep 28, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+              var DOCUMENTATION_OPTIONS = {
+                URL_ROOT:    '',
+                VERSION:     '',
+                COLLAPSE_INDEX: false,
+                FILE_SUFFIX: '.html',
+                HAS_SOURCE:  true,
+                SOURCELINK_SUFFIX: '.txt'
+              };
+            </script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/core/static/underscore.js"></script>
+<script src="/core/static/doctools.js"></script>
+<!-- <script src="/core/static/websupport.js"></script> -->
+<script src="/core/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

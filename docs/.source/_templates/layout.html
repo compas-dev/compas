@@ -1,0 +1,217 @@
+{% macro breadcrumb() %}
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/core">main library</a>
+        {% if parents %}
+            {% for parent in parents %}
+                <a class="breadcrumb-item" href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title|lower }}</a>
+            {% endfor %}
+        {% endif %}
+    </nav>
+{% endmacro %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <!-- compas meta tags -->
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+
+        <!-- highlight CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+
+        <!-- compas CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        {% if next %}
+            <link rel="next" title="{{ next.title|striptags|e }}" href="{{ next.link|e }}" />
+        {% endif %}
+        
+        {% if prev %}
+            <link rel="prev" title="{{ prev.title|striptags|e }}" href="{{ prev.link|e }}" />
+        {% endif %}
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+        <!-- main navigation bar -->
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/index.html">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/core/index.html">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages/index.html">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <!-- page container -->
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <!-- main page content -->
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    {% block content %}
+
+                        {{ breadcrumb() }}
+
+                        {% set page = pagename.split('/') %}
+
+                        {% set body = body
+                            | replace("<pre>", "<pre><code class=\"language-python border rounded\">")
+                            | replace("</pre>", "</code></pre>")
+                        %}
+
+                        {{ body }}
+                        
+                        <nav class="compas-sideways">
+                            {% if prev %}
+                                <a href="{{ prev.link|e }}" class="btn btn-primary compas-prev" role="button">{{ prev.title|striptags|e }}</a>
+                            {% endif %}
+
+                            {% if next %}
+                                <a href="{{ next.link|e }}" class="btn btn-primary compas-next" role="button">{{ next.title|striptags|e }}</a>
+                            {% endif %}
+                        </nav>
+
+                    {% endblock %}
+
+                </main>
+
+                <!-- sidebar navigation -->
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="{{ pathto('search') }}" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        {% set toctree = toctree(maxdepth=3, titles_only=True) %}
+                        {% if toctree %}
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                {{ toctree
+                                    | replace("<ul>", "<ul class=\"nav\">")
+                                    | replace("<ul class=\"nav\">", "<ul class=\"nav flex-column\">", 1)
+                                    | replace("<ul class=\"current\">", "<ul class=\"nav active\">")
+                                    | replace("<ul class=\"nav active\">", "<ul class=\"nav flex-column active\">", 1)
+
+                                    | replace("<li class=\"toctree-l1\">", "<li class=\"nav-item\">")
+                                    | replace("<li class=\"toctree-l1 current\">", "<li class=\"nav-item active\">")
+                                    | replace("class=\"reference internal\"", "class=\"nav-link reference internal\"") 
+                                    | replace("class=\"current reference internal\"", "class=\"nav-link active current reference internal\"") 
+                                    | replace("<li class=\"toctree-l2\">", "<li class=\"nav-item\">")
+                                    | replace("<li class=\"toctree-l2 current\">", "<li class=\"nav-item active\">")
+                                    | replace("<li class=\"toctree-l3\">", "<li class=\"nav-item\">")
+                                    | replace("<li class=\"toctree-l3 current\">", "<li class=\"nav-item active\">")
+                                    | replace("class=\"reference internal\"", "class=\"nav-link reference internal\"") 
+                                    | replace("class=\"current reference internal\"", "class=\"nav-link active current reference internal\"") 
+                                }}
+
+                                </div>
+                            </div>
+
+                        {% else %}
+                            {{ toc }}
+                        {% endif %}
+
+                    </div>
+                </div>
+                
+                <!-- toc of current page -->
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    {% set toc = toc
+                        | replace("<ul>", "<ul class=\"nav\">") 
+                        | replace("<ul class=\"nav\">", "<ul class=\"nav flex-column\" id=\"compas-localnav\">", 1) 
+                        | replace("<li>", "<li class=\"nav-item\">") 
+                        | replace("<a>", "<a class=\"nav-link\">") 
+                        | replace("class=\"reference internal\"", "class=\"nav-link reference internal\"") 
+                    %}
+
+                    {{ toc }}
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
+            {% if show_copyright %}
+                {% if hasdoc('copyright') %}
+                    {% trans path=pathto('copyright'), copyright=copyright|e %}&#169; <a href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
+                {% else %}
+                    {% trans copyright=copyright|e %}&#169; Copyright {{ copyright }}.{% endtrans %}
+                {% endif %}
+            {% endif %}
+
+            {% if last_updated %}
+                {% trans last_updated=last_updated|e %}Last updated on {{ last_updated }}.{% endtrans %}
+            {% endif %}
+
+            {% if show_sphinx %}
+                {% trans sphinx_version=sphinx_version|e %}Created using <a href="http://sphinx-doc.org/">Sphinx</a> {{ sphinx_version }}.{% endtrans %}
+            {% endif %}
+        </footer>
+
+        {% block footer %}
+
+            <script type="text/javascript">
+              var DOCUMENTATION_OPTIONS = {
+                URL_ROOT:    '{{ url_root }}',
+                VERSION:     '{{ release|e }}',
+                COLLAPSE_INDEX: false,
+                FILE_SUFFIX: '{{ '' if no_search_suffix else file_suffix }}',
+                HAS_SOURCE:  {{ has_source|lower }},
+                SOURCELINK_SUFFIX: '{{ sourcelink_suffix }}'
+              };
+            </script>
+
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/core/static/underscore.js"></script>
+            <script src="/core/static/doctools.js"></script>
+            <!-- <script src="/core/static/websupport.js"></script> -->
+            <script src="/core/static/searchtools_.js"></script>
+
+            <script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+
+        {% endblock %}
+    </body>
+</html>

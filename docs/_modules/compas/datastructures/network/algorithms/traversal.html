@@ -1,0 +1,589 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<!-- Required meta tags -->
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<!-- compas meta tags -->
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<!-- Bootstrap CSS -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<!-- highlight CSS -->
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<!-- compas CSS -->
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<!-- main navigation bar -->
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/index.html">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" href="/index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link active" href="/core/index.html">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages/index.html">Additional Packages</a>
+</li>
+</ul>
+</header>
+<!-- page container -->
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<!-- main page content -->
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/core">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.datastructures.network.algorithms.traversal</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele &lt;vanmelet@ethz.ch&gt;'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, Block Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'network_dfs'</span><span class="p">,</span>
+    <span class="s1">'network_bfs'</span><span class="p">,</span>
+    <span class="s1">'network_bfs2'</span><span class="p">,</span>
+    <span class="s1">'network_dfs_paths'</span><span class="p">,</span>
+    <span class="s1">'network_bfs_paths'</span><span class="p">,</span>
+    <span class="s1">'network_shortest_path'</span><span class="p">,</span>
+    <span class="s1">'network_dijkstra_distances'</span><span class="p">,</span>
+    <span class="s1">'network_dijkstra_path'</span>
+<span class="p">]</span>
+
+
+<span class="c1"># @todo: rempove the callbacks</span>
+<span class="c1"># @todo: add specialised bfs to mesh orientation module</span>
+<span class="c1"># @todo: move to _graph module</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># depth-first</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="network_dfs"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_dfs.html#compas.datastructures.network_dfs">[docs]</a><span class="k">def</span> <span class="nf">network_dfs</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Return all nodes of a connected component containing 'root' of a network</span>
+<span class="sd">    represented by an adjacency dictionary.</span>
+
+<span class="sd">    This implementation uses a 'to visit' stack. The principle of a stack</span>
+<span class="sd">    is LIFO. In Python, a list is a stack.</span>
+
+<span class="sd">    Initially only the root element is on the stack. While there are still</span>
+<span class="sd">    elements on the stack, the node on top of the stack is 'popped off' and if</span>
+<span class="sd">    this node was not already visited, its neighbours are added to the stack if</span>
+<span class="sd">    they hadn't already been visited themselves.</span>
+
+<span class="sd">    Since the last element on top of the stack is always popped off, the</span>
+<span class="sd">    algorithm goes deeper and deeper in the datastructure, until it reaches a</span>
+<span class="sd">    node without (unvisited) neighbours and then backtracks. Once a new node</span>
+<span class="sd">    with unvisited neighbours is found, there too it will go as deep as possible</span>
+<span class="sd">    before backtracking again, and so on. Once there are no more nodes on the</span>
+<span class="sd">    stack, the entire structure has been traversed.</span>
+
+<span class="sd">    Note that this returns a depth-first spanning tree of a connected component</span>
+<span class="sd">    of the network.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        adjacency (dict): An adjacency dictionary. Each key represents a vertex</span>
+<span class="sd">            and maps to a list of neighbouring vertex keys.</span>
+<span class="sd">        root (str): The vertex from which to start the depth-first search.</span>
+<span class="sd">        callback (callable): Optional. A function that is called on every node</span>
+<span class="sd">            when it is found. Default is ``None``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: A depth-first ordering of all vertices in the network.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        AssertionError: If the callback is provided, but is not callable.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import compas</span>
+<span class="sd">        &gt;&gt;&gt; network = Network.from_obj(compas.get_data('lines.obj'))</span>
+<span class="sd">        &gt;&gt;&gt; print(network_dfs(network, network.get_any_vertex()))</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        ...</span>
+
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">),</span> <span class="s1">'The provided callback is not callable: </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+
+    <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">adjacency</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
+    <span class="n">tovisit</span> <span class="o">=</span> <span class="p">[</span><span class="n">root</span><span class="p">]</span>
+    <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">while</span> <span class="n">tovisit</span><span class="p">:</span>
+        <span class="c1"># pop the last added element from the stack</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">tovisit</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+            <span class="c1"># mark the node as visited</span>
+            <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="c1"># call the callback</span>
+            <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+                <span class="n">callback</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="c1"># add the unvisited nbrs to the stack</span>
+            <span class="n">tovisit</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">adjacency</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">-</span> <span class="n">visited</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tree</span></div>
+
+
+<span class="c1"># def network_dfs_tree(adjacency, root):</span>
+<span class="c1">#     adjacency = dict((key, set(nbrs)) for key, nbrs in adjacency.iteritems())</span>
+<span class="c1">#     tovisit = [(root, [root])]</span>
+<span class="c1">#     visited = {}</span>
+<span class="c1">#     while tovisit:</span>
+<span class="c1">#         # a node to visit</span>
+<span class="c1">#         # and the nodes that have been visited to get there</span>
+<span class="c1">#         node, path = tovisit.pop()</span>
+<span class="c1">#         # add every unvisited nbr</span>
+<span class="c1">#         # and the path that leads to it</span>
+<span class="c1">#         for nbr in adjacency[node] - set(path):</span>
+<span class="c1">#             # if the nbr is the goal, yield the path that leads to it</span>
+<span class="c1">#             tovisit.append((nbr, path + [nbr]))</span>
+<span class="c1">#         visited[node] = path</span>
+<span class="c1">#     return visited</span>
+
+
+<div class="viewcode-block" id="network_dfs_paths"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_dfs_paths.html#compas.datastructures.network_dfs_paths">[docs]</a><span class="k">def</span> <span class="nf">network_dfs_paths</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Yield all paths that lead from a root node to a specific goal.</span>
+
+<span class="sd">    The implementation is based on</span>
+<span class="sd">    http://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/</span>
+<span class="sd">    """</span>
+    <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">adjacency</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
+    <span class="n">tovisit</span> <span class="o">=</span> <span class="p">[(</span><span class="n">root</span><span class="p">,</span> <span class="p">[</span><span class="n">root</span><span class="p">])]</span>
+
+    <span class="k">while</span> <span class="n">tovisit</span><span class="p">:</span>
+        <span class="c1"># get the last added node and the path that led to that node</span>
+        <span class="n">node</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">tovisit</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="c1"># add every unvisited nbr</span>
+        <span class="c1"># and the path that leads to it</span>
+        <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">adjacency</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="c1"># if the nbr is the goal, yield the path that leads to it</span>
+            <span class="k">if</span> <span class="n">nbr</span> <span class="o">==</span> <span class="n">goal</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="n">nbr</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tovisit</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nbr</span><span class="p">,</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="n">nbr</span><span class="p">]))</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># depth-first</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="network_bfs"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_bfs.html#compas.datastructures.network_bfs">[docs]</a><span class="k">def</span> <span class="nf">network_bfs</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Return all nodes of a connected component containing 'root' of a network</span>
+<span class="sd">    represented by an adjacency dictionary.</span>
+
+<span class="sd">    This implementation uses a queue to keep track of nodes to visit.</span>
+<span class="sd">    The principle of a queue is FIFO. In Python, a deque (double-ended queue) is</span>
+<span class="sd">    ideal for removing elements from the beginning, i.e. from the 'left'.</span>
+
+<span class="sd">    In a breadth-first search, all unvisited neighbours of a node are visited</span>
+<span class="sd">    first. When a neighbour is visited, its univisited neighbours are added to</span>
+<span class="sd">    the list of nodes to visit.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        adjacency (dict): An adjacency dictionary. Each key represents a vertex</span>
+<span class="sd">            and maps to a list of neighbouring vertex keys.</span>
+<span class="sd">        root (str): The vertex from which to start the breadth-first search.</span>
+<span class="sd">        callback (callable): Optional. A function that is called on every node</span>
+<span class="sd">            when it is found. Default is ``None``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: A breadth-first ordering of all vertices in the network.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        AssertionError: If the callback is provided, but is not callable.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import compas</span>
+<span class="sd">        &gt;&gt;&gt; network = Network.from_obj(compas.get_data('lines.obj'))</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        By appending the neighbours to the end of the list of nodes to visit,</span>
+<span class="sd">        and by visiting the nodes at the start of the list first, the network is</span>
+<span class="sd">        traversed in *breadth-first* order.</span>
+
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">),</span> <span class="s1">'The provided callback is not callable: </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+
+    <span class="n">tovisit</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">root</span><span class="p">])</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="p">[</span><span class="n">root</span><span class="p">]</span>
+    <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">tovisit</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">tovisit</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+        <span class="c1"># for nbr in adjacency[node] - visited:</span>
+        <span class="c1">#     tovisit</span>
+        <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">adjacency</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">nbr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                <span class="n">tovisit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
+                <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
+                <span class="n">tree</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">nbr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tree</span></div>
+
+
+<span class="k">def</span> <span class="nf">network_bfs2</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+    <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">adjacency</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
+    <span class="n">tovisit</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">root</span><span class="p">])</span>
+    <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="n">tovisit</span><span class="p">:</span>
+        <span class="c1"># visit all the neighbours of a node first</span>
+        <span class="c1"># before moving on to their respective neighbours in the same order</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">tovisit</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+            <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="c1"># add all the neighbours of the current node that have not yet been visited</span>
+            <span class="n">tovisit</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">adjacency</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">-</span> <span class="n">visited</span><span class="p">)</span>
+    <span class="c1"># returning this is pointless</span>
+    <span class="c1"># since visited is a set</span>
+    <span class="c1"># and sets have no order</span>
+    <span class="k">return</span> <span class="n">visited</span>
+
+
+<div class="viewcode-block" id="network_bfs_paths"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_bfs_paths.html#compas.datastructures.network_bfs_paths">[docs]</a><span class="k">def</span> <span class="nf">network_bfs_paths</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+    <span class="sd">"""Return all paths from root to goal.</span>
+
+<span class="sd">    Due to the nature of the search, the first path returned is the shortest.</span>
+<span class="sd">    """</span>
+    <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">adjacency</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
+    <span class="n">tovisit</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([(</span><span class="n">root</span><span class="p">,</span> <span class="p">[</span><span class="n">root</span><span class="p">])])</span>
+    <span class="k">while</span> <span class="n">tovisit</span><span class="p">:</span>
+        <span class="n">node</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">tovisit</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">adjacency</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">nbr</span> <span class="o">==</span> <span class="n">goal</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="n">nbr</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tovisit</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nbr</span><span class="p">,</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="n">nbr</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="network_shortest_path"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_shortest_path.html#compas.datastructures.network_shortest_path">[docs]</a><span class="k">def</span> <span class="nf">network_shortest_path</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+    <span class="sd">""""""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">network_bfs_paths</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">goal</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># dijkstra</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="network_dijkstra_distances"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_dijkstra_distances.html#compas.datastructures.network_dijkstra_distances">[docs]</a><span class="k">def</span> <span class="nf">network_dijkstra_distances</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="sd">"""Compute Dijkstra distances to a specific vertex of a network to every other</span>
+<span class="sd">    vertex of the network.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        adjacency (dict): An adjacency dictionary. Each key represents a vertex</span>
+<span class="sd">            and maps to a list of neighbouring vertex keys.</span>
+<span class="sd">        weight (dict): A dictionary of edge weights.</span>
+<span class="sd">        target (str): The key of the vertex to which the distances are computed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dictionary of distances from every vertex in the network.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        ...</span>
+
+<span class="sd">    """</span>
+    <span class="n">adjacency</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="nb">set</span><span class="p">(</span><span class="n">nbrs</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">adjacency</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">target</span> <span class="k">else</span> <span class="mi">1</span><span class="n">e17</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">adjacency</span><span class="p">)</span>
+    <span class="n">tovisit</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">adjacency</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">tovisit</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">tovisit</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">dist</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">tovisit</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">adjacency</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">-</span> <span class="n">visited</span><span class="p">:</span>
+            <span class="n">d_uuv</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">weight</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="n">d_uuv</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+                <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_uuv</span>
+    <span class="k">return</span> <span class="n">dist</span></div>
+
+
+<div class="viewcode-block" id="network_dijkstra_path"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_dijkstra_path.html#compas.datastructures.network_dijkstra_path">[docs]</a><span class="k">def</span> <span class="nf">network_dijkstra_path</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Find the shortest path between two vertices if the edge weights are not</span>
+<span class="sd">    all one.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        adjacency (dict): An adjacency dictionary. Each key represents a vertex</span>
+<span class="sd">            and maps to a list of neighbouring vertex keys.</span>
+<span class="sd">        weight (dict): A dictionary of edge weights.</span>
+<span class="sd">        source (str): The start vertex.</span>
+<span class="sd">        target (str): The end vertex.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: The shortest path.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The edge weights should all be positive.</span>
+<span class="sd">        For a directed graph, set the weights of the reversed edges to ``+inf``.</span>
+<span class="sd">        For an undirected graph, add the same weight for an edge in both directions.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">            :include-source:</span>
+
+<span class="sd">            import compas</span>
+
+<span class="sd">            from compas.datastructures.network import Network</span>
+<span class="sd">            from compas.visualization.plotters import NetworkPlotter</span>
+<span class="sd">            from compas.datastructures.network.algorithms import network_dijkstra_path</span>
+
+<span class="sd">            network = Network.from_obj(compas.get_data('grid_irregular.obj'))</span>
+
+<span class="sd">            weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())</span>
+<span class="sd">            weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})</span>
+
+<span class="sd">            start = 21</span>
+<span class="sd">            end = 22</span>
+
+<span class="sd">            path = network_dijkstra_path(network.adjacency, weight, start, end)</span>
+
+<span class="sd">            edges = []</span>
+<span class="sd">            for i in range(len(path) - 1):</span>
+<span class="sd">                u = path[i]</span>
+<span class="sd">                v = path[i + 1]</span>
+<span class="sd">                if v not in network.edge[u]:</span>
+<span class="sd">                    u, v = v, u</span>
+<span class="sd">                edges.append([u, v])</span>
+
+<span class="sd">            plotter = NetworkPlotter(network)</span>
+
+<span class="sd">            plotter.draw_vertices(</span>
+<span class="sd">                text={key: key for key in path},</span>
+<span class="sd">                facecolor={key: '#ff0000' for key in (path[0], path[-1])},</span>
+<span class="sd">                radius=0.15</span>
+<span class="sd">            )</span>
+
+<span class="sd">            plotter.draw_edges(</span>
+<span class="sd">                color={(u, v): '#ff0000' for u, v in edges},</span>
+<span class="sd">                width={(u, v): 2.0 for u, v in edges},</span>
+<span class="sd">                text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}</span>
+<span class="sd">            )</span>
+
+<span class="sd">            plotter.show()</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">            :include-source:</span>
+
+<span class="sd">            import compas</span>
+
+<span class="sd">            from compas.datastructures.network import Network</span>
+<span class="sd">            from compas.visualization.plotters import NetworkPlotter</span>
+<span class="sd">            from compas.datastructures.network.algorithms import network_dijkstra_path</span>
+
+<span class="sd">            network = Network.from_obj(compas.get_data('grid_irregular.obj'))</span>
+
+<span class="sd">            weight = dict(((u, v), network.edge_length(u, v)) for u, v in network.edges())</span>
+<span class="sd">            weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})</span>
+
+<span class="sd">            weight[(8, 7)] = 1000</span>
+<span class="sd">            weight[(7, 8)] = 1000</span>
+
+<span class="sd">            start = 21</span>
+<span class="sd">            end = 22</span>
+
+<span class="sd">            path = network_dijkstra_path(network.adjacency, weight, start, end)</span>
+
+<span class="sd">            edges = []</span>
+<span class="sd">            for i in range(len(path) - 1):</span>
+<span class="sd">                u = path[i]</span>
+<span class="sd">                v = path[i + 1]</span>
+<span class="sd">                if v not in network.edge[u]:</span>
+<span class="sd">                    u, v = v, u</span>
+<span class="sd">                edges.append([u, v])</span>
+
+<span class="sd">            plotter = NetworkPlotter(network)</span>
+
+<span class="sd">            plotter.draw_vertices(</span>
+<span class="sd">                text={key: key for key in path},</span>
+<span class="sd">                facecolor={key: '#ff0000' for key in (path[0], path[-1])},</span>
+<span class="sd">                radius=0.15</span>
+<span class="sd">            )</span>
+
+<span class="sd">            plotter.draw_edges(</span>
+<span class="sd">                color={(u, v): '#ff0000' for u, v in edges},</span>
+<span class="sd">                width={(u, v): 2.0 for u, v in edges},</span>
+<span class="sd">                text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}</span>
+<span class="sd">            )</span>
+
+<span class="sd">            plotter.show()</span>
+
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dist</span><span class="p">:</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">network_dijkstra_distances</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="p">]</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">source</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">adjacency</span><span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">nbr</span><span class="p">:</span> <span class="n">dist</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="o">+</span> <span class="n">weight</span><span class="p">[(</span><span class="n">node</span><span class="p">,</span> <span class="n">nbr</span><span class="p">)])</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">node</span> <span class="o">!=</span> <span class="n">target</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">adjacency</span><span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">nbr</span><span class="p">:</span> <span class="n">dist</span><span class="p">[</span><span class="n">nbr</span><span class="p">])</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">compas</span>
+
+    <span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="k">import</span> <span class="n">Network</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms</span> <span class="k">import</span> <span class="n">network_dijkstra_path</span>
+
+    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.networkplotter</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
+
+    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
+
+    <span class="n">weight</span> <span class="o">=</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="mf">1.0</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()}</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">update</span><span class="p">({(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span> <span class="n">weight</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()})</span>
+
+    <span class="n">weight</span><span class="p">[(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">17</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">weight</span><span class="p">[(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">7</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1000</span>
+
+    <span class="n">start</span> <span class="o">=</span> <span class="mi">21</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="mi">29</span>
+
+    <span class="n">path1</span> <span class="o">=</span> <span class="n">network_dijkstra_path</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+
+    <span class="n">start</span> <span class="o">=</span> <span class="mi">29</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="mi">22</span>
+
+    <span class="n">path2</span> <span class="o">=</span> <span class="n">network_dijkstra_path</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">path1</span> <span class="o">+</span> <span class="n">path2</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">path</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">,</span> <span class="n">u</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">])</span>
+
+    <span class="n">vertexcolor</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">path</span><span class="p">}</span>
+    <span class="n">vertexcolor</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'#00ff00'</span>
+    <span class="n">vertexcolor</span><span class="p">[</span><span class="mi">22</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'#00ff00'</span>
+
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">()},</span>
+                          <span class="n">textcolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]},</span>
+                          <span class="n">facecolor</span><span class="o">=</span><span class="n">vertexcolor</span><span class="p">,</span>
+                          <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">},</span>
+                       <span class="n">width</span><span class="o">=</span><span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="mf">2.0</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">},</span>
+                       <span class="n">text</span><span class="o">=</span><span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="s1">'</span><span class="si">{:.1f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">weight</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()})</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<!-- sidebar navigation -->
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- toc of current page -->
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Sep 28, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+              var DOCUMENTATION_OPTIONS = {
+                URL_ROOT:    '',
+                VERSION:     '',
+                COLLAPSE_INDEX: false,
+                FILE_SUFFIX: '.html',
+                HAS_SOURCE:  true,
+                SOURCELINK_SUFFIX: '.txt'
+              };
+            </script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/core/static/underscore.js"></script>
+<script src="/core/static/doctools.js"></script>
+<!-- <script src="/core/static/websupport.js"></script> -->
+<script src="/core/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

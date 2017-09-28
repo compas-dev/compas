@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<!-- Required meta tags -->
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<!-- compas meta tags -->
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<!-- Bootstrap CSS -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<!-- highlight CSS -->
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<!-- compas CSS -->
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<!-- main navigation bar -->
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/index.html">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" href="/index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link active" href="/core/index.html">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages/index.html">Additional Packages</a>
+</li>
+</ul>
+</header>
+<!-- page container -->
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<!-- main page content -->
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/core">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.numerical.solvers.lma</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="sd">""""""</span>
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'lma'</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="lma"><a class="viewcode-back" href="../../../../reference/generated/compas.numerical.solvers.lma.html#compas.numerical.solvers.lma">[docs]</a><span class="k">def</span> <span class="nf">lma</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+    <span class="c1"># qind0 = mat(qind0).T</span>
+    <span class="c1"># q = EEE * qind0</span>
+
+    <span class="c1"># Q = diag(q.flat)</span>
+    <span class="c1"># D = Ci.T * Q * Ci</span>
+    <span class="c1"># Df = Ci.T * Q * Cf</span>
+    <span class="c1"># zi = solve(D, pz - Df * zf)</span>
+
+    <span class="c1"># W = diag((Ci*zi).flat)</span>
+    <span class="c1"># J = solve(-D, Ci.T) * W * EEE</span>
+    <span class="c1"># A = J.T * J</span>
+    <span class="c1"># a = diag(A)</span>
+    <span class="c1"># f = zi - zT</span>
+    <span class="c1"># g = J.T * f</span>
+
+    <span class="c1"># tau = 1e-06</span>
+    <span class="c1"># eps1 = 1e-08</span>
+    <span class="c1"># eps2 = 1e-08</span>
+    <span class="c1"># kmax = 1000</span>
+    <span class="c1"># k = 0</span>
+    <span class="c1"># v = 2</span>
+    <span class="c1"># mu = tau * max(a)</span>
+
+    <span class="c1"># stop = 'max(abs(g)): %s &gt; %s' % (max(abs(g)), eps1)</span>
+    <span class="c1"># while max(abs(g)) &gt; eps1 :</span>
+    <span class="c1">#     dqind = solve(-(A + mu * eye(dof)), g)</span>
+    <span class="c1">#     dq = EEE * dqind</span>
+    <span class="c1">#     # differences between iterations become too small</span>
+    <span class="c1">#     # this means that we are at a local minimum, i think</span>
+    <span class="c1">#     if norm(dq) &lt;= eps2 * norm(q) :</span>
+    <span class="c1">#         stop = 'differences: %s &lt;= %s' % (norm(dq),eps2*norm(q))</span>
+    <span class="c1">#         break</span>
+    <span class="c1">#     qn = q + dq</span>
+    <span class="c1">#     # linear force density</span>
+    <span class="c1">#     Q = diag(qn.flat)</span>
+    <span class="c1">#     D = Ci.T * Q * Ci</span>
+    <span class="c1">#     Df = Ci.T * Q * Cf</span>
+    <span class="c1">#     zi = solve(D, pz - Df * zf)</span>
+    <span class="c1">#     # current difference</span>
+    <span class="c1">#     fn = zi - zT</span>
+    <span class="c1">#     # gain ratio</span>
+    <span class="c1">#     # assess whether to switch between ...</span>
+    <span class="c1">#     gain = (0.5 * (sum(power(f,2)) - sum(power(fn,2)))) / (0.5 * dqind.T * (mu * dqind - g))</span>
+    <span class="c1">#     if gain &gt; 0 :</span>
+    <span class="c1">#         # ...</span>
+    <span class="c1">#         q = qn</span>
+    <span class="c1">#         Q = diag(q.flat)</span>
+    <span class="c1">#         D = Ci.T * Q * Ci</span>
+    <span class="c1">#         Df = Ci.T * Q * Cf</span>
+    <span class="c1">#         zi = solve(D, pz - Df * zf)</span>
+
+    <span class="c1">#         W = diag((Ci*zi).flat)</span>
+    <span class="c1">#         J = solve(-D, Ci.T) * W * EEE</span>
+    <span class="c1">#         A = J.T * J</span>
+    <span class="c1">#         a = diag(A)</span>
+    <span class="c1">#         f = zi - zT</span>
+    <span class="c1">#         g = J.T * f</span>
+
+    <span class="c1">#         mu = mu * max([1/3,1-(2*gain-1)**3])</span>
+    <span class="c1">#         v = 2</span>
+    <span class="c1">#     else :</span>
+    <span class="c1">#         # ...</span>
+    <span class="c1">#         mu = mu * v</span>
+    <span class="c1">#         v = 2 * v</span>
+    <span class="c1">#     k = k + 1</span>
+    <span class="c1">#     if k &gt;= kmax :</span>
+    <span class="c1">#         stop = 'kmax'</span>
+    <span class="c1">#         break</span>
+    <span class="c1"># return [q, stop, k, g]</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<!-- sidebar navigation -->
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- toc of current page -->
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Sep 28, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+              var DOCUMENTATION_OPTIONS = {
+                URL_ROOT:    '',
+                VERSION:     '',
+                COLLAPSE_INDEX: false,
+                FILE_SUFFIX: '.html',
+                HAS_SOURCE:  true,
+                SOURCELINK_SUFFIX: '.txt'
+              };
+            </script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/core/static/underscore.js"></script>
+<script src="/core/static/doctools.js"></script>
+<!-- <script src="/core/static/websupport.js"></script> -->
+<script src="/core/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<!-- Required meta tags -->
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<!-- compas meta tags -->
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<!-- Bootstrap CSS -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<!-- highlight CSS -->
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<!-- compas CSS -->
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<!-- main navigation bar -->
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/index.html">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" href="/index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link active" href="/core/index.html">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages/index.html">Additional Packages</a>
+</li>
+</ul>
+</header>
+<!-- page container -->
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<!-- main page content -->
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/core">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.com.mlab.client</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">System</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">platform</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'IronPython'</span><span class="p">:</span>
+        <span class="k">raise</span>
+
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'MatlabClient'</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="MatlabClient"><a class="viewcode-back" href="../../../../reference/generated/compas.com.MatlabClient.html#compas.com.MatlabClient">[docs]</a><span class="k">class</span> <span class="nc">MatlabClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">"""Communicate with Matlab through Windows' COM interface.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This implementation uses Windows' COM interface to communicate with Matlab.</span>
+<span class="sd">    Therefore, it is obviously only available on Windows.</span>
+<span class="sd">    When an instance of this class is created, it automatically connects to Matlab,</span>
+<span class="sd">    and initializes a lease that keeps the interface alive for at least 5 minutes</span>
+<span class="sd">    such that subsequent calls can be executed immediately.</span>
+<span class="sd">    After every call, the lease is renewed...</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        If ``True``, all commands and results will be printed in the Python console.</span>
+<span class="sd">        Default is ``False``.</span>
+<span class="sd">    interactive : bool</span>
+<span class="sd">        If ``True``, a Matlab console window will be visible.</span>
+<span class="sd">        Default is ``False``.</span>
+<span class="sd">    workspace : str</span>
+<span class="sd">        The name of the Matlab workspace.</span>
+<span class="sd">        Default is ``'base'``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; matlab = MatlabClient(interactive=True)</span>
+
+<span class="sd">    &gt;&gt;&gt; A = matlab.matrix_from_list([[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]])</span>
+
+<span class="sd">    &gt;&gt;&gt; matlab.put('A', A)</span>
+<span class="sd">    &gt;&gt;&gt; matlab.eval('[R, jb] = rref(A);')</span>
+
+<span class="sd">    &gt;&gt;&gt; R = matlab.get('R')</span>
+<span class="sd">    &gt;&gt;&gt; jb = matlab.get('jb')</span>
+
+<span class="sd">    &gt;&gt;&gt; print(R)</span>
+<span class="sd">    &gt;&gt;&gt; print(jb)</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    * compas.com.mlab.MatlabEngine</span>
+<span class="sd">    * compas.com.mlab.MatlabSession</span>
+<span class="sd">    * compas.com.mlab.MatlabProcess</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">workspace</span><span class="o">=</span><span class="s1">'base'</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_app</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lease</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interactive</span> <span class="o">=</span> <span class="n">interactive</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="n">workspace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_lease</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_create_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">GetTypeFromProgID</span><span class="p">(</span><span class="s1">'Matlab.Application'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_app</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Activator</span><span class="o">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">Visible</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactive</span>
+
+    <span class="k">def</span> <span class="nf">_init_lease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lease</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">InitializeLifetimeService</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lease</span><span class="o">.</span><span class="n">InitialLeaseTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">TimeSpan</span><span class="o">.</span><span class="n">FromMinutes</span><span class="p">(</span><span class="mf">5.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lease</span><span class="o">.</span><span class="n">RenewOnCallTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">TimeSpan</span><span class="o">.</span><span class="n">FromMinutes</span><span class="p">(</span><span class="mf">5.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_renew_lease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lease</span><span class="o">.</span><span class="n">Renew</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">TimeSpan</span><span class="o">.</span><span class="n">FromMinutes</span><span class="p">(</span><span class="mf">5.0</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_get_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">GetVariable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_value</span><span class="o">.</span><span class="n">Rank</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">_value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">list_from_vector</span><span class="p">(</span><span class="n">_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_get_matrix_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="s1">'[m, n] = size(</span><span class="si">{0}</span><span class="s1">);'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">GetVariable</span><span class="p">(</span><span class="s1">'m'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">GetVariable</span><span class="p">(</span><span class="s1">'n'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># static methods</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">vector_from_list</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
+        <span class="sd">"""Make a Matlab-compatible vector from a list.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        a : list</span>
+<span class="sd">            The input list.</span>
+<span class="sd">        dtype : object</span>
+<span class="sd">            The data type constructor function.</span>
+<span class="sd">            Default is ``float``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        System.Array</span>
+<span class="sd">            The vector.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; MatlabClient.vector_from_list([1, 2, 3], dtype=float)</span>
+
+<span class="sd">        """</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">vector</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Array</span><span class="o">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">vector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vector</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">vector_from_array</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="sd">"""Make a Matlab-compatible vector from a (Numpy) array.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        a : ndarray</span>
+<span class="sd">            The input array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        System.Array</span>
+<span class="sd">            The vector.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">matrix_from_list</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
+        <span class="sd">"""Make a Matlab-compatible matrix from a list of lists.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        A : list of list</span>
+<span class="sd">            The input list.</span>
+<span class="sd">        dtype : object</span>
+<span class="sd">            The data type constructor function.</span>
+<span class="sd">            Default is ``float``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        System.Array</span>
+<span class="sd">            The matrix.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+
+<span class="sd">        """</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">A</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Matrix dimensions inconsistent.'</span><span class="p">)</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Array</span><span class="o">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">matrix</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">matrix</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">matrix_from_array</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="sd">"""Make a Matlab-compatible matrix from a (Numpy) array.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        a : ndarray</span>
+<span class="sd">            The input array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        System.Array</span>
+<span class="sd">            The matrix.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">list_from_vector</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="sd">"""Convert a Matlab vector to a Python list."""</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">list_from_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">"""Convert a Matlab matrix to a Python list."""</span>
+        <span class="n">nlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">nlist</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">nlist</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">nlist</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">vector_from_list</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">matrix_from_list</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># methods</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">):</span>
+        <span class="sd">"""Evaluate a command from a string.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cmd : str</span>
+<span class="sd">            The command string.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; matlab = MatlabClient(verbose=True)</span>
+<span class="sd">        &gt;&gt;&gt; matlab.eval('isprime(13);')</span>
+<span class="sd">        True</span>
+
+<span class="sd">        """</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">"""Put a variable in the Matlab workspace.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the variable.</span>
+<span class="sd">        value : ...</span>
+<span class="sd">            The value of the variable.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; m = MatlabClient(verbose=True, interactive=True)</span>
+
+<span class="sd">        &gt;&gt;&gt; m.put('A', m.matrix([[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]))</span>
+<span class="sd">        &gt;&gt;&gt; m.put()</span>
+<span class="sd">        &gt;&gt;&gt; m.put()</span>
+
+<span class="sd">        """</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">PutFullMatrix</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">PutWorkspaceData</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">"""Get the value of a variable in the workspace.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the variable.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str, int, float, list</span>
+<span class="sd">            The value of the variable.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; m = MatlabClient(verbose=True)</span>
+
+<span class="sd">        &gt;&gt;&gt; m.get('A')</span>
+<span class="sd">        [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]</span>
+
+<span class="sd">        """</span>
+        <span class="n">_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">GetVariable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_value</span><span class="o">.</span><span class="n">Rank</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">_value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">_value</span><span class="o">.</span><span class="n">Rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">list_from_vector</span><span class="p">(</span><span class="n">_value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">_value</span><span class="o">.</span><span class="n">Rank</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_matrix_size</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">list_from_matrix</span><span class="p">(</span><span class="n">_value</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+
+    <span class="n">matlab</span> <span class="o">=</span> <span class="n">MatlabClient</span><span class="p">(</span><span class="n">interactive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">matrix_from_list</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">]])</span>
+
+    <span class="n">matlab</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+    <span class="n">matlab</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s1">'[R, jb] = rref(A);'</span><span class="p">)</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'R'</span><span class="p">)</span>
+    <span class="n">jb</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'jb'</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">jb</span><span class="p">)</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<!-- sidebar navigation -->
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- toc of current page -->
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Sep 28, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+              var DOCUMENTATION_OPTIONS = {
+                URL_ROOT:    '',
+                VERSION:     '',
+                COLLAPSE_INDEX: false,
+                FILE_SUFFIX: '.html',
+                HAS_SOURCE:  true,
+                SOURCELINK_SUFFIX: '.txt'
+              };
+            </script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/core/static/underscore.js"></script>
+<script src="/core/static/doctools.js"></script>
+<!-- <script src="/core/static/websupport.js"></script> -->
+<script src="/core/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

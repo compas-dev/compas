@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<!-- Required meta tags -->
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<!-- compas meta tags -->
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<!-- Bootstrap CSS -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<!-- highlight CSS -->
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<!-- compas CSS -->
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="compas.geometry.Spline.html" rel="next" title="Spline"/>
+<link href="compas.geometry.Polyhedron.html" rel="prev" title="Polyhedron"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<!-- main navigation bar -->
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/index.html">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" href="/index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link active" href="/core/index.html">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages/index.html">Additional Packages</a>
+</li>
+</ul>
+</header>
+<!-- page container -->
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<!-- main page content -->
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/core">main library</a>
+<a class="breadcrumb-item" href="../../reference.html">reference</a>
+<a class="breadcrumb-item" href="../compas.html">compas</a>
+<a accesskey="U" class="breadcrumb-item" href="../compas.geometry.html">geometry</a>
+</nav>
+<div class="section">
+<h1>Polyline</h1>
+<dl class="class">
+<dt id="compas.geometry.Polyline">
+<em class="property">class </em><code class="descclassname">compas.geometry.</code><code class="descname">Polyline</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/objects/polyline.html#Polyline"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal">object</code></a></p>
+<p>A polyline object represents a concatenation of lines.</p>
+<p>A polyline is a piecewise linear element. It does not have an interior. It
+can be open or closed. It can be self-intersecting.</p>
+<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
+<col class="field-name"/>
+<col class="field-body"/>
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> (<em>tuple, list</em>) – A list of points in three-dimensional space.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="compas.geometry.Polyline.points">
+<code class="descname">points</code></dt>
+<dd><p><em>list</em> – A list of <code class="docutils literal">Point</code> objects.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.geometry.Polyline.lines">
+<code class="descname">lines</code></dt>
+<dd><p><em>list</em> – A list of <code class="docutils literal">Line</code> objects.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.geometry.Polyline.p">
+<code class="descname">p</code></dt>
+<dd><p><em>int</em> – The number of objects in <cite>points</cite>.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.geometry.Polyline.l">
+<code class="descname">l</code></dt>
+<dd><p><em>int</em> – The number of objects in ‘lines’.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.geometry.Polyline.length">
+<code class="descname">length</code></dt>
+<dd><p><em>float</em> – The length of the polyline.</p>
+</dd></dl>
+<p class="rubric">Examples</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span> <span class="o">=</span> <span class="n">Polyline</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span><span class="o">.</span><span class="n">length</span>
+<span class="go">3.0</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">polyline</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">&lt;class 'point.Point'&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span>
+<span class="go">0.0</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">polyline</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">&lt;class 'line.Line'&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">length</span>
+<span class="go">1.0</span>
+</code></pre></div>
+
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><code class="xref py py-obj docutils literal">__init__</code>(points)</td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_closed</code>()</td>
+<td>Verify if the polyline is closed.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_selfintersecting</code>()</td>
+<td>Return True if the polyline is <cite>self-intersecting</cite>, False otherwise.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="" title="compas.geometry.Polyline.l"><code class="xref py py-obj docutils literal">l</code></a></td>
+<td>The number of lines.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="" title="compas.geometry.Polyline.length"><code class="xref py py-obj docutils literal">length</code></a></td>
+<td>The length of the polyline.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="" title="compas.geometry.Polyline.lines"><code class="xref py py-obj docutils literal">lines</code></a></td>
+<td>The lines of the polyline.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="" title="compas.geometry.Polyline.p"><code class="xref py py-obj docutils literal">p</code></a></td>
+<td>The number of points.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="" title="compas.geometry.Polyline.points"><code class="xref py py-obj docutils literal">points</code></a></td>
+<td>The points of the polyline.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+</div>
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="compas.geometry.Polyhedron.html" role="button">Polyhedron</a>
+<a class="btn btn-primary compas-next" href="compas.geometry.Spline.html" role="button">Spline</a>
+</nav>
+</main>
+<!-- sidebar navigation -->
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.com.html">com</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.hpc.html">hpc</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_maya.html">compas_maya</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_grasshopper.html">compas_grasshopper</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- toc of current page -->
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Polyline</a></li>
+</ul>
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Sep 28, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+              var DOCUMENTATION_OPTIONS = {
+                URL_ROOT:    '',
+                VERSION:     '',
+                COLLAPSE_INDEX: false,
+                FILE_SUFFIX: '.html',
+                HAS_SOURCE:  true,
+                SOURCELINK_SUFFIX: '.txt'
+              };
+            </script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/core/static/underscore.js"></script>
+<script src="/core/static/doctools.js"></script>
+<!-- <script src="/core/static/websupport.js"></script> -->
+<script src="/core/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>
