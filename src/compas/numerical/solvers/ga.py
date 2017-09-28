@@ -9,9 +9,50 @@ __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
 
-__all__ = [
-    'GA'
-]
+def ga_optimize(fit_function,
+                fit_type,
+                num_var,
+                boundaries,
+                num_gen=100,
+                num_pop=100,
+                num_elite=10,
+                mutation_probability=0.001,
+                num_bin_dig=None,
+                num_pop_init=None,
+                num_gen_init_pop=None,
+                start_from_gen=False,
+                min_fit=None,
+                fit_name=None,
+                fargs=None,
+                fkwargs=None,
+                output_path=None,
+                input_path=None):
+
+    ga = GA()
+
+    ga.fit_name             = fit_name or fit_function.__name__
+    ga.fit_type             = fit_type
+    ga.num_gen              = num_gen
+    ga.num_pop              = num_pop
+    ga.num_pop_init         = num_pop_init
+    ga.num_gen_init_pop     = num_gen_init_pop
+    ga.num_elite            = num_elite
+    ga.num_var              = num_var
+    ga.mutation_probability = mutation_probability
+    ga.start_from_gen       = start_from_gen
+    ga.min_fit              = min_fit
+    ga.boundaries           = boundaries
+    ga.num_bin_dig          = num_bin_dig or [8] * num_var
+    ga.max_bin_dig          = max(ga.num_bin_dig)
+    ga.total_bin_dig        = sum(ga.num_bin_dig)
+    ga.fargs                = fargs or {}
+    ga.fkwargs              = fkwargs or {}
+    ga.fit_function         = fit_function
+    ga.output_path          = output_path or ''
+    ga.input_path           = input_path or ''
+    print 'output_path', ga.output_path
+    ga.ga()
+    return ga
 
 
 class GA:
@@ -23,7 +64,7 @@ class GA:
     def __init__(self):
         """ Initializes the GA object.
 
-        Attributes
+        Parameters
         ----------
         best_fit: float
             The fitness value of the best performing solution for the current generation.
@@ -52,7 +93,7 @@ class GA:
         kwargs : dict
             This dictionary will be passed as a keyword argument to all fitness functions.
             It can be used to pass required data, objects, that are not related to the
-            optimmization variables but is required to run the fitness function.
+            optimmization variables but are required to run the fitness function.
         max_bin_digit: int
             The maximum number of binary digits that are used to code a variable values.
             The number of binary digits assigned to code a variable determine the number
@@ -94,11 +135,12 @@ class GA:
         """
 
         self.kwargs = {}
+        self.fargs = {}
         self.best_fit = None
         self.best_individual_index = None
         self.boundaries   = {}
-        self.current_pop  = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_value': {}}
-        self.elite_pop   = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_value': {}}
+        self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
+        self.elite_pop    = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
         self.end_gen = None
         self.fit_function = None
         self.fit_name = ''
@@ -145,23 +187,23 @@ class GA:
 
             if generation == 0:
                 num = self.num_pop
+                self.current_pop['fit_value'] = [[]] * num
             else:
                 num = self.num_pop - self.num_elite
+
             for i in range(num):
-                self.current_pop['fit_value'][i] = self.fit_function(self.current_pop['scaled'][i], **self.kwargs)
+                self.current_pop['fit_value'][i] = self.fit_function(self.current_pop['scaled'][i], *self.fargs, **self.kwargs)
 
             if self.num_pop_init and generation >= self.num_gen_init_pop:
                 self.num_pop = self.num_pop_temp
                 self.current_pop = self.select_elite_pop(self.current_pop, num_elite=self.num_pop)
-
             self.write_out_file(generation)
 
             if self.min_fit:
                 self.update_min_fit_flag()
             else:
                 self.get_best_fit()
-
-            print ('generation ', generation, ' opt fit ', self.best_fit, 'min fit', self.min_fit)
+            print ('generation ', generation, ' best fit ', self.best_fit, 'min fit', self.min_fit)
             if self.check_diversity:
                 print ('num repeated individuals', self.check_pop_diversity())
             if generation < self.num_gen - 1 and self.min_fit_flag is False:
@@ -181,9 +223,7 @@ class GA:
     def check_pop_diversity(self):
         seen = []
         all_ = []
-        for key in self.current_pop['scaled']:
-            ind_ = self.current_pop['scaled'][key]
-            ind = [ind_[k] for k in ind_]
+        for ind in self.current_pop['scaled']:
             if ind not in seen:
                 seen.append(ind)
             all_.append(ind)
@@ -194,17 +234,16 @@ class GA:
 
         Parameters
         ----------
-        bin_pop: dict
-            The binary population dictionary.
+        bin_pop: list
+            The binary population list.
 
         Returns
         -------
         decoded_pop:
-            The decoded population dictionary.
+            The decoded population list.
         """
-        decoded_pop = {}
+        decoded_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
-            decoded_pop[j] = {}
             for i in range(self.num_var):
                 value = 0
                 chrom = bin_pop[j][i]
@@ -219,18 +258,13 @@ class GA:
 
         Returns
         -------
-        random_bin_pop: dict
-            A dictionary containing a random binary population.
+        random_bin_pop: list
+            A list containing a random binary population.
         """
-        random_bin_pop = {}
+        random_bin_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
-            random_bin_pop[j] = {}
             for i in range(self.num_var):
-                chrom_list = []
-                for u in range(self.num_bin_dig[i]):
-                    chrom_list.append(random.randint(0, 1))
-                random_bin_pop[j][i] = chrom_list
-
+                random_bin_pop[j][i] = [random.randint(0, 1) for u in range(self.num_bin_dig[i])]
         return random_bin_pop
 
     def scale_population(self, decoded_pop):
@@ -240,32 +274,20 @@ class GA:
 
         Parameters
         ----------
-        decoded_pop: dict
-            The decoded population dictionary.
+        decoded_pop: list
+            The decoded population list.
 
         Returns
         -------
-        scaled_pop: dict
-            The scaled ppopulation dictionary.
+        scaled_pop: list
+            The scaled ppopulation list.
         """
-        scaled_pop = {}
-        max_bin = []
-        for q in range(self.num_var):
-            max_bin_temp = 0
-            for u in range(self.num_bin_dig[q]):
-                max_bin_temp = max_bin_temp + 2**u
-            max_bin.append(max_bin_temp)
 
-        for j in range(self.num_pop):
-            scaled_pop[j] = {}
-            for i in range(self.num_var):
-                scaled_pop[j][i] = 1.0 / max_bin[i] * decoded_pop[j][i]
-
+        scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
             for i in range(self.num_var):
-                bound = self.boundaries[i]
-                scaled_pop[j][i] = bound[0] + (bound[1] - bound[0]) * scaled_pop[j][i]
-
+                maxbin = (2 ** self.num_bin_dig[i]) - 1
+                scaled_pop[j][i] = decoded_pop[j][i] * (self.boundaries[i][1] - self.boundaries[i][0]) / float((maxbin + self.boundaries[i][0]))
         return scaled_pop
 
     def tournament_selection(self):
@@ -308,25 +330,22 @@ class GA:
         elite_pop: dict
             The elite population dictionary.
         """
-        elite_pop   = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_value': {}}
-
-        # fit_list = pop['fit_value'].values()
-        fit_list = [self.current_pop['fit_value'][i] for i in range(len(self.current_pop['fit_value']))]
 
         if self.fit_type == 'min':
-            index_list = self.get_sorting_indices(fit_list)
+            sorted_ind = self.get_sorting_indices(self.current_pop['fit_value'])
         elif self.fit_type == 'max':
-            index_list = self.get_sorting_indices(fit_list, reverse=True)
+            sorted_ind = self.get_sorting_indices(self.current_pop['fit_value'], reverse=True)
         else:
             raise ValueError('User selected fit_type is wrong. Use "min" or "max" only')
         if not num_elite:
             num_elite = self.num_elite
-        for i in range(num_elite):
-            elite_pop['binary'][i] = pop['binary'][index_list[i]]
-            elite_pop['decoded'][i] = pop['decoded'][index_list[i]]
-            elite_pop['scaled'][i] = pop['scaled'][index_list[i]]
-            elite_pop['fit_value'][i] = pop['fit_value'][index_list[i]]
 
+        elite_pop   = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
+        for i in range(num_elite):
+            elite_pop['binary'].append(pop['binary'][sorted_ind[i]])
+            elite_pop['decoded'].append(pop['decoded'][sorted_ind[i]])
+            elite_pop['scaled'].append(pop['scaled'][sorted_ind[i]])
+            elite_pop['fit_value'].append(pop['fit_value'][sorted_ind[i]])
         return elite_pop
 
     def get_sorting_indices(self, l, reverse=False):
@@ -381,8 +400,8 @@ class GA:
         crossover point.
         """
 
-        self.current_pop  = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_value': {}}
-
+        self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
+        self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range((self.num_pop - self.num_elite) / 2):
             cross = random.randint(1, self.total_bin_dig - 1)
             a = self.mating_pool_a[j]
@@ -390,8 +409,6 @@ class GA:
             c = a[:cross] + b[cross:]
             d = b[:cross] + c[cross:]
 
-            self.current_pop['binary'][j] = {}
-            self.current_pop['binary'][j + ((self.num_pop - self.num_elite) / 2)] = {}
             for i in range(self.num_var):
                 variable_a = c[:self.num_bin_dig[i]]
                 del c[:self.num_bin_dig[i]]
@@ -535,6 +552,10 @@ class GA:
     def add_elite_to_current(self):
         """Adds the elite population to the current population dictionary.
         """
+        self.current_pop['decoded'] = [[[]] * self.num_var for i in range(self.num_pop)]
+        self.current_pop['decoded'] = [[[]] * self.num_var for i in range(self.num_pop)]
+        self.current_pop['scaled'] = [[[]] * self.num_var for i in range(self.num_pop)]
+        self.current_pop['fit_value'] = [[]] * self.num_pop
         for i in range(self.num_elite):
             self.current_pop['binary'][self.num_pop - self.num_elite + i] = self.elite_pop['binary'][i]
             self.current_pop['decoded'][self.num_pop - self.num_elite + i] = self.elite_pop['decoded'][i]
@@ -583,7 +604,7 @@ class GA:
         """Checks if the minimum desired fitness value has been achieved during optimization
         and saves the result in ``GA.min_fit_flag``.
         """
-        values = self.current_pop['fit_value'].values()
+        values = self.current_pop['fit_value']
         if self.fit_type == 'min':
             self.best_fit = min(values)
             if self.best_fit <= self.min_fit:
@@ -597,9 +618,9 @@ class GA:
         """Saves the best fitness value in ``GA.best_fit``
         """
         if self.fit_type == 'min':
-            self.best_fit = min(self.current_pop['fit_value'].values())
+            self.best_fit = min(self.current_pop['fit_value'])
         elif self.fit_type == 'max':
-            self.best_fit = max(self.current_pop['fit_value'].values())
+            self.best_fit = max(self.current_pop['fit_value'])
 
     def get_pop_from_pop_file(self, gen):
         """Reads the population file corresponding to the ``gen`` generation and returns
@@ -615,17 +636,18 @@ class GA:
         file_pop: dict
             The population dictionary contained in the file.
         """
-        file_pop  = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_value': {},
-                     'pf': {}}
+        # file_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': [],
+        #              'pf': []}
         filename  = 'generation_' + "%05d" % gen + '_population' + ".pop"
         filename = self.input_path + filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
         pf_file.close()
 
+        file_pop  = {'scaled': [[[]] * self.num_var for i in range(self.num_pop)]}
+        file_pop  = {'fit_value': [[[]] * self.num_var for i in range(self.num_pop)]}
+
         for i in range(self.num_pop):
-            file_pop['scaled'][i] = {}
-            file_pop['fit_value'][i] = {}
             line_scaled = lines[i + 7]
             line_fit = lines[i + 9 + self.num_pop]
             string_scaled = re.split(',', line_scaled)
@@ -635,9 +657,9 @@ class GA:
             del string_scaled[0]
             scaled = [float(j) for j in string_scaled]
             fit_value = float(string_fit)
+            file_pop['fit_value'][i] = fit_value
             for j in range(len(scaled)):
                 file_pop['scaled'][i][j] = scaled[j]
-            file_pop['fit_value'][i] = fit_value
 
         file_pop['decoded'] = self.unscale_pop(file_pop['scaled'])
         file_pop['binary'] = self.code_decoded(file_pop['decoded'])
@@ -649,19 +671,8 @@ class GA:
         """
         # fit_values = self.current_pop['fit_value'].values()
         fit_values = [self.current_pop['fit_value'][i] for i in range(len(self.current_pop['fit_value']))]
-        print('fit_values', fit_values)
         if self.fit_type == 'min':
             indices = self.get_sorting_indices(fit_values)
         elif self.fit_type == 'max':
             indices = self.get_sorting_indices(fit_values, reverse=True)
-        print('fitness sorted individual indices', indices)
         self.best_individual_index = indices[0]
-        print('self.best_individual_index', self.best_individual_index)
-
-
-# ==============================================================================
-# Debugging
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

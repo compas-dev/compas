@@ -10,9 +10,43 @@ __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
 
-__all__ = [
-    'MOGA'
-]
+def moga_optimize(fit_functions,
+                  fit_types,
+                  num_var,
+                  boundaries,
+                  num_gen=100,
+                  num_pop=100,
+                  mutation_probability=0.001,
+                  num_bin_dig=None,
+                  start_from_gen=False,
+                  min_fit=None,
+                  fit_names=None,
+                  fargs=None,
+                  fkwargs=None,
+                  output_path=None):
+
+    moga = MOGA()
+
+    moga.fit_names            = fit_names or [ff.__name__ for ff in fit_functions]
+    moga.fit_types            = fit_types
+    moga.num_gen              = num_gen
+    moga.num_pop              = num_pop
+    moga.num_var              = num_var
+    moga.mutation_probability = mutation_probability
+    moga.start_from_gen       = start_from_gen
+    moga.min_fit              = min_fit
+    moga.boundaries           = boundaries
+    moga.num_bin_dig          = num_bin_dig or [8] * num_var
+    moga.max_bin_dig          = max(moga.num_bin_dig)
+    moga.total_bin_dig        = sum(moga.num_bin_dig)
+    moga.fargs                = fargs or {}
+    moga.fkwargs              = fkwargs or {}
+    moga.fit_functions        = fit_functions
+    moga.output_path          = output_path or ''
+    moga.num_fit_func         = len(fit_functions)
+    print ('output_path = ', moga.output_path)
+    moga.moga()
+    return moga
 
 
 class MOGA:
@@ -43,7 +77,7 @@ class MOGA:
         self.num_bin_dig = 0
         self.mutation_probability = 0
         self.fit_names = []
-        self.fit_type = []
+        self.fit_types = []
         self.start_from_gen = False
         self.max_bin_dig = 0
         self.total_bin_dig = 0
@@ -51,9 +85,9 @@ class MOGA:
         self.output_path = []
         self.additional_data = {}
         self.parent_combined_dict = {}
-        self.parent_pop   = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {}, 'pf': {}}
-        self.current_pop  = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {}}
-        self.combined_pop = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {}}
+        self.parent_pop   = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': [], 'pf': []}
+        self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': []}
+        self.combined_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': []}
         self.new_pop_cd = []
         self.fixed_start_pop = None  # {'binary':{},'decoded':{},'scaled':{}}
 
@@ -81,9 +115,8 @@ class MOGA:
                     self.parent_pop['scaled'][i] = self.fixed_start_pop['scaled'][i]
                     print(self.fixed_start_pop['scaled'][i])
                     print('')
-
+            self.parent_pop['fit_values'] = [[[]] * self.num_fit_func for i in range(self.num_pop)]
             for i in range(self.num_pop):
-                self.parent_pop['fit_values'][i] = {}
                 for j in range(self.num_fit_func):
                     fit_func = self.fit_functions[j]
                     self.parent_pop['fit_values'][i][j] = fit_func(self.parent_pop['scaled'][i], self.additional_data)
@@ -95,9 +128,8 @@ class MOGA:
 
             self.current_pop['decoded'] = self.decode_binary_pop(self.current_pop['binary'])
             self.current_pop['scaled'] = self.scale_population(self.current_pop['decoded'])
-
+            self.current_pop['fit_values'] = [[[]] * self.num_fit_func for i in range(self.num_pop)]
             for i in range(self.num_pop):
-                self.current_pop['fit_values'][i] = {}
                 for j in range(self.num_fit_func):
                     fit_func = self.fit_functions[j]
                     self.current_pop['fit_values'][i][j] = fit_func(self.current_pop['scaled'][i], self.additional_data)
@@ -176,7 +208,7 @@ class MOGA:
         rendom_bin_pop: dict
             The generated random binary population dictionary.
         """
-        random_bin_pop = {}
+        random_bin_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
             random_bin_pop[j] = {}
             for i in range(self.num_var):
@@ -200,7 +232,7 @@ class MOGA:
         decoded_pop: dict
             The decoded population dictionary.
         """
-        decoded_pop = {}
+        decoded_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(len(bin_pop)):
             decoded_pop[j] = {}
             for i in range(self.num_var):
@@ -213,43 +245,38 @@ class MOGA:
         return decoded_pop
 
     def scale_population(self, decoded_pop):
+
         """Scales the decoded population, variable values are scaled according to each
-        of their bounds contained in ``MOGA.boundaries``.
+        of their bounds contained in ``GA.boundaries``.
 
         Parameters
         ----------
-        decoded_pop: dict
-            The decoded population dictionary.
+        decoded_pop: list
+            The decoded population list.
 
         Returns
         -------
-        scaled_pop: dict
-            The scaled ppopulation dictionary.
+        scaled_pop: list
+            The scaled ppopulation list.
         """
-        scaled_pop = {}
-        max_bin = []
-        for q in range(self.num_var):
-            max_bin_temp = 0
-            for u in range(self.num_bin_dig[q]):
-                max_bin_temp = max_bin_temp + 2**u
-            max_bin.append(max_bin_temp)
 
-        for j in range(len(decoded_pop)):
-            scaled_pop[j] = {}
+        scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
+        for j in range(self.num_pop):
             for i in range(self.num_var):
-                scaled_pop[j][i] = 1.0 / max_bin[i] * decoded_pop[j][i]
-
-        for j in range(len(decoded_pop)):
-            for i in range(self.num_var):
-                bound = self.boundaries[i]
-                scaled_pop[j][i] = bound[0] + (bound[1] - bound[0]) * scaled_pop[j][i]
-
+                maxbin = (2 ** self.num_bin_dig[i]) - 1
+                scaled_pop[j][i] = decoded_pop[j][i] * (self.boundaries[i][1] - self.boundaries[i][0]) / float((maxbin + self.boundaries[i][0]))
         return scaled_pop
 
     def combine_populations(self):
         """This function combines the parent population with the current population
         to create a 2 x ``MOGA.num_pop`` long current population.
         """
+
+        self.combined_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop * 2)]
+        self.combined_pop['decoded'] = [[[]] * self.num_var for i in range(self.num_pop * 2)]
+        self.combined_pop['scaled'] = [[[]] * self.num_var for i in range(self.num_pop * 2)]
+        self.combined_pop['fit_values'] = [[[]] * self.num_fit_func for i in range(self.num_pop * 2)]
+
         for i in range(self.num_pop):
             self.combined_pop['binary'][i] = self.parent_pop['binary'][i]
             self.combined_pop['binary'][i + self.num_pop] = self.current_pop['binary'][i]
@@ -283,12 +310,12 @@ class MOGA:
                 count_sup = 0
                 count_inf = 0
                 for j in range(self.num_fit_func):
-                    if self.fit_type[j] == 0:
+                    if self.fit_types[j] == 'min':
                         if self.combined_pop['fit_values'][i][j] < self.combined_pop['fit_values'][k][j]:
                             count_sup += 1
                         elif self.combined_pop['fit_values'][i][j] > self.combined_pop['fit_values'][k][j]:
                             count_inf += 1
-                    elif self.fit_type[j] == 1:
+                    elif self.fit_types[j] == 'max':
                         if self.combined_pop['fit_values'][i][j] > self.combined_pop['fit_values'][k][j]:
                             count_sup += 1
                         elif self.combined_pop['fit_values'][i][j] < self.combined_pop['fit_values'][k][j]:
@@ -344,13 +371,13 @@ class MOGA:
         self.crowding_distance       = [0] * self.num_i_pareto_front
 
         for i in range(self.num_fit_func):
-            ind_fit_values_list = [self.combined_pop['fit_values'][key][i] for key in self.combined_pop['fit_values'].keys()]
+            ind_fit_values_list = [fit_val[i] for fit_val in self.combined_pop['fit_values']]
             delta = max(ind_fit_values_list) - min(ind_fit_values_list)
 
             for k in range(self.num_i_pareto_front):
                 self.pf_values[k] = (self.combined_pop['fit_values'][self.i_pareto_front[k]][i])
 
-            if self.fit_type[i] == 1:
+            if self.fit_types[i] == 'max':
                 self.sorted_indices = self.get_sorting_indices(self.pf_values, reverse=False)
             else:
                 self.sorted_indices = self.get_sorting_indices(self.pf_values, reverse=False)
@@ -404,8 +431,8 @@ class MOGA:
         """This function updates the patent population, selecting the individuals that are higher
         in the pareto front level, and have the largest crowding distance.
         """
-        self.parent_pop['scaled'] = {}
-        self.parent_pop['decoded'] = {}
+        self.parent_pop['scaled'] = []
+        self.parent_pop['decoded'] = []
         self.parent_combined_dict = {}
 
         for i in range(self.num_pop):
@@ -497,8 +524,8 @@ class MOGA:
         combined with individuals in ``MOGA.mating_pool_b`` using a single, randomly selected
         crossover point.
         """
-        self.current_pop = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {}}
-
+        self.current_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': []}
+        self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop / 2):
             cross = random.randint(1, self.total_bin_dig - 1)
             a = self.mating_pool_a[j]
@@ -506,8 +533,8 @@ class MOGA:
             c = a[:cross] + b[cross:]
             d = b[:cross] + c[cross:]
 
-            self.current_pop['binary'][j] = {}
-            self.current_pop['binary'][j + (self.num_pop / 2)] = {}
+            # self.current_pop['binary'][j] = {}
+            # self.current_pop['binary'][j + (self.num_pop / 2)] = {}
             for i in range(self.num_var):
                 variable_a = c[:self.num_bin_dig[i]]
                 del c[:self.num_bin_dig[i]]
@@ -541,18 +568,18 @@ class MOGA:
             The population dictionary contained in the file.
         """
 
-        file_pop = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {},
-                    'pf': {}}
+        file_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': [],
+                    'pf': []}
         filename  = 'generation ' + "%03d" % self.start_from_gen + '_pareto_front' + ".pareto"
         filename = self.output_path + filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
         pf_file.close()
 
-        for i in range(self.num_pop):
-            file_pop['scaled'][i] = {}
-            file_pop['fit_values'][i] = {}
 
+        file_pop['scaled'] = [[[]] * self.num_var for i in range(self.num_pop)]
+        file_pop['scaled'] = [[[]] * self.num_fit_func for i in range(self.num_pop)]
+        for i in range(self.num_pop):
             line_scaled = lines[i + 7]
             line_fit = lines[i + 9 + self.num_pop]
             line_pf = lines[i + 11 + (self.num_pop * 2)]
@@ -595,7 +622,7 @@ class MOGA:
         binary_pop: dict
             The binary population dictionary.
         """
-        binary_pop = {}
+        binary_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for i in range(len(decoded_pop)):
             binary_pop[i] = {}
             for j in range(self.num_var):
@@ -626,7 +653,7 @@ class MOGA:
         unscaled_pop: dict
             The unscaled population dictionary.
         """
-        unscaled_pop = {}
+        unscaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for i in range(len(scaled_pop)):
             unscaled_pop[i] = {}
             for j in range(self.num_var):
@@ -699,7 +726,7 @@ class MOGA:
                 'num_bin_dig': self.num_bin_dig,
                 'mutation_probability': self.mutation_probability,
                 'fit_names': self.fit_names,
-                'fit_type': self.fit_type,
+                'fit_type': self.fit_types,
                 'start_from_gen': self.start_from_gen,
                 'max_bin_dig': self.max_bin_dig,
                 'total_bin_dig': self.total_bin_dig,
@@ -733,7 +760,7 @@ class MOGA:
         data = self.make_moga_input_data()
         filename = ''
         for name in self.fit_names:
-            filename += name + '_'
+            filename += name + '-'
         filename += '.json'
         with open(self.output_path + filename, 'wb+') as fh:
             json.dump(data, fh)
