@@ -36,12 +36,12 @@ def network_split_edge(network, u, v, t=0.5, allow_boundary=True):
             :include-source:
 
             import compas
-            from compas.datastructures import Network
+            from compas.datastructures import FaceNetwork
             from compas.visualization import NetworkPlotter
             from compas.datastructures import network_find_faces
             from compas.datastructures import network_split_edge
 
-            network = Network.from_obj(compas.get_data('lines.obj'))
+            network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
 
             network_find_faces(network, breakpoints=network.leaves())
 
@@ -142,20 +142,20 @@ def network_split_edge(network, u, v, t=0.5, allow_boundary=True):
 if __name__ == "__main__":
 
     import compas
-    from compas.datastructures.network import Network
+    from compas.datastructures.network import FaceNetwork
     from compas.visualization.plotters.networkplotter import NetworkPlotter
 
-    from compas.datastructures.network.algorithms import find_network_faces
-    from compas.datastructures.network.operations import split_edge_network
+    from compas.datastructures.network.algorithms import network_find_faces
+    from compas.datastructures.network.operations import network_split_edge
 
-    network = Network.from_obj(compas.get_data('lines.obj'))
+    network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
 
-    find_network_faces(network, breakpoints=network.leaves())
+    network_find_faces(network, breakpoints=network.leaves())
 
-    a = split_edge_network(network, 0, 22)
-    b = split_edge_network(network, 2, 30)
-    c = split_edge_network(network, 17, 21)
-    d = split_edge_network(network, 28, 16)
+    a = network_split_edge(network, 0, 22)
+    b = network_split_edge(network, 2, 30)
+    c = network_split_edge(network, 17, 21)
+    d = network_split_edge(network, 28, 16)
 
     lines = []
     for u, v in network.edges():

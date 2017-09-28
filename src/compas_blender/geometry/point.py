@@ -1,5 +1,3 @@
-"""compas.cad.blender.geometry.point : Manipulating Blender points (Empties)."""
-
 from compas_blender.utilities.layers import layer_mask
 from compas_blender.utilities.objects import deselect_all_objects
 

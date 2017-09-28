@@ -95,8 +95,8 @@ def draw_network(network,
 
     See Also:
         * :class:`compas.datastructures.network.Network`
-        * :func:`compas_compas_rhino.utilities.drawing.xdraw_lines`
-        * :func:`compas_compas_rhino.utilities.drawing.xdraw_points`
+        * :func:`compas_rhino.utilities.drawing.xdraw_lines`
+        * :func:`compas_rhino.utilities.drawing.xdraw_points`
 
     Example:
 
@@ -109,7 +109,7 @@ def draw_network(network,
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_compas_rhino.draw_network(network)
+            compas_rhino.draw_network(network)
 
     """
     vertexcolor = color_to_colordict(vertexcolor,
@@ -453,7 +453,7 @@ def update_network_attributes(network):
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            if compas_compas_rhino.update_network_attributes(network):
+            if compas_rhino.update_network_attributes(network):
                 print('network attributes updated')
             else:
                 print('network attributres not updated')
@@ -504,7 +504,7 @@ def update_network_vertex_attributes(network, keys, names=None):
 
             keys = network.vertices()
 
-            if compas_compas_rhino.update_network_vertex_attributes(network, keys):
+            if compas_rhino.update_network_vertex_attributes(network, keys):
                 print('network vertex attributes updated')
             else:
                 print('network vertex attributes not updated')
@@ -584,7 +584,7 @@ def update_network_edge_attributes(network, keys, names=None):
 
             keys = network.edges()
 
-            if compas_compas_rhino.update_network_edge_attributes(network, keys):
+            if compas_rhino.update_network_edge_attributes(network, keys):
                 print('network edge attributes updated')
             else:
                 print('network edge attributes not updated')
@@ -669,7 +669,7 @@ def update_network_face_attributes(network, fkeys, names=None):
 
             keys = network.faces()
 
-            if compas_compas_rhino.update_network_face_attributes(network, keys):
+            if compas_rhino.update_network_face_attributes(network, keys):
                 print('network face attributes updated')
             else:
                 print('network face attributes not updated')
@@ -742,7 +742,7 @@ def display_network_vertex_labels(network, attr_name=None, layer=None, color=Non
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_compas_rhino.display_network_vertex_labels(network)
+            compas_rhino.display_network_vertex_labels(network)
 
 
         .. code-block:: python
@@ -757,7 +757,7 @@ def display_network_vertex_labels(network, attr_name=None, layer=None, color=Non
             def formatter(value):
                 return '{0:.3f}'.format(value)
 
-            compas_compas_rhino.display_network_vertex_labels(network, attr_name='x' formatter=formatter)
+            compas_rhino.display_network_vertex_labels(network, attr_name='x' formatter=formatter)
 
 
     See Also:
@@ -833,7 +833,7 @@ def display_network_edge_labels(network, attr_name=None, layer=None, color=None,
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_compas_rhino.display_network_edge_labels(network)
+            compas_rhino.display_network_edge_labels(network)
 
 
     See Also:
@@ -910,7 +910,7 @@ def display_network_face_labels(network, attr_name=None, layer=None, color=None,
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_compas_rhino.display_network_face_labels(network)
+            compas_rhino.display_network_face_labels(network)
 
 
     See Also:
@@ -1038,10 +1038,10 @@ def move_network_vertex(network, key, constraint=None, allow_off=None):
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            key = compas_compas_rhino.select_network_vertex(network)
+            key = compas_rhino.select_network_vertex(network)
 
             if key:
-                compas_compas_rhino.move_network_vertex(network, key)
+                compas_rhino.move_network_vertex(network, key)
 
     """
     color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
@@ -1133,7 +1133,7 @@ def display_network_axial_forces(network,
             for u, v, attr in network.edges(True):
                 attr['f'] = random.choice([-1.0, 1.0]) * random.randint(1, 10)
 
-            compas_compas_rhino.display_network_axial_forces(network)
+            compas_rhino.display_network_axial_forces(network)
 
     See Also:
         * :func:`display_network_reaction_forces`

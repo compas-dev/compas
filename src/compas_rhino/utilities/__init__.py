@@ -1,11 +1,11 @@
 """
-.. _compas_compas_rhino.utilities:
+.. _compas_rhino.utilities:
 
 ********************************************************************************
 utilities
 ********************************************************************************
 
-.. module:: compas_compas_rhino.utilities
+.. module:: compas_rhino.utilities
 
 
 This package contains many convenience functions for working and interacting
@@ -14,10 +14,6 @@ with Rhino.
 
 document
 ========
-
-.. currentmodule:: compas_compas_rhino.utilities.document
-
-:mod:`compas_compas_rhino.utilities.document`
 
 .. autosummary::
     :toctree: generated/
@@ -31,10 +27,6 @@ document
 layers
 ======
 
-.. currentmodule:: compas_compas_rhino.utilities.layers
-
-:mod:`compas_compas_rhino.utilities.layers`
-
 .. autosummary::
     :toctree: generated/
 
@@ -45,10 +37,6 @@ layers
 
 objects
 =======
-
-.. currentmodule:: compas_compas_rhino.utilities.objects
-
-:mod:`compas_compas_rhino.utilities.objects`
 
 .. note::
 
@@ -113,10 +101,6 @@ objects
 misc
 ====
 
-.. currentmodule:: compas_compas_rhino.utilities.misc
-
-:mod:`compas_compas_rhino.utilities.misc`
-
 .. autosummary::
     :toctree: generated/
 
@@ -140,10 +124,6 @@ misc
 drawing
 =======
 
-.. currentmodule:: compas_compas_rhino.utilities.drawing
-
-:mod:`compas_compas_rhino.utilities.drawing`
-
 .. autosummary::
     :toctree: generated/
 
@@ -157,32 +137,6 @@ drawing
     xdraw_spheres
     xdraw_mesh
 
-
-scripts
-=======
-
-.. currentmodule:: compas_compas_rhino.utilities.scripts
-
-:mod:`compas_compas_rhino.utilities.scripts`
-
-.. autosummary::
-    :toctree: generated/
-
-    ScriptServer
-
-
-xfunc
-=====
-
-.. currentmodule:: compas_compas_rhino.utilities.xfunc
-
-:mod:`compas_compas_rhino.utilities.xfunc`
-
-.. autosummary::
-    :toctree: generated/
-
-    XFunc
-
 """
 
 from .document import *
@@ -190,5 +144,11 @@ from .layers import *
 from .objects import *
 from .misc import *
 from .drawing import *
-# from ._scripts import *
-# from ._xfunc import *
+
+from .document import __all__ as a
+from .layers import __all__ as b
+from .objects import __all__ as c
+from .misc import __all__ as d
+from .drawing import __all__ as e
+
+__all__ = a + b + c + d + e

@@ -21,6 +21,9 @@ __license__    = 'MIT'
 __email__      = 'vanmelet@ethz.ch'
 
 
+__all__ = ['RhinoMesh', ]
+
+
 class RhinoMesh(object):
     """"""
 

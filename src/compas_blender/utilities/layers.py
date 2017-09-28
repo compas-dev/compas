@@ -1,5 +1,3 @@
-"""compas.cad.blender.utilities.layers : Functions for manipulating Blender layers."""
-
 from compas_blender.utilities.objects import delete_objects
 from compas_blender.utilities.objects import delete_all_objects
 from compas_blender.utilities.objects import get_objects

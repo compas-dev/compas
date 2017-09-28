@@ -1,5 +1,3 @@
-""""""
-
 from compas.utilities import to_valuedict
 
 import compas_rhino
@@ -18,7 +16,7 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = []
+__all__ = ['MeshArtist']
 
 
 class MeshArtist(object):

@@ -1,5 +1,3 @@
-"""compas.cad.blender.utilities.modifiers : Blender modifier functions."""
-
 try:
     import bpy
 except ImportError:

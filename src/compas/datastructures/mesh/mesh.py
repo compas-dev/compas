@@ -1,13 +1,41 @@
 from __future__ import print_function
 
+from copy import deepcopy
+from ast import literal_eval
+
 from compas.files.obj import OBJ
 from compas.files.ply import PLYreader
 
-from compas.utilities import geometric_key
+from compas.utilities import pairwise
+from compas.utilities import window
 
-from compas.utilities.itertools_ import pairwise
+from compas.geometry import normalize_vector
+from compas.geometry import centroid_points
+from compas.geometry import center_of_mass_polygon
+from compas.geometry import cross_vectors
+from compas.geometry import length_vector
+from compas.geometry import subtract_vectors
+from compas.geometry import normal_polygon
+from compas.geometry import area_polygon
 
-from compas.datastructures._graph import Graph
+from compas.datastructures import Datastructure
+
+from compas.datastructures.mixins import VertexAttributesMixin
+from compas.datastructures.mixins import VertexHelpersMixin
+from compas.datastructures.mixins import VertexCoordinatesDescriptorsMixin
+
+from compas.datastructures.mixins import EdgeAttributesMixin
+from compas.datastructures.mixins import EdgeHelpersMixin
+from compas.datastructures.mixins import EdgeGeometryMixin
+
+from compas.datastructures.mixins import FaceAttributesMixin
+from compas.datastructures.mixins import FaceHelpersMixin
+
+from compas.datastructures.mixins import FactoryMixin
+from compas.datastructures.mixins import ConversionMixin
+from compas.datastructures.mixins import MagicMixin
+
+from compas.datastructures.network.algorithms import network_bfs2
 
 
 __author__     = 'Tom Van Mele'
@@ -20,125 +48,142 @@ __email__      = '<vanmelet@ethz.ch>'
 #        for which two opposite halfedges do not already exist
 
 
-class Mesh(Graph):
+class Mesh(MagicMixin,
+           ConversionMixin,
+           FactoryMixin,
+           FaceHelpersMixin,
+           FaceAttributesMixin,
+           EdgeGeometryMixin,
+           EdgeHelpersMixin,
+           EdgeAttributesMixin,
+           VertexCoordinatesDescriptorsMixin,
+           VertexHelpersMixin,
+           VertexAttributesMixin,
+           Datastructure):
     """Class representing a mesh.
 
     The datastructure of the mesh is implemented as a half-edge.
 
-    Parameters:
-        vertices (:obj:`list` of :obj:`dict`) : Optional. A sequence of vertices to add to the mesh.
-            Each vertex should be a dictionary of vertex attributes.
-        faces (:obj:`list` of :obj:`list`) : Optional. A sequence of faces to add to the mesh.
-            Each face should be a list of vertex keys.
-        dva (dict) : Optional. A dictionary of default vertex attributes.
-        dfa (dict) : Optional. A dictionary of default face attributes.
-        dea (dict) : Optional. A dictionary of default edge attributes.
-        kwargs (dict) : The remaining named parameters. These are added to the attributes
-            dictionary of the instance.
+    Parameters
+    ----------
+    vertices : :obj:`list` of :obj:`dict`
+        Optional. A sequence of vertices to add to the mesh.
+        Each vertex should be a dictionary of vertex attributes.
+    faces : :obj:`list` of :obj:`list`
+        Optional. A sequence of faces to add to the mesh.
+        Each face should be a list of vertex keys.
+    dva : dict
+        Optional. A dictionary of default vertex attributes.
+    dfa : dict
+        Optional. A dictionary of default face attributes.
+    dea : dict
+        Optional. A dictionary of default edge attributes.
+    kwargs : dict
+        The remaining named parameters. These are added to the attributes
+        dictionary of the instance.
 
-    Attributes:
-        vertex (dict) : The vertex dictionary.
-            With every key in the dictionary corresponds a dictionary of attributes.
-        face (dict) : The face dictionary.
-            With every key in the dictionary corresponds a dictionary of half-edges.
-        halfedge (dict) : The half-edge dictionary.
-            Every key in the dictionary corresponds to a vertex of the mesh.
-            With every key corresponds a dictionary of neighbours pointing to face keys.
-        edge (dict) : The edge dictionary.
-            Every key in the dictionary corresponds to a vertex.
-            With every key corresponds a dictionary of neighbours pointing to attribute dictionaries.
-        attributes (dict) : General mesh attributes.
-        facedata (Mesh, optional) : A ``Mesh`` object for keeping track of face attributes
-            by storing them on dual vertices.
+    Attributes
+    ----------
+    vertex : dict
+        The vertex dictionary.
+        With every key in the dictionary corresponds a dictionary of attributes.
+    face : dict
+        The face dictionary.
+        With every key in the dictionary corresponds a dictionary of half-edges.
+    halfedge : dict
+        The half-edge dictionary.
+        Every key in the dictionary corresponds to a vertex of the mesh.
+        With every key corresponds a dictionary of neighbours pointing to face keys.
+    edge : dict
+        The edge dictionary.
+        Every key in the dictionary corresponds to a vertex.
+        With every key corresponds a dictionary of neighbours pointing to attribute dictionaries.
+    attributes : dict
+        General mesh attributes.
+    facedata : Mesh, optional
+        A ``Mesh`` object for keeping track of face attributes
+        by storing them on dual vertices.
 
-    Examples:
+    Examples
+    --------
 
-        .. plot::
-            :include-source:
+    .. plot::
+        :include-source:
 
-            import compas
-            from compas.datastructures.mesh import Mesh
-            from compas.visualization.plotters import MeshPlotter
+        import compas
+        from compas.datastructures import Mesh
+        from compas.visualization.plotters import MeshPlotter
 
-            mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            plotter = MeshPlotter(mesh)
+        plotter = MeshPlotter(mesh)
 
-            plotter.draw_vertices(radius=0.2)
-            plotter.draw_faces()
-            plotter.show()
-
-
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures.mesh import Mesh
-            from compas.visualization.plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get_data('faces.obj'))
-
-            plotter = MeshPlotter(mesh)
-
-            plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2)
-            plotter.draw_faces()
-            plotter.show()
-
-
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures.mesh import Mesh
-            from compas.visualization.plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get_data('faces.obj'))
-
-            plotter = MeshPlotter(mesh)
-
-            plotter.draw_vertices(radius=0.2)
-            plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
-            plotter.show()
+        plotter.draw_vertices(radius=0.2)
+        plotter.draw_faces()
+        plotter.show()
 
 
-        >>> for key in mesh.vertex:
-        ...     print(key)
-        ...
+    .. plot::
+        :include-source:
 
-        >>> for key in mesh.vertices():
-        ...     print(key)
-        ...
+        import compas
+        from compas.datastructures import Mesh
+        from compas.visualization.plotters import MeshPlotter
 
-        >>> for key in mesh.vertices_iter():
-        ...     print(key)
-        ...
+        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-        >>> for index, key in mesh.vertices_enum():
-        ...     print(index, key)
-        ...
+        plotter = MeshPlotter(mesh)
 
-        >>> for key, attr in mesh.vertices(True):
-        ...     print(key, attr)
-        ...
+        plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2)
+        plotter.draw_faces()
+        plotter.show()
 
-        >>> for key, attr in mesh.vertices_iter(True):
-        ...     print(key, attr)
-        ...
 
-        >>> for index, key, attr in mesh.vertices_enum(True):
-        ...     print(index, key, attr)
-        ...
+    .. plot::
+        :include-source:
+
+        import compas
+        from compas.datastructures import Mesh
+        from compas.visualization.plotters import MeshPlotter
+
+        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+
+        plotter = MeshPlotter(mesh)
+
+        plotter.draw_vertices(radius=0.2)
+        plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
+        plotter.show()
+
+
+    >>> for key in mesh.vertices():
+    ...     print(key)
+    ...
+
+    >>> for key, attr in mesh.vertices(True):
+    ...     print(key, attr)
+    ...
 
     """
 
     def __init__(self):
         super(Mesh, self).__init__()
-        self.attributes.update({
+        self._key_to_str = False
+        self._max_int_key = -1
+        self._max_int_fkey = -1
+        self.attributes = {
             'name'         : 'Mesh',
             'color.vertex' : None,
             'color.edge'   : None,
             'color.face'   : None,
-        })
+        }
+        self.vertex = {}
+        self.edge = {}
+        self.halfedge = {}
+        self.face = {}
+        self.facedata = {}
+        self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        self.default_edge_attributes = {}
+        self.default_face_attributes = {}
 
     # --------------------------------------------------------------------------
     # customisation
@@ -208,6 +253,146 @@ mesh: {}
     # special properties
     # --------------------------------------------------------------------------
 
+    @property
+    def name(self):
+        """:obj:`str` : The name of the data structure.
+
+        Any value assigned to this property will be stored in the attribute dict
+        of the data structure instance.
+        """
+        return self.attributes.get('name', None)
+
+    @name.setter
+    def name(self, value):
+        self.attributes['name'] = value
+
+    # the current data implementations
+    # allow for the recreation of corrupt data
+    # should this be the case?
+    # or should the builder functions be used instead
+
+    @property
+    def data(self):
+        """Return a data dict of this data structure for serialisation.
+        """
+        data = {'attributes'  : self.attributes,
+                'dva'         : self.default_vertex_attributes,
+                'dea'         : self.default_edge_attributes,
+                'dfa'         : self.default_face_attributes,
+                'vertex'      : {},
+                'edge'        : {},
+                'halfedge'    : {},
+                'face'        : {},
+                'facedata'    : {},
+                'max_int_key' : self._max_int_key,
+                'max_int_fkey': self._max_int_fkey, }
+
+        for key in self.vertex:
+            rkey = repr(key)
+            data['vertex'][rkey] = self.vertex[key]
+
+        for u in self.edge:
+            ru = repr(u)
+            data['edge'][ru] = {}
+
+            for v in self.edge[u]:
+                rv = repr(v)
+                data['edge'][ru][rv] = self.edge[u][v]
+
+        for u in self.halfedge:
+            ru = repr(u)
+            data['halfedge'][ru] = {}
+
+            for v in self.halfedge[u]:
+                rv = repr(v)
+                data['halfedge'][ru][rv] = repr(self.halfedge[u][v])
+
+        for fkey in self.face:
+            rfkey = repr(fkey)
+            data['face'][rfkey] = [repr(key) for key in self.face[fkey]]
+
+        for fkey in self.facedata:
+            rfkey = repr(fkey)
+            data['facedata'][rfkey] = self.facedata[fkey]
+
+        return data
+
+    @data.setter
+    def data(self, data):
+        attributes   = data.get('attributes') or {}
+        dva          = data.get('dva') or {}
+        dfa          = data.get('dfa') or {}
+        dea          = data.get('dea') or {}
+        vertex       = data.get('vertex') or {}
+        halfedge     = data.get('halfedge') or {}
+        face         = data.get('face') or {}
+        facedata     = data.get('facedata') or {}
+        edge         = data.get('edge') or {}
+        max_int_key  = data.get('max_int_key', -1)
+        max_int_fkey = data.get('max_int_fkey', -1)
+
+        self.attributes.update(attributes)
+        self.default_vertex_attributes.update(dva)
+        self.default_face_attributes.update(dfa)
+        self.default_edge_attributes.update(dea)
+
+        # add the vertices
+
+        self.vertex = {literal_eval(key): attr for key, attr in iter(vertex.items())}
+
+        # add the edges
+
+        self.edge = {}
+
+        for u, nbrs in iter(edge.items()):
+            nbrs = nbrs or {}
+
+            u = literal_eval(u)
+
+            self.edge[u] = {}
+
+            for v, attr in iter(nbrs.items()):
+                attr = attr or {}
+
+                v = literal_eval(v)
+
+                self.edge[u][v] = attr
+
+        # add the halfedges
+
+        self.halfedge = {}
+
+        for u, nbrs in iter(halfedge.items()):
+            nbrs = nbrs or {}
+
+            u = literal_eval(u)
+
+            self.halfedge[u] = {}
+
+            for v, fkey in iter(nbrs.items()):
+                v = literal_eval(v)
+                fkey = literal_eval(fkey)
+
+                self.halfedge[u][v] = fkey
+
+        # add the faces
+
+        self.face = {}
+        self.facedata = {}
+
+        for fkey, vertices in iter(face.items()):
+            attr = facedata.get(fkey) or {}
+            fkey = literal_eval(fkey)
+            vertices = [literal_eval(key) for key in vertices]
+
+            self.face[fkey] = vertices
+            self.facedata[fkey] = attr
+
+        # set the counts
+
+        self._max_int_key = max_int_key
+        self._max_int_fkey = max_int_fkey
+
     # --------------------------------------------------------------------------
     # constructors
     # --------------------------------------------------------------------------
@@ -246,55 +431,55 @@ mesh: {}
         mesh = cls.from_vertices_and_faces(vertices, faces, **kwargs)
         return mesh
 
-    @classmethod
-    def from_lines(cls, lines, boundary_face=False, precision='3f'):
-        """"""
-        from compas.datastructures.network.algorithms.duality import _sort_neighbours
-        from compas.datastructures.network.algorithms.duality import _find_first_neighbour
-        from compas.datastructures.network.algorithms.duality import _find_edge_face
+    # @classmethod
+    # def from_lines(cls, lines, boundary_face=False, precision='3f'):
+    #     """"""
+    #     from compas.datastructures.network.algorithms.duality import _sort_neighbours
+    #     from compas.datastructures.network.algorithms.duality import _find_first_neighbour
+    #     from compas.datastructures.network.algorithms.duality import _find_edge_face
 
-        mesh = cls()
-        edges   = []
-        vertex  = {}
-        for line in lines:
-            sp = line[0]
-            ep = line[1]
-            a  = geometric_key(sp, precision)
-            b  = geometric_key(ep, precision)
-            vertex[a] = sp
-            vertex[b] = ep
-            edges.append((a, b))
-        key_index = dict((k, i) for i, k in enumerate(iter(vertex)))
-        for key, xyz in iter(vertex.items()):
-            i = key_index[key]
-            mesh.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])
-        edges_uv = []
-        for u, v in edges:
-            i = key_index[u]
-            j = key_index[v]
-            edges_uv.append((i, j))
-        # the clear commands below are from the network equivalent. Needed?
-        # network.clear_facedict()
-        # network.clear_halfedgedict()
-        mesh.halfedge = dict((key, {}) for key in mesh.vertex)
-        for u, v in edges_uv:
-            mesh.halfedge[u][v] = None
-            mesh.halfedge[v][u] = None
-        _sort_neighbours(mesh)
+    #     mesh = cls()
+    #     edges   = []
+    #     vertex  = {}
+    #     for line in lines:
+    #         sp = line[0]
+    #         ep = line[1]
+    #         a  = geometric_key(sp, precision)
+    #         b  = geometric_key(ep, precision)
+    #         vertex[a] = sp
+    #         vertex[b] = ep
+    #         edges.append((a, b))
+    #     key_index = dict((k, i) for i, k in enumerate(iter(vertex)))
+    #     for key, xyz in iter(vertex.items()):
+    #         i = key_index[key]
+    #         mesh.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])
+    #     edges_uv = []
+    #     for u, v in edges:
+    #         i = key_index[u]
+    #         j = key_index[v]
+    #         edges_uv.append((i, j))
+    #     # the clear commands below are from the network equivalent. Needed?
+    #     # network.clear_facedict()
+    #     # network.clear_halfedgedict()
+    #     mesh.halfedge = dict((key, {}) for key in mesh.vertex)
+    #     for u, v in edges_uv:
+    #         mesh.halfedge[u][v] = None
+    #         mesh.halfedge[v][u] = None
+    #     _sort_neighbours(mesh)
 
-        u = sorted(mesh.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
-        v = _find_first_neighbour(u, mesh)
-        key_boundary_face = _find_edge_face(u, v, mesh)
-        print(key_boundary_face)
-        for u, v in mesh.edges():
-            if mesh.halfedge[u][v] is None:
-                _find_edge_face(u, v, mesh)
-            if mesh.halfedge[v][u] is None:
-                _find_edge_face(v, u, mesh)
+    #     u = sorted(mesh.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+    #     v = _find_first_neighbour(u, mesh)
+    #     key_boundary_face = _find_edge_face(u, v, mesh)
+    #     print(key_boundary_face)
+    #     for u, v in mesh.edges():
+    #         if mesh.halfedge[u][v] is None:
+    #             _find_edge_face(u, v, mesh)
+    #         if mesh.halfedge[v][u] is None:
+    #             _find_edge_face(v, u, mesh)
 
-        if not boundary_face:
-            mesh.delete_face(key_boundary_face)
-        return mesh
+    #     if not boundary_face:
+    #         mesh.delete_face(key_boundary_face)
+    #     return mesh
 
     @classmethod
     def from_vertices_and_faces(cls, vertices, faces, **kwargs):
@@ -364,6 +549,72 @@ mesh: {}
     # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
+
+    def _get_vertexkey(self, key):
+        if key is None:
+            key = self._max_int_key = self._max_int_key + 1
+        else:
+            try:
+                i = int(key)
+            except (ValueError, TypeError):
+                pass
+            else:
+                if i > self._max_int_key:
+                    self._max_int_key = i
+        if self._key_to_str:
+            return str(key)
+        return key
+
+    def _get_facekey(self, fkey):
+        if fkey is None:
+            fkey = self._max_int_fkey = self._max_int_fkey + 1
+        else:
+            try:
+                i = int(fkey)
+            except (ValueError, TypeError):
+                pass
+            else:
+                if i > self._max_int_fkey:
+                    self._max_int_fkey = i
+        return fkey
+
+    def copy(self):
+        cls = type(self)
+        return cls.from_data(deepcopy(self.data))
+
+    def clear(self):
+        del self.vertex
+        del self.edge
+        del self.halfedge
+        del self.face
+        del self.facedata
+        self.vertex   = {}
+        self.edge     = {}
+        self.halfedge = {}
+        self.face     = {}
+        self.facedata = {}
+        self._max_int_key = -1
+        self._max_int_fkey = -1
+
+    def clear_vertexdict(self):
+        del self.vertex
+        self.vertex = {}
+        self._max_int_key = -1
+
+    def clear_facedict(self):
+        del self.face
+        del self.facedata
+        self.face = {}
+        self.facedata = {}
+        self._max_int_fkey = -1
+
+    def clear_edgedict(self):
+        del self.edge
+        self.edge = {}
+
+    def clear_halfedgedict(self):
+        del self.halfedge
+        self.halfedge = {}
 
     # --------------------------------------------------------------------------
     # builders
@@ -565,6 +816,18 @@ mesh: {}
     # info
     # --------------------------------------------------------------------------
 
+    def number_of_vertices(self):
+        return len(list(self.vertices()))
+
+    def number_of_edges(self):
+        return len(list(self.edges()))
+
+    def number_of_faces(self):
+        return len(list(self.faces()))
+
+    def number_of_halfedges(self):
+        return len(list(self.halfedges()))
+
     def is_valid(self):
         # a mesh is valid if the following conditions are true
         # - halfedges don't point at non-existing faces
@@ -630,6 +893,16 @@ mesh: {}
 
         return True
 
+    def is_connected(self):
+        """Return True if for every two vertices a path exists connecting them."""
+        if not self.vertex:
+            return False
+
+        root = self.get_any_vertex()
+        nodes = network_bfs2(self.halfedge, root)
+
+        return len(nodes) == self.number_of_vertices()
+
     def is_manifold(self):
         """Return True if each edge is incident to only one or two faces, and the
         faces incident to a vertex form a closed or an open fan.
@@ -684,6 +957,20 @@ mesh: {}
     # accessors
     # --------------------------------------------------------------------------
 
+    def vertices(self, data=False):
+        """Return an iterator for the vertices and their attributes (optional).
+
+        Parameters:
+            data (bool): Return key, data pairs, defaults to False.
+
+        Returns:
+            iter: An iterator of vertex keys, if data is False.
+            iter: An iterator of key, data pairs, if data is True.
+        """
+        if data:
+            return iter(self.vertex.items())
+        return iter(self.vertex)
+
     def edges(self, data=False):
         for u, v in self.halfedges():
             if u in self.edge and v in self.edge[u]:
@@ -705,51 +992,37 @@ mesh: {}
                 else:
                     yield u, v
 
-    # def vertices_iter(self, data=False):
-    #     """Get an iterator over the list of vertex keys. If `data` is True, get
-    #     an iterator over key, data pairs.
+    def faces(self, data=False):
+        """Return an iterator for the faces and their attributes (optional)."""
+        for fkey in self.face:
+            if data:
+                yield fkey, self.facedata.setdefault(fkey, self.default_face_attributes.copy())
+            else:
+                yield fkey
 
-    #     Parameters:
-    #         data (bool): Return key, data pairs, defaults to False.
+    def halfedges(self):
+        edges = set()
+        for fkey in self.faces():
+            for u, v in self.face_halfedges(fkey):
+                if (u, v) in edges or (v, u) in edges:
+                    continue
+                edges.add((u, v))
+        return list(edges)
 
-    #     Returns:
-    #         iter: An iterator of vertex keys, if data is False.
-    #         iter: An iterator of key, data pairs, if data is True.
-    #     """
-    #     return self.vertices(data=data)
+    def wireframe(self):
+        return self.halfedges()
 
-    # def vertices_enum(self, data=False):
-    #     """Get an enumeration of the vertex keys.
+    # --------------------------------------------------------------------------
+    # additional accessors
+    # --------------------------------------------------------------------------
 
-    #     Parameters:
-    #         data (bool) : If ``True``, return the vertex attributes as part of
-    #             the enumeration. Default is ``False``.
+    def indexed_edges(self):
+        k_i = self.key_index()
+        return [(k_i[u], k_i[v]) for u, v in self.edges()]
 
-    #     Returns:
-    #         iter : The enumerating iterator of vertex keys.
-
-    #     >>> for index, key in mesh.vertices_enum():
-    #     ...     print(index, key)
-    #     ...
-
-    #     >>> for index, key, attr in mesh.vertices_enum(data=True):
-    #     ...     print(index, key, attr)
-    #     ...
-
-    #     """
-    #     return enumerate(self.vertices(data=data))
-
-    # def edges_iter(self, data=False):
-    #     return self.edges(data=data)
-
-    # def edges_enum(self, data=False):
-    #     return enumerate(self.edges(data=data))
-
-    # def faces_iter(self, data=False):
-    #     return self.faces(data=data)
-
-    # def faces_enum(self, data=False):
-    #     return enumerate(self.faces(data=data))
+    def indexed_face_vertices(self):
+        k_i = self.key_index()
+        return [[k_i[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
 
     # --------------------------------------------------------------------------
     # default attributes
@@ -775,43 +1048,20 @@ mesh: {}
     #     nbrs = self.vertex_neighbours(key, ordered=True)
     #     return dict((nbrs[i], nbrs[i + 1]) for i in range(-1, len(nbrs) - 1))
 
-    # def vertex_descendant(self, u, v):
-    #     """Return the descendant vertex of halfedge ``uv``.
+    def has_vertex(self, key):
+        return key in self.vertex
 
-    #     Parameters:
-    #         u (str) : The *from* vertex.
-    #         v (str) : The *to* vertex.
+    def is_vertex_leaf(self, key):
+        return self.vertex_degree(key) == 1
 
-    #     Returns:
-    #         str : The key of the descendant.
-    #         None : If ``uv`` has no descendant.
+    def leaves(self):
+        return [key for key in self.vertices() if self.is_vertex_leaf(key)]
 
-    #     Raises:
-    #         KeyError : If the halfedge is not part of the mesh.
-    #         MeshError : If something else went wrong.
-    #     """
-    #     fkey = self.halfedge[u][v]
-    #     if fkey is not None:
-    #         # the face is on the inside
-    #         return self.face[fkey][v]
-    #     # the face is on the outside
-    #     for nbr in self.halfedge[v]:
-    #         if nbr != u:
-    #             if self.halfedge[v][nbr] is None:
-    #                 return nbr
-    #     # raise a ``MeshError`` here.
-    #     return None
+    def is_vertex_orphan(self, key):
+        return not self.vertex_degree(key) > 0
 
-    # def vertex_ancestor(self, u, v):
-    #     """Return the key of the vertex before u in the face that contains uv."""
-    #     fkey = self.halfedge[v][u]
-    #     if fkey is not None:
-    #         return self.face[fkey][u]
-    #     for nbr in self.halfedge[u]:
-    #         if nbr != v:
-    #             if self.halfedge[u][nbr] is None:
-    #                 return nbr
-    #     return None
+    def is_vertex_connected(self, key):
+        return self.vertex_degree(key) > 0
 
     def is_vertex_on_boundary(self, key):
         for nbr in self.halfedge[key]:
@@ -822,57 +1072,339 @@ mesh: {}
     def is_vertex_extraordinary(self, key, mtype=None):
         raise NotImplementedError
 
+    def vertex_neighbours(self, key, ordered=False):
+        """Return the neighbours of a vertex."""
+
+        temp = list(self.halfedge[key])
+
+        # temp = [nbr for nbr in self.halfedge[key] if self.has_edge(key, nbr, directed=False)]
+
+        if not ordered:
+            return temp
+
+        if len(temp) == 1:
+            return temp
+
+        start = temp[0]
+        for nbr in temp:
+            if self.halfedge[key][nbr] is None:
+                start = nbr
+                break
+
+        fkey = self.halfedge[start][key]
+        nbrs = [start]
+        count = 1000
+
+        while count:
+            count -= 1
+            nbr = self.face_vertex_descendant(fkey, key)
+            fkey = self.halfedge[nbr][key]
+
+            if nbr == start:
+                break
+
+            nbrs.append(nbr)
+
+            if fkey is None:
+                break
+
+        return nbrs
+
+    def vertex_neighbourhood(self, key, ring=1):
+        """Return the vertices in the neighbourhood of a vertex."""
+        nbrs = set(self.vertex_neighbours(key))
+
+        i = 1
+        while True:
+            if i == ring:
+                break
+
+            temp = []
+            for key in nbrs:
+                temp += self.vertex_neighbours(key)
+
+            nbrs.update(temp)
+
+            i += 1
+
+        return nbrs
+
+    def vertex_neighbours_out(self, key):
+        """Return the outgoing neighbours of a vertex."""
+        return list(self.edge[key])
+
+    def vertex_neighbours_in(self, key):
+        """Return the incoming neighbours of a vertex."""
+        return list(set(self.halfedge[key]) - set(self.edge[key]))
+
+    def vertex_degree(self, key):
+        """Return the number of neighbours of a vertex."""
+        return len(self.vertex_neighbours(key))
+
+    def vertex_degree_out(self, key):
+        """Return the number of outgoing neighbours of a vertex."""
+        return len(self.vertex_neighbours_out(key))
+
+    def vertex_degree_in(self, key):
+        """Return the numer of incoming neighbours of a vertex."""
+        return len(self.vertex_neighbours_in(key))
+
+    def vertex_connected_edges(self, key):
+        """Return the edges connected to a vertex."""
+        edges = []
+        for nbr in self.vertex_neighbours(key):
+            if nbr in self.edge[key]:
+                edges.append((key, nbr))
+            else:
+                edges.append((nbr, key))
+        return edges
+
+    def vertex_faces(self, key, ordered=False, include_None=False):
+        """Return the faces connected to a vertex."""
+        if not ordered:
+            faces = list(self.halfedge[key].values())
+
+        else:
+            nbrs = self.vertex_neighbours(key, ordered=True)
+
+            # if len(nbrs) == 1:
+            #     nbr = nbrs[0]
+            #     faces = [self.halfedge[key][nbr], self.halfedge[nbr][key]]
+
+            # else:
+            faces = [self.halfedge[key][n] for n in nbrs]
+
+        if include_None:
+            return faces
+
+        return [fkey for fkey in faces if fkey is not None]
+
     # --------------------------------------------------------------------------
     # edge topology
     # --------------------------------------------------------------------------
+
+    def has_edge(self, u, v, directed=True):
+        if directed:
+            return u in self.edge and v in self.edge[u]
+        else:
+            return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])
+
+    def edge_faces(self, u, v):
+        return [self.halfedge[u][v], self.halfedge[v][u]]
+
+    def edge_connected_edges(self, u, v):
+        edges = []
+        for nbr in self.vertex_neighbours(u):
+            if nbr in self.edge[u]:
+                edges.append((u, nbr))
+            else:
+                edges.append((nbr, u))
+        for nbr in self.vertex_neighbours(v):
+            if nbr in self.edge[v]:
+                edges.append((v, nbr))
+            else:
+                edges.append((nbr, v))
+        return edges
+
+    def is_edge_naked(self, u, v):
+        return self.halfedge[u][v] is None or self.halfedge[v][u] is None
 
     # --------------------------------------------------------------------------
     # face topology
     # --------------------------------------------------------------------------
 
+    def face_vertices(self, fkey, ordered=True):
+        """Return the vertices of the face."""
+        return list(self.face[fkey])
+
+    def face_halfedges(self, fkey):
+        """Return the halfedges of a face."""
+        vertices = self.face_vertices(fkey)
+        return pairwise(vertices + vertices[0:1])
+
+    def face_edges(self, fkey):
+        """Return the edges corresponding to the halfedges of a face."""
+        edges = []
+        for u, v in self.face_halfedges(fkey):
+            if v in self.edge[u]:
+                edges.append((u, v))
+            else:
+                edges.append((v, u))
+        return edges
+
+    def face_corners(self, fkey):
+        vertices = self.face_vertices(fkey)
+        return window(vertices + vertices[0:2], 3)
+
+    def face_neighbours(self, fkey):
+        """Return the neighbours of a face across its edges."""
+        nbrs = []
+        for u, v in self.face_halfedges(fkey):
+            nbr = self.halfedge[v][u]
+            if nbr is not None:
+                nbrs.append(nbr)
+        return nbrs
+
+    def face_vertex_neighbours(self, fkey):
+        """Return the neighbours of a face across its corners."""
+        nbrs = []
+        for u, v in self.face_halfedges(fkey):
+            nbr = self.halfedge[v][u]
+            if nbr is not None:
+                w = self.face_vertex_descendant(fkey, u)
+                nbrs.append(self.halfedge[w][u])
+        return nbrs
+
+    def face_neighbourhood(self, fkey):
+        """Return the neighbours of a face across both edges and corners."""
+        nbrs = []
+        for u, v in self.face_halfedges(fkey):
+            nbr = self.halfedge[v][u]
+            if nbr is not None:
+                nbrs.append(nbr)
+                w = self.face_vertex_descendant(fkey, u)
+                nbrs.append(self.halfedge[w][u])
+        return nbrs
+
+    def face_vertex_ancestor(self, fkey, key):
+        """Return the vertex before the specified vertex in a specific face."""
+        i = self.face[fkey].index(key)
+        return self.face[fkey][i - 1]
+
+    def face_vertex_descendant(self, fkey, key):
+        """Return the vertex after the specified vertex in a specific face."""
+        if self.face[fkey][-1] == key:
+            return self.face[fkey][0]
+        i = self.face[fkey].index(key)
+        return self.face[fkey][i + 1]
+
+    def face_adjacency(self):
+        # this function does not actually use any of the topological information
+        # provided by the halfedges
+        # it is used for unifying face cycles
+        # so the premise is that halfedge data is not valid/reliable
+        from scipy.spatial import cKDTree
+
+        fkey_index = {fkey: index for index, fkey in self.faces_enum()}
+        index_fkey = dict(self.faces_enum())
+        points = [self.face_centroid(fkey) for fkey in self.faces()]
+
+        tree = cKDTree(points)
+
+        _, closest = tree.query(points, k=10, n_jobs=-1)
+
+        adjacency = {}
+        for fkey in self.face:
+            nbrs  = []
+            index = fkey_index[fkey]
+            nnbrs = closest[index]
+            found = set()
+            for u, v in iter(self.face[fkey].items()):
+                for index in nnbrs:
+                    nbr = index_fkey[index]
+                    if nbr == fkey:
+                        continue
+                    if nbr in found:
+                        continue
+                    if v in self.face[nbr] and u == self.face[nbr][v]:
+                        nbrs.append(nbr)
+                        found.add(nbr)
+                        break
+                    if u in self.face[nbr] and v == self.face[nbr][u]:
+                        nbrs.append(nbr)
+                        found.add(nbr)
+                        break
+            adjacency[fkey] = nbrs
+        return adjacency
+
+    # def face_tree(self, root, algo=network_bfs):
+    #     return algo(self.face_adjacency(), root)
+
+    def face_adjacency_edge(self, f1, f2):
+        for u, v in self.face_halfedges(f1):
+            if self.halfedge[v][u] == f2:
+                if v in self.edge[u]:
+                    return u, v
+                return v, u
+
     # --------------------------------------------------------------------------
     # vertex geometry
     # --------------------------------------------------------------------------
 
-    # def vertex_normal(self, key):
-    #     nx = 0
-    #     ny = 0
-    #     nz = 0
-    #     for nbr in self.halfedge[key]:
-    #         fkey = self.halfedge[key][nbr]
-    #         if fkey is None:
-    #             continue
-    #         n   = self.face_normal(fkey, unitized=False)
-    #         nx += n[0]
-    #         ny += n[1]
-    #         nz += n[2]
-    #     a = length_vector(n)
-    #     return nx / a, ny / a, nz / a
+    def vertex_coordinates(self, key, axes='xyz'):
+        """Return the coordinates of a vertex."""
+        return [self.vertex[key][axis] for axis in axes]
+
+    def vertex_area(self, key):
+        """Return the tributary area of a vertex."""
+        area = 0
+
+        p0 = self.vertex_coordinates(key)
+
+        for nbr in self.halfedge[key]:
+            p1 = self.vertex_coordinates(nbr)
+            v1 = subtract_vectors(p1, p0)
+
+            fkey = self.halfedge[key][nbr]
+            if fkey is not None:
+                p2 = self.face_centroid(fkey)
+                v2 = subtract_vectors(p2, p0)
+                area += length_vector(cross_vectors(v1, v2))
+
+            fkey = self.halfedge[nbr][key]
+            if fkey is not None:
+                p3 = self.face_centroid(fkey)
+                v3 = subtract_vectors(p3, p0)
+                area += length_vector(cross_vectors(v1, v3))
+
+        return 0.25 * area
+
+    def vertex_laplacian(self, key):
+        """Return the vector from the vertex to the centroid of its 1-ring neighbourhood."""
+        c = centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbours(key)])
+        p = self.vertex_coordinates(key)
+        return subtract_vectors(c, p)
+
+    def vertex_neighbourhood_centroid(self, key):
+        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbours(key)])
+
+    # centroid_points is in fact an averaging of vectors
+    # name it as such
+    def vertex_normal(self, key):
+        """Return the normal vector at the vertex as the weighted average of the
+        normals of the neighbouring faces."""
+        vectors = [self.face_normal(fkey) for fkey in self.vertex_faces(key) if fkey is not None]
+        return normalize_vector(centroid_points(vectors))
 
     # --------------------------------------------------------------------------
     # edge geometry
     # --------------------------------------------------------------------------
 
-    # def point_on_edge(self, u, v, t=0.5):
-    #     sp = self.vertex_coordinates(u)
-    #     ep = self.vertex_coordinates(v)
-    #     line = Line(sp, ep)
-    #     line.scale(t)
-    #     x, y, z = line.end
-    #     return x, y, z
-
-    # def edge_vector(self, u, v, unitized=False):
-    #     sp  = self.vertex_coordinates(u)
-    #     ep  = self.vertex_coordinates(v)
-    #     vec = [ep[i] - sp[i] for i in range(3)]
-    #     if not unitized:
-    #         return vec
-    #     vec_len = length_vector(vec)
-    #     return [axis / vec_len for axis in vec]
+    # inherited from EdgeGeometryMixin
 
     # --------------------------------------------------------------------------
     # face geometry
     # --------------------------------------------------------------------------
+
+    def face_coordinates(self, fkey, axes='xyz'):
+        """Return the coordinates of the vertices of a face."""
+        return [self.vertex_coordinates(key, axes=axes) for key in self.face_vertices(fkey)]
+
+    def face_normal(self, fkey, normalised=True):
+        """Return the normal of a face."""
+        return normal_polygon(self.face_coordinates(fkey), normalised=normalised)
+
+    def face_centroid(self, fkey):
+        """Return the location of the centroid of a face."""
+        return centroid_points(self.face_coordinates(fkey))
+
+    def face_center(self, fkey):
+        """Return the location of the center of mass of a face."""
+        return center_of_mass_polygon(self.face_coordinates(fkey))
+
+    def face_area(self, fkey):
+        """Return the area of a face."""
+        return area_polygon(self.face_coordinates(fkey))
 
     # --------------------------------------------------------------------------
     # boundary
@@ -962,7 +1494,7 @@ if __name__ == '__main__':
     mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
     mesh.update_default_vertex_attributes({'is_fixed': False})
 
-    plotter = MeshPlotter(mesh)
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
 
     print(mesh.number_of_vertices())
     print(mesh.number_of_edges())
@@ -975,7 +1507,7 @@ if __name__ == '__main__':
         facecolor={key: '#ff0000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2}
     )
 
-    plotter.draw_faces(text={key: key for key in mesh.faces()})
+    plotter.draw_faces(text={key: str(key) for key in mesh.faces()})
     plotter.draw_edges()
 
     plotter.show()

@@ -117,4 +117,4 @@ examples/**
 libs/**
 !libs/PLACEHOLDER
 
-src/_build/**
+src/.build/**

@@ -32,6 +32,7 @@ class SplinesConduit(Conduit):
                  color=None,
                  spline_color=None,
                  **kwargs):
+
         super(SplinesConduit, self).__init__(**kwargs)
         self.points = points
         self.lines = lines
@@ -45,6 +46,7 @@ class SplinesConduit(Conduit):
         self.spline_color = FromArgb(*spline_color)
 
     def DrawForeground(self, e):
+
         lines = List[Line](self.lines_count)
         for i, j in self.lines:
             sp = self.points[i]

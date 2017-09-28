@@ -14,6 +14,11 @@ __all__ = [
 ]
 
 
+# return the faces after face finding
+# don;t add the faces on the fly
+# make FaceNetwork from network and faces
+
+
 def network_dual(network, cls=None):
     """Construct the dual of a network.
 
@@ -41,16 +46,17 @@ def network_dual(network, cls=None):
             :include-source:
 
             import compas
-            from compas.datastructures.network import Network
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_find_faces
-            from compas.datastructures.network.algorithms import network_dual
 
-            network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+            from compas.datastructures import FaceNetwork
+            from compas.datastructures import network_find_faces
+            from compas.datastructures import network_dual
+            from compas.visualization.plotters import NetworkPlotter
+
+            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
             network_find_faces(network, breakpoints=network.leaves())
 
-            dual = network_dual(network, Network)
+            dual = network_dual(network)
 
             plotter = NetworkPlotter(dual)
 
@@ -134,11 +140,11 @@ def network_find_faces(network, breakpoints=None):
             # no breakpoints
 
             import compas
-            from compas.datastructures.network import Network
+            from compas.datastructures.network import FaceNetwork
             from compas.visualization.plotters import NetworkPlotter
             from compas.datastructures.network.algorithms import network_find_faces
 
-            network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
             network_find_faces(network)
 
@@ -156,11 +162,11 @@ def network_find_faces(network, breakpoints=None):
             # leaves as breakpoints
 
             import compas
-            from compas.datastructures.network import Network
+            from compas.datastructures.network import FaceNetwork
             from compas.visualization.plotters import NetworkPlotter
             from compas.datastructures.network.algorithms import network_find_faces
 
-            network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
             network_find_faces(network, breakpoints=network.leaves())
 
@@ -173,33 +179,45 @@ def network_find_faces(network, breakpoints=None):
             plotter.show()
 
     """
-    from compas.datastructures.network.mixins.facemixin import FaceMixin
-    for name, value in FaceMixin.__dict__.items():
-        if not name.startswith('_'):
-            setattr(type(network), 'add_face', FaceMixin.add_face.__func__)
+    # from compas.datastructures.network.mixins.facemixin import FaceMixin
+
+    # for name, value in FaceMixin.__dict__.items():
+    #     if not name.startswith('_'):
+    #         setattr(type(network), 'add_face', FaceMixin.add_face.__func__)
 
     if not breakpoints:
         breakpoints = []
+
     network.clear_facedict()
     network.clear_halfedgedict()
+
     network.halfedge = {key: {} for key in network.vertices()}
+
     for u, v in network.edges():
         network.halfedge[u][v] = None
         network.halfedge[v][u] = None
+
     _sort_neighbours(network)
+
     leaves = network.leaves()
+
     if leaves:
         u = sorted([(key, network.vertex[key]) for key in leaves], key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
     else:
         u = sorted(network.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+
     v = _find_first_neighbour(u, network)
+
     _find_edge_face(u, v, network)
+
     for u, v in network.edges():
         if network.halfedge[u][v] is None:
             _find_edge_face(u, v, network)
         if network.halfedge[v][u] is None:
             _find_edge_face(v, u, network)
+
     _break_faces(network, breakpoints)
+
     return network.face
 
 
@@ -311,17 +329,17 @@ def _break_faces(network, breakpoints):
 if __name__ == '__main__':
 
     import compas
-    from compas.datastructures.network import Network
+    from compas.datastructures import FaceNetwork
     from compas.visualization.plotters.networkplotter import NetworkPlotter
 
-    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+    network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
     network_find_faces(network, breakpoints=network.leaves())
 
-    plotter = NetworkPlotter(network)
+    plotter = NetworkPlotter(network, figsize=(10, 7))
 
-    plotter.draw_vertices(radius=0.075, facecolor={key: '#cccccc' for key in network.leaves()})
-    plotter.draw_edges(color={(u, v): '#cccccc' for u, v in network.edges()})
+    plotter.draw_vertices(radius=0.075, facecolor={key: '#ff0000' for key in network.leaves()})
+    # plotter.draw_edges(color={(u, v): '#cccccc' for u, v in network.edges()})
     plotter.draw_faces(facecolor={fkey: '#eeeeee' for fkey in network.faces()},
                        text={fkey: fkey for fkey in network.faces()})
 

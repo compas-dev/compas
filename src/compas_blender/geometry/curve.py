@@ -1,6 +1,3 @@
-"""compas.cad.blender.geometry.curve : Manipulating Blender curves."""
-
-
 from compas_blender.utilities.layers import layer_mask
 
 try:

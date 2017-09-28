@@ -8,9 +8,6 @@ datastructures
 .. module:: compas.datastructures
 
 
-Class definitions of data structures, data structure algorithms and operations.
-
-
 Network
 =======
 
@@ -18,33 +15,7 @@ Network
     :toctree: generated/
 
     Network
-
-.. code-block:: python
-
-    >>> import compas
-    >>> from compas.datastructures import Network
-    >>> from compas.visualization import NetworkPlotter
-
-    >>> n = Network.from_obj(compas.get_data('grid_irregular.obj'))
-    >>> p = NetworkPlotter(n)
-
-    >>> f = {key: '#ff0000' for key in n.leaves()}
-    >>> t = {(u, v): '{:.1f}'.format(n.edge_length(u, v)) for u, v in n.edges()}
-
-    >>> p.draw_vertices(facecolor=f)
-    >>> p.draw_edges(text=t)
-    >>> p.show()
-
-.. plot::
-
-    import compas
-    from compas.datastructures import Network
-    from compas.visualization import NetworkPlotter
-    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
-    p = NetworkPlotter(network)
-    p.draw_vertices(facecolor={key: '#ff0000' for key in network.leaves()})
-    p.draw_edges(text={(u, v): '{:.1f}'.format(network.edge_length(u, v)) for u, v in network.edges() })
-    p.show()
+    FaceNetwork
 
 
 network.operations
@@ -86,60 +57,6 @@ network.algorithms
     network_vertex_coloring
 
 
-.. plot::
-    :include-source:
-
-    import compas
-
-    from compas.datastructures import Network
-    from compas.datastructures import network_dijkstra_path
-
-    from compas.visualization import NetworkPlotter
-
-    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
-
-    weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
-    weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
-
-    # set a very high weight on one of the edges
-
-    weight[(8, 7)] = 1000
-    weight[(7, 8)] = 1000
-
-    # define start and end of the path
-
-    start = 21
-    end = 22
-
-    path = network_dijkstra_path(network.adjacency, weight, start, end)
-
-    # plot
-
-    edges = []
-    for i in range(len(path) - 1):
-        u = path[i]
-        v = path[i + 1]
-        if v not in network.edge[u]:
-            u, v = v, u
-        edges.append([u, v])
-
-    plotter = NetworkPlotter(network)
-
-    plotter.draw_vertices(
-        text={key: key for key in path},
-        facecolor={key: '#ff0000' for key in (path[0], path[-1])},
-        radius=0.15
-    )
-
-    plotter.draw_edges(
-        color={(u, v): '#ff0000' for u, v in edges},
-        width={(u, v): 2.0 for u, v in edges},
-        text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}
-    )
-
-    plotter.show()
-
-
 Mesh
 ====
 
@@ -149,37 +66,6 @@ Package for working with mesh objects.
     :toctree: generated/
 
     Mesh
-
-
-.. code-block:: python
-
-    >>> import compas
-    >>> from compas.datastructures import Mesh
-    >>> from compas.visualization import MeshPlotter
-
-    >>> m = Mesh.from_obj(compas.get_data('faces.obj'))
-    >>> p = MeshPlotter(m)
-
-    >>> p.defaults['face.facecolor'] = '#eeeeee'
-    >>> f = {key: '#00ff00' for key in mesh.vertices_on_boundary()}
-    >>> t = {fkey: str(fkey) for fkey in mesh.faces()}
-
-    >>> p.draw_vertices(facecolor=f)
-    >>> p.draw_faces(text=t)
-    >>> p.show()
-
-.. plot::
-    :class: figure-img img-fluid
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
-    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
-    p = MeshPlotter(mesh)
-    p.defaults['face.facecolor'] = '#eeeeee'
-    p.draw_vertices(facecolor={key: '#00ff00' for key in mesh.vertices_on_boundary()})
-    p.draw_faces(text={fkey: str(fkey) for fkey in mesh.faces()})
-    p.show()
 
 
 mesh.operations
@@ -237,13 +123,6 @@ mesh.algorithms
 VolMesh
 =======
 
-.. code-block:: python
-
-    >>> import compas
-    >>> from compas.datastructures import VolMesh
-
-    >>> m = VolMesh.from_obj(compas.get_data('boxes.obj'))
-
 
 volmesh.operations
 ------------------
@@ -256,6 +135,11 @@ volmesh.algorithms
 """
 
 from __future__ import print_function
+
+
+class Datastructure(object):
+    pass
+
 
 from .network import *
 from .mesh import *

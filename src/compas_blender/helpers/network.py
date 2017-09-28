@@ -1,5 +1,3 @@
-"""compas.cad.blender.helpers.network : Functions for Network datastructures in Blender."""
-
 from compas.datastructures.network import Network
 
 from compas.geometry import centroid_points

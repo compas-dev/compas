@@ -1,5 +1,3 @@
-from compas_rhino.exceptions import RhinoSurfaceError
-
 from compas.geometry import subtract_vectors
 
 try:
@@ -20,6 +18,9 @@ __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
+
+
+__all__ = ['RhinoSurface', ]
 
 
 class RhinoSurface(object):
@@ -51,7 +52,7 @@ class RhinoSurface(object):
         elif rs.IsSurface(self.guid):
             faces = [self.guid]
         else:
-            raise RhinoSurfaceError('object is not a surface')
+            raise Exception('Object is not a surface.')
 
         for face in faces:
             domain_u = rs.SurfaceDomain(face, 0)
@@ -90,7 +91,7 @@ class RhinoSurface(object):
         elif rs.IsSurface(self.guid):
             faces = [self.guid]
         else:
-            raise RhinoSurfaceError('object is not a surface')
+            raise Exception('Object is not a surface.')
 
         if over_space:
             for guid in faces:
@@ -160,7 +161,7 @@ class RhinoSurface(object):
                 vector = [p1[_] - p0[_] for _ in range(3)]
                 descent.append((p0, vector))
         else:
-            raise RhinoSurfaceError('object is not a surface')
+            raise Exception('Object is not a surface.')
 
         return descent
 
@@ -194,7 +195,7 @@ class RhinoSurface(object):
                 props = rs.SurfaceCurvature(self.guid, uv)
                 curvature.append((point, (props[1], props[3], props[5])))
         else:
-            raise RhinoSurfaceError('object is not a surface')
+            raise Exception('Object is not a surface.')
 
         return curvature
 
@@ -209,7 +210,7 @@ class RhinoSurface(object):
         for point in points:
             ppoints = rs.ProjectPointToSurface(point, self.guid, [0, 0, 1])
             if not ppoints:
-                raise RhinoSurfaceError('Could not project point to surface.')
+                raise Exception('Could not project point to surface.')
             ppoint = ppoints[0]
             projections.append(list(ppoint))
         return projections

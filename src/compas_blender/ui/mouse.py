@@ -1,5 +1,3 @@
-"""compas.cad.blender.ui.mouse : Blender mouse UI functions."""
-
 try:
     import bpy
 except ImportError:
