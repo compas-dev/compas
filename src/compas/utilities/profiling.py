@@ -9,9 +9,9 @@ except ImportError:
         from io import StringIO
 
 try:
-    import cProfile as profile
+    import cProfile as Profile
 except ImportError:
-    import profile
+    import profile as Profile
 
 import pstats
 
@@ -54,14 +54,14 @@ def print_profile(func):
     """
     @wraps(func)
     def wrapper(*args, **kwargs):
-        p = profile.Profile()
-        p.enable()
+        profile = Profile.Profile()
+        profile.enable()
         #
         res = func(*args, **kwargs)
         #
-        p.disable()
+        profile.disable()
         stream = StringIO()
-        stats  = pstats.Stats(p, stream=stream)
+        stats  = pstats.Stats(profile, stream=stream)
         stats.strip_dirs()
         stats.sort_stats(1)
         stats.print_stats(20)
@@ -85,7 +85,7 @@ if __name__ == "__main__":
             s += i
         return s
 
-    f(100)
+    print(f(100))
 
     print(f.__doc__)
     print(f.__name__)
