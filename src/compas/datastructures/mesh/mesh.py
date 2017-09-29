@@ -432,54 +432,74 @@ mesh: {}
         mesh = cls.from_vertices_and_faces(vertices, faces, **kwargs)
         return mesh
 
+    # @classmethod
+    # def from_lines(cls, lines, boundary_face=False, precision='3f'):
+    #     """"""
+    #     from compas.datastructures.network.algorithms.duality import _sort_neighbours
+    #     from compas.datastructures.network.algorithms.duality import _find_first_neighbour
+    #     from compas.datastructures.network.algorithms.duality import _find_edge_face
+
+    #     mesh = cls()
+    #     edges   = []
+    #     vertex  = {}
+    #     for line in lines:
+    #         sp = line[0]
+    #         ep = line[1]
+    #         a  = geometric_key(sp, precision)
+    #         b  = geometric_key(ep, precision)
+    #         vertex[a] = sp
+    #         vertex[b] = ep
+    #         edges.append((a, b))
+    #     key_index = dict((k, i) for i, k in enumerate(iter(vertex)))
+    #     for key, xyz in iter(vertex.items()):
+    #         i = key_index[key]
+    #         mesh.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])
+    #     edges_uv = []
+    #     for u, v in edges:
+    #         i = key_index[u]
+    #         j = key_index[v]
+    #         edges_uv.append((i, j))
+    #     # the clear commands below are from the network equivalent. Needed?
+    #     # network.clear_facedict()
+    #     # network.clear_halfedgedict()
+    #     mesh.halfedge = dict((key, {}) for key in mesh.vertex)
+    #     for u, v in edges_uv:
+    #         mesh.halfedge[u][v] = None
+    #         mesh.halfedge[v][u] = None
+    #     _sort_neighbours(mesh)
+
+    #     u = sorted(mesh.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+    #     v = _find_first_neighbour(u, mesh)
+    #     key_boundary_face = _find_edge_face(u, v, mesh)
+    #     print(key_boundary_face)
+    #     for u, v in mesh.edges():
+    #         if mesh.halfedge[u][v] is None:
+    #             _find_edge_face(u, v, mesh)
+    #         if mesh.halfedge[v][u] is None:
+    #             _find_edge_face(v, u, mesh)
+
+    #     if not boundary_face:
+    #         mesh.delete_face(key_boundary_face)
+    #     return mesh
+
     @classmethod
     def from_lines(cls, lines, boundary_face=False, precision='3f'):
         """"""
-        from compas.datastructures.network.algorithms.duality import _sort_neighbours
-        from compas.datastructures.network.algorithms.duality import _find_first_neighbour
-        from compas.datastructures.network.algorithms.duality import _find_edge_face
+        from compas.datastructures import network_find_faces
+        from compas.datastructures import FaceNetwork
 
-        mesh = cls()
-        edges   = []
-        vertex  = {}
-        for line in lines:
-            sp = line[0]
-            ep = line[1]
-            a  = geometric_key(sp, precision)
-            b  = geometric_key(ep, precision)
-            vertex[a] = sp
-            vertex[b] = ep
-            edges.append((a, b))
-        key_index = dict((k, i) for i, k in enumerate(iter(vertex)))
-        for key, xyz in iter(vertex.items()):
-            i = key_index[key]
-            mesh.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])
-        edges_uv = []
-        for u, v in edges:
-            i = key_index[u]
-            j = key_index[v]
-            edges_uv.append((i, j))
-        # the clear commands below are from the network equivalent. Needed?
-        # network.clear_facedict()
-        # network.clear_halfedgedict()
-        mesh.halfedge = dict((key, {}) for key in mesh.vertex)
-        for u, v in edges_uv:
-            mesh.halfedge[u][v] = None
-            mesh.halfedge[v][u] = None
-        _sort_neighbours(mesh)
+        network = FaceNetwork.from_lines(lines)
 
-        u = sorted(mesh.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
-        v = _find_first_neighbour(u, mesh)
-        key_boundary_face = _find_edge_face(u, v, mesh)
-        print(key_boundary_face)
-        for u, v in mesh.edges():
-            if mesh.halfedge[u][v] is None:
-                _find_edge_face(u, v, mesh)
-            if mesh.halfedge[v][u] is None:
-                _find_edge_face(v, u, mesh)
+        network_find_faces(network, breakpoints=network.leaves())
+
+        key_index = network.key_index()
+        vertices = [network.vertex_coordinates(key) for key in network.vertices()]
+        faces = [[key_index[key] for key in network.face_vertices(fkey)] for fkey in network.faces()]
+        mesh = cls.from_vertices_and_faces(vertices, faces)
 
         if not boundary_face:
-            mesh.delete_face(key_boundary_face)
+            mesh.delete_face(0)
+
         return mesh
 
     @classmethod
