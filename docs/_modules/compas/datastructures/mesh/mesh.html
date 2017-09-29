@@ -16,16 +16,13 @@
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
 <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/index.html">compas</a>
+<a class="navbar-brand" href="/">compas</a>
 <ul class="navbar-nav">
 <li class="nav-item">
-<a class="nav-link" href="/index.html">Home</a>
+<a class="nav-link active" href="/compas">Main library</a>
 </li>
 <li class="nav-item">
-<a class="nav-link active" href="/compas/index.html">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages/index.html">Additional Packages</a>
+<a class="nav-link" href="/packages">Additional Packages</a>
 </li>
 </ul>
 </header>
@@ -48,6 +45,7 @@
 
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">pairwise</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">window</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">geometric_key</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">normalize_vector</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">centroid_points</span>
@@ -471,55 +469,55 @@
         <span class="n">mesh</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mesh</span>
 
-    <span class="c1"># @classmethod</span>
-    <span class="c1"># def from_lines(cls, lines, boundary_face=False, precision='3f'):</span>
-    <span class="c1">#     """"""</span>
-    <span class="c1">#     from compas.datastructures.network.algorithms.duality import _sort_neighbours</span>
-    <span class="c1">#     from compas.datastructures.network.algorithms.duality import _find_first_neighbour</span>
-    <span class="c1">#     from compas.datastructures.network.algorithms.duality import _find_edge_face</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_lines</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">boundary_face</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="s1">'3f'</span><span class="p">):</span>
+        <span class="sd">""""""</span>
+        <span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms.duality</span> <span class="k">import</span> <span class="n">_sort_neighbours</span>
+        <span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms.duality</span> <span class="k">import</span> <span class="n">_find_first_neighbour</span>
+        <span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms.duality</span> <span class="k">import</span> <span class="n">_find_edge_face</span>
 
-    <span class="c1">#     mesh = cls()</span>
-    <span class="c1">#     edges   = []</span>
-    <span class="c1">#     vertex  = {}</span>
-    <span class="c1">#     for line in lines:</span>
-    <span class="c1">#         sp = line[0]</span>
-    <span class="c1">#         ep = line[1]</span>
-    <span class="c1">#         a  = geometric_key(sp, precision)</span>
-    <span class="c1">#         b  = geometric_key(ep, precision)</span>
-    <span class="c1">#         vertex[a] = sp</span>
-    <span class="c1">#         vertex[b] = ep</span>
-    <span class="c1">#         edges.append((a, b))</span>
-    <span class="c1">#     key_index = dict((k, i) for i, k in enumerate(iter(vertex)))</span>
-    <span class="c1">#     for key, xyz in iter(vertex.items()):</span>
-    <span class="c1">#         i = key_index[key]</span>
-    <span class="c1">#         mesh.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])</span>
-    <span class="c1">#     edges_uv = []</span>
-    <span class="c1">#     for u, v in edges:</span>
-    <span class="c1">#         i = key_index[u]</span>
-    <span class="c1">#         j = key_index[v]</span>
-    <span class="c1">#         edges_uv.append((i, j))</span>
-    <span class="c1">#     # the clear commands below are from the network equivalent. Needed?</span>
-    <span class="c1">#     # network.clear_facedict()</span>
-    <span class="c1">#     # network.clear_halfedgedict()</span>
-    <span class="c1">#     mesh.halfedge = dict((key, {}) for key in mesh.vertex)</span>
-    <span class="c1">#     for u, v in edges_uv:</span>
-    <span class="c1">#         mesh.halfedge[u][v] = None</span>
-    <span class="c1">#         mesh.halfedge[v][u] = None</span>
-    <span class="c1">#     _sort_neighbours(mesh)</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+        <span class="n">edges</span>   <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">vertex</span>  <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">sp</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">ep</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">a</span>  <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+            <span class="n">b</span>  <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">ep</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+            <span class="n">vertex</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">sp</span>
+            <span class="n">vertex</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="n">ep</span>
+            <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+        <span class="n">key_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">vertex</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">edges_uv</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+            <span class="n">edges_uv</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+        <span class="c1"># the clear commands below are from the network equivalent. Needed?</span>
+        <span class="c1"># network.clear_facedict()</span>
+        <span class="c1"># network.clear_halfedgedict()</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="p">{})</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges_uv</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">_sort_neighbours</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
-    <span class="c1">#     u = sorted(mesh.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]</span>
-    <span class="c1">#     v = _find_first_neighbour(u, mesh)</span>
-    <span class="c1">#     key_boundary_face = _find_edge_face(u, v, mesh)</span>
-    <span class="c1">#     print(key_boundary_face)</span>
-    <span class="c1">#     for u, v in mesh.edges():</span>
-    <span class="c1">#         if mesh.halfedge[u][v] is None:</span>
-    <span class="c1">#             _find_edge_face(u, v, mesh)</span>
-    <span class="c1">#         if mesh.halfedge[v][u] is None:</span>
-    <span class="c1">#             _find_edge_face(v, u, mesh)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">'y'</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">'x'</span><span class="p">]))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">_find_first_neighbour</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
+        <span class="n">key_boundary_face</span> <span class="o">=</span> <span class="n">_find_edge_face</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">key_boundary_face</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">_find_edge_face</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">_find_edge_face</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
 
-    <span class="c1">#     if not boundary_face:</span>
-    <span class="c1">#         mesh.delete_face(key_boundary_face)</span>
-    <span class="c1">#     return mesh</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">boundary_face</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">delete_face</span><span class="p">(</span><span class="n">key_boundary_face</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mesh</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_vertices_and_faces</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1531,6 +1529,9 @@
 
     <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
+    <span class="n">mesh</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">'./test.json'</span><span class="p">)</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="s1">'./test.json'</span><span class="p">)</span>
+
     <span class="n">mesh</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">({</span><span class="s1">'px'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'py'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
     <span class="n">mesh</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">({</span><span class="s1">'is_fixed'</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
 
@@ -1590,7 +1591,7 @@
             
 
             
-                Last updated on Sep 28, 2017.
+                Last updated on Sep 29, 2017.
             
 
             

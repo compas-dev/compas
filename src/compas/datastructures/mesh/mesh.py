@@ -8,6 +8,7 @@ from compas.files.ply import PLYreader
 
 from compas.utilities import pairwise
 from compas.utilities import window
+from compas.utilities import geometric_key
 
 from compas.geometry import normalize_vector
 from compas.geometry import centroid_points
@@ -431,55 +432,55 @@ mesh: {}
         mesh = cls.from_vertices_and_faces(vertices, faces, **kwargs)
         return mesh
 
-    # @classmethod
-    # def from_lines(cls, lines, boundary_face=False, precision='3f'):
-    #     """"""
-    #     from compas.datastructures.network.algorithms.duality import _sort_neighbours
-    #     from compas.datastructures.network.algorithms.duality import _find_first_neighbour
-    #     from compas.datastructures.network.algorithms.duality import _find_edge_face
+    @classmethod
+    def from_lines(cls, lines, boundary_face=False, precision='3f'):
+        """"""
+        from compas.datastructures.network.algorithms.duality import _sort_neighbours
+        from compas.datastructures.network.algorithms.duality import _find_first_neighbour
+        from compas.datastructures.network.algorithms.duality import _find_edge_face
 
-    #     mesh = cls()
-    #     edges   = []
-    #     vertex  = {}
-    #     for line in lines:
-    #         sp = line[0]
-    #         ep = line[1]
-    #         a  = geometric_key(sp, precision)
-    #         b  = geometric_key(ep, precision)
-    #         vertex[a] = sp
-    #         vertex[b] = ep
-    #         edges.append((a, b))
-    #     key_index = dict((k, i) for i, k in enumerate(iter(vertex)))
-    #     for key, xyz in iter(vertex.items()):
-    #         i = key_index[key]
-    #         mesh.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])
-    #     edges_uv = []
-    #     for u, v in edges:
-    #         i = key_index[u]
-    #         j = key_index[v]
-    #         edges_uv.append((i, j))
-    #     # the clear commands below are from the network equivalent. Needed?
-    #     # network.clear_facedict()
-    #     # network.clear_halfedgedict()
-    #     mesh.halfedge = dict((key, {}) for key in mesh.vertex)
-    #     for u, v in edges_uv:
-    #         mesh.halfedge[u][v] = None
-    #         mesh.halfedge[v][u] = None
-    #     _sort_neighbours(mesh)
+        mesh = cls()
+        edges   = []
+        vertex  = {}
+        for line in lines:
+            sp = line[0]
+            ep = line[1]
+            a  = geometric_key(sp, precision)
+            b  = geometric_key(ep, precision)
+            vertex[a] = sp
+            vertex[b] = ep
+            edges.append((a, b))
+        key_index = dict((k, i) for i, k in enumerate(iter(vertex)))
+        for key, xyz in iter(vertex.items()):
+            i = key_index[key]
+            mesh.add_vertex(i, x=xyz[0], y=xyz[1], z=xyz[2])
+        edges_uv = []
+        for u, v in edges:
+            i = key_index[u]
+            j = key_index[v]
+            edges_uv.append((i, j))
+        # the clear commands below are from the network equivalent. Needed?
+        # network.clear_facedict()
+        # network.clear_halfedgedict()
+        mesh.halfedge = dict((key, {}) for key in mesh.vertex)
+        for u, v in edges_uv:
+            mesh.halfedge[u][v] = None
+            mesh.halfedge[v][u] = None
+        _sort_neighbours(mesh)
 
-    #     u = sorted(mesh.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
-    #     v = _find_first_neighbour(u, mesh)
-    #     key_boundary_face = _find_edge_face(u, v, mesh)
-    #     print(key_boundary_face)
-    #     for u, v in mesh.edges():
-    #         if mesh.halfedge[u][v] is None:
-    #             _find_edge_face(u, v, mesh)
-    #         if mesh.halfedge[v][u] is None:
-    #             _find_edge_face(v, u, mesh)
+        u = sorted(mesh.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+        v = _find_first_neighbour(u, mesh)
+        key_boundary_face = _find_edge_face(u, v, mesh)
+        print(key_boundary_face)
+        for u, v in mesh.edges():
+            if mesh.halfedge[u][v] is None:
+                _find_edge_face(u, v, mesh)
+            if mesh.halfedge[v][u] is None:
+                _find_edge_face(v, u, mesh)
 
-    #     if not boundary_face:
-    #         mesh.delete_face(key_boundary_face)
-    #     return mesh
+        if not boundary_face:
+            mesh.delete_face(key_boundary_face)
+        return mesh
 
     @classmethod
     def from_vertices_and_faces(cls, vertices, faces, **kwargs):
@@ -1490,6 +1491,9 @@ if __name__ == '__main__':
     from compas.visualization.plotters.meshplotter import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+
+    mesh.to_json('./test.json')
+    mesh = Mesh.from_json('./test.json')
 
     mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
     mesh.update_default_vertex_attributes({'is_fixed': False})
