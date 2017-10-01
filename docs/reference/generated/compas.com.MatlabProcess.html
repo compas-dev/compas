@@ -64,7 +64,6 @@ Defaults to <cite>‘./workspace.mat’</cite>.</li>
 <p class="rubric">Examples</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabProcess</span><span class="p">()</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="mi">37</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'tf = isprime(a);'</span><span class="p">)</span>
@@ -72,22 +71,18 @@ Defaults to <cite>‘./workspace.mat’</cite>.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">ws_data</span><span class="p">)</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'res = isprime(a);'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">read_value</span><span class="p">(</span><span class="s1">'res'</span><span class="p">)</span>
 <span class="go">True</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'res = isprime(a);'</span><span class="p">,</span> <span class="n">ivars</span><span class="o">=</span><span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">17</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">read_value</span><span class="p">(</span><span class="s1">'res'</span><span class="p">)</span>
 <span class="go">True</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'res = isprime(a);'</span><span class="p">,</span> <span class="n">ivars</span><span class="o">=</span><span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">17</span><span class="p">},</span> <span class="n">ovars</span><span class="o">=</span><span class="p">{</span><span class="s1">'res'</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
 <span class="go">{'res': True}</span>
 </code></pre></div>
-
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
