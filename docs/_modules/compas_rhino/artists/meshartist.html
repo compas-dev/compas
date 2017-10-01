@@ -1,40 +1,68 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
-</nav>
-<h1>Source code for compas_rhino.artists.meshartist</h1><div class="highlight"><pre><code class="language-python border rounded">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <h1>Source code for compas_rhino.artists.meshartist</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">to_valuedict</span>
 
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
@@ -43,38 +71,38 @@
     <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">platform</span>
-    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'IronPython'</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;IronPython&#39;</span><span class="p">:</span>
         <span class="k">raise</span>
 
 
-<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
-<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;Copyright 2016 - Block Research Group, ETH Zurich&#39;</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'MeshArtist'</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MeshArtist&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="MeshArtist"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.artists.MeshArtist.html#compas_rhino.artists.MeshArtist">[docs]</a><span class="k">class</span> <span class="nc">MeshArtist</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">""""""</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">'vertex.color'</span> <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">'face.color'</span>   <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-            <span class="s1">'edge.color'</span>   <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;vertex.color&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;face.color&#39;</span>   <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;edge.color&#39;</span>   <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
         <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Redraw the Rhino view."""</span>
+        <span class="sd">&quot;&quot;&quot;Redraw the Rhino view.&quot;&quot;&quot;</span>
         <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">rs</span><span class="o">.</span><span class="n">Redraw</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Clear the main layer of the artist."""</span>
+        <span class="sd">&quot;&quot;&quot;Clear the main layer of the artist.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">:</span>
             <span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
 
@@ -85,42 +113,42 @@
 
     <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">.vertex.*'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">])</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.vertex.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
             <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">.vertex.</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">],</span> <span class="n">key</span><span class="p">)</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.vertex.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">key</span><span class="p">)</span>
                 <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
                 <span class="n">guids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
         <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">.face.*'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">])</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.face.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
             <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">.face.</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">],</span> <span class="n">key</span><span class="p">)</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.face.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">key</span><span class="p">)</span>
                 <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
                 <span class="n">guids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
         <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">.edge.*'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">])</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.edge.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
             <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">.edge.</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">],</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.edge.</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
                 <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
                 <span class="n">guids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
         <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Draw a selection of vertices of the mesh.</span>
+        <span class="sd">&quot;&quot;&quot;Draw a selection of vertices of the mesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -134,34 +162,34 @@
 <span class="sd">            To apply the same color to all vertices, provide a single color</span>
 <span class="sd">            specification. Individual colors can be assigned using a dictionary</span>
 <span class="sd">            of key-color pairs. Missing keys will be assigned the default vertex</span>
-<span class="sd">            color (``self.defaults['vertex.color']``).</span>
+<span class="sd">            color (``self.defaults[&#39;vertex.color&#39;]``).</span>
 <span class="sd">            The default is ``None``, in which case all vertices are assigned the</span>
 <span class="sd">            default vertex color.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        The vertices are named using the following template:</span>
-<span class="sd">        ``"{}.vertex.{}".format(self.mesh.attributes['name'], key)``.</span>
+<span class="sd">        ``&quot;{}.vertex.{}&quot;.format(self.mesh.attributes[&#39;name&#39;], key)``.</span>
 <span class="sd">        This name is used afterwards to identify vertices of the meshin the Rhino model.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
-        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'vertex.color'</span><span class="p">])</span>
+        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;vertex.color&#39;</span><span class="p">])</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
             <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">'pos'</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-                <span class="s1">'name'</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_name</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-                <span class="s1">'color'</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="s1">&#39;pos&#39;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_name</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
             <span class="p">})</span>
         <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkeys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Draw a selection of faces of the mesh.</span>
+        <span class="sd">&quot;&quot;&quot;Draw a selection of faces of the mesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -175,34 +203,34 @@
 <span class="sd">            To apply the same color to all faces, provide a single color</span>
 <span class="sd">            specification. Individual colors can be assigned using a dictionary</span>
 <span class="sd">            of key-color pairs. Missing keys will be assigned the default face</span>
-<span class="sd">            color (``self.defaults['face.color']``).</span>
+<span class="sd">            color (``self.defaults[&#39;face.color&#39;]``).</span>
 <span class="sd">            The default is ``None``, in which case all faces are assigned the</span>
 <span class="sd">            default vertex color.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        The faces are named using the following template:</span>
-<span class="sd">        ``"{}.face.{}".format(self.mesh.attributes['name'], key)``.</span>
+<span class="sd">        ``&quot;{}.face.{}&quot;.format(self.mesh.attributes[&#39;name&#39;], key)``.</span>
 <span class="sd">        This name is used afterwards to identify faces of the mesh in the Rhino model.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fkeys</span> <span class="o">=</span> <span class="n">fkeys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
-        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">fkeys</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.color'</span><span class="p">])</span>
+        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">fkeys</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;face.color&#39;</span><span class="p">])</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">fkeys</span><span class="p">:</span>
             <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">'points'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span>
-                <span class="s1">'name'</span>  <span class="p">:</span> <span class="s2">"</span><span class="si">{}</span><span class="s2">.face.</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">],</span> <span class="n">fkey</span><span class="p">),</span>
-                <span class="s1">'color'</span> <span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">fkey</span><span class="p">],</span>
+                <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span>  <span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.face.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">fkey</span><span class="p">),</span>
+                <span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">fkey</span><span class="p">],</span>
             <span class="p">})</span>
         <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_faces</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Draw a selection of edges of the mesh.</span>
+        <span class="sd">&quot;&quot;&quot;Draw a selection of edges of the mesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -216,39 +244,39 @@
 <span class="sd">            To apply the same color to all faces, provide a single color</span>
 <span class="sd">            specification. Individual colors can be assigned using a dictionary</span>
 <span class="sd">            of key-color pairs. Missing keys will be assigned the default face</span>
-<span class="sd">            color (``self.defaults['face.color']``).</span>
+<span class="sd">            color (``self.defaults[&#39;face.color&#39;]``).</span>
 <span class="sd">            The default is ``None``, in which case all faces are assigned the</span>
 <span class="sd">            default vertex color.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        All edges are named using the following template:</span>
-<span class="sd">        ``"{}.edge.{}-{}".fromat(self.mesh.attributes['name'], u, v)``.</span>
+<span class="sd">        ``&quot;{}.edge.{}-{}&quot;.fromat(self.mesh.attributes[&#39;name&#39;], u, v)``.</span>
 <span class="sd">        This name is used afterwards to identify edges of the mesh in the Rhino model.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; artist.draw_edges()</span>
-<span class="sd">        &gt;&gt;&gt; artist.draw_edges(color='#ff0000')</span>
+<span class="sd">        &gt;&gt;&gt; artist.draw_edges(color=&#39;#ff0000&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; artist.draw_edges(color=(255, 0, 0))</span>
 <span class="sd">        &gt;&gt;&gt; artist.draw_edges(keys=self.mesh.edges_on_boundary())</span>
-<span class="sd">        &gt;&gt;&gt; artist.draw_edges(color={(u, v): '#00ff00' for u, v in self.mesh.edges_on_boundary()})</span>
+<span class="sd">        &gt;&gt;&gt; artist.draw_edges(color={(u, v): &#39;#00ff00&#39; for u, v in self.mesh.edges_on_boundary()})</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
-        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'edge.color'</span><span class="p">])</span>
+        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;edge.color&#39;</span><span class="p">])</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">'start'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">),</span>
-                <span class="s1">'end'</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
-                <span class="s1">'color'</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)],</span>
-                <span class="s1">'name'</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edge_name</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">),</span>
+                <span class="s1">&#39;end&#39;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)],</span>
+                <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edge_name</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
             <span class="p">})</span>
         <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">draw_vertexlabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Draw labels for selected vertices of the mesh.</span>
+        <span class="sd">&quot;&quot;&quot;Draw labels for selected vertices of the mesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -258,43 +286,43 @@
 <span class="sd">            will be labelled with its key.</span>
 <span class="sd">        color : str, tuple, dict</span>
 <span class="sd">            The color sepcification of the labels.</span>
-<span class="sd">            String values are interpreted as hex colors (e.g. ``'#ff0000'`` for red).</span>
+<span class="sd">            String values are interpreted as hex colors (e.g. ``&#39;#ff0000&#39;`` for red).</span>
 <span class="sd">            Tuples are interpreted as RGB component specifications (e.g. ``(255, 0, 0) for red``.</span>
 <span class="sd">            If a dictionary of specififcations is provided, the keys of the</span>
 <span class="sd">            should refer to vertex keys in the mesh and the values should be color</span>
 <span class="sd">            specifications in the form of strings or tuples.</span>
 <span class="sd">            The default value is ``None``, in which case the labels are assigned</span>
-<span class="sd">            the default vertex color (``self.defaults['vertex.color']``).</span>
+<span class="sd">            the default vertex color (``self.defaults[&#39;vertex.color&#39;]``).</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        All labels are assigned a name using the folling template:</span>
-<span class="sd">        ``"{}.vertex.{}".format(self.mesh.attributes['name'], key)``.</span>
+<span class="sd">        ``&quot;{}.vertex.{}&quot;.format(self.mesh.attributes[&#39;name&#39;], key)``.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">textdict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">textdict</span> <span class="o">=</span> <span class="n">text</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'vertex.color'</span><span class="p">])</span>
+        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;vertex.color&#39;</span><span class="p">])</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">'pos'</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-                <span class="s1">'name'</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_name</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-                <span class="s1">'color'</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
-                <span class="s1">'text'</span> <span class="p">:</span> <span class="n">textdict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                <span class="s1">&#39;pos&#39;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_name</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                <span class="s1">&#39;text&#39;</span> <span class="p">:</span> <span class="n">textdict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
             <span class="p">})</span>
         <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">draw_facelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Draw labels for selected faces of the mesh.</span>
+        <span class="sd">&quot;&quot;&quot;Draw labels for selected faces of the mesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -305,26 +333,26 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">textdict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">textdict</span> <span class="o">=</span> <span class="n">text</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.color'</span><span class="p">])</span>
+        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;face.color&#39;</span><span class="p">])</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">'pos'</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_center</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-                <span class="s1">'name'</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_name</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-                <span class="s1">'color'</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
-                <span class="s1">'text'</span> <span class="p">:</span> <span class="n">textdict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                <span class="s1">&#39;pos&#39;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_center</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_name</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                <span class="s1">&#39;text&#39;</span> <span class="p">:</span> <span class="n">textdict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
             <span class="p">})</span>
         <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">draw_edgelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Draw labels for selected edges of the mesh.</span>
+        <span class="sd">&quot;&quot;&quot;Draw labels for selected edges of the mesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -335,21 +363,21 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">textdict</span> <span class="o">=</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="s2">"</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()}</span>
+            <span class="n">textdict</span> <span class="o">=</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()}</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">textdict</span> <span class="o">=</span> <span class="n">text</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'edge.color'</span><span class="p">])</span>
+        <span class="n">colordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;edge.color&#39;</span><span class="p">])</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">'pos'</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edge_midpoint</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
-                <span class="s1">'name'</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edge_name</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
-                <span class="s1">'color'</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)],</span>
-                <span class="s1">'text'</span> <span class="p">:</span> <span class="n">textdict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)],</span>
+                <span class="s1">&#39;pos&#39;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edge_midpoint</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edge_name</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)],</span>
+                <span class="s1">&#39;text&#39;</span> <span class="p">:</span> <span class="n">textdict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)],</span>
             <span class="p">})</span>
         <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
@@ -358,7 +386,7 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">time</span>
 
@@ -371,7 +399,7 @@
 
     <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">poly</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span>
 
-    <span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'MeshArtist'</span><span class="p">)</span>
+    <span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;MeshArtist&#39;</span><span class="p">)</span>
 
     <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
 
@@ -393,52 +421,82 @@
 
     <span class="c1"># artist.redraw()</span>
 </code></pre></div>
-<nav class="compas-sideways">
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column">
+                        
+                        <nav class="compas-sideways">
+                            
+
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
             
-                Last updated on Sep 29, 2017.
+                Last updated on Oct 01, 2017.
             
 
             
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -448,17 +506,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/core/static/underscore.js"></script>
-<script src="/core/static/doctools.js"></script>
-<script src="/core/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="/js/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>
