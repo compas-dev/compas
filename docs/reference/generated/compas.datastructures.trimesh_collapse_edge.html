@@ -48,14 +48,11 @@ point.</p>
 <p>An edge can only be collapsed if the collapse is <cite>legal</cite>. A collapse is
 legal if it meets the following requirements:</p>
 <blockquote>
-<div><ul>
-<li><p class="first">any vertex <cite>w</cite> that is a neighbour of both <cite>u</cite> and <cite>v</cite> is a face
-of the mesh</p>
-</li>
-<li><p class="first"><cite>u</cite> and <cite>v</cite> are not on the boundary</p>
-</li>
-<li><p class="first">...</p>
-</li>
+<div><ul class="simple">
+<li>any vertex <cite>w</cite> that is a neighbour of both <cite>u</cite> and <cite>v</cite> is a face
+of the mesh</li>
+<li><cite>u</cite> and <cite>v</cite> are not on the boundary</li>
+<li>...</li>
 </ul>
 </div></blockquote>
 <p>See [] for a detailed explanation of these requirements.</p>
@@ -63,15 +60,12 @@ of the mesh</p>
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>u</strong> (<em>str</em>) – The first vertex of the (half-) edge.</p>
-</li>
-<li><p class="first"><strong>v</strong> (<em>str</em>) – The second vertex of the (half-) edge.</p>
-</li>
-<li><p class="first"><strong>t</strong> (<em>float</em>) – Determines where to collapse to. If <cite>t == 0.0</cite> collapse
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>str</em>) – The first vertex of the (half-) edge.</li>
+<li><strong>v</strong> (<em>str</em>) – The second vertex of the (half-) edge.</li>
+<li><strong>t</strong> (<em>float</em>) – Determines where to collapse to. If <cite>t == 0.0</cite> collapse
 to <cite>u</cite>. If <cite>t == 1.0</cite> collapse to <cite>v</cite>. If <cite>0.0 &lt; t &lt; 1.0</cite>,
-collapse to a point between <cite>u</cite> and <cite>v</cite>.</p>
-</li>
+collapse to a point between <cite>u</cite> and <cite>v</cite>.</li>
 </ul>
 </td>
 </tr>

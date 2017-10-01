@@ -49,33 +49,24 @@
 <p>The <em>object-aligned bounding box</em> (OABB) is computed using the following
 procedure:</p>
 <blockquote class="last">
-<div><ol class="arabic">
-<li><p class="first">Compute the convex hull of the points.</p>
-</li>
+<div><ol class="arabic simple">
+<li>Compute the convex hull of the points.</li>
 <li><dl class="first docutils">
 <dt>For each of the edges on the hull:</dt>
 <dd><ol class="first last arabic">
-<li><p class="first">Compute the s-axis as the unit vector in the direction of the edge</p>
-</li>
-<li><p class="first">Compute the othorgonal t-axis.</p>
-</li>
-<li><p class="first">Use the start point of the edge as origin.</p>
-</li>
-<li><p class="first">Compute the spread of the points along the s-axis.
-(dot product of the point vecor in local coordinates and the s-axis)</p>
-</li>
-<li><p class="first">Compute the spread along the t-axis.</p>
-</li>
-<li><p class="first">Determine the side of s on which the points are.</p>
-</li>
-<li><p class="first">Compute and store the corners of the bbox and its area.</p>
-</li>
+<li>Compute the s-axis as the unit vector in the direction of the edge</li>
+<li>Compute the othorgonal t-axis.</li>
+<li>Use the start point of the edge as origin.</li>
+<li>Compute the spread of the points along the s-axis.
+(dot product of the point vecor in local coordinates and the s-axis)</li>
+<li>Compute the spread along the t-axis.</li>
+<li>Determine the side of s on which the points are.</li>
+<li>Compute and store the corners of the bbox and its area.</li>
 </ol>
 </dd>
 </dl>
 </li>
-<li><p class="first">Select the box with the smallest area.</p>
-</li>
+<li>Select the box with the smallest area.</li>
 </ol>
 </div></blockquote>
 </div>

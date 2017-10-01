@@ -18,25 +18,25 @@ of them. Each of the datastructures and their corresponding functionality are
 defined in their own subpackage.
 
 
-* :mod:`compas.datastructures`
+* compas.datastructures
 
-  * :mod:`compas.datastructures.mesh`
+  * mesh
 
-    * :mod:`compas.datastructures.mesh.mesh`
-    * :mod:`compas.datastructures.mesh.operations`
-    * :mod:`compas.datastructures.mesh.algorithms`
+    * mesh
+    * operations
+    * algorithms
 
-  * :mod:`compas.datastructures.network`
+  * network
 
-    * :mod:`compas.datastructures.network.network`
-    * :mod:`compas.datastructures.network.operations`
-    * :mod:`compas.datastructures.network.algorithms`
+    * network
+    * operations
+    * algorithms
 
-  * :mod:`compas.datastructures.volmesh`
+  * volmesh
 
-    * :mod:`compas.datastructures.volmesh.volmesh`
-    * :mod:`compas.datastructures.volmesh.operations`
-    * :mod:`compas.datastructures.volmesh.algorithms`
+    * volmesh
+    * operations
+    * algorithms
 
 
 The datastructure classes can be imported directly from the datastructures package.
@@ -47,12 +47,13 @@ The datastructure classes can be imported directly from the datastructures packa
     >>> from compas.datastructures import Mesh
     >>> from compas.datastructures import VolMesh
 
-The operations and algorithms have to be imported using a fully qualified path.
+The operations and algorithms have been namespaced and pulled up so they can be
+imported directly from the datastructures package as well.
 
 .. code-block:: python
     
-    >>> from compas.datastructures.network.algorithms import network_dijkstra_path
-    >>> from compas.datastructures.mesh.operations import mesh_collapse_edge
+    >>> from compas.datastructures import network_dijkstra_path
+    >>> from compas.datastructures import mesh_collapse_edge
 
 The ``Network`` is implemented as a directed graph. Each edge connects two and only
 two vertices, pointing from one of the vertices to the other. Between two vertices

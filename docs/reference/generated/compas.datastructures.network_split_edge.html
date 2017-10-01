@@ -48,27 +48,21 @@
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>u</strong> (<em>str</em>) – The key of the first vertex of the edge.</p>
-</li>
-<li><p class="first"><strong>v</strong> (<em>str</em>) – The key of the second vertex of the edge.</p>
-</li>
-<li><p class="first"><strong>t</strong> (<em>float</em>) – The position of the inserted vertex.</p>
-</li>
-<li><p class="first"><strong>allow_boundary</strong> (<em>bool</em>) – Optional. Split boundary edges, if <code class="docutils literal">True</code>.
-Defaults is <code class="docutils literal">True</code>.</p>
-</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>str</em>) – The key of the first vertex of the edge.</li>
+<li><strong>v</strong> (<em>str</em>) – The key of the second vertex of the edge.</li>
+<li><strong>t</strong> (<em>float</em>) – The position of the inserted vertex.</li>
+<li><strong>allow_boundary</strong> (<em>bool</em>) – Optional. Split boundary edges, if <code class="docutils literal">True</code>.
+Defaults is <code class="docutils literal">True</code>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>str</em> – The key of the inserted vertex.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><code class="xref py py-exc docutils literal">ValueError</code> – If <code class="docutils literal">t</code> is not <code class="docutils literal">0 &lt;= t &lt;= 1</code>.</p>
-</li>
-<li><p class="first"><code class="xref py py-exc docutils literal">Exception</code> – If <code class="docutils literal">u</code> and <code class="docutils literal">v</code> are not neighbours.</p>
-</li>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal">ValueError</code> – If <code class="docutils literal">t</code> is not <code class="docutils literal">0 &lt;= t &lt;= 1</code>.</li>
+<li><code class="xref py py-exc docutils literal">Exception</code> – If <code class="docutils literal">u</code> and <code class="docutils literal">v</code> are not neighbours.</li>
 </ul>
 </td>
 </tr>

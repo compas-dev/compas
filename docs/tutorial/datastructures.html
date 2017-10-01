@@ -45,28 +45,24 @@
 <code class="docutils literal">Network</code>, <code class="docutils literal">Mesh</code>, and <code class="docutils literal">VolMesh</code>, and algorithms and operations for each
 of them. Each of the datastructures and their corresponding functionality are
 defined in their own subpackage.</p>
-<ul>
-<li><p class="first"><a class="reference internal" href="../reference/compas.datastructures.html#module-compas.datastructures" title="compas.datastructures"><code class="xref py py-mod docutils literal">compas.datastructures</code></a></p>
-<ul>
-<li><p class="first"><code class="xref py py-mod docutils literal">compas.datastructures.mesh</code></p>
-<ul>
-<li><code class="xref py py-mod docutils literal">compas.datastructures.mesh.mesh</code></li>
-<li><code class="xref py py-mod docutils literal">compas.datastructures.mesh.operations</code></li>
-<li><code class="xref py py-mod docutils literal">compas.datastructures.mesh.algorithms</code></li>
+<ul class="simple">
+<li>compas.datastructures<ul>
+<li>mesh<ul>
+<li>mesh</li>
+<li>operations</li>
+<li>algorithms</li>
 </ul>
 </li>
-<li><p class="first"><code class="xref py py-mod docutils literal">compas.datastructures.network</code></p>
-<ul>
-<li><code class="xref py py-mod docutils literal">compas.datastructures.network.network</code></li>
-<li><code class="xref py py-mod docutils literal">compas.datastructures.network.operations</code></li>
-<li><code class="xref py py-mod docutils literal">compas.datastructures.network.algorithms</code></li>
+<li>network<ul>
+<li>network</li>
+<li>operations</li>
+<li>algorithms</li>
 </ul>
 </li>
-<li><p class="first"><code class="xref py py-mod docutils literal">compas.datastructures.volmesh</code></p>
-<ul>
-<li><code class="xref py py-mod docutils literal">compas.datastructures.volmesh.volmesh</code></li>
-<li><code class="xref py py-mod docutils literal">compas.datastructures.volmesh.operations</code></li>
-<li><code class="xref py py-mod docutils literal">compas.datastructures.volmesh.algorithms</code></li>
+<li>volmesh<ul>
+<li>volmesh</li>
+<li>operations</li>
+<li>algorithms</li>
 </ul>
 </li>
 </ul>
@@ -78,9 +74,10 @@ defined in their own subpackage.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">VolMesh</span>
 </code></pre></div>
 
-<p>The operations and algorithms have to be imported using a fully qualified path.</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms</span> <span class="kn">import</span> <span class="n">network_dijkstra_path</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures.mesh.operations</span> <span class="kn">import</span> <span class="n">mesh_collapse_edge</span>
+<p>The operations and algorithms have been namespaced and pulled up so they can be
+imported directly from the datastructures package as well.</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_dijkstra_path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">mesh_collapse_edge</span>
 </code></pre></div>
 
 <p>The <code class="docutils literal">Network</code> is implemented as a directed graph. Each edge connects two and only
@@ -491,13 +488,10 @@ relationship of the vertices.</p>
 <p class="first admonition-title">Note</p>
 <p>This section describes the visualisation options with the core viewers and plotters.
 For visualisation in CAD software see:</p>
-<ul class="last">
-<li><p class="first">compas_rhino.artists</p>
-</li>
-<li><p class="first">compas_blender.xxx</p>
-</li>
-<li><p class="first">...</p>
-</li>
+<ul class="last simple">
+<li>compas_rhino.artists</li>
+<li>compas_blender.xxx</li>
+<li>...</li>
 </ul>
 </div>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>

@@ -163,7 +163,7 @@ html_show_sourcelink = True
 html_add_permalinks = ''
 
 html_experimental_html5_writer = True
-html_compact_lists = False
+html_compact_lists = True
 
 # -- Options for HTMLHelp output ------------------------------------------
 

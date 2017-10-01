@@ -48,32 +48,25 @@
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>mesh</strong> (<em>Mesh</em>) – A mesh object.</p>
-</li>
-<li><p class="first"><strong>scheme</strong> (<em>str</em>) – Optional.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mesh</strong> (<em>Mesh</em>) – A mesh object.</li>
+<li><strong>scheme</strong> (<em>str</em>) – Optional.
 The scheme according to which the mesh should be subdivided.
-Defult is ‘tri’. Supported values are:</p>
-<ul>
-<li><p class="first">tri: insertion subdivision.</p>
-</li>
-<li><p class="first">corner: corner cutting.</p>
-</li>
-<li><p class="first">catmullclark : catmull-clark subdivision.</p>
-</li>
-<li><p class="first">doosabin : doo-sabin subdivision.</p>
-</li>
+Defult is ‘tri’. Supported values are:<ul>
+<li>tri: insertion subdivision.</li>
+<li>corner: corner cutting.</li>
+<li>catmullclark : catmull-clark subdivision.</li>
+<li>doosabin : doo-sabin subdivision.</li>
 </ul>
 </li>
-<li><p class="first"><strong>options</strong> (<em>kwargs</em>) – Optional additional keyword arguments.</p>
-</li>
+<li><strong>options</strong> (<em>kwargs</em>) – Optional additional keyword arguments.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>Mesh</em> – The subdivided mesh.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
 <li><code class="xref py py-exc docutils literal">NotImplementedError</code></li>
 <li><code class="xref py py-exc docutils literal">MeshError</code></li>
 </ul>

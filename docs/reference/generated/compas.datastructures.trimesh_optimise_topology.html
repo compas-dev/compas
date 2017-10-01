@@ -46,13 +46,10 @@
 <dd><p>Remesh until all edges have a specified target length.</p>
 <p>This involves three operations:</p>
 <blockquote>
-<div><ul>
-<li><p class="first">split edges that are longer than a maximum length,</p>
-</li>
-<li><p class="first">collapse edges that are shorter than a minimum length,</p>
-</li>
-<li><p class="first">swap edges if this improves the valency error.</p>
-</li>
+<div><ul class="simple">
+<li>split edges that are longer than a maximum length,</li>
+<li>collapse edges that are shorter than a minimum length,</li>
+<li>swap edges if this improves the valency error.</li>
 </ul>
 </div></blockquote>
 <p>The minimum and maximum lengths are calculated based on a desired target
@@ -61,17 +58,12 @@ length:</p>
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
-<li><p class="first"><strong>mesh</strong> (<em>Mesh</em>) – A triangle mesh.</p>
-</li>
-<li><p class="first"><strong>target</strong> (<em>float</em>) – The target length.</p>
-</li>
-<li><p class="first"><strong>tol</strong> (<em>float</em>) – Length deviation tolerance. Defaults to <cite>0.1</cite></p>
-</li>
-<li><p class="first"><strong>kmax</strong> (<em>int</em>) – The number of iterations.</p>
-</li>
-<li><p class="first"><strong>verbose</strong> (<em>bool</em>) – Print feedback messages, if True.</p>
-</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mesh</strong> (<em>Mesh</em>) – A triangle mesh.</li>
+<li><strong>target</strong> (<em>float</em>) – The target length.</li>
+<li><strong>tol</strong> (<em>float</em>) – Length deviation tolerance. Defaults to <cite>0.1</cite></li>
+<li><strong>kmax</strong> (<em>int</em>) – The number of iterations.</li>
+<li><strong>verbose</strong> (<em>bool</em>) – Print feedback messages, if True.</li>
 </ul>
 </td>
 </tr>
