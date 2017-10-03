@@ -78,19 +78,21 @@ def remove_duplicate_bmesh_vertices(bmesh):
     return mesh
 
 
-def update_bmesh_vertices(bmesh, X):
+def update_bmesh_vertices(bmesh, X, winswap=False):
     """ Update the vertex co-ordinates of a Blender mesh.
 
     Parameters:
         bmesh (obj): Blender mesh object.
         X (array, list): New x, y, z co-ordinates.
+        winswap (bool): Update workspace window.
 
     Returns:
         None
     """
     for c, Xi in enumerate(list(X)):
         bmesh.data.vertices[c].co = Xi
-    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+    if winswap:
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 
 # ==============================================================================
@@ -195,7 +197,7 @@ if __name__ == "__main__":
     colour_bmesh_vertices(bmesh, [0, 1, 2, 3], colours)
 
     update_bmesh_vertices(bmesh, [[0, 0, 0.1], [1, 0, 0.2], [1, 1, 0.3], [0, 1, 0]])
-    
+
     print(bmesh_edge_lengths(bmesh))
     print(bmesh_face_areas(bmesh))
     print(bmesh_face_normals(bmesh))

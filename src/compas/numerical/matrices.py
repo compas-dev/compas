@@ -453,7 +453,7 @@ def mass_matrix(Ct, ks, q=0, c=1, tiled=True):
         array : mass matrix, either (m x 1) or (m x 3).
 
     """
-    m = c * (abs(Ct).dot(ks + q))
+    m = c * abs(Ct).dot(ks + q)
     if tiled:
         return tile(m, (1, 3))
     return m
