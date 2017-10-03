@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="07-subd-modeling.html" rel="next" title="Subd mesh modeling"/>
+<link href="05-remeshing.html" rel="prev" title="Remeshing 2D"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../examples.html">examples</a>
+<a accesskey="U" class="breadcrumb-item" href="../meshlab.html">meshlab</a>
+</nav>
+<div class="section">
+<span id="example-mesh-remeshing-on-mesh"></span><h1>Remeshing 3D</h1>
+<figure class="figure">
+<img alt="../../images/example-mesh-remeshing-on-mesh.gif" class="figure-img img-fluid" src="../../images/example-mesh-remeshing-on-mesh.gif"/>
+</figure>
+<div class="card bg-light">
+<div class="card-body">
+<div class="card-title">Downloads</div><ul class="simple">
+<li><a class="reference download internal" download="" href="../../_downloads/example-mesh-remeshing-on-mesh.3dm"><code class="xref download docutils literal">example-mesh-remeshing-on-mesh.3dm</code></a></li>
+<li><a class="reference download internal" download="" href="../../_downloads/mesh-remeshing-on-mesh.py"><code class="xref download docutils literal">mesh-remeshing-on-mesh.py</code></a></li>
+</ul>
+</div>
+</div><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="sd">"""Remeshing a 3D mesh."""</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
+
+<span class="kn">import</span> <span class="nn">compas_rhino</span>
+
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">geometric_key</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">centroid_points</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="k">import</span> <span class="n">smooth_mesh_centroid</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="k">import</span> <span class="n">optimise_trimesh_topology</span>
+
+<span class="kn">from</span> <span class="nn">compas.cad.rhino.geometry.mesh</span> <span class="k">import</span> <span class="n">RhinoMesh</span>
+<span class="kn">from</span> <span class="nn">compas.cad.rhino.geometry.curve</span> <span class="k">import</span> <span class="n">RhinoCurve</span>
+
+<span class="kn">from</span> <span class="nn">compas.cad.rhino.conduits.mesh</span> <span class="k">import</span> <span class="n">MeshConduit</span>
+
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="s1">'Matthias Rippmann'</span><span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2017, BRG - ETH Zurich'</span><span class="p">,</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'van.mele@arch.ethz.ch'</span>
+
+
+<span class="c1"># define the mesh boundary smoother</span>
+
+<span class="k">def</span> <span class="nf">smooth_mesh_boundary</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">boundary</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">key_xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key_xyz</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+
+
+<span class="c1"># define the post-processing function</span>
+<span class="c1"># that will be called at every iteration</span>
+
+<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c1"># prevent the dreaded Rhino spinning wheel</span>
+    <span class="n">compas_rhino</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
+    <span class="c1"># unpack the user-defined argument list</span>
+    <span class="n">conduit</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">border</span> <span class="o">=</span> <span class="n">args</span>
+
+    <span class="c1"># find the boundary vertices</span>
+    <span class="n">boundary</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">())</span>
+
+    <span class="c1"># smooth</span>
+    <span class="n">smooth_mesh_centroid</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">boundary</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">smooth_mesh_boundary</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">boundary</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">)</span>
+
+    <span class="c1"># pull the mesh vertices back to the target and border</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">border</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+
+    <span class="c1"># update the conduit at the specified rate</span>
+    <span class="n">conduit</span><span class="o">.</span><span class="n">redraw</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+
+<span class="c1"># get the target mesh</span>
+<span class="c1"># and its border</span>
+
+<span class="n">guid_target</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_mesh</span><span class="p">()</span>
+<span class="n">guid_border</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_polyline</span><span class="p">()</span>
+
+<span class="c1"># get fixed points</span>
+
+<span class="n">points</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_point_coordinates</span><span class="p">(</span><span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_points</span><span class="p">())</span>
+
+<span class="c1"># triangulate the input mesh</span>
+
+<span class="n">rs</span><span class="o">.</span><span class="n">MeshQuadsToTriangles</span><span class="p">(</span><span class="n">guid_target</span><span class="p">)</span>
+
+<span class="c1"># make a remeshing mesh</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">mesh_from_guid</span><span class="p">(</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">guid_target</span><span class="p">)</span>
+
+<span class="c1"># update its attributes</span>
+
+<span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'Remeshed'</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">({</span><span class="s1">'is_fixed'</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+
+<span class="c1"># make the target and border objects</span>
+
+<span class="n">target</span> <span class="o">=</span> <span class="n">RhinoMesh</span><span class="p">(</span><span class="n">guid_target</span><span class="p">)</span>
+<span class="n">border</span> <span class="o">=</span> <span class="n">RhinoCurve</span><span class="p">(</span><span class="n">guid_border</span><span class="p">)</span>
+
+<span class="c1"># make a map of vertex coorindates</span>
+<span class="c1"># with 1 float precision</span>
+
+<span class="n">gkey_key</span> <span class="o">=</span> <span class="p">{</span><span class="n">geometric_key</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="s1">'1f'</span><span class="p">):</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+
+<span class="c1"># identify fixed points</span>
+
+<span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+    <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="s1">'1f'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="n">gkey_key</span><span class="p">:</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">gkey_key</span><span class="p">[</span><span class="n">gkey</span><span class="p">]</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'is_fixed'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># find the fixed vertices</span>
+
+<span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">'is_fixed'</span><span class="p">:</span> <span class="kc">True</span><span class="p">}))</span>
+
+<span class="c1"># create a conduit for visualisation</span>
+
+<span class="n">conduit</span> <span class="o">=</span> <span class="n">MeshConduit</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">refreshrate</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># set the target length</span>
+
+<span class="n">target_length</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+<span class="c1"># visualise the process with a conduit</span>
+<span class="k">with</span> <span class="n">conduit</span><span class="o">.</span><span class="n">enabled</span><span class="p">():</span>
+    <span class="n">optimise_trimesh_topology</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span>
+                              <span class="n">target_length</span><span class="p">,</span>
+                              <span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                              <span class="n">divergence</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+                              <span class="n">kmax</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                              <span class="n">allow_boundary_split</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                              <span class="n">allow_boundary_collapse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                              <span class="n">smooth</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                              <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span>
+                              <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
+                              <span class="n">callback_args</span><span class="o">=</span><span class="p">(</span><span class="n">conduit</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">border</span><span class="p">))</span>
+
+<span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'remeshed'</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="05-remeshing.html" role="button">Remeshing 2D</a>
+<a class="btn btn-primary compas-next" href="07-subd-modeling.html" role="button">Subd mesh modeling</a>
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../examples.html">Examples</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../formfinding.html">Form Finding</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../meshlab.html">MeshLab</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="0001-delaunay.html">Delaunay triangulation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="0002-delaunay-with-boundary.html">Delaunay triangulation with boundary</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="0010-smoothing.html">Mesh smoothing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="0011-smoothing-with-conduit.html">Visualising mesh smoothing with a conduit</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="0012-smoothing-on-surface.html">Mesh smoothing on a surface</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="0013-planarisation.html">Mesh planarisation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="05-collapse.html">Collapse mesh to a single vertex</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="05-remeshing.html">Remeshing 2D</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Remeshing 3D</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="07-subd-modeling.html">Subd mesh modeling</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="08-skeleton-modeling.html">Skeleton mesh modeling</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="10-stanford-bunny.html">The Stanford Bunny</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="11-stanford-dragon.html">The Stanford Dragon</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="12-stanford-armadillo.html">The Stanford Armadillo</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="13-parameterisation.html">Mesh parametrisation</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../networktopology.html">Network Topology</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Remeshing 3D</a></li>
+</ul>
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 01, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="/js/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

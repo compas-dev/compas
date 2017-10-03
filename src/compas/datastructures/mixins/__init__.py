@@ -1,7 +1,9 @@
 
+# try:
+#     import cjson as json
+# except ImportError:
 import json
 
-from ast import literal_eval
 from copy import deepcopy
 from random import sample
 

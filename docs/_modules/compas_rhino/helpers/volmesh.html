@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas_rhino.helpers.volmesh</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">geometric_key</span>
+
+<span class="kn">import</span> <span class="nn">compas_rhino</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">Rhino</span>
+    <span class="kn">import</span> <span class="nn">scriptcontext</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">platform</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'IronPython'</span><span class="p">:</span>
+        <span class="k">raise</span>
+
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'volmesh_from_polysurfaces'</span><span class="p">,</span>
+    <span class="s1">'volmesh_from_wireframe'</span><span class="p">,</span>
+    <span class="s1">'draw_volmesh'</span><span class="p">,</span>
+
+<span class="p">]</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># constructors</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="volmesh_from_polysurfaces"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.volmesh_from_polysurfaces.html#compas_rhino.helpers.volmesh_from_polysurfaces">[docs]</a><span class="k">def</span> <span class="nf">volmesh_from_polysurfaces</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">guids</span><span class="p">):</span>
+    <span class="sd">"""Construct a volumetric mesh from given polysurfaces.</span>
+
+<span class="sd">    Essentially, this function does the following:</span>
+
+<span class="sd">    * find each of the polysurfaces and check if they have a boundary representation (b-rep)</span>
+<span class="sd">    * convert to b-rep and extract the edge loops</span>
+<span class="sd">    * make a face of each loop by referring to vertices using their geometric keys</span>
+<span class="sd">    * add a cell per brep</span>
+<span class="sd">    * and add the faces of a brep to the cell</span>
+<span class="sd">    * create a volmesh from the found vertices and cells</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        cls (compas.datastructures.volmesh.VolMesh):</span>
+<span class="sd">            The class of volmesh.</span>
+<span class="sd">        guids (sequence of str or System.Guid):</span>
+<span class="sd">            The *globally unique identifiers* of the polysurfaces.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        compas.datastructures.volmesh.Volmesh: The volumetric mesh object.</span>
+
+<span class="sd">    """</span>
+    <span class="n">gkey_xyz</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">guid</span> <span class="ow">in</span> <span class="n">guids</span><span class="p">:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">HasBrepForm</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">brep</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Brep</span><span class="o">.</span><span class="n">TryConvertBrep</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">Geometry</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">brep</span><span class="o">.</span><span class="n">Loops</span><span class="p">:</span>
+            <span class="n">curve</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">To3dCurve</span><span class="p">()</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">Explode</span><span class="p">()</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">sp</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">PointAtStart</span>
+            <span class="n">ep</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">PointAtEnd</span>
+            <span class="n">sp_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+            <span class="n">ep_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">ep</span><span class="p">)</span>
+            <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">sp_gkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">sp</span>
+            <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">ep_gkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ep</span>
+            <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sp_gkey</span><span class="p">)</span>
+            <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ep_gkey</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">ep</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">PointAtEnd</span>
+                <span class="n">ep_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">ep</span><span class="p">)</span>
+                <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ep_gkey</span><span class="p">)</span>
+                <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">ep_gkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ep</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+        <span class="n">cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+
+    <span class="n">gkey_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">gkey</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gkey_xyz</span><span class="p">))</span>
+    <span class="n">vertices</span>   <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">gkey</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">gkey_xyz</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+    <span class="n">cells</span>      <span class="o">=</span> <span class="p">[[[</span><span class="n">gkey_index</span><span class="p">[</span><span class="n">gkey</span><span class="p">]</span> <span class="k">for</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">]</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_vertices_and_cells</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="volmesh_from_wireframe"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.volmesh_from_wireframe.html#compas_rhino.helpers.volmesh_from_wireframe">[docs]</a><span class="k">def</span> <span class="nf">volmesh_from_wireframe</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># drawing</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="draw_volmesh"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.draw_volmesh.html#compas_rhino.helpers.draw_volmesh">[docs]</a><span class="k">def</span> <span class="nf">draw_volmesh</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span>
+                 <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">redraw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">show_faces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">show_vertices</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">vertex_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">edge_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">face_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">""""""</span>
+    <span class="c1"># set default options</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vertex_color</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">vertex_color</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge_color</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">face_color</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">face_color</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">volmesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">layer</span><span class="p">:</span>
+        <span class="n">volmesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'layer'</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span>
+    <span class="c1"># delete all relevant objects by name</span>
+    <span class="n">objects</span>  <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'</span><span class="si">{0}</span><span class="s1">.mesh'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">objects</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'</span><span class="si">{0}</span><span class="s1">.vertex.*'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">objects</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'</span><span class="si">{0}</span><span class="s1">.edge.*'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
+    <span class="c1"># clear the layer if requested</span>
+    <span class="k">if</span> <span class="n">clear</span><span class="p">:</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layers</span><span class="p">([</span><span class="n">layer</span><span class="p">])</span>
+    <span class="c1"># draw the requested components</span>
+    <span class="k">if</span> <span class="n">show_faces</span><span class="p">:</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'color.face'</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">vertices</span> <span class="o">+</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>
+            <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">'points'</span> <span class="p">:</span> <span class="n">points</span><span class="p">,</span>
+                <span class="s1">'name'</span>   <span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
+                <span class="s1">'color'</span>  <span class="p">:</span> <span class="n">color</span><span class="p">,</span>
+            <span class="p">})</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_faces</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show_edges</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'color.edge'</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">():</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">'start'</span><span class="p">:</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">),</span>
+                <span class="s1">'end'</span>  <span class="p">:</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+                <span class="s1">'name'</span> <span class="p">:</span> <span class="s1">'</span><span class="si">{0}</span><span class="s1">.edge.</span><span class="si">{1}</span><span class="s1">-</span><span class="si">{2}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+                <span class="s1">'color'</span><span class="p">:</span> <span class="n">edge_color</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">color</span><span class="p">),</span>
+            <span class="p">})</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show_vertices</span><span class="p">:</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">color</span>  <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'color.vertex'</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertices_iter</span><span class="p">():</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">'pos'</span>  <span class="p">:</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+                <span class="s1">'name'</span> <span class="p">:</span> <span class="s1">'</span><span class="si">{0}</span><span class="s1">.vertex.</span><span class="si">{1}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span>
+                <span class="s1">'color'</span><span class="p">:</span> <span class="n">vertex_color</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">color</span><span class="p">),</span>
+            <span class="p">})</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># redraw if requested</span>
+    <span class="k">if</span> <span class="n">redraw</span><span class="p">:</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">Redraw</span><span class="p">()</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># labels</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="c1"># def display_volmesh_vertex_labels(volmesh, attr_name=None, layer=None, color=None, formatter=None):</span>
+    
+
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 01, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="/js/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

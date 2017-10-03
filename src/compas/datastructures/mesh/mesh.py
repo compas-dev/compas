@@ -8,6 +8,7 @@ from compas.files.ply import PLYreader
 
 from compas.utilities import pairwise
 from compas.utilities import window
+from compas.utilities import geometric_key
 
 from compas.geometry import normalize_vector
 from compas.geometry import centroid_points
@@ -480,6 +481,26 @@ mesh: {}
     #     if not boundary_face:
     #         mesh.delete_face(key_boundary_face)
     #     return mesh
+
+    @classmethod
+    def from_lines(cls, lines, boundary_face=False, precision='3f'):
+        """"""
+        from compas.datastructures import network_find_faces
+        from compas.datastructures import FaceNetwork
+
+        network = FaceNetwork.from_lines(lines)
+
+        network_find_faces(network, breakpoints=network.leaves())
+
+        key_index = network.key_index()
+        vertices = [network.vertex_coordinates(key) for key in network.vertices()]
+        faces = [[key_index[key] for key in network.face_vertices(fkey)] for fkey in network.faces()]
+        mesh = cls.from_vertices_and_faces(vertices, faces)
+
+        if not boundary_face:
+            mesh.delete_face(0)
+
+        return mesh
 
     @classmethod
     def from_vertices_and_faces(cls, vertices, faces, **kwargs):
@@ -1490,6 +1511,9 @@ if __name__ == '__main__':
     from compas.visualization.plotters.meshplotter import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+
+    mesh.to_json('./test.json')
+    mesh = Mesh.from_json('./test.json')
 
     mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
     mesh.update_default_vertex_attributes({'is_fixed': False})
