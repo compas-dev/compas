@@ -69,6 +69,19 @@ cuda
 euler
 =====
 
+.. autosummary::
+    :toctree: generated/
+
+    connect_to_euler
+    load_euler_module
+    recieve_file_from_euler
+    send_file_to_euler
+    send_folder_to_euler
+    show_euler_quotas
+    show_euler_modules
+    show_euler_module_info
+    sync_folder_to_euler
+
 
 geometry
 ========
@@ -100,9 +113,11 @@ opencl
 from .cuda import *
 from .numba_ import *
 from .opencl import *
+from .euler import *
 
 from .cuda import __all__ as a
 from .numba_ import __all__ as b
 from .opencl import __all__ as c
+from .euler import __all__ as d
 
-__all__ = a + b + c
+__all__ = a + b + c + d

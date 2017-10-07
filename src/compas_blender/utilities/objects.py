@@ -52,8 +52,9 @@ def delete_objects(objects):
     Returns:
         None
     """
-    select_objects(objects)
-    bpy.ops.object.delete()
+    objs = bpy.data.objects
+    for object in objects:
+        objs.remove(object, True)
 
 
 def delete_all_objects():
@@ -65,8 +66,8 @@ def delete_all_objects():
     Returns:
         None
     """
-    select_all_objects()
-    bpy.ops.object.delete()
+    for layer in list(range(20)):
+        delete_objects(get_objects(layer))
 
 
 # ==============================================================================

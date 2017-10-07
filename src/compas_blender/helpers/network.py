@@ -37,7 +37,7 @@ __all__ = [
 # drawing
 # ==============================================================================
 
-def draw_network(network, type='mesh', layer=0, show_vertices=0.01, show_edges=0.005, show_faces=True,
+def draw_network(network, type='mesh', layer=0, show_vertices=0.01, show_edges=0.005, show_faces=False,
                  vertex_name_attr=[], edge_name_attr=[], face_name_attr=[]):
     """ Draw a representation of a Network datastructure.
 
@@ -63,8 +63,11 @@ def draw_network(network, type='mesh', layer=0, show_vertices=0.01, show_edges=0
     u_v = list(network.edges())
     edges = [(k_i[u], k_i[v]) for u, v in u_v]
 
-    fkeys = list(network.faces())
-    faces = [network.face[fkey] for fkey in fkeys]
+    if show_faces:
+        fkeys = list(network.faces())
+        faces = [network.face[fkey] for fkey in fkeys]
+    else:
+        faces = []
 
     if type == 'mesh':
 
@@ -194,6 +197,8 @@ def network_from_bmesh(bmesh, add_faces=False):
     if add_faces:
         for c, face in enumerate(faces):
             network.add_face(face, fkey=c)
+    else:
+        network.faces = None
     return network
 
 

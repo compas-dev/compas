@@ -50,7 +50,7 @@ def ga_optimize(fit_function,
     ga.fit_function         = fit_function
     ga.output_path          = output_path or ''
     ga.input_path           = input_path or ''
-    print 'output_path', ga.output_path
+    print('output_path', ga.output_path)
     ga.ga()
     return ga
 
