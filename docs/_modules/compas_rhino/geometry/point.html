@@ -35,9 +35,11 @@
 <a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
 </nav>
 <h1>Source code for compas_rhino.geometry.point</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">scriptcontext</span> <span class="k">as</span> <span class="nn">sc</span>
+<span></span><span class="kn">from</span> <span class="nn">compas.cad</span> <span class="k">import</span> <span class="n">PointGeometryInterface</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.utilities</span> <span class="k">import</span> <span class="n">select_point</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">scriptcontext</span> <span class="k">as</span> <span class="nn">sc</span>
     <span class="n">find_object</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">Find</span>
 
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -55,22 +57,48 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'RhinoPoint'</span><span class="p">,</span> <span class="p">]</span>
 
 
-<div class="viewcode-block" id="RhinoPoint"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.geometry.RhinoPoint.html#compas_rhino.geometry.RhinoPoint">[docs]</a><span class="k">class</span> <span class="nc">RhinoPoint</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoPoint"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.geometry.RhinoPoint.html#compas_rhino.geometry.RhinoPoint">[docs]</a><span class="k">class</span> <span class="nc">RhinoPoint</span><span class="p">(</span><span class="n">PointGeometryInterface</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="n">guid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">Geometry</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">Attributes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">otype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="n">RhinoPoint</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">Geometry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">Attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_selection</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">guid</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">select</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">select_point</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Location</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">loc</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">Z</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Location</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">loc</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span>
 
     <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">project_to_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">project_to_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">project_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="k">pass</span></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -78,7 +106,15 @@
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="k">pass</span>
+
+    <span class="n">point</span> <span class="o">=</span> <span class="n">RhinoPoint</span><span class="o">.</span><span class="n">from_selection</span><span class="p">()</span>
+
+    <span class="nb">print</span> <span class="n">point</span><span class="o">.</span><span class="n">guid</span>
+    <span class="nb">print</span> <span class="n">point</span><span class="o">.</span><span class="n">object</span>
+    <span class="nb">print</span> <span class="n">point</span><span class="o">.</span><span class="n">geometry</span>
+    <span class="nb">print</span> <span class="n">point</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="nb">print</span> <span class="n">point</span><span class="o">.</span><span class="n">type</span>
+    <span class="nb">print</span> <span class="n">point</span><span class="o">.</span><span class="n">xyz</span>
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>
@@ -118,7 +154,7 @@
             
 
             
-                Last updated on Oct 01, 2017.
+                Last updated on Oct 07, 2017.
             
 
             
@@ -142,7 +178,7 @@ var DOCUMENTATION_OPTIONS = {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
 <script src="/static/underscore.js"></script>
 <script src="/static/doctools.js"></script>
-<script src="/js/searchtools_.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
 <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();

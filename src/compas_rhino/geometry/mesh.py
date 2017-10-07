@@ -1,3 +1,5 @@
+from compas.cad import MeshGeometryInterface
+
 try:
     from System.Collections.Generic import List
 
@@ -24,7 +26,7 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = ['RhinoMesh', ]
 
 
-class RhinoMesh(object):
+class RhinoMesh(MeshGeometryInterface):
     """"""
 
     def __init__(self, guid):

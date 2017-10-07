@@ -1,3 +1,5 @@
+from compas.cad import CurveGeometryInterface
+
 try:
     from Rhino.Geometry import Point3d
 
@@ -21,7 +23,7 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = ['RhinoCurve', ]
 
 
-class RhinoCurve(object):
+class RhinoCurve(CurveGeometryInterface):
     """"""
 
     def __init__(self, guid):

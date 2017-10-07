@@ -1,4 +1,5 @@
 from compas.utilities import to_valuedict
+from compas.cad import ArtistInterface
 
 import compas_rhino
 
@@ -19,7 +20,7 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['MeshArtist']
 
 
-class MeshArtist(object):
+class MeshArtist(ArtistInterface):
     """"""
 
     def __init__(self, mesh, layer=None):
@@ -325,8 +326,8 @@ if __name__ == "__main__":
 
     import time
 
-    from compas.datastructures.mesh import Mesh
-    from compas.geometry.elements import Polyhedron
+    from compas.datastructures import Mesh
+    from compas.geometry import Polyhedron
 
     from compas_rhino.artists.meshartist import MeshArtist
 

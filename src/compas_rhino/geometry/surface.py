@@ -1,3 +1,4 @@
+from compas.cad import SurfaceGeometryInterface
 from compas.geometry import subtract_vectors
 
 try:
@@ -23,7 +24,7 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = ['RhinoSurface', ]
 
 
-class RhinoSurface(object):
+class RhinoSurface(SurfaceGeometryInterface):
     """"""
 
     def __init__(self, guid=None):
@@ -205,15 +206,25 @@ class RhinoSurface(object):
         curves = rs.ExplodeCurves(border, delete_input=True)
         return curves
 
-    def project_points(self, points):
-        projections = []
-        for point in points:
-            ppoints = rs.ProjectPointToSurface(point, self.guid, [0, 0, 1])
-            if not ppoints:
-                raise Exception('Could not project point to surface.')
-            ppoint = ppoints[0]
-            projections.append(list(ppoint))
-        return projections
+    # def project_point(self, point, direction=(0, 0, 1)):
+    #     ppoints = rs.ProjectPointToSurface(point, self.guid, direction)
+    #     if not ppoints:
+    #         raise Exception('Could not project point to surface.')
+    #     ppoint = ppoints[0]
+
+    # def project_points(self, points, direction=(0, 0, 1), include_none=True):
+    #     projections = rs.ProjectPointToSurface(points, self.guid, direction)
+    #     print projections
+    #     return map(list, projections)
+    #     # projections = []
+    #     # for point in points:
+    #     #     ppoints = rs.ProjectPointToSurface(point, self.guid, direction)
+    #     #     if not ppoints:
+    #     #         print ppoints
+    #     #         raise Exception('Could not project point to surface.')
+    #     #     ppoint = ppoints[0]
+    #     #     projections.append(list(ppoint))
+    #     # return projections
 
     def closest_point(self, point, maxdist=None):
         point = self.geometry.ClosestPoint(Point3d(*point))
@@ -221,6 +232,18 @@ class RhinoSurface(object):
 
     def closest_points(self, points, maxdist=None):
         return [self.closest_point(point) for point in points]
+
+    def pull_point(self, point):
+        pass
+
+    def pull_points(self, points):
+        pass
+
+    def pull_curve(self, curve):
+        pass
+
+    def pull_curves(self, curves):
+        pass
 
     def pull_mesh(self, mesh, fixed=None, d=1.0):
         if not fixed:
@@ -235,6 +258,9 @@ class RhinoSurface(object):
             mesh.vertex[key]['x'] += d * dx
             mesh.vertex[key]['y'] += d * dy
             mesh.vertex[key]['z'] += d * dz
+
+    def pull_meshes(self, meshes):
+        pass
 
 
 # ==============================================================================

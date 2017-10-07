@@ -35,7 +35,8 @@
 <a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
 </nav>
 <h1>Source code for compas_rhino.geometry.surface</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
+<span></span><span class="kn">from</span> <span class="nn">compas.cad</span> <span class="k">import</span> <span class="n">SurfaceGeometryInterface</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
@@ -60,7 +61,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'RhinoSurface'</span><span class="p">,</span> <span class="p">]</span>
 
 
-<div class="viewcode-block" id="RhinoSurface"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.geometry.RhinoSurface.html#compas_rhino.geometry.RhinoSurface">[docs]</a><span class="k">class</span> <span class="nc">RhinoSurface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSurface"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.geometry.RhinoSurface.html#compas_rhino.geometry.RhinoSurface">[docs]</a><span class="k">class</span> <span class="nc">RhinoSurface</span><span class="p">(</span><span class="n">SurfaceGeometryInterface</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -242,15 +243,25 @@
         <span class="n">curves</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">ExplodeCurves</span><span class="p">(</span><span class="n">border</span><span class="p">,</span> <span class="n">delete_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">curves</span>
 
-    <span class="k">def</span> <span class="nf">project_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="n">projections</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
-            <span class="n">ppoints</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">ProjectPointToSurface</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">ppoints</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Could not project point to surface.'</span><span class="p">)</span>
-            <span class="n">ppoint</span> <span class="o">=</span> <span class="n">ppoints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">projections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ppoint</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">projections</span>
+    <span class="c1"># def project_point(self, point, direction=(0, 0, 1)):</span>
+    <span class="c1">#     ppoints = rs.ProjectPointToSurface(point, self.guid, direction)</span>
+    <span class="c1">#     if not ppoints:</span>
+    <span class="c1">#         raise Exception('Could not project point to surface.')</span>
+    <span class="c1">#     ppoint = ppoints[0]</span>
+
+    <span class="c1"># def project_points(self, points, direction=(0, 0, 1), include_none=True):</span>
+    <span class="c1">#     projections = rs.ProjectPointToSurface(points, self.guid, direction)</span>
+    <span class="c1">#     print projections</span>
+    <span class="c1">#     return map(list, projections)</span>
+    <span class="c1">#     # projections = []</span>
+    <span class="c1">#     # for point in points:</span>
+    <span class="c1">#     #     ppoints = rs.ProjectPointToSurface(point, self.guid, direction)</span>
+    <span class="c1">#     #     if not ppoints:</span>
+    <span class="c1">#     #         print ppoints</span>
+    <span class="c1">#     #         raise Exception('Could not project point to surface.')</span>
+    <span class="c1">#     #     ppoint = ppoints[0]</span>
+    <span class="c1">#     #     projections.append(list(ppoint))</span>
+    <span class="c1">#     # return projections</span>
 
     <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ClosestPoint</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">))</span>
@@ -258,6 +269,18 @@
 
     <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">pull_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">pull_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">pull_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">pull_curves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curves</span><span class="p">):</span>
+        <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">pull_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">fixed</span><span class="p">:</span>
@@ -271,7 +294,10 @@
             <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xyz</span><span class="p">)</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">dx</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">dy</span>
-            <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">dz</span></div>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">dz</span>
+
+    <span class="k">def</span> <span class="nf">pull_meshes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meshes</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -334,7 +360,7 @@
             
 
             
-                Last updated on Oct 01, 2017.
+                Last updated on Oct 07, 2017.
             
 
             
@@ -358,7 +384,7 @@ var DOCUMENTATION_OPTIONS = {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
 <script src="/static/underscore.js"></script>
 <script src="/static/doctools.js"></script>
-<script src="/js/searchtools_.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
 <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
