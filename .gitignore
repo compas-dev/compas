@@ -106,12 +106,6 @@ ENV/
 
 *.3dmbak
 
-data/**
-!data/PLACEHOLDER
-
-examples/**
-!examples/PLACEHOLDER
-
 libs/**
 !libs/PLACEHOLDER
 
