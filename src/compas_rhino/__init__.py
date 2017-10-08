@@ -24,10 +24,7 @@ compas_rhino
 from .utilities import *
 from .helpers import *
 
-from .ui import *
-
 from .utilities import __all__ as a
 from .helpers import __all__ as b
-from .ui import __all__ as c
 
-__all__ = a + b + c
+__all__ = a + b
