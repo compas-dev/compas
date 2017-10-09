@@ -17,9 +17,14 @@ RhinoSurface
       ~RhinoSurface.closest_points
       ~RhinoSurface.curvature
       ~RhinoSurface.descent
+      ~RhinoSurface.find
       ~RhinoSurface.heightfield
-      ~RhinoSurface.project_points
+      ~RhinoSurface.pull_curve
+      ~RhinoSurface.pull_curves
       ~RhinoSurface.pull_mesh
+      ~RhinoSurface.pull_meshes
+      ~RhinoSurface.pull_point
+      ~RhinoSurface.pull_points
       ~RhinoSurface.space
    
    

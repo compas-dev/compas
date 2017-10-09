@@ -35,7 +35,9 @@
 <a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
 </nav>
 <h1>Source code for compas_rhino.geometry.curve</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="k">try</span><span class="p">:</span>
+<span></span><span class="kn">from</span> <span class="nn">compas.cad</span> <span class="k">import</span> <span class="n">CurveGeometryInterface</span>
+
+<span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="k">import</span> <span class="n">Point3d</span>
 
     <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
@@ -58,7 +60,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'RhinoCurve'</span><span class="p">,</span> <span class="p">]</span>
 
 
-<div class="viewcode-block" id="RhinoCurve"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.geometry.RhinoCurve.html#compas_rhino.geometry.RhinoCurve">[docs]</a><span class="k">class</span> <span class="nc">RhinoCurve</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.geometry.RhinoCurve.html#compas_rhino.geometry.RhinoCurve">[docs]</a><span class="k">class</span> <span class="nc">RhinoCurve</span><span class="p">(</span><span class="n">CurveGeometryInterface</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
@@ -219,7 +221,7 @@
             
 
             
-                Last updated on Oct 01, 2017.
+                Last updated on Oct 07, 2017.
             
 
             
@@ -243,7 +245,7 @@ var DOCUMENTATION_OPTIONS = {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
 <script src="/static/underscore.js"></script>
 <script src="/static/doctools.js"></script>
-<script src="/js/searchtools_.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
 <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();

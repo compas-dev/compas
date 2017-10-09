@@ -36,6 +36,7 @@
 </nav>
 <h1>Source code for compas_rhino.artists.meshartist</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">to_valuedict</span>
+<span class="kn">from</span> <span class="nn">compas.cad</span> <span class="k">import</span> <span class="n">ArtistInterface</span>
 
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 
@@ -56,7 +57,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'MeshArtist'</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="MeshArtist"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.artists.MeshArtist.html#compas_rhino.artists.MeshArtist">[docs]</a><span class="k">class</span> <span class="nc">MeshArtist</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshArtist"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.artists.MeshArtist.html#compas_rhino.artists.MeshArtist">[docs]</a><span class="k">class</span> <span class="nc">MeshArtist</span><span class="p">(</span><span class="n">ArtistInterface</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -362,8 +363,8 @@
 
     <span class="kn">import</span> <span class="nn">time</span>
 
-    <span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
-    <span class="kn">from</span> <span class="nn">compas.geometry.elements</span> <span class="k">import</span> <span class="n">Polyhedron</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">Polyhedron</span>
 
     <span class="kn">from</span> <span class="nn">compas_rhino.artists.meshartist</span> <span class="k">import</span> <span class="n">MeshArtist</span>
 
@@ -431,7 +432,7 @@
             
 
             
-                Last updated on Oct 01, 2017.
+                Last updated on Oct 07, 2017.
             
 
             
@@ -455,7 +456,7 @@ var DOCUMENTATION_OPTIONS = {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
 <script src="/static/underscore.js"></script>
 <script src="/static/doctools.js"></script>
-<script src="/js/searchtools_.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
 <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();

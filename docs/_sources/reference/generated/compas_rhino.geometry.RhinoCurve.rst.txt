@@ -18,6 +18,7 @@ RhinoCurve
       ~RhinoCurve.descent
       ~RhinoCurve.divide
       ~RhinoCurve.divide_length
+      ~RhinoCurve.find
       ~RhinoCurve.heightfield
       ~RhinoCurve.hide
       ~RhinoCurve.is_line

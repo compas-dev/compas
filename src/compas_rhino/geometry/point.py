@@ -1,6 +1,8 @@
+from compas.cad import PointGeometryInterface
+from compas_rhino.utilities import select_point
+
 try:
     import scriptcontext as sc
-
     find_object = sc.doc.Objects.Find
 
 except ImportError:
@@ -18,22 +20,48 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = ['RhinoPoint', ]
 
 
-class RhinoPoint(object):
+class RhinoPoint(PointGeometryInterface):
     """"""
 
     def __init__(self, guid):
         self.guid = guid
-        self.point = find_object(guid)
-        self.geometry = self.point.Geometry
-        self.attributes = self.point.Attributes
-        self.otype = self.geometry.ObjectType
+        self.object = RhinoPoint.find(guid)
+        self.geometry = self.object.Geometry
+        self.attributes = self.object.Attributes
+        self.type = self.geometry.ObjectType
+
+    @classmethod
+    def from_selection(cls):
+        guid = cls.select()
+        return cls(guid)
+
+    @staticmethod
+    def select():
+        return select_point()
+
+    @staticmethod
+    def find(guid):
+        return find_object(guid)
+
+    @property
+    def xyz(self):
+        loc = self.geometry.Location
+        return [loc.X, loc.Y, loc.Z]
 
     def closest_point(self, point, maxdist=None):
-        loc = self.geometry.Location
-        return (loc.X, loc.Y, loc.Z)
+        return self.xyz
 
     def closest_points(self, points, maxdist=None):
         return [self.closest_point(point, maxdist) for point in points]
+
+    def project_to_curve(self, curve, direction=(0, 0, 1)):
+        pass
+
+    def project_to_surface(self, surface, direction=(0, 0, 1)):
+        pass
+
+    def project_to_mesh(self, mesh, direction=(0, 0, 1)):
+        pass
 
 
 # ==============================================================================
@@ -41,4 +69,12 @@ class RhinoPoint(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    point = RhinoPoint.from_selection()
+
+    print point.guid
+    print point.object
+    print point.geometry
+    print point.attributes
+    print point.type
+    print point.xyz

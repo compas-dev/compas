@@ -61,6 +61,7 @@ Mesh
       ~Mesh.faces_where
       ~Mesh.from_data
       ~Mesh.from_json
+      ~Mesh.from_lines
       ~Mesh.from_obj
       ~Mesh.from_ply
       ~Mesh.from_vertices_and_faces

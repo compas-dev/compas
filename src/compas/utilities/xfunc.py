@@ -5,8 +5,11 @@ import json
 import time
 import inspect
 
-from subprocess import Popen
-from subprocess import PIPE
+try:
+    from subprocess import Popen
+    from subprocess import PIPE
+except ImportError:
+    pass
 
 from functools import wraps
 

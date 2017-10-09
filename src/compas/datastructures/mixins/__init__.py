@@ -1,7 +1,4 @@
 
-# try:
-#     import cjson as json
-# except ImportError:
 import json
 
 from copy import deepcopy

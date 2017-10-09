@@ -1,0 +1,424 @@
+# Rhino
+
+v 8 10 0
+p 1
+v 0 4 0
+p 2
+v 8 6 0
+p 3
+v 10 6.000000000000001 0
+p 4
+v 0 8 0
+p 5
+v 8 8 0
+p 6
+v 10 4 0
+p 7
+v 0 6 0
+p 8
+v 2 10 0
+p 9
+v 10 10 0
+p 10
+v 4 6.000000000000001 0
+p 11
+v 2 8 0
+p 12
+v 10 8 0
+p 13
+v 2 6.000000000000001 0
+p 14
+v 4 10 0
+p 15
+v 10 0 0
+p 16
+v 4 4 0
+p 17
+v 8 2 0
+p 18
+v 8 0 0
+p 19
+v 6 2 0
+p 20
+v 6 0 0
+p 21
+v 4 2 0
+p 22
+v 4 0 0
+p 23
+v 2 2 0
+p 24
+v 2 0 0
+p 25
+v 2 4 0
+p 26
+v 0 0 0
+p 27
+v 4 8 0
+p 28
+v 6 4 0
+p 29
+v 10 2 0
+p 30
+v 6 10 0
+p 31
+v 6 8 0
+p 32
+v 0 10 0
+p 33
+v 8 4 0
+p 34
+v 0 2 0
+p 35
+v 6 6 0
+p 36
+v 0 4 0
+v 0 6 0
+cstype bspline
+deg 1
+curv 0 2 37 38
+parm u 0 0 2 2
+end
+v 8 6 0
+v 8 8 0
+cstype bspline
+deg 1
+curv 0 2 39 40
+parm u 0 0 2 2
+end
+v 8 6 0
+v 6 6 0
+cstype bspline
+deg 1
+curv 0 2 41 42
+parm u 0 0 2 2
+end
+v 10 6.000000000000001 0
+v 10 8 0
+cstype bspline
+deg 1
+curv 0 1.999999999999999 43 44
+parm u 0 0 1.999999999999999 1.999999999999999
+end
+v 10 6.000000000000001 0
+v 8 6 0
+cstype bspline
+deg 1
+curv 0 2 45 46
+parm u 0 0 2 2
+end
+v 0 8 0
+v 0 10 0
+cstype bspline
+deg 1
+curv 0 2 47 48
+parm u 0 0 2 2
+end
+v 8 8 0
+v 6 8 0
+cstype bspline
+deg 1
+curv 0 2 49 50
+parm u 0 0 2 2
+end
+v 8 8 0
+v 8 10 0
+cstype bspline
+deg 1
+curv 0 2 51 52
+parm u 0 0 2 2
+end
+v 10 4 0
+v 8 4 0
+cstype bspline
+deg 1
+curv 0 2 53 54
+parm u 0 0 2 2
+end
+v 10 4 0
+v 10 6.000000000000001 0
+cstype bspline
+deg 1
+curv 0 2.000000000000001 55 56
+parm u 0 0 2.000000000000001 2.000000000000001
+end
+v 0 6 0
+v 0 8 0
+cstype bspline
+deg 1
+curv 0 2 57 58
+parm u 0 0 2 2
+end
+v 4 6.000000000000001 0
+v 4 8 0
+cstype bspline
+deg 1
+curv 0 1.999999999999999 59 60
+parm u 0 0 1.999999999999999 1.999999999999999
+end
+v 4 6.000000000000001 0
+v 2 6.000000000000001 0
+cstype bspline
+deg 1
+curv 0 2 61 62
+parm u 0 0 2 2
+end
+v 2 8 0
+v 2 10 0
+cstype bspline
+deg 1
+curv 0 2 63 64
+parm u 0 0 2 2
+end
+v 2 8 0
+v 0 8 0
+cstype bspline
+deg 1
+curv 0 2 65 66
+parm u 0 0 2 2
+end
+v 10 8 0
+v 8 8 0
+cstype bspline
+deg 1
+curv 0 2 67 68
+parm u 0 0 2 2
+end
+v 10 8 0
+v 10 10 0
+cstype bspline
+deg 1
+curv 0 2 69 70
+parm u 0 0 2 2
+end
+v 2 6.000000000000001 0
+v 0 6 0
+cstype bspline
+deg 1
+curv 0 2 71 72
+parm u 0 0 2 2
+end
+v 2 6.000000000000001 0
+v 2 8 0
+cstype bspline
+deg 1
+curv 0 1.999999999999999 73 74
+parm u 0 0 1.999999999999999 1.999999999999999
+end
+v 10 0 0
+v 10 2 0
+cstype bspline
+deg 1
+curv 0 2 75 76
+parm u 0 0 2 2
+end
+v 4 4 0
+v 2 4 0
+cstype bspline
+deg 1
+curv 0 2 77 78
+parm u 0 0 2 2
+end
+v 4 4 0
+v 4 6.000000000000001 0
+cstype bspline
+deg 1
+curv 0 2.000000000000001 79 80
+parm u 0 0 2.000000000000001 2.000000000000001
+end
+v 8 2 0
+v 6 2 0
+cstype bspline
+deg 1
+curv 0 2 81 82
+parm u 0 0 2 2
+end
+v 8 2 0
+v 8 4 0
+cstype bspline
+deg 1
+curv 0 2 83 84
+parm u 0 0 2 2
+end
+v 8 0 0
+v 8 2 0
+cstype bspline
+deg 1
+curv 0 2 85 86
+parm u 0 0 2 2
+end
+v 6 2 0
+v 6 4 0
+cstype bspline
+deg 1
+curv 0 2 87 88
+parm u 0 0 2 2
+end
+v 6 2 0
+v 4 2 0
+cstype bspline
+deg 1
+curv 0 2 89 90
+parm u 0 0 2 2
+end
+v 6 0 0
+v 6 2 0
+cstype bspline
+deg 1
+curv 0 2 91 92
+parm u 0 0 2 2
+end
+v 4 2 0
+v 4 4 0
+cstype bspline
+deg 1
+curv 0 2 93 94
+parm u 0 0 2 2
+end
+v 4 2 0
+v 2 2 0
+cstype bspline
+deg 1
+curv 0 2 95 96
+parm u 0 0 2 2
+end
+v 4 0 0
+v 4 2 0
+cstype bspline
+deg 1
+curv 0 2 97 98
+parm u 0 0 2 2
+end
+v 2 2 0
+v 2 4 0
+cstype bspline
+deg 1
+curv 0 2 99 100
+parm u 0 0 2 2
+end
+v 2 2 0
+v 0 2 0
+cstype bspline
+deg 1
+curv 0 2 101 102
+parm u 0 0 2 2
+end
+v 2 0 0
+v 2 2 0
+cstype bspline
+deg 1
+curv 0 2 103 104
+parm u 0 0 2 2
+end
+v 2 4 0
+v 0 4 0
+cstype bspline
+deg 1
+curv 0 2 105 106
+parm u 0 0 2 2
+end
+v 2 4 0
+v 2 6.000000000000001 0
+cstype bspline
+deg 1
+curv 0 2.000000000000001 107 108
+parm u 0 0 2.000000000000001 2.000000000000001
+end
+v 0 0 0
+v 0 2 0
+cstype bspline
+deg 1
+curv 0 2 109 110
+parm u 0 0 2 2
+end
+v 4 8 0
+v 2 8 0
+cstype bspline
+deg 1
+curv 0 2 111 112
+parm u 0 0 2 2
+end
+v 4 8 0
+v 4 10 0
+cstype bspline
+deg 1
+curv 0 2 113 114
+parm u 0 0 2 2
+end
+v 6 4 0
+v 4 4 0
+cstype bspline
+deg 1
+curv 0 2 115 116
+parm u 0 0 2 2
+end
+v 6 4 0
+v 6 6 0
+cstype bspline
+deg 1
+curv 0 2 117 118
+parm u 0 0 2 2
+end
+v 10 2 0
+v 10 4 0
+cstype bspline
+deg 1
+curv 0 2 119 120
+parm u 0 0 2 2
+end
+v 10 2 0
+v 8 2 0
+cstype bspline
+deg 1
+curv 0 2 121 122
+parm u 0 0 2 2
+end
+v 6 8 0
+v 4 8 0
+cstype bspline
+deg 1
+curv 0 2 123 124
+parm u 0 0 2 2
+end
+v 6 8 0
+v 6 10 0
+cstype bspline
+deg 1
+curv 0 2 125 126
+parm u 0 0 2 2
+end
+v 8 4 0
+v 6 4 0
+cstype bspline
+deg 1
+curv 0 2 127 128
+parm u 0 0 2 2
+end
+v 8 4 0
+v 8 6 0
+cstype bspline
+deg 1
+curv 0 2 129 130
+parm u 0 0 2 2
+end
+v 0 2 0
+v 0 4 0
+cstype bspline
+deg 1
+curv 0 2 131 132
+parm u 0 0 2 2
+end
+v 6 6 0
+v 6 8 0
+cstype bspline
+deg 1
+curv 0 2 133 134
+parm u 0 0 2 2
+end
+v 6 6 0
+v 4 6.000000000000001 0
+cstype bspline
+deg 1
+curv 0 2 135 136
+parm u 0 0 2 2
+end

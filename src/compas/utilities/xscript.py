@@ -3,8 +3,11 @@ from __future__ import print_function
 import os
 import json
 
-from subprocess import Popen
-from subprocess import PIPE
+try:
+    from subprocess import Popen
+    from subprocess import PIPE
+except ImportError:
+    pass
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]

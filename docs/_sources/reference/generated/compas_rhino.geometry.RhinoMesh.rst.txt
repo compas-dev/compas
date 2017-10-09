@@ -14,6 +14,7 @@ RhinoMesh
       ~RhinoMesh.__init__
       ~RhinoMesh.closest_point
       ~RhinoMesh.closest_points
+      ~RhinoMesh.find
       ~RhinoMesh.get_border
       ~RhinoMesh.get_face_index
       ~RhinoMesh.get_face_vertices
