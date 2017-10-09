@@ -326,8 +326,6 @@ class MeshArtist(ArtistInterface):
 
 if __name__ == "__main__":
 
-    import time
-
     from compas.datastructures import Mesh
     from compas.geometry import Polyhedron
 

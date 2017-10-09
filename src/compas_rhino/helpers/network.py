@@ -1,8 +1,10 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 import ast
 
-from compas.utilities.colors import color_to_colordict
+from compas.utilities import color_to_colordict
 from compas.utilities import geometric_key
 from compas.geometry import distance_point_point
 
@@ -25,29 +27,31 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'draw_network',
-    'select_network_vertices',
-    'select_network_vertex',
-    'select_network_edges',
-    'select_network_edge',
-    'select_network_faces',
-    'select_network_face',
-    'update_network_attributes',
-    'update_network_vertex_attributes',
-    'update_network_from_points',
-    'update_network_edge_attributes',
-    'update_network_from_lines',
-    'update_network_face_attributes',
-    'display_network_vertex_labels',
-    'display_network_edge_labels',
-    'display_network_face_labels',
-    'move_network',
-    'move_network_vertex',
-    'display_network_axial_forces',
-    'display_network_reaction_forces',
-    'display_network_residual_forces',
-    'display_network_selfweight',
-    'display_network_applied_loads',
+    'network_draw',
+    'network_draw_vertices',
+    'network_draw_edges',
+    'network_select_vertices',
+    'network_select_vertex',
+    'network_select_edges',
+    'network_select_edge',
+    'network_select_faces',
+    'network_select_face',
+    'network_update_attributes',
+    'network_update_vertex_attributes',
+    'network_update_from_points',
+    'network_update_edge_attributes',
+    'network_update_from_lines',
+    'network_update_face_attributes',
+    'network_display_vertex_labels',
+    'network_display_edge_labels',
+    'network_display_face_labels',
+    'network_move',
+    'network_move_vertex',
+    'network_display_axial_forces',
+    'network_display_reaction_forces',
+    'network_display_residual_forces',
+    'network_display_selfweight',
+    'network_display_applied_loads',
 ]
 
 
@@ -56,123 +60,156 @@ __all__ = [
 # ==============================================================================
 
 # ==============================================================================
-# draw
+# artists
 # ==============================================================================
 
 
-def draw_network(network,
+class NetworkDrawingMixin(object):
+    """Class for mixing drawing functionality into the network datastructure."""
+
+    def __init__(self, *args, **kwargs):
+        super(NetworkDrawingMixin, self).__init__(*args, **kwargs)
+        self.layer = None
+        self.defaults = {
+            'color.vertex': (255, 255, 255),
+            'color.edge'  : (0, 0, 0),
+        }
+
+    def clear_layer(self):
+        pass
+
+    def redraw(self):
+        pass
+
+    def draw_vertices(self, keys=None, color=None):
+        color = color or self.defaults['color.vertex']
+        network_draw_vertices(self, keys=keys, color=color, layer=self.layer)
+
+    def draw_edges(self, keys=None, color=None):
+        color = color or self.defaults['color.edge']
+        network_draw_edges(self, keys=keys, color=color, layer=self.layer)
+
+
+def network_draw(network,
                  layer=None,
                  clear_layer=False,
                  vertexcolor=None,
-                 edgecolor=None,
-                 edgelabel=None):
+                 edgecolor=None):
     """Draw a network data structure in Rhino.
 
-    Parameters:
-        network (compas.datastructures.network.Network): The network object.
-        layer (str): Optional. The layer to draw in. Default is ``None``. If
-            ``None``, the currenlt layer is used.
-        clear_layer (bool): Optional. Clear the layer if ``True``. Default is ``False``.
-        vertexcolor (list, tuple, str, dict): Optional. The color specification
-            for the vertices. Default is ``None``.
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        A network object.
+    layer : str (None)
+        The layer to draw in.
+        Default is the current layer.
+    clear_layer : bool (False)
+        Clear the layer.
+    vertexcolor : list, tuple, str, dict (None)
+        The color specification for the vertices.
+        * list, tuple: rgb color, with color specs between 0 and 255 (e.g. ``(255, 0, 0)``).
+        * str: hex color (e.g. ``'#ff0000'``).
+        * dict: dictionary of hex or rgb colors.
+    edgecolor : list, tuple, str, dict (None)
+        The color specification for the edges.
+        * list, tuple: rgb color, with color specs between 0 and 255 (e.g. ``(255, 0, 0)``).
+        * str: hex color (e.g. ``'#ff0000'``).
+        * dict: dictionary of hex or rgb color.
 
-                * list, tuple: rgb color, with color specs between 0 and 255 (e.g. ``(255, 0, 0)``).
-                * str: hex color (e.g. ``'#ff0000'``).
-                * dict: dictionary of hex or rgb colors.
+    Notes
+    -----
+    * Any network objects with the same name that are already present in the
+      model will be deleted by this function.
+    * To also clear the entire layer the network will be drawn on, for
+      example, if you have a dedicated network layer, use the ``clear_layer`` flag as well.
 
-        edgecolor (list, tuple, str, dict): Optional. The color specification
-            for the edges. Default is ``None``.
+    See Also
+    --------
+    * network_draw_vertices
+    * network_draw_edges
 
-                * list, tuple: rgb color, with color specs between 0 and 255 (e.g. ``(255, 0, 0)``).
-                * str: hex color (e.g. ``'#ff0000'``).
-                * dict: dictionary of hex or rgb color.
+    Example
+    -------
+    .. code-block:: python
 
-    Note:
-        * Any network objects with the same name that are already present in the
-          model will be deleted by this function.
-        * To also clear the entire layer the network will be drawn on, for
-          example, if you have a dedicated network layer, use the ``clear_layer`` flag as well.
+        import compas
+        from compas.datastructures import Network
+        import compas_rhino as compas_rhino
 
-    See Also:
-        * :class:`compas.datastructures.network.Network`
-        * :func:`compas_rhino.utilities.drawing.xdraw_lines`
-        * :func:`compas_rhino.utilities.drawing.xdraw_points`
+        network = Network.from_obj(compas.get_data('lines.obj'))
 
-    Example:
-
-        .. code-block:: python
-            :emphasize-lines: 7
-
-            import compas
-            from compas.datastructures.network import Network
-            import compas_rhino as compas_rhino
-
-            network = Network.from_obj(compas.get_data('lines.obj'))
-
-            compas_rhino.draw_network(network)
+        compas_rhino.network_draw(network)
 
     """
-    vertexcolor = color_to_colordict(vertexcolor,
-                                     network.vertices(),
-                                     default=network.attributes['color.vertex'],
-                                     colorformat='rgb',
-                                     normalize=False)
+    network_draw_vertices(network, color=vertexcolor, layer=layer, clear_layer=clear_layer, redraw=False)
+    network_draw_edges(network, color=edgecolor, layer=layer, clear_layer=False, redraw=True)
 
-    edgecolor = color_to_colordict(edgecolor,
-                                   network.edges(),
-                                   default=network.attributes['color.edge'],
-                                   colorformat='rgb',
+
+def network_draw_vertices(network, keys=None, color=None, layer=None,
+                          clear_layer=False, redraw=True):
+    """Draw a selection of vertices of a network.
+
+    Parameters
+    ----------
+    keys : list (None)
+        A list of vertex keys identifying which vertices to draw.
+        Default is to draw all vertices.
+    color : str, tuple, dict (None)
+        The color specififcation for the vertices.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all vertices, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default vertex color (``self.defaults['color.vertex']``).
+        Default is to inherit the color from the layer.
+    layer : str (None)
+        The layer in which the vertices are drawn.
+        Default is to draw in the current layer.
+    clear_layer : bool (False)
+        Clear the drawing layer.
+    redraw : bool (True)
+        Redraw the view after adding the vertices.
+
+    Notes
+    -----
+    The vertices are named using the following template:
+    ``"{}.vertex.{}".format(self.network.attributes['name'], key)``.
+    This name is used afterwards to identify vertices of the networkin the Rhino model.
+
+    Examples
+    --------
+    >>> network_draw_vertices(network)
+    >>> network_draw_vertices(network, color='#ff0000')
+    >>> network_draw_vertices(network, color=(255, 0, 0))
+    >>> network_draw_vertices(network, keys=network.vertices_on_boundary())
+    >>> network_draw_vertices(network, color={(u, v): '#00ff00' for u, v in network.vertices_on_boundary()})
+
+    """
+    keys = keys or list(network.vertices())
+    colordict = color_to_colordict(color, keys, default=None, colorformat='rgb',
                                    normalize=False)
-
-    edgelabel = edgelabel or {}
-
     points = []
-    for key, attr in network.vertices(True):
+    for key in keys:
         points.append({
             'pos'  : network.vertex_coordinates(key),
-            'name' : '{0}.vertex.{1}'.format(network.attributes['name'], repr(key)),
-            'color': vertexcolor[key]
+            'name' : network.vertex_name(key),
+            'color': colordict[key],
         })
+    return compas_rhino.xdraw_points(points, layer=layer, clear=clear_layer, redraw=redraw)
 
+
+def network_draw_edges(network, keys=None, color=None, layer=None, clear_layer=False, redraw=True):
+    keys = keys or list(network.edges())
+    colordict = color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=False)
     lines = []
-    for u, v, attr in network.edges(True):
+    for u, v in keys:
         lines.append({
             'start': network.vertex_coordinates(u),
             'end'  : network.vertex_coordinates(v),
-            'name' : '{0}.edge.{1}-{2}'.format(network.attributes['name'], repr(u), repr(v)),
-            'color': edgecolor[(u, v)]
+            'name' : network.edge_name(u, v),
+            'color': colordict[(u, v)],
         })
-
-    labels = []
-    for (u, v), text in edgelabel.items():
-        labels.append({
-            'pos'  : network.edge_midpoint(u, v),
-            'text' : str(text),
-            'name' : '{0}.edge.label.{1}-{2}'.format(network.attributes['name'], repr(u), repr(v)),
-            'color': edgecolor[(u, v)],
-        })
-
-    guids = compas_rhino.get_objects(name='{0}.*'.format(network.attributes['name']))
-    compas_rhino.delete_objects(guids)
-
-    compas_rhino.xdraw_points(
-        points,
-        layer=layer,
-        clear=clear_layer,
-        redraw=False
-    )
-    compas_rhino.xdraw_lines(
-        lines,
-        layer=layer,
-        clear=False,
-        redraw=False
-    )
-    compas_rhino.xdraw_labels(
-        labels,
-        layer=layer,
-        clear=False,
-        redraw=True
-    )
+    return compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer, redraw=redraw)
 
 
 # ==============================================================================
@@ -180,7 +217,7 @@ def draw_network(network,
 # ==============================================================================
 
 
-def select_network_vertices(network, message="Select network vertices."):
+def network_select_vertices(network, message="Select network vertices."):
     """Select vertices of a network.
 
     Parameters:
@@ -193,7 +230,7 @@ def select_network_vertices(network, message="Select network vertices."):
 
     Note:
         Selection is based on naming conventions.
-        When a network is drawn using the function :func:`draw_network`,
+        When a network is drawn using the function :func:`network_draw`,
         the point objects representing the vertices get assigned a name that
         has the following pattern::
 
@@ -212,14 +249,14 @@ def select_network_vertices(network, message="Select network vertices."):
 
             network = Network.from_lines(lines)
 
-            keys = compas_rhino.select_network_vertices(network)
+            keys = compas_rhino.network_select_vertices(network)
 
             print(keys)
 
 
     See Also:
-        * :func:`select_network_edges`
-        * :func:`select_network_faces`
+        * :func:`network_select_edges`
+        * :func:`network_select_faces`
 
     """
     keys = []
@@ -238,7 +275,7 @@ def select_network_vertices(network, message="Select network vertices."):
     return keys
 
 
-def select_network_vertex(network, message="Select a network vertex"):
+def network_select_vertex(network, message="Select a network vertex"):
     """Select one vertex of a network.
 
     Parameters:
@@ -251,7 +288,7 @@ def select_network_vertex(network, message="Select a network vertex"):
         * None: If no vertex was selected.
 
     See Also:
-        * :func:`select_network_vertices`
+        * :func:`network_select_vertices`
 
     """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.point | rs.filter.textdot)
@@ -266,7 +303,7 @@ def select_network_vertex(network, message="Select a network vertex"):
     return None
 
 
-def select_network_edges(network, message="Select network edges"):
+def network_select_edges(network, message="Select network edges"):
     """Select edges of a network.
 
     Parameters:
@@ -279,15 +316,15 @@ def select_network_edges(network, message="Select network edges"):
 
     Note:
         Selection is based on naming conventions.
-        When a network is drawn using the function :func:`draw_network`,
+        When a network is drawn using the function :func:`network_draw`,
         the curve objects representing the edges get assigned a name that
         has the following pattern::
 
             '{0}.edge.{1}-{2}'.format(network.attributes['name'], u, v)
 
     See Also:
-        * :func:`select_network_vertices`
-        * :func:`select_network_faces`
+        * :func:`network_select_vertices`
+        * :func:`network_select_faces`
 
     """
     keys = []
@@ -308,7 +345,7 @@ def select_network_edges(network, message="Select network edges"):
     return keys
 
 
-def select_network_edge(network, message="Select a network edge"):
+def network_select_edge(network, message="Select a network edge"):
     """Select one edge of a network.
 
     Parameters:
@@ -321,7 +358,7 @@ def select_network_edge(network, message="Select a network edge"):
         None: If no edge was selected.
 
     See Also:
-        * :func:`select_network_edges`
+        * :func:`network_select_edges`
 
     """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.curve | rs.filter.textdot)
@@ -338,7 +375,7 @@ def select_network_edge(network, message="Select a network edge"):
     return None
 
 
-def select_network_faces(network, message='Select network faces.'):
+def network_select_faces(network, message='Select network faces.'):
     """Select faces of a network.
 
     Parameters:
@@ -351,7 +388,7 @@ def select_network_faces(network, message='Select network faces.'):
 
     Note:
         Selection of faces is based on naming conventions.
-        When a network is drawn using the function :func:`draw_network`,
+        When a network is drawn using the function :func:`network_draw`,
         the curve objects representing the edges get assigned a name that
         has the following pattern::
 
@@ -372,17 +409,17 @@ def select_network_faces(network, message='Select network faces.'):
 
             find_network_faces(network, network.leaves())
 
-            compas_rhino.draw_network(network)
-            compas_rhino.display_network_face_labels(network)
+            compas_rhino.network_draw(network)
+            compas_rhino.network_display_face_labels(network)
 
-            fkeys = compas_rhino.select_network_faces(network)
+            fkeys = compas_rhino.network_select_faces(network)
 
             print(fkeys)
 
 
     See Also:
-        * :func:`select_network_vertices`
-        * :func:`select_network_edges`
+        * :func:`network_select_vertices`
+        * :func:`network_select_edges`
 
     """
     keys = []
@@ -401,7 +438,7 @@ def select_network_faces(network, message='Select network faces.'):
     return keys
 
 
-def select_network_face(network, message='Select face.'):
+def network_select_face(network, message='Select face.'):
     """Select one face of a network.
 
     Parameters:
@@ -414,7 +451,7 @@ def select_network_face(network, message='Select face.'):
         None: If no face was selected.
 
     See Also:
-        * :func:`select_network_faces`
+        * :func:`network_select_faces`
 
     """
     guid = rs.GetObjects(message, preselect=True, filter=rs.filter.textdot)
@@ -434,7 +471,7 @@ def select_network_face(network, message='Select face.'):
 # ==============================================================================
 
 
-def update_network_attributes(network):
+def network_update_attributes(network):
     """Update the attributes of a network.
 
     Parameters:
@@ -453,16 +490,16 @@ def update_network_attributes(network):
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            if compas_rhino.update_network_attributes(network):
+            if compas_rhino.network_update_attributes(network):
                 print('network attributes updated')
             else:
                 print('network attributres not updated')
 
 
     See Also:
-        * :func:`update_network_vertex_attributes`
-        * :func:`update_network_edge_attributes`
-        * :func:`update_network_face_attributes`
+        * :func:`network_update_vertex_attributes`
+        * :func:`network_update_edge_attributes`
+        * :func:`network_update_face_attributes`
 
     """
     names  = sorted(network.attributes.keys())
@@ -478,7 +515,7 @@ def update_network_attributes(network):
     return False
 
 
-def update_network_vertex_attributes(network, keys, names=None):
+def network_update_vertex_attributes(network, keys, names=None):
     """Update the attributes of the vertices of a network.
 
     Parameters:
@@ -504,16 +541,16 @@ def update_network_vertex_attributes(network, keys, names=None):
 
             keys = network.vertices()
 
-            if compas_rhino.update_network_vertex_attributes(network, keys):
+            if compas_rhino.network_update_vertex_attributes(network, keys):
                 print('network vertex attributes updated')
             else:
                 print('network vertex attributes not updated')
 
 
     See Also:
-        * :func:`update_network_attributes`
-        * :func:`update_network_edge_attributes`
-        * :func:`update_network_face_attributes`
+        * :func:`network_update_attributes`
+        * :func:`network_update_edge_attributes`
+        * :func:`network_update_face_attributes`
 
     """
     if not names:
@@ -540,7 +577,7 @@ def update_network_vertex_attributes(network, keys, names=None):
     return False
 
 
-def update_network_from_points(network, guids):
+def network_update_from_points(network, guids):
     points = compas_rhino.get_point_coordinates(guids)
     names = compas_rhino.get_object_names(guids)
     gkey_key = {geometric_key(network.vertex_coordinates(key)): key for key in network}
@@ -557,7 +594,7 @@ def update_network_from_points(network, guids):
                 network.vertex[key].update(attr)
 
 
-def update_network_edge_attributes(network, keys, names=None):
+def network_update_edge_attributes(network, keys, names=None):
     """Update the attributes of the edges of a network.
 
     Parameters:
@@ -584,16 +621,16 @@ def update_network_edge_attributes(network, keys, names=None):
 
             keys = network.edges()
 
-            if compas_rhino.update_network_edge_attributes(network, keys):
+            if compas_rhino.network_update_edge_attributes(network, keys):
                 print('network edge attributes updated')
             else:
                 print('network edge attributes not updated')
 
 
     See Also:
-        * :func:`update_network_attributes`
-        * :func:`update_network_vertex_attributes`
-        * :func:`update_network_face_attributes`
+        * :func:`network_update_attributes`
+        * :func:`network_update_vertex_attributes`
+        * :func:`network_update_face_attributes`
 
     """
     if not names:
@@ -621,7 +658,7 @@ def update_network_edge_attributes(network, keys, names=None):
     return False
 
 
-def update_network_from_lines(network, guids):
+def network_update_from_lines(network, guids):
     lines = compas_rhino.get_line_coordinates(guids)
     names = compas_rhino.get_object_names(guids)
     gkey_key = {geometric_key(network.vertex_coordinates(key)): key for key in network}
@@ -643,7 +680,7 @@ def update_network_from_lines(network, guids):
                     network.edge[v][u].update(attr)
 
 
-def update_network_face_attributes(network, fkeys, names=None):
+def network_update_face_attributes(network, fkeys, names=None):
     """Update the attributes of the faces of a network.
 
     Parameters:
@@ -669,16 +706,16 @@ def update_network_face_attributes(network, fkeys, names=None):
 
             keys = network.faces()
 
-            if compas_rhino.update_network_face_attributes(network, keys):
+            if compas_rhino.network_update_face_attributes(network, keys):
                 print('network face attributes updated')
             else:
                 print('network face attributes not updated')
 
 
     See Also:
-        * :func:`update_network_attributes`
-        * :func:`update_network_vertex_attributes`
-        * :func:`update_network_edge_attributes`
+        * :func:`network_update_attributes`
+        * :func:`network_update_vertex_attributes`
+        * :func:`network_update_edge_attributes`
 
     """
     if not network.dualdata:
@@ -713,7 +750,7 @@ def update_network_face_attributes(network, fkeys, names=None):
 # use color callables to generate dynamic colors
 # rename formatter to data_formatter
 
-def display_network_vertex_labels(network, attr_name=None, layer=None, color=None, formatter=None):
+def network_display_vertex_labels(network, attr_name=None, layer=None, color=None, formatter=None):
     """Display labels for the vertices of a network.
 
     Parameters:
@@ -742,7 +779,7 @@ def display_network_vertex_labels(network, attr_name=None, layer=None, color=Non
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_rhino.display_network_vertex_labels(network)
+            compas_rhino.network_display_vertex_labels(network)
 
 
         .. code-block:: python
@@ -757,12 +794,12 @@ def display_network_vertex_labels(network, attr_name=None, layer=None, color=Non
             def formatter(value):
                 return '{0:.3f}'.format(value)
 
-            compas_rhino.display_network_vertex_labels(network, attr_name='x' formatter=formatter)
+            compas_rhino.network_display_vertex_labels(network, attr_name='x' formatter=formatter)
 
 
     See Also:
-        * :func:`display_network_edge_labels`
-        * :func:`display_network_face_labels`
+        * :func:`network_display_edge_labels`
+        * :func:`network_display_face_labels`
 
     """
     compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.vertex.label.*".format(network.attributes['name'])))
@@ -804,7 +841,7 @@ def display_network_vertex_labels(network, attr_name=None, layer=None, color=Non
     )
 
 
-def display_network_edge_labels(network, attr_name=None, layer=None, color=None, formatter=None):
+def network_display_edge_labels(network, attr_name=None, layer=None, color=None, formatter=None):
     """Display labels for the edges of a network.
 
     Parameters:
@@ -833,12 +870,12 @@ def display_network_edge_labels(network, attr_name=None, layer=None, color=None,
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_rhino.display_network_edge_labels(network)
+            compas_rhino.network_display_edge_labels(network)
 
 
     See Also:
-        * :func:`display_network_vertex_labels`
-        * :func:`display_network_face_labels`
+        * :func:`network_display_vertex_labels`
+        * :func:`network_display_face_labels`
 
     """
     compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.edge.label.*".format(network.attributes['name'])))
@@ -881,7 +918,7 @@ def display_network_edge_labels(network, attr_name=None, layer=None, color=None,
     )
 
 
-def display_network_face_labels(network, attr_name=None, layer=None, color=None, formatter=None):
+def network_display_face_labels(network, attr_name=None, layer=None, color=None, formatter=None):
     """Display labels for the faces of a network.
 
     Parameters:
@@ -910,12 +947,12 @@ def display_network_face_labels(network, attr_name=None, layer=None, color=None,
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_rhino.display_network_face_labels(network)
+            compas_rhino.network_display_face_labels(network)
 
 
     See Also:
-        * :func:`display_network_vertex_labels`
-        * :func:`display_network_edge_labels`
+        * :func:`network_display_vertex_labels`
+        * :func:`network_display_edge_labels`
 
     """
     compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.face.label.*".format(network.attributes['name'])))
@@ -965,7 +1002,7 @@ def display_network_face_labels(network, attr_name=None, layer=None, color=None,
 # ==============================================================================
 
 
-def move_network(network):
+def network_move(network):
     """Move the entire network.
 
     Parameters:
@@ -1013,10 +1050,10 @@ def move_network(network):
         network.draw()
     except AttributeError:
         # this may result in the network being drawn in a different layer then before
-        draw_network(network)
+        network_draw(network)
 
 
-def move_network_vertex(network, key, constraint=None, allow_off=None):
+def network_move_vertex(network, key, constraint=None, allow_off=None):
     """Move on vertex of the network.
 
     Parameters:
@@ -1038,10 +1075,10 @@ def move_network_vertex(network, key, constraint=None, allow_off=None):
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            key = compas_rhino.select_network_vertex(network)
+            key = compas_rhino.network_select_vertex(network)
 
             if key:
-                compas_rhino.move_network_vertex(network, key)
+                compas_rhino.network_move_vertex(network, key)
 
     """
     color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
@@ -1075,7 +1112,7 @@ def move_network_vertex(network, key, constraint=None, allow_off=None):
         network.draw()
     except AttributeError:
         # this may result in the network being drawn in a different layer then before
-        draw_network(network)
+        network_draw(network)
 
 
 # ==============================================================================
@@ -1083,7 +1120,7 @@ def move_network_vertex(network, key, constraint=None, allow_off=None):
 # ==============================================================================
 
 
-def display_network_axial_forces(network,
+def network_display_axial_forces(network,
                                  display=True,
                                  layer=None,
                                  clear_layer=False,
@@ -1133,12 +1170,12 @@ def display_network_axial_forces(network,
             for u, v, attr in network.edges(True):
                 attr['f'] = random.choice([-1.0, 1.0]) * random.randint(1, 10)
 
-            compas_rhino.display_network_axial_forces(network)
+            compas_rhino.network_display_axial_forces(network)
 
     See Also:
-        * :func:`display_network_reaction_forces`
-        * :func:`display_network_residual_forces`
-        * :func:`display_network_selfweight`
+        * :func:`network_display_reaction_forces`
+        * :func:`network_display_residual_forces`
+        * :func:`network_display_selfweight`
 
     """
     tol = compas_rhino.get_tolerance()
@@ -1172,7 +1209,7 @@ def display_network_axial_forces(network,
     compas_rhino.xdraw_cylinders(lines, layer=layer, clear=clear_layer)
 
 
-def display_network_reaction_forces(network,
+def network_display_reaction_forces(network,
                                     display=True,
                                     layer=None,
                                     clear_layer=False,
@@ -1215,7 +1252,7 @@ def display_network_reaction_forces(network,
     compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
 
 
-def display_network_residual_forces(network,
+def network_display_residual_forces(network,
                                     display=True,
                                     layer=None,
                                     clear_layer=False,
@@ -1258,7 +1295,7 @@ def display_network_residual_forces(network,
     compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
 
 
-def display_network_selfweight(network,
+def network_display_selfweight(network,
                                display=True,
                                layer=None,
                                clear_layer=False,
@@ -1296,7 +1333,7 @@ def display_network_selfweight(network,
     compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
 
 
-def display_network_applied_loads(network,
+def network_display_applied_loads(network,
                                   display=True,
                                   layer=None,
                                   clear_layer=False,

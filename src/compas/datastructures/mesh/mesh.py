@@ -1254,6 +1254,7 @@ mesh: {}
         return edges
 
     def face_corners(self, fkey):
+        """Return triplets of face vertices forming the corners of the face."""
         vertices = self.face_vertices(fkey)
         return window(vertices + vertices[0:2], 3)
 

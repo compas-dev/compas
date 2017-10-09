@@ -1,6 +1,6 @@
 import time
 
-from compas.utilities import to_valuedict
+from compas.utilities import color_to_colordict
 from compas.cad import ArtistInterface
 
 import compas_rhino
@@ -29,10 +29,12 @@ class NetworkArtist(ArtistInterface):
         self.network = network
         self.layer = layer
         self.defaults = {
-            'vertex.color': (255, 0, 0),
-            'edge.color'  : (0, 0, 0),
+            'color.vertex': (255, 0, 0),
+            'color.edge'  : (0, 0, 0),
         }
 
+    # this should be called 'update_view'
+    # 'redraw' should draw the network again, with the same settings
     def redraw(self, timeout=None):
         """Redraw the Rhino view."""
         if timeout:
@@ -88,7 +90,7 @@ class NetworkArtist(ArtistInterface):
             To apply the same color to all vertices, provide a single color
             specification. Individual colors can be assigned using a dictionary
             of key-color pairs. Missing keys will be assigned the default vertex
-            color (``self.defaults['vertex.color']``).
+            color (``self.defaults['color.vertex']``).
             The default is ``None``, in which case all vertices are assigned the
             default vertex color.
 
@@ -108,7 +110,7 @@ class NetworkArtist(ArtistInterface):
 
         """
         keys = keys or list(self.network.vertices())
-        colordict = to_valuedict(keys, color, self.defaults['vertex.color'])
+        colordict = color_to_colordict(color, keys, default=self.defaults['color.vertex'])
         points = []
         for key in keys:
             points.append({
@@ -153,7 +155,7 @@ class NetworkArtist(ArtistInterface):
 
         """
         keys = keys or list(self.network.edges())
-        colordict = to_valuedict(keys, color, self.defaults['edge.color'])
+        colordict = to_valuedict(keys, color, self.defaults['color.edge'])
         lines = []
         for u, v in keys:
             lines.append({
@@ -199,7 +201,7 @@ class NetworkArtist(ArtistInterface):
             should refer to vertex keys in the network and the values should be color
             specifications in the form of strings or tuples.
             The default value is ``None``, in which case the labels are assigned
-            the default vertex color (``self.defaults['vertex.color']``).
+            the default vertex color (``self.defaults['color.vertex']``).
 
         Notes
         -----
@@ -217,7 +219,7 @@ class NetworkArtist(ArtistInterface):
             textdict = text
         else:
             raise NotImplementedError
-        colordict = to_valuedict(list(textdict.keys()), color, self.defaults['vertex.color'])
+        colordict = to_valuedict(list(textdict.keys()), color, self.defaults['color.vertex'])
         labels = []
         for key, text in iter(textdict.items()):
             labels.append({
@@ -248,7 +250,7 @@ class NetworkArtist(ArtistInterface):
             textdict = text
         else:
             raise NotImplementedError
-        colordict = to_valuedict(list(textdict.keys()), color, self.defaults['edge.color'])
+        colordict = to_valuedict(list(textdict.keys()), color, self.defaults['color.edge'])
         labels = []
         for (u, v), text in iter(textdict.items()):
             labels.append({

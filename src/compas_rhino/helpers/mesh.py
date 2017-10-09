@@ -31,21 +31,21 @@ __all__ = [
     'mesh_from_surface',
     'mesh_from_surface_uv',
     'mesh_from_surface_heightfield',
-    'draw_mesh',
-    'draw_mesh_as_faces',
-    'select_mesh_vertices',
-    'select_mesh_vertex',
-    'select_mesh_edges',
-    'select_mesh_edge',
-    'select_mesh_faces',
-    'select_mesh_face',
-    'update_mesh_vertex_attributes',
-    'update_mesh_edge_attributes',
-    'update_mesh_face_attributes',
-    'display_mesh_vertex_labels',
-    'display_mesh_edge_labels',
-    'display_mesh_face_labels',
-    'move_mesh_vertex',
+    'mesh_draw',
+    'mesh_draw_as_faces',
+    'mesh_select_vertices',
+    'mesh_select_vertex',
+    'mesh_select_edges',
+    'mesh_select_edge',
+    'mesh_select_faces',
+    'mesh_select_face',
+    'mesh_update_vertex_attributes',
+    'mesh_update_edge_attributes',
+    'mesh_update_face_attributes',
+    'mesh_display_vertex_labels',
+    'mesh_display_edge_labels',
+    'mesh_display_face_labels',
+    'mesh_move_vertex',
 ]
 
 
@@ -153,7 +153,7 @@ def mesh_from_surface_heightfield(cls, guid, density=(10, 10), **kwargs):
 # remove redraw?
 # process color spec into color dict
 
-def draw_mesh(mesh,
+def mesh_draw(mesh,
               layer=None,
               clear_layer=False,
               show_faces=True,
@@ -204,11 +204,11 @@ def draw_mesh(mesh,
                                    colorformat='rgb',
                                    normalize=False)
 
-    # facecolor = color_to_colordict(facecolor,
-    #                                mesh.faces(),
-    #                                default=mesh.attributes['color.face'],
-    #                                colorformat='rgb',
-    #                                normalize=False)
+    facecolor = color_to_colordict(facecolor,
+                                   mesh.faces(),
+                                   default=mesh.attributes['color.face'],
+                                   colorformat='rgb',
+                                   normalize=False)
 
     guids = compas_rhino.get_objects(name='{0}.*'.format(mesh.attributes['name']))
     compas_rhino.delete_objects(guids)
@@ -244,7 +244,7 @@ def draw_mesh(mesh,
                     vertices = [c, key_index[key], key_index[nbr], key_index[nbr]]
                     faces.append(vertices)
 
-        compas_rhino.xdraw_mesh(xyz,
+        compas_rhino.xmesh_draw(xyz,
                                 faces,
                                 color,
                                 '{0}.mesh'.format(mesh.attributes['name']),
@@ -291,7 +291,19 @@ def draw_mesh(mesh,
     rs.Redraw()
 
 
-def draw_mesh_as_faces(mesh,
+def mesh_draw_vertices(mesh):
+    pass
+
+
+def mesh_draw_edges(mesh):
+    pass
+
+
+def mesh_draw_faces(mesh):
+    pass
+
+
+def mesh_draw_as_faces(mesh,
                        layer=None,
                        clear_layer=False,
                        facecolor=None,
@@ -314,7 +326,7 @@ def draw_mesh_as_faces(mesh,
         vertices = mesh.face_coordinates(fkey)
         faces = [range(len(vertices))]
         color = facecolor.get(fkey, (255, 255, 255))
-        guid = compas_rhino.xdraw_mesh(vertices,
+        guid = compas_rhino.xmesh_draw(vertices,
                                        faces,
                                        None,
                                        '{0}.face.{1}'.format(mesh.attributes['name'], fkey),
@@ -343,7 +355,7 @@ def draw_mesh_as_faces(mesh,
 # ==============================================================================
 
 
-def select_mesh_vertices(mesh, message="Select mesh vertices."):
+def mesh_select_vertices(mesh, message="Select mesh vertices."):
     """Select vertices of a mesh.
 
     Parameters:
@@ -356,7 +368,7 @@ def select_mesh_vertices(mesh, message="Select mesh vertices."):
 
     Note:
         Selection is based on naming conventions.
-        When a mesh is drawn using the function :func:`draw_mesh`,
+        When a mesh is drawn using the function :func:`mesh_draw`,
         the point objects representing the vertices get assigned a name that
         has the following pattern::
 
@@ -372,14 +384,14 @@ def select_mesh_vertices(mesh, message="Select mesh vertices."):
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            keys = compas_rhino.select_mesh_vertices(mesh)
+            keys = compas_rhino.mesh_select_vertices(mesh)
 
             print(keys)
 
 
     See Also:
-        * :func:`select_mesh_edges`
-        * :func:`select_mesh_faces`
+        * :func:`mesh_select_edges`
+        * :func:`mesh_select_faces`
 
     """
     keys = []
@@ -398,7 +410,7 @@ def select_mesh_vertices(mesh, message="Select mesh vertices."):
     return keys
 
 
-def select_mesh_vertex(mesh, message="Select a mesh vertex"):
+def mesh_select_vertex(mesh, message="Select a mesh vertex"):
     """Select one vertex of a mesh.
 
     Parameters:
@@ -411,7 +423,7 @@ def select_mesh_vertex(mesh, message="Select a mesh vertex"):
         * None: If no vertex was selected.
 
     See Also:
-        * :func:`select_mesh_vertices`
+        * :func:`mesh_select_vertices`
 
     """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.point | rs.filter.textdot)
@@ -426,7 +438,7 @@ def select_mesh_vertex(mesh, message="Select a mesh vertex"):
     return None
 
 
-def select_mesh_edges(mesh, message="Select mesh edges"):
+def mesh_select_edges(mesh, message="Select mesh edges"):
     """Select edges of a mesh.
 
     Parameters:
@@ -439,15 +451,15 @@ def select_mesh_edges(mesh, message="Select mesh edges"):
 
     Note:
         Selection is based on naming conventions.
-        When a mesh is drawn using the function :func:`draw_mesh`,
+        When a mesh is drawn using the function :func:`mesh_draw`,
         the curve objects representing the edges get assigned a name that
         has the following pattern::
 
             '{0}.edge.{1}-{2}'.format(mesh.attributes['name'], u, v)
 
     See Also:
-        * :func:`select_mesh_vertices`
-        * :func:`select_mesh_faces`
+        * :func:`mesh_select_vertices`
+        * :func:`mesh_select_faces`
 
     """
     keys = []
@@ -468,7 +480,7 @@ def select_mesh_edges(mesh, message="Select mesh edges"):
     return keys
 
 
-def select_mesh_edge(mesh, message="Select a mesh edge"):
+def mesh_select_edge(mesh, message="Select a mesh edge"):
     """Select one edge of a mesh.
 
     Parameters:
@@ -481,7 +493,7 @@ def select_mesh_edge(mesh, message="Select a mesh edge"):
         None: If no edge was selected.
 
     See Also:
-        * :func:`select_mesh_edges`
+        * :func:`mesh_select_edges`
 
     """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.curve | rs.filter.textdot)
@@ -498,7 +510,7 @@ def select_mesh_edge(mesh, message="Select a mesh edge"):
     return None
 
 
-def select_mesh_faces(mesh, message='Select mesh faces.'):
+def mesh_select_faces(mesh, message='Select mesh faces.'):
     """Select faces of a mesh.
 
     Parameters:
@@ -511,7 +523,7 @@ def select_mesh_faces(mesh, message='Select mesh faces.'):
 
     Note:
         Selection of faces is based on naming conventions.
-        When a mesh is drawn using the function :func:`draw_mesh`,
+        When a mesh is drawn using the function :func:`mesh_draw`,
         the curve objects representing the edges get assigned a name that
         has the following pattern::
 
@@ -531,17 +543,17 @@ def select_mesh_faces(mesh, message='Select mesh faces.'):
 
             find_mesh_faces(mesh, mesh.leaves())
 
-            compas_rhino.draw_mesh(mesh)
-            compas_rhino.display_mesh_face_labels(mesh)
+            compas_rhino.mesh_draw(mesh)
+            compas_rhino.mesh_display_face_labels(mesh)
 
-            fkeys = compas_rhino.select_mesh_faces(mesh)
+            fkeys = compas_rhino.mesh_select_faces(mesh)
 
             print(fkeys)
 
 
     See Also:
-        * :func:`select_mesh_vertices`
-        * :func:`select_mesh_edges`
+        * :func:`mesh_select_vertices`
+        * :func:`mesh_select_edges`
 
     """
     keys = []
@@ -560,7 +572,7 @@ def select_mesh_faces(mesh, message='Select mesh faces.'):
     return keys
 
 
-def select_mesh_face(mesh, message='Select face.'):
+def mesh_select_face(mesh, message='Select face.'):
     """Select one face of a mesh.
 
     Parameters:
@@ -573,7 +585,7 @@ def select_mesh_face(mesh, message='Select face.'):
         None: If no face was selected.
 
     See Also:
-        * :func:`select_mesh_faces`
+        * :func:`mesh_select_faces`
 
     """
     guid = rs.GetObjects(message, preselect=True, filter=rs.filter.textdot)
@@ -593,7 +605,7 @@ def select_mesh_face(mesh, message='Select face.'):
 # ==============================================================================
 
 
-def update_mesh_attributes(mesh):
+def mesh_update_attributes(mesh):
     """Update the attributes of a mesh.
 
     Parameters:
@@ -612,16 +624,16 @@ def update_mesh_attributes(mesh):
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            if compas_rhino.update_mesh_attributes(mesh):
+            if compas_rhino.mesh_update_attributes(mesh):
                 print('mesh attributes updated')
             else:
                 print('mesh attributres not updated')
 
 
     See Also:
-        * :func:`update_mesh_vertex_attributes`
-        * :func:`update_mesh_edge_attributes`
-        * :func:`update_mesh_face_attributes`
+        * :func:`mesh_update_vertex_attributes`
+        * :func:`mesh_update_edge_attributes`
+        * :func:`mesh_update_face_attributes`
 
     """
     names  = sorted(mesh.attributes.keys())
@@ -637,7 +649,7 @@ def update_mesh_attributes(mesh):
     return False
 
 
-def update_mesh_vertex_attributes(mesh, keys, names=None):
+def mesh_update_vertex_attributes(mesh, keys, names=None):
     """Update the attributes of the vertices of a mesh.
 
     Parameters:
@@ -663,16 +675,16 @@ def update_mesh_vertex_attributes(mesh, keys, names=None):
 
             keys = mesh.vertices()
 
-            if compas_rhino.update_mesh_vertex_attributes(mesh, keys):
+            if compas_rhino.mesh_update_vertex_attributes(mesh, keys):
                 print('mesh vertex attributes updated')
             else:
                 print('mesh vertex attributes not updated')
 
 
     See Also:
-        * :func:`update_mesh_attributes`
-        * :func:`update_mesh_edge_attributes`
-        * :func:`update_mesh_face_attributes`
+        * :func:`mesh_update_attributes`
+        * :func:`mesh_update_edge_attributes`
+        * :func:`mesh_update_face_attributes`
 
     """
     if not names:
@@ -699,7 +711,7 @@ def update_mesh_vertex_attributes(mesh, keys, names=None):
     return False
 
 
-def update_mesh_edge_attributes(mesh, keys, names=None):
+def mesh_update_edge_attributes(mesh, keys, names=None):
     """Update the attributes of the edges of a mesh.
 
     Parameters:
@@ -726,16 +738,16 @@ def update_mesh_edge_attributes(mesh, keys, names=None):
 
             keys = mesh.edges()
 
-            if compas_rhino.update_mesh_edge_attributes(mesh, keys):
+            if compas_rhino.mesh_update_edge_attributes(mesh, keys):
                 print('mesh edge attributes updated')
             else:
                 print('mesh edge attributes not updated')
 
 
     See Also:
-        * :func:`update_mesh_attributes`
-        * :func:`update_mesh_vertex_attributes`
-        * :func:`update_mesh_face_attributes`
+        * :func:`mesh_update_attributes`
+        * :func:`mesh_update_vertex_attributes`
+        * :func:`mesh_update_face_attributes`
 
     """
     if not names:
@@ -770,7 +782,7 @@ def update_mesh_edge_attributes(mesh, keys, names=None):
     return False
 
 
-def update_mesh_face_attributes(mesh, fkeys, names=None):
+def mesh_update_face_attributes(mesh, fkeys, names=None):
     """Update the attributes of the faces of a mesh.
 
     Parameters:
@@ -796,16 +808,16 @@ def update_mesh_face_attributes(mesh, fkeys, names=None):
 
             keys = mesh.faces()
 
-            if compas_rhino.update_mesh_face_attributes(mesh, keys):
+            if compas_rhino.mesh_update_face_attributes(mesh, keys):
                 print('mesh face attributes updated')
             else:
                 print('mesh face attributes not updated')
 
 
     See Also:
-        * :func:`update_mesh_attributes`
-        * :func:`update_mesh_vertex_attributes`
-        * :func:`update_mesh_edge_attributes`
+        * :func:`mesh_update_attributes`
+        * :func:`mesh_update_vertex_attributes`
+        * :func:`mesh_update_edge_attributes`
 
     """
     if not mesh.facedata:
@@ -838,7 +850,7 @@ def update_mesh_face_attributes(mesh, fkeys, names=None):
 # ==============================================================================
 
 
-def display_mesh_vertex_labels(mesh, attr_name=None, layer=None, color=None, formatter=None):
+def mesh_display_vertex_labels(mesh, attr_name=None, layer=None, color=None, formatter=None):
     """Display labels for the vertices of a mesh.
 
     Parameters:
@@ -867,7 +879,7 @@ def display_mesh_vertex_labels(mesh, attr_name=None, layer=None, color=None, for
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            compas_rhino.display_mesh_vertex_labels(mesh)
+            compas_rhino.mesh_display_vertex_labels(mesh)
 
 
         .. code-block:: python
@@ -882,12 +894,12 @@ def display_mesh_vertex_labels(mesh, attr_name=None, layer=None, color=None, for
             def formatter(value):
                 return '{0:.3f}'.format(value)
 
-            compas_rhino.display_mesh_vertex_labels(mesh, attr_name='x' formatter=formatter)
+            compas_rhino.mesh_display_vertex_labels(mesh, attr_name='x' formatter=formatter)
 
 
     See Also:
-        * :func:`display_mesh_edge_labels`
-        * :func:`display_mesh_face_labels`
+        * :func:`mesh_display_edge_labels`
+        * :func:`mesh_display_face_labels`
 
     """
     compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.vertex.label.*".format(mesh.attributes['name'])))
@@ -929,7 +941,7 @@ def display_mesh_vertex_labels(mesh, attr_name=None, layer=None, color=None, for
     )
 
 
-def display_mesh_edge_labels(mesh, attr_name=None, layer=None, color=None, formatter=None):
+def mesh_display_edge_labels(mesh, attr_name=None, layer=None, color=None, formatter=None):
     """Display labels for the edges of a mesh.
 
     Parameters:
@@ -958,12 +970,12 @@ def display_mesh_edge_labels(mesh, attr_name=None, layer=None, color=None, forma
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            compas_rhino.display_mesh_edge_labels(mesh)
+            compas_rhino.mesh_display_edge_labels(mesh)
 
 
     See Also:
-        * :func:`display_mesh_vertex_labels`
-        * :func:`display_mesh_face_labels`
+        * :func:`mesh_display_vertex_labels`
+        * :func:`mesh_display_face_labels`
 
     """
     compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.edge.label.*".format(mesh.attributes['name'])))
@@ -1006,7 +1018,7 @@ def display_mesh_edge_labels(mesh, attr_name=None, layer=None, color=None, forma
     )
 
 
-def display_mesh_face_labels(mesh, attr_name=None, layer=None, color=None, formatter=None):
+def mesh_display_face_labels(mesh, attr_name=None, layer=None, color=None, formatter=None):
     """Display labels for the faces of a mesh.
 
     Parameters:
@@ -1035,12 +1047,12 @@ def display_mesh_face_labels(mesh, attr_name=None, layer=None, color=None, forma
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            compas_rhino.display_mesh_face_labels(mesh)
+            compas_rhino.mesh_display_face_labels(mesh)
 
 
     See Also:
-        * :func:`display_mesh_vertex_labels`
-        * :func:`display_mesh_edge_labels`
+        * :func:`mesh_display_vertex_labels`
+        * :func:`mesh_display_edge_labels`
 
     """
     compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.face.label.*".format(mesh.attributes['name'])))
@@ -1090,7 +1102,7 @@ def display_mesh_face_labels(mesh, attr_name=None, layer=None, color=None, forma
 # ==============================================================================
 
 
-def display_mesh_vertex_normals(mesh,
+def mesh_display_vertex_normals(mesh,
                                 display=True,
                                 layer=None,
                                 scale=1.0,
@@ -1121,7 +1133,7 @@ def display_mesh_vertex_normals(mesh,
     compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
 
-def display_mesh_face_normals(mesh,
+def mesh_display_face_normals(mesh,
                               display=True,
                               layer=None,
                               scale=1.0,
@@ -1157,7 +1169,7 @@ def display_mesh_face_normals(mesh,
 # ==============================================================================
 
 
-def move_mesh_vertex(mesh, key, constraint=None, allow_off=None, redraw=True):
+def mesh_move_vertex(mesh, key, constraint=None, allow_off=None, redraw=True):
     """Move on vertex of the mesh.
 
     Parameters:
@@ -1179,10 +1191,10 @@ def move_mesh_vertex(mesh, key, constraint=None, allow_off=None, redraw=True):
 
             mesh = Mesh.from_obj(compas.get_data('lines.obj'))
 
-            key = compas_rhino.select_mesh_vertex(mesh)
+            key = compas_rhino.mesh_select_vertex(mesh)
 
             if key:
-                compas_rhino.move_mesh_vertex(mesh, key)
+                compas_rhino.mesh_move_vertex(mesh, key)
 
     """
     color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
@@ -1217,7 +1229,7 @@ def move_mesh_vertex(mesh, key, constraint=None, allow_off=None, redraw=True):
             mesh.draw()
         except AttributeError:
             # this may result in the mesh being drawn in a different layer then before
-            draw_mesh(mesh)
+            mesh_draw(mesh)
 
 
 # ==============================================================================

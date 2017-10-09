@@ -52,7 +52,6 @@ if __name__ == '__main__':
 
     from compas.geometry import distance_point_line
 
-    import System
     from System.Drawing import Color
 
     import Rhino
@@ -60,11 +59,6 @@ if __name__ == '__main__':
 
     import rhinoscriptsyntax as rs
 
-    # calculate "right angle distance" from point to frustum line
-    # to check if mouse is hovering over that point
-    # the distance from a point P to a line defined by points A, B
-    # is twice the area of the trianlge ABP divided by the length of AB
-    # see: https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
     class Inspector(Rhino.Display.DisplayConduit):
         """"""
 

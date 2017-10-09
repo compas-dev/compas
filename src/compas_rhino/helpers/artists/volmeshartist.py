@@ -1,3 +1,5 @@
+import time
+
 from compas.utilities import to_valuedict
 from compas.cad import ArtistInterface
 
@@ -213,6 +215,9 @@ class VolMeshArtist(ArtistInterface):
             })
         return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
+    def draw_cells(self, keys=None, color=None):
+        raise NotImplementedError
+
     def draw_vertexlabels(self, text=None, color=None):
         """Draw labels for selected vertices of the volmesh.
 
@@ -346,8 +351,8 @@ if __name__ == "__main__":
     artist.draw_faces()
     artist.redraw(1.0)
 
-    artist.draw_facelabels()
-    artist.redraw(1.0)
+#    artist.draw_facelabels()
+#    artist.redraw(1.0)
 
     artist.draw_edges()
     artist.redraw(1.0)
