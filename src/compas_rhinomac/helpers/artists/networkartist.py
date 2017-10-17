@@ -1,9 +1,9 @@
 import time
 
-from compas.utilities import color_to_colordict
+from compas.utilities import to_valuedict
 from compas.cad import ArtistInterface
 
-import compas_rhino
+import compas_rhinomac
 
 try:
     import rhinoscriptsyntax as rs
@@ -29,12 +29,10 @@ class NetworkArtist(ArtistInterface):
         self.network = network
         self.layer = layer
         self.defaults = {
-            'color.vertex': (255, 0, 0),
-            'color.edge'  : (0, 0, 0),
+            'vertex.color': (255, 0, 0),
+            'edge.color'  : (0, 0, 0),
         }
 
-    # this should be called 'update_view'
-    # 'redraw' should draw the network again, with the same settings
     def redraw(self, timeout=None):
         """Redraw the Rhino view."""
         if timeout:
@@ -45,7 +43,7 @@ class NetworkArtist(ArtistInterface):
     def clear_layer(self):
         """Clear the main layer of the artist."""
         if self.layer:
-            compas_rhino.clear_layer(self.layer)
+            compas_rhinomac.clear_layer(self.layer)
 
     def clear(self):
         self.clear_vertices()
@@ -54,26 +52,26 @@ class NetworkArtist(ArtistInterface):
     def clear_vertices(self, keys=None):
         if not keys:
             name = '{}.vertex.*'.format(self.network.attributes['name'])
-            guids = compas_rhino.get_objects(name=name)
+            guids = compas_rhinomac.get_objects(name=name)
         else:
             guids = []
             for key in keys:
                 name = '{}.vertex.{}'.format(self.attributes['name'], key)
-                guid = compas_rhino.get_object(name=name)
+                guid = compas_rhinomac.get_object(name=name)
                 guids.append(guid)
-        compas_rhino.delete_objects(guids)
+        compas_rhinomac.delete_objects(guids)
 
     def clear_edges(self, keys=None):
         if not keys:
             name = '{}.edge.*'.format(self.network.attributes['name'])
-            guids = compas_rhino.get_objects(name=name)
+            guids = compas_rhinomac.get_objects(name=name)
         else:
             guids = []
             for u, v in keys:
                 name = '{}.edge.{}-{}'.format(self.attributes['name'], u, v)
-                guid = compas_rhino.get_object(name=name)
+                guid = compas_rhinomac.get_object(name=name)
                 guids.append(guid)
-        compas_rhino.delete_objects(guids)
+        compas_rhinomac.delete_objects(guids)
 
     def draw_vertices(self, keys=None, color=None):
         """Draw a selection of vertices of the network.
@@ -90,7 +88,7 @@ class NetworkArtist(ArtistInterface):
             To apply the same color to all vertices, provide a single color
             specification. Individual colors can be assigned using a dictionary
             of key-color pairs. Missing keys will be assigned the default vertex
-            color (``self.defaults['color.vertex']``).
+            color (``self.defaults['vertex.color']``).
             The default is ``None``, in which case all vertices are assigned the
             default vertex color.
 
@@ -110,7 +108,7 @@ class NetworkArtist(ArtistInterface):
 
         """
         keys = keys or list(self.network.vertices())
-        colordict = color_to_colordict(color, keys, default=self.defaults['color.vertex'])
+        colordict = to_valuedict(keys, color, self.defaults['vertex.color'])
         points = []
         for key in keys:
             points.append({
@@ -118,7 +116,7 @@ class NetworkArtist(ArtistInterface):
                 'name' : self.network.vertex_name(key),
                 'color': colordict[key]
             })
-        return compas_rhino.xdraw_points(points, layer=self.layer, clear=False, redraw=False)
+        return compas_rhinomac.xdraw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, keys=None, color=None):
         """Draw a selection of edges of the network.
@@ -155,7 +153,7 @@ class NetworkArtist(ArtistInterface):
 
         """
         keys = keys or list(self.network.edges())
-        colordict = to_valuedict(keys, color, self.defaults['color.edge'])
+        colordict = to_valuedict(keys, color, self.defaults['edge.color'])
         lines = []
         for u, v in keys:
             lines.append({
@@ -164,7 +162,7 @@ class NetworkArtist(ArtistInterface):
                 'color': colordict[(u, v)],
                 'name' : self.network.edge_name(u, v)
             })
-        return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
+        return compas_rhinomac.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_path(self, path):
         """Draw a path from one vertex to another as a polyline of edges.
@@ -201,7 +199,7 @@ class NetworkArtist(ArtistInterface):
             should refer to vertex keys in the network and the values should be color
             specifications in the form of strings or tuples.
             The default value is ``None``, in which case the labels are assigned
-            the default vertex color (``self.defaults['color.vertex']``).
+            the default vertex color (``self.defaults['vertex.color']``).
 
         Notes
         -----
@@ -219,7 +217,7 @@ class NetworkArtist(ArtistInterface):
             textdict = text
         else:
             raise NotImplementedError
-        colordict = to_valuedict(list(textdict.keys()), color, self.defaults['color.vertex'])
+        colordict = to_valuedict(list(textdict.keys()), color, self.defaults['vertex.color'])
         labels = []
         for key, text in iter(textdict.items()):
             labels.append({
@@ -228,7 +226,7 @@ class NetworkArtist(ArtistInterface):
                 'color': colordict[key],
                 'text' : textdict[key],
             })
-        return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        return compas_rhinomac.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
         """Draw labels for selected edges of the network.
@@ -250,7 +248,7 @@ class NetworkArtist(ArtistInterface):
             textdict = text
         else:
             raise NotImplementedError
-        colordict = to_valuedict(list(textdict.keys()), color, self.defaults['color.edge'])
+        colordict = to_valuedict(list(textdict.keys()), color, self.defaults['edge.color'])
         labels = []
         for (u, v), text in iter(textdict.items()):
             labels.append({
@@ -259,7 +257,7 @@ class NetworkArtist(ArtistInterface):
                 'color': colordict[(u, v)],
                 'text' : textdict[(u, v)],
             })
-        return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        return compas_rhinomac.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
 
 # ==============================================================================
@@ -270,7 +268,7 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Network
-    from compas_rhino.helpers.artists.networkartist import NetworkArtist
+    from compas_rhinomac.helpers.artists.networkartist import NetworkArtist
 
     network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 

@@ -1,13 +1,28 @@
-import json
-
 from ast import literal_eval as _eval
 from math import sqrt
+from copy import deepcopy
 
 from compas.files.obj import OBJ
 
-from compas.datastructures.mesh import Mesh
-
 from compas.geometry import centroid_points
+
+from compas.datastructures import Datastructure
+from compas.datastructures import Mesh
+
+from compas.datastructures.mixins import VertexAttributesMixin
+from compas.datastructures.mixins import VertexHelpersMixin
+from compas.datastructures.mixins import VertexCoordinatesDescriptorsMixin
+
+from compas.datastructures.mixins import EdgeAttributesMixin
+from compas.datastructures.mixins import EdgeHelpersMixin
+from compas.datastructures.mixins import EdgeGeometryMixin
+
+from compas.datastructures.mixins import FaceAttributesMixin
+from compas.datastructures.mixins import FaceHelpersMixin
+
+from compas.datastructures.mixins import FactoryMixin
+from compas.datastructures.mixins import ConversionMixin
+from compas.datastructures.mixins import MagicMixin
 
 
 __author__     = ['Tom Van Mele', ]
@@ -33,7 +48,18 @@ def center_of_mass(edges, sqrt=sqrt):
     return cx, cy, cz
 
 
-class VolMesh(object):
+class VolMesh(MagicMixin,
+              ConversionMixin,
+              FactoryMixin,
+              FaceHelpersMixin,
+              FaceAttributesMixin,
+              EdgeGeometryMixin,
+              EdgeHelpersMixin,
+              EdgeAttributesMixin,
+              VertexCoordinatesDescriptorsMixin,
+              VertexHelpersMixin,
+              VertexAttributesMixin,
+              Datastructure):
     """Class for working with volumetric meshes.
 
     Volumetric meshes are 3-mainfold, cellular structures.
@@ -108,29 +134,9 @@ class VolMesh(object):
         }
         self.default_edge_attributes = {}
 
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # magic methods
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-
-    def __contains__(self, key):
-        return key in self.vertex
-
-    def __len__(self):
-        return len(self.vertex)
-
-    def __iter__(self):
-        return iter(self.vertex)
-
-    def __getitem__(self, key):
-        return self.vertex[key]
+    # --------------------------------------------------------------------------
+    # customisation
+    # --------------------------------------------------------------------------
 
     def __str__(self):
         """"""
@@ -143,17 +149,9 @@ under construction
 
 """
 
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # descriptors
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
+    # --------------------------------------------------------------------------
+    # special properties
+    # --------------------------------------------------------------------------
 
     @property
     def name(self):
@@ -321,46 +319,9 @@ under construction
         self._max_int_fkey = max_int_fkey
         self._max_int_ckey = max_int_ckey
 
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
+    # --------------------------------------------------------------------------
     # constructors
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-
-    @classmethod
-    def from_vertices_and_cells(cls, vertices, cells):
-        mesh = cls()
-        for x, y, z in vertices:
-            mesh.add_vertex(x=x, y=y, z=z)
-        for halffaces in cells:
-            mesh.add_cell(halffaces)
-        return mesh
-
-    @classmethod
-    def from_vertices_and_edges(cls, vertices, edges):
-        raise NotImplementedError
-
-    @classmethod
-    def from_data(cls, data):
-        volmesh = cls()
-        volmesh.data = data
-        return volmesh
-
-    @classmethod
-    def from_json(cls, filepath):
-        volmesh = cls()
-        data = None
-        with open(filepath, 'rb') as fp:
-            data = json.load(fp)
-        if data:
-            volmesh.data = data
-        return volmesh
+    # --------------------------------------------------------------------------
 
     @classmethod
     def from_obj(cls, filepath):
@@ -380,56 +341,74 @@ under construction
             cells.append(cell)
         return cls.from_vertices_and_cells(vertices, cells)
 
-    # --------------------------------------------------------------------------
-    # special
-    # --------------------------------------------------------------------------
+    @classmethod
+    def from_vertices_and_cells(cls, vertices, cells):
+        mesh = cls()
+        for x, y, z in vertices:
+            mesh.add_vertex(x=x, y=y, z=z)
+        for halffaces in cells:
+            mesh.add_cell(halffaces)
+        return mesh
 
-    # def dual(self, cls):
-    #     network = cls()
-    #     for ckey in self.cell:
-    #         x, y, z = self.cell_center(ckey)
-    #         network.add_vertex(key=ckey, x=x, y=y, z=z)
-    #         for nbr in self.cell_neighbours(ckey):
-    #             if nbr in network.edge[ckey]:
-    #                 continue
-    #             if nbr in network.edge and ckey in network.edge[nbr]:
-    #                 continue
-    #             network.add_edge(ckey, nbr)
-    #     return network
+    @classmethod
+    def from_vertices_and_edges(cls, vertices, edges):
+        raise NotImplementedError
 
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
+    # --------------------------------------------------------------------------
     # converters
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-
-    def to_data(self):
-        return self.data
-
-    def to_json(self, filepath):
-        with open(filepath, 'wb+') as fp:
-            json.dump(self.data, fp)
+    # --------------------------------------------------------------------------
 
     def to_obj(self, filepath):
         raise NotImplementedError
 
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
+    # --------------------------------------------------------------------------
     # helpers
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
+    # --------------------------------------------------------------------------
+
+    def _get_vertexkey(self, key):
+        if key is None:
+            key = self._max_int_key = self._max_int_key + 1
+        else:
+            try:
+                i = int(key)
+            except (ValueError, TypeError):
+                pass
+            else:
+                if i > self._max_int_key:
+                    self._max_int_key = i
+        if self._key_to_str:
+            return str(key)
+        return key
+
+    def _get_facekey(self, fkey):
+        if fkey is None:
+            fkey = self._max_int_fkey = self._max_int_fkey + 1
+        else:
+            try:
+                i = int(fkey)
+            except (ValueError, TypeError):
+                pass
+            else:
+                if i > self._max_int_fkey:
+                    self._max_int_fkey = i
+        return fkey
+
+    def _get_cellkey(self, ckey):
+        if ckey is None:
+            ckey = self._max_int_ckey = self._max_int_ckey + 1
+        else:
+            try:
+                i = int(ckey)
+            except (ValueError, TypeError):
+                pass
+            else:
+                if i > self._max_int_ckey:
+                    self._max_int_ckey = i
+        return ckey
+
+    def copy(self):
+        cls = type(self)
+        return cls.from_data(deepcopy(self.data))
 
     def clear(self):
         del self.vertex
@@ -446,41 +425,15 @@ under construction
         self._max_int_fkey = -1
         self._max_int_ckey = -1
 
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # modifiers
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
+    # --------------------------------------------------------------------------
+    # builders
+    # --------------------------------------------------------------------------
 
-    def _get_vertexkey(self, key):
-        if key is None:
-            key = self._max_int_key = self._max_int_key + 1
-        else:
-            if int(key) > self._max_int_key:
-                self._max_int_key = int(key)
-        return key
-
-    def _get_facekey(self, fkey):
-        if fkey is None:
-            fkey = self._max_int_fkey = self._max_int_fkey + 1
-        else:
-            if int(fkey) > self._max_int_fkey:
-                self._max_int_fkey = int(fkey)
-        return fkey
-
-    def _get_cellkey(self, ckey):
-        if ckey is None:
-            ckey = self._max_int_ckey = self._max_int_ckey + 1
-        else:
-            if int(ckey) > self._max_int_ckey:
-                self._max_int_ckey = int(ckey)
-        return ckey
+    # add all vertices of a halfface in one go
+    # loop over 3-windows of returned vertex keys
+    # store halffaces as lists
+    # loop over halfface cycles as 3-windows
+    # find unique faces by comparing string versions of sorted vertex lists
 
     def add_vertex(self, vkey=None, attr_dict=None, **kwattr):
         attr = self.default_vertex_attributes.copy()
@@ -565,17 +518,17 @@ under construction
 
         return ckey
 
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # lists and iterators
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
+    # --------------------------------------------------------------------------
+    # modifiers
+    # --------------------------------------------------------------------------
+
+    # --------------------------------------------------------------------------
+    # info
+    # --------------------------------------------------------------------------
+
+    # --------------------------------------------------------------------------
+    # accessors
+    # --------------------------------------------------------------------------
 
     def vertices(self, data=False):
         for key in self.vertex:
@@ -602,50 +555,39 @@ under construction
                 else:
                     yield u, v
 
-    # --------------------------------------------------------------------------
-    # special purpose
-    # --------------------------------------------------------------------------
-
+    # this should return "uique" halfface keys
+    # uniqueness is determined based on string comparison of sorted vertex lists
     def faces(self):
-        faces = []
+        # faces = []
+        # seen = set()
+        # for ckey in self.cells():
+        #     for fkey in self.cell_halffaces(ckey):
+        #         vertices = self.halfface_vertices(fkey, ordered=True)
+        #         vset = frozenset(vertices)
+        #         if vset not in seen:
+        #             faces.append(vertices)
+        #         seen.add(vset)
+        # return faces
         seen = set()
-        for ckey in self.cell:
-            for fkey in self.cell_halffaces(ckey):
-                vertices = self.halfface_vertices(fkey, ordered=True)
-                vset = frozenset(vertices)
-                if vset not in seen:
-                    faces.append(vertices)
-                seen.add(vset)
+        faces = []
+        for fkey in self.halfface:
+            vertices = self.halfface_vertices(fkey)
+            key = "-".join(map(str, sorted(vertices, key=int)))
+            if key not in seen:
+                seen.add(key)
+                faces.append(fkey)
         return faces
 
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # topology
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
+    # --------------------------------------------------------------------------
+    # vertex topology
+    # --------------------------------------------------------------------------
 
     def vertex_neighbours(self, vkey):
         return self.plane[vkey].keys()
 
-    def cell_neighbours(self, ckey):
-        nbrs = []
-        for fkey in self.cell_halffaces(ckey):
-            u   = self.halfface[fkey].iterkeys().next()
-            v   = self.halfface[fkey][u]
-            w   = self.halfface[fkey][v]
-            nbr = self.plane[w][v][u]
-            if nbr is not None:
-                nbrs.append(nbr)
-        return nbrs
-
-    def cell_vertex_neighbours(self, ckey):
-        raise NotImplementedError
+    # --------------------------------------------------------------------------
+    # halfface topology
+    # --------------------------------------------------------------------------
 
     def halfface_cell(self, fkey):
         u = self.halfface[fkey].iterkeys().next()
@@ -675,6 +617,24 @@ under construction
     def halfface_adjacency(self, ckey):
         raise NotImplementedError
 
+    # --------------------------------------------------------------------------
+    # cell topology
+    # --------------------------------------------------------------------------
+
+    def cell_neighbours(self, ckey):
+        nbrs = []
+        for fkey in self.cell_halffaces(ckey):
+            u   = self.halfface[fkey].iterkeys().next()
+            v   = self.halfface[fkey][u]
+            w   = self.halfface[fkey][v]
+            nbr = self.plane[w][v][u]
+            if nbr is not None:
+                nbrs.append(nbr)
+        return nbrs
+
+    def cell_vertex_neighbours(self, ckey):
+        raise NotImplementedError
+
     def cell_halffaces(self, ckey):
         halffaces = set()
         for u in self.cell[ckey]:
@@ -684,7 +644,7 @@ under construction
         return list(halffaces)
 
     def cell_vertices(self, ckey):
-        return list(set([vkey for fkey in self.cell_halffaces(ckey) for vkey in self.halfface_vertices(fkey)]))
+        return list(set([key for fkey in self.cell_halffaces(ckey) for key in self.halfface_vertices(fkey)]))
 
     def cell_edges(self, ckey):
         halfedges = []
@@ -711,27 +671,32 @@ under construction
         vertices, halffaces = self.cell_vertices_and_halffaces(ckey)
         return Mesh.from_vertices_and_faces(vertices, halffaces)
 
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # geometry
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
+    # --------------------------------------------------------------------------
+    # vertex geometry
+    # --------------------------------------------------------------------------
 
     def vertex_coordinates(self, vkey, axes='xyz'):
         attr = self.vertex[vkey]
         return [attr[axis] for axis in axes]
 
+    # --------------------------------------------------------------------------
+    # edge geometry
+    # --------------------------------------------------------------------------
+
     def edge_coordinates(self, u, v, axes='xyz'):
         return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
 
+    # --------------------------------------------------------------------------
+    # face geometry
+    # --------------------------------------------------------------------------
+
     def face_coordinates(self, fkey, axes='xyz'):
-        raise NotImplementedError
+        vertices = self.halfface_vertices(fkey, ordered=True)
+        return [self.vertex_coordinates(key, axes=axes) for key in vertices]
+
+    # --------------------------------------------------------------------------
+    # cell geometry
+    # --------------------------------------------------------------------------
 
     def cell_centroid(self, ckey):
         vkeys = self.cell_vertices(ckey)
@@ -752,155 +717,131 @@ under construction
             attr['y'] *= factor
             attr['z'] *= factor
 
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # attributes
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-
     # --------------------------------------------------------------------------
     # vertex attributes
     # --------------------------------------------------------------------------
 
-    def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        self.default_vertex_attributes.update(attr_dict)
-        for key in self.vertex:
-            attr = attr_dict.copy()
-            attr.update(self.vertex[key])
-            self.vertex[key] = attr
+    # def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwattr)
+    #     self.default_vertex_attributes.update(attr_dict)
+    #     for key in self.vertex:
+    #         attr = attr_dict.copy()
+    #         attr.update(self.vertex[key])
+    #         self.vertex[key] = attr
 
-    def set_vertex_attribute(self, key, name, value):
-        self.vertex[key][name] = value
+    # def set_vertex_attribute(self, key, name, value):
+    #     self.vertex[key][name] = value
 
-    def set_vertex_attributes(self, key, attr_dict=None, **kwattr):
-        attr_dict = attr_dict or {}
-        attr_dict.update(kwattr)
-        self.vertex[key].update(attr_dict)
+    # def set_vertex_attributes(self, key, attr_dict=None, **kwattr):
+    #     attr_dict = attr_dict or {}
+    #     attr_dict.update(kwattr)
+    #     self.vertex[key].update(attr_dict)
 
-    def set_vertices_attribute(self, name, value, keys=None):
-        if not keys:
-            for key, attr in self.vertices_iter(True):
-                attr[name] = value
-        else:
-            for key in keys:
-                self.vertex[key][name] = value
+    # def set_vertices_attribute(self, name, value, keys=None):
+    #     if not keys:
+    #         for key, attr in self.vertices_iter(True):
+    #             attr[name] = value
+    #     else:
+    #         for key in keys:
+    #             self.vertex[key][name] = value
 
-    def set_vertices_attributes(self, keys=None, attr_dict=None, **kwattr):
-        attr_dict = attr_dict or {}
-        attr_dict.update(kwattr)
-        if not keys:
-            for key, attr in self.vertices_iter(True):
-                attr.update(attr_dict)
-        else:
-            for key in keys:
-                self.vertex[key].update(attr_dict)
+    # def set_vertices_attributes(self, keys=None, attr_dict=None, **kwattr):
+    #     attr_dict = attr_dict or {}
+    #     attr_dict.update(kwattr)
+    #     if not keys:
+    #         for key, attr in self.vertices_iter(True):
+    #             attr.update(attr_dict)
+    #     else:
+    #         for key in keys:
+    #             self.vertex[key].update(attr_dict)
 
-    def get_vertex_attribute(self, key, name, default=None):
-        return self.vertex[key].get(name, default)
+    # def get_vertex_attribute(self, key, name, default=None):
+    #     return self.vertex[key].get(name, default)
 
-    def get_vertex_attributes(self, key, names, defaults=None):
-        if not defaults:
-            defaults = [None] * len(names)
-        return [self.vertex[key].get(name, default) for name, default in zip(names, defaults)]
+    # def get_vertex_attributes(self, key, names, defaults=None):
+    #     if not defaults:
+    #         defaults = [None] * len(names)
+    #     return [self.vertex[key].get(name, default) for name, default in zip(names, defaults)]
 
-    def get_vertices_attribute(self, name, default=None, keys=None):
-        if not keys:
-            return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
-        return [self.vertex[key].get(name, default) for key in keys]
+    # def get_vertices_attribute(self, name, default=None, keys=None):
+    #     if not keys:
+    #         return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
+    #     return [self.vertex[key].get(name, default) for key in keys]
 
-    def get_vertices_attributes(self, names, defaults=None, keys=None):
-        if not defaults:
-            defaults = [None] * len(names)
-        temp = zip(names, defaults)
-        if not keys:
-            return [[attr.get(name, default) for name, default in temp] for key, attr in self.vertices_iter(True)]
-        return [[self.vertex[key].get(name, default) for name, default in temp] for key in keys]
+    # def get_vertices_attributes(self, names, defaults=None, keys=None):
+    #     if not defaults:
+    #         defaults = [None] * len(names)
+    #     temp = zip(names, defaults)
+    #     if not keys:
+    #         return [[attr.get(name, default) for name, default in temp] for key, attr in self.vertices_iter(True)]
+    #     return [[self.vertex[key].get(name, default) for name, default in temp] for key in keys]
 
     # --------------------------------------------------------------------------
     # edge attributes
     # --------------------------------------------------------------------------
 
-    def update_default_edge_attributes(self, attr_dict=None, **kwargs):
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwargs)
-        self.default_edge_attributes.update(attr_dict)
-        for u, v in self.edges_iter():
-            attr = attr_dict.copy()
-            attr.update(self.edge[u][v])
-            self.edge[u][v] = attr
+    # def update_default_edge_attributes(self, attr_dict=None, **kwargs):
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwargs)
+    #     self.default_edge_attributes.update(attr_dict)
+    #     for u, v in self.edges_iter():
+    #         attr = attr_dict.copy()
+    #         attr.update(self.edge[u][v])
+    #         self.edge[u][v] = attr
 
-    def set_edge_attribute(self, u, v, name, value):
-        self.edge[u][v][name] = value
+    # def set_edge_attribute(self, u, v, name, value):
+    #     self.edge[u][v][name] = value
 
-    def set_edge_attributes(self, u, v, attr_dict=None, **kwattr):
-        attr_dict = attr_dict or kwattr
-        attr_dict.update(kwattr)
-        self.edge[u][v].update(attr_dict)
+    # def set_edge_attributes(self, u, v, attr_dict=None, **kwattr):
+    #     attr_dict = attr_dict or kwattr
+    #     attr_dict.update(kwattr)
+    #     self.edge[u][v].update(attr_dict)
 
-    def set_edges_attribute(self, name, value, keys=None):
-        if not keys:
-            for u, v, attr in self.edges_iter(True):
-                attr[name] = value
-        else:
-            for u, v in keys:
-                self.edge[u][v][name] = value
+    # def set_edges_attribute(self, name, value, keys=None):
+    #     if not keys:
+    #         for u, v, attr in self.edges_iter(True):
+    #             attr[name] = value
+    #     else:
+    #         for u, v in keys:
+    #             self.edge[u][v][name] = value
 
-    def set_edges_attributes(self, keys=None, attr_dict=None, **kwattr):
-        attr_dict = attr_dict or {}
-        attr_dict.update(kwattr)
-        if not keys:
-            for u, v, attr in self.edges_iter(True):
-                attr.update(attr_dict)
-        else:
-            for u, v in keys:
-                self.edge[u][v].update(attr_dict)
+    # def set_edges_attributes(self, keys=None, attr_dict=None, **kwattr):
+    #     attr_dict = attr_dict or {}
+    #     attr_dict.update(kwattr)
+    #     if not keys:
+    #         for u, v, attr in self.edges_iter(True):
+    #             attr.update(attr_dict)
+    #     else:
+    #         for u, v in keys:
+    #             self.edge[u][v].update(attr_dict)
 
-    def get_edge_attribute(self, u, v, name, default=None):
-        if u in self.edge[v]:
-            return self.edge[v][u].get(name, default)
-        return self.edge[u][v].get(name, default)
+    # def get_edge_attribute(self, u, v, name, default=None):
+    #     if u in self.edge[v]:
+    #         return self.edge[v][u].get(name, default)
+    #     return self.edge[u][v].get(name, default)
 
-    def get_edge_attributes(self, u, v, names, defaults=None):
-        if not defaults:
-            defaults = [None] * len(names)
-        if v in self.edge[u]:
-            return [self.edge[u][v].get(name, default) for name, default in zip(names, defaults)]
-        return [self.edge[v][u].get(name, default) for name, default in zip(names, defaults)]
+    # def get_edge_attributes(self, u, v, names, defaults=None):
+    #     if not defaults:
+    #         defaults = [None] * len(names)
+    #     if v in self.edge[u]:
+    #         return [self.edge[u][v].get(name, default) for name, default in zip(names, defaults)]
+    #     return [self.edge[v][u].get(name, default) for name, default in zip(names, defaults)]
 
-    def get_edges_attribute(self, name, default=None, keys=None):
-        if not keys:
-            return [attr.get(name, default) for u, v, attr in self.edges_iter(True)]
-        return [self.edge[u][v].get(name, default) for u, v in keys]
+    # def get_edges_attribute(self, name, default=None, keys=None):
+    #     if not keys:
+    #         return [attr.get(name, default) for u, v, attr in self.edges_iter(True)]
+    #     return [self.edge[u][v].get(name, default) for u, v in keys]
 
-    def get_edges_attributes(self, names, defaults=None, keys=None):
-        if not defaults:
-            defaults = [None] * len(names)
-        temp = zip(names, defaults)
-        if not keys:
-            return [[attr.get(name, default) for name, default in temp] for u, v, attr in self.edges_iter(True)]
-        return [[self.edge[u][v].get(name, default) for name, default in temp] for u, v in keys]
-
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # visualisation
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
-    # **************************************************************************
+    # def get_edges_attributes(self, names, defaults=None, keys=None):
+    #     if not defaults:
+    #         defaults = [None] * len(names)
+    #     temp = zip(names, defaults)
+    #     if not keys:
+    #         return [[attr.get(name, default) for name, default in temp] for u, v, attr in self.edges_iter(True)]
+    #     return [[self.edge[u][v].get(name, default) for name, default in temp] for u, v in keys]
 
 
 # ==============================================================================

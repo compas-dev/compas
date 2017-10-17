@@ -19,14 +19,14 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = ['VolMeshArtist']
+__all__ = ['MeshArtist']
 
 
-class VolMeshArtist(ArtistInterface):
+class MeshArtist(ArtistInterface):
     """"""
 
-    def __init__(self, volmesh, layer=None):
-        self.volmesh = volmesh
+    def __init__(self, mesh, layer=None):
+        self.mesh = mesh
         self.layer = layer
         self.defaults = {
             'vertex.color' : (255, 0, 0),
@@ -53,7 +53,7 @@ class VolMeshArtist(ArtistInterface):
 
     def clear_vertices(self, keys=None):
         if not keys:
-            name = '{}.vertex.*'.format(self.volmesh.attributes['name'])
+            name = '{}.vertex.*'.format(self.mesh.attributes['name'])
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
@@ -65,7 +65,7 @@ class VolMeshArtist(ArtistInterface):
 
     def clear_faces(self, keys=None):
         if not keys:
-            name = '{}.face.*'.format(self.volmesh.attributes['name'])
+            name = '{}.face.*'.format(self.mesh.attributes['name'])
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
@@ -77,7 +77,7 @@ class VolMeshArtist(ArtistInterface):
 
     def clear_edges(self, keys=None):
         if not keys:
-            name = '{}.edge.*'.format(self.volmesh.attributes['name'])
+            name = '{}.edge.*'.format(self.mesh.attributes['name'])
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
@@ -88,7 +88,7 @@ class VolMeshArtist(ArtistInterface):
         compas_rhino.delete_objects(guids)
 
     def draw_vertices(self, keys=None, color=None):
-        """Draw a selection of vertices of the volmesh.
+        """Draw a selection of vertices of the mesh.
 
         Parameters
         ----------
@@ -109,27 +109,27 @@ class VolMeshArtist(ArtistInterface):
         Notes
         -----
         The vertices are named using the following template:
-        ``"{}.vertex.{}".format(self.volmesh.attributes['name'], key)``.
-        This name is used afterwards to identify vertices of the volmeshin the Rhino model.
+        ``"{}.vertex.{}".format(self.mesh.attributes['name'], key)``.
+        This name is used afterwards to identify vertices of the meshin the Rhino model.
 
         Examples
         --------
         >>>
 
         """
-        keys = keys or list(self.volmesh.vertices())
+        keys = keys or list(self.mesh.vertices())
         colordict = to_valuedict(keys, color, self.defaults['vertex.color'])
         points = []
         for key in keys:
             points.append({
-                'pos'  : self.volmesh.vertex_coordinates(key),
-                'name' : self.volmesh.vertex_name(key),
+                'pos'  : self.mesh.vertex_coordinates(key),
+                'name' : self.mesh.vertex_name(key),
                 'color': colordict[key]
             })
         return compas_rhino.xdraw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_faces(self, fkeys=None, color=None):
-        """Draw a selection of faces of the volmesh.
+        """Draw a selection of faces of the mesh.
 
         Parameters
         ----------
@@ -150,27 +150,27 @@ class VolMeshArtist(ArtistInterface):
         Notes
         -----
         The faces are named using the following template:
-        ``"{}.face.{}".format(self.volmesh.attributes['name'], key)``.
-        This name is used afterwards to identify faces of the volmesh in the Rhino model.
+        ``"{}.face.{}".format(self.mesh.attributes['name'], key)``.
+        This name is used afterwards to identify faces of the mesh in the Rhino model.
 
         Examples
         --------
         >>>
 
         """
-        fkeys = fkeys or list(self.volmesh.faces())
+        fkeys = fkeys or list(self.mesh.faces())
         colordict = to_valuedict(fkeys, color, self.defaults['face.color'])
         faces = []
         for fkey in fkeys:
             faces.append({
-                'points': self.volmesh.face_coordinates(fkey),
-                'name'  : "{}.face.{}".format(self.volmesh.attributes['name'], fkey),
+                'points': self.mesh.face_coordinates(fkey),
+                'name'  : "{}.face.{}".format(self.mesh.attributes['name'], fkey),
                 'color' : colordict[fkey],
             })
         return compas_rhino.xdraw_faces(faces, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, keys=None, color=None):
-        """Draw a selection of edges of the volmesh.
+        """Draw a selection of edges of the mesh.
 
         Parameters
         ----------
@@ -191,48 +191,45 @@ class VolMeshArtist(ArtistInterface):
         Notes
         -----
         All edges are named using the following template:
-        ``"{}.edge.{}-{}".fromat(self.volmesh.attributes['name'], u, v)``.
-        This name is used afterwards to identify edges of the volmesh in the Rhino model.
+        ``"{}.edge.{}-{}".fromat(self.mesh.attributes['name'], u, v)``.
+        This name is used afterwards to identify edges of the mesh in the Rhino model.
 
         Examples
         --------
         >>> artist.draw_edges()
         >>> artist.draw_edges(color='#ff0000')
         >>> artist.draw_edges(color=(255, 0, 0))
-        >>> artist.draw_edges(keys=self.volmesh.edges_on_boundary())
-        >>> artist.draw_edges(color={(u, v): '#00ff00' for u, v in self.volmesh.edges_on_boundary()})
+        >>> artist.draw_edges(keys=self.mesh.edges_on_boundary())
+        >>> artist.draw_edges(color={(u, v): '#00ff00' for u, v in self.mesh.edges_on_boundary()})
 
         """
-        keys = keys or list(self.volmesh.edges())
+        keys = keys or list(self.mesh.edges())
         colordict = to_valuedict(keys, color, self.defaults['edge.color'])
         lines = []
         for u, v in keys:
             lines.append({
-                'start': self.volmesh.vertex_coordinates(u),
-                'end'  : self.volmesh.vertex_coordinates(v),
+                'start': self.mesh.vertex_coordinates(u),
+                'end'  : self.mesh.vertex_coordinates(v),
                 'color': colordict[(u, v)],
-                'name' : self.volmesh.edge_name(u, v)
+                'name' : self.mesh.edge_name(u, v)
             })
         return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
-    def draw_cells(self, keys=None, color=None):
-        raise NotImplementedError
-
     def draw_vertexlabels(self, text=None, color=None):
-        """Draw labels for selected vertices of the volmesh.
+        """Draw labels for selected vertices of the mesh.
 
         Parameters
         ----------
         text : dict
             A dictionary of vertex labels as key-text pairs.
-            The default value is ``None``, in which case every vertex of the volmesh
+            The default value is ``None``, in which case every vertex of the mesh
             will be labelled with its key.
         color : str, tuple, dict
             The color sepcification of the labels.
             String values are interpreted as hex colors (e.g. ``'#ff0000'`` for red).
             Tuples are interpreted as RGB component specifications (e.g. ``(255, 0, 0) for red``.
             If a dictionary of specififcations is provided, the keys of the
-            should refer to vertex keys in the volmesh and the values should be color
+            should refer to vertex keys in the mesh and the values should be color
             specifications in the form of strings or tuples.
             The default value is ``None``, in which case the labels are assigned
             the default vertex color (``self.defaults['vertex.color']``).
@@ -240,7 +237,7 @@ class VolMeshArtist(ArtistInterface):
         Notes
         -----
         All labels are assigned a name using the folling template:
-        ``"{}.vertex.{}".format(self.volmesh.attributes['name'], key)``.
+        ``"{}.vertex.{}".format(self.mesh.attributes['name'], key)``.
 
         Examples
         --------
@@ -248,7 +245,7 @@ class VolMeshArtist(ArtistInterface):
 
         """
         if text is None:
-            textdict = {key: str(key) for key in self.volmesh.vertices()}
+            textdict = {key: str(key) for key in self.mesh.vertices()}
         elif isinstance(text, dict):
             textdict = text
         else:
@@ -257,15 +254,15 @@ class VolMeshArtist(ArtistInterface):
         labels = []
         for key, text in iter(textdict.items()):
             labels.append({
-                'pos'  : self.volmesh.vertex_coordinates(key),
-                'name' : self.volmesh.vertex_name(key),
+                'pos'  : self.mesh.vertex_coordinates(key),
+                'name' : self.mesh.vertex_name(key),
                 'color': colordict[key],
                 'text' : textdict[key],
             })
         return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_facelabels(self, text=None, color=None):
-        """Draw labels for selected faces of the volmesh.
+        """Draw labels for selected faces of the mesh.
 
         Parameters
         ----------
@@ -278,7 +275,7 @@ class VolMeshArtist(ArtistInterface):
 
         """
         if text is None:
-            textdict = {key: str(key) for key in self.volmesh.faces()}
+            textdict = {key: str(key) for key in self.mesh.faces()}
         elif isinstance(text, dict):
             textdict = text
         else:
@@ -287,15 +284,15 @@ class VolMeshArtist(ArtistInterface):
         labels = []
         for key, text in iter(textdict.items()):
             labels.append({
-                'pos'  : self.volmesh.face_center(key),
-                'name' : self.volmesh.face_name(key),
+                'pos'  : self.mesh.face_center(key),
+                'name' : self.mesh.face_name(key),
                 'color': colordict[key],
                 'text' : textdict[key],
             })
         return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
-        """Draw labels for selected edges of the volmesh.
+        """Draw labels for selected edges of the mesh.
 
         Parameters
         ----------
@@ -308,7 +305,7 @@ class VolMeshArtist(ArtistInterface):
 
         """
         if text is None:
-            textdict = {(u, v): "{}-{}".format(u, v) for u, v in self.volmesh.edges()}
+            textdict = {(u, v): "{}-{}".format(u, v) for u, v in self.mesh.edges()}
         elif isinstance(text, dict):
             textdict = text
         else:
@@ -317,8 +314,8 @@ class VolMeshArtist(ArtistInterface):
         labels = []
         for (u, v), text in iter(textdict.items()):
             labels.append({
-                'pos'  : self.volmesh.edge_midpoint(u, v),
-                'name' : self.volmesh.edge_name(u, v),
+                'pos'  : self.mesh.edge_midpoint(u, v),
+                'name' : self.mesh.edge_name(u, v),
                 'color': colordict[(u, v)],
                 'text' : textdict[(u, v)],
             })
@@ -331,14 +328,16 @@ class VolMeshArtist(ArtistInterface):
 
 if __name__ == "__main__":
 
-    import compas
+    from compas.datastructures import Mesh
+    from compas.geometry import Polyhedron
 
-    from compas.datastructures import VolMesh
-    from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
+    from compas_rhino.helpers.artists.meshartist import MeshArtist
 
-    volmesh = VolMesh.from_obj(compas.get_data('boxes.obj'))
+    poly = Polyhedron.generate(12)
 
-    artist = VolMeshArtist(volmesh, layer='VolMeshArtist')
+    mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
+
+    artist = MeshArtist(mesh, layer='MeshArtist')
 
     artist.clear_layer()
 
@@ -351,8 +350,8 @@ if __name__ == "__main__":
     artist.draw_faces()
     artist.redraw(1.0)
 
-#    artist.draw_facelabels()
-#    artist.redraw(1.0)
+    artist.draw_facelabels()
+    artist.redraw(1.0)
 
     artist.draw_edges()
     artist.redraw(1.0)

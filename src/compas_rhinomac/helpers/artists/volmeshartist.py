@@ -3,7 +3,7 @@ import time
 from compas.utilities import to_valuedict
 from compas.cad import ArtistInterface
 
-import compas_rhino
+import compas_rhinomac
 
 try:
     import rhinoscriptsyntax as rs
@@ -44,7 +44,7 @@ class VolMeshArtist(ArtistInterface):
     def clear_layer(self):
         """Clear the main layer of the artist."""
         if self.layer:
-            compas_rhino.clear_layer(self.layer)
+            compas_rhinomac.clear_layer(self.layer)
 
     def clear(self):
         self.clear_vertices()
@@ -54,38 +54,38 @@ class VolMeshArtist(ArtistInterface):
     def clear_vertices(self, keys=None):
         if not keys:
             name = '{}.vertex.*'.format(self.volmesh.attributes['name'])
-            guids = compas_rhino.get_objects(name=name)
+            guids = compas_rhinomac.get_objects(name=name)
         else:
             guids = []
             for key in keys:
                 name = '{}.vertex.{}'.format(self.attributes['name'], key)
-                guid = compas_rhino.get_object(name=name)
+                guid = compas_rhinomac.get_object(name=name)
                 guids.append(guid)
-        compas_rhino.delete_objects(guids)
+        compas_rhinomac.delete_objects(guids)
 
     def clear_faces(self, keys=None):
         if not keys:
             name = '{}.face.*'.format(self.volmesh.attributes['name'])
-            guids = compas_rhino.get_objects(name=name)
+            guids = compas_rhinomac.get_objects(name=name)
         else:
             guids = []
             for key in keys:
                 name = '{}.face.{}'.format(self.attributes['name'], key)
-                guid = compas_rhino.get_object(name=name)
+                guid = compas_rhinomac.get_object(name=name)
                 guids.append(guid)
-        compas_rhino.delete_objects(guids)
+        compas_rhinomac.delete_objects(guids)
 
     def clear_edges(self, keys=None):
         if not keys:
             name = '{}.edge.*'.format(self.volmesh.attributes['name'])
-            guids = compas_rhino.get_objects(name=name)
+            guids = compas_rhinomac.get_objects(name=name)
         else:
             guids = []
             for u, v in keys:
                 name = '{}.edge.{}-{}'.format(self.attributes['name'], u, v)
-                guid = compas_rhino.get_object(name=name)
+                guid = compas_rhinomac.get_object(name=name)
                 guids.append(guid)
-        compas_rhino.delete_objects(guids)
+        compas_rhinomac.delete_objects(guids)
 
     def draw_vertices(self, keys=None, color=None):
         """Draw a selection of vertices of the volmesh.
@@ -126,7 +126,7 @@ class VolMeshArtist(ArtistInterface):
                 'name' : self.volmesh.vertex_name(key),
                 'color': colordict[key]
             })
-        return compas_rhino.xdraw_points(points, layer=self.layer, clear=False, redraw=False)
+        return compas_rhinomac.xdraw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_faces(self, fkeys=None, color=None):
         """Draw a selection of faces of the volmesh.
@@ -167,7 +167,7 @@ class VolMeshArtist(ArtistInterface):
                 'name'  : "{}.face.{}".format(self.volmesh.attributes['name'], fkey),
                 'color' : colordict[fkey],
             })
-        return compas_rhino.xdraw_faces(faces, layer=self.layer, clear=False, redraw=False)
+        return compas_rhinomac.xdraw_faces(faces, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, keys=None, color=None):
         """Draw a selection of edges of the volmesh.
@@ -213,10 +213,7 @@ class VolMeshArtist(ArtistInterface):
                 'color': colordict[(u, v)],
                 'name' : self.volmesh.edge_name(u, v)
             })
-        return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
-
-    def draw_cells(self, keys=None, color=None):
-        raise NotImplementedError
+        return compas_rhinomac.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_vertexlabels(self, text=None, color=None):
         """Draw labels for selected vertices of the volmesh.
@@ -262,7 +259,7 @@ class VolMeshArtist(ArtistInterface):
                 'color': colordict[key],
                 'text' : textdict[key],
             })
-        return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        return compas_rhinomac.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_facelabels(self, text=None, color=None):
         """Draw labels for selected faces of the volmesh.
@@ -292,7 +289,7 @@ class VolMeshArtist(ArtistInterface):
                 'color': colordict[key],
                 'text' : textdict[key],
             })
-        return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        return compas_rhinomac.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
         """Draw labels for selected edges of the volmesh.
@@ -322,7 +319,7 @@ class VolMeshArtist(ArtistInterface):
                 'color': colordict[(u, v)],
                 'text' : textdict[(u, v)],
             })
-        return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        return compas_rhinomac.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
 
 # ==============================================================================
@@ -334,7 +331,7 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import VolMesh
-    from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
+    from compas_rhinomac.helpers.artists.volmeshartist import VolMeshArtist
 
     volmesh = VolMesh.from_obj(compas.get_data('boxes.obj'))
 
@@ -351,8 +348,8 @@ if __name__ == "__main__":
     artist.draw_faces()
     artist.redraw(1.0)
 
-#    artist.draw_facelabels()
-#    artist.redraw(1.0)
+    artist.draw_facelabels()
+    artist.redraw(1.0)
 
     artist.draw_edges()
     artist.redraw(1.0)
