@@ -1,10 +1,5 @@
-from compas_blender.utilities.layers import layer_mask
-from compas_blender.utilities.objects import deselect_all_objects
-
-try:
-    import bpy
-except ImportError:
-    pass
+from compas.cad import PointGeometryInterface
+from compas_blender.utilities import select_point
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
@@ -13,26 +8,54 @@ __license__    = 'MIT License'
 __email__      = 'liew@arch.ethz.ch'
 
 
-__all__ = [
-    'add_empty'
-]
+__all__ = ['BlenderPoint']
 
 
-def add_empty(type='PLAIN_AXES', location=[0, 0, 0], layer=0, radius=1):
-    """ Creates an Empty object.
+class BlenderPoint(PointGeometryInterface):
+    """"""
 
-    Parameters:
-        type (str): Display type: 'PLAIN_AXES', 'ARROWS', 'SINGLE_ARROW', 'CIRCLE', 'CUBE', 'SPHERE', 'CONE'.
-        location (list): Co-ordinates for Empty.
-        layer (int): Layer number.
-        radius (float): Size of the Empty.
+    def __init__(self, object):
+        self.guid = object.name
+        self.object = object
+        self.geometry = None
+        self.attributes = {}
+        self.type = self.object.type
 
-    Returns:
-        obj: Created Empty object.
-    """
-    bpy.ops.object.empty_add(type=type, radius=radius, view_align=False, location=location, layers=layer_mask(layer))
-    deselect_all_objects()
-    return bpy.context.object
+    @classmethod
+    def from_selection(cls):
+        object = select_point()
+        return cls(object)
+
+    @property
+    def xyz(self):
+        return list(self.object.location)
+
+    def hide(self):
+        self.object.hide = True
+
+    def show(self):
+        self.object.hide = False
+
+    def select(self):
+        self.object.select = True
+
+    def unselect(self):
+        self.object.select = False
+
+    def closest_point(self, point, maxdist=None):
+        return self.xyz
+
+    def closest_points(self, points, maxdist=None):
+        return [self.closest_point(point, maxdist) for point in points]
+
+    def project_to_curve(self, curve, direction=(0, 0, 1)):
+        raise NotImplementedError
+
+    def project_to_surface(self, surface, direction=(0, 0, 1)):
+        raise NotImplementedError
+
+    def project_to_mesh(self, mesh, direction=(0, 0, 1)):
+        raise NotImplementedError
 
 
 # ==============================================================================
@@ -41,8 +64,12 @@ def add_empty(type='PLAIN_AXES', location=[0, 0, 0], layer=0, radius=1):
 
 if __name__ == "__main__":
 
-    add_empty(type='PLAIN_AXES', location=[0, 0, 1])
-    add_empty(type='ARROWS', location=[2, 0, 1])
-    add_empty(type='SINGLE_ARROW', location=[4, 0, 1])
-    add_empty(type='CUBE', location=[6, 0, 1])
-    add_empty(type='SPHERE', location=[8, 0, 1])
+    point = BlenderPoint.from_selection()
+
+    print(point.guid)
+    print(point.object)
+    print(point.geometry)
+    print(point.attributes)
+    print(point.type)
+    print(point.xyz)
+    point.unselect()

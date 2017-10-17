@@ -1,7 +1,30 @@
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+from compas.cad import SurfaceGeometryInterface
 
 
-__all__ = []
+__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'liew@arch.ethz.ch'
+
+
+__all__ = ['BlenderSurface']
+
+
+class BlenderSurface(SurfaceGeometryInterface):
+    """"""
+
+    def __init__(self, object):
+        self.guid = object.name
+        self.mesh = object
+        self.geometry = None
+        self.attributes = {}
+        self.type = self.mesh.type
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == '__main__':
+
+    pass

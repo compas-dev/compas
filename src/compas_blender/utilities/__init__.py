@@ -35,6 +35,10 @@ layers
 .. autosummary::
     :toctree: generated/
 
+    clear_layer
+    clear_layers
+    layer_mask
+
 
 misc
 ----
@@ -58,12 +62,12 @@ objects
 
 """
 
-from .document import *
+# from .document import *
 from .objects import *
 from .layers import *
 from .drawing import *
-from .animation import *
-from .misc import *
-from .modifiers import *
+# from .animation import *
+# from .misc import *
+# from .modifiers import *
 
 __all__ = []

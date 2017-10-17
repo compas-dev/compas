@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
         @staticmethod
         def test():
-            print B.__metaclass__
+            print(B.__metaclass__)
 
     b = B()
 
