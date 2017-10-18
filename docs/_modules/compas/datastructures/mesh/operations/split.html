@@ -113,8 +113,57 @@
     <span class="k">return</span> <span class="n">w</span></div>
 
 
-<div class="viewcode-block" id="trimesh_split_edge"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.trimesh_split_edge.html#compas.datastructures.trimesh_split_edge">[docs]</a><span class="k">def</span> <span class="nf">trimesh_split_edge</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">interpolate_attr</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">""""""</span>
+<div class="viewcode-block" id="trimesh_split_edge"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.trimesh_split_edge.html#compas.datastructures.trimesh_split_edge">[docs]</a><span class="k">def</span> <span class="nf">trimesh_split_edge</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">"""Split an edge of a triangle mesh.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : compas.datastructures.Mesh</span>
+<span class="sd">        A mesh object.</span>
+<span class="sd">    u : hashable</span>
+<span class="sd">        Identifier of the first vertex.</span>
+<span class="sd">    v : hashable</span>
+<span class="sd">        Identifier of the second vertex.</span>
+<span class="sd">    t : float (0.5)</span>
+<span class="sd">        The location of the split point along the original edge.</span>
+<span class="sd">        The value should be between 0.0 and 1.0</span>
+<span class="sd">    allow_boundary : bool (False)</span>
+<span class="sd">        Allow splits on boundary edges.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This operation only works as expected for triangle meshes.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        import compas</span>
+<span class="sd">        from compas.datastructures import Mesh</span>
+<span class="sd">        from compas.datastructures import mesh_split_face</span>
+<span class="sd">        from compas.datastructures import trimesh_split_edge</span>
+
+<span class="sd">        from compas.visualization import MeshPlotter</span>
+
+<span class="sd">        mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
+
+<span class="sd">        for fkey in list(mesh.faces()):</span>
+<span class="sd">            a, b, c, d = mesh.face_vertices(fkey)</span>
+<span class="sd">            mesh_split_face(mesh, fkey, b, d)</span>
+
+<span class="sd">        split = trimesh_split_edge(mesh, 17, 30)</span>
+
+<span class="sd">        facecolor = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}</span>
+
+<span class="sd">        plotter = MeshPlotter(mesh)</span>
+
+<span class="sd">        plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2, facecolor=facecolor)</span>
+<span class="sd">        plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})</span>
+
+<span class="sd">        plotter.show()</span>
+
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'t should be greater than 0.0.'</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
@@ -207,27 +256,26 @@
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">compas</span>
-    <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
-    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.meshplotter</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">mesh_split_face</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">trimesh_split_edge</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">)</span>
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
 
-    <span class="n">mesh_split_edge</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()):</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="n">mesh_split_face</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="mi">32</span><span class="p">][</span><span class="mi">36</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="mi">36</span><span class="p">][</span><span class="mi">32</span><span class="p">])</span>
+    <span class="n">split</span> <span class="o">=</span> <span class="n">trimesh_split_edge</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="mi">36</span><span class="p">][</span><span class="mi">17</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="mi">17</span><span class="p">][</span><span class="mi">36</span><span class="p">])</span>
+    <span class="n">facecolor</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#cccccc'</span> <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="n">split</span> <span class="k">else</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
 
     <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()},</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">facecolor</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">fkey</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()})</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>

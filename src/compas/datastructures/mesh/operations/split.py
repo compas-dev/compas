@@ -76,11 +76,55 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     return w
 
 
-def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False, interpolate_attr=False):
+def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     """Split an edge of a triangle mesh.
 
     Parameters
     ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    u : hashable
+        Identifier of the first vertex.
+    v : hashable
+        Identifier of the second vertex.
+    t : float (0.5)
+        The location of the split point along the original edge.
+        The value should be between 0.0 and 1.0
+    allow_boundary : bool (False)
+        Allow splits on boundary edges.
+
+    Note
+    ----
+    This operation only works as expected for triangle meshes.
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+        from compas.datastructures import Mesh
+        from compas.datastructures import mesh_split_face
+        from compas.datastructures import trimesh_split_edge
+
+        from compas.visualization import MeshPlotter
+
+        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+
+        for fkey in list(mesh.faces()):
+            a, b, c, d = mesh.face_vertices(fkey)
+            mesh_split_face(mesh, fkey, b, d)
+
+        split = trimesh_split_edge(mesh, 17, 30)
+
+        facecolor = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
+
+        plotter = MeshPlotter(mesh)
+
+        plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2, facecolor=facecolor)
+        plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
+
+        plotter.show()
 
     """
     if t <= 0.0:
@@ -175,26 +219,25 @@ def mesh_split_face(mesh, fkey, u, v):
 if __name__ == "__main__":
 
     import compas
-    from compas.datastructures.mesh.mesh import Mesh
-    from compas.visualization.plotters.meshplotter import MeshPlotter
+    from compas.datastructures import Mesh
+    from compas.datastructures import mesh_split_face
+    from compas.datastructures import trimesh_split_edge
 
-    data = compas.get_data('faces.obj')
-    mesh = Mesh.from_obj(data)
+    from compas.visualization import MeshPlotter
 
-    mesh_split_edge(mesh, 17, 32)
+    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-    print(mesh.face_vertices(11, ordered=True))
-    print(mesh.face_vertices(16, ordered=True))
+    for fkey in list(mesh.faces()):
+        a, b, c, d = mesh.face_vertices(fkey)
+        mesh_split_face(mesh, fkey, b, d)
 
-    print(mesh.halfedge[32][36])
-    print(mesh.halfedge[36][32])
+    split = trimesh_split_edge(mesh, 17, 30)
 
-    print(mesh.halfedge[36][17])
-    print(mesh.halfedge[17][36])
+    facecolor = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
 
     plotter = MeshPlotter(mesh)
 
-    plotter.draw_vertices()
-    plotter.draw_faces()
+    plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2, facecolor=facecolor)
+    plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
 
     plotter.show()
