@@ -49,18 +49,19 @@
 <col class="field-body"/>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mesh</strong> (<em>Mesh</em>) – A mesh object.</li>
 <li><strong>u</strong> (<em>str</em>) – The key of the first vertex of the edge.</li>
 <li><strong>v</strong> (<em>str</em>) – The key of the second vertex of the edge.</li>
-<li><strong>t</strong> (<em>float</em>) – The position of the inserted vertex.</li>
-<li><strong>allow_boundary</strong> (<em>bool</em>) – Split boundary edges, if True. Defaults to
-False.</li>
+<li><strong>t</strong> (<em>float (0.5)</em>) – The position of the inserted vertex.
+The value should be between 0.0 and 1.0</li>
+<li><strong>allow_boundary</strong> (<em>bool (False)</em>) – Split edges on the boundary.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>str</em> – The key of the inserted vertex.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>int</em> – The key of the inserted vertex.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal">ValueError</code> – If <cite>u</cite> and <cite>v</cite> are not neighbours.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal">ValueError</code> – If u and v are not neighbours.</p>
 </td>
 </tr>
 </tbody>

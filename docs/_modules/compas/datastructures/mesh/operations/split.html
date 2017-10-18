@@ -58,18 +58,30 @@
 <div class="viewcode-block" id="mesh_split_edge"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.mesh_split_edge.html#compas.datastructures.mesh_split_edge">[docs]</a><span class="k">def</span> <span class="nf">mesh_split_edge</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">"""Split and edge by inserting a vertex along its length.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        u (str): The key of the first vertex of the edge.</span>
-<span class="sd">        v (str): The key of the second vertex of the edge.</span>
-<span class="sd">        t (float): The position of the inserted vertex.</span>
-<span class="sd">        allow_boundary (bool): Split boundary edges, if True. Defaults to</span>
-<span class="sd">            False.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+<span class="sd">    u : str</span>
+<span class="sd">        The key of the first vertex of the edge.</span>
+<span class="sd">    v : str</span>
+<span class="sd">        The key of the second vertex of the edge.</span>
+<span class="sd">    t : float (0.5)</span>
+<span class="sd">        The position of the inserted vertex.</span>
+<span class="sd">        The value should be between 0.0 and 1.0</span>
+<span class="sd">    allow_boundary : bool (False)</span>
+<span class="sd">        Split edges on the boundary.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        str: The key of the inserted vertex.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        The key of the inserted vertex.</span>
 
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If `u` and `v` are not neighbours.</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If u and v are not neighbours.</span>
+
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'t should be greater than 0.0.'</span><span class="p">)</span>
@@ -118,7 +130,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    mesh : compas.datastructures.Mesh</span>
+<span class="sd">    mesh : Mesh</span>
 <span class="sd">        A mesh object.</span>
 <span class="sd">    u : hashable</span>
 <span class="sd">        Identifier of the first vertex.</span>

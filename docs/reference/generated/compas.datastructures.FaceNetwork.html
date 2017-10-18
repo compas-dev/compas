@@ -42,8 +42,38 @@
 <h1>FaceNetwork</h1>
 <dl class="class">
 <dt id="compas.datastructures.FaceNetwork">
-<em class="property">class </em><code class="descclassname">compas.datastructures.</code><code class="descname">FaceNetwork</code><a class="reference internal" href="../../_modules/compas/datastructures/network/network.html#FaceNetwork"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal">compas.datastructures.mixins.helpers.FaceHelpers</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.attributes.FaceAttributesManagement</code>, <code class="xref py py-class docutils literal">compas.datastructures.network.network.Network</code></p>
+<em class="property">class </em><code class="descclassname">compas.datastructures.</code><code class="descname">FaceNetwork</code><a class="reference internal" href="../../_modules/compas/datastructures/network/facenetwork.html#FaceNetwork"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal">compas.datastructures.mixins.helpers.FaceHelpers</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.attributes.FaceAttributesManagement</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.mappings.FaceMappings</code>, <code class="xref py py-class docutils literal">compas.datastructures.network.network.Network</code></p>
+<p>Definition of a face network.</p>
+<p class="rubric">Examples</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">FaceNetwork</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_find_faces</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
+
+<span class="n">network</span> <span class="o">=</span> <span class="n">FaceNetwork</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
+
+<span class="n">network_find_faces</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">breakpoints</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">())</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'vertex.fontsize'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">8.0</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">()},</span>
+    <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+<span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">'#eeeeee'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'#eeeeee'</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<figure class="figure">
+<img alt="../../images/compas-datastructures-FaceNetwork-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-FaceNetwork-1.png"/>
+</figure>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>

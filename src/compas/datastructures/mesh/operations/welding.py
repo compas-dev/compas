@@ -17,7 +17,7 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : Mesh
         A mesh object.
     fkey : hashable
         The identifier of a face.

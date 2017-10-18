@@ -80,6 +80,8 @@ mesh.operations
     mesh_unweld_vertices
 
 
+The following operations are specifically designed for triangle meshes.
+
 .. autosummary::
     :toctree: generated/
 
@@ -111,6 +113,8 @@ mesh.algorithms
     mesh_unify_cycles
     mesh_voronoi_from_points
 
+
+The following algorithms are specifically designed for triangle meshes.
 
 .. autosummary::
     :toctree: generated/

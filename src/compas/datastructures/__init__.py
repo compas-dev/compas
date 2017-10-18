@@ -80,6 +80,8 @@ mesh.operations
     mesh_unweld_vertices
 
 
+The following operations are specifically designed for triangle meshes.
+
 .. autosummary::
     :toctree: generated/
 
@@ -112,7 +114,7 @@ mesh.algorithms
     mesh_voronoi_from_points
 
 
-The following mesh algorithms are specifically designed for meshes with only triangular faces.
+The following algorithms are specifically designed for triangle meshes.
 
 .. autosummary::
     :toctree: generated/
@@ -147,7 +149,7 @@ from .mesh import *
 from .volmesh import *
 
 from .network import __all__ as a
-from .mesh import __all__ as b
-from .volmesh import __all__ as c
+from .mesh import __all__ as c
+from .volmesh import __all__ as d
 
-__all__ = a + b + c
+__all__ = a + c + d

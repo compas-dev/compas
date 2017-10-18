@@ -21,18 +21,30 @@ def _split_halfedge(mesh, fkey, u, v, w):
 def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     """Split and edge by inserting a vertex along its length.
 
-    Parameters:
-        u (str): The key of the first vertex of the edge.
-        v (str): The key of the second vertex of the edge.
-        t (float): The position of the inserted vertex.
-        allow_boundary (bool): Split boundary edges, if True. Defaults to
-            False.
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    u : str
+        The key of the first vertex of the edge.
+    v : str
+        The key of the second vertex of the edge.
+    t : float (0.5)
+        The position of the inserted vertex.
+        The value should be between 0.0 and 1.0
+    allow_boundary : bool (False)
+        Split edges on the boundary.
 
-    Returns:
-        str: The key of the inserted vertex.
+    Returns
+    -------
+    int
+        The key of the inserted vertex.
 
-    Raises:
-        ValueError: If `u` and `v` are not neighbours.
+    Raises
+    ------
+    ValueError
+        If u and v are not neighbours.
+
     """
     if t <= 0.0:
         raise ValueError('t should be greater than 0.0.')
@@ -81,7 +93,7 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : Mesh
         A mesh object.
     u : hashable
         Identifier of the first vertex.
