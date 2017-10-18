@@ -1,68 +1,40 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas_rhino.utilities.misc</h1><div class="highlight"><pre><code class="language-python border rounded">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas_rhino.utilities.misc</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
@@ -79,32 +51,32 @@
 
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">platform</span>
-    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;IronPython&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'IronPython'</span><span class="p">:</span>
         <span class="k">raise</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, BLOCK Research Group - ETH Zurich&#39;</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, BLOCK Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;wait&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;get_tolerance&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;toggle_toolbargroup&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pick_point&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;browse_for_folder&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;browse_for_file&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;print_display_on&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;display_message&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;display_text&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;display_image&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;display_html&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;update_settings&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;update_attributes&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;update_named_values&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;screenshot_current_view&#39;</span><span class="p">,</span>
+    <span class="s1">'wait'</span><span class="p">,</span>
+    <span class="s1">'get_tolerance'</span><span class="p">,</span>
+    <span class="s1">'toggle_toolbargroup'</span><span class="p">,</span>
+    <span class="s1">'pick_point'</span><span class="p">,</span>
+    <span class="s1">'browse_for_folder'</span><span class="p">,</span>
+    <span class="s1">'browse_for_file'</span><span class="p">,</span>
+    <span class="s1">'print_display_on'</span><span class="p">,</span>
+    <span class="s1">'display_message'</span><span class="p">,</span>
+    <span class="s1">'display_text'</span><span class="p">,</span>
+    <span class="s1">'display_image'</span><span class="p">,</span>
+    <span class="s1">'display_html'</span><span class="p">,</span>
+    <span class="s1">'update_settings'</span><span class="p">,</span>
+    <span class="s1">'update_attributes'</span><span class="p">,</span>
+    <span class="s1">'update_named_values'</span><span class="p">,</span>
+    <span class="s1">'screenshot_current_view'</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -122,19 +94,19 @@
                             <span class="n">draw_cplane_axes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                             <span class="n">background</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="n">draw_grid</span><span class="p">,</span> <span class="n">draw_world_axes</span><span class="p">,</span> <span class="n">draw_cplane_axes</span><span class="p">,</span> <span class="n">background</span><span class="p">]</span>
-    <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Yes&quot;</span> <span class="k">if</span> <span class="n">item</span> <span class="k">else</span> <span class="s2">&quot;No&quot;</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">]</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Yes"</span> <span class="k">if</span> <span class="n">item</span> <span class="k">else</span> <span class="s2">"No"</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">]</span>
     <span class="n">scale</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>  <span class="c1"># the rhino command requires a scale &gt; 1</span>
     <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">rs</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="s2">&quot;-_ViewCaptureToFile </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
-                        <span class="s2">&quot; Width=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">width</span><span class="p">)</span> <span class="o">+</span>
-                        <span class="s2">&quot; Height=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">height</span><span class="p">)</span> <span class="o">+</span>
-                        <span class="s2">&quot; Scale=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span> <span class="o">+</span>
-                        <span class="s2">&quot; DrawGrid=&quot;</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span>
-                        <span class="s2">&quot; DrawWorldAxes=&quot;</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
-                        <span class="s2">&quot; DrawCPlaneAxes=&quot;</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span>
-                        <span class="s2">&quot; TransparentBackground=&quot;</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span>
-                        <span class="s2">&quot; _enter&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="s2">"-_ViewCaptureToFile </span><span class="se">\"</span><span class="s2">"</span> <span class="o">+</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\"</span><span class="s2">"</span>
+                        <span class="s2">" Width="</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">width</span><span class="p">)</span> <span class="o">+</span>
+                        <span class="s2">" Height="</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">height</span><span class="p">)</span> <span class="o">+</span>
+                        <span class="s2">" Scale="</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span> <span class="o">+</span>
+                        <span class="s2">" DrawGrid="</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span>
+                        <span class="s2">" DrawWorldAxes="</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+                        <span class="s2">" DrawCPlaneAxes="</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span>
+                        <span class="s2">" TransparentBackground="</span> <span class="o">+</span> <span class="n">properties</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span>
+                        <span class="s2">" _enter"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
     <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span></div>
 
@@ -146,10 +118,10 @@
             <span class="c1"># for name, value in helper.__dict__.items():</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">helper</span><span class="p">):</span>
                 <span class="c1"># magic methods</span>
-                <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'__'</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'__'</span><span class="p">):</span>
                     <span class="k">continue</span>
                 <span class="c1"># protected / private methods</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">protected</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">protected</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'_'</span><span class="p">):</span>
                     <span class="k">continue</span>
                 <span class="c1"># existing methods</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
@@ -197,7 +169,7 @@
 
 <span class="c1"># pick a location</span>
 <span class="c1"># get_location</span>
-<div class="viewcode-block" id="pick_point"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.pick_point.html#compas_rhino.utilities.pick_point">[docs]</a><span class="k">def</span> <span class="nf">pick_point</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Pick a point.&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="pick_point"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.pick_point.html#compas_rhino.utilities.pick_point">[docs]</a><span class="k">def</span> <span class="nf">pick_point</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Pick a point.'</span><span class="p">):</span>
     <span class="n">point</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetPoint</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">point</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
@@ -210,7 +182,7 @@
 
 
 <div class="viewcode-block" id="browse_for_folder"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.browse_for_folder.html#compas_rhino.utilities.browse_for_folder">[docs]</a><span class="k">def</span> <span class="nf">browse_for_folder</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">BrowseForFolder</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="n">default</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;compas&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">BrowseForFolder</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="n">default</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'compas'</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="browse_for_file"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.browse_for_file.html#compas_rhino.utilities.browse_for_file">[docs]</a><span class="k">def</span> <span class="nf">browse_for_file</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -224,23 +196,23 @@
 
 <div class="viewcode-block" id="print_display_on"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.print_display_on.html#compas_rhino.utilities.print_display_on">[docs]</a><span class="k">def</span> <span class="nf">print_display_on</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">on</span><span class="p">:</span>
-        <span class="n">rs</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="s1">&#39;_PrintDisplay State On Color Display Thickness 1 _Enter&#39;</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="s1">'_PrintDisplay State On Color Display Thickness 1 _Enter'</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">rs</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="s1">&#39;_PrintDisplay State Off _Enter&#39;</span><span class="p">)</span></div>
+        <span class="n">rs</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="s1">'_PrintDisplay State Off _Enter'</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="display_message"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.display_message.html#compas_rhino.utilities.display_message">[docs]</a><span class="k">def</span> <span class="nf">display_message</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ShowMessageBox</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s1">&#39;Message&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">ShowMessageBox</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s1">'Message'</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="display_text"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.display_text.html#compas_rhino.utilities.display_text">[docs]</a><span class="k">def</span> <span class="nf">display_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Text&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
+<div class="viewcode-block" id="display_text"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.display_text.html#compas_rhino.utilities.display_text">[docs]</a><span class="k">def</span> <span class="nf">display_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Text'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Environment</span><span class="o">.</span><span class="n">NewLine</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Environment</span><span class="o">.</span><span class="n">NewLine</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">TextForm</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="display_image"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.display_image.html#compas_rhino.utilities.display_image">[docs]</a><span class="k">def</span> <span class="nf">display_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Image&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
+<div class="viewcode-block" id="display_image"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.display_image.html#compas_rhino.utilities.display_image">[docs]</a><span class="k">def</span> <span class="nf">display_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Image'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">ImageForm</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
@@ -254,7 +226,7 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="update_settings"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.update_settings.html#compas_rhino.utilities.update_settings">[docs]</a><span class="k">def</span> <span class="nf">update_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Update settings&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="update_settings"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.update_settings.html#compas_rhino.utilities.update_settings">[docs]</a><span class="k">def</span> <span class="nf">update_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Update settings'</span><span class="p">):</span>
     <span class="n">names</span>  <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span>
     <span class="n">values</span> <span class="o">=</span> <span class="n">ShowPropertyListBox</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
@@ -268,11 +240,11 @@
     <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="update_attributes"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.update_attributes.html#compas_rhino.utilities.update_attributes">[docs]</a><span class="k">def</span> <span class="nf">update_attributes</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Update attributes&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="update_attributes"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.update_attributes.html#compas_rhino.utilities.update_attributes">[docs]</a><span class="k">def</span> <span class="nf">update_attributes</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Update attributes'</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ShowPropertyListBox</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="update_named_values"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.update_named_values.html#compas_rhino.utilities.update_named_values">[docs]</a><span class="k">def</span> <span class="nf">update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Update named values&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="update_named_values"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.update_named_values.html#compas_rhino.utilities.update_named_values">[docs]</a><span class="k">def</span> <span class="nf">update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Update named values'</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ShowPropertyListBox</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
 
 
@@ -280,71 +252,44 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
     <span class="k">pass</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -356,10 +301,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -369,24 +311,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

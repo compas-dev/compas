@@ -1,83 +1,55 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas_blender.geometry.curve</h1><div class="highlight"><pre><code class="language-python border rounded">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas_blender.geometry.curve</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas.cad</span> <span class="k">import</span> <span class="n">CurveGeometryInterface</span>
 <span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">select_curve</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Andrew Liew &lt;liew@arch.ethz.ch&gt;&#39;</span><span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2017, BLOCK Research Group - ETH Zurich&#39;</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;liew@arch.ethz.ch&#39;</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2017, BLOCK Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'liew@arch.ethz.ch'</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BlenderCurve&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'BlenderCurve'</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="BlenderCurve"><a class="viewcode-back" href="../../../reference/generated/compas_blender.geometry.BlenderCurve.html#compas_blender.geometry.BlenderCurve">[docs]</a><span class="k">class</span> <span class="nc">BlenderCurve</span><span class="p">(</span><span class="n">CurveGeometryInterface</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="sd">""""""</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span>
@@ -145,7 +117,7 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
 
     <span class="n">curve</span> <span class="o">=</span> <span class="n">BlenderCurve</span><span class="o">.</span><span class="n">from_selection</span><span class="p">()</span>
 
@@ -176,23 +148,23 @@
 <span class="c1">#     pass</span>
 
 
-<span class="c1"># __author__     = [&#39;Andrew Liew &lt;liew@arch.ethz.ch&gt;&#39;]</span>
-<span class="c1"># __copyright__  = &#39;Copyright 2017, BLOCK Research Group - ETH Zurich&#39;</span>
-<span class="c1"># __license__    = &#39;MIT License&#39;</span>
-<span class="c1"># __email__      = &#39;liew@arch.ethz.ch&#39;</span>
+<span class="c1"># __author__     = ['Andrew Liew &lt;liew@arch.ethz.ch&gt;']</span>
+<span class="c1"># __copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'</span>
+<span class="c1"># __license__    = 'MIT License'</span>
+<span class="c1"># __email__      = 'liew@arch.ethz.ch'</span>
 
 
 <span class="c1"># __all__ = [</span>
-<span class="c1">#     &#39;bezier_curve_interpolate&#39;,</span>
-<span class="c1">#     &#39;bezier_curve_points&#39;,</span>
-<span class="c1">#     &#39;curve_to_bmesh&#39;,</span>
-<span class="c1">#     &#39;curve_geometry&#39;</span>
+<span class="c1">#     'bezier_curve_interpolate',</span>
+<span class="c1">#     'bezier_curve_points',</span>
+<span class="c1">#     'curve_to_bmesh',</span>
+<span class="c1">#     'curve_geometry'</span>
 <span class="c1"># ]</span>
 
 
 
 <span class="c1"># def bezier_curve_interpolate(curve, number=3):</span>
-<span class="c1">#     &quot;&quot;&quot;Interpolate points along a Bezier curve object.</span>
+<span class="c1">#     """Interpolate points along a Bezier curve object.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         curve (obj): Bezier curve object.</span>
@@ -200,7 +172,7 @@
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         list: Interpolated points [x, y, z.]</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     co, left, right = bezier_curve_points(curve)</span>
 <span class="c1">#     vectors = interpolate_bezier(co[0], right[0], left[1], co[1], number)</span>
 <span class="c1">#     points = [list(point) for point in vectors]</span>
@@ -208,7 +180,7 @@
 
 
 <span class="c1"># def bezier_curve_points(curve):</span>
-<span class="c1">#     &quot;&quot;&quot;Return a Bezier curve&#39;s control points.</span>
+<span class="c1">#     """Return a Bezier curve's control points.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         curve (obj): Bezier curve object.</span>
@@ -217,7 +189,7 @@
 <span class="c1">#         list: Control point locations.</span>
 <span class="c1">#         list: Control point left handles.</span>
 <span class="c1">#         list: Control point right handles.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     points = curve.data.splines[0].bezier_points</span>
 <span class="c1">#     co = [list(point.co) for point in points]</span>
 <span class="c1">#     left = [list(point.handle_left) for point in points]</span>
@@ -230,7 +202,7 @@
 <span class="c1"># # ==============================================================================</span>
 
 <span class="c1"># def curve_to_bmesh(curve, name, divisions=10, delete=False):</span>
-<span class="c1">#     &quot;&quot;&quot;Convert a Blender curve object into a bmesh of edges.</span>
+<span class="c1">#     """Convert a Blender curve object into a bmesh of edges.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         curve (obj): Curve object.</span>
@@ -239,9 +211,9 @@
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         obj: Resulting bmesh object.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     curve.data.resolution_u = divisions</span>
-<span class="c1">#     mesh = curve.to_mesh(bpy.context.scene, True, &#39;PREVIEW&#39;)</span>
+<span class="c1">#     mesh = curve.to_mesh(bpy.context.scene, True, 'PREVIEW')</span>
 <span class="c1">#     if delete:</span>
 <span class="c1">#         bpy.ops.object.delete()</span>
 <span class="c1">#     else:</span>
@@ -252,19 +224,19 @@
 <span class="c1">#     return bmesh</span>
 
 
-<span class="c1"># def curve_geometry(curve, extrude=0, bevel=0, bevel_resolution=1, fill=&#39;HALF&#39;):</span>
-<span class="c1">#     &quot;&quot;&quot;Alter the geometry of the Blender curve object.</span>
+<span class="c1"># def curve_geometry(curve, extrude=0, bevel=0, bevel_resolution=1, fill='HALF'):</span>
+<span class="c1">#     """Alter the geometry of the Blender curve object.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         curve (obj): Curve object.</span>
 <span class="c1">#         extrude (float): Extrude depth along local z.</span>
 <span class="c1">#         bevel (float): Bevel depth.</span>
 <span class="c1">#         bevel_resolution (int): Number of sides for bevel face.</span>
-<span class="c1">#         fill (str): &#39;HALF&#39; or &#39;FULL&#39; solid fill.</span>
+<span class="c1">#         fill (str): 'HALF' or 'FULL' solid fill.</span>
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         None</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     curve.data.extrude = extrude</span>
 <span class="c1">#     curve.data.bevel_depth = bevel</span>
 <span class="c1">#     curve.data.bevel_resolution = bevel_resolution</span>
@@ -275,74 +247,47 @@
 <span class="c1"># # Debugging</span>
 <span class="c1"># # ==============================================================================</span>
 
-<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
+<span class="c1"># if __name__ == "__main__":</span>
 
 <span class="c1">#     curve = add_bezier_curve()</span>
 <span class="c1">#     print(bezier_curve_points(curve))</span>
 <span class="c1">#     print(bezier_curve_interpolate(curve, number=4))</span>
-<span class="c1">#     curve_to_bmesh(curve, name=&#39;bmesh&#39;, divisions=20)</span>
+<span class="c1">#     curve_to_bmesh(curve, name='bmesh', divisions=20)</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -354,10 +299,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -367,24 +309,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

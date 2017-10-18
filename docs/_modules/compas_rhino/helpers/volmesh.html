@@ -1,68 +1,40 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas_rhino.helpers.volmesh</h1><div class="highlight"><pre><code class="language-python border rounded">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas_rhino.helpers.volmesh</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
@@ -78,35 +50,35 @@
     <span class="kn">import</span> <span class="nn">scriptcontext</span> <span class="k">as</span> <span class="nn">sc</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">platform</span>
-    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;IronPython&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'IronPython'</span><span class="p">:</span>
         <span class="k">raise</span>
 
 
-<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;Copyright 2016 - Block Research Group, ETH Zurich&#39;</span>
-<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;volmesh_from_polysurfaces&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_from_wireframe&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_draw&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_draw_vertices&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_draw_edges&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_draw_faces&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_draw_cells&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_select_vertex&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_select_vertices&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_select_edge&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_select_edges&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_select_face&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;volmesh_select_faces&#39;</span><span class="p">,</span>
+    <span class="s1">'volmesh_from_polysurfaces'</span><span class="p">,</span>
+    <span class="s1">'volmesh_from_wireframe'</span><span class="p">,</span>
+    <span class="s1">'volmesh_draw'</span><span class="p">,</span>
+    <span class="s1">'volmesh_draw_vertices'</span><span class="p">,</span>
+    <span class="s1">'volmesh_draw_edges'</span><span class="p">,</span>
+    <span class="s1">'volmesh_draw_faces'</span><span class="p">,</span>
+    <span class="s1">'volmesh_draw_cells'</span><span class="p">,</span>
+    <span class="s1">'volmesh_select_vertex'</span><span class="p">,</span>
+    <span class="s1">'volmesh_select_vertices'</span><span class="p">,</span>
+    <span class="s1">'volmesh_select_edge'</span><span class="p">,</span>
+    <span class="s1">'volmesh_select_edges'</span><span class="p">,</span>
+    <span class="s1">'volmesh_select_face'</span><span class="p">,</span>
+    <span class="s1">'volmesh_select_faces'</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="volmesh_from_polysurfaces"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.volmesh_from_polysurfaces.html#compas_rhino.helpers.volmesh_from_polysurfaces">[docs]</a><span class="k">def</span> <span class="nf">volmesh_from_polysurfaces</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">guids</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Construct a volumetric mesh from given polysurfaces.</span>
+    <span class="sd">"""Construct a volumetric mesh from given polysurfaces.</span>
 
 <span class="sd">    Essentially, this function does the following:</span>
 
@@ -126,7 +98,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        compas.datastructures.volmesh.Volmesh: The volumetric mesh object.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">gkey_xyz</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">cells</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -181,7 +153,7 @@
                  <span class="n">vertexcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">edgecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">facecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Draw a volmesh.</span>
+    <span class="sd">"""Draw a volmesh.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -205,9 +177,9 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw(volmesh)</span>
-<span class="sd">    &gt;&gt;&gt; volmesh_draw(volmesh, layer=&#39;SomeLayer&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; volmesh_draw(volmesh, layer='SomeLayer')</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw(volmesh, clear_layer=True)</span>
-<span class="sd">    &gt;&gt;&gt; volmesh_draw(volmesh, vertexcolor=&#39;#ff0000&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; volmesh_draw(volmesh, vertexcolor='#ff0000')</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw(volmesh, edgecolor=(0, 255, 0))</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw(volmesh, facecolor={key: (0.0, 0.0, 0.5) for key in volmesh.faces()})</span>
 
@@ -215,7 +187,7 @@
 <span class="sd">    --------</span>
 <span class="sd">    * compas_rhino.helpers.VolMeshArtist</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">artist</span> <span class="o">=</span> <span class="n">VolMeshArtist</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span>
     <span class="n">artist</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
     <span class="k">if</span> <span class="n">clear_layer</span><span class="p">:</span>
@@ -233,7 +205,7 @@
                           <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">clear_layer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                           <span class="n">redraw</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Draw the vertices of a volmesh.</span>
+    <span class="sd">"""Draw the vertices of a volmesh.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -247,7 +219,7 @@
 <span class="sd">        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.</span>
 <span class="sd">        To apply the same color to all vertices, provide a single color specification.</span>
 <span class="sd">        Individual colors can be assigned using a dictionary of key-color pairs.</span>
-<span class="sd">        Missing keys will be assigned the default vertex color (``self.defaults[&#39;vertex.color&#39;]``).</span>
+<span class="sd">        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).</span>
 <span class="sd">        Default is use the color of the parent layer.</span>
 <span class="sd">    layer : str (None)</span>
 <span class="sd">        The layer in which the vertices are drawn.</span>
@@ -261,15 +233,15 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw_vertices(volmesh)</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw_vertices(volmesh, keys=volmesh.vertices_on_boundary())</span>
-<span class="sd">    &gt;&gt;&gt; volmesh_draw_vertices(volmesh, color=&#39;#00ff00&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; color = {key: ((&#39;#ff0000&#39;) if volmesh.vertex_is_on_boundary(key) else (&#39;#00ff00&#39;)) for key in volmesh.vertices()}</span>
+<span class="sd">    &gt;&gt;&gt; volmesh_draw_vertices(volmesh, color='#00ff00')</span>
+<span class="sd">    &gt;&gt;&gt; color = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.vertices()}</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw_vertices(volmesh, color=color)</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    * compas_rhino.helpers.VolMeshArtist</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">artist</span> <span class="o">=</span> <span class="n">VolMeshArtist</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span>
     <span class="n">artist</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
     <span class="k">if</span> <span class="n">clear_layer</span><span class="p">:</span>
@@ -286,7 +258,7 @@
                        <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">clear_layer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                        <span class="n">redraw</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Draw the edges of a volmesh.</span>
+    <span class="sd">"""Draw the edges of a volmesh.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -300,7 +272,7 @@
 <span class="sd">        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.</span>
 <span class="sd">        To apply the same color to all edges, provide a single color specification.</span>
 <span class="sd">        Individual colors can be assigned using a dictionary of key-color pairs.</span>
-<span class="sd">        Missing keys will be assigned the default vertex color (``self.defaults[&#39;vertex.color&#39;]``).</span>
+<span class="sd">        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).</span>
 <span class="sd">        Default is use the color of the parent layer.</span>
 <span class="sd">    layer : str (None)</span>
 <span class="sd">        The layer in which the edges are drawn.</span>
@@ -314,15 +286,15 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw_edges(volmesh)</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw_edges(volmesh, keys=volmesh.edges_on_boundary())</span>
-<span class="sd">    &gt;&gt;&gt; volmesh_draw_edges(volmesh, color=&#39;#00ff00&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; color = {key: ((&#39;#ff0000&#39;) if volmesh.vertex_is_on_boundary(key) else (&#39;#00ff00&#39;)) for key in volmesh.edges()}</span>
+<span class="sd">    &gt;&gt;&gt; volmesh_draw_edges(volmesh, color='#00ff00')</span>
+<span class="sd">    &gt;&gt;&gt; color = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.edges()}</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw_edges(volmesh, color=color)</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    * compas_rhino.helpers.VolMeshArtist</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">artist</span> <span class="o">=</span> <span class="n">VolMeshArtist</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span>
     <span class="n">artist</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
     <span class="k">if</span> <span class="n">clear_layer</span><span class="p">:</span>
@@ -339,7 +311,7 @@
                        <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">clear_layer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                        <span class="n">redraw</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Draw the faces of a volmesh.</span>
+    <span class="sd">"""Draw the faces of a volmesh.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -353,7 +325,7 @@
 <span class="sd">        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.</span>
 <span class="sd">        To apply the same color to all faces, provide a single color specification.</span>
 <span class="sd">        Individual colors can be assigned using a dictionary of key-color pairs.</span>
-<span class="sd">        Missing keys will be assigned the default vertex color (``self.defaults[&#39;vertex.color&#39;]``).</span>
+<span class="sd">        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).</span>
 <span class="sd">        Default is use the color of the parent layer.</span>
 <span class="sd">    layer : str (None)</span>
 <span class="sd">        The layer in which the faces are drawn.</span>
@@ -367,15 +339,15 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw_faces(volmesh)</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw_faces(volmesh, keys=volmesh.faces_on_boundary())</span>
-<span class="sd">    &gt;&gt;&gt; volmesh_draw_faces(volmesh, color=&#39;#00ff00&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; color = {key: ((&#39;#ff0000&#39;) if volmesh.vertex_is_on_boundary(key) else (&#39;#00ff00&#39;)) for key in volmesh.faces()}</span>
+<span class="sd">    &gt;&gt;&gt; volmesh_draw_faces(volmesh, color='#00ff00')</span>
+<span class="sd">    &gt;&gt;&gt; color = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.faces()}</span>
 <span class="sd">    &gt;&gt;&gt; volmesh_draw_faces(volmesh, color=color)</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    * compas_rhino.helpers.VolMeshArtist</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">artist</span> <span class="o">=</span> <span class="n">VolMeshArtist</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span>
     <span class="n">artist</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
     <span class="k">if</span> <span class="n">clear_layer</span><span class="p">:</span>
@@ -396,7 +368,7 @@
 
 
 <div class="viewcode-block" id="volmesh_select_vertex"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.volmesh_select_vertex.html#compas_rhino.helpers.volmesh_select_vertex">[docs]</a><span class="k">def</span> <span class="nf">volmesh_select_vertex</span><span class="p">(</span><span class="n">volmesh</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Select a vertex of a volmesh.</span>
+    <span class="sd">"""Select a vertex of a volmesh.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -418,12 +390,12 @@
 <span class="sd">    --------</span>
 <span class="sd">    * volmesh_select_vertices</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">VertexSelector</span><span class="o">.</span><span class="n">select_vertex</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="volmesh_select_vertices"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.volmesh_select_vertices.html#compas_rhino.helpers.volmesh_select_vertices">[docs]</a><span class="k">def</span> <span class="nf">volmesh_select_vertices</span><span class="p">(</span><span class="n">volmesh</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Select multiple vertices of a volmesh.</span>
+    <span class="sd">"""Select multiple vertices of a volmesh.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -443,27 +415,27 @@
 <span class="sd">    --------</span>
 <span class="sd">    * volmesh_select_vertex</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">VertexSelector</span><span class="o">.</span><span class="n">select_vertices</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="volmesh_select_edge"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.volmesh_select_edge.html#compas_rhino.helpers.volmesh_select_edge">[docs]</a><span class="k">def</span> <span class="nf">volmesh_select_edge</span><span class="p">(</span><span class="n">volmesh</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="sd">""""""</span>
     <span class="k">return</span> <span class="n">EdgeSelector</span><span class="o">.</span><span class="n">select_edge</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="volmesh_select_edges"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.volmesh_select_edges.html#compas_rhino.helpers.volmesh_select_edges">[docs]</a><span class="k">def</span> <span class="nf">volmesh_select_edges</span><span class="p">(</span><span class="n">volmesh</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="sd">""""""</span>
     <span class="k">return</span> <span class="n">EdgeSelector</span><span class="o">.</span><span class="n">select_edges</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="volmesh_select_face"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.volmesh_select_face.html#compas_rhino.helpers.volmesh_select_face">[docs]</a><span class="k">def</span> <span class="nf">volmesh_select_face</span><span class="p">(</span><span class="n">volmesh</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="sd">""""""</span>
     <span class="k">return</span> <span class="n">FaceSelector</span><span class="o">.</span><span class="n">select_face</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="volmesh_select_faces"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.volmesh_select_faces.html#compas_rhino.helpers.volmesh_select_faces">[docs]</a><span class="k">def</span> <span class="nf">volmesh_select_faces</span><span class="p">(</span><span class="n">volmesh</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="sd">""""""</span>
     <span class="k">return</span> <span class="n">FaceSelector</span><span class="o">.</span><span class="n">select_faces</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span></div>
 
 
@@ -484,7 +456,7 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">compas</span>
     <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">VolMesh</span>
@@ -492,78 +464,51 @@
     <span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="k">import</span> <span class="n">volmesh_select_vertex</span>
     <span class="c1"># from compas_rhino.helpers import volmesh_move_vertex</span>
 
-    <span class="n">volmesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;boxes.obj&#39;</span><span class="p">))</span>
+    <span class="n">volmesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'boxes.obj'</span><span class="p">))</span>
 
-    <span class="n">volmesh_draw</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">volmesh_draw</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'test'</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">key</span> <span class="o">=</span> <span class="n">volmesh_select_vertex</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
     <span class="c1"># if volmesh_move_vertex(volmesh, key):</span>
-    <span class="c1">#     volmesh_draw(volmesh, layer=&#39;test&#39;, clear_layer=True)</span>
+    <span class="c1">#     volmesh_draw(volmesh, layer='test', clear_layer=True)</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -575,10 +520,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -588,24 +530,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

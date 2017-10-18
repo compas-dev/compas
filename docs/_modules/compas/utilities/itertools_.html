@@ -1,68 +1,40 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas.utilities.itertools_</h1><div class="highlight"><pre><code class="language-python border rounded">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.utilities.itertools_</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="c1"># recipes with itertools</span>
 <span class="c1"># see: https://docs.python.org/3.6/library/itertools.html</span>
 
@@ -88,50 +60,50 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;take&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;tabulate&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;tail&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;consume&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;nth&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;all_equal&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;quantify&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;padnone&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;ncycles&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;dotproduct&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;flatten&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;repeatfunc&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pairwise&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;window&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;roundrobin&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;powerset&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;unique_everseen&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;unique_justseen&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;iter_except&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;first_true&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;random_permutation&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;random_combination&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;random_combination_with_replacement&#39;</span>
+    <span class="s1">'take'</span><span class="p">,</span>
+    <span class="s1">'tabulate'</span><span class="p">,</span>
+    <span class="s1">'tail'</span><span class="p">,</span>
+    <span class="s1">'consume'</span><span class="p">,</span>
+    <span class="s1">'nth'</span><span class="p">,</span>
+    <span class="s1">'all_equal'</span><span class="p">,</span>
+    <span class="s1">'quantify'</span><span class="p">,</span>
+    <span class="s1">'padnone'</span><span class="p">,</span>
+    <span class="s1">'ncycles'</span><span class="p">,</span>
+    <span class="s1">'dotproduct'</span><span class="p">,</span>
+    <span class="s1">'flatten'</span><span class="p">,</span>
+    <span class="s1">'repeatfunc'</span><span class="p">,</span>
+    <span class="s1">'pairwise'</span><span class="p">,</span>
+    <span class="s1">'window'</span><span class="p">,</span>
+    <span class="s1">'roundrobin'</span><span class="p">,</span>
+    <span class="s1">'powerset'</span><span class="p">,</span>
+    <span class="s1">'unique_everseen'</span><span class="p">,</span>
+    <span class="s1">'unique_justseen'</span><span class="p">,</span>
+    <span class="s1">'iter_except'</span><span class="p">,</span>
+    <span class="s1">'first_true'</span><span class="p">,</span>
+    <span class="s1">'random_permutation'</span><span class="p">,</span>
+    <span class="s1">'random_combination'</span><span class="p">,</span>
+    <span class="s1">'random_combination_with_replacement'</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="take"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.take.html#compas.utilities.take">[docs]</a><span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return first n items of the iterable as a list&quot;&quot;&quot;</span>
+    <span class="sd">"""Return first n items of the iterable as a list"""</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="tabulate"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.tabulate.html#compas.utilities.tabulate">[docs]</a><span class="k">def</span> <span class="nf">tabulate</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return function(0), function(1), ...&quot;&quot;&quot;</span>
+    <span class="sd">"""Return function(0), function(1), ..."""</span>
     <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="n">start</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="tail"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.tail.html#compas.utilities.tail">[docs]</a><span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return an iterator over the last n items&quot;&quot;&quot;</span>
-    <span class="c1"># tail(3, &#39;ABCDEFG&#39;) --&gt; E F G</span>
+    <span class="sd">"""Return an iterator over the last n items"""</span>
+    <span class="c1"># tail(3, 'ABCDEFG') --&gt; E F G</span>
     <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">deque</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">n</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="consume"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.consume.html#compas.utilities.consume">[docs]</a><span class="k">def</span> <span class="nf">consume</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Advance the iterator n-steps ahead. If n is none, consume entirely.&quot;&quot;&quot;</span>
+    <span class="sd">"""Advance the iterator n-steps ahead. If n is none, consume entirely."""</span>
     <span class="c1"># Use functions that consume iterators at C speed.</span>
     <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># feed the entire iterator into a zero-length deque</span>
@@ -142,31 +114,31 @@
 
 
 <div class="viewcode-block" id="nth"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.nth.html#compas.utilities.nth">[docs]</a><span class="k">def</span> <span class="nf">nth</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the nth item or a default value&quot;&quot;&quot;</span>
+    <span class="sd">"""Returns the nth item or a default value"""</span>
     <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">default</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="all_equal"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.all_equal.html#compas.utilities.all_equal">[docs]</a><span class="k">def</span> <span class="nf">all_equal</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns True if all the elements are equal to each other&quot;&quot;&quot;</span>
+    <span class="sd">"""Returns True if all the elements are equal to each other"""</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">groupby</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="quantify"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.quantify.html#compas.utilities.quantify">[docs]</a><span class="k">def</span> <span class="nf">quantify</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">pred</span><span class="o">=</span><span class="nb">bool</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Count how many times the predicate is true&quot;&quot;&quot;</span>
+    <span class="sd">"""Count how many times the predicate is true"""</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">iterable</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="padnone"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.padnone.html#compas.utilities.padnone">[docs]</a><span class="k">def</span> <span class="nf">padnone</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the sequence elements and then returns None indefinitely.</span>
+    <span class="sd">"""Returns the sequence elements and then returns None indefinitely.</span>
 
 <span class="sd">    Useful for emulating the behavior of the built-in map() function.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">chain</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="ncycles"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.ncycles.html#compas.utilities.ncycles">[docs]</a><span class="k">def</span> <span class="nf">ncycles</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the sequence elements n times&quot;&quot;&quot;</span>
+    <span class="sd">"""Returns the sequence elements n times"""</span>
     <span class="k">return</span> <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">iterable</span><span class="p">),</span> <span class="n">n</span><span class="p">))</span></div>
 
 
@@ -175,32 +147,32 @@
 
 
 <div class="viewcode-block" id="flatten"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.flatten.html#compas.utilities.flatten">[docs]</a><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">listOfLists</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Flatten one level of nesting&quot;&quot;&quot;</span>
+    <span class="sd">"""Flatten one level of nesting"""</span>
     <span class="k">return</span> <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">listOfLists</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="repeatfunc"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.repeatfunc.html#compas.utilities.repeatfunc">[docs]</a><span class="k">def</span> <span class="nf">repeatfunc</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Repeat calls to func with specified arguments.</span>
+    <span class="sd">"""Repeat calls to func with specified arguments.</span>
 
 <span class="sd">    Example:  repeatfunc(random.random)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">starmap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">repeat</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">starmap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">repeat</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">times</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="pairwise"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.pairwise.html#compas.utilities.pairwise">[docs]</a><span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;s -&gt; (s0,s1), (s1,s2), (s2, s3), ...&quot;&quot;&quot;</span>
+    <span class="sd">"""s -&gt; (s0,s1), (s1,s2), (s2, s3), ..."""</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">tee</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
     <span class="nb">next</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="window"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.window.html#compas.utilities.window">[docs]</a><span class="k">def</span> <span class="nf">window</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns a sliding window (of width n) over data from the iterable.</span>
+    <span class="sd">"""Returns a sliding window (of width n) over data from the iterable.</span>
 
 <span class="sd">    s -&gt; (s0,s1,...s[n-1]), (s1,s2,...,sn), ...</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
@@ -211,14 +183,14 @@
 
 
 <span class="c1"># def grouper(iterable, n, fillvalue=None):</span>
-<span class="c1">#     &quot;&quot;&quot;Collect data into fixed-length chunks or blocks&quot;&quot;&quot;</span>
-<span class="c1">#     # grouper(&#39;ABCDEFG&#39;, 3, &#39;x&#39;) --&gt; ABC DEF Gxx&quot;&quot;&quot;</span>
+<span class="c1">#     """Collect data into fixed-length chunks or blocks"""</span>
+<span class="c1">#     # grouper('ABCDEFG', 3, 'x') --&gt; ABC DEF Gxx"""</span>
 <span class="c1">#     args = [iter(iterable)] * n</span>
 <span class="c1">#     return zip_longest(*args, fillvalue=fillvalue)</span>
 
 
 <div class="viewcode-block" id="roundrobin"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.roundrobin.html#compas.utilities.roundrobin">[docs]</a><span class="k">def</span> <span class="nf">roundrobin</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;roundrobin(&#39;ABC&#39;, &#39;D&#39;, &#39;EF&#39;) --&gt; A D E B F C&quot;&quot;&quot;</span>
+    <span class="sd">"""roundrobin('ABC', 'D', 'EF') --&gt; A D E B F C"""</span>
     <span class="c1"># Recipe credited to George Sakkis</span>
     <span class="n">pending</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">iterables</span><span class="p">)</span>
     <span class="n">nexts</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">it</span><span class="p">)</span><span class="o">.</span><span class="n">__next__</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">iterables</span><span class="p">)</span>
@@ -232,22 +204,22 @@
 
 
 <span class="c1"># def partition(pred, iterable):</span>
-<span class="c1">#     &#39;Use a predicate to partition entries into false entries and true entries&#39;</span>
+<span class="c1">#     'Use a predicate to partition entries into false entries and true entries'</span>
 <span class="c1">#     # partition(is_odd, range(10)) --&gt; 0 2 4 6 8   and  1 3 5 7 9</span>
 <span class="c1">#     t1, t2 = tee(iterable)</span>
 <span class="c1">#     return filterfalse(pred, t1), filter(pred, t2)</span>
 
 
 <div class="viewcode-block" id="powerset"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.powerset.html#compas.utilities.powerset">[docs]</a><span class="k">def</span> <span class="nf">powerset</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;powerset([1,2,3]) --&gt; () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)&quot;&quot;&quot;</span>
+    <span class="sd">"""powerset([1,2,3]) --&gt; () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"""</span>
     <span class="n">s</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">combinations</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="unique_everseen"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.unique_everseen.html#compas.utilities.unique_everseen">[docs]</a><span class="k">def</span> <span class="nf">unique_everseen</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;List unique elements, preserving order. Remember all elements ever seen.&quot;&quot;&quot;</span>
-    <span class="c1"># unique_everseen(&#39;AAAABBBCCDAABBB&#39;) --&gt; A B C D</span>
-    <span class="c1"># unique_everseen(&#39;ABBCcAD&#39;, str.lower) --&gt; A B C D</span>
+    <span class="sd">"""List unique elements, preserving order. Remember all elements ever seen."""</span>
+    <span class="c1"># unique_everseen('AAAABBBCCDAABBB') --&gt; A B C D</span>
+    <span class="c1"># unique_everseen('ABBCcAD', str.lower) --&gt; A B C D</span>
     <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="n">seen_add</span> <span class="o">=</span> <span class="n">seen</span><span class="o">.</span><span class="n">add</span>
     <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -263,14 +235,14 @@
 
 
 <div class="viewcode-block" id="unique_justseen"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.unique_justseen.html#compas.utilities.unique_justseen">[docs]</a><span class="k">def</span> <span class="nf">unique_justseen</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;List unique elements, preserving order. Remember only the element just seen.&quot;&quot;&quot;</span>
-    <span class="c1"># unique_justseen(&#39;AAAABBBCCDAABBB&#39;) --&gt; A B C D A B</span>
-    <span class="c1"># unique_justseen(&#39;ABBCcAD&#39;, str.lower) --&gt; A B C A D</span>
+    <span class="sd">"""List unique elements, preserving order. Remember only the element just seen."""</span>
+    <span class="c1"># unique_justseen('AAAABBBCCDAABBB') --&gt; A B C D A B</span>
+    <span class="c1"># unique_justseen('ABBCcAD', str.lower) --&gt; A B C A D</span>
     <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="nb">next</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">groupby</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">key</span><span class="p">)))</span></div>
 
 
 <div class="viewcode-block" id="iter_except"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.iter_except.html#compas.utilities.iter_except">[docs]</a><span class="k">def</span> <span class="nf">iter_except</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">exception</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Call a function repeatedly until an exception is raised.</span>
+    <span class="sd">"""Call a function repeatedly until an exception is raised.</span>
 
 <span class="sd">    Converts a call-until-exception interface to an iterator interface.</span>
 <span class="sd">    Like builtins.iter(func, sentinel) but uses an exception instead</span>
@@ -283,7 +255,7 @@
 <span class="sd">        iter_except(q.get_nowait, Queue.Empty)                   # loop over a producer Queue</span>
 <span class="sd">        iter_except(s.pop, KeyError)                             # non-blocking set iterator</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">first</span><span class="p">()</span>            <span class="c1"># For database APIs needing an initial cast to db.first()</span>
@@ -294,34 +266,34 @@
 
 
 <div class="viewcode-block" id="first_true"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.first_true.html#compas.utilities.first_true">[docs]</a><span class="k">def</span> <span class="nf">first_true</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pred</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the first true value in the iterable.</span>
+    <span class="sd">"""Returns the first true value in the iterable.</span>
 
 <span class="sd">    If no true value is found, returns *default*</span>
 
 <span class="sd">    If *pred* is not None, returns the first item</span>
 <span class="sd">    for which pred(item) is true.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># first_true([a,b,c], x) --&gt; a or b or c or x</span>
     <span class="c1"># first_true([a,b], x, f) --&gt; a if f(a) else b if f(b) else x</span>
     <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">iterable</span><span class="p">),</span> <span class="n">default</span><span class="p">)</span></div>
 
 
 <span class="c1"># def random_product(*args, repeat=1):</span>
-<span class="c1">#     &quot;&quot;&quot;Random selection from itertools.product(*args, **kwds)&quot;&quot;&quot;</span>
+<span class="c1">#     """Random selection from itertools.product(*args, **kwds)"""</span>
 <span class="c1">#     pools = [tuple(pool) for pool in args] * repeat</span>
 <span class="c1">#     return tuple(random.choice(pool) for pool in pools)</span>
 
 
 <div class="viewcode-block" id="random_permutation"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.random_permutation.html#compas.utilities.random_permutation">[docs]</a><span class="k">def</span> <span class="nf">random_permutation</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Random selection from itertools.permutations(iterable, r)&quot;&quot;&quot;</span>
+    <span class="sd">"""Random selection from itertools.permutations(iterable, r)"""</span>
     <span class="n">pool</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
     <span class="n">r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span> <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">r</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="random_combination"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.random_combination.html#compas.utilities.random_combination">[docs]</a><span class="k">def</span> <span class="nf">random_combination</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Random selection from itertools.combinations(iterable, r)&quot;&quot;&quot;</span>
+    <span class="sd">"""Random selection from itertools.combinations(iterable, r)"""</span>
     <span class="n">pool</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">r</span><span class="p">))</span>
@@ -329,7 +301,7 @@
 
 
 <div class="viewcode-block" id="random_combination_with_replacement"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.random_combination_with_replacement.html#compas.utilities.random_combination_with_replacement">[docs]</a><span class="k">def</span> <span class="nf">random_combination_with_replacement</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Random selection from itertools.combinations_with_replacement(iterable, r)&quot;&quot;&quot;</span>
+    <span class="sd">"""Random selection from itertools.combinations_with_replacement(iterable, r)"""</span>
     <span class="n">pool</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
@@ -340,74 +312,47 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
     <span class="n">s</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">window</span><span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="mi">3</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -419,10 +364,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -432,24 +374,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

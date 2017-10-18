@@ -1,93 +1,65 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas.com.mlab.client</h1><div class="highlight"><pre><code class="language-python border rounded">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.com.mlab.client</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">System</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">platform</span>
-    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;IronPython&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'IronPython'</span><span class="p">:</span>
         <span class="k">raise</span>
 
 
-<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;Copyright 2016 - Block Research Group, ETH Zurich&#39;</span>
-<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MatlabClient&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'MatlabClient'</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="MatlabClient"><a class="viewcode-back" href="../../../../reference/generated/compas.com.MatlabClient.html#compas.com.MatlabClient">[docs]</a><span class="k">class</span> <span class="nc">MatlabClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Communicate with Matlab through Windows&#39; COM interface.</span>
+    <span class="sd">"""Communicate with Matlab through Windows' COM interface.</span>
 
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
-<span class="sd">    This implementation uses Windows&#39; COM interface to communicate with Matlab.</span>
+<span class="sd">    This implementation uses Windows' COM interface to communicate with Matlab.</span>
 <span class="sd">    Therefore, it is obviously only available on Windows.</span>
 <span class="sd">    When an instance of this class is created, it automatically connects to Matlab,</span>
 <span class="sd">    and initializes a lease that keeps the interface alive for at least 5 minutes</span>
@@ -104,7 +76,7 @@
 <span class="sd">        Default is ``False``.</span>
 <span class="sd">    workspace : str</span>
 <span class="sd">        The name of the Matlab workspace.</span>
-<span class="sd">        Default is ``&#39;base&#39;``.</span>
+<span class="sd">        Default is ``'base'``.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -112,11 +84,11 @@
 
 <span class="sd">    &gt;&gt;&gt; A = matlab.matrix_from_list([[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]])</span>
 
-<span class="sd">    &gt;&gt;&gt; matlab.put(&#39;A&#39;, A)</span>
-<span class="sd">    &gt;&gt;&gt; matlab.eval(&#39;[R, jb] = rref(A);&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; matlab.put('A', A)</span>
+<span class="sd">    &gt;&gt;&gt; matlab.eval('[R, jb] = rref(A);')</span>
 
-<span class="sd">    &gt;&gt;&gt; R = matlab.get(&#39;R&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; jb = matlab.get(&#39;jb&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; R = matlab.get('R')</span>
+<span class="sd">    &gt;&gt;&gt; jb = matlab.get('jb')</span>
 
 <span class="sd">    &gt;&gt;&gt; print(R)</span>
 <span class="sd">    &gt;&gt;&gt; print(jb)</span>
@@ -127,9 +99,9 @@
 <span class="sd">    * compas.com.mlab.MatlabSession</span>
 <span class="sd">    * compas.com.mlab.MatlabProcess</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">workspace</span><span class="o">=</span><span class="s1">&#39;base&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">workspace</span><span class="o">=</span><span class="s1">'base'</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_app</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lease</span> <span class="o">=</span> <span class="kc">None</span>
@@ -143,7 +115,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_lease</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_create_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">GetTypeFromProgID</span><span class="p">(</span><span class="s1">&#39;Matlab.Application&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">GetTypeFromProgID</span><span class="p">(</span><span class="s1">'Matlab.Application'</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_app</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Activator</span><span class="o">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">Visible</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactive</span>
 
@@ -167,9 +139,9 @@
         <span class="k">return</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">_get_matrix_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="s1">&#39;[m, n] = size(</span><span class="si">{0}</span><span class="s1">);&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">GetVariable</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">GetVariable</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="s1">'[m, n] = size(</span><span class="si">{0}</span><span class="s1">);'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">GetVariable</span><span class="p">(</span><span class="s1">'m'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">GetVariable</span><span class="p">(</span><span class="s1">'n'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
     <span class="c1"># ==========================================================================</span>
@@ -178,7 +150,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">vector_from_list</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a Matlab-compatible vector from a list.</span>
+        <span class="sd">"""Make a Matlab-compatible vector from a list.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -197,7 +169,7 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; MatlabClient.vector_from_list([1, 2, 3], dtype=float)</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Array</span><span class="o">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -206,7 +178,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">vector_from_array</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a Matlab-compatible vector from a (Numpy) array.</span>
+        <span class="sd">"""Make a Matlab-compatible vector from a (Numpy) array.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -222,12 +194,12 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">matrix_from_list</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a Matlab-compatible matrix from a list of lists.</span>
+        <span class="sd">"""Make a Matlab-compatible matrix from a list of lists.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -246,11 +218,11 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">A</span><span class="p">]):</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Matrix dimensions inconsistent.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Matrix dimensions inconsistent.'</span><span class="p">)</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Array</span><span class="o">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -259,7 +231,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">matrix_from_array</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a Matlab-compatible matrix from a (Numpy) array.</span>
+        <span class="sd">"""Make a Matlab-compatible matrix from a (Numpy) array.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -275,17 +247,17 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">list_from_vector</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a Matlab vector to a Python list.&quot;&quot;&quot;</span>
+        <span class="sd">"""Convert a Matlab vector to a Python list."""</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">list_from_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a Matlab matrix to a Python list.&quot;&quot;&quot;</span>
+        <span class="sd">"""Convert a Matlab matrix to a Python list."""</span>
         <span class="n">nlist</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
             <span class="n">nlist</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
@@ -307,7 +279,7 @@
     <span class="c1"># ==========================================================================</span>
 
     <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Evaluate a command from a string.</span>
+        <span class="sd">"""Evaluate a command from a string.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -317,17 +289,17 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; matlab = MatlabClient(verbose=True)</span>
-<span class="sd">        &gt;&gt;&gt; matlab.eval(&#39;isprime(13);&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; matlab.eval('isprime(13);')</span>
 <span class="sd">        True</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Put a variable in the Matlab workspace.</span>
+        <span class="sd">"""Put a variable in the Matlab workspace.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -340,11 +312,11 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; m = MatlabClient(verbose=True, interactive=True)</span>
 
-<span class="sd">        &gt;&gt;&gt; m.put(&#39;A&#39;, m.matrix([[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]))</span>
+<span class="sd">        &gt;&gt;&gt; m.put('A', m.matrix([[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]))</span>
 <span class="sd">        &gt;&gt;&gt; m.put()</span>
 <span class="sd">        &gt;&gt;&gt; m.put()</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">PutFullMatrix</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -354,7 +326,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the value of a variable in the workspace.</span>
+        <span class="sd">"""Get the value of a variable in the workspace.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -370,10 +342,10 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; m = MatlabClient(verbose=True)</span>
 
-<span class="sd">        &gt;&gt;&gt; m.get(&#39;A&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; m.get('A')</span>
 <span class="sd">        [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">GetVariable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">_value</span><span class="o">.</span><span class="n">Rank</span>
@@ -394,82 +366,55 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
     <span class="n">matlab</span> <span class="o">=</span> <span class="n">MatlabClient</span><span class="p">(</span><span class="n">interactive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">A</span> <span class="o">=</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">matrix_from_list</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">]])</span>
 
-    <span class="n">matlab</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
-    <span class="n">matlab</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s1">&#39;[R, jb] = rref(A);&#39;</span><span class="p">)</span>
+    <span class="n">matlab</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+    <span class="n">matlab</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s1">'[R, jb] = rref(A);'</span><span class="p">)</span>
 
-    <span class="n">R</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">)</span>
-    <span class="n">jb</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jb&#39;</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'R'</span><span class="p">)</span>
+    <span class="n">jb</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'jb'</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">jb</span><span class="p">)</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -481,10 +426,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -494,24 +436,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

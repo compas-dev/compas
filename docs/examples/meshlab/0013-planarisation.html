@@ -1,86 +1,55 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-            <link rel="next" title="Collapse mesh to a single vertex" href="05-collapse.html" />
-        
-        
-        
-            <link rel="prev" title="Mesh smoothing on a surface" href="0012-smoothing-on-surface.html" />
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../examples.html" >examples</a>
-            
-                <a class="breadcrumb-item" href="../meshlab.html" accesskey="U">meshlab</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <div class="section" id="mesh-planarisation">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="05-collapse.html" rel="next" title="Collapse mesh to a single vertex"/>
+<link href="0012-smoothing-on-surface.html" rel="prev" title="Mesh smoothing on a surface"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../examples.html">examples</a>
+<a accesskey="U" class="breadcrumb-item" href="../meshlab.html">meshlab</a>
+</nav>
+<div class="section">
 <span id="example-mesh-planarisation"></span><h1>Mesh planarisation</h1>
-<div class="figure">
-<img alt="../../_images/example-mesh-planarization.jpg" class="figure-img img-fluid" src="../../_images/example-mesh-planarization.jpg" />
-</div>
+<figure class="figure">
+<img alt="../../images/example-mesh-planarization.jpg" class="figure-img img-fluid" src="../../images/example-mesh-planarization.jpg"/>
+</figure>
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Downloads</div><ul class="simple">
-<li><a class="reference download internal" href="../../_downloads/example-mesh-planarization.3dm" download=""><code class="xref download docutils literal"><span class="pre">example-mesh-planarization.3dm</span></code></a></li>
-<li><a class="reference download internal" href="../../_downloads/mesh-planarization.py" download=""><code class="xref download docutils literal"><span class="pre">mesh-planarization.py</span></code></a></li>
+<li><a class="reference download internal" download="" href="../../_downloads/example-mesh-planarization.3dm"><code class="xref download docutils literal">example-mesh-planarization.3dm</code></a></li>
+<li><a class="reference download internal" download="" href="../../_downloads/mesh-planarization.py"><code class="xref download docutils literal">mesh-planarization.py</code></a></li>
 </ul>
 </div>
-</div><div class="highlight-default"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas_rhino</span>
+</div><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas_rhino</span>
 
 <span class="kn">from</span> <span class="nn">compas.cad.rhino.conduits</span> <span class="k">import</span> <span class="n">MeshConduit</span>
 <span class="kn">from</span> <span class="nn">compas.cad.rhino.geometry</span> <span class="k">import</span> <span class="n">RhinoSurface</span>
@@ -93,10 +62,10 @@
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="k">import</span> <span class="n">flatness</span>
 
 
-<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;Copyright 2016 - Block Research Group, ETH Zurich&#39;</span>
-<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
 <span class="c1"># define a callback to visualise the planarisation process</span>
@@ -106,7 +75,7 @@
 
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">:</span>
-            <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># surf.pull_mesh(mesh, fixed=fixed, d=0.1)</span>
 
@@ -115,10 +84,10 @@
 
 <span class="c1"># select an input surface and convert it to a mesh</span>
 
-<span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_surface</span><span class="p">(</span><span class="s1">&#39;Select an input surface.&#39;</span><span class="p">)</span>
+<span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_surface</span><span class="p">(</span><span class="s1">'Select an input surface.'</span><span class="p">)</span>
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">mesh_from_surface_heightfield</span><span class="p">(</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">guid</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
-<span class="n">fixed</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)})</span>
+<span class="n">fixed</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">'z'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)})</span>
 
 <span class="c1"># create a surface constraint</span>
 
@@ -128,8 +97,8 @@
 
 <span class="n">flat</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Mesh&#39;</span>
-<span class="n">flat</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;FlatMesh&#39;</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'Mesh'</span>
+<span class="n">flat</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'FlatMesh'</span>
 
 <span class="c1"># draw the original mesh</span>
 
@@ -138,7 +107,7 @@
 
 <span class="n">compas_rhino</span><span class="o">.</span><span class="n">helpers</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">draw_mesh_as_faces</span><span class="p">(</span>
     <span class="n">mesh</span><span class="p">,</span>
-    <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;mesh_start&#39;</span><span class="p">,</span>
+    <span class="n">layer</span><span class="o">=</span><span class="s1">'mesh_start'</span><span class="p">,</span>
     <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">i_to_rgb</span><span class="p">(</span><span class="n">dev0</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">/</span> <span class="n">dmax</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
 <span class="p">)</span>
@@ -161,49 +130,31 @@
 
 <span class="n">compas_rhino</span><span class="o">.</span><span class="n">helpers</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">draw_mesh_as_faces</span><span class="p">(</span>
     <span class="n">flat</span><span class="p">,</span>
-    <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;mesh_end&#39;</span><span class="p">,</span>
+    <span class="n">layer</span><span class="o">=</span><span class="s1">'mesh_end'</span><span class="p">,</span>
     <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">i_to_rgb</span><span class="p">(</span><span class="n">dev1</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">/</span> <span class="n">dmax</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">flat</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
 <span class="p">)</span>
 </code></pre></div>
+
 </div>
-</div>
-
-                        
-                        <nav class="compas-sideways">
-                            
-                                <a href="0012-smoothing-on-surface.html" class="btn btn-primary compas-prev" role="button">Mesh smoothing on a surface</a>
-                            
-
-                            
-                                <a href="05-collapse.html" class="btn btn-primary compas-next" role="button">Collapse mesh to a single vertex</a>
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column active">
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="0012-smoothing-on-surface.html" role="button">Mesh smoothing on a surface</a>
+<a class="btn btn-primary compas-next" href="05-collapse.html" role="button">Collapse mesh to a single vertex</a>
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../examples.html">Examples</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="../formfinding.html">Form Finding</a></li>
@@ -233,33 +184,21 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    <ul class="nav flex-column" id="compas-localnav">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Mesh planarisation</a></li>
 </ul>
-
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -271,10 +210,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -284,24 +220,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

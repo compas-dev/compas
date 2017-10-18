@@ -1,68 +1,40 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas_blender.geometry.mesh</h1><div class="highlight"><pre><code class="language-python border rounded">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas_blender.geometry.mesh</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas.cad</span> <span class="k">import</span> <span class="n">MeshGeometryInterface</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">add_vectors</span>
 <span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">select_mesh</span>
@@ -73,17 +45,17 @@
     <span class="k">pass</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Andrew Liew &lt;liew@arch.ethz.ch&gt;&#39;</span><span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2017, BLOCK Research Group - ETH Zurich&#39;</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;liew@arch.ethz.ch&#39;</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2017, BLOCK Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'liew@arch.ethz.ch'</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BlenderMesh&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'BlenderMesh'</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="BlenderMesh"><a class="viewcode-back" href="../../../reference/generated/compas_blender.geometry.BlenderMesh.html#compas_blender.geometry.BlenderMesh">[docs]</a><span class="k">class</span> <span class="nc">BlenderMesh</span><span class="p">(</span><span class="n">MeshGeometryInterface</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="sd">""""""</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span>
@@ -199,7 +171,7 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
 
     <span class="n">mesh</span> <span class="o">=</span> <span class="n">BlenderMesh</span><span class="o">.</span><span class="n">from_selection</span><span class="p">()</span>
 
@@ -222,28 +194,28 @@
 <span class="c1"># from compas.geometry import normal_polygon</span>
 
 <span class="c1"># def remove_duplicate_bmesh_vertices(bmesh):</span>
-<span class="c1">#     &quot;&quot;&quot; Remove duplicate overlapping vertices of a Blender mesh object.</span>
+<span class="c1">#     """ Remove duplicate overlapping vertices of a Blender mesh object.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         obj: New Blender mesh.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     bmesh.select = True</span>
-<span class="c1">#     bpy.ops.object.mode_set(mode=&#39;EDIT&#39;)</span>
-<span class="c1">#     bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type=&#39;VERT&#39;)</span>
+<span class="c1">#     bpy.ops.object.mode_set(mode='EDIT')</span>
+<span class="c1">#     bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='VERT')</span>
 <span class="c1">#     mesh = bmesh.from_edit_mesh(bpy.context.object.data)</span>
 <span class="c1">#     for vertex in mesh.verts:</span>
 <span class="c1">#         vertex.select = True</span>
 <span class="c1">#     bpy.ops.mesh.remove_doubles()</span>
-<span class="c1">#     bpy.ops.object.mode_set(mode=&#39;OBJECT&#39;)</span>
+<span class="c1">#     bpy.ops.object.mode_set(mode='OBJECT')</span>
 <span class="c1">#     bmesh.select = False</span>
 <span class="c1">#     return mesh</span>
 
 
 <span class="c1"># def update_bmesh_vertices(bmesh, X, winswap=False):</span>
-<span class="c1">#     &quot;&quot;&quot; Update the vertex co-ordinates of a Blender mesh.</span>
+<span class="c1">#     """ Update the vertex co-ordinates of a Blender mesh.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
@@ -252,15 +224,15 @@
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         None</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     for c, Xi in enumerate(list(X)):</span>
 <span class="c1">#         bmesh.data.vertices[c].co = Xi</span>
 <span class="c1">#     if winswap:</span>
-<span class="c1">#         bpy.ops.wm.redraw_timer(type=&#39;DRAW_WIN_SWAP&#39;, iterations=1)</span>
+<span class="c1">#         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)</span>
 
 
 <span class="c1"># def bmesh_edge_lengths(bmesh):</span>
-<span class="c1">#     &quot;&quot;&quot; Retrieve the edge legnths of a Blender mesh.</span>
+<span class="c1">#     """ Retrieve the edge legnths of a Blender mesh.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
@@ -268,7 +240,7 @@
 <span class="c1">#     Returns:</span>
 <span class="c1">#         list: Lengths of each edge.</span>
 <span class="c1">#         float: Total length.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     X, uv, _ = bmesh_data(bmesh)</span>
 <span class="c1">#     lengths = [distance_point_point(X[u], X[v]) for u, v in uv]</span>
 <span class="c1">#     L = sum(lengths)</span>
@@ -276,7 +248,7 @@
 
 
 <span class="c1"># def bmesh_face_areas(bmesh):</span>
-<span class="c1">#     &quot;&quot;&quot; Retrieve the face areas of a Blender mesh.</span>
+<span class="c1">#     """ Retrieve the face areas of a Blender mesh.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
@@ -284,7 +256,7 @@
 <span class="c1">#     Returns:</span>
 <span class="c1">#         list: Areas of each face.</span>
 <span class="c1">#         float: Total area.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     vertices, edges, faces = bmesh_data(bmesh)</span>
 <span class="c1">#     polygons = [[vertices[i] for i in face] for face in faces]</span>
 <span class="c1">#     areas = [area_polygon(polygon) for polygon in polygons]</span>
@@ -293,14 +265,14 @@
 
 
 <span class="c1"># def bmesh_face_normals(bmesh):</span>
-<span class="c1">#     &quot;&quot;&quot; Retrieve the face normals of a Blender mesh.</span>
+<span class="c1">#     """ Retrieve the face normals of a Blender mesh.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         list: Normals of each face.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     vertices, edges, faces = bmesh_data(bmesh)</span>
 <span class="c1">#     polygons = [[vertices[i] for i in face] for face in faces]</span>
 <span class="c1">#     normals = [normal_polygon(polygon) for polygon in polygons]</span>
@@ -308,42 +280,42 @@
 
 
 <span class="c1"># def unify_bmesh_normals(bmesh):</span>
-<span class="c1">#     &quot;&quot;&quot; Make the Blender mesh face normals consistent.</span>
+<span class="c1">#     """ Make the Blender mesh face normals consistent.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         None</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     bmesh.mode_set(mode=&#39;EDIT&#39;)</span>
+<span class="c1">#     """</span>
+<span class="c1">#     bmesh.mode_set(mode='EDIT')</span>
 <span class="c1">#     bmesh.normals_make_consistent(inside=False)</span>
-<span class="c1">#     bmesh.mode_set(mode=&#39;OBJECT&#39;)</span>
+<span class="c1">#     bmesh.mode_set(mode='OBJECT')</span>
 
 
 <span class="c1"># def remove_duplicate_bmesh_vertices(bmesh):</span>
-<span class="c1">#     &quot;&quot;&quot; Remove duplicate overlapping vertices of a Blender mesh object.</span>
+<span class="c1">#     """ Remove duplicate overlapping vertices of a Blender mesh object.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         obj: New Blender mesh.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     bmesh.select = True</span>
-<span class="c1">#     bpy.ops.object.mode_set(mode=&#39;EDIT&#39;)</span>
-<span class="c1">#     bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type=&#39;VERT&#39;)</span>
+<span class="c1">#     bpy.ops.object.mode_set(mode='EDIT')</span>
+<span class="c1">#     bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='VERT')</span>
 <span class="c1">#     mesh = bmesh.from_edit_mesh(bpy.context.object.data)</span>
 <span class="c1">#     for vertex in mesh.verts:</span>
 <span class="c1">#         vertex.select = True</span>
 <span class="c1">#     bpy.ops.mesh.remove_doubles()</span>
-<span class="c1">#     bpy.ops.object.mode_set(mode=&#39;OBJECT&#39;)</span>
+<span class="c1">#     bpy.ops.object.mode_set(mode='OBJECT')</span>
 <span class="c1">#     bmesh.select = False</span>
 <span class="c1">#     return mesh</span>
 
 
 <span class="c1"># def update_bmesh_vertices(bmesh, X, winswap=False):</span>
-<span class="c1">#     &quot;&quot;&quot; Update the vertex co-ordinates of a Blender mesh.</span>
+<span class="c1">#     """ Update the vertex co-ordinates of a Blender mesh.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
@@ -352,15 +324,15 @@
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         None</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     for c, Xi in enumerate(list(X)):</span>
 <span class="c1">#         bmesh.data.vertices[c].co = Xi</span>
 <span class="c1">#     if winswap:</span>
-<span class="c1">#         bpy.ops.wm.redraw_timer(type=&#39;DRAW_WIN_SWAP&#39;, iterations=1)</span>
+<span class="c1">#         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)</span>
 
 
 <span class="c1"># def bmesh_edge_lengths(bmesh):</span>
-<span class="c1">#     &quot;&quot;&quot; Retrieve the edge legnths of a Blender mesh.</span>
+<span class="c1">#     """ Retrieve the edge legnths of a Blender mesh.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
@@ -368,7 +340,7 @@
 <span class="c1">#     Returns:</span>
 <span class="c1">#         list: Lengths of each edge.</span>
 <span class="c1">#         float: Total length.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     X, uv, _ = bmesh_data(bmesh)</span>
 <span class="c1">#     lengths = [distance_point_point(X[u], X[v]) for u, v in uv]</span>
 <span class="c1">#     L = sum(lengths)</span>
@@ -376,7 +348,7 @@
 
 
 <span class="c1"># def bmesh_face_areas(bmesh):</span>
-<span class="c1">#     &quot;&quot;&quot; Retrieve the face areas of a Blender mesh.</span>
+<span class="c1">#     """ Retrieve the face areas of a Blender mesh.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
@@ -384,7 +356,7 @@
 <span class="c1">#     Returns:</span>
 <span class="c1">#         list: Areas of each face.</span>
 <span class="c1">#         float: Total area.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     vertices, edges, faces = bmesh_data(bmesh)</span>
 <span class="c1">#     polygons = [[vertices[i] for i in face] for face in faces]</span>
 <span class="c1">#     areas = [area_polygon(polygon) for polygon in polygons]</span>
@@ -393,14 +365,14 @@
 
 
 <span class="c1"># def bmesh_face_normals(bmesh):</span>
-<span class="c1">#     &quot;&quot;&quot; Retrieve the face normals of a Blender mesh.</span>
+<span class="c1">#     """ Retrieve the face normals of a Blender mesh.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         list: Normals of each face.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     """</span>
 <span class="c1">#     vertices, edges, faces = bmesh_data(bmesh)</span>
 <span class="c1">#     polygons = [[vertices[i] for i in face] for face in faces]</span>
 <span class="c1">#     normals = [normal_polygon(polygon) for polygon in polygons]</span>
@@ -408,79 +380,52 @@
 
 
 <span class="c1"># def unify_bmesh_normals(bmesh):</span>
-<span class="c1">#     &quot;&quot;&quot; Make the Blender mesh face normals consistent.</span>
+<span class="c1">#     """ Make the Blender mesh face normals consistent.</span>
 
 <span class="c1">#     Parameters:</span>
 <span class="c1">#         bmesh (obj): Blender mesh object.</span>
 
 <span class="c1">#     Returns:</span>
 <span class="c1">#         None</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     bmesh.mode_set(mode=&#39;EDIT&#39;)</span>
+<span class="c1">#     """</span>
+<span class="c1">#     bmesh.mode_set(mode='EDIT')</span>
 <span class="c1">#     bmesh.normals_make_consistent(inside=False)</span>
-<span class="c1">#     bmesh.mode_set(mode=&#39;OBJECT&#39;)</span>
+<span class="c1">#     bmesh.mode_set(mode='OBJECT')</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -492,10 +437,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -505,24 +447,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>
