@@ -27,7 +27,16 @@ class EdgeArtist(object):
         compas_rhino.delete_objects(guids)
 
     def clear_edgelabels(self, keys=None):
-        pass
+        if not keys:
+            name = '{}.edge.label.*'.format(self.datastructure.name)
+            guids = compas_rhino.get_objects(name=name)
+        else:
+            guids = []
+            for key in keys:
+                name = self.datastructure.edge_label_name(key)
+                guid = compas_rhino.get_object(name=name)
+                guids.append(guid)
+        compas_rhino.delete_objects(guids)
 
     def draw_edges(self, keys=None, color=None):
         """Draw a selection of edges of the network.

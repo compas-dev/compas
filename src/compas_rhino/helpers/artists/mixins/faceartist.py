@@ -59,7 +59,7 @@ class FaceArtist(object):
         fkeys = fkeys or list(self.datastructure.faces())
         colordict = color_to_colordict(color,
                                        fkeys,
-                                       default=self.defaults['face.color'],
+                                       default=self.defaults['color.face'],
                                        colorformat='rgb',
                                        normalize=False)
         faces = []
@@ -93,7 +93,7 @@ class FaceArtist(object):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.defaults['face.color'],
+                                       default=self.defaults['color.face'],
                                        colorformat='rgb',
                                        normalize=False)
 

@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import ast
+
 import compas_rhino
 
 try:
@@ -20,54 +22,11 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'NetworkModifier',
+    'VertexModifier',
 ]
 
 
-class NetworkModifier(object):
-
-    @staticmethod
-    def move(self):
-        color  = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        origin = {key: self.vertex_coordinates(key) for key in self.network.vertices()}
-        vertex = {key: self.vertex_coordinates(key) for key in self.network.vertices()}
-        edges  = self.edges()
-        start  = compas_rhino.pick_point('Point to move from?')
-
-        if not start:
-            return False
-
-        def OnDynamicDraw(sender, e):
-            current = list(e.CurrentPoint)
-            vec = [current[i] - start[i] for i in range(3)]
-            for key in vertex:
-                vertex[key] = [origin[key][i] + vec[i] for i in range(3)]
-            for u, v in iter(edges):
-                sp = vertex[u]
-                ep = vertex[v]
-                sp = Point3d(*sp)
-                ep = Point3d(*ep)
-                e.Display.DrawDottedLine(sp, ep, color)
-
-        # name = '{0}.*'.format(self.attributes['name'])
-        # guids = compas_rhino.get_objects(name=name)
-        # compas_rhino.delete_objects(guids, False)
-
-        gp = Rhino.Input.Custom.GetPoint()
-        gp.SetCommandPrompt('Point to move to?')
-        gp.DynamicDraw += OnDynamicDraw
-
-        gp.Get()
-
-        if gp.CommandResult() == Rhino.Commands.Result.Success:
-            end = list(gp.Point())
-            vec = [end[i] - start[i] for i in range(3)]
-            for key, attr in self.vertices(True):
-                attr['x'] += vec[0]
-                attr['y'] += vec[1]
-                attr['z'] += vec[2]
-            return True
-        return False
+class VertexModifier(object):
 
     @staticmethod
     def move_vertex(self, key, constraint=None, allow_off=None):
@@ -100,6 +59,31 @@ class NetworkModifier(object):
             return True
         return False
 
+    @staticmethod
+    def update_vertex_attributes(self, keys, names=None):
+        if not names:
+            names = self.default_vertex_attributes.keys()
+        names = sorted(names)
+        values = [self.vertex[keys[0]][name] for name in names]
+        if len(keys) > 1:
+            for i, name in enumerate(names):
+                for key in keys[1:]:
+                    if values[i] != self.vertex[key][name]:
+                        values[i] = '-'
+                        break
+        values = map(str, values)
+        values = compas_rhino.update_named_values(names, values)
+        if values:
+            for name, value in zip(names, values):
+                if value != '-':
+                    for key in keys:
+                        try:
+                            self.vertex[key][name] = ast.literal_eval(value)
+                        except (ValueError, TypeError):
+                            self.vertex[key][name] = value
+            return True
+        return False
+
 
 # ==============================================================================
 # Debugging
@@ -111,7 +95,7 @@ if __name__ == "__main__":
 
     from compas.datastructures import Network
     from compas_rhino.helpers.artists.networkartist import NetworkArtist
-    from compas_rhino.helpers.modifiers.networkmodifier import NetworkModifier
+    from compas_rhino.helpers.modifiers.vertexmodifier import VertexModifier
 
     network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -122,7 +106,7 @@ if __name__ == "__main__":
     artist.draw_edges()
     artist.redraw()
 
-    if NetworkModifier.move_vertex(network, 0):
+    if VertexModifier.move_vertex(network, 0):
         artist.clear()
         artist.draw_vertices()
         artist.draw_edges()
