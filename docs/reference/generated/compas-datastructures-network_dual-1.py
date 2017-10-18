@@ -3,7 +3,7 @@ import compas
 from compas.datastructures import FaceNetwork
 from compas.datastructures import network_find_faces
 from compas.datastructures import network_dual
-from compas.visualization.plotters import NetworkPlotter
+from compas.visualization import NetworkPlotter
 
 network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 

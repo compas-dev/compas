@@ -25,7 +25,9 @@ mesh
     mesh_draw_vertices
     mesh_draw_edges
     mesh_draw_faces
-    mesh_draw_as_faces
+    mesh_draw_vertex_labels
+    mesh_draw_edge_labels
+    mesh_draw_face_labels
     mesh_select_vertices
     mesh_select_vertex
     mesh_select_edges
@@ -35,10 +37,6 @@ mesh
     mesh_update_vertex_attributes
     mesh_update_edge_attributes
     mesh_update_face_attributes
-    mesh_display_vertex_labels
-    mesh_display_edge_labels
-    mesh_display_face_labels
-    mesh_move
     mesh_move_vertex
 
 
@@ -51,28 +49,17 @@ network
     network_draw
     network_draw_vertices
     network_draw_edges
+    network_draw_vertex_labels
+    network_draw_edge_labels
     network_select_vertices
     network_select_vertex
     network_select_edges
     network_select_edge
-    network_select_faces
-    network_select_face
     network_update_attributes
     network_update_vertex_attributes
-    network_update_from_points
     network_update_edge_attributes
-    network_update_from_lines
-    network_update_face_attributes
-    network_display_vertex_labels
-    network_display_edge_labels
-    network_display_face_labels
     network_move
     network_move_vertex
-    network_display_axial_forces
-    network_display_reaction_forces
-    network_display_residual_forces
-    network_display_selfweight
-    network_display_applied_loads
 
 
 volmesh
@@ -88,6 +75,12 @@ volmesh
     volmesh_draw_edges
     volmesh_draw_faces
     volmesh_draw_cells
+    volmesh_select_vertex
+    volmesh_select_vertices
+    volmesh_select_edge
+    volmesh_select_edges
+    volmesh_select_face
+    volmesh_select_faces
 
 """
 

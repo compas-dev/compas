@@ -33,7 +33,6 @@ FaceNetwork
       ~FaceNetwork.edge_vector
       ~FaceNetwork.edges
       ~FaceNetwork.edges_on_boundary
-      ~FaceNetwork.edges_where
       ~FaceNetwork.face_adjacency
       ~FaceNetwork.face_adjacency_edge
       ~FaceNetwork.face_area
@@ -54,7 +53,6 @@ FaceNetwork
       ~FaceNetwork.face_vertices
       ~FaceNetwork.faces
       ~FaceNetwork.faces_on_boundary
-      ~FaceNetwork.faces_where
       ~FaceNetwork.from_data
       ~FaceNetwork.from_json
       ~FaceNetwork.from_lines
@@ -77,6 +75,7 @@ FaceNetwork
       ~FaceNetwork.get_vertex_attributes
       ~FaceNetwork.get_vertices_attribute
       ~FaceNetwork.get_vertices_attributes
+      ~FaceNetwork.gkey_key
       ~FaceNetwork.halfedges
       ~FaceNetwork.has_edge
       ~FaceNetwork.has_vertex
@@ -89,10 +88,9 @@ FaceNetwork
       ~FaceNetwork.is_vertex_connected
       ~FaceNetwork.is_vertex_leaf
       ~FaceNetwork.is_vertex_orphan
+      ~FaceNetwork.key_gkey
       ~FaceNetwork.key_index
       ~FaceNetwork.leaves
-      ~FaceNetwork.max_vertex_attribute_value
-      ~FaceNetwork.min_vertex_attribute_value
       ~FaceNetwork.number_of_edges
       ~FaceNetwork.number_of_faces
       ~FaceNetwork.number_of_halfedges
@@ -137,7 +135,6 @@ FaceNetwork
       ~FaceNetwork.vertex_normal
       ~FaceNetwork.vertices
       ~FaceNetwork.vertices_on_boundary
-      ~FaceNetwork.vertices_where
       ~FaceNetwork.wireframe
    
    

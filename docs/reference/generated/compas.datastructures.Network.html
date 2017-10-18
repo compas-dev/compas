@@ -1,97 +1,135 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="compas.datastructures.FaceNetwork.html" rel="next" title="FaceNetwork"/>
-<link href="../compas.datastructures.html" rel="prev" title="datastructures"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a class="breadcrumb-item" href="../../reference.html">reference</a>
-<a class="breadcrumb-item" href="../compas.html">compas</a>
-<a accesskey="U" class="breadcrumb-item" href="../compas.datastructures.html">datastructures</a>
-</nav>
-<div class="section">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+            <link rel="next" title="FaceNetwork" href="compas.datastructures.FaceNetwork.html" />
+        
+        
+        
+            <link rel="prev" title="datastructures" href="../compas.datastructures.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../reference.html" >reference</a>
+            
+                <a class="breadcrumb-item" href="../compas.html" >compas</a>
+            
+                <a class="breadcrumb-item" href="../compas.datastructures.html" accesskey="U">datastructures</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <div class="section" id="network">
 <h1>Network</h1>
 <dl class="class">
 <dt id="compas.datastructures.Network">
 <em class="property">class </em><code class="descclassname">compas.datastructures.</code><code class="descname">Network</code><a class="reference internal" href="../../_modules/compas/datastructures/network/network.html#Network"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal">compas.datastructures.mixins.MagicMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.ConversionMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.FactoryMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.EdgeGeometryMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.EdgeHelpersMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.EdgeAttributesMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.VertexCoordinatesDescriptorsMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.VertexHelpersMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.VertexAttributesMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.Datastructure</code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.fromto.FromToJson</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.fromto.FromToData</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.geometry.EdgeGeometry</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.helpers.EdgeHelpers</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.helpers.VertexHelpers</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.mappings.VertexMappings</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.mappings.EdgeMappings</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.descriptors.VertexCoordinatesDescriptors</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.attributes.EdgeAttributesManagement</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.attributes.VertexAttributesManagement</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.Datastructure</span></code></p>
 <p>Definition of a network object.</p>
-<p>The <code class="docutils literal">Network</code> class is implemented as a directed edge graph.</p>
+<p>The <code class="docutils literal"><span class="pre">Network</span></code> class is implemented as a directed edge graph.</p>
 <dl class="attribute">
 <dt id="compas.datastructures.Network.vertex">
 <code class="descname">vertex</code></dt>
-<dd><p><em>dict</em> – The vertex dictionary. Each key in the vertex dictionary
+<dd><p><em>dict</em> &#8211; The vertex dictionary. Each key in the vertex dictionary
 represents a vertex of the network and maps to a dictionary of
 vertex attributes.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.datastructures.Network.edge">
 <code class="descname">edge</code></dt>
-<dd><p><em>dict of dict</em> – The edge dictionary. Each key in the edge dictionary
+<dd><p><em>dict of dict</em> &#8211; The edge dictionary. Each key in the edge dictionary
 corresponds to a key in the vertex dictionary, and maps to a dictionary
 with connected vertices. In the latter, the keys are again references
 to items in the vertex dictionary, and the values are dictionaries
 of edge attributes.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.datastructures.Network.halfedge">
 <code class="descname">halfedge</code></dt>
-<dd><p><em>dict of dict</em> – A half-edge dictionary, which keeps track of
+<dd><p><em>dict of dict</em> &#8211; A half-edge dictionary, which keeps track of
 undirected adjacencies. If the network is planar, the halfedges point
 at entries in the face dictionary.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.datastructures.Network.face">
 <code class="descname">face</code></dt>
-<dd><p><em>dict</em> – The face dictionary. If the network is planar, this dictionary
+<dd><p><em>dict</em> &#8211; The face dictionary. If the network is planar, this dictionary
 is populated by a face finding algorithm. Each key represents a face
 and points to its corresponding vertex cycle.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.datastructures.Network.facedata">
 <code class="descname">facedata</code></dt>
-<dd><p><em>dict</em> – Face attributes.</p>
+<dd><p><em>dict</em> &#8211; Face attributes.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.datastructures.Network.attributes">
 <code class="descname">attributes</code></dt>
-<dd><p><em>dict</em> – A dictionary of miscellaneous information about the network.</p>
+<dd><p><em>dict</em> &#8211; A dictionary of miscellaneous information about the network.</p>
 </dd></dl>
+
 <p class="rubric">Examples</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
 <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 
-<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;lines.obj&#39;</span><span class="p">))</span>
 
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
 
@@ -100,321 +138,334 @@ and points to its corresponding vertex cycle.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
-<figure class="figure">
-<img alt="../../images/compas-datastructures-Network-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Network-1.png"/>
-</figure>
+</div>
+<div class="figure">
+<img alt="../../_images/compas-datastructures-Network-1.png" src="../../_images/compas-datastructures-Network-1.png" />
+</div>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="10%"/>
-<col width="90%"/>
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><code class="xref py py-obj docutils literal">__init__</code>()</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">add_edge</code>(u, v[, attr_dict])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">add_edge</span></code>(u,&nbsp;v[,&nbsp;attr_dict])</td>
 <td>Add an edge and specify its attributes (optional).</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">add_vertex</code>([key, attr_dict])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">add_vertex</span></code>([key,&nbsp;attr_dict])</td>
 <td>Add a vertex and specify its attributes (optional).</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">clear</code>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">clear_edgedict</code>()</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">clear_edgedict</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">clear_halfedgedict</code>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">clear_halfedgedict</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">clear_vertexdict</code>()</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">clear_vertexdict</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">copy</code>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">copy</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edge_connected_edges</code>(u, v)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">edge_connected_edges</span></code>(u,&nbsp;v)</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edge_coordinates</code>(u, v[, axes])</td>
-<td></td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">edge_coordinates</span></code>(u,&nbsp;v[,&nbsp;axes])</td>
+<td>Return the coordinates of the start and end point of an edge.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edge_direction</code>(u, v)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">edge_direction</span></code>(u,&nbsp;v)</td>
 <td>Return the direction vector of an edge.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edge_label_name</code>(u, v)</td>
-<td></td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">edge_label_name</span></code>(u,&nbsp;v)</td>
+<td>Get the name of an edge label.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edge_length</code>(u, v)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">edge_length</span></code>(u,&nbsp;v)</td>
 <td>Return the length of an edge.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edge_midpoint</code>(u, v)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">edge_midpoint</span></code>(u,&nbsp;v)</td>
 <td>Return the location of the midpoint of an edge.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edge_name</code>(u, v)</td>
-<td></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">edge_name</span></code>(u,&nbsp;v)</td>
+<td>Get the name of an edge.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edge_point</code>(u, v[, t])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">edge_point</span></code>(u,&nbsp;v[,&nbsp;t])</td>
 <td>Return the location of a point along an edge.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edge_vector</code>(u, v)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">edge_vector</span></code>(u,&nbsp;v)</td>
 <td>Return the vector of an edge.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edges</code>([data])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">edges</span></code>([data])</td>
 <td>Return an iterator for the edges and their attributes (optional).</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edges_where</code>(conditions)</td>
-<td>Get edges for which a certain condition or set of conditions is <code class="docutils literal">True</code>.</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">from_data</span></code>(data)</td>
+<td>Construct a datastructure from structured data.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">from_data</code>(data)</td>
-<td>Construct a mesh from actual mesh data.</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">from_json</span></code>(filepath)</td>
+<td>Construct a datastructure from structured data contained in a json file.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">from_json</code>(filepath)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">from_lines</span></code>(lines[,&nbsp;precision])</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">from_lines</code>(lines[, precision])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">from_obj</span></code>(filepath[,&nbsp;precision])</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">from_obj</code>(filepath[, precision])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">from_vertices_and_edges</span></code>(vertices,&nbsp;edges)</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">from_vertices_and_edges</code>(vertices, edges)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_any_edge</span></code>()</td>
+<td>Get the identifier of a random edge.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_any_vertex</span></code>()</td>
+<td>Get the identifier of a random vertex.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_any_vertices</span></code>(n[,&nbsp;exclude_leaves])</td>
+<td>Get a list of identifiers of a random set of n vertices.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_edge_attribute</span></code>(key,&nbsp;name[,&nbsp;value])</td>
+<td>Get the value of a named attribute of one edge.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_edge_attributes</span></code>(key,&nbsp;names[,&nbsp;values])</td>
+<td>Get the value of a named attribute of one edge.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_edges_attribute</span></code>(name[,&nbsp;value,&nbsp;keys])</td>
+<td>Get the value of a named attribute of multiple edges.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_edges_attributes</span></code>(names[,&nbsp;values,&nbsp;keys])</td>
+<td>Get the values of multiple named attribute of multiple edges.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_vertex_attribute</span></code>(key,&nbsp;name[,&nbsp;value])</td>
+<td>Get the value of a named attribute of one vertex.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_vertex_attributes</span></code>(key,&nbsp;names[,&nbsp;values])</td>
+<td>Get the value of a named attribute of one vertex.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_vertices_attribute</span></code>(name[,&nbsp;value,&nbsp;keys])</td>
+<td>Get the value of a named attribute of multiple vertices.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_vertices_attributes</span></code>(names[,&nbsp;values,&nbsp;keys])</td>
+<td>Get the values of multiple named attribute of multiple vertices.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">gkey_key</span></code>([precision])</td>
+<td>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">has_edge</span></code>(u,&nbsp;v[,&nbsp;directed])</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_any_edge</code>()</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">has_vertex</span></code>(key)</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_any_vertex</code>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">index_key</span></code>()</td>
+<td>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">index_uv</span></code>()</td>
+<td>Returns a dictionary that maps edges in a list to the corresponding vertex key pairs.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">indexed_edges</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_any_vertices</code>(n[, exclude_leaves])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_edge_attribute</code>(u, v, name[, value])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_edge_attributes</code>(u, v, names[, values])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_edges_attribute</code>(name[, value, keys])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_edges_attributes</code>(names[, values, keys])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_vertex_attribute</code>(key, name[, value])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_vertex_attributes</code>(key, names[, values])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_vertices_attribute</code>(name[, value, keys])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_vertices_attributes</code>(names[, values, keys])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">has_edge</code>(u, v[, directed])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">has_vertex</code>(key)</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">index_key</code>()</td>
-<td>Returns an <em>index-to-key</em> map.</td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">index_uv</code>()</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">indexed_edges</code>()</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">is_connected</code>()</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">is_connected</span></code>()</td>
 <td>Return True if for every two vertices a path exists connecting them.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">is_vertex_connected</code>(key)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">is_vertex_connected</span></code>(key)</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">is_vertex_leaf</code>(key)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">is_vertex_leaf</span></code>(key)</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">is_vertex_orphan</code>(key)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">is_vertex_orphan</span></code>(key)</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">key_index</code>()</td>
-<td>Returns a <em>key-to-index</em> map.</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">key_gkey</span></code>([precision])</td>
+<td>Returns a dictionary that maps vertex dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">leaves</code>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">key_index</span></code>()</td>
+<td>Returns a dictionary that maps vertex dictionary keys to the corresponding index in a vertex list or array.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">leaves</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">max_vertex_attribute_value</code>(name)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">number_of_edges</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">min_vertex_attribute_value</code>(name)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">number_of_halfedges</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">number_of_edges</code>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">number_of_vertices</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">number_of_halfedges</code>()</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_edge_attribute</span></code>(key,&nbsp;name,&nbsp;value)</td>
+<td>Set one attribute of one edge.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_edge_attributes</span></code>(key[,&nbsp;attr_dict])</td>
+<td>Set multiple attributes of one edge.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_edges_attribute</span></code>(name,&nbsp;value[,&nbsp;keys])</td>
+<td>Set one attribute of multiple edges.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_edges_attributes</span></code>([keys,&nbsp;attr_dict])</td>
+<td>Set multiple attributes of multiple edges.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_vertex_attribute</span></code>(key,&nbsp;name,&nbsp;value)</td>
+<td>Set one attribute of one vertex.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_vertex_attributes</span></code>(key[,&nbsp;attr_dict])</td>
+<td>Set multiple attributes of one vertex.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_vertices_attribute</span></code>(name,&nbsp;value[,&nbsp;keys])</td>
+<td>Set one attribute of multiple vertices.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_vertices_attributes</span></code>([keys,&nbsp;attr_dict])</td>
+<td>Set multiple attributes of multiple vertices.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">to_data</span></code>()</td>
+<td>Returns a dictionary of structured data representing the data structure.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">to_json</span></code>([filepath])</td>
+<td>Serialise the structured data representing the data structure to json.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">to_lines</span></code>([axes])</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">number_of_vertices</code>()</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">to_obj</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">set_edge_attribute</code>(u, v, name, value)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">to_points</span></code>([axes])</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">set_edge_attributes</code>(u, v[, attr_dict])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">to_vertices_and_edges</span></code>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">set_edges_attribute</code>(name, value[, keys])</td>
-<td></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">update_default_edge_attributes</span></code>([attr_dict])</td>
+<td>Update the default edge attributes (this also affects already existing edges).</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">set_edges_attributes</code>([keys, attr_dict])</td>
-<td></td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">update_default_vertex_attributes</span></code>([attr_dict])</td>
+<td>Update the default vertex attributes (this also affects already existing vertices).</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">set_vertex_attribute</code>(key, name, value)</td>
-<td></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">uv_index</span></code>()</td>
+<td>Returns a dictionary that maps edge keys (i.e.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">set_vertex_attributes</code>(key[, attr_dict])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">set_vertices_attribute</code>(name, value[, keys])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">set_vertices_attributes</code>([keys, attr_dict])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">to_data</code>()</td>
-<td>Return the data dict that represents the mesh, and from which it can be reconstructed.</td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">to_json</code>([filepath])</td>
-<td>Serialize the mesh data to a JSON file.</td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">to_lines</code>([axes])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">to_obj</code>()</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">to_points</code>([axes])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">to_vertices_and_edges</code>()</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">update_default_edge_attributes</code>([attr_dict])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">update_default_vertex_attributes</code>([attr_dict])</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">uv_index</code>()</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_connected_edges</code>(key)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_connected_edges</span></code>(key)</td>
 <td>Return the edges connected to a vertex.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_coordinates</code>(key[, axes])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_coordinates</span></code>(key[,&nbsp;axes])</td>
 <td>Return the coordinates of a vertex.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_degree</code>(key)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_degree</span></code>(key)</td>
 <td>Return the number of neighbours of a vertex.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_degree_in</code>(key)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_degree_in</span></code>(key)</td>
 <td>Return the numer of incoming neighbours of a vertex.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_degree_out</code>(key)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_degree_out</span></code>(key)</td>
 <td>Return the number of outgoing neighbours of a vertex.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_label_name</code>(key)</td>
-<td></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_label_name</span></code>(key)</td>
+<td>Get the name of a vertex label.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_laplacian</code>(key)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_laplacian</span></code>(key)</td>
 <td>Return the vector from the vertex to the centroid of its 1-ring neighbourhood.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_name</code>(key)</td>
-<td></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_name</span></code>(key)</td>
+<td>Get the name of a vertex.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbourhood</code>(key[, ring])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_neighbourhood</span></code>(key[,&nbsp;ring])</td>
 <td>Return the vertices in the neighbourhood of a vertex.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbourhood_centroid</code>(key)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_neighbourhood_centroid</span></code>(key)</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbours</code>(key)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_neighbours</span></code>(key)</td>
 <td>Return the neighbours of a vertex.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbours_in</code>(key)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_neighbours_in</span></code>(key)</td>
 <td>Return the incoming neighbours of a vertex.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbours_out</code>(key)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">vertex_neighbours_out</span></code>(key)</td>
 <td>Return the outgoing neighbours of a vertex.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertices</code>([data])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">vertices</span></code>([data])</td>
 <td>Return an iterator for the vertices and their attributes (optional).</td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertices_where</code>(conditions)</td>
-<td>Get vertices for which a certain condition or set of conditions is <code class="docutils literal">True</code>.</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="10%"/>
-<col width="90%"/>
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><code class="xref py py-obj docutils literal">adjacency</code></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">adjacency</span></code></td>
 <td>Alias for the halfedge attribute.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">data</code></td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">data</span></code></td>
 <td>Return a data dict of this data structure for serialisation.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">name</code></td>
-<td><a class="reference external" href="https://docs.python.org/2/library/functions.html" title="(in Python v2.7)"><code class="xref py py-obj docutils literal">str</code></a> – The name of the data structure.</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">name</span></code></td>
+<td><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> &#8211; The name of the data structure.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">x</code></td>
-<td><code class="xref py py-obj docutils literal">list</code> – The <cite>x</cite> coordinates of the vertices.</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">x</span></code></td>
+<td><em>list</em> &#8211; The X coordinates of the vertices.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">xy</code></td>
-<td><code class="xref py py-obj docutils literal">list</code> – The <cite>xy</cite> coordinates of the vertices.</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">xy</span></code></td>
+<td><em>list</em> &#8211; The XY coordinates of the vertices.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">xyz</code></td>
-<td><code class="xref py py-obj docutils literal">list</code> – The <cite>xyz</cite> coordinates of the vertices.</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">xyz</span></code></td>
+<td><em>list</em> &#8211; The XYZ coordinates of the vertices.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">y</code></td>
-<td><code class="xref py py-obj docutils literal">list</code> – The <cite>y</cite> coordinates of the vertices.</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">y</span></code></td>
+<td><em>list</em> &#8211; The Y coordinates of the vertices.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">z</code></td>
-<td><code class="xref py py-obj docutils literal">list</code> – The <cite>z</cite> coordinates of the vertices.</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">z</span></code></td>
+<td><em>list</em> &#8211; The Z coordinates of the vertices.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
+
 </div>
-<nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="../compas.datastructures.html" role="button">datastructures</a>
-<a class="btn btn-primary compas-next" href="compas.datastructures.FaceNetwork.html" role="button">FaceNetwork</a>
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column active">
+
+                        
+                        <nav class="compas-sideways">
+                            
+                                <a href="../compas.datastructures.html" class="btn btn-primary compas-prev" role="button">datastructures</a>
+                            
+
+                            
+                                <a href="compas.datastructures.FaceNetwork.html" class="btn btn-primary compas-next" role="button">FaceNetwork</a>
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
@@ -440,33 +491,48 @@ and points to its corresponding vertex cycle.</p>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-<ul class="nav flex-column" id="compas-localnav">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Network</a></li>
 </ul>
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 18, 2017.
             
 
             
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -476,17 +542,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

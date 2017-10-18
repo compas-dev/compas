@@ -1,7 +1,7 @@
 import compas
 from compas.datastructures import Mesh
-from compas.datastructures.mesh.algorithms import mesh_dual
-from compas.visualization.plotters import MeshPlotter
+from compas.datastructures import mesh_dual
+from compas.visualization import MeshPlotter
 
 mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 

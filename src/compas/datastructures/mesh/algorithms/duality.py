@@ -18,7 +18,7 @@ def mesh_dual(mesh, cls=None):
             Defaults to the type of the provided mesh object.
 
     Returns:
-        compas.datastructures.mesh.Mesh: The dual mesh.
+        compas.datastructures.Mesh: The dual mesh.
 
     Example:
 
@@ -27,8 +27,8 @@ def mesh_dual(mesh, cls=None):
 
             import compas
             from compas.datastructures import Mesh
-            from compas.datastructures.mesh.algorithms import mesh_dual
-            from compas.visualization.plotters import MeshPlotter
+            from compas.datastructures import mesh_dual
+            from compas.visualization import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 

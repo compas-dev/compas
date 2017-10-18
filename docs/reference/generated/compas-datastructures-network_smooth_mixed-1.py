@@ -1,8 +1,8 @@
 import compas
 from compas.datastructures import FaceNetwork
-from compas.visualization.plotters import NetworkPlotter
-from compas.datastructures.network.algorithms import network_smooth_mixed
-from compas.datastructures.network.algorithms import network_find_faces
+from compas.visualization import NetworkPlotter
+from compas.datastructures import network_smooth_mixed
+from compas.datastructures import network_find_faces
 
 network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 smooth = network.copy()

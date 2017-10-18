@@ -203,8 +203,8 @@ def mesh_draw(mesh,
     * tuple, list: RGB color that will be applied to all elements subject to the specification.
     * dict: RGB or hex color dict with a specification for some or all of the related elements.
 
-    Important
-    ---------
+    Note
+    ----
     RGB colors specified as values between 0 and 255, should be integers.
     RGB colors specified as values between 0.0 and 1.0, should be floats.
 

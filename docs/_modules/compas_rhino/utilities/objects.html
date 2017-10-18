@@ -1,40 +1,68 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
-</nav>
-<h1>Source code for compas_rhino.utilities.objects</h1><div class="highlight"><pre><code class="language-python border rounded">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <h1>Source code for compas_rhino.utilities.objects</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">System</span>
     <span class="kn">import</span> <span class="nn">Rhino</span>
@@ -46,14 +74,14 @@
 
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">platform</span>
-    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'IronPython'</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;IronPython&#39;</span><span class="p">:</span>
         <span class="k">raise</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, BLOCK Research Group - ETH Zurich'</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
 
 
 <span class="c1"># get_point_coordinates =&gt; get_coordinates_points</span>
@@ -63,48 +91,48 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'get_objects'</span><span class="p">,</span>
-    <span class="s1">'get_object_names'</span><span class="p">,</span>
-    <span class="s1">'get_object_attributes'</span><span class="p">,</span>
-    <span class="s1">'get_object_attributes_from_name'</span><span class="p">,</span>
-    <span class="s1">'delete_object'</span><span class="p">,</span>
-    <span class="s1">'delete_objects'</span><span class="p">,</span>
-    <span class="s1">'purge_objects'</span><span class="p">,</span>
-    <span class="s1">'is_curve_line'</span><span class="p">,</span>
-    <span class="s1">'is_curve_polyline'</span><span class="p">,</span>
-    <span class="s1">'is_curve_polygon'</span><span class="p">,</span>
-    <span class="s1">'get_points'</span><span class="p">,</span>
-    <span class="s1">'get_curves'</span><span class="p">,</span>
-    <span class="s1">'get_lines'</span><span class="p">,</span>
-    <span class="s1">'get_polylines'</span><span class="p">,</span>
-    <span class="s1">'get_polygons'</span><span class="p">,</span>
-    <span class="s1">'get_point_coordinates'</span><span class="p">,</span>
-    <span class="s1">'get_line_coordinates'</span><span class="p">,</span>
-    <span class="s1">'get_polyline_coordinates'</span><span class="p">,</span>
-    <span class="s1">'get_polygon_coordinates'</span><span class="p">,</span>
-    <span class="s1">'get_meshes'</span><span class="p">,</span>
-    <span class="s1">'get_mesh_face_vertices'</span><span class="p">,</span>
-    <span class="s1">'get_mesh_vertex_coordinates'</span><span class="p">,</span>
-    <span class="s1">'get_mesh_vertex_colors'</span><span class="p">,</span>
-    <span class="s1">'set_mesh_vertex_colors'</span><span class="p">,</span>
-    <span class="s1">'get_mesh_vertices_and_faces'</span><span class="p">,</span>
-    <span class="s1">'get_mesh_vertex_index'</span><span class="p">,</span>
-    <span class="s1">'get_mesh_face_index'</span><span class="p">,</span>
-    <span class="s1">'get_mesh_edge_index'</span><span class="p">,</span>
-    <span class="s1">'select_point'</span><span class="p">,</span>
-    <span class="s1">'select_points'</span><span class="p">,</span>
-    <span class="s1">'select_curve'</span><span class="p">,</span>
-    <span class="s1">'select_curves'</span><span class="p">,</span>
-    <span class="s1">'select_line'</span><span class="p">,</span>
-    <span class="s1">'select_lines'</span><span class="p">,</span>
-    <span class="s1">'select_polyline'</span><span class="p">,</span>
-    <span class="s1">'select_polylines'</span><span class="p">,</span>
-    <span class="s1">'select_polygon'</span><span class="p">,</span>
-    <span class="s1">'select_polygons'</span><span class="p">,</span>
-    <span class="s1">'select_surface'</span><span class="p">,</span>
-    <span class="s1">'select_surfaces'</span><span class="p">,</span>
-    <span class="s1">'select_mesh'</span><span class="p">,</span>
-    <span class="s1">'select_meshes'</span><span class="p">,</span>
+    <span class="s1">&#39;get_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_object_names&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_object_attributes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_object_attributes_from_name&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;delete_object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;delete_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;purge_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_curve_line&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_curve_polyline&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_curve_polygon&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_points&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_curves&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_lines&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_polylines&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_polygons&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_point_coordinates&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_line_coordinates&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_polyline_coordinates&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_polygon_coordinates&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_meshes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_mesh_face_vertices&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_mesh_vertex_coordinates&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_mesh_vertex_colors&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_mesh_vertex_colors&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_mesh_vertices_and_faces&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_mesh_vertex_index&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_mesh_face_index&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_mesh_edge_index&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_point&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_points&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_curve&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_curves&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_line&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_lines&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_polyline&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_polylines&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_polygon&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_polygons&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_surface&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_surfaces&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_mesh&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_meshes&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -161,11 +189,11 @@
 <span class="c1"># use ast for this</span>
 <span class="c1"># ast.literal_eval</span>
 <span class="c1"># @see: https://docs.python.org/2/library/ast.html#ast.literal_eval</span>
-<div class="viewcode-block" id="get_object_attributes_from_name"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.get_object_attributes_from_name.html#compas_rhino.utilities.get_object_attributes_from_name">[docs]</a><span class="k">def</span> <span class="nf">get_object_attributes_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">';'</span><span class="p">,</span> <span class="n">assignment</span><span class="o">=</span><span class="s1">':'</span><span class="p">):</span>
+<div class="viewcode-block" id="get_object_attributes_from_name"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.get_object_attributes_from_name.html#compas_rhino.utilities.get_object_attributes_from_name">[docs]</a><span class="k">def</span> <span class="nf">get_object_attributes_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="n">assignment</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">):</span>
     <span class="n">attr</span>  <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">'{'</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">'}'</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">)</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
             <span class="n">pair</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">assignment</span><span class="p">)</span>
@@ -183,10 +211,10 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="select_point"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_point.html#compas_rhino.utilities.select_point">[docs]</a><span class="k">def</span> <span class="nf">select_point</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select a point.'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_point"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_point.html#compas_rhino.utilities.select_point">[docs]</a><span class="k">def</span> <span class="nf">select_point</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select a point.&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">point</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="select_points"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_points.html#compas_rhino.utilities.select_points">[docs]</a><span class="k">def</span> <span class="nf">select_points</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select points.'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_points"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_points.html#compas_rhino.utilities.select_points">[docs]</a><span class="k">def</span> <span class="nf">select_points</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select points.&#39;</span><span class="p">):</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
@@ -233,11 +261,11 @@
     <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsCurve</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span> <span class="ow">and</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsCurveClosed</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span> <span class="ow">and</span> <span class="n">rs</span><span class="o">.</span><span class="n">CurveDegree</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">CurvePoints</span><span class="p">(</span><span class="n">guid</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">2</span></div>
 
 
-<div class="viewcode-block" id="select_curve"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_curve.html#compas_rhino.utilities.select_curve">[docs]</a><span class="k">def</span> <span class="nf">select_curve</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select curve.'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_curve"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_curve.html#compas_rhino.utilities.select_curve">[docs]</a><span class="k">def</span> <span class="nf">select_curve</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select curve.&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="select_curves"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_curves.html#compas_rhino.utilities.select_curves">[docs]</a><span class="k">def</span> <span class="nf">select_curves</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select curves.'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_curves"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_curves.html#compas_rhino.utilities.select_curves">[docs]</a><span class="k">def</span> <span class="nf">select_curves</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select curves.&#39;</span><span class="p">):</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
@@ -245,14 +273,14 @@
     <span class="k">return</span> <span class="n">guids</span></div>
 
 
-<div class="viewcode-block" id="select_line"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_line.html#compas_rhino.utilities.select_line">[docs]</a><span class="k">def</span> <span class="nf">select_line</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select line.'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_line"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_line.html#compas_rhino.utilities.select_line">[docs]</a><span class="k">def</span> <span class="nf">select_line</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select line.&#39;</span><span class="p">):</span>
     <span class="n">guid</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">is_curve_line</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">guid</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="select_lines"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_lines.html#compas_rhino.utilities.select_lines">[docs]</a><span class="k">def</span> <span class="nf">select_lines</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select lines.'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_lines"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_lines.html#compas_rhino.utilities.select_lines">[docs]</a><span class="k">def</span> <span class="nf">select_lines</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select lines.&#39;</span><span class="p">):</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
@@ -262,14 +290,14 @@
     <span class="k">return</span> <span class="n">guids</span></div>
 
 
-<div class="viewcode-block" id="select_polyline"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_polyline.html#compas_rhino.utilities.select_polyline">[docs]</a><span class="k">def</span> <span class="nf">select_polyline</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select a polyline (curve with degree = 1, and multiple segments).'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_polyline"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_polyline.html#compas_rhino.utilities.select_polyline">[docs]</a><span class="k">def</span> <span class="nf">select_polyline</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select a polyline (curve with degree = 1, and multiple segments).&#39;</span><span class="p">):</span>
     <span class="n">guid</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">is_curve_polyline</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">guid</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="select_polylines"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_polylines.html#compas_rhino.utilities.select_polylines">[docs]</a><span class="k">def</span> <span class="nf">select_polylines</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select polylines (curves with degree = 1, and multiple segments).'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_polylines"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_polylines.html#compas_rhino.utilities.select_polylines">[docs]</a><span class="k">def</span> <span class="nf">select_polylines</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select polylines (curves with degree = 1, and multiple segments).&#39;</span><span class="p">):</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
@@ -279,14 +307,14 @@
     <span class="k">return</span> <span class="n">guids</span></div>
 
 
-<div class="viewcode-block" id="select_polygon"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_polygon.html#compas_rhino.utilities.select_polygon">[docs]</a><span class="k">def</span> <span class="nf">select_polygon</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select a polygon (closed curve with degree = 1)'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_polygon"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_polygon.html#compas_rhino.utilities.select_polygon">[docs]</a><span class="k">def</span> <span class="nf">select_polygon</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select a polygon (closed curve with degree = 1)&#39;</span><span class="p">):</span>
     <span class="n">guid</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">is_curve_polygon</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">guid</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="select_polygons"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_polygons.html#compas_rhino.utilities.select_polygons">[docs]</a><span class="k">def</span> <span class="nf">select_polygons</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select polygons (closed curves with degree = 1)'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_polygons"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_polygons.html#compas_rhino.utilities.select_polygons">[docs]</a><span class="k">def</span> <span class="nf">select_polygons</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select polygons (closed curves with degree = 1)&#39;</span><span class="p">):</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
@@ -415,14 +443,14 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="select_surface"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_surface.html#compas_rhino.utilities.select_surface">[docs]</a><span class="k">def</span> <span class="nf">select_surface</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select a surface.'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_surface"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_surface.html#compas_rhino.utilities.select_surface">[docs]</a><span class="k">def</span> <span class="nf">select_surface</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select a surface.&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span>
         <span class="n">message</span><span class="p">,</span>
         <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">surface</span> <span class="o">|</span> <span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">polysurface</span>
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="select_surfaces"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_surfaces.html#compas_rhino.utilities.select_surfaces">[docs]</a><span class="k">def</span> <span class="nf">select_surfaces</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select surfaces.'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_surfaces"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_surfaces.html#compas_rhino.utilities.select_surfaces">[docs]</a><span class="k">def</span> <span class="nf">select_surfaces</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select surfaces.&#39;</span><span class="p">):</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">surface</span> <span class="o">|</span> <span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">polysurface</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
@@ -435,14 +463,14 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="select_mesh"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_mesh.html#compas_rhino.utilities.select_mesh">[docs]</a><span class="k">def</span> <span class="nf">select_mesh</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select a mesh.'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_mesh"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_mesh.html#compas_rhino.utilities.select_mesh">[docs]</a><span class="k">def</span> <span class="nf">select_mesh</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select a mesh.&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span>
         <span class="n">message</span><span class="p">,</span>
         <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">mesh</span>
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="select_meshes"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_meshes.html#compas_rhino.utilities.select_meshes">[docs]</a><span class="k">def</span> <span class="nf">select_meshes</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">'Select meshes.'</span><span class="p">):</span>
+<div class="viewcode-block" id="select_meshes"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.select_meshes.html#compas_rhino.utilities.select_meshes">[docs]</a><span class="k">def</span> <span class="nf">select_meshes</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select meshes.&#39;</span><span class="p">):</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">mesh</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
@@ -510,7 +538,7 @@
         <span class="k">def</span> <span class="nf">CustomGeometryFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_object</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">component_index</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">guid</span> <span class="o">==</span> <span class="n">rhino_object</span><span class="o">.</span><span class="n">Id</span>
     <span class="n">go</span> <span class="o">=</span> <span class="n">CustomGetObject</span><span class="p">()</span>
-    <span class="n">go</span><span class="o">.</span><span class="n">SetCommandPrompt</span><span class="p">(</span><span class="s1">'Select a vertex of the mesh.'</span><span class="p">)</span>
+    <span class="n">go</span><span class="o">.</span><span class="n">SetCommandPrompt</span><span class="p">(</span><span class="s1">&#39;Select a vertex of the mesh.&#39;</span><span class="p">)</span>
     <span class="n">go</span><span class="o">.</span><span class="n">GeometryFilter</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">DocObjects</span><span class="o">.</span><span class="n">ObjectType</span><span class="o">.</span><span class="n">MeshVertex</span>
     <span class="n">go</span><span class="o">.</span><span class="n">AcceptNothing</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">go</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Input</span><span class="o">.</span><span class="n">GetResult</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
@@ -532,7 +560,7 @@
         <span class="k">def</span> <span class="nf">CustomGeometryFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_object</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">component_index</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">guid</span> <span class="o">==</span> <span class="n">rhino_object</span><span class="o">.</span><span class="n">Id</span>
     <span class="n">go</span> <span class="o">=</span> <span class="n">CustomGetObject</span><span class="p">()</span>
-    <span class="n">go</span><span class="o">.</span><span class="n">SetCommandPrompt</span><span class="p">(</span><span class="s1">'Select a face of the mesh.'</span><span class="p">)</span>
+    <span class="n">go</span><span class="o">.</span><span class="n">SetCommandPrompt</span><span class="p">(</span><span class="s1">&#39;Select a face of the mesh.&#39;</span><span class="p">)</span>
     <span class="n">go</span><span class="o">.</span><span class="n">GeometryFilter</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">DocObjects</span><span class="o">.</span><span class="n">ObjectType</span><span class="o">.</span><span class="n">MeshFace</span>
     <span class="n">go</span><span class="o">.</span><span class="n">AcceptNothing</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">go</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Input</span><span class="o">.</span><span class="n">GetResult</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
@@ -550,7 +578,7 @@
         <span class="k">def</span> <span class="nf">CustomGeometryFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_object</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">component_index</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">guid</span> <span class="o">==</span> <span class="n">rhino_object</span><span class="o">.</span><span class="n">Id</span>
     <span class="n">go</span> <span class="o">=</span> <span class="n">CustomGetObject</span><span class="p">()</span>
-    <span class="n">go</span><span class="o">.</span><span class="n">SetCommandPrompt</span><span class="p">(</span><span class="s1">'Select an edge of the mesh.'</span><span class="p">)</span>
+    <span class="n">go</span><span class="o">.</span><span class="n">SetCommandPrompt</span><span class="p">(</span><span class="s1">&#39;Select an edge of the mesh.&#39;</span><span class="p">)</span>
     <span class="n">go</span><span class="o">.</span><span class="n">GeometryFilter</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">DocObjects</span><span class="o">.</span><span class="n">ObjectType</span><span class="o">.</span><span class="n">MeshEdge</span>
     <span class="n">go</span><span class="o">.</span><span class="n">AcceptNothing</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">go</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Input</span><span class="o">.</span><span class="n">GetResult</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
@@ -564,7 +592,7 @@
 
 
 <span class="k">def</span> <span class="nf">get_mesh_vertex_indices</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
-    <span class="n">tvindices</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetMeshVertices</span><span class="p">(</span><span class="n">guid</span><span class="p">,</span> <span class="s1">'Select mesh vertices.'</span><span class="p">)</span>
+    <span class="n">tvindices</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetMeshVertices</span><span class="p">(</span><span class="n">guid</span><span class="p">,</span> <span class="s1">&#39;Select mesh vertices.&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">tvindices</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="n">mobj</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
@@ -577,7 +605,7 @@
 
 
 <span class="k">def</span> <span class="nf">get_mesh_face_indices</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetMeshFaces</span><span class="p">(</span><span class="n">guid</span><span class="p">,</span> <span class="s1">'Select mesh faces.'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetMeshFaces</span><span class="p">(</span><span class="n">guid</span><span class="p">,</span> <span class="s1">&#39;Select mesh faces.&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">get_mesh_vertex_face_indices</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
@@ -623,56 +651,86 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 
     <span class="k">pass</span>
 </code></pre></div>
-<nav class="compas-sideways">
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column">
+                        
+                        <nav class="compas-sideways">
+                            
+
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 18, 2017.
             
 
             
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -682,17 +740,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

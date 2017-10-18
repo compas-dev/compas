@@ -21,21 +21,23 @@ mesh
     mesh_from_surface
     mesh_from_surface_uv
     mesh_from_surface_heightfield
-    draw_mesh
-    draw_mesh_as_faces
-    select_mesh_vertices
-    select_mesh_vertex
-    select_mesh_edges
-    select_mesh_edge
-    select_mesh_faces
-    select_mesh_face
-    update_mesh_vertex_attributes
-    update_mesh_edge_attributes
-    update_mesh_face_attributes
-    display_mesh_vertex_labels
-    display_mesh_edge_labels
-    display_mesh_face_labels
-    move_mesh_vertex
+    mesh_draw
+    mesh_draw_vertices
+    mesh_draw_edges
+    mesh_draw_faces
+    mesh_draw_vertex_labels
+    mesh_draw_edge_labels
+    mesh_draw_face_labels
+    mesh_select_vertices
+    mesh_select_vertex
+    mesh_select_edges
+    mesh_select_edge
+    mesh_select_faces
+    mesh_select_face
+    mesh_update_vertex_attributes
+    mesh_update_edge_attributes
+    mesh_update_face_attributes
+    mesh_move_vertex
 
 
 network
@@ -44,29 +46,20 @@ network
 .. autosummary::
     :toctree: generated/
 
-    draw_network
-    select_network_vertices
-    select_network_vertex
-    select_network_edges
-    select_network_edge
-    select_network_faces
-    select_network_face
-    update_network_attributes
-    update_network_vertex_attributes
-    update_network_from_points
-    update_network_edge_attributes
-    update_network_from_lines
-    update_network_face_attributes
-    display_network_vertex_labels
-    display_network_edge_labels
-    display_network_face_labels
-    move_network
-    move_network_vertex
-    display_network_axial_forces
-    display_network_reaction_forces
-    display_network_residual_forces
-    display_network_selfweight
-    display_network_applied_loads
+    network_draw
+    network_draw_vertices
+    network_draw_edges
+    network_draw_vertex_labels
+    network_draw_edge_labels
+    network_select_vertices
+    network_select_vertex
+    network_select_edges
+    network_select_edge
+    network_update_attributes
+    network_update_vertex_attributes
+    network_update_edge_attributes
+    network_move
+    network_move_vertex
 
 
 volmesh
@@ -77,5 +70,15 @@ volmesh
 
     volmesh_from_polysurfaces
     volmesh_from_wireframe
-    draw_volmesh
+    volmesh_draw
+    volmesh_draw_vertices
+    volmesh_draw_edges
+    volmesh_draw_faces
+    volmesh_draw_cells
+    volmesh_select_vertex
+    volmesh_select_vertices
+    volmesh_select_edge
+    volmesh_select_edges
+    volmesh_select_face
+    volmesh_select_faces
 

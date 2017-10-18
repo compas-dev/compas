@@ -28,7 +28,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=1, d=1.0, callback=None, callbac
     fixed = set(fixed)
 
     for k in range(kmax):
-        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh}
+        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
 
         for key in mesh.vertices():
             if key in fixed:
@@ -60,7 +60,7 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=1, d=1.0, callback=None, cal
     fixed = set(fixed)
 
     for k in range(kmax):
-        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh}
+        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
 
         for key in mesh.vertices():
             if key in fixed:
@@ -92,7 +92,7 @@ def mesh_smooth_length(mesh, lmin, lmax, fixed=None, kmax=1, d=1.0, callback=Non
     fixed = set(fixed)
 
     for k in range(kmax):
-        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh}
+        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
 
         for key in mesh:
             if key in fixed:
@@ -132,9 +132,9 @@ def mesh_smooth_area(mesh, fixed=None, kmax=1, d=1.0, callback=None, callback_ar
     fixed = set(fixed)
 
     for k in range(kmax):
-        fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.face}
-        fkey_area     = {fkey: mesh.face_area(fkey) for fkey in mesh.face}
-        key_xyz       = {key: mesh.vertex_coordinates(key) for key in mesh}
+        fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
+        fkey_area     = {fkey: mesh.face_area(fkey) for fkey in mesh.faces()}
+        key_xyz       = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
 
         for key in mesh:
             if key in fixed:
@@ -180,7 +180,7 @@ def mesh_smooth_angle(mesh, fixed=None, kmax=1, callback=None, callback_args=Non
     fixed = set(fixed)
 
     for k in range(kmax):
-        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh}
+        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
 
         for key in mesh:
             if key in fixed:

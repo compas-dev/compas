@@ -1,7 +1,7 @@
 import compas
-from compas.datastructures.network import Network
-from compas.visualization.plotters import NetworkPlotter
-from compas.datastructures.network.algorithms import network_vertex_coloring
+from compas.datastructures import Network
+from compas.visualization import NetworkPlotter
+from compas.datastructures import network_vertex_coloring
 
 network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 

@@ -1,7 +1,7 @@
 import compas
-from compas.datastructures.network import Network
-from compas.visualization.plotters import NetworkPlotter
-from compas.datastructures.network.algorithms import network_embed_in_plane
+from compas.datastructures import Network
+from compas.visualization import NetworkPlotter
+from compas.datastructures import network_embed_in_plane
 
 network = Network.from_obj(compas.get_data('fink.obj'))
 embedding = network.copy()
@@ -13,7 +13,7 @@ if network_embed_in_plane(embedding, fix=fix):
     plotter = NetworkPlotter(embedding)
 
     points = []
-    for key in network:
+    for key in network.vertices():
         points.append({
             'pos': network.vertex_coordinates(key, 'xy'),
             'radius': 0.1

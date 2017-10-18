@@ -59,9 +59,9 @@ def network_smooth_mixed(network,
 
             import compas
             from compas.datastructures import FaceNetwork
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_smooth_mixed
-            from compas.datastructures.network.algorithms import network_find_faces
+            from compas.visualization import NetworkPlotter
+            from compas.datastructures import network_smooth_mixed
+            from compas.datastructures import network_find_faces
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
             smooth = network.copy()
@@ -185,7 +185,7 @@ def network_smooth_centroid(network, fixed=None, kmax=1, d=0.5, callback=None, c
     """Smooth a network using per vertex the centroid of its neighbours.
 
     Parameters:
-        network (compas.datastructures.network.Network): The network object.
+        network (compas.datastructures.Network): The network object.
         fixed (list): Optional.
             The fixed vertices of the network. Default is ``None``.
         kmax (int): Optional.
@@ -205,9 +205,9 @@ def network_smooth_centroid(network, fixed=None, kmax=1, d=0.5, callback=None, c
             :include-source:
 
             import compas
-            from compas.datastructures.network import Network
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_smooth_centroid
+            from compas.datastructures import Network
+            from compas.datastructures import network_smooth_centroid
+            from compas.visualization import NetworkPlotter
 
             network  = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -231,7 +231,7 @@ def network_smooth_centroid(network, fixed=None, kmax=1, d=0.5, callback=None, c
     for k in range(kmax):
         key_xyz = {key: network.vertex_coordinates(key) for key in network.vertices()}
 
-        for key in network:
+        for key in network.vertices():
             if key in fixed:
                 continue
 
@@ -253,7 +253,7 @@ def network_smooth_area(network, fixed=None, kmax=1, d=0.5, callback=None, callb
     """Smooth a network using per vertex the centroid of the neighbouring faces, weighted by their respective areas.
 
     Parameters:
-        network (compas.datastructures.network.Network): The network object.
+        network (compas.datastructures.Network): The network object.
         fixed (list): Optional.
             The fixed vertices of the network. Default is ``None``.
         kmax (int): Optional.
@@ -273,10 +273,10 @@ def network_smooth_area(network, fixed=None, kmax=1, d=0.5, callback=None, callb
             :include-source:
 
             import compas
-            from compas.datastructures.network import FaceNetwork
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_find_faces
-            from compas.datastructures.network.algorithms import network_smooth_area
+            from compas.datastructures import FaceNetwork
+            from compas.datastructures import network_find_faces
+            from compas.datastructures import network_smooth_area
+            from compas.visualization import NetworkPlotter
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -305,7 +305,7 @@ def network_smooth_area(network, fixed=None, kmax=1, d=0.5, callback=None, callb
         fkey_centroid = {fkey: network.face_centroid(fkey) for fkey in network.faces()}
         fkey_area     = {fkey: network.face_area(fkey) for fkey in network.faces()}
 
-        for key in network:
+        for key in network.vertices():
             if key in fixed:
                 continue
 
@@ -352,7 +352,7 @@ def network_smooth_mass(network, fixed=None, kmax=1, d=0.5, callback=None, callb
     """Smooth a network using per vertex the center of mass of the polygon formed by the neighbouring vertices.
 
     Parameters:
-        network (compas.datastructures.network.Network): The network object.
+        network (compas.datastructures.Network): The network object.
         fixed (list): Optional.
             The fixed vertices of the network. Default is ``None``.
         kmax (int): Optional.
@@ -373,9 +373,9 @@ def network_smooth_mass(network, fixed=None, kmax=1, d=0.5, callback=None, callb
 
             import compas
             from compas.datastructures import FaceNetwork
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_find_faces
-            from compas.datastructures.network.algorithms import network_smooth_mass
+            from compas.datastructures import network_find_faces
+            from compas.datastructures import network_smooth_mass
+            from compas.visualization import NetworkPlotter
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -400,7 +400,7 @@ def network_smooth_mass(network, fixed=None, kmax=1, d=0.5, callback=None, callb
     for k in range(kmax):
         key_xyz = {key: network.vertex_coordinates(key) for key in network.vertices()}
 
-        for key in network:
+        for key in network.vertices():
             if key in fixed:
                 continue
 
@@ -428,7 +428,7 @@ def network_smooth_length(network, lmin, lmax, fixed=None, kmax=1, d=0.5, callba
     for k in range(kmax):
         key_xyz = {key: network.vertex_coordinates(key) for key in network.vertices()}
 
-        for key in network:
+        for key in network.vertices():
             if key in fixed:
                 continue
 

@@ -149,7 +149,7 @@ def _is_collapse_legal(mesh, u, v, allow_boundary=False):
     """Verify if the requested collapse is legal fro a triangle mesh.
 
     Parameters:
-        mesh (compas.datastructures.mesh.Mesh) :
+        mesh (compas.datastructures.Mesh) :
             The mesh.
         u (str) : The vertex to collapse towards.
         v (str) : The vertex to collapse.
@@ -233,8 +233,8 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
             import compas
 
-            from compas.datastructures.mesh import Mesh
-            from compas.visualization.plotters import MeshPlotter
+            from compas.datastructures import Mesh
+            from compas.visualization import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -250,11 +250,11 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
             import compas
 
-            from compas.datastructures.mesh import Mesh
-            from compas.visualization.plotters import MeshPlotter
-            from compas.datastructures.mesh.operations import mesh_split_face
-            from compas.datastructures.mesh.operations import trimesh_swap_edge
-            from compas.datastructures.mesh.operations import trimesh_collapse_edge
+            from compas.datastructures import Mesh
+            from compas.datastructures import mesh_split_face
+            from compas.datastructures import trimesh_swap_edge
+            from compas.datastructures import trimesh_collapse_edge
+            from compas.visualization import MeshPlotter
 
             from compas.geometry import centroid_points
 

@@ -1,40 +1,68 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
-</nav>
-<h1>Source code for compas.hpc.cuda._linalg</h1><div class="highlight"><pre><code class="language-python border rounded">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../../index.html" accesskey="U">module code</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <h1>Source code for compas.hpc.cuda._linalg</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">float64</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">ceil</span>
 
@@ -54,30 +82,30 @@
     <span class="k">pass</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2016, Block Research Group - ETH Zurich'</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'liew@arch.ethz.ch'</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Andrew Liew &lt;liew@arch.ethz.ch&gt;&#39;</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2016, Block Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;liew@arch.ethz.ch&#39;</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'cuda_conj'</span><span class="p">,</span>
-    <span class="s1">'cuda_cross'</span><span class="p">,</span>
-    <span class="s1">'cuda_det'</span><span class="p">,</span>
-    <span class="s1">'cuda_dot'</span><span class="p">,</span>
-    <span class="s1">'cuda_eig'</span><span class="p">,</span>
-    <span class="s1">'cuda_hermitian'</span><span class="p">,</span>
-    <span class="s1">'cuda_inv'</span><span class="p">,</span>
-    <span class="s1">'cuda_normrow'</span><span class="p">,</span>
-    <span class="s1">'cuda_pinv'</span><span class="p">,</span>
-    <span class="s1">'cuda_svd'</span><span class="p">,</span>
-    <span class="s1">'cuda_trace'</span><span class="p">,</span>
-    <span class="s1">'cuda_transpose'</span>
+    <span class="s1">&#39;cuda_conj&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_cross&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_det&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_dot&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_eig&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_hermitian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_inv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_normrow&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_pinv&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_svd&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_trace&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_transpose&#39;</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="cuda_conj"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_conj.html#compas.hpc.cuda_conj">[docs]</a><span class="k">def</span> <span class="nf">cuda_conj</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Complex conjugate of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Complex conjugate of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): Complex GPUArray.</span>
@@ -86,16 +114,16 @@
 <span class="sd">        gpu: The complex conjugate of the GPUArray.</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        a = cuda_conj(cuda_give([1 + 2.j, 3 - 4.j], type='complex'))</span>
+<span class="sd">        a = cuda_conj(cuda_give([1 + 2.j, 3 - 4.j], type=&#39;complex&#39;))</span>
 <span class="sd">        array([ 1.-2.j,  3.+4.j], dtype=complex64)</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">kernel_code_template</span> <span class="o">=</span> <span class="s2">"""</span>
+    <span class="n">kernel_code_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    __global__ void cross_product(float *a, float *b, float *c)</span>
 <span class="s2">    {</span>
 <span class="s2">        int i = threadIdx.x + blockDim.x * blockIdx.x;</span>
@@ -110,16 +138,16 @@
 <span class="s2">        c[i * n + 1] = A3 * B1 - A1 * B3;</span>
 <span class="s2">        c[i * n + 2] = A1 * B2 - A2 * B1;</span>
 <span class="s2">    }</span>
-<span class="s2">    """</span>
-    <span class="n">kernel_code</span> <span class="o">=</span> <span class="n">kernel_code_template</span> <span class="o">%</span> <span class="p">{</span><span class="s1">'m'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">kernel_code</span> <span class="o">=</span> <span class="n">kernel_code_template</span> <span class="o">%</span> <span class="p">{</span><span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
     <span class="n">mod</span> <span class="o">=</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">SourceModule</span><span class="p">(</span><span class="n">kernel_code</span><span class="p">)</span>
-    <span class="n">cross_product</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">get_function</span><span class="p">(</span><span class="s2">"cross_product"</span><span class="p">)</span>
+    <span class="n">cross_product</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">get_function</span><span class="p">(</span><span class="s2">&quot;cross_product&quot;</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">NameError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="k">pass</span>
 
 
 <div class="viewcode-block" id="cuda_cross"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_cross.html#compas.hpc.cuda_cross">[docs]</a><span class="k">def</span> <span class="nf">cuda_cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">bsize</span><span class="p">):</span>
-    <span class="sd">""" Cross-product of two GPUArrays (row by row).</span>
+    <span class="sd">&quot;&quot;&quot; Cross-product of two GPUArrays (row by row).</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray 1 of vectors (m x 3).</span>
@@ -128,7 +156,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        gpu: Returns the m vectors from a x b</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">gpuarray</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">float64</span><span class="p">)</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="n">m</span> <span class="o">/</span> <span class="n">bsize</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span>
@@ -137,7 +165,7 @@
 
 
 <div class="viewcode-block" id="cuda_det"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_det.html#compas.hpc.cuda_det">[docs]</a><span class="k">def</span> <span class="nf">cuda_det</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" GPUArray square matrix determinant.</span>
+    <span class="sd">&quot;&quot;&quot; GPUArray square matrix determinant.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">        - Requires CULA.</span>
@@ -151,12 +179,12 @@
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; a = cuda_det(cuda_give([[5, -2, 1], [0, 3, -1], [2, 0, 7]]))</span>
 <span class="sd">        103</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_dot"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_dot.html#compas.hpc.cuda_dot">[docs]</a><span class="k">def</span> <span class="nf">cuda_dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="sd">""" Matrix multiplication of two GPUArrays.</span>
+    <span class="sd">&quot;&quot;&quot; Matrix multiplication of two GPUArrays.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray matrix 1 (m x n).</span>
@@ -172,13 +200,13 @@
 <span class="sd">        array([[ 1.,  0.],</span>
 <span class="sd">               [ 3.,  2.]])</span>
 <span class="sd">        &gt;&gt;&gt; type(c)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_eig"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_eig.html#compas.hpc.cuda_eig">[docs]</a><span class="k">def</span> <span class="nf">cuda_eig</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Matrix Eigenvectors and Eigenvalues of GPUArray.</span>
+    <span class="sd">&quot;&quot;&quot; Matrix Eigenvectors and Eigenvalues of GPUArray.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">        - Requires CULA.</span>
@@ -191,13 +219,13 @@
 <span class="sd">        gpu: Normalised Eigenvectors (right)</span>
 <span class="sd">        gpu: Eigenvalues.</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">vr</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">vr</span><span class="p">,</span> <span class="n">w</span></div>
 
 
 <div class="viewcode-block" id="cuda_hermitian"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_hermitian.html#compas.hpc.cuda_hermitian">[docs]</a><span class="k">def</span> <span class="nf">cuda_hermitian</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Hermitian conjugate transpose of GPUArray.</span>
+    <span class="sd">&quot;&quot;&quot; Hermitian conjugate transpose of GPUArray.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): Complex GPUArray.</span>
@@ -206,17 +234,17 @@
 <span class="sd">        gpu: The complex conjugate transpose of the GPUArray.</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; a = cuda_hermitian(cuda_give([[1 + 2.j, 3 - 4.j],[0 - 5.j, 6 - 1.j]], type='complex'))</span>
+<span class="sd">        &gt;&gt;&gt; a = cuda_hermitian(cuda_give([[1 + 2.j, 3 - 4.j],[0 - 5.j, 6 - 1.j]], type=&#39;complex&#39;))</span>
 <span class="sd">        array([[ 1.-2.j,  0.+5.j],</span>
 <span class="sd">               [ 3.+4.j,  6.+1.j]], dtype=complex64)</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">hermitian</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_inv"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_inv.html#compas.hpc.cuda_inv">[docs]</a><span class="k">def</span> <span class="nf">cuda_inv</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Inverse of GPUArray matrix.</span>
+    <span class="sd">&quot;&quot;&quot; Inverse of GPUArray matrix.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">        - Requires CULA.</span>
@@ -232,13 +260,13 @@
 <span class="sd">        array([[ 0.6, -0.7],</span>
 <span class="sd">               [-0.2,  0.4]])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_normrow"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_normrow.html#compas.hpc.cuda_normrow">[docs]</a><span class="k">def</span> <span class="nf">cuda_normrow</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" GPUArray of vectors norm.2 (row by row).</span>
+    <span class="sd">&quot;&quot;&quot; GPUArray of vectors norm.2 (row by row).</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray of vectors (m x n).</span>
@@ -250,13 +278,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_normrow(cuda_give([[1, 2], [3, 4]]))</span>
 <span class="sd">        array([ 2.23606798,  5.])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">cuda_sqrt</span><span class="p">(</span><span class="n">cuda_sum</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="cuda_pinv"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_pinv.html#compas.hpc.cuda_pinv">[docs]</a><span class="k">def</span> <span class="nf">cuda_pinv</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Moore-Penrose pseudo inverse of the GPUArray.</span>
+    <span class="sd">&quot;&quot;&quot; Moore-Penrose pseudo inverse of the GPUArray.</span>
 
 <span class="sd">    Notes:</span>
 <span class="sd">        - Singular values smaller than 10^-15 are set to zero.</span>
@@ -274,13 +302,13 @@
 <span class="sd">               [ 0.27464789,  0.02112676],</span>
 <span class="sd">               [-0.07042254,  0.22535211]])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cuda_svd"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_svd.html#compas.hpc.cuda_svd">[docs]</a><span class="k">def</span> <span class="nf">cuda_svd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">jobu</span><span class="o">=</span><span class="s1">'S'</span><span class="p">,</span> <span class="n">jobvt</span><span class="o">=</span><span class="s1">'S'</span><span class="p">):</span>
-    <span class="sd">""" GPUArray Singular Value Decomposition.</span>
+<div class="viewcode-block" id="cuda_svd"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_svd.html#compas.hpc.cuda_svd">[docs]</a><span class="k">def</span> <span class="nf">cuda_svd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">jobu</span><span class="o">=</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="n">jobvt</span><span class="o">=</span><span class="s1">&#39;S&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; GPUArray Singular Value Decomposition.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">        - Requires CULA.</span>
@@ -293,12 +321,12 @@
 <span class="sd">        gpu: Singular values.</span>
 <span class="sd">        gpu: vh matrix (k x n).</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_trace"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_trace.html#compas.hpc.cuda_trace">[docs]</a><span class="k">def</span> <span class="nf">cuda_trace</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" GPUArray trace, the sum along the main diagonal.</span>
+    <span class="sd">&quot;&quot;&quot; GPUArray trace, the sum along the main diagonal.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): Input GPUArray.</span>
@@ -310,13 +338,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_trace(cuda_give([[0, 1], [2, 3]]))</span>
 <span class="sd">        3.0</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'numpy.float64'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;numpy.float64&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_transpose"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_transpose.html#compas.hpc.cuda_transpose">[docs]</a><span class="k">def</span> <span class="nf">cuda_transpose</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Transpose a GPUArray.</span>
+    <span class="sd">&quot;&quot;&quot; Transpose a GPUArray.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray of size (m x n).</span>
@@ -329,8 +357,8 @@
 <span class="sd">        array([[ 0.,  2.],</span>
 <span class="sd">               [ 1.,  3.]])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
@@ -338,7 +366,7 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
     <span class="kn">from</span> <span class="nn">compas.numerical.hpc.gpu.cuda._array</span> <span class="k">import</span> <span class="n">cuda_give</span>
 
@@ -347,56 +375,86 @@
     <span class="n">c</span> <span class="o">=</span> <span class="n">cuda_pinv</span><span class="p">(</span><span class="n">cuda_give</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]))</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">cuda_normrow</span><span class="p">(</span><span class="n">cuda_give</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]))</span>
     <span class="n">e</span> <span class="o">=</span> <span class="n">cuda_inv</span><span class="p">(</span><span class="n">cuda_give</span><span class="p">([[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]))</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">cuda_hermitian</span><span class="p">(</span><span class="n">cuda_give</span><span class="p">([[</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">2.</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span> <span class="o">-</span> <span class="mf">4.</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span> <span class="o">-</span> <span class="mf">5.</span><span class="n">j</span><span class="p">,</span> <span class="mi">6</span> <span class="o">-</span> <span class="mf">1.</span><span class="n">j</span><span class="p">]],</span> <span class="nb">type</span><span class="o">=</span><span class="s1">'complex'</span><span class="p">))</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">cuda_hermitian</span><span class="p">(</span><span class="n">cuda_give</span><span class="p">([[</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">2.</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span> <span class="o">-</span> <span class="mf">4.</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span> <span class="o">-</span> <span class="mf">5.</span><span class="n">j</span><span class="p">,</span> <span class="mi">6</span> <span class="o">-</span> <span class="mf">1.</span><span class="n">j</span><span class="p">]],</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">))</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">cuda_det</span><span class="p">(</span><span class="n">cuda_give</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]))</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="n">cuda_conj</span><span class="p">(</span><span class="n">cuda_give</span><span class="p">([</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">2.</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span> <span class="o">-</span> <span class="mf">4.</span><span class="n">j</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="s1">'complex'</span><span class="p">))</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">cuda_conj</span><span class="p">(</span><span class="n">cuda_give</span><span class="p">([</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">2.</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span> <span class="o">-</span> <span class="mf">4.</span><span class="n">j</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">))</span>
 </code></pre></div>
-<nav class="compas-sideways">
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column">
+                        
+                        <nav class="compas-sideways">
+                            
+
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 18, 2017.
             
 
             
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -406,17 +464,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

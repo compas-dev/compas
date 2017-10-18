@@ -13,7 +13,7 @@ def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=Non
     """Parallelise the edges of a network to given target vectors.
 
     Parameters:
-        network (compas.datastructures.network.Network): The network object.
+        network (compas.datastructures.Network): The network object.
         targets (list): A list of target vectors.
         fixed (list): Optional.
             The fixed vertices of the network.

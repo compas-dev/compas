@@ -186,9 +186,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         .. plot::
             :include-source:
 
-            from compas.datastructures.mesh import Mesh
-            from compas.visualization.plotters import MeshPlotter
-            from compas.datastructures.mesh.algorithms import mesh_subdivide_catmullclark
+            from compas.datastructures import Mesh
+            from compas.datastructures import mesh_subdivide_catmullclark
+            from compas.visualization import MeshPlotter
 
             vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
             faces = [[0, 1, 2, 3], ]
@@ -207,9 +207,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         .. plot::
             :include-source:
 
-            from compas.datastructures.mesh import Mesh
-            from compas.visualization.plotters import MeshPlotter
-            from compas.datastructures.mesh.algorithms import mesh_subdivide_catmullclark
+            from compas.datastructures import Mesh
+            from compas.datastructures import mesh_subdivide_catmullclark
+            from compas.visualization import MeshPlotter
 
             vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
             faces = [[0, 1, 2, 3], ]
@@ -229,9 +229,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
             from compas.datastructures.mesh import Mesh
 
-            from compas.datastructures.mesh.algorithms import mesh_subdivide_catmullclark
-            from compas.geometry.elements.polyhedron import Polyhedron
-            from compas.visualization.viewers.meshviewer import SubdMeshViewer
+            from compas.datastructures import mesh_subdivide_catmullclark
+            from compas.geometry import Polyhedron
+            from compas.visualization import SubdMeshViewer
 
             cube = Polyhedron.generate(6)
 
@@ -450,10 +450,10 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
         .. code-block:: python
 
-            from compas.datastructures.mesh import Mesh
-            from compas.geometry.elements import Polyhedron
-            from compas.datastructures.mesh.algorithms import mesh_flip_cycle_directions
-            from compas.visualization.viewers.meshviewer import SubdMeshViewer
+            from compas.datastructures import Mesh
+            from compas.geometry import Polyhedron
+            from compas.datastructures import mesh_flip_cycle_directions
+            from compas.visualization import SubdMeshViewer
 
             tet = Polyhedron.generate(4)
 

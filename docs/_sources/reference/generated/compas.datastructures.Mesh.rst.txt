@@ -37,7 +37,6 @@ Mesh
       ~Mesh.edge_vector
       ~Mesh.edges
       ~Mesh.edges_on_boundary
-      ~Mesh.edges_where
       ~Mesh.face_adjacency
       ~Mesh.face_adjacency_edge
       ~Mesh.face_area
@@ -58,7 +57,6 @@ Mesh
       ~Mesh.face_vertices
       ~Mesh.faces
       ~Mesh.faces_on_boundary
-      ~Mesh.faces_where
       ~Mesh.from_data
       ~Mesh.from_json
       ~Mesh.from_lines
@@ -82,6 +80,7 @@ Mesh
       ~Mesh.get_vertex_attributes
       ~Mesh.get_vertices_attribute
       ~Mesh.get_vertices_attributes
+      ~Mesh.gkey_key
       ~Mesh.halfedges
       ~Mesh.has_edge
       ~Mesh.has_vertex
@@ -104,10 +103,9 @@ Mesh
       ~Mesh.is_vertex_leaf
       ~Mesh.is_vertex_on_boundary
       ~Mesh.is_vertex_orphan
+      ~Mesh.key_gkey
       ~Mesh.key_index
       ~Mesh.leaves
-      ~Mesh.max_vertex_attribute_value
-      ~Mesh.min_vertex_attribute_value
       ~Mesh.number_of_edges
       ~Mesh.number_of_faces
       ~Mesh.number_of_halfedges
@@ -151,7 +149,6 @@ Mesh
       ~Mesh.vertex_normal
       ~Mesh.vertices
       ~Mesh.vertices_on_boundary
-      ~Mesh.vertices_where
       ~Mesh.wireframe
    
    

@@ -1,6 +1,6 @@
-hpc.numba_drx
+numba_drx
 ====================
 
-.. currentmodule:: compas
+.. currentmodule:: compas.hpc
 
-.. autoattribute:: hpc.numba_drx
+.. autofunction:: numba_drx

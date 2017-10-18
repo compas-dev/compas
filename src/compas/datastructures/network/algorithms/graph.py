@@ -92,9 +92,9 @@ def network_is_xy(network):
     z = None
     for key in network:
         if z is None:
-            z = network[key].get('z', 0.0)
+            z = network.vertex[key].get('z', 0.0)
         else:
-            if z != network[key].get('z', 0.0):
+            if z != network.vertex[key].get('z', 0.0):
                 return False
     return True
 
@@ -127,10 +127,10 @@ def network_is_planar(network):
 
             import compas
 
-            from compas.datastructures.network import Network
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_is_planar
-            from compas.datastructures.network.algorithms import network_find_crossings
+            from compas.datastructures import Network
+            from compas.visualization import NetworkPlotter
+            from compas.datastructures import network_is_planar
+            from compas.datastructures import network_find_crossings
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
@@ -169,7 +169,7 @@ def network_embed_in_plane(network, fix=None, straightline=True):
     """Embed the network in the plane.
 
     Parameters:
-        network (compas.datastructures.network.Network): The network object.
+        network (compas.datastructures.Network): The network object.
 
         fix (list): Optional.
             Two fixed points.
@@ -193,9 +193,9 @@ def network_embed_in_plane(network, fix=None, straightline=True):
             :include-source:
 
             import compas
-            from compas.datastructures.network import Network
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_embed_in_plane
+            from compas.datastructures import Network
+            from compas.visualization import NetworkPlotter
+            from compas.datastructures import network_embed_in_plane
 
             network = Network.from_obj(compas.get_data('fink.obj'))
             embedding = network.copy()
@@ -207,7 +207,7 @@ def network_embed_in_plane(network, fix=None, straightline=True):
                 plotter = NetworkPlotter(embedding)
 
                 points = []
-                for key in network:
+                for key in network.vertices():
                     points.append({
                         'pos': network.vertex_coordinates(key, 'xy'),
                         'radius': 0.1
@@ -267,7 +267,7 @@ def network_embed_in_plane(network, fix=None, straightline=True):
         p0   = network.vertex_coordinates(a, 'xy')
         p1   = network.vertex_coordinates(b, 'xy')
         p2   = pos[b]
-        vec0 = [network[b][axis] - network[a][axis] for axis in 'xy']
+        vec0 = [network.vertex[b][axis] - network.vertex[a][axis] for axis in 'xy']
         vec1 = [pos[b][axis] - pos[a][axis] for axis in (0, 1)]
         # rotate
         a = angle_smallest_vectors_xy(vec0, vec1)
@@ -287,16 +287,16 @@ def network_embed_in_plane(network, fix=None, straightline=True):
             pos[key][0] *= scale
             pos[key][1] *= scale
         # translate
-        t = network[fix[0]]['x'] - pos[fix[0]][0], network[fix[0]]['y'] - pos[fix[0]][1]
+        t = network.vertex[fix[0]]['x'] - pos[fix[0]][0], network.vertex[fix[0]]['y'] - pos[fix[0]][1]
         for key in pos:
             pos[key][0] += t[0]
             pos[key][1] += t[1]
 
     # update network vertex coordinates
-    for key in network:
+    for key in network.vertices():
         if key in pos:
-            network[key]['x'] = pos[key][0]
-            network[key]['y'] = pos[key][1]
+            network.vertex[key]['x'] = pos[key][0]
+            network.vertex[key]['y'] = pos[key][1]
 
     return True
 

@@ -50,7 +50,7 @@ def network_dual(network, cls=None):
             from compas.datastructures import FaceNetwork
             from compas.datastructures import network_find_faces
             from compas.datastructures import network_dual
-            from compas.visualization.plotters import NetworkPlotter
+            from compas.visualization import NetworkPlotter
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -140,9 +140,9 @@ def network_find_faces(network, breakpoints=None):
             # no breakpoints
 
             import compas
-            from compas.datastructures.network import FaceNetwork
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_find_faces
+            from compas.datastructures import FaceNetwork
+            from compas.datastructures import network_find_faces
+            from compas.visualization import NetworkPlotter
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -162,9 +162,9 @@ def network_find_faces(network, breakpoints=None):
             # leaves as breakpoints
 
             import compas
-            from compas.datastructures.network import FaceNetwork
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_find_faces
+            from compas.datastructures import FaceNetwork
+            from compas.datastructures import network_find_faces
+            from compas.visualization import NetworkPlotter
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
