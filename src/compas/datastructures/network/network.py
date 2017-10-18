@@ -50,7 +50,7 @@ class Network(FromToJson,
               EdgeAttributesManagement,
               VertexAttributesManagement,
               Datastructure):
-    """Definition of a network object.
+    """Definition of a network.
 
     The ``Network`` class is implemented as a directed edge graph.
 

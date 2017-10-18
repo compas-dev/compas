@@ -260,7 +260,24 @@
 <div class="viewcode-block" id="network_bfs_paths"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_bfs_paths.html#compas.datastructures.network_bfs_paths">[docs]</a><span class="k">def</span> <span class="nf">network_bfs_paths</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
     <span class="sd">"""Return all paths from root to goal.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    adjacency : dict</span>
+<span class="sd">        An adjacency dictionary.</span>
+<span class="sd">    root : hashable</span>
+<span class="sd">        The identifier of the starting node.</span>
+<span class="sd">    goal : hashable</span>
+<span class="sd">        The identifier of the ending node.</span>
+
+<span class="sd">    Yields</span>
+<span class="sd">    ------</span>
+<span class="sd">    list</span>
+<span class="sd">        A path from root to goal.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    Due to the nature of the search, the first path returned is the shortest.</span>
+
 <span class="sd">    """</span>
     <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">adjacency</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
     <span class="n">tovisit</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([(</span><span class="n">root</span><span class="p">,</span> <span class="p">[</span><span class="n">root</span><span class="p">])])</span>
@@ -274,7 +291,25 @@
 
 
 <div class="viewcode-block" id="network_shortest_path"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_shortest_path.html#compas.datastructures.network_shortest_path">[docs]</a><span class="k">def</span> <span class="nf">network_shortest_path</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
-    <span class="sd">""""""</span>
+    <span class="sd">"""Find the shortest path between two vertices of a network.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    adjacency : dict</span>
+<span class="sd">        An adjacency dictionary.</span>
+<span class="sd">    root : hashable</span>
+<span class="sd">        The identifier of the starting node.</span>
+<span class="sd">    goal : hashable</span>
+<span class="sd">        The identifier of the ending node.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        The path from root to goal.</span>
+<span class="sd">    None</span>
+<span class="sd">        If no path exists between the vertices.</span>
+
+<span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">network_bfs_paths</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">goal</span><span class="p">))</span>
     <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
@@ -347,9 +382,9 @@
 
 <span class="sd">            import compas</span>
 
-<span class="sd">            from compas.datastructures.network import Network</span>
-<span class="sd">            from compas.visualization.plotters import NetworkPlotter</span>
-<span class="sd">            from compas.datastructures.network.algorithms import network_dijkstra_path</span>
+<span class="sd">            from compas.datastructures import Network</span>
+<span class="sd">            from compas.datastructures import network_dijkstra_path</span>
+<span class="sd">            from compas.visualization import NetworkPlotter</span>
 
 <span class="sd">            network = Network.from_obj(compas.get_data('grid_irregular.obj'))</span>
 
@@ -390,9 +425,9 @@
 
 <span class="sd">            import compas</span>
 
-<span class="sd">            from compas.datastructures.network import Network</span>
-<span class="sd">            from compas.visualization.plotters import NetworkPlotter</span>
-<span class="sd">            from compas.datastructures.network.algorithms import network_dijkstra_path</span>
+<span class="sd">            from compas.datastructures import Network</span>
+<span class="sd">            from compas.datastructures import network_dijkstra_path</span>
+<span class="sd">            from compas.visualization import NetworkPlotter</span>
 
 <span class="sd">            network = Network.from_obj(compas.get_data('grid_irregular.obj'))</span>
 
@@ -452,10 +487,9 @@
 
     <span class="kn">import</span> <span class="nn">compas</span>
 
-    <span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="k">import</span> <span class="n">Network</span>
-    <span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms</span> <span class="k">import</span> <span class="n">network_dijkstra_path</span>
-
-    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.networkplotter</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Network</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">network_dijkstra_path</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
 
     <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
 

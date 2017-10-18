@@ -95,10 +95,12 @@
 <span class="sd">            :include-source:</span>
 
 <span class="sd">            import compas</span>
+
 <span class="sd">            from compas.datastructures import FaceNetwork</span>
-<span class="sd">            from compas.visualization import NetworkPlotter</span>
 <span class="sd">            from compas.datastructures import network_smooth_mixed</span>
 <span class="sd">            from compas.datastructures import network_find_faces</span>
+
+<span class="sd">            from compas.visualization import NetworkPlotter</span>
 
 <span class="sd">            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))</span>
 <span class="sd">            smooth = network.copy()</span>
@@ -171,9 +173,6 @@
                     <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
 
                     <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">fkeys</span><span class="p">:</span>
-                        <span class="c1"># if fkey == 0:</span>
-                        <span class="c1">#     continue</span>
-
                         <span class="k">if</span> <span class="n">fkey</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                             <span class="k">continue</span>
 
@@ -218,7 +217,12 @@
             <span class="n">callback</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="network_smooth_centroid"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_smooth_centroid.html#compas.datastructures.network_smooth_centroid">[docs]</a><span class="k">def</span> <span class="nf">network_smooth_centroid</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="network_smooth_centroid"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_smooth_centroid.html#compas.datastructures.network_smooth_centroid">[docs]</a><span class="k">def</span> <span class="nf">network_smooth_centroid</span><span class="p">(</span><span class="n">network</span><span class="p">,</span>
+                            <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">d</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                            <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""Smooth a network using per vertex the centroid of its neighbours.</span>
 
 <span class="sd">    Parameters:</span>
@@ -286,7 +290,12 @@
             <span class="n">callback</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="network_smooth_area"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_smooth_area.html#compas.datastructures.network_smooth_area">[docs]</a><span class="k">def</span> <span class="nf">network_smooth_area</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="network_smooth_area"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_smooth_area.html#compas.datastructures.network_smooth_area">[docs]</a><span class="k">def</span> <span class="nf">network_smooth_area</span><span class="p">(</span><span class="n">network</span><span class="p">,</span>
+                        <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">d</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                        <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""Smooth a network using per vertex the centroid of the neighbouring faces, weighted by their respective areas.</span>
 
 <span class="sd">    Parameters:</span>
@@ -303,6 +312,9 @@
 
 <span class="sd">    Raises:</span>
 <span class="sd">        Exception: If a callback is provided, but not callable.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This algorithm only works with face networks.</span>
 
 <span class="sd">    Example:</span>
 
@@ -385,7 +397,12 @@
             <span class="n">callback</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="network_smooth_mass"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_smooth_mass.html#compas.datastructures.network_smooth_mass">[docs]</a><span class="k">def</span> <span class="nf">network_smooth_mass</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="network_smooth_mass"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_smooth_mass.html#compas.datastructures.network_smooth_mass">[docs]</a><span class="k">def</span> <span class="nf">network_smooth_mass</span><span class="p">(</span><span class="n">network</span><span class="p">,</span>
+                        <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">d</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                        <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""Smooth a network using per vertex the center of mass of the polygon formed by the neighbouring vertices.</span>
 
 <span class="sd">    Parameters:</span>
@@ -454,7 +471,47 @@
             <span class="n">callback</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="network_smooth_length"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_smooth_length.html#compas.datastructures.network_smooth_length">[docs]</a><span class="k">def</span> <span class="nf">network_smooth_length</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">lmin</span><span class="p">,</span> <span class="n">lmax</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="network_smooth_length"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_smooth_length.html#compas.datastructures.network_smooth_length">[docs]</a><span class="k">def</span> <span class="nf">network_smooth_length</span><span class="p">(</span><span class="n">network</span><span class="p">,</span>
+                          <span class="n">lmin</span><span class="p">,</span>
+                          <span class="n">lmax</span><span class="p">,</span>
+                          <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                          <span class="n">d</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                          <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Smooth a network using bounds on the edge lengths.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+<span class="sd">    lmin : float</span>
+<span class="sd">        Minimum length of the edges.</span>
+<span class="sd">    lmax : float</span>
+<span class="sd">        Maximum length of the edges.</span>
+<span class="sd">    fixed : list, optional [None]</span>
+<span class="sd">        The fixed vertices of the network.</span>
+<span class="sd">    kmax : int, optional [1]</span>
+<span class="sd">        The maximum number of iterations.</span>
+<span class="sd">    d : float, optional [0.5]</span>
+<span class="sd">        The damping factor.</span>
+<span class="sd">    callback : callable, optional [None]</span>
+<span class="sd">        A user-defined callback function to be executed after every iteration.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    Exception</span>
+<span class="sd">        If a callback is provided, but not callable.</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    This algorithm is not yet properly implemented.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="n">fixed</span> <span class="o">=</span> <span class="n">fixed</span> <span class="ow">or</span> <span class="p">[]</span>
     <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
 
@@ -499,9 +556,8 @@
 
     <span class="kn">import</span> <span class="nn">compas</span>
 
-    <span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="k">import</span> <span class="n">Network</span>
-
-    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.networkplotter</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Network</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
 
     <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
     <span class="n">smooth</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>

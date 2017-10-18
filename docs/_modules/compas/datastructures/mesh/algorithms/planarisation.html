@@ -35,9 +35,7 @@
 <a accesskey="U" class="breadcrumb-item" href="../../../../index.html">module code</a>
 </nav>
 <h1>Source code for compas.datastructures.mesh.algorithms.planarisation</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="sd">""""""</span>
-
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">bestfit_plane_from_points</span>
+<span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">bestfit_plane_from_points</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">project_points_plane</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">centroid_points</span>
 
@@ -64,11 +62,29 @@
 <span class="p">]</span>
 
 
+<span class="c1"># flatness should be measured as the ratio of the distance between the diagonals</span>
+<span class="c1"># and the average edge length</span>
+<span class="c1"># this should not exceed 2%</span>
+<span class="c1"># note that this only works for quad meshes</span>
+
 <span class="k">def</span> <span class="nf">mesh_flatness</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
     <span class="sd">"""Compute mesh flatness per face.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        For each face, a deviation from *flatness*.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    The "flatness" of a face is expressed as the average of the angles between</span>
 <span class="sd">    the normal at each face corner and the normal of the best-fit plane.</span>
+
 <span class="sd">    """</span>
     <span class="n">dev</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
@@ -88,7 +104,12 @@
     <span class="k">return</span> <span class="n">dev</span>
 
 
-<div class="viewcode-block" id="mesh_planarize"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.mesh_planarize.html#compas.datastructures.mesh_planarize">[docs]</a><span class="k">def</span> <span class="nf">mesh_planarize</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="mesh_planarize"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.mesh_planarize.html#compas.datastructures.mesh_planarize">[docs]</a><span class="k">def</span> <span class="nf">mesh_planarize</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span>
+                   <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                   <span class="n">d</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                   <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""Planarise the faces of a mesh.</span>
 
 <span class="sd">    Planarisation is implemented as a two-step iterative procedure. At every</span>
@@ -96,16 +117,20 @@
 <span class="sd">    and then the vertices are projected to the centroid of the disconnected</span>
 <span class="sd">    corners of the faces.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        mesh</span>
-<span class="sd">        fixed</span>
-<span class="sd">        kmax</span>
-<span class="sd">        d</span>
-<span class="sd">        callback</span>
-<span class="sd">        callback_args</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        None</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+<span class="sd">    fixed : list, optional [None]</span>
+<span class="sd">        A list of fixed vertices.</span>
+<span class="sd">    kmax : int, optional [100]</span>
+<span class="sd">        The number of iterations.</span>
+<span class="sd">    d : float, optional [1.0]</span>
+<span class="sd">        A damping factor.</span>
+<span class="sd">    callback : callable, optional [None]</span>
+<span class="sd">        A user-defined callback that is called after every iteration.</span>
+<span class="sd">    callback_args : list, optional [None]</span>
+<span class="sd">        A list of arguments to be passed to the callback function.</span>
 
 <span class="sd">    """</span>
     <span class="c1"># planarize every face individually</span>
@@ -145,26 +170,37 @@
             <span class="n">callback</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">mesh_planarize_shapeop</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">mesh_planarize_shapeop</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span>
+                           <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                           <span class="n">d</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                           <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""Planarize the faces of a mesh using ShapeOp.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        mesh</span>
-<span class="sd">        fixed</span>
-<span class="sd">        kmax</span>
-<span class="sd">        d</span>
-<span class="sd">        callback</span>
-<span class="sd">        callback_args</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+<span class="sd">    fixed : list, optional [None]</span>
+<span class="sd">        A list of fixed vertices.</span>
+<span class="sd">    kmax : int, optional [100]</span>
+<span class="sd">        The number of iterations.</span>
+<span class="sd">    d : float, optional [0.1]</span>
+<span class="sd">        A damping factor.</span>
+<span class="sd">    callback : callable, optional [None]</span>
+<span class="sd">        A user-defined callback that is called after every iteration.</span>
+<span class="sd">    callback_args : list, optional [None]</span>
+<span class="sd">        A list of arguments to be passed to the callback function.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        None</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This planarization algorithm relies on the Python binding of the ShapeOp</span>
+<span class="sd">    library. Installation instructions are available in ``compas.interop.shapeop``.</span>
 
-<span class="sd">    Examples:</span>
-<span class="sd">        None</span>
-
-<span class="sd">    Note:</span>
-<span class="sd">        This planarization algorithm relies on the Python binding of the ShapeOp</span>
-<span class="sd">        library. Installation instructions are available in ``compas.interop.shapeop``.</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 
 <span class="sd">    """</span>
     <span class="kn">from</span> <span class="nn">compas.interop</span> <span class="k">import</span> <span class="n">shapeop</span>
@@ -179,25 +215,44 @@
     <span class="n">shapeop</span><span class="o">.</span><span class="n">planarize_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="n">kmax</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="mesh_circularize"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.mesh_circularize.html#compas.datastructures.mesh_circularize">[docs]</a><span class="k">def</span> <span class="nf">mesh_circularize</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">""""""</span>
+<div class="viewcode-block" id="mesh_circularize"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.mesh_circularize.html#compas.datastructures.mesh_circularize">[docs]</a><span class="k">def</span> <span class="nf">mesh_circularize</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span>
+                     <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                     <span class="n">d</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                     <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Circularize the faces of a mesh using ShapeOp.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+<span class="sd">    fixed : list, optional [None]</span>
+<span class="sd">        A list of fixed vertices.</span>
+<span class="sd">    kmax : int, optional [100]</span>
+<span class="sd">        The number of iterations.</span>
+<span class="sd">    d : float, optional [1.0]</span>
+<span class="sd">        A damping factor.</span>
+<span class="sd">    callback : callable, optional [None]</span>
+<span class="sd">        A user-defined callback that is called after every iteration.</span>
+<span class="sd">    callback_args : list, optional [None]</span>
+<span class="sd">        A list of arguments to be passed to the callback function.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    ...</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
+
     <span class="c1"># map the corners of the faces to a circle on the nearest plane</span>
     <span class="c1"># use circle from points</span>
     <span class="c1"># map vertices to the centroids of the face corners</span>
 
-    <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'The callback is not callable.'</span><span class="p">)</span>
-
-    <span class="n">fixed</span> <span class="o">=</span> <span class="n">fixed</span> <span class="ow">or</span> <span class="p">[]</span>
-    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kmax</span><span class="p">):</span>
-
-        <span class="k">pass</span>
-
-        <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
-            <span class="n">callback</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span></div>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -208,7 +263,7 @@
 
     <span class="kn">import</span> <span class="nn">compas</span>
 
-    <span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
 
     <span class="kn">from</span> <span class="nn">compas.visualization.viewers.viewer</span> <span class="k">import</span> <span class="n">Viewer</span>
 

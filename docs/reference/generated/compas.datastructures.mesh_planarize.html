@@ -52,17 +52,14 @@ corners of the faces.</p>
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mesh</strong></li>
-<li><strong>fixed</strong></li>
-<li><strong>kmax</strong></li>
-<li><strong>d</strong></li>
-<li><strong>callback</strong></li>
-<li><strong>callback_args</strong></li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mesh</strong> (<em>Mesh</em>) – A mesh object.</li>
+<li><strong>fixed</strong> (<em>list, optional [None]</em>) – A list of fixed vertices.</li>
+<li><strong>kmax</strong> (<em>int, optional [100]</em>) – The number of iterations.</li>
+<li><strong>d</strong> (<em>float, optional [1.0]</em>) – A damping factor.</li>
+<li><strong>callback</strong> (<em>callable, optional [None]</em>) – A user-defined callback that is called after every iteration.</li>
+<li><strong>callback_args</strong> (<em>list, optional [None]</em>) – A list of arguments to be passed to the callback function.</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>

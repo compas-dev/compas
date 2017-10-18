@@ -66,7 +66,7 @@ class Mesh(FromToJson,
            EdgeAttributesManagement,
            VertexAttributesManagement,
            Datastructure):
-    """Class representing a mesh.
+    """Definition of a mesh.
 
     The datastructure of the mesh is implemented as a half-edge.
 

@@ -72,9 +72,9 @@ For an undirected graph, add the same weight for an edge in both directions.</p>
 <p class="rubric">Examples</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="kn">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms</span> <span class="kn">import</span> <span class="n">network_dijkstra_path</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_dijkstra_path</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 
 <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
 
@@ -116,9 +116,9 @@ For an undirected graph, add the same weight for an edge in both directions.</p>
 </figure>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="kn">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms</span> <span class="kn">import</span> <span class="n">network_dijkstra_path</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_dijkstra_path</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 
 <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
 

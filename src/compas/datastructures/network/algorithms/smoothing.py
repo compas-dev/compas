@@ -58,10 +58,12 @@ def network_smooth_mixed(network,
             :include-source:
 
             import compas
+
             from compas.datastructures import FaceNetwork
-            from compas.visualization import NetworkPlotter
             from compas.datastructures import network_smooth_mixed
             from compas.datastructures import network_find_faces
+
+            from compas.visualization import NetworkPlotter
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
             smooth = network.copy()
@@ -134,9 +136,6 @@ def network_smooth_mixed(network,
                     x, y, z = 0, 0, 0
 
                     for fkey in fkeys:
-                        # if fkey == 0:
-                        #     continue
-
                         if fkey is None:
                             continue
 
@@ -181,7 +180,12 @@ def network_smooth_mixed(network,
             callback(network, k, callback_args)
 
 
-def network_smooth_centroid(network, fixed=None, kmax=1, d=0.5, callback=None, callback_args=None):
+def network_smooth_centroid(network,
+                            fixed=None,
+                            kmax=1,
+                            d=0.5,
+                            callback=None,
+                            callback_args=None):
     """Smooth a network using per vertex the centroid of its neighbours.
 
     Parameters:
@@ -249,7 +253,12 @@ def network_smooth_centroid(network, fixed=None, kmax=1, d=0.5, callback=None, c
             callback(network, k, callback_args)
 
 
-def network_smooth_area(network, fixed=None, kmax=1, d=0.5, callback=None, callback_args=None):
+def network_smooth_area(network,
+                        fixed=None,
+                        kmax=1,
+                        d=0.5,
+                        callback=None,
+                        callback_args=None):
     """Smooth a network using per vertex the centroid of the neighbouring faces, weighted by their respective areas.
 
     Parameters:
@@ -266,6 +275,9 @@ def network_smooth_area(network, fixed=None, kmax=1, d=0.5, callback=None, callb
 
     Raises:
         Exception: If a callback is provided, but not callable.
+
+    Note:
+        This algorithm only works with face networks.
 
     Example:
 
@@ -348,7 +360,12 @@ def network_smooth_area(network, fixed=None, kmax=1, d=0.5, callback=None, callb
             callback(network, k, callback_args)
 
 
-def network_smooth_mass(network, fixed=None, kmax=1, d=0.5, callback=None, callback_args=None):
+def network_smooth_mass(network,
+                        fixed=None,
+                        kmax=1,
+                        d=0.5,
+                        callback=None,
+                        callback_args=None):
     """Smooth a network using per vertex the center of mass of the polygon formed by the neighbouring vertices.
 
     Parameters:
@@ -417,7 +434,47 @@ def network_smooth_mass(network, fixed=None, kmax=1, d=0.5, callback=None, callb
             callback(network, k, callback_args)
 
 
-def network_smooth_length(network, lmin, lmax, fixed=None, kmax=1, d=0.5, callback=None, callback_args=None):
+def network_smooth_length(network,
+                          lmin,
+                          lmax,
+                          fixed=None,
+                          kmax=1,
+                          d=0.5,
+                          callback=None,
+                          callback_args=None):
+    """Smooth a network using bounds on the edge lengths.
+
+    Parameters
+    ----------
+    network : Network
+        A network object.
+    lmin : float
+        Minimum length of the edges.
+    lmax : float
+        Maximum length of the edges.
+    fixed : list, optional [None]
+        The fixed vertices of the network.
+    kmax : int, optional [1]
+        The maximum number of iterations.
+    d : float, optional [0.5]
+        The damping factor.
+    callback : callable, optional [None]
+        A user-defined callback function to be executed after every iteration.
+
+    Raises
+    ------
+    Exception
+        If a callback is provided, but not callable.
+
+    Warning
+    -------
+    This algorithm is not yet properly implemented.
+
+    Example
+    -------
+    >>>
+
+    """
     fixed = fixed or []
     fixed = set(fixed)
 
@@ -462,9 +519,8 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas.datastructures.network import Network
-
-    from compas.visualization.plotters.networkplotter import NetworkPlotter
+    from compas.datastructures import Network
+    from compas.visualization import NetworkPlotter
 
     network = Network.from_obj(compas.get_data('grid_irregular.obj'))
     smooth = network.copy()

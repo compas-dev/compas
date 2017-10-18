@@ -74,10 +74,12 @@ Default is <code class="docutils literal">None</code>.</li>
 </table>
 <p class="rubric">Example</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">FaceNetwork</span>
-<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_smooth_mixed</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_find_faces</span>
+
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 
 <span class="n">network</span> <span class="o">=</span> <span class="n">FaceNetwork</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
 <span class="n">smooth</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
