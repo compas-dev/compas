@@ -66,12 +66,21 @@ def geometric_key2(xy, precision='3f', tolerance=1e-9, sanitize=True):
         return '{0},{1}'.format(int(x), int(y))
     if sanitize:
         tolerance = tolerance ** 2
+
         if x ** 2 < tolerance:
             x = 0.0
         if y ** 2 < tolerance:
             y = 0.0
     return '{0:.{2}},{1:.{2}}'.format(x, y, precision)
 
+
+def normalize_values(l, new_min=0.0, new_max=1.0):
+    """Normalize a list of numbers to the range between new_min and new_max."""
+    old_max = max(l) 
+    old_min = min(l)
+    old_range = (old_max - old_min) 
+    new_range = (new_max - new_min)  
+    return [(((item - old_min) * new_range) / old_range) + new_min for item in l]
 
 # ==============================================================================
 # Debugging

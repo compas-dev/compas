@@ -72,9 +72,9 @@ if __name__ == "__main__":
 
     point = RhinoPoint.from_selection()
 
-    print point.guid
-    print point.object
-    print point.geometry
-    print point.attributes
-    print point.type
-    print point.xyz
+    print(point.guid)
+    print(point.object)
+    print(point.geometry)
+    print(point.attributes)
+    print(point.type)
+    print(point.xyz)

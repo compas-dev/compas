@@ -8,45 +8,22 @@ geometry
 .. module:: compas_blender.geometry
 
 
-curve
------
+Object-oriented wrappers for native Blender geometry.
+
 
 .. autosummary::
     :toctree: generated/
 
-
-mesh
-----
-
-.. autosummary::
-    :toctree: generated/
-
-
-point
------
-
-.. autosummary::
-    :toctree: generated/
-
-
-surface
--------
-
-.. autosummary::
-    :toctree: generated/
-
-
+    BlenderPoint
+    BlenderCurve
+    BlenderMesh
+    BlenderSurface
 
 """
 
-from .curve import *
-from .mesh import *
-from .point import *
-from .surface import *
+from .point import BlenderPoint
+from .curve import BlenderCurve
+from .mesh import BlenderMesh
+from .surface import BlenderSurface
 
-from .curve import __all__ as a
-from .mesh import __all__ as b
-from .point import __all__ as c
-from .surface import __all__ as d
-
-__all__ = a + b + c + d
+__all__ = ['BlenderPoint', 'BlenderCurve', 'BlenderMesh', 'BlenderSurface', ]

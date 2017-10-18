@@ -1,6 +1,6 @@
-from compas_blender.utilities.objects import delete_objects
-from compas_blender.utilities.objects import delete_all_objects
-from compas_blender.utilities.objects import get_objects
+from compas_blender.utilities import delete_objects
+from compas_blender.utilities import delete_all_objects
+from compas_blender.utilities import get_objects
 
 try:
     import bpy
@@ -9,19 +9,32 @@ except ImportError:
 
 
 __all__ = [
+    'clear_layer',
     'clear_layers',
     'layer_mask'
 ]
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'liew@arch.ethz.ch'
 
 
+def clear_layer(layer):
+    """ Deletes objects in given layer.
+
+    Parameters:
+        layers (int): Layer number.
+
+    Returns:
+        None
+    """
+    delete_objects(get_objects(layer=layer))
+
+
 def clear_layers(layers):
-    """ Deletes all objects in given layers.
+    """ Deletes objects in given layers.
 
     Parameters:
         layers (list, str): Layers or 'all'.
@@ -31,11 +44,9 @@ def clear_layers(layers):
     """
     if layers == 'all':
         delete_all_objects()
-    elif isinstance(layers, int):
-        delete_objects(get_objects(layers))
     elif isinstance(layers, list):
         for layer in layers:
-            delete_objects(get_objects(layer))
+            delete_objects(get_objects(layer=layer))
 
 
 def layer_mask(layer):
@@ -56,4 +67,5 @@ def layer_mask(layer):
 
 if __name__ == "__main__":
 
-    pass
+    print(layer_mask(layer=0))
+    clear_layers(layers=[0, 1])
