@@ -338,27 +338,15 @@
 
 <span class="sd">            plotter = NetworkPlotter(embedding)</span>
 
-<span class="sd">            points = []</span>
-<span class="sd">            for key in network.vertices():</span>
-<span class="sd">                points.append({</span>
-<span class="sd">                    'pos': network.vertex_coordinates(key, 'xy'),</span>
-<span class="sd">                    'radius': 0.1</span>
-<span class="sd">                })</span>
+<span class="sd">            plotter.draw_xlines([{'start': network.vertex_coordinates(u, 'xy'),</span>
+<span class="sd">                                  'end': network.vertex_coordinates(v, 'xy'),</span>
+<span class="sd">                                  'color': '#cccccc'} for u, v in network.edges()])</span>
 
-<span class="sd">            lines = []</span>
-<span class="sd">            for u, v in network.edges():</span>
-<span class="sd">                lines.append({</span>
-<span class="sd">                    'start': network.vertex_coordinates(u, 'xy'),</span>
-<span class="sd">                    'end'  : network.vertex_coordinates(v, 'xy'),</span>
-<span class="sd">                    'color': '#cccccc',</span>
-<span class="sd">                })</span>
-
-<span class="sd">            plotter.draw_xlines(lines)</span>
-<span class="sd">            plotter.draw_xpoints(points)</span>
+<span class="sd">            plotter.draw_vertices(radius=0.3,</span>
+<span class="sd">                                  text={key: key for key in embedding.vertices()},</span>
+<span class="sd">                                  facecolor={key: '#ff0000' for key in fix})</span>
 
 <span class="sd">            plotter.draw_edges()</span>
-<span class="sd">            plotter.draw_vertices(facecolor={key: ('#ff0000' if key in fix else '#ffffff') for key in embedding.vertices()}, text={key: key for key in fix})</span>
-
 <span class="sd">            plotter.show()</span>
 
 <span class="sd">    """</span>

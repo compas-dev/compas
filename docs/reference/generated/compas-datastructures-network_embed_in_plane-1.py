@@ -14,25 +14,13 @@ if network_embed_in_plane(embedding, fix=fix):
 
     plotter = NetworkPlotter(embedding)
 
-    points = []
-    for key in network.vertices():
-        points.append({
-            'pos': network.vertex_coordinates(key, 'xy'),
-            'radius': 0.1
-        })
+    plotter.draw_xlines([{'start': network.vertex_coordinates(u, 'xy'),
+                          'end': network.vertex_coordinates(v, 'xy'),
+                          'color': '#cccccc'} for u, v in network.edges()])
 
-    lines = []
-    for u, v in network.edges():
-        lines.append({
-            'start': network.vertex_coordinates(u, 'xy'),
-            'end'  : network.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
-        })
-
-    plotter.draw_xlines(lines)
-    plotter.draw_xpoints(points)
+    plotter.draw_vertices(radius=0.3,
+                          text={key: key for key in embedding.vertices()},
+                          facecolor={key: '#ff0000' for key in fix})
 
     plotter.draw_edges()
-    plotter.draw_vertices(facecolor={key: ('#ff0000' if key in fix else '#ffffff') for key in embedding.vertices()}, text={key: key for key in fix})
-
     plotter.show()
