@@ -50,16 +50,17 @@ the plane exists, and, furthermore, that straight-line embedding in the plane
 exists.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">This function uses the python binding of the <em>edge addition planarity suite</em>
-in the background. The package is available on GitHub: <a class="reference external" href="https://github.com/hagberg/planarity">https://github.com/hagberg/planarity</a>.</p>
+<p class="last">This function uses the python binding of the <em>edge addition planarity suite</em>.
+It is available on GitHub: <a class="reference external" href="https://github.com/hagberg/planarity">https://github.com/hagberg/planarity</a>.</p>
 </div>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>network</strong> (<em>compas.datastructures.network.Network</em>) – The network object.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>network</strong> (<em>Network</em>) – A network object.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>bool</em> – <code class="docutils literal">True</code> if the network is planar. <code class="docutils literal">False</code> otherwise.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>bool</em> – True if the network is planar.
+False otherwise.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal">ImportError</code> – If the planarity package is not installed.</td>
 </tr>
@@ -69,9 +70,9 @@ in the background. The package is available on GitHub: <a class="reference exter
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_is_planar</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_find_crossings</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 
 <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
 

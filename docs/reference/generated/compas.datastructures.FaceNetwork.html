@@ -55,9 +55,7 @@
 
 <span class="n">network_find_faces</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">breakpoints</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">())</span>
 
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'vertex.fontsize'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">8.0</span>
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span>
     <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">()},</span>

@@ -93,9 +93,7 @@
 
 <span class="sd">        network_find_faces(network, breakpoints=network.leaves())</span>
 
-<span class="sd">        plotter = NetworkPlotter(network, figsize=(10, 7))</span>
-
-<span class="sd">        plotter.defaults['vertex.fontsize'] = 8.0</span>
+<span class="sd">        plotter = NetworkPlotter(network)</span>
 
 <span class="sd">        plotter.draw_vertices(</span>
 <span class="sd">            facecolor={key: '#ff0000' for key in network.leaves()},</span>

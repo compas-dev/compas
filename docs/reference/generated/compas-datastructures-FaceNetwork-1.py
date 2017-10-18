@@ -7,9 +7,7 @@ network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
 
 network_find_faces(network, breakpoints=network.leaves())
 
-plotter = NetworkPlotter(network, figsize=(10, 7))
-
-plotter.defaults['vertex.fontsize'] = 8.0
+plotter = NetworkPlotter(network)
 
 plotter.draw_vertices(
     facecolor={key: '#ff0000' for key in network.leaves()},

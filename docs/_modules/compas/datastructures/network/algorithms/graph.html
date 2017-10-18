@@ -64,6 +64,24 @@
 
 
 <div class="viewcode-block" id="network_is_crossed"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_is_crossed.html#compas.datastructures.network_is_crossed">[docs]</a><span class="k">def</span> <span class="nf">network_is_crossed</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Verify if a network has crossing edges.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This algorithm assumes that the network lies in the XY plane.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the network has at least one pair of crossing edges.</span>
+<span class="sd">        False otherwise.</span>
+
+<span class="sd">    """</span>
     <span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">u2</span> <span class="ow">or</span> <span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u2</span> <span class="o">==</span> <span class="n">v1</span><span class="p">:</span>
@@ -94,6 +112,23 @@
 
 
 <div class="viewcode-block" id="network_count_crossings"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_count_crossings.html#compas.datastructures.network_count_crossings">[docs]</a><span class="k">def</span> <span class="nf">network_count_crossings</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Count the number of crossings (pairs of crossing edges) in the network.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This algorithm assumes that the network lies in the XY plane.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        The number of crossings.</span>
+
+<span class="sd">    """</span>
     <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
@@ -110,6 +145,23 @@
 
 
 <div class="viewcode-block" id="network_find_crossings"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_find_crossings.html#compas.datastructures.network_find_crossings">[docs]</a><span class="k">def</span> <span class="nf">network_find_crossings</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Identify all pairs of crossing edges in a network.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This algorithm assumes that the network lies in the XY plane.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list of edge pairs, with each edge represented by two vertex keys.</span>
+
+<span class="sd">    """</span>
     <span class="n">crossings</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
@@ -126,6 +178,20 @@
 
 
 <div class="viewcode-block" id="network_is_xy"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_is_xy.html#compas.datastructures.network_is_xy">[docs]</a><span class="k">def</span> <span class="nf">network_is_xy</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Verify that a network lies in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the Z coordinate of all vertices is zero.</span>
+<span class="sd">        False otherwise.</span>
+
+<span class="sd">    """</span>
     <span class="n">z</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -144,47 +210,56 @@
 <span class="sd">    the plane exists, and, furthermore, that straight-line embedding in the plane</span>
 <span class="sd">    exists.</span>
 
-<span class="sd">    Warning:</span>
-<span class="sd">        This function uses the python binding of the *edge addition planarity suite*</span>
-<span class="sd">        in the background. The package is available on GitHub: https://github.com/hagberg/planarity.</span>
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    This function uses the python binding of the *edge addition planarity suite*.</span>
+<span class="sd">    It is available on GitHub: https://github.com/hagberg/planarity.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        network (compas.datastructures.network.Network): The network object.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        bool: ``True`` if the network is planar. ``False`` otherwise.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the network is planar.</span>
+<span class="sd">        False otherwise.</span>
 
-<span class="sd">    Raises:</span>
-<span class="sd">        ImportError: If the planarity package is not installed.</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ImportError</span>
+<span class="sd">        If the planarity package is not installed.</span>
 
-<span class="sd">    Example:</span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
 
-<span class="sd">        .. plot::</span>
-<span class="sd">            :include-source:</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
 
-<span class="sd">            import compas</span>
+<span class="sd">        import compas</span>
 
-<span class="sd">            from compas.datastructures import Network</span>
-<span class="sd">            from compas.visualization import NetworkPlotter</span>
-<span class="sd">            from compas.datastructures import network_is_planar</span>
-<span class="sd">            from compas.datastructures import network_find_crossings</span>
+<span class="sd">        from compas.datastructures import Network</span>
+<span class="sd">        from compas.datastructures import network_is_planar</span>
+<span class="sd">        from compas.datastructures import network_find_crossings</span>
+<span class="sd">        from compas.visualization import NetworkPlotter</span>
 
-<span class="sd">            network = Network.from_obj(compas.get_data('lines.obj'))</span>
+<span class="sd">        network = Network.from_obj(compas.get_data('lines.obj'))</span>
 
-<span class="sd">            network.add_edge(21, 29)</span>
-<span class="sd">            network.add_edge(17, 28)</span>
+<span class="sd">        network.add_edge(21, 29)</span>
+<span class="sd">        network.add_edge(17, 28)</span>
 
-<span class="sd">            if not network_is_planar(network):</span>
-<span class="sd">                crossings = network_find_crossings(network)</span>
-<span class="sd">            else:</span>
-<span class="sd">                crossings = []</span>
+<span class="sd">        if not network_is_planar(network):</span>
+<span class="sd">            crossings = network_find_crossings(network)</span>
+<span class="sd">        else:</span>
+<span class="sd">            crossings = []</span>
 
-<span class="sd">            plotter = NetworkPlotter(network)</span>
+<span class="sd">        plotter = NetworkPlotter(network)</span>
 
-<span class="sd">            plotter.draw_vertices(radius=0.15, text={key: key for key in network.vertices()})</span>
-<span class="sd">            plotter.draw_edges(color={edge: '#ff0000' for edges in crossings for edge in edges})</span>
+<span class="sd">        plotter.draw_vertices(radius=0.15, text={key: key for key in network.vertices()})</span>
+<span class="sd">        plotter.draw_edges(color={edge: '#ff0000' for edges in crossings for edge in edges})</span>
 
-<span class="sd">            plotter.show()</span>
+<span class="sd">        plotter.show()</span>
 
 <span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
@@ -195,8 +270,21 @@
     <span class="k">return</span> <span class="n">planarity</span><span class="o">.</span><span class="n">is_planar</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span></div>
 
 
-<span class="c1"># is it embedded in the plane without crossing (curved) edges</span>
 <div class="viewcode-block" id="network_is_planar_embedding"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_is_planar_embedding.html#compas.datastructures.network_is_planar_embedding">[docs]</a><span class="k">def</span> <span class="nf">network_is_planar_embedding</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Verify that a network is embedded in the plane without crossing edges.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the network is embedded in the plane without crossing edges.</span>
+<span class="sd">        Fase otherwise.</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">network_is_planar</span><span class="p">(</span><span class="n">network</span><span class="p">)</span> <span class="ow">and</span>
             <span class="n">network_is_xy</span><span class="p">(</span><span class="n">network</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span>
             <span class="n">network_is_crossed</span><span class="p">(</span><span class="n">network</span><span class="p">))</span></div>
@@ -205,66 +293,73 @@
 <div class="viewcode-block" id="network_embed_in_plane"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_embed_in_plane.html#compas.datastructures.network_embed_in_plane">[docs]</a><span class="k">def</span> <span class="nf">network_embed_in_plane</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">fix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">straightline</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">"""Embed the network in the plane.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        network (compas.datastructures.Network): The network object.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+<span class="sd">    fix : list (None)</span>
+<span class="sd">        Two fixed points.</span>
+<span class="sd">    straightline : bool (True)</span>
+<span class="sd">        Embed using straight lines.</span>
 
-<span class="sd">        fix (list): Optional.</span>
-<span class="sd">            Two fixed points.</span>
-<span class="sd">            Default is ``None``.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the embedding was successful.</span>
+<span class="sd">        False otherwise.</span>
 
-<span class="sd">        straightline (bool): Optional.</span>
-<span class="sd">            Embed using straight lines.</span>
-<span class="sd">            Default is ``True``.</span>
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    This function uses the Python package NetworkX. NetworkX can be *pip installed*.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        bool:</span>
-<span class="sd">        ``True`` if the embedding was successful.</span>
-<span class="sd">        ``False`` otherwise.</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ImportError</span>
+<span class="sd">        If NetworkX is not installed.</span>
 
-<span class="sd">    Raises:</span>
-<span class="sd">        ImportError: If NetworkX is not installed.</span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
 
-<span class="sd">    Example:</span>
+<span class="sd">        import compas</span>
 
-<span class="sd">        .. plot::</span>
-<span class="sd">            :include-source:</span>
+<span class="sd">        from compas.datastructures import Network</span>
+<span class="sd">        from compas.datastructures import network_embed_in_plane</span>
+<span class="sd">        from compas.visualization import NetworkPlotter</span>
 
-<span class="sd">            import compas</span>
-<span class="sd">            from compas.datastructures import Network</span>
-<span class="sd">            from compas.visualization import NetworkPlotter</span>
-<span class="sd">            from compas.datastructures import network_embed_in_plane</span>
+<span class="sd">        network = Network.from_obj(compas.get_data('fink.obj'))</span>
 
-<span class="sd">            network = Network.from_obj(compas.get_data('fink.obj'))</span>
-<span class="sd">            embedding = network.copy()</span>
+<span class="sd">        embedding = network.copy()</span>
 
-<span class="sd">            fix = (1, 12)</span>
+<span class="sd">        fix = (1, 12)</span>
 
-<span class="sd">            if network_embed_in_plane(embedding, fix=fix):</span>
+<span class="sd">        if network_embed_in_plane(embedding, fix=fix):</span>
 
-<span class="sd">                plotter = NetworkPlotter(embedding)</span>
+<span class="sd">            plotter = NetworkPlotter(embedding)</span>
 
-<span class="sd">                points = []</span>
-<span class="sd">                for key in network.vertices():</span>
-<span class="sd">                    points.append({</span>
-<span class="sd">                        'pos': network.vertex_coordinates(key, 'xy'),</span>
-<span class="sd">                        'radius': 0.1</span>
-<span class="sd">                    })</span>
+<span class="sd">            points = []</span>
+<span class="sd">            for key in network.vertices():</span>
+<span class="sd">                points.append({</span>
+<span class="sd">                    'pos': network.vertex_coordinates(key, 'xy'),</span>
+<span class="sd">                    'radius': 0.1</span>
+<span class="sd">                })</span>
 
-<span class="sd">                lines = []</span>
-<span class="sd">                for u, v in network.edges():</span>
-<span class="sd">                    lines.append({</span>
-<span class="sd">                        'start': network.vertex_coordinates(u, 'xy'),</span>
-<span class="sd">                        'end'  : network.vertex_coordinates(v, 'xy'),</span>
-<span class="sd">                        'color': '#cccccc',</span>
-<span class="sd">                    })</span>
+<span class="sd">            lines = []</span>
+<span class="sd">            for u, v in network.edges():</span>
+<span class="sd">                lines.append({</span>
+<span class="sd">                    'start': network.vertex_coordinates(u, 'xy'),</span>
+<span class="sd">                    'end'  : network.vertex_coordinates(v, 'xy'),</span>
+<span class="sd">                    'color': '#cccccc',</span>
+<span class="sd">                })</span>
 
-<span class="sd">                plotter.draw_xlines(lines)</span>
-<span class="sd">                plotter.draw_xpoints(points)</span>
+<span class="sd">            plotter.draw_xlines(lines)</span>
+<span class="sd">            plotter.draw_xpoints(points)</span>
 
-<span class="sd">                plotter.draw_edges()</span>
-<span class="sd">                plotter.draw_vertices(facecolor={key: ('#ff0000' if key in fix else '#ffffff') for key in embedding.vertices()}, text={key: key for key in fix})</span>
+<span class="sd">            plotter.draw_edges()</span>
+<span class="sd">            plotter.draw_vertices(facecolor={key: ('#ff0000' if key in fix else '#ffffff') for key in embedding.vertices()}, text={key: key for key in fix})</span>
 
-<span class="sd">                plotter.show()</span>
+<span class="sd">            plotter.show()</span>
 
 <span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
@@ -346,8 +441,8 @@
 
     <span class="kn">import</span> <span class="nn">compas</span>
 
-    <span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="k">import</span> <span class="n">Network</span>
-    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.networkplotter</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Network</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
 
     <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'fink.obj'</span><span class="p">))</span>
 
