@@ -22,20 +22,22 @@ from compas.geometry import area_polygon
 
 from compas.datastructures import Datastructure
 
-from compas.datastructures.mixins import VertexAttributesMixin
-from compas.datastructures.mixins import VertexHelpersMixin
-from compas.datastructures.mixins import VertexCoordinatesDescriptorsMixin
+from compas.datastructures.mixins import VertexAttributesManagement
+from compas.datastructures.mixins import VertexHelpers
+from compas.datastructures.mixins import VertexCoordinatesDescriptors
+from compas.datastructures.mixins import VertexMappings
 
-from compas.datastructures.mixins import EdgeAttributesMixin
-from compas.datastructures.mixins import EdgeHelpersMixin
-from compas.datastructures.mixins import EdgeGeometryMixin
+from compas.datastructures.mixins import EdgeAttributesManagement
+from compas.datastructures.mixins import EdgeHelpers
+from compas.datastructures.mixins import EdgeGeometry
+from compas.datastructures.mixins import EdgeMappings
 
-from compas.datastructures.mixins import FaceAttributesMixin
-from compas.datastructures.mixins import FaceHelpersMixin
+from compas.datastructures.mixins import FaceAttributesManagement
+from compas.datastructures.mixins import FaceHelpers
+from compas.datastructures.mixins import FaceMappings
 
-from compas.datastructures.mixins import FactoryMixin
-from compas.datastructures.mixins import ConversionMixin
-from compas.datastructures.mixins import MagicMixin
+from compas.datastructures.mixins import FromToData
+from compas.datastructures.mixins import FromToJson
 
 from compas.datastructures.network.algorithms import network_bfs2
 
@@ -49,15 +51,16 @@ __email__      = '<vanmelet@ethz.ch>'
 __all__ = ['Network', 'FaceNetwork', ]
 
 
-class Network(MagicMixin,
-              ConversionMixin,
-              FactoryMixin,
-              EdgeGeometryMixin,
-              EdgeHelpersMixin,
-              EdgeAttributesMixin,
-              VertexCoordinatesDescriptorsMixin,
-              VertexHelpersMixin,
-              VertexAttributesMixin,
+class Network(FromToJson,
+              FromToData,
+              EdgeGeometry,
+              EdgeHelpers,
+              VertexHelpers,
+              VertexMappings,
+              EdgeMappings,
+              VertexCoordinatesDescriptors,
+              EdgeAttributesManagement,
+              VertexAttributesManagement,
               Datastructure):
     """Definition of a network object.
 
@@ -730,8 +733,8 @@ network: {0}
     # inherited from EdgeAttributesMixin
 
 
-class FaceNetwork(FaceHelpersMixin,
-                  FaceAttributesMixin,
+class FaceNetwork(FaceHelpers,
+                  FaceAttributesManagement,
                   Network):
 
     def __init__(self):

@@ -1,11 +1,11 @@
 """
-.. _compas_rhino.utilities:
+.. _compas_rhinomac.utilities:
 
 ********************************************************************************
 utilities
 ********************************************************************************
 
-.. module:: compas_rhino.utilities
+.. module:: compas_rhinomac.utilities
 
 
 This package contains many convenience functions for working and interacting

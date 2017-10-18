@@ -9,20 +9,20 @@ from compas.geometry import centroid_points
 from compas.datastructures import Datastructure
 from compas.datastructures import Mesh
 
-from compas.datastructures.mixins import VertexAttributesMixin
-from compas.datastructures.mixins import VertexHelpersMixin
-from compas.datastructures.mixins import VertexCoordinatesDescriptorsMixin
+from compas.datastructures.mixins import VertexAttributesManagement
+from compas.datastructures.mixins import VertexHelpers
+from compas.datastructures.mixins import VertexCoordinatesDescriptors
 
-from compas.datastructures.mixins import EdgeAttributesMixin
-from compas.datastructures.mixins import EdgeHelpersMixin
-from compas.datastructures.mixins import EdgeGeometryMixin
+from compas.datastructures.mixins import EdgeAttributesManagement
+from compas.datastructures.mixins import EdgeHelpers
+from compas.datastructures.mixins import EdgeGeometry
 
-from compas.datastructures.mixins import FaceAttributesMixin
-from compas.datastructures.mixins import FaceHelpersMixin
+from compas.datastructures.mixins import FaceAttributesManagement
+from compas.datastructures.mixins import FaceHelpers
 
-from compas.datastructures.mixins import FactoryMixin
-from compas.datastructures.mixins import ConversionMixin
-from compas.datastructures.mixins import MagicMixin
+from compas.datastructures.mixins import FromToData
+from compas.datastructures.mixins import FromToJson
+# from compas.datastructures.mixins import MagicMethods
 
 
 __author__     = ['Tom Van Mele', ]
@@ -48,17 +48,16 @@ def center_of_mass(edges, sqrt=sqrt):
     return cx, cy, cz
 
 
-class VolMesh(MagicMixin,
-              ConversionMixin,
-              FactoryMixin,
-              FaceHelpersMixin,
-              FaceAttributesMixin,
-              EdgeGeometryMixin,
-              EdgeHelpersMixin,
-              EdgeAttributesMixin,
-              VertexCoordinatesDescriptorsMixin,
-              VertexHelpersMixin,
-              VertexAttributesMixin,
+class VolMesh(FromToData,
+              FromToJson,
+              FaceHelpers,
+              EdgeHelpers,
+              VertexHelpers,
+              EdgeGeometry,
+              VertexCoordinatesDescriptors,
+              FaceAttributesManagement,
+              EdgeAttributesManagement,
+              VertexAttributesManagement,
               Datastructure):
     """Class for working with volumetric meshes.
 

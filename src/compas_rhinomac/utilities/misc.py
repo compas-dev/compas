@@ -2,8 +2,8 @@ import os
 import ast
 import inspect
 
-# from compas_rhino.forms import TextForm
-# from compas_rhino.forms import ImageForm
+# from compas_rhinomac.forms import TextForm
+# from compas_rhinomac.forms import ImageForm
 
 try:
     import System

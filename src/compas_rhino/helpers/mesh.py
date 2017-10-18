@@ -32,7 +32,9 @@ __all__ = [
     'mesh_from_surface_uv',
     'mesh_from_surface_heightfield',
     'mesh_draw',
-    'mesh_draw_as_faces',
+    'mesh_draw_vertices',
+    'mesh_draw_edges',
+    'mesh_draw_faces',
     'mesh_select_vertices',
     'mesh_select_vertex',
     'mesh_select_edges',
@@ -149,67 +151,57 @@ def mesh_from_surface_heightfield(cls, guid, density=(10, 10), **kwargs):
 # drawing
 # ==============================================================================
 
-# change clear to clearlayer
-# remove redraw?
-# process color spec into color dict
-
 def mesh_draw(mesh,
               layer=None,
               clear_layer=False,
               show_faces=True,
-              show_vertices=False,
+              show_vertices=True,
               show_edges=False,
-              show_wireframe=False,
               vertexcolor=None,
               edgecolor=None,
-              wireframecolor=None,
-              facecolor=None,
-              ):
+              facecolor=None):
     """
     Draw a mesh object in Rhino.
 
-    Parameters:
-        mesh (compas.datastructures.mesh.Mesh): The mesh object.
-        layer (str): Optional. The layer to draw in. Default is ``None``.
-        clear_layer (bool): Optional. Clear the drawing layer. Default is ``True``.
-        show_faces (bool): Optional. Show the faces. Default is ``True``.
-        show_vertices (bool): Optional. Show the vertices. Default is ``True``.
-        show_edges (bool): Optional. Show the edges. Default is ``True``.
-        vertexcolor (str, tuple, list, dict): Optional. The vertex color specification. Default is ``None``.
-        edgecolor (str, tuple, list, dict): Optional. The edge color specification. Default is ``None``.
-        facecolor (str, tuple, list, dict): Optional. The face color specification. Default is ``None``.
-        redraw (bool): Optional. Redraw instructions. Default is ``True``.
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        The mesh object.
+    layer : str (None)
+        The layer to draw in.
+        Default is to draw in the current layer.
+    clear_layer : bool (False)
+        Clear the drawing layer.
+    show_faces : bool (True)
+        Draw the faces.
+    show_vertices : bool (True)
+        Draw the vertices.
+    show_edges : bool (False)
+        Draw the edges.
+    vertexcolor : str, tuple, list, dict (None)
+        The vertex color specification.
+        Default is to use the color of the parent layer.
+    edgecolor : str, tuple, list, dict (None)
+        The edge color specification.
+        Default is to use the color of the parent layer.
+    facecolor : str, tuple, list, dict (None)
+        The face color specification.
+        Default is to use the color of the parent layer.
 
-    Note:
-        Colors can be specifiedin different ways:
+    Note
+    ----
+    Colors can be specifiedin different ways:
 
-        * str: A hexadecimal color that will be applied to all elements subject to the specification.
-        * tuple, list: RGB color that will be applied to all elements subject to the specification.
-        * dict: RGB or hex color dict with a specification for some or all of the related elements.
+    * str: A hexadecimal color that will be applied to all elements subject to the specification.
+    * tuple, list: RGB color that will be applied to all elements subject to the specification.
+    * dict: RGB or hex color dict with a specification for some or all of the related elements.
 
-    Important:
-        RGB colors should specify color values between 0 and 255.
+    Important
+    ---------
+    RGB colors specified as values between 0 and 255, should be integers.
+    RGB colors specified as values between 0.0 and 1.0, should be floats.
 
     """
-
-    vertexcolor = color_to_colordict(vertexcolor,
-                                     mesh.vertices(),
-                                     default=mesh.attributes['color.vertex'],
-                                     colorformat='rgb',
-                                     normalize=False)
-
-    edgecolor = color_to_colordict(edgecolor,
-                                   mesh.edges(),
-                                   default=mesh.attributes['color.edge'],
-                                   colorformat='rgb',
-                                   normalize=False)
-
-    facecolor = color_to_colordict(facecolor,
-                                   mesh.faces(),
-                                   default=mesh.attributes['color.face'],
-                                   colorformat='rgb',
-                                   normalize=False)
-
     guids = compas_rhino.get_objects(name='{0}.*'.format(mesh.attributes['name']))
     compas_rhino.delete_objects(guids)
 
@@ -218,136 +210,181 @@ def mesh_draw(mesh,
             compas_rhino.clear_current_layer()
         else:
             compas_rhino.clear_layer(layer)
-
-    if show_faces:
-        key_index = {key: index for index, key in enumerate(mesh.vertices())}
-        xyz       = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-        faces     = []
-        color     = mesh.attributes['color.face']
-
-        for fkey in mesh.face:
-            face = mesh.face_vertices(fkey, ordered=True)
-            v = len(face)
-
-            if v < 3:
-                print('Degenerate face: {0} => {1}'.format(fkey, face))
-            elif v == 3:
-                faces.append([key_index[k] for k in face + [face[-1]]])
-            elif v == 4:
-                faces.append([key_index[k] for k in face])
-            else:
-                c = len(xyz)
-                xyz.append(mesh.face_center(fkey))
-                for i in range(-1, len(face) - 1):
-                    key = face[i]
-                    nbr = face[i + 1]
-                    vertices = [c, key_index[key], key_index[nbr], key_index[nbr]]
-                    faces.append(vertices)
-
-        compas_rhino.xmesh_draw(xyz,
-                                faces,
-                                color,
-                                '{0}.mesh'.format(mesh.attributes['name']),
-                                layer=layer,
-                                clear=False,
-                                redraw=False)
-
-    if show_edges:
-        lines = []
-        color = mesh.attributes['color.edge']
-        for u, v in mesh.edges():
-            lines.append({
-                'start': mesh.vertex_coordinates(u),
-                'end'  : mesh.vertex_coordinates(v),
-                'name' : '{0}.edge.{1}-{2}'.format(mesh.attributes['name'], repr(u), repr(v)),
-                'color': edgecolor.get((u, v), color),
-            })
-        compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=False)
-
-    if show_wireframe:
-        lines = []
-        color = mesh.attributes['color.edge']
-        for u, v in mesh.wireframe():
-            lines.append({
-                'start': mesh.vertex_coordinates(u),
-                'end'  : mesh.vertex_coordinates(v),
-                'name' : '{0}.edge.{1}-{2}'.format(mesh.attributes['name'], repr(u), repr(v)),
-                'color': edgecolor.get((u, v), color),
-            })
-        compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=False)
 
     if show_vertices:
-        points = []
-        color  = mesh.attributes['color.vertex']
-        for key in mesh.vertices():
-            points.append({
-                'pos'  : mesh.vertex_coordinates(key),
-                'name' : '{0}.vertex.{1}'.format(mesh.attributes['name'], repr(key)),
-                'color': vertexcolor.get(key, color),
-            })
-        compas_rhino.xdraw_points(points, layer=layer, clear=False, redraw=False)
+        mesh_draw_vertices(mesh, color=vertexcolor, layer=layer, clear_layer=False, redraw=False)
+
+    if show_edges:
+        mesh_draw_edges(mesh, color=edgecolor, layer=layer, clear_layer=False, redraw=False)
+
+    if show_faces:
+        mesh_draw_faces(mesh, color=facecolor, layer=layer, clear_layer=False, redraw=False)
 
     rs.EnableRedraw()
     rs.Redraw()
 
 
-def mesh_draw_vertices(mesh):
-    pass
+def mesh_draw_vertices(mesh, keys=None, color=None, layer=None, clear_layer=False, redraw=True):
+    """Draw a selection of vertices of the mesh.
 
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    keys : list (None)
+        A list of vertex keys identifying which vertices to draw.
+        Default is to draw all vertices.
+    color : str, tuple, dict (None)
+        The color specififcation for the vertices.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all vertices, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).
+        Default is use the color of the parent layer.
+    layer : str (None)
+        The layer in which the vertices are drawn.
+        Default is to draw in the current layer.
+    clear_layer : bool (False)
+        Clear the drawing layer.
+    redraw : bool (True)
+        Redraw the view after adding the vertices.
 
-def mesh_draw_edges(mesh):
-    pass
+    Notes
+    -----
+    The vertices are named using the following template:
+    ``"{}.vertex.{}".format(self.mesh.attributes['name'], key)``.
+    This name is used afterwards to identify vertices of the meshin the Rhino model.
 
+    Examples
+    --------
+    >>>
 
-def mesh_draw_faces(mesh):
-    pass
-
-
-def mesh_draw_as_faces(mesh,
-                       layer=None,
-                       clear_layer=False,
-                       facecolor=None,
-                       redraw=True):
-
-    guids = compas_rhino.get_objects(name='{0}.*'.format(mesh.attributes['name']))
+    """
+    guids = compas_rhino.get_objects(name='{0}.vertex.*'.format(mesh.attributes['name']))
     compas_rhino.delete_objects(guids)
 
-    if clear_layer:
-        if not layer:
-            compas_rhino.clear_current_layer()
-        else:
-            compas_rhino.clear_layer(layer)
+    keys = keys or list(mesh.vertices())
+    colordict = color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=False)
+    points = []
+    for key in keys:
+        points.append({
+            'pos'  : mesh.vertex_coordinates(key),
+            'name' : mesh.vertex_name(key),
+            'color': colordict[key]
+        })
+    return compas_rhino.xdraw_points(points, layer=layer, clear=clear_layer, redraw=redraw)
 
-    facecolor = facecolor or {}
 
-    meshes = []
+def mesh_draw_edges(mesh, keys=None, color=None, layer=None, clear_layer=False, redraw=True):
+    """Draw a selection of edges of the mesh.
 
-    for fkey in mesh.faces():
-        vertices = mesh.face_coordinates(fkey)
-        faces = [range(len(vertices))]
-        color = facecolor.get(fkey, (255, 255, 255))
-        guid = compas_rhino.xmesh_draw(vertices,
-                                       faces,
-                                       None,
-                                       '{0}.face.{1}'.format(mesh.attributes['name'], fkey),
-                                       layer=layer,
-                                       clear=False,
-                                       redraw=False)
-        compas_rhino.set_mesh_vertex_colors(guid, [color for i in range(len(vertices))])
-        meshes.append(guid)
+    Parameters
+    ----------
+    keys : list
+        A list of edge keys (as uv pairs) identifying which edges to draw.
+        Default is to draw all edges.
+    color : str, tuple, dict
+        The color specififcation for the edges.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all faces, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default face color (``self.defaults['face.color']``).
+        Default is use the color of the parent layer.
+    layer : str (None)
+        The layer in which the edges are drawn.
+        Default is to draw in the current layer.
+    clear_layer : bool (False)
+        Clear the drawing layer.
+    redraw : bool (True)
+        Redraw the view after adding the edges.
 
-    if layer:
-        previous = rs.CurrentLayer(layer)
+    Notes
+    -----
+    All edges are named using the following template:
+    ``"{}.edge.{}-{}".fromat(self.mesh.attributes['name'], u, v)``.
+    This name is used afterwards to identify edges of the mesh in the Rhino model.
 
-    guid = rs.JoinMeshes(meshes, delete_input=True)
+    Examples
+    --------
+    >>> mesh_draw_edges(mesh)
+    >>> mesh_draw_edges(mesh, color='#ff0000')
+    >>> mesh_draw_edges(mesh, color=(255, 0, 0))
+    >>> mesh_draw_edges(mesh, keys=mesh.edges_on_boundary())
+    >>> mesh_draw_edges(mesh, color={(u, v): '#00ff00' for u, v in mesh.edges_on_boundary()})
 
-    if layer:
-        rs.CurrentLayer(previous)
+    """
+    guids = compas_rhino.get_objects(name='{0}.edge.*'.format(mesh.attributes['name']))
+    compas_rhino.delete_objects(guids)
 
-    rs.ObjectName(guid, '{0}'.format(mesh.attributes['name']))
+    keys = keys or list(mesh.edges())
+    colordict = color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=False)
+    lines = []
+    for u, v in keys:
+        lines.append({
+            'start': mesh.vertex_coordinates(u),
+            'end'  : mesh.vertex_coordinates(v),
+            'name' : mesh.edge_name(u, v),
+            'color': colordict[(u, v)],
+        })
+    return compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer, redraw=redraw)
 
-    rs.EnableRedraw()
-    rs.Redraw()
+
+def mesh_draw_faces(mesh, keys=None, color=None, layer=None, clear_layer=False, redraw=True, join_faces=False):
+    """Draw a selection of faces of the mesh.
+
+    Parameters
+    ----------
+    keys : list (None)
+        A list of face keys identifying which faces to draw.
+        Default is to draw all faces.
+    color : str, tuple, dict (None)
+        The color specififcation for the faces.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all faces, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default face color (``self.defaults['face.color']``).
+        Default is to use the color of the parent layer.
+    layer : str (None)
+        The layer in which the edges are drawn.
+        Default is to draw in the current layer.
+    clear_layer : bool (False)
+        Clear the drawing layer.
+    redraw : bool (True)
+        Redraw the view after adding the edges.
+    join_faces : bool (False)
+        Join the faces into a polymesh object.
+
+    Notes
+    -----
+    The faces are named using the following template:
+    ``"{}.face.{}".format(self.mesh.attributes['name'], key)``.
+    This name is used afterwards to identify faces of the mesh in the Rhino model.
+
+    Examples
+    --------
+    >>>
+
+    """
+    guids = compas_rhino.get_objects(name='{0}.face.*'.format(mesh.attributes['name']))
+    compas_rhino.delete_objects(guids)
+
+    keys = keys or list(mesh.faces())
+    colordict = color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=False)
+    faces = []
+    for key in keys:
+        faces.append({
+            'points': mesh.face_coordinates(key),
+            'name'  : mesh.face_name(key),
+            'color' : colordict[key],
+        })
+
+    guids = compas_rhino.xdraw_faces(faces, layer=layer, clear=clear_layer, redraw=redraw)
+
+    if join_faces:
+        guid = rs.JoinMeshes(guids, delete_input=True)
+        return guid
+
+    return guids
 
 
 # ==============================================================================

@@ -21,20 +21,23 @@ from compas.geometry import area_polygon
 
 from compas.datastructures import Datastructure
 
-from compas.datastructures.mixins import VertexAttributesMixin
-from compas.datastructures.mixins import VertexHelpersMixin
-from compas.datastructures.mixins import VertexCoordinatesDescriptorsMixin
+from compas.datastructures.mixins import VertexAttributesManagement
+from compas.datastructures.mixins import VertexHelpers
+from compas.datastructures.mixins import VertexCoordinatesDescriptors
 
-from compas.datastructures.mixins import EdgeAttributesMixin
-from compas.datastructures.mixins import EdgeHelpersMixin
-from compas.datastructures.mixins import EdgeGeometryMixin
+from compas.datastructures.mixins import EdgeAttributesManagement
+from compas.datastructures.mixins import EdgeHelpers
+from compas.datastructures.mixins import EdgeGeometry
 
-from compas.datastructures.mixins import FaceAttributesMixin
-from compas.datastructures.mixins import FaceHelpersMixin
+from compas.datastructures.mixins import FaceAttributesManagement
+from compas.datastructures.mixins import FaceHelpers
 
-from compas.datastructures.mixins import FactoryMixin
-from compas.datastructures.mixins import ConversionMixin
-from compas.datastructures.mixins import MagicMixin
+from compas.datastructures.mixins import FromToData
+from compas.datastructures.mixins import FromToJson
+
+from compas.datastructures.mixins import VertexMappings
+from compas.datastructures.mixins import EdgeMappings
+from compas.datastructures.mixins import FaceMappings
 
 from compas.datastructures.network.algorithms import network_bfs2
 
@@ -49,17 +52,19 @@ __email__      = '<vanmelet@ethz.ch>'
 #        for which two opposite halfedges do not already exist
 
 
-class Mesh(MagicMixin,
-           ConversionMixin,
-           FactoryMixin,
-           FaceHelpersMixin,
-           FaceAttributesMixin,
-           EdgeGeometryMixin,
-           EdgeHelpersMixin,
-           EdgeAttributesMixin,
-           VertexCoordinatesDescriptorsMixin,
-           VertexHelpersMixin,
-           VertexAttributesMixin,
+class Mesh(FromToJson,
+           FromToData,
+           EdgeGeometry,
+           FaceHelpers,
+           EdgeHelpers,
+           VertexHelpers,
+           FaceMappings,
+           EdgeMappings,
+           VertexMappings,
+           VertexCoordinatesDescriptors,
+           FaceAttributesManagement,
+           EdgeAttributesManagement,
+           VertexAttributesManagement,
            Datastructure):
     """Class representing a mesh.
 
@@ -172,7 +177,7 @@ class Mesh(MagicMixin,
         self._max_int_key = -1
         self._max_int_fkey = -1
         self.attributes = {
-            'name'         : 'Mesh',
+            'name'         : None,
             'color.vertex' : None,
             'color.edge'   : None,
             'color.face'   : None,
@@ -261,7 +266,7 @@ mesh: {}
         Any value assigned to this property will be stored in the attribute dict
         of the data structure instance.
         """
-        return self.attributes.get('name', None)
+        return self.attributes.get('name') or self.__class__.__name__
 
     @name.setter
     def name(self, value):

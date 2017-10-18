@@ -6,7 +6,7 @@ from compas.utilities.colors import color_to_colordict
 from compas.utilities import geometric_key
 from compas.geometry import distance_point_point
 
-import compas_rhino
+import compas_rhinomac
 
 try:
     import Rhino
@@ -95,8 +95,8 @@ def draw_network(network,
 
     See Also:
         * :class:`compas.datastructures.network.Network`
-        * :func:`compas_rhino.utilities.drawing.xdraw_lines`
-        * :func:`compas_rhino.utilities.drawing.xdraw_points`
+        * :func:`compas_rhinomac.utilities.drawing.xdraw_lines`
+        * :func:`compas_rhinomac.utilities.drawing.xdraw_points`
 
     Example:
 
@@ -105,11 +105,11 @@ def draw_network(network,
 
             import compas
             from compas.datastructures.network import Network
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_rhino.draw_network(network)
+            compas_rhinomac.draw_network(network)
 
     """
     vertexcolor = color_to_colordict(vertexcolor,
@@ -152,22 +152,22 @@ def draw_network(network,
             'color': edgecolor[(u, v)],
         })
 
-    guids = compas_rhino.get_objects(name='{0}.*'.format(network.attributes['name']))
-    compas_rhino.delete_objects(guids)
+    guids = compas_rhinomac.get_objects(name='{0}.*'.format(network.attributes['name']))
+    compas_rhinomac.delete_objects(guids)
 
-    compas_rhino.xdraw_points(
+    compas_rhinomac.xdraw_points(
         points,
         layer=layer,
         clear=clear_layer,
         redraw=False
     )
-    compas_rhino.xdraw_lines(
+    compas_rhinomac.xdraw_lines(
         lines,
         layer=layer,
         clear=False,
         redraw=False
     )
-    compas_rhino.xdraw_labels(
+    compas_rhinomac.xdraw_labels(
         labels,
         layer=layer,
         clear=False,
@@ -205,14 +205,14 @@ def select_network_vertices(network, message="Select network vertices."):
             :emphasize-lines: 9
 
             from compas.datastructures.network import Network
-            import compas_rhino as compas_rhino as rhino
+            import compas_rhinomac as compas_rhino as rhino
 
-            guids = compas_rhino.select_objects()
-            lines = compas_rhino.select_line_coordinates(guids)
+            guids = compas_rhinomac.select_objects()
+            lines = compas_rhinomac.select_line_coordinates(guids)
 
             network = Network.from_lines(lines)
 
-            keys = compas_rhino.select_network_vertices(network)
+            keys = compas_rhinomac.select_network_vertices(network)
 
             print(keys)
 
@@ -366,16 +366,16 @@ def select_network_faces(network, message='Select network faces.'):
             from compas.datastructures.network import Network
             from compas.datastructures.network.algorithms import find_network_faces
 
-            import compas_rhino as compas_rhino as rhino
+            import compas_rhinomac as compas_rhino as rhino
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
             find_network_faces(network, network.leaves())
 
-            compas_rhino.draw_network(network)
-            compas_rhino.display_network_face_labels(network)
+            compas_rhinomac.draw_network(network)
+            compas_rhinomac.display_network_face_labels(network)
 
-            fkeys = compas_rhino.select_network_faces(network)
+            fkeys = compas_rhinomac.select_network_faces(network)
 
             print(fkeys)
 
@@ -448,12 +448,12 @@ def update_network_attributes(network):
         .. code-block:: python
 
             import compas
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
             from compas.datastructures.network import Network
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            if compas_rhino.update_network_attributes(network):
+            if compas_rhinomac.update_network_attributes(network):
                 print('network attributes updated')
             else:
                 print('network attributres not updated')
@@ -467,7 +467,7 @@ def update_network_attributes(network):
     """
     names  = sorted(network.attributes.keys())
     values = [str(network.attributes[name]) for name in names]
-    values = compas_rhino.update_named_values(names, values)
+    values = compas_rhinomac.update_named_values(names, values)
     if values:
         for name, value in zip(names, values):
             try:
@@ -496,7 +496,7 @@ def update_network_vertex_attributes(network, keys, names=None):
         .. code-block:: python
 
             import compas
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
 
             from compas.datastructures.network import Network
 
@@ -504,7 +504,7 @@ def update_network_vertex_attributes(network, keys, names=None):
 
             keys = network.vertices()
 
-            if compas_rhino.update_network_vertex_attributes(network, keys):
+            if compas_rhinomac.update_network_vertex_attributes(network, keys):
                 print('network vertex attributes updated')
             else:
                 print('network vertex attributes not updated')
@@ -527,7 +527,7 @@ def update_network_vertex_attributes(network, keys, names=None):
                     values[i] = '-'
                     break
     values = map(str, values)
-    values = compas_rhino.update_named_values(names, values)
+    values = compas_rhinomac.update_named_values(names, values)
     if values:
         for name, value in zip(names, values):
             if value != '-':
@@ -541,8 +541,8 @@ def update_network_vertex_attributes(network, keys, names=None):
 
 
 def update_network_from_points(network, guids):
-    points = compas_rhino.get_point_coordinates(guids)
-    names = compas_rhino.get_object_names(guids)
+    points = compas_rhinomac.get_point_coordinates(guids)
+    names = compas_rhinomac.get_object_names(guids)
     gkey_key = {geometric_key(network.vertex_coordinates(key)): key for key in network}
     for i, xyz in enumerate(points):
         name = names[i]
@@ -576,7 +576,7 @@ def update_network_edge_attributes(network, keys, names=None):
         .. code-block:: python
 
             import compas
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
 
             from compas.datastructures.network import Network
 
@@ -584,7 +584,7 @@ def update_network_edge_attributes(network, keys, names=None):
 
             keys = network.edges()
 
-            if compas_rhino.update_network_edge_attributes(network, keys):
+            if compas_rhinomac.update_network_edge_attributes(network, keys):
                 print('network edge attributes updated')
             else:
                 print('network edge attributes not updated')
@@ -608,7 +608,7 @@ def update_network_edge_attributes(network, keys, names=None):
                     values[i] = '-'
                     break
     values = map(str, values)
-    values = compas_rhino.update_named_values(names, values)
+    values = compas_rhinomac.update_named_values(names, values)
     if values:
         for name, value in zip(names, values):
             if value != '-':
@@ -622,8 +622,8 @@ def update_network_edge_attributes(network, keys, names=None):
 
 
 def update_network_from_lines(network, guids):
-    lines = compas_rhino.get_line_coordinates(guids)
-    names = compas_rhino.get_object_names(guids)
+    lines = compas_rhinomac.get_line_coordinates(guids)
+    names = compas_rhinomac.get_object_names(guids)
     gkey_key = {geometric_key(network.vertex_coordinates(key)): key for key in network}
     for i, (sp, ep) in enumerate(lines):
         name = names[i]
@@ -661,7 +661,7 @@ def update_network_face_attributes(network, fkeys, names=None):
         .. code-block:: python
 
             import compas
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
 
             from compas.datastructures.network import Network
 
@@ -669,7 +669,7 @@ def update_network_face_attributes(network, fkeys, names=None):
 
             keys = network.faces()
 
-            if compas_rhino.update_network_face_attributes(network, keys):
+            if compas_rhinomac.update_network_face_attributes(network, keys):
                 print('network face attributes updated')
             else:
                 print('network face attributes not updated')
@@ -693,7 +693,7 @@ def update_network_face_attributes(network, fkeys, names=None):
                     values[i] = '-'
                     break
     values = map(str, values)
-    values = compas_rhino.update_attributes(names, values)
+    values = compas_rhinomac.update_attributes(names, values)
     if values:
         for name, value in zip(names, values):
             if value != '-':
@@ -736,19 +736,19 @@ def display_network_vertex_labels(network, attr_name=None, layer=None, color=Non
         .. code-block:: python
 
             import compas
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
 
             from compas.datastructures.network import Network
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_rhino.display_network_vertex_labels(network)
+            compas_rhinomac.display_network_vertex_labels(network)
 
 
         .. code-block:: python
 
             import compas
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
 
             from compas.datastructures.network import Network
 
@@ -757,7 +757,7 @@ def display_network_vertex_labels(network, attr_name=None, layer=None, color=Non
             def formatter(value):
                 return '{0:.3f}'.format(value)
 
-            compas_rhino.display_network_vertex_labels(network, attr_name='x' formatter=formatter)
+            compas_rhinomac.display_network_vertex_labels(network, attr_name='x' formatter=formatter)
 
 
     See Also:
@@ -765,7 +765,7 @@ def display_network_vertex_labels(network, attr_name=None, layer=None, color=Non
         * :func:`display_network_face_labels`
 
     """
-    compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.vertex.label.*".format(network.attributes['name'])))
+    compas_rhinomac.delete_objects(compas_rhinomac.get_objects(name="{0}.vertex.label.*".format(network.attributes['name'])))
 
     if not attr_name:
         attr_name = 'key'
@@ -796,7 +796,7 @@ def display_network_vertex_labels(network, attr_name=None, layer=None, color=Non
                        'name' : "{0}.vertex.label.{1}".format(network.attributes['name'], key),
                        'color': colordict[key], })
 
-    compas_rhino.xdraw_labels(
+    compas_rhinomac.xdraw_labels(
         labels,
         layer=layer,
         clear=False,
@@ -827,13 +827,13 @@ def display_network_edge_labels(network, attr_name=None, layer=None, color=None,
         .. code-block:: python
 
             import compas
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
 
             from compas.datastructures.network import Network
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_rhino.display_network_edge_labels(network)
+            compas_rhinomac.display_network_edge_labels(network)
 
 
     See Also:
@@ -841,7 +841,7 @@ def display_network_edge_labels(network, attr_name=None, layer=None, color=None,
         * :func:`display_network_face_labels`
 
     """
-    compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.edge.label.*".format(network.attributes['name'])))
+    compas_rhinomac.delete_objects(compas_rhinomac.get_objects(name="{0}.edge.label.*".format(network.attributes['name'])))
 
     if not attr_name:
         attr_name = 'key'
@@ -873,7 +873,7 @@ def display_network_edge_labels(network, attr_name=None, layer=None, color=None,
                        'name' : '{0}.edge.label.{1}-{2}'.format(network.attributes['name'], u, v),
                        'color': colordict[(u, v)], })
 
-    compas_rhino.xdraw_labels(
+    compas_rhinomac.xdraw_labels(
         labels,
         layer=layer,
         clear=False,
@@ -904,13 +904,13 @@ def display_network_face_labels(network, attr_name=None, layer=None, color=None,
         .. code-block:: python
 
             import compas
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
 
             from compas.datastructures.network import Network
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            compas_rhino.display_network_face_labels(network)
+            compas_rhinomac.display_network_face_labels(network)
 
 
     See Also:
@@ -918,7 +918,7 @@ def display_network_face_labels(network, attr_name=None, layer=None, color=None,
         * :func:`display_network_edge_labels`
 
     """
-    compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.face.label.*".format(network.attributes['name'])))
+    compas_rhinomac.delete_objects(compas_rhinomac.get_objects(name="{0}.face.label.*".format(network.attributes['name'])))
 
     if not attr_name:
         attr_name = 'key'
@@ -952,7 +952,7 @@ def display_network_face_labels(network, attr_name=None, layer=None, color=None,
             'color': colordict[fkey]
         })
 
-    compas_rhino.xdraw_labels(
+    compas_rhinomac.xdraw_labels(
         labels,
         layer=layer,
         clear=False,
@@ -976,7 +976,7 @@ def move_network(network):
     origin = {key: network.vertex_coordinates(key) for key in network.vertices()}
     vertex = {key: network.vertex_coordinates(key) for key in network.vertices()}
     edges  = network.edges()
-    start  = compas_rhino.pick_point('Point to move from?')
+    start  = compas_rhinomac.pick_point('Point to move from?')
 
     if not start:
         return
@@ -993,8 +993,8 @@ def move_network(network):
             ep = Point3d(*ep)
             e.Display.DrawDottedLine(sp, ep, color)
 
-    guids = compas_rhino.get_objects(name='{0}.*'.format(network.attributes['name']))
-    compas_rhino.delete_objects(guids, False)
+    guids = compas_rhinomac.get_objects(name='{0}.*'.format(network.attributes['name']))
+    compas_rhinomac.delete_objects(guids, False)
 
     gp = Rhino.Input.Custom.GetPoint()
     gp.SetCommandPrompt('Point to move to?')
@@ -1032,16 +1032,16 @@ def move_network_vertex(network, key, constraint=None, allow_off=None):
         .. code-block:: python
 
             import compas
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
 
             from compas.datastructures.network import Network
 
             network = Network.from_obj(compas.get_data('lines.obj'))
 
-            key = compas_rhino.select_network_vertex(network)
+            key = compas_rhinomac.select_network_vertex(network)
 
             if key:
-                compas_rhino.move_network_vertex(network, key)
+                compas_rhinomac.move_network_vertex(network, key)
 
     """
     color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
@@ -1124,7 +1124,7 @@ def display_network_axial_forces(network,
 
             import random
             import compas
-            import compas_rhino as compas_rhino
+            import compas_rhinomac as compas_rhino
 
             from compas.datastructures.network import Network
 
@@ -1133,7 +1133,7 @@ def display_network_axial_forces(network,
             for u, v, attr in network.edges(True):
                 attr['f'] = random.choice([-1.0, 1.0]) * random.randint(1, 10)
 
-            compas_rhino.display_network_axial_forces(network)
+            compas_rhinomac.display_network_axial_forces(network)
 
     See Also:
         * :func:`display_network_reaction_forces`
@@ -1141,9 +1141,9 @@ def display_network_axial_forces(network,
         * :func:`display_network_selfweight`
 
     """
-    tol = compas_rhino.get_tolerance()
-    objects = compas_rhino.get_objects(name='{0}.force:axial.*'.format(network.attributes['name']))
-    compas_rhino.delete_objects(objects)
+    tol = compas_rhinomac.get_tolerance()
+    objects = compas_rhinomac.get_objects(name='{0}.force:axial.*'.format(network.attributes['name']))
+    compas_rhinomac.delete_objects(objects)
 
     if not display:
         return
@@ -1169,7 +1169,7 @@ def display_network_axial_forces(network,
             'radius': radius,
         })
 
-    compas_rhino.xdraw_cylinders(lines, layer=layer, clear=clear_layer)
+    compas_rhinomac.xdraw_cylinders(lines, layer=layer, clear=clear_layer)
 
 
 def display_network_reaction_forces(network,
@@ -1180,9 +1180,9 @@ def display_network_reaction_forces(network,
                                     color=(0, 255, 0),
                                     attr_name='is_anchor'):
 
-    tol = compas_rhino.get_tolerance()
-    objects = compas_rhino.get_objects(name='{0}.force:reaction.*'.format(network.attributes['name']))
-    compas_rhino.delete_objects(objects)
+    tol = compas_rhinomac.get_tolerance()
+    objects = compas_rhinomac.get_objects(name='{0}.force:reaction.*'.format(network.attributes['name']))
+    compas_rhinomac.delete_objects(objects)
 
     if not display:
         return
@@ -1212,7 +1212,7 @@ def display_network_reaction_forces(network,
             'arrow': arrow,
         })
 
-    compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
+    compas_rhinomac.xdraw_lines(lines, layer=layer, clear=clear_layer)
 
 
 def display_network_residual_forces(network,
@@ -1223,9 +1223,9 @@ def display_network_residual_forces(network,
                                     color=(0, 255, 255),
                                     attr_name='is_anchor'):
 
-    tol = compas_rhino.get_tolerance()
-    guids = compas_rhino.get_objects(name='{0}.force:residual.*'.format(network.attributes['name']))
-    compas_rhino.delete_objects(guids)
+    tol = compas_rhinomac.get_tolerance()
+    guids = compas_rhinomac.get_objects(name='{0}.force:residual.*'.format(network.attributes['name']))
+    compas_rhinomac.delete_objects(guids)
 
     if not display:
         return
@@ -1255,7 +1255,7 @@ def display_network_residual_forces(network,
             'arrow' : arrow,
         })
 
-    compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
+    compas_rhinomac.xdraw_lines(lines, layer=layer, clear=clear_layer)
 
 
 def display_network_selfweight(network,
@@ -1265,9 +1265,9 @@ def display_network_selfweight(network,
                                scale=1.0,
                                color=(0, 255, 0)):
 
-    tol = compas_rhino.get_tolerance()
-    guids = compas_rhino.get_objects(name='{0}.force:selfweight.*'.format(network.attributes['name']))
-    compas_rhino.delete_objects(guids)
+    tol = compas_rhinomac.get_tolerance()
+    guids = compas_rhinomac.get_objects(name='{0}.force:selfweight.*'.format(network.attributes['name']))
+    compas_rhinomac.delete_objects(guids)
 
     if not display:
         return
@@ -1293,7 +1293,7 @@ def display_network_selfweight(network,
             'arrow': arrow,
         })
 
-    compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
+    compas_rhinomac.xdraw_lines(lines, layer=layer, clear=clear_layer)
 
 
 def display_network_applied_loads(network,
@@ -1303,9 +1303,9 @@ def display_network_applied_loads(network,
                                   scale=1.0,
                                   color=(0, 0, 255)):
 
-    tol = compas_rhino.get_tolerance()
-    guids = compas_rhino.get_objects(name='{0}.force:load.*'.format(network.attributes['name']))
-    compas_rhino.delete_objects(guids)
+    tol = compas_rhinomac.get_tolerance()
+    guids = compas_rhinomac.get_objects(name='{0}.force:load.*'.format(network.attributes['name']))
+    compas_rhinomac.delete_objects(guids)
 
     if not display:
         return
@@ -1331,7 +1331,7 @@ def display_network_applied_loads(network,
             'arrow': arrow,
         })
 
-    compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
+    compas_rhinomac.xdraw_lines(lines, layer=layer, clear=clear_layer)
 
 
 # ==============================================================================
