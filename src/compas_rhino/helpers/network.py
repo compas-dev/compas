@@ -17,15 +17,6 @@ from compas_rhino.helpers.selectors import VertexSelector
 from compas_rhino.helpers.selectors import EdgeSelector
 from compas_rhino.helpers.selectors import FaceSelector
 
-try:
-    import Rhino
-    from Rhino.Geometry import Point3d
-    import rhinoscriptsyntax as rs
-except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
-
 
 __author__    = 'Tom Van Mele'
 __copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
@@ -1254,6 +1245,9 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Network
+    from compas_rhino.helpers import network_draw
+    from compas_rhino.helpers import network_select_vertex
+    from compas_rhino.helpers import network_move_vertex
 
     network = Network.from_obj(compas.get_data('lines.obj'))
 
