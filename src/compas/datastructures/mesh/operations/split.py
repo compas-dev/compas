@@ -77,7 +77,12 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
 
 def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False, interpolate_attr=False):
-    """"""
+    """Split an edge of a triangle mesh.
+
+    Parameters
+    ----------
+
+    """
     if t <= 0.0:
         raise ValueError('t should be greater than 0.0.')
     if t >= 1.0:
