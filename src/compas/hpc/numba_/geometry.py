@@ -1,4 +1,6 @@
 from numba import jit
+from numba import int64
+from numba import float64
 from numba import guvectorize
 
 from numpy import sqrt
@@ -15,7 +17,8 @@ __all__ = [
     'numba_cross',
     'numba_vdot',
     'numba_dot',
-    'numba_length'
+    'numba_length',
+    'numba_subtract'
 ]
 
 
@@ -84,6 +87,24 @@ def numba_length(a):
         float: Length of input vector.
     """
     c = sqrt(a[0]**2 + a[1]**2 + a[2]**2)
+    return c
+
+
+@jit(nogil=True, nopython=True)
+def numba_subtract(a, b):
+    """ Subtract two vectors.
+
+    Parameters:
+        a (array): The first vector to subtract from.
+        b (array): The second vector to subtract with.
+
+    Returns:
+        array: a - b.
+    """
+    c = zeros(3)
+    c[0] = a[0] - b[0]
+    c[1] = a[1] - b[1]
+    c[2] = a[2] - b[2]
     return c
 
 
