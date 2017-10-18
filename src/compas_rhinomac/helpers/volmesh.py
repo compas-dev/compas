@@ -1,6 +1,6 @@
 from compas.utilities import geometric_key
 
-import compas_rhino
+import compas_rhinomac
 
 try:
     import Rhino

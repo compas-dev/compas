@@ -1,6 +1,12 @@
-from compas.utilities import geometric_key
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
-import compas_rhino
+from compas.utilities import geometric_key
+from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
+from compas_rhino.helpers.selectors import VertexSelector
+from compas_rhino.helpers.selectors import EdgeSelector
+from compas_rhino.helpers.selectors import FaceSelector
 
 try:
     import Rhino
@@ -20,6 +26,11 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = [
     'volmesh_from_polysurfaces',
     'volmesh_from_wireframe',
+    'volmesh_draw',
+    'volmesh_draw_vertices',
+    'volmesh_draw_edges',
+    'volmesh_draw_faces',
+    'volmesh_draw_cells',
 ]
 
 
@@ -89,8 +100,330 @@ def volmesh_from_wireframe(cls, edges):
 
 
 # ==============================================================================
+# drawing (artists)
+# ==============================================================================
+
+
+def volmesh_draw(volmesh,
+                 layer=None,
+                 clear_layer=False,
+                 vertexcolor=None,
+                 edgecolor=None,
+                 facecolor=None):
+    """Draw a volmesh.
+
+    Parameters
+    ----------
+    volmesh : compas.datastructures.VolMesh
+        A volmesh object.
+    layer : str (None)
+        The layer to draw in.
+        Default is to draw in the current layer.
+    clear_layer : bool (False)
+        Clear the current layer.
+    vertexcolor : str, tuple, list, dict (None)
+        The vertex color specification.
+        Default is to use the color of the parent layer.
+    edgecolor : str, tuple, list, dict (None)
+        The edge color specification.
+        Default is to use the color of the parent layer.
+    facecolor : str, tuple, list, dict (None)
+        The face color specification.
+        Default is to use the color of the parent layer.
+
+    Examples
+    --------
+    >>> volmesh_draw(volmesh)
+    >>> volmesh_draw(volmesh, layer='SomeLayer')
+    >>> volmesh_draw(volmesh, clear_layer=True)
+    >>> volmesh_draw(volmesh, vertexcolor='#ff0000')
+    >>> volmesh_draw(volmesh, edgecolor=(0, 255, 0))
+    >>> volmesh_draw(volmesh, facecolor={key: (0.0, 0.0, 0.5) for key in volmesh.faces()})
+
+    See Also
+    --------
+    * compas_rhino.helpers.VolMeshArtist
+
+    """
+    artist = VolMeshArtist(volmesh)
+    artist.layer = layer
+    if clear_layer:
+        artist.clear_layer()
+    artist.clear()
+    artist.draw_vertices(color=vertexcolor)
+    artist.draw_edges(color=edgecolor)
+    artist.draw_faces(color=facecolor)
+    artist.redraw()
+
+
+def volmesh_draw_vertices(volmesh,
+                          keys=None,
+                          color=None,
+                          layer=None,
+                          clear_layer=False,
+                          redraw=True):
+    """Draw the vertices of a volmesh.
+
+    Parameters
+    ----------
+    volmesh : compas.datastructures.VolMesh
+        A volmesh object.
+    keys : list (None)
+        A list of vertex keys identifying which vertices to draw.
+        Default is to draw all vertices.
+    color : str, tuple, dict (None)
+        The color specififcation for the vertices.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all vertices, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).
+        Default is use the color of the parent layer.
+    layer : str (None)
+        The layer in which the vertices are drawn.
+        Default is to draw in the current layer.
+    clear_layer : bool (False)
+        Clear the drawing layer.
+    redraw : bool (True)
+        Redraw the view after adding the vertices.
+
+    Examples
+    --------
+    >>> volmesh_draw_vertices(volmesh)
+    >>> volmesh_draw_vertices(volmesh, keys=volmesh.vertices_on_boundary())
+    >>> volmesh_draw_vertices(volmesh, color='#00ff00')
+    >>> color = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.vertices()}
+    >>> volmesh_draw_vertices(volmesh, color=color)
+
+    See Also
+    --------
+    * compas_rhino.helpers.VolMeshArtist
+
+    """
+    artist = VolMeshArtist(volmesh)
+    artist.layer = layer
+    if clear_layer:
+        artist.clear_layer()
+    artist.clear_vertices()
+    artist.draw_vertices(color=color)
+    if redraw:
+        artist.redraw()
+
+
+def volmesh_draw_edges(volmesh,
+                       keys=None,
+                       color=None,
+                       layer=None,
+                       clear_layer=False,
+                       redraw=True):
+    """Draw the edges of a volmesh.
+
+    Parameters
+    ----------
+    volmesh : compas.datastructures.VolMesh
+        A volmesh object.
+    keys : list (None)
+        A list of edge keys identifying which edges to draw.
+        Default is to draw all edges.
+    color : str, tuple, dict (None)
+        The color specififcation for the edges.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all edges, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).
+        Default is use the color of the parent layer.
+    layer : str (None)
+        The layer in which the edges are drawn.
+        Default is to draw in the current layer.
+    clear_layer : bool (False)
+        Clear the drawing layer.
+    redraw : bool (True)
+        Redraw the view after adding the edges.
+
+    Examples
+    --------
+    >>> volmesh_draw_edges(volmesh)
+    >>> volmesh_draw_edges(volmesh, keys=volmesh.edges_on_boundary())
+    >>> volmesh_draw_edges(volmesh, color='#00ff00')
+    >>> color = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.edges()}
+    >>> volmesh_draw_edges(volmesh, color=color)
+
+    See Also
+    --------
+    * compas_rhino.helpers.VolMeshArtist
+
+    """
+    artist = VolMeshArtist(volmesh)
+    artist.layer = layer
+    if clear_layer:
+        artist.clear_layer()
+    artist.clear_edges()
+    artist.draw_edges(color=color)
+    if redraw:
+        artist.redraw()
+
+
+def volmesh_draw_faces(volmesh,
+                       keys=None,
+                       color=None,
+                       layer=None,
+                       clear_layer=False,
+                       redraw=True):
+    """Draw the faces of a volmesh.
+
+    Parameters
+    ----------
+    volmesh : compas.datastructures.VolMesh
+        A volmesh object.
+    keys : list (None)
+        A list of edge keys identifying which faces to draw.
+        Default is to draw all faces.
+    color : str, tuple, dict (None)
+        The color specififcation for the faces.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all faces, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).
+        Default is use the color of the parent layer.
+    layer : str (None)
+        The layer in which the faces are drawn.
+        Default is to draw in the current layer.
+    clear_layer : bool (False)
+        Clear the drawing layer.
+    redraw : bool (True)
+        Redraw the view after adding the faces.
+
+    Examples
+    --------
+    >>> volmesh_draw_faces(volmesh)
+    >>> volmesh_draw_faces(volmesh, keys=volmesh.faces_on_boundary())
+    >>> volmesh_draw_faces(volmesh, color='#00ff00')
+    >>> color = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.faces()}
+    >>> volmesh_draw_faces(volmesh, color=color)
+
+    See Also
+    --------
+    * compas_rhino.helpers.VolMeshArtist
+
+    """
+    artist = VolMeshArtist(volmesh)
+    artist.layer = layer
+    if clear_layer:
+        artist.clear_layer()
+    artist.clear_faces()
+    artist.draw_faces(color=color)
+    if redraw:
+        artist.redraw()
+
+
+def volmesh_draw_cells(volmesh):
+    pass
+
+
+# ==============================================================================
+# selection (selectors)
+# ==============================================================================
+
+
+def volmesh_select_vertex(volmesh):
+    """Select a vertex of a volmesh.
+
+    Parameters
+    ----------
+    volmesh : compas.datastructures.VolMesh
+        A volmesh object.
+
+    Returns
+    -------
+    key : int, str, tuple, frozenset
+        The identifier or *key* of the selected vertex.
+    None
+        If no vertex was selected.
+
+    Examples
+    --------
+    >>> key = volmesh_select_vertex(volmesh)
+
+    See Also
+    --------
+    * volmesh_select_vertices
+
+    """
+    return VertexSelector.select_vertex(volmesh)
+
+
+def volmesh_select_vertices(volmesh):
+    """Select multiple vertices of a volmesh.
+
+    Parameters
+    ----------
+    volmesh : compas.datastructures.VolMesh
+        A volmesh object.
+
+    Returns
+    -------
+    keys : list(int, str, tuple, frozenset)
+        The identifiers or *keys* of the selected vertices.
+
+    Examples
+    --------
+    >>> keys = volmesh_select_vertices(volmesh)
+
+    See Also
+    --------
+    * volmesh_select_vertex
+
+    """
+    return VertexSelector.select_vertices(volmesh)
+
+
+def volmesh_select_edge(volmesh):
+    """"""
+    return EdgeSelector.select_edge(volmesh)
+
+
+def volmesh_select_edges(volmesh):
+    """"""
+    return EdgeSelector.select_edges(volmesh)
+
+
+def volmesh_select_face(volmesh):
+    """"""
+    return FaceSelector.select_face(volmesh)
+
+
+def volmesh_select_faces(volmesh):
+    """"""
+    return FaceSelector.select_faces(volmesh)
+
+
+def volmesh_select_cell():
+    pass
+
+
+def volmesh_select_cells():
+    pass
+
+
+# ==============================================================================
+# move (modifiers)
+# ==============================================================================
+
+
+# ==============================================================================
 # Debugging
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    import compas
+
+    from compas.datastructures import VolMesh
+    from compas_rhino.helpers.volmesh import *
+
+    volmesh = VolMesh.from_obj(compas.get_data('boxes.obj'))
+
+    volmesh_draw(volmesh)
+
+    key = volmesh_select_face(volmesh)
+
+    print(key)

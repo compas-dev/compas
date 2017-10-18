@@ -5,9 +5,9 @@ import ast
 from compas.utilities import geometric_key
 from compas.utilities import color_to_colordict
 
-from compas_rhino.geometry.surface import RhinoSurface
+from compas_rhinomac.geometry.surface import RhinoSurface
 
-import compas_rhino
+import compas_rhinomac
 
 try:
     import Rhino
@@ -55,7 +55,7 @@ __all__ = [
 
 
 def mesh_from_guid(cls, guid, **kwargs):
-    vertices, faces = compas_rhino.get_mesh_vertices_and_faces(guid)
+    vertices, faces = compas_rhinomac.get_mesh_vertices_and_faces(guid)
     faces = [face[:-1] if face[-2] == face[-1] else face for face in faces]
     mesh  = cls.from_vertices_and_faces(vertices, faces)
     mesh.attributes.update(kwargs)
@@ -210,14 +210,14 @@ def draw_mesh(mesh,
     #                                colorformat='rgb',
     #                                normalize=False)
 
-    guids = compas_rhino.get_objects(name='{0}.*'.format(mesh.attributes['name']))
-    compas_rhino.delete_objects(guids)
+    guids = compas_rhinomac.get_objects(name='{0}.*'.format(mesh.attributes['name']))
+    compas_rhinomac.delete_objects(guids)
 
     if clear_layer:
         if not layer:
-            compas_rhino.clear_current_layer()
+            compas_rhinomac.clear_current_layer()
         else:
-            compas_rhino.clear_layer(layer)
+            compas_rhinomac.clear_layer(layer)
 
     if show_faces:
         key_index = {key: index for index, key in enumerate(mesh.vertices())}
@@ -244,7 +244,7 @@ def draw_mesh(mesh,
                     vertices = [c, key_index[key], key_index[nbr], key_index[nbr]]
                     faces.append(vertices)
 
-        compas_rhino.xdraw_mesh(xyz,
+        compas_rhinomac.xdraw_mesh(xyz,
                                 faces,
                                 color,
                                 '{0}.mesh'.format(mesh.attributes['name']),
@@ -262,7 +262,7 @@ def draw_mesh(mesh,
                 'name' : '{0}.edge.{1}-{2}'.format(mesh.attributes['name'], repr(u), repr(v)),
                 'color': edgecolor.get((u, v), color),
             })
-        compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=False)
+        compas_rhinomac.xdraw_lines(lines, layer=layer, clear=False, redraw=False)
 
     if show_wireframe:
         lines = []
@@ -274,7 +274,7 @@ def draw_mesh(mesh,
                 'name' : '{0}.edge.{1}-{2}'.format(mesh.attributes['name'], repr(u), repr(v)),
                 'color': edgecolor.get((u, v), color),
             })
-        compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=False)
+        compas_rhinomac.xdraw_lines(lines, layer=layer, clear=False, redraw=False)
 
     if show_vertices:
         points = []
@@ -285,7 +285,7 @@ def draw_mesh(mesh,
                 'name' : '{0}.vertex.{1}'.format(mesh.attributes['name'], repr(key)),
                 'color': vertexcolor.get(key, color),
             })
-        compas_rhino.xdraw_points(points, layer=layer, clear=False, redraw=False)
+        compas_rhinomac.xdraw_points(points, layer=layer, clear=False, redraw=False)
 
     rs.EnableRedraw()
     rs.Redraw()
@@ -297,14 +297,14 @@ def draw_mesh_as_faces(mesh,
                        facecolor=None,
                        redraw=True):
 
-    guids = compas_rhino.get_objects(name='{0}.*'.format(mesh.attributes['name']))
-    compas_rhino.delete_objects(guids)
+    guids = compas_rhinomac.get_objects(name='{0}.*'.format(mesh.attributes['name']))
+    compas_rhinomac.delete_objects(guids)
 
     if clear_layer:
         if not layer:
-            compas_rhino.clear_current_layer()
+            compas_rhinomac.clear_current_layer()
         else:
-            compas_rhino.clear_layer(layer)
+            compas_rhinomac.clear_layer(layer)
 
     facecolor = facecolor or {}
 
@@ -314,14 +314,14 @@ def draw_mesh_as_faces(mesh,
         vertices = mesh.face_coordinates(fkey)
         faces = [range(len(vertices))]
         color = facecolor.get(fkey, (255, 255, 255))
-        guid = compas_rhino.xdraw_mesh(vertices,
+        guid = compas_rhinomac.xdraw_mesh(vertices,
                                        faces,
                                        None,
                                        '{0}.face.{1}'.format(mesh.attributes['name'], fkey),
                                        layer=layer,
                                        clear=False,
                                        redraw=False)
-        compas_rhino.set_mesh_vertex_colors(guid, [color for i in range(len(vertices))])
+        compas_rhinomac.set_mesh_vertex_colors(guid, [color for i in range(len(vertices))])
         meshes.append(guid)
 
     if layer:
@@ -367,12 +367,12 @@ def select_mesh_vertices(mesh, message="Select mesh vertices."):
         .. code-block:: python
 
             import compas
-            import compas_rhino as rhino as rhino
+            import compas_rhinomac as rhino as rhino
             from compas.datastructures.mesh import Mesh
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            keys = compas_rhino.select_mesh_vertices(mesh)
+            keys = compas_rhinomac.select_mesh_vertices(mesh)
 
             print(keys)
 
@@ -523,7 +523,7 @@ def select_mesh_faces(mesh, message='Select mesh faces.'):
             :emphasize-lines: 14
 
             import compas
-            import compas_rhino as rhino as rhino
+            import compas_rhinomac as rhino as rhino
 
             from compas.datastructures.mesh import Mesh
 
@@ -531,10 +531,10 @@ def select_mesh_faces(mesh, message='Select mesh faces.'):
 
             find_mesh_faces(mesh, mesh.leaves())
 
-            compas_rhino.draw_mesh(mesh)
-            compas_rhino.display_mesh_face_labels(mesh)
+            compas_rhinomac.draw_mesh(mesh)
+            compas_rhinomac.display_mesh_face_labels(mesh)
 
-            fkeys = compas_rhino.select_mesh_faces(mesh)
+            fkeys = compas_rhinomac.select_mesh_faces(mesh)
 
             print(fkeys)
 
@@ -607,12 +607,12 @@ def update_mesh_attributes(mesh):
         .. code-block:: python
 
             import compas
-            import compas_rhino as rhino
+            import compas_rhinomac as rhino
             from compas.datastructures.mesh import Mesh
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            if compas_rhino.update_mesh_attributes(mesh):
+            if compas_rhinomac.update_mesh_attributes(mesh):
                 print('mesh attributes updated')
             else:
                 print('mesh attributres not updated')
@@ -626,7 +626,7 @@ def update_mesh_attributes(mesh):
     """
     names  = sorted(mesh.attributes.keys())
     values = [str(mesh.attributes[name]) for name in names]
-    values = compas_rhino.update_named_values(names, values)
+    values = compas_rhinomac.update_named_values(names, values)
     if values:
         for name, value in zip(names, values):
             try:
@@ -655,7 +655,7 @@ def update_mesh_vertex_attributes(mesh, keys, names=None):
         .. code-block:: python
 
             import compas
-            import compas_rhino as rhino
+            import compas_rhinomac as rhino
 
             from compas.datastructures.mesh import Mesh
 
@@ -663,7 +663,7 @@ def update_mesh_vertex_attributes(mesh, keys, names=None):
 
             keys = mesh.vertices()
 
-            if compas_rhino.update_mesh_vertex_attributes(mesh, keys):
+            if compas_rhinomac.update_mesh_vertex_attributes(mesh, keys):
                 print('mesh vertex attributes updated')
             else:
                 print('mesh vertex attributes not updated')
@@ -686,7 +686,7 @@ def update_mesh_vertex_attributes(mesh, keys, names=None):
                     values[i] = '-'
                     break
     values = map(str, values)
-    values = compas_rhino.update_named_values(names, values)
+    values = compas_rhinomac.update_named_values(names, values)
     if values:
         for name, value in zip(names, values):
             if value != '-':
@@ -718,7 +718,7 @@ def update_mesh_edge_attributes(mesh, keys, names=None):
         .. code-block:: python
 
             import compas
-            import compas_rhino as rhino
+            import compas_rhinomac as rhino
 
             from compas.datastructures.mesh import Mesh
 
@@ -726,7 +726,7 @@ def update_mesh_edge_attributes(mesh, keys, names=None):
 
             keys = mesh.edges()
 
-            if compas_rhino.update_mesh_edge_attributes(mesh, keys):
+            if compas_rhinomac.update_mesh_edge_attributes(mesh, keys):
                 print('mesh edge attributes updated')
             else:
                 print('mesh edge attributes not updated')
@@ -754,7 +754,7 @@ def update_mesh_edge_attributes(mesh, keys, names=None):
                     break
 
     values = map(str, values)
-    values = compas_rhino.update_named_values(names, values)
+    values = compas_rhinomac.update_named_values(names, values)
 
     if values:
         for name, value in zip(names, values):
@@ -788,7 +788,7 @@ def update_mesh_face_attributes(mesh, fkeys, names=None):
         .. code-block:: python
 
             import compas
-            import compas_rhino as rhino
+            import compas_rhinomac as rhino
 
             from compas.datastructures.mesh import Mesh
 
@@ -796,7 +796,7 @@ def update_mesh_face_attributes(mesh, fkeys, names=None):
 
             keys = mesh.faces()
 
-            if compas_rhino.update_mesh_face_attributes(mesh, keys):
+            if compas_rhinomac.update_mesh_face_attributes(mesh, keys):
                 print('mesh face attributes updated')
             else:
                 print('mesh face attributes not updated')
@@ -820,7 +820,7 @@ def update_mesh_face_attributes(mesh, fkeys, names=None):
                     values[i] = '-'
                     break
     values = map(str, values)
-    values = compas_rhino.update_attributes(names, values)
+    values = compas_rhinomac.update_attributes(names, values)
     if values:
         for name, value in zip(names, values):
             if value != '-':
@@ -861,19 +861,19 @@ def display_mesh_vertex_labels(mesh, attr_name=None, layer=None, color=None, for
         .. code-block:: python
 
             import compas
-            import compas_rhino as rhino
+            import compas_rhinomac as rhino
 
             from compas.datastructures.mesh import Mesh
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            compas_rhino.display_mesh_vertex_labels(mesh)
+            compas_rhinomac.display_mesh_vertex_labels(mesh)
 
 
         .. code-block:: python
 
             import compas
-            import compas_rhino as rhino
+            import compas_rhinomac as rhino
 
             from compas.datastructures.mesh import Mesh
 
@@ -882,7 +882,7 @@ def display_mesh_vertex_labels(mesh, attr_name=None, layer=None, color=None, for
             def formatter(value):
                 return '{0:.3f}'.format(value)
 
-            compas_rhino.display_mesh_vertex_labels(mesh, attr_name='x' formatter=formatter)
+            compas_rhinomac.display_mesh_vertex_labels(mesh, attr_name='x' formatter=formatter)
 
 
     See Also:
@@ -890,7 +890,7 @@ def display_mesh_vertex_labels(mesh, attr_name=None, layer=None, color=None, for
         * :func:`display_mesh_face_labels`
 
     """
-    compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.vertex.label.*".format(mesh.attributes['name'])))
+    compas_rhinomac.delete_objects(compas_rhinomac.get_objects(name="{0}.vertex.label.*".format(mesh.attributes['name'])))
 
     if not attr_name:
         attr_name = 'key'
@@ -921,7 +921,7 @@ def display_mesh_vertex_labels(mesh, attr_name=None, layer=None, color=None, for
                        'name' : '{0}.vertex.label.{1}'.format(mesh.attributes['name'], key),
                        'color': colordict[key], })
 
-    compas_rhino.xdraw_labels(
+    compas_rhinomac.xdraw_labels(
         labels,
         layer=layer,
         clear=False,
@@ -952,13 +952,13 @@ def display_mesh_edge_labels(mesh, attr_name=None, layer=None, color=None, forma
         .. code-block:: python
 
             import compas
-            import compas_rhino as rhino
+            import compas_rhinomac as rhino
 
             from compas.datastructures.mesh import Mesh
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            compas_rhino.display_mesh_edge_labels(mesh)
+            compas_rhinomac.display_mesh_edge_labels(mesh)
 
 
     See Also:
@@ -966,7 +966,7 @@ def display_mesh_edge_labels(mesh, attr_name=None, layer=None, color=None, forma
         * :func:`display_mesh_face_labels`
 
     """
-    compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.edge.label.*".format(mesh.attributes['name'])))
+    compas_rhinomac.delete_objects(compas_rhinomac.get_objects(name="{0}.edge.label.*".format(mesh.attributes['name'])))
 
     if not attr_name:
         attr_name = 'key'
@@ -998,7 +998,7 @@ def display_mesh_edge_labels(mesh, attr_name=None, layer=None, color=None, forma
                        'name' : '{0}.edge.label.{1}-{2}'.format(mesh.attributes['name'], u, v),
                        'color': colordict[(u, v)], })
 
-    compas_rhino.xdraw_labels(
+    compas_rhinomac.xdraw_labels(
         labels,
         layer=layer,
         clear=False,
@@ -1029,13 +1029,13 @@ def display_mesh_face_labels(mesh, attr_name=None, layer=None, color=None, forma
         .. code-block:: python
 
             import compas
-            import compas_rhino as rhino
+            import compas_rhinomac as rhino
 
             from compas.datastructures.mesh import Mesh
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            compas_rhino.display_mesh_face_labels(mesh)
+            compas_rhinomac.display_mesh_face_labels(mesh)
 
 
     See Also:
@@ -1043,7 +1043,7 @@ def display_mesh_face_labels(mesh, attr_name=None, layer=None, color=None, forma
         * :func:`display_mesh_edge_labels`
 
     """
-    compas_rhino.delete_objects(compas_rhino.get_objects(name="{0}.face.label.*".format(mesh.attributes['name'])))
+    compas_rhinomac.delete_objects(compas_rhinomac.get_objects(name="{0}.face.label.*".format(mesh.attributes['name'])))
 
     if not attr_name:
         attr_name = 'key'
@@ -1077,7 +1077,7 @@ def display_mesh_face_labels(mesh, attr_name=None, layer=None, color=None, forma
             'color': colordict[fkey]
         })
 
-    compas_rhino.xdraw_labels(
+    compas_rhinomac.xdraw_labels(
         labels,
         layer=layer,
         clear=False,
@@ -1096,8 +1096,8 @@ def display_mesh_vertex_normals(mesh,
                                 scale=1.0,
                                 color=(0, 0, 255)):
 
-    guids = compas_rhino.get_objects(name='{0}.vertex.normal.*'.format(mesh.attributes['name']))
-    compas_rhino.delete_objects(guids)
+    guids = compas_rhinomac.get_objects(name='{0}.vertex.normal.*'.format(mesh.attributes['name']))
+    compas_rhinomac.delete_objects(guids)
 
     if not display:
         return
@@ -1118,7 +1118,7 @@ def display_mesh_vertex_normals(mesh,
             'arrow': 'end',
         })
 
-    compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
+    compas_rhinomac.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
 
 def display_mesh_face_normals(mesh,
@@ -1127,8 +1127,8 @@ def display_mesh_face_normals(mesh,
                               scale=1.0,
                               color=(0, 0, 255)):
 
-    guids = compas_rhino.get_objects(name='{0}.face.normal.*'.format(mesh.attributes['name']))
-    compas_rhino.delete_objects(guids)
+    guids = compas_rhinomac.get_objects(name='{0}.face.normal.*'.format(mesh.attributes['name']))
+    compas_rhinomac.delete_objects(guids)
 
     if not display:
         return
@@ -1149,7 +1149,7 @@ def display_mesh_face_normals(mesh,
             'arrow' : 'end',
         })
 
-    compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
+    compas_rhinomac.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
 
 # ==============================================================================
@@ -1173,16 +1173,16 @@ def move_mesh_vertex(mesh, key, constraint=None, allow_off=None, redraw=True):
         .. code-block:: python
 
             import compas
-            import compas_rhino as rhino
+            import compas_rhinomac as rhino
 
             from compas.datastructures.mesh import Network
 
             mesh = Mesh.from_obj(compas.get_data('lines.obj'))
 
-            key = compas_rhino.select_mesh_vertex(mesh)
+            key = compas_rhinomac.select_mesh_vertex(mesh)
 
             if key:
-                compas_rhino.move_mesh_vertex(mesh, key)
+                compas_rhinomac.move_mesh_vertex(mesh, key)
 
     """
     color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor

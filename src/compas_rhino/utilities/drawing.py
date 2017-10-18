@@ -6,6 +6,7 @@ from compas.geometry import center_of_mass_polygon
 
 from compas_rhino.utilities import create_layers_from_path
 from compas_rhino.utilities import clear_layer
+from compas_rhino.utilities import clear_current_layer
 
 try:
     import rhinoscriptsyntax as rs
@@ -86,18 +87,27 @@ def wrap_xdrawfunc(f):
         layer  = kwargs.get('layer', None)
         clear  = kwargs.get('clear', False)
         redraw = kwargs.get('redraw', True)
+
         if layer:
             if not rs.IsLayer(layer):
                 create_layers_from_path(layer)
-            if clear:
-                clear_layer(layer)
             previous = rs.CurrentLayer(layer)
+
+        if clear:
+            if not layer:
+                clear_current_layer()
+            else:
+                clear_layer(layer)
+
         rs.EnableRedraw(False)
         res = f(*args)
+
         if redraw:
             rs.EnableRedraw(True)
+
         if layer:
             rs.CurrentLayer(previous)
+
         return res
     return wrapper
 
@@ -523,13 +533,11 @@ def xdraw_faces(faces):
         points = face['points']
         name   = face.get('name')
         color  = face.get('color')
-        layer  = face.get('layer')
 
         v = len(points)
 
         if v < 3:
             continue
-
         if v == 3:
             mfaces = [[0, 1, 2, 2]]
         elif v == 4:
@@ -537,7 +545,10 @@ def xdraw_faces(faces):
         else:
             mfaces = _face_to_max_quad(points, range(v))
 
-        xdraw_mesh(points, mfaces, color, name, clear=False, redraw=False, layer=None)
+        guid = xdraw_mesh(points, mfaces, color, name, clear=False, redraw=False, layer=None)
+        guids.append(guid)
+
+    return guids
 
 
 def _face_to_max_quad(points, face):

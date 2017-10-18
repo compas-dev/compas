@@ -1,11 +1,11 @@
 """
-.. _compas_rhino.helpers:
+.. _compas_rhinomac.helpers:
 
 ********************************************************************************
 helpers
 ********************************************************************************
 
-.. module:: compas_rhino.helpers
+.. module:: compas_rhinomac.helpers
 
 
 Helpers make it easier to work with datastructures in Rhino.
