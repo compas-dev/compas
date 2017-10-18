@@ -75,7 +75,6 @@ mesh.operations
     :toctree: generated/
 
     mesh_collapse_edge
-    mesh_insert_edge
     mesh_split_edge
     mesh_split_face
     mesh_unweld_vertices

@@ -38,6 +38,7 @@ def mesh_collapse_edge(mesh, u, v, t=0.5):
 
     Raises:
         ValueError: If `u` and `v` are not neighbours.
+
     """
     if t < 0.0:
         raise ValueError('Parameter t should be greater than or equal to 0.')

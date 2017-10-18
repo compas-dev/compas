@@ -50,8 +50,52 @@
 
 
 <div class="viewcode-block" id="mesh_unweld_vertices"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.mesh_unweld_vertices.html#compas.datastructures.mesh_unweld_vertices">[docs]</a><span class="k">def</span> <span class="nf">mesh_unweld_vertices</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Unweld a face of the mesh.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : compas.datastructures.Mesh</span>
+<span class="sd">        A mesh object.</span>
+<span class="sd">    fkey : hashable</span>
+<span class="sd">        The identifier of a face.</span>
+<span class="sd">    where : list (None)</span>
+<span class="sd">        A list of vertices to unweld.</span>
+<span class="sd">        Default is to unweld all vertices of the face.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        import compas</span>
+
+<span class="sd">        from compas.datastructures import Mesh</span>
+<span class="sd">        from compas.datastructures import mesh_unweld_vertices</span>
+
+<span class="sd">        from compas.visualization import MeshPlotter</span>
+
+<span class="sd">        mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
+
+<span class="sd">        fkey  = 12</span>
+<span class="sd">        where = mesh.face_vertices(fkey)[0:1]</span>
+<span class="sd">        xyz   = mesh.face_centroid(fkey)</span>
+
+<span class="sd">        mesh_unweld_vertices(mesh, fkey, where)</span>
+
+<span class="sd">        mesh.vertex[36]['x'] = xyz[0]</span>
+<span class="sd">        mesh.vertex[36]['y'] = xyz[1]</span>
+<span class="sd">        mesh.vertex[36]['z'] = xyz[2]</span>
+
+<span class="sd">        plotter = MeshPlotter(mesh)</span>
+
+<span class="sd">        plotter.draw_vertices()</span>
+<span class="sd">        plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})</span>
+
+<span class="sd">        plotter.show()</span>
+
+<span class="sd">    """</span>
     <span class="n">face</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">vertices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">where</span><span class="p">:</span>
         <span class="n">where</span> <span class="o">=</span> <span class="n">vertices</span>
@@ -79,25 +123,23 @@
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">compas</span>
-    <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
-    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.meshplotter</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">)</span>
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">mesh_unweld_vertices</span>
+
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
+
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
     <span class="n">fkey</span>  <span class="o">=</span> <span class="mi">12</span>
     <span class="n">where</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">xyz</span>   <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
-    <span class="n">unweld_vertices_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">where</span><span class="p">)</span>
+    <span class="n">mesh_unweld_vertices</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">where</span><span class="p">)</span>
 
-    <span class="c1"># move the unwelded vertex to the original centroid of the face it (partially)</span>
-    <span class="c1"># disconnects</span>
     <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="mi">36</span><span class="p">][</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="mi">36</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="mi">36</span><span class="p">][</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
     <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 

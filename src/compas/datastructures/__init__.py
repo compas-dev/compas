@@ -75,7 +75,6 @@ mesh.operations
     :toctree: generated/
 
     mesh_collapse_edge
-    mesh_insert_edge
     mesh_split_edge
     mesh_split_face
     mesh_unweld_vertices
@@ -112,6 +111,8 @@ mesh.algorithms
     mesh_unify_cycles
     mesh_voronoi_from_points
 
+
+The following mesh algorithms are specifically designed for meshes with only triangular faces.
 
 .. autosummary::
     :toctree: generated/
