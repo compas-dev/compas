@@ -171,7 +171,7 @@ def mesh_smooth_length(mesh, lmin, lmax, fixed=None, kmax=1, d=1.0, callback=Non
             callback(mesh, k, callback_args)
 
 
-def mesh_smooth_area(mesh, fixed=None, kmax=1, d=1.0, callback=None, callback_args=None):
+def mesh_smooth_area(mesh, fixed=None, kmax=1, d=0.5, callback=None, callback_args=None):
     """"""
 
     if callback:
@@ -186,7 +186,7 @@ def mesh_smooth_area(mesh, fixed=None, kmax=1, d=1.0, callback=None, callback_ar
         fkey_area     = {fkey: mesh.face_area(fkey) for fkey in mesh.faces()}
         key_xyz       = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
 
-        for key in mesh:
+        for key in mesh.vertices():
             if key in fixed:
                 continue
 
@@ -195,7 +195,7 @@ def mesh_smooth_area(mesh, fixed=None, kmax=1, d=1.0, callback=None, callback_ar
             A = 0
             x, y, z = 0, 0, 0
             for fkey in mesh.vertex_faces(key):
-                if fkey:
+                if fkey is not None:
                     a  = fkey_area[fkey]
                     c  = fkey_centroid[fkey]
                     x += a * c[0]
@@ -232,7 +232,7 @@ def mesh_smooth_angle(mesh, fixed=None, kmax=1, callback=None, callback_args=Non
     for k in range(kmax):
         key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
 
-        for key in mesh:
+        for key in mesh.vertices():
             if key in fixed:
                 continue
 
@@ -279,8 +279,8 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas.datastructures.mesh import Mesh
-    from compas.visualization.plotters.meshplotter import MeshPlotter
+    from compas.datastructures import Mesh
+    from compas.visualization import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -298,6 +298,6 @@ if __name__ == '__main__':
         plotter.update_edges()
         plotter.update(pause=0.01)
 
-    mesh_smooth_centroid(mesh, fixed=fixed, kmax=100, callback=callback, callback_args=(plotter, ))
+    mesh_smooth_area(mesh, fixed=fixed, kmax=100, callback=callback, callback_args=(plotter, ))
 
     plotter.show()

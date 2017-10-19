@@ -358,6 +358,8 @@ Algorithms
     :toctree: generated/
 
     smooth_centroid
+    smooth_centerofmass
+    smooth_area
 
 
 """
