@@ -131,11 +131,11 @@
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_smooth_centroid.html" title="compas.datastructures.network_smooth_centroid"><code class="xref py py-obj docutils literal">network_smooth_centroid</code></a>(network[, fixed, ...])</td>
 <td>Smooth a network using per vertex the centroid of its neighbours.</td>
 </tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_smooth_centerofmass.html" title="compas.datastructures.network_smooth_centerofmass"><code class="xref py py-obj docutils literal">network_smooth_centerofmass</code></a>(network[, ...])</td>
+<td>Smooth a network using per vertex the center of mass of the polygon formed by the neighbouring vertices.</td>
+</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_smooth_length.html" title="compas.datastructures.network_smooth_length"><code class="xref py py-obj docutils literal">network_smooth_length</code></a>(network, lmin, lmax[, ...])</td>
 <td>Smooth a network using bounds on the edge lengths.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_smooth_mass.html" title="compas.datastructures.network_smooth_mass"><code class="xref py py-obj docutils literal">network_smooth_mass</code></a>(network[, fixed, kmax, ...])</td>
-<td>Smooth a network using per vertex the center of mass of the polygon formed by the neighbouring vertices.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_smooth_mixed.html" title="compas.datastructures.network_smooth_mixed"><code class="xref py py-obj docutils literal">network_smooth_mixed</code></a>(network, smoothers[, ...])</td>
 <td>Smooth a network using mixed criteria.</td>
@@ -183,7 +183,10 @@
 </tr>
 </tbody>
 </table>
-<p>The following operations are specifically designed for triangle meshes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The following operations are specifically designed for triangle meshes.</p>
+</div>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -226,7 +229,7 @@
 <td>Planarise the faces of a mesh.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.mesh_smooth_centroid.html" title="compas.datastructures.mesh_smooth_centroid"><code class="xref py py-obj docutils literal">mesh_smooth_centroid</code></a>(mesh[, fixed, kmax, d, ...])</td>
-<td></td>
+<td>Smooth a mesh using per vertex the centroid of its neighbours.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.mesh_smooth_centerofmass.html" title="compas.datastructures.mesh_smooth_centerofmass"><code class="xref py py-obj docutils literal">mesh_smooth_centerofmass</code></a>(mesh[, fixed, ...])</td>
 <td></td>
@@ -260,7 +263,10 @@
 </tr>
 </tbody>
 </table>
-<p>The following algorithms are specifically designed for triangle meshes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The following algorithms are specifically designed for triangle meshes.</p>
+</div>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>

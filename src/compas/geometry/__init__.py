@@ -351,6 +351,15 @@ This package provides an object-oriented interface to the above functionality.
     1.7320508075688772
 
 
+Algorithms
+==========
+
+.. autosummary::
+    :toctree: generated/
+
+    smooth_centroid
+
+
 """
 
 
