@@ -263,38 +263,98 @@ if __name__ == "__main__":
     from numpy import hstack
     from numpy import zeros
 
-    from compas.visualization.plotters.meshplotter import MeshPlotter
+    from compas.datastructures import Mesh
+    from compas.datastructures import FaceNetwork
+    from compas.datastructures import network_find_faces
+    from compas.datastructures import network_dual
+    from compas.visualization import MeshPlotter
+    from compas.visualization import NetworkPlotter
+    from compas.datastructures import mesh_flip_cycles
 
-    points = hstack((10.0 * random.random_sample((20, 2)), zeros((20, 1)))).tolist()
-    mesh = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
+    points = [[2853.0, -29.0, 594.0], [2922.0, -29.0, 594.0], [2922.0, 59.0, 594.0], [2853.0, 59.0, 594.0], [3028.0, -29.0, 594.0], [3097.0, -29.0, 594.0], [3097.0, 59.0, 594.0], [3028.0, 59.0, 594.0]]
 
-    trimesh_optimise_topology(mesh, 1.0, allow_boundary_split=True)
+    faces = mesh_delaunay_from_points(points)
 
-    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+    mesh = Mesh.from_vertices_and_faces(points, faces)
 
-    voronoi, delaunay = mesh_voronoi_from_points(points, return_delaunay=True)
+    key_index = mesh.key_index()
+    vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+    edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
+
+    network = FaceNetwork.from_vertices_and_edges(vertices, edges)
+
+    network_find_faces(network, breakpoints=None)
+
+    f0 = [fkey for fkey in network.faces() if len(network.face_vertices(fkey)) > 3][0]
+    v0 = network.face_vertices(f0)
+
+    for i in range(-1, len(v0) - 1):
+        u = v0[i]
+        v = v0[i + 1]
+        network.halfedge[u][v] = None
+
+    del network.face[f0]
+
+    for i in range(-1, len(v0) - 1):
+        u = v0[i]
+        v = v0[i + 1]
+        fkey = network._get_facekey(None)
+        network.face[fkey] = [u, v]
+        network.halfedge[u][v] = fkey
+
+    for u, v in network.edges():
+        print u, v, ':', network.halfedge[u][v], network.halfedge[v][u]
+
+    dual = network_dual(network)
+
+    plotter = NetworkPlotter(network)
 
     lines = []
-    for u, v in voronoi.wireframe():
+    for u, v in dual.edges():
         lines.append({
-            'start': voronoi.vertex_coordinates(u, 'xy'),
-            'end'  : voronoi.vertex_coordinates(v, 'xy')
+            'start': dual.vertex_coordinates(u, 'xy'),
+            'end': dual.vertex_coordinates(v, 'xy'),
+            'width': 1.0,
+            'color': '#cccccc'
         })
 
-    boundary = set(delaunay.vertices_on_boundary())
-
-    plotter = MeshPlotter(delaunay)
-
-    plotter.draw_vertices(radius=0.075, facecolor={key: '#0092d2' for key in delaunay.vertices() if key not in boundary})
-    plotter.draw_edges(color='#cccccc')
+    plotter.draw_vertices(radius=2.0, text={key: key for key in network.vertices()})
+    plotter.draw_faces(text={fkey: str(fkey) for fkey in network.faces()}, facecolor='#eeeeee')
     plotter.draw_xlines(lines)
 
     plotter.show()
 
-    # delaunay.plot(
-    #     vertexsize=0.075,
-    #     faces_on=False,
-    #     edgecolor='#cccccc',
-    #     vertexcolor={key: '#0092d2' for key in delaunay if key not in boundary},
-    #     lines=lines
-    # )
+    # # points = hstack((10.0 * random.random_sample((20, 2)), zeros((20, 1)))).tolist()
+    # # mesh = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
+
+    # # trimesh_optimise_topology(mesh, 1.0, allow_boundary_split=True)
+
+    # # points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+
+    # voronoi, delaunay = mesh_voronoi_from_points(points, return_delaunay=True)
+
+    # lines = []
+    # for u, v in voronoi.edges():
+    #     lines.append({
+    #         'start': voronoi.vertex_coordinates(u, 'xy'),
+    #         'end'  : voronoi.vertex_coordinates(v, 'xy'),
+    #         'width': 1.0
+    #     })
+
+    # boundary = set(delaunay.vertices_on_boundary())
+
+    # plotter = MeshPlotter(delaunay)
+
+    # plotter.draw_vertices(radius=0.075, facecolor={key: '#0092d2' for key in delaunay.vertices() if key not in boundary})
+    # plotter.draw_edges(color='#cccccc')
+    # plotter.draw_xlines(lines)
+
+    # plotter.show()
+
+    # # delaunay.plot(
+    # #     vertexsize=0.075,
+    # #     faces_on=False,
+    # #     edgecolor='#cccccc',
+    # #     vertexcolor={key: '#0092d2' for key in delaunay if key not in boundary},
+    # #     lines=lines
+    # # )
