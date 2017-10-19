@@ -5,9 +5,9 @@ from compas.visualization import MeshPlotter
 
 mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-adjacency = mesh.halfedge
-fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
+fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
 lines = []
 for u, v in mesh.edges():
