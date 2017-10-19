@@ -89,7 +89,7 @@ def smooth_centroid(vertices,
         plotter = MeshPlotter(mesh)
 
         plotter.draw_xlines(lines)
-        plotter.draw_vertices()
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
         plotter.draw_edges()
 
         plotter.show()
@@ -201,7 +201,7 @@ def smooth_centerofmass(vertices,
         plotter = MeshPlotter(mesh)
 
         plotter.draw_xlines(lines)
-        plotter.draw_vertices()
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
         plotter.draw_edges()
 
         plotter.show()
@@ -368,18 +368,13 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-
-    # from compas.geometry import smooth_centroid
-    # from compas.geometry import smooth_centerofmass
     from compas.geometry import smooth_area
-
     from compas.visualization import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
     vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
     faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
-    # adjacency = {key: mesh.vertex_neighbours(key, ordered=True) for key in mesh.vertices()}
     adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
     fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
@@ -409,6 +404,6 @@ if __name__ == "__main__":
         plotter.update_edges()
         plotter.update(pause=0.01)
 
-    vertices = smooth_area(vertices, faces, adjacency, fixed=fixed, kmax=100, callback=callback)
+    smooth_area(vertices, faces, adjacency, fixed=fixed, kmax=100, callback=callback)
 
     plotter.show()

@@ -21,7 +21,7 @@ __all__ = [
 ]
 
 
-# @todo: rempove the callbacks
+# @todo: remove the callbacks
 # @todo: add specialised bfs to mesh orientation module
 # @todo: move to _graph module
 

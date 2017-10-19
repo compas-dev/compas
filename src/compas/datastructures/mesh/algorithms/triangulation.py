@@ -2,9 +2,10 @@ import random
 
 from compas.datastructures.mesh import Mesh
 
-from compas.datastructures.mesh.algorithms.duality import mesh_dual
-from compas.datastructures.mesh.algorithms.optimisation import trimesh_optimise_topology
-from compas.datastructures.mesh.operations.swap import trimesh_swap_edge
+from compas.datastructures.mesh.algorithms import mesh_dual
+from compas.datastructures.mesh.algorithms import trimesh_optimise_topology
+from compas.datastructures.mesh.operations import trimesh_swap_edge
+from compas.datastructures.mesh.operations import mesh_split_face
 
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
@@ -25,13 +26,19 @@ __email__     = 'rippmann@ethz.ch, vanmelet@ethz.ch'
 
 
 __all__ = [
+    'mesh_quads_to_triangles',
     'mesh_delaunay_from_points',
     'mesh_voronoi_from_points'
 ]
 
 
-def mesh_quads_to_triangles(mesh):
-    pass
+def mesh_quads_to_triangles(mesh, check_angles=False):
+    """"""
+    for fkey in list(mesh.faces()):
+        vertices = mesh.face_vertices(fkey)
+        if len(vertices) == 4:
+            a, b, c, d = vertices
+            mesh_split_face(mesh, fkey, b, d)
 
 
 def mesh_delaunay_from_points(points, polygon=None, polygons=None):

@@ -114,10 +114,17 @@ class Plotter(object):
     def title(self, value):
         self.figure.canvas.set_window_title(value)
 
+    def clear(self):
+        raise NotImplementedError
+
+    def clear_collection(self, collection):
+        collection.remove()
+
     def show(self):
         self.axes.autoscale()
         if self.tight:
             plt.tight_layout()
+        self.update()
         plt.show()
 
     def save(self, filepath, **kwargs):

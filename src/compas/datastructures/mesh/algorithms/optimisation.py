@@ -1,11 +1,11 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-from .smoothing import mesh_smooth_centroid
+from compas.geometry import smooth_centroid
 
-from ..operations.split import trimesh_split_edge
-from ..operations.collapse import trimesh_collapse_edge
-from ..operations.swap import trimesh_swap_edge
+from compas.datastructures.mesh.operations import trimesh_split_edge
+from compas.datastructures.mesh.operations import trimesh_collapse_edge
+from compas.datastructures.mesh.operations import trimesh_swap_edge
 
 
 __author__     = 'Tom Van Mele'
@@ -140,8 +140,7 @@ def trimesh_optimise_topology(mesh,
         if count == 1:
             visited = set()
 
-            for u, v in mesh.wireframe():
-                # is this correct?
+            for u, v in mesh.edges():
                 if u in visited or v in visited:
                     continue
                 if mesh.edge_length(u, v) <= lmax + dlmax:
@@ -158,8 +157,7 @@ def trimesh_optimise_topology(mesh,
         elif count == 2:
             visited = set()
 
-            for u, v in mesh.wireframe():
-                # is this correct?
+            for u, v in mesh.edges():
                 if u in visited or v in visited:
                     continue
                 if mesh.edge_length(u, v) >= lmin - dlmin:
@@ -178,7 +176,7 @@ def trimesh_optimise_topology(mesh,
         elif count == 3:
             visited = set()
 
-            for u, v in mesh.wireframe():
+            for u, v in mesh.edges():
                 if u in visited or v in visited:
                     continue
 
@@ -233,7 +231,15 @@ def trimesh_optimise_topology(mesh,
         # smoothen
         if smooth:
             boundary = set(mesh.vertices_on_boundary())
-            mesh_smooth_centroid(mesh, fixed=boundary, kmax=1)
+            vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+            adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
+
+            smooth_centroid(vertices, adjacency, fixed=boundary, kmax=1)
+
+            for key, attr in mesh.vertices(True):
+                attr['x'] = vertices[key][0]
+                attr['y'] = vertices[key][1]
+                attr['z'] = vertices[key][2]
 
         if callback:
             callback(mesh, k, callback_args)
@@ -247,9 +253,8 @@ if __name__ == '__main__':
 
     import time
 
-    from compas.datastructures.mesh import Mesh
-
-    from compas.visualization.plotters.meshplotter import MeshPlotter
+    from compas.datastructures import Mesh
+    from compas.visualization import MeshPlotter
 
     vertices = [
         (0.0, 0.0, 0.0),
@@ -268,31 +273,41 @@ if __name__ == '__main__':
 
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
+    plotter = MeshPlotter(mesh)
+
+    plotter.defaults['vertex.edgewidth'] = 0.1
+    plotter.defaults['face.facecolor'] = '#eeeeee'
+    plotter.defaults['face.edgecolor'] = '#222222'
+    plotter.defaults['face.edgewidth'] = 0.1
+
+    plotter.draw_edges()
+
+    def callback(mesh, k, args):
+        plotter.update_edges()
+        plotter.update(pause=0.001)
+
     t0 = time.time()
 
     trimesh_optimise_topology(
         mesh,
         0.5,
         tol=0.05,
-        kmax=300,
+        kmax=200,
         allow_boundary_split=True,
         allow_boundary_swap=True,
-        fixed=mesh.vertices_on_boundary()
+        fixed=mesh.vertices_on_boundary(),
+        callback=callback,
+        callback_args=None,
     )
 
     t1 = time.time()
 
     print(t1 - t0)
 
-    plotter = MeshPlotter(mesh)
+    plotter.clear_edges()
+    plotter.update()
 
-    plotter.defaults['vertex.edgewidth'] = 0.1
-
-    plotter.defaults['face.facecolor'] = '#eeeeee'
-    plotter.defaults['face.edgecolor'] = '#222222'
-    plotter.defaults['face.edgewidth'] = 0.1
-
-    plotter.draw_vertices(radius=0.05)
+    plotter.draw_vertices(radius=0.02)
     plotter.draw_faces()
 
     plotter.show()

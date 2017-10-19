@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-from compas.datastructures.network.algorithms.traversal import network_bfs
+from compas.datastructures.network.algorithms import network_bfs
 
 
 __author__     = 'Tom Van Mele'

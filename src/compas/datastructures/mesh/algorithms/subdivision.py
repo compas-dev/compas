@@ -3,7 +3,7 @@ from math import pi
 
 from compas.geometry import centroid_points
 
-from compas.datastructures.mesh.operations.split import mesh_split_edge
+from compas.datastructures.mesh.operations import mesh_split_edge
 
 
 __author__     = 'Tom Van Mele'
