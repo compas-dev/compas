@@ -3,6 +3,7 @@ import compas
 from compas.datastructures import Network
 from compas.topology import dijkstra_distances
 from compas.visualization import NetworkPlotter
+from compas.utilities import i_to_red
 
 network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -17,9 +18,14 @@ distances = dijkstra_distances(adjacency, weight, target)
 
 plotter = NetworkPlotter(network)
 
+dmax = max(distances.values())
+
+facecolor = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}
+text = {key: '{.1f}'.format(distances[key]) for key in network.vertices()}
+
 plotter.draw_vertices(
-    text={key: distances[key] for key in network.vertices()},
-    facecolor='#eeeeee',
+    text=text,
+    facecolor=facecolor,
     radius=0.15
 )
 plotter.draw_edges()

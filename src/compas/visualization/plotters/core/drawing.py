@@ -14,6 +14,8 @@ from mpl_toolkits.mplot3d.art3d import Patch3DCollection
 
 from compas.geometry import centroid_points_xy
 from compas.geometry import midpoint_line_xy
+from compas.utilities import color_to_colordict
+from compas.utilities import color_to_rgb
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
@@ -215,8 +217,8 @@ def draw_xpoints_xy(points, axes):
         textcolor = point.get('textcolor') or '#000000'
         fontsize  = point.get('fontsize') or 24
         circles.append(Circle(pos, radius=radius))
-        facecolors.append(fcolor)
-        edgecolors.append(ecolor)
+        facecolors.append(color_to_rgb(fcolor, normalize=True))
+        edgecolors.append(color_to_rgb(ecolor, normalize=True))
         linewidths.append(lwidth)
         if text is not None:
             axes.text(
@@ -302,7 +304,7 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
         fontsize  = line.get('fontsize') or 24
         fromto.append((sp, ep))
         widths.append(width)
-        colors.append(color)
+        colors.append(color_to_rgb(color, normalize=True))
         if text:
             x, y, z = midpoint_line_xy((sp, ep))
             t = axes.text(x,
@@ -312,7 +314,7 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
                           zorder=ZORDER_LABELS,
                           ha='center',
                           va='center',
-                          color=textcolor)
+                          color=color_to_rgb(textcolor, normalize=True))
             t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
     coll = LineCollection(
         fromto,
@@ -368,7 +370,7 @@ def draw_xarrows_xy(lines, axes):
         text      = line.get('text', None)
         textcolor = line.get('textcolor') or '#000000'
         fontsize  = line.get('fontsize') or 6
-        arrowprops['color']     = line.get('color', '#000000')
+        arrowprops['color']     = color_to_rgb(line.get('color', '#000000'), normalize=True)
         arrowprops['linewidth'] = line.get('width', 1.0)
         axes.annotate(
             '',
@@ -386,7 +388,7 @@ def draw_xarrows_xy(lines, axes):
                           zorder=ZORDER_LABELS,
                           ha='center',
                           va='center',
-                          color=textcolor)
+                          color=color_to_rgb(textcolor, normalize=True))
             t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
 
 
@@ -402,7 +404,10 @@ def draw_xlabels_xy(labels, axes):
         fontsize  = label['fontsize']
         color     = label.get('color') or '#ffffff'
         textcolor = label.get('textcolor') or '#000000'
-        bbox      = dict(color=color, edgecolor=color, alpha=1.0, pad=0.0)
+        bbox      = dict(color=color_to_rgb(color, normalize=True),
+                         edgecolor=color_to_rgb(color, normalize=True),
+                         alpha=1.0,
+                         pad=0.0)
         t = axes.text(
             x,
             y,
@@ -411,7 +416,7 @@ def draw_xlabels_xy(labels, axes):
             zorder=ZORDER_LABELS,
             ha='center',
             va='center',
-            color=textcolor
+            color=color_to_rgb(textcolor, normalize=True)
         )
         t.set_bbox(bbox)
 
@@ -429,9 +434,9 @@ def draw_xpolygons_xy(polygons, axes):
     for attr in polygons:
         points    = attr['points']
         text      = attr.get('text')
-        textcolor = attr.get('textcolor', '#000000')
-        facecolors.append(attr.get('facecolor', '#ffffff'))
-        edgecolors.append(attr.get('edgecolor', '#000000'))
+        textcolor = color_to_rgb(attr.get('textcolor', '#000000'), normalize=True)
+        facecolors.append(color_to_rgb(attr.get('facecolor', '#ffffff'), normalize=True))
+        edgecolors.append(color_to_rgb(attr.get('edgecolor', '#000000'), normalize=True))
         linewidths.append(attr.get('edgewidth', 1.0))
         patches.append(Polygon(points))
         if text:
