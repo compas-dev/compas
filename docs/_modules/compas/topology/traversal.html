@@ -338,7 +338,7 @@
 <span class="sd">            dmax = max(distances.values())</span>
 
 <span class="sd">            facecolor = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}</span>
-<span class="sd">            text = {key: '{.1f}'.format(distances[key]) for key in network.vertices()}</span>
+<span class="sd">            text = {key: '{:.1f}'.format(distances[key]) for key in network.vertices()}</span>
 
 <span class="sd">            plotter.draw_vertices(</span>
 <span class="sd">                text=text,</span>

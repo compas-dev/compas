@@ -21,7 +21,7 @@ plotter = NetworkPlotter(network)
 dmax = max(distances.values())
 
 facecolor = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}
-text = {key: '{.1f}'.format(distances[key]) for key in network.vertices()}
+text = {key: '{:.1f}'.format(distances[key]) for key in network.vertices()}
 
 plotter.draw_vertices(
     text=text,
