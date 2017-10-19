@@ -69,7 +69,12 @@ def smooth_centroid(vertices,
                 'width': 1.0,
             })
 
-        smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)
+        vertices = smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)
+
+        for key, attr in mesh.vertices(True):
+            attr['x'] = vertices[key][0]
+            attr['y'] = vertices[key][1]
+            attr['z'] = vertices[key][2]
 
         plotter = MeshPlotter(mesh)
 
@@ -106,6 +111,14 @@ def smooth_centroid(vertices,
             callback(vertices, k, callback_args)
 
     return vertices
+
+
+def smooth_centerofmass():
+    pass
+
+
+def smooth_area():
+    pass
 
 
 # ==============================================================================

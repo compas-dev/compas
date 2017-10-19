@@ -107,7 +107,12 @@
 <span class="sd">                'width': 1.0,</span>
 <span class="sd">            })</span>
 
-<span class="sd">        smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)</span>
+<span class="sd">        vertices = smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)</span>
+
+<span class="sd">        for key, attr in mesh.vertices(True):</span>
+<span class="sd">            attr['x'] = vertices[key][0]</span>
+<span class="sd">            attr['y'] = vertices[key][1]</span>
+<span class="sd">            attr['z'] = vertices[key][2]</span>
 
 <span class="sd">        plotter = MeshPlotter(mesh)</span>
 
