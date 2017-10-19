@@ -93,6 +93,10 @@ class NetworkPlotter(Plotter):
         self.vertexcollection = collection
         return collection
 
+    def clear(self):
+        self.clear_vertices()
+        self.clear_edges()
+
     def clear_vertices(self):
         self.vertexcollection.remove()
 

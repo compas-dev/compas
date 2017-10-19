@@ -21,14 +21,12 @@ def mesh_unify_cycles(mesh, root=None):
     Unified cycle directions is a necessary condition for the data structure to
     work properly. When in doubt, run this function on your mesh.
 
-    Parameters:
-        root (str): The key of the root face. Defaults to None.
-
-    Raises:
-        ValueError: If `direction` is not one of (None, `ccw`, `cw`)
-
-    Dependencies:
-        scipy.spatial import cKDTree
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    root : str, optional [None]
+        The key of the root face.
 
     """
     def unify(node, nbr):

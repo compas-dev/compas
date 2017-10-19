@@ -9,8 +9,9 @@ modules = [
     'compas.hpc',
     'compas.interop',
     'compas.numerical',
-    'compas.visualization',
     'compas.utilities',
+    'compas.topology',
+    'compas.visualization',
 
     'compas_rhino',
     'compas_rhino.conduits',

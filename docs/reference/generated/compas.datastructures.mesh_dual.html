@@ -49,13 +49,13 @@
 <col class="field-body"/>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mesh</strong> (<em>compas.datastructures.mesh.Mesh</em>) – The mesh object.</li>
-<li><strong>cls</strong> (<em>compas.datastructures.mesh.Mesh</em>) – Optional. Mesh class of the dual.
+<li><strong>mesh</strong> (<em>Mesh</em>) – A mesh object.</li>
+<li><strong>cls</strong> (<em>Mesh, optional [None]</em>) – The type of the dual mesh.
 Defaults to the type of the provided mesh object.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>compas.datastructures.Mesh</em> – The dual mesh.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>Mesh</em> – The dual mesh object.</p>
 </td>
 </tr>
 </tbody>
@@ -70,8 +70,6 @@ Defaults to the type of the provided mesh object.</li>
 
 <span class="n">dual</span> <span class="o">=</span> <span class="n">mesh_dual</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">dual</span><span class="p">)</span>
-
 <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
     <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
@@ -81,10 +79,12 @@ Defaults to the type of the provided mesh object.</li>
         <span class="s1">'width'</span><span class="p">:</span> <span class="mf">1.0</span>
     <span class="p">})</span>
 
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">dual</span><span class="p">)</span>
+
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">'#eeeeee'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'#000000'</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dual</span><span class="o">.</span><span class="n">vertices</span><span class="p">()})</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'#000000'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
@@ -125,6 +125,7 @@ Defaults to the type of the provided mesh object.</li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>

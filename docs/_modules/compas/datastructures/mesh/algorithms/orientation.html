@@ -37,7 +37,7 @@
 <h1>Source code for compas.datastructures.mesh.algorithms.orientation</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms.traversal</span> <span class="k">import</span> <span class="n">network_bfs</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms</span> <span class="k">import</span> <span class="n">network_bfs</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="s1">'Tom Van Mele'</span>
@@ -58,14 +58,12 @@
 <span class="sd">    Unified cycle directions is a necessary condition for the data structure to</span>
 <span class="sd">    work properly. When in doubt, run this function on your mesh.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        root (str): The key of the root face. Defaults to None.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If `direction` is not one of (None, `ccw`, `cw`)</span>
-
-<span class="sd">    Dependencies:</span>
-<span class="sd">        scipy.spatial import cKDTree</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+<span class="sd">    root : str, optional [None]</span>
+<span class="sd">        The key of the root face.</span>
 
 <span class="sd">    """</span>
     <span class="k">def</span> <span class="nf">unify</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">nbr</span><span class="p">):</span>

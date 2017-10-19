@@ -94,6 +94,11 @@
             <span class="s1">'face.fontsize'</span>  <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
         <span class="p">}</span>
 
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_vertices</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_edges</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_faces</span><span class="p">()</span>
+
     <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                       <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -130,6 +135,9 @@
         <span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_xpoints</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span> <span class="o">=</span> <span class="n">collection</span>
         <span class="k">return</span> <span class="n">collection</span>
+
+    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">update_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">circles</span> <span class="o">=</span> <span class="p">[]</span>
@@ -171,6 +179,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span> <span class="o">=</span> <span class="n">collection</span>
         <span class="k">return</span> <span class="n">collection</span>
 
+    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+
     <span class="k">def</span> <span class="nf">update_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
@@ -210,6 +221,9 @@
         <span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_xpolygons</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">facecollection</span> <span class="o">=</span> <span class="n">collection</span>
         <span class="k">return</span> <span class="n">collection</span>
+
+    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facecollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">update_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">polygons</span> <span class="o">=</span> <span class="p">[]</span>

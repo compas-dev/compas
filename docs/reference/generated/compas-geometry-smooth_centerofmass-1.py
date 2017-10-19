@@ -28,7 +28,7 @@ for key, attr in mesh.vertices(True):
 plotter = MeshPlotter(mesh)
 
 plotter.draw_xlines(lines)
-plotter.draw_vertices()
+plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
 plotter.draw_edges()
 
 plotter.show()

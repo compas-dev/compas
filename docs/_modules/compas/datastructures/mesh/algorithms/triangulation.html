@@ -39,9 +39,10 @@
 
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms.duality</span> <span class="k">import</span> <span class="n">mesh_dual</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms.optimisation</span> <span class="k">import</span> <span class="n">trimesh_optimise_topology</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.operations.swap</span> <span class="k">import</span> <span class="n">trimesh_swap_edge</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="k">import</span> <span class="n">mesh_dual</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="k">import</span> <span class="n">trimesh_optimise_topology</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.operations</span> <span class="k">import</span> <span class="n">trimesh_swap_edge</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.operations</span> <span class="k">import</span> <span class="n">mesh_split_face</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">centroid_points</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">distance_point_point</span>
@@ -62,13 +63,19 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'mesh_quads_to_triangles'</span><span class="p">,</span>
     <span class="s1">'mesh_delaunay_from_points'</span><span class="p">,</span>
     <span class="s1">'mesh_voronoi_from_points'</span>
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">mesh_quads_to_triangles</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
-    <span class="k">pass</span>
+<span class="k">def</span> <span class="nf">mesh_quads_to_triangles</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">check_angles</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">""""""</span>
+    <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()):</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">vertices</span>
+            <span class="n">mesh_split_face</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="mesh_delaunay_from_points"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.mesh_delaunay_from_points.html#compas.datastructures.mesh_delaunay_from_points">[docs]</a><span class="k">def</span> <span class="nf">mesh_delaunay_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">polygon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">polygons</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

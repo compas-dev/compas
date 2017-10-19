@@ -12,45 +12,50 @@ __all__ = [
 def mesh_dual(mesh, cls=None):
     """Construct the dual of a mesh.
 
-    Parameters:
-        mesh (compas.datastructures.mesh.Mesh): The mesh object.
-        cls (compas.datastructures.mesh.Mesh): Optional. Mesh class of the dual.
-            Defaults to the type of the provided mesh object.
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    cls : Mesh, optional [None]
+        The type of the dual mesh.
+        Defaults to the type of the provided mesh object.
 
-    Returns:
-        compas.datastructures.Mesh: The dual mesh.
+    Returns
+    -------
+    Mesh
+        The dual mesh object.
 
-    Example:
+    Example
+    -------
+    .. plot::
+        :include-source:
 
-        .. plot::
-            :include-source:
+        import compas
+        from compas.datastructures import Mesh
+        from compas.datastructures import mesh_dual
+        from compas.visualization import MeshPlotter
 
-            import compas
-            from compas.datastructures import Mesh
-            from compas.datastructures import mesh_dual
-            from compas.visualization import MeshPlotter
+        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-            mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+        dual = mesh_dual(mesh)
 
-            dual = mesh_dual(mesh)
+        lines = []
+        for u, v in mesh.edges():
+            lines.append({
+                'start': mesh.vertex_coordinates(u, 'xy'),
+                'end'  : mesh.vertex_coordinates(v, 'xy'),
+                'color': '#cccccc',
+                'width': 1.0
+            })
 
-            plotter = MeshPlotter(dual)
+        plotter = MeshPlotter(dual)
 
-            lines = []
-            for u, v in mesh.edges():
-                lines.append({
-                    'start': mesh.vertex_coordinates(u, 'xy'),
-                    'end'  : mesh.vertex_coordinates(v, 'xy'),
-                    'color': '#cccccc',
-                    'width': 1.0
-                })
+        plotter.draw_xlines(lines)
 
-            plotter.draw_xlines(lines)
+        plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text={key: key for key in dual.vertices()})
+        plotter.draw_edges()
 
-            plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text={key: key for key in dual.vertices()})
-            plotter.draw_edges(color='#000000', width=2.0)
-
-            plotter.show()
+        plotter.show()
 
     """
     if not cls:
@@ -83,37 +88,26 @@ if __name__ == '__main__':
     import compas
     from compas.datastructures import Mesh
     from compas.datastructures import mesh_dual
-
-    from compas.visualization.plotters.meshplotter import MeshPlotter
+    from compas.visualization import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
     dual = mesh_dual(mesh)
 
     lines = []
-    for u, v in dual.wireframe():
+    for u, v in mesh.edges():
         lines.append({
-            'start': dual.vertex_coordinates(u, 'xy'),
-            'end'  : dual.vertex_coordinates(v, 'xy'),
-            'color': '#000000',
-            'width': 2.0
+            'start': mesh.vertex_coordinates(u, 'xy'),
+            'end'  : mesh.vertex_coordinates(v, 'xy'),
+            'color': '#cccccc',
+            'width': 1.0
         })
 
-    points = []
-    for key in dual.vertices():
-        points.append({
-            'pos'      : dual.vertex_coordinates(key, 'xy'),
-            'text'     : str(key),
-            'textcolor': '#000000',
-            'facecolor': '#eeeeee',
-            'edgecolor': '#000000',
-            'radius'   : 0.2
-        })
+    plotter = MeshPlotter(dual)
 
-    plotter = MeshPlotter(mesh)
-
-    plotter.draw_edges(color={(u, v): '#cccccc' for u, v in mesh.edges()})
     plotter.draw_xlines(lines)
-    plotter.draw_xpoints(points)
+
+    plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text={key: key for key in dual.vertices()})
+    plotter.draw_edges()
 
     plotter.show()

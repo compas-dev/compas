@@ -1,7 +1,8 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
 
-from compas.geometry import smooth_centroid
+from compas.geometry import smooth_area
 
 from compas.datastructures.mesh.operations import trimesh_split_edge
 from compas.datastructures.mesh.operations import trimesh_collapse_edge
@@ -41,65 +42,101 @@ def trimesh_optimise_topology(mesh,
         * swap edges if this improves the valency error.
 
     The minimum and maximum lengths are calculated based on a desired target
-    length:
+    length.
 
-    Parameters:
-        mesh (Mesh) : A triangle mesh.
-        target (float) : The target length.
-        tol (float) : Length deviation tolerance. Defaults to `0.1`
-        kmax (int) : The number of iterations.
-        verbose (bool) : Print feedback messages, if True.
+    Parameters
+    ----------
+    mesh : Mesh
+        A triangle mesh.
+    target : float
+        The target length for the mesh edges.
+    kmax : int, optional [100]
+        The number of iterations.
+    tol : float, optional [0.1]
+        Length deviation tolerance.
+    divergence : float, optional [0.01]
+        ??
+    verbose : bool, optional [False]
+        Print feedback messages.
+    allow_boundary_split : bool, optional [False]
+        Allow boundary edges to be split.
+    allow_boundary_swap : bool, optional [False]
+        Allow boundary edges or edges connected to the boundary to be swapped.
+    allow_boundary_collapse : bool, optional [False]
+        Allow boundary edges or edges connected to the boundary to be collapsed.
+    smooth : bool, optional [True]
+        Apply smoothing at every iteration.
+    fixed : list, optional [None]
+        A list of vertices that have to stay fixed.
+    callback : callable, optional [None]
+        A user-defined function that is called after every iteration.
+    callback_args : list, optional [None]
+        A list of additional parameters to be passed to the callback function.
 
-    Returns:
-        None
+    Returns
+    -------
+    None
 
-    Note:
-        This algorithm not only changes the geometry of the mesh, but also its
-        topology as needed to achieve the specified target lengths.
-        Topological changes are made such that vertex valencies are well-balanced
-        and close to six.
+    Note
+    ----
+    This algorithm not only changes the geometry of the mesh, but also its
+    topology as needed to achieve the specified target lengths.
+    Topological changes are made such that vertex valencies are well-balanced
+    and close to six.
 
-    Examples:
+    Note
+    ----
+    Smoothing is done with area-based smoothing.
 
-        .. plot::
-            :include-source:
+    See Also
+    --------
+    * :func:`compas.geometry.smooth_area`
 
-            from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
-            from compas.datastructures import trimesh_optimise_topology
+    Examples
+    --------
+    .. plot::
+        :include-source:
 
-            vertices = [
-                (0.0, 0.0, 0.0),
-                (10.0, 0.0, 0.0),
-                (10.0, 10.0, 0.0),
-                (0.0, 10.0, 0.0),
-                (5.0, 5.0, 0.0)
-            ]
-            faces = [
-                (0, 1, 4),
-                (1, 2, 4),
-                (2, 3, 4),
-                (3, 0, 4)
-            ]
+        from compas.datastructures import Mesh
+        from compas.visualization import MeshPlotter
+        from compas.datastructures import trimesh_optimise_topology
 
-            mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        vertices = [
+            (0.0, 0.0, 0.0),
+            (10.0, 0.0, 0.0),
+            (10.0, 10.0, 0.0),
+            (0.0, 10.0, 0.0),
+            (5.0, 5.0, 0.0)
+        ]
+        faces = [
+            (0, 1, 4),
+            (1, 2, 4),
+            (2, 3, 4),
+            (3, 0, 4)
+        ]
 
-            trimesh_optimise_topology(
-                mesh,
-                target=0.5,
-                tol=0.05,
-                kmax=300,
-                allow_boundary_split=True,
-                allow_boundary_swap=True,
-                verbose=False
-            )
+        mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-            plotter = MeshPlotter(mesh)
+        trimesh_optimise_topology(
+            mesh,
+            target=0.5,
+            tol=0.05,
+            kmax=300,
+            allow_boundary_split=True,
+            allow_boundary_swap=True,
+            verbose=False
+        )
 
-            plotter.draw_vertices(radius=0.05)
-            plotter.draw_faces()
+        plotter = MeshPlotter(mesh)
 
-            plotter.show()
+        plotter.draw_vertices(radius=0.05)
+        plotter.draw_faces()
+
+        plotter.show()
+
+    References
+    ----------
+    * ...
 
     """
     if verbose:
@@ -108,10 +145,10 @@ def trimesh_optimise_topology(mesh,
     lmin = (1 - tol) * (4.0 / 5.0) * target
     lmax = (1 + tol) * (4.0 / 3.0) * target
 
-    edge_lengths = [mesh.edge_length(u, v) for u, v in mesh.wireframe()]
+    edge_lengths = [mesh.edge_length(u, v) for u, v in mesh.edges()]
     target_start = max(edge_lengths) / 2.0
 
-    fac = float(target_start / target)
+    fac = target_start / target
 
     boundary = set(mesh.vertices_on_boundary())
     count = 0
@@ -225,16 +262,17 @@ def trimesh_optimise_topology(mesh,
         if (k - 10) % 20 == 0:
             num_vertices_2 = len(mesh.vertex)
 
-            if abs(1 - num_vertices_1 / float(num_vertices_2)) < divergence and k > kmax_start:
+            if abs(1 - num_vertices_1 / num_vertices_2) < divergence and k > kmax_start:
                 break
 
         # smoothen
         if smooth:
-            boundary = set(mesh.vertices_on_boundary())
-            vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-            adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
+            boundary  = set(mesh.vertices_on_boundary())
+            vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+            faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
+            adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
 
-            smooth_centroid(vertices, adjacency, fixed=boundary, kmax=1)
+            smooth_area(vertices, faces, adjacency, fixed=boundary, kmax=1)
 
             for key, attr in mesh.vertices(True):
                 attr['x'] = vertices[key][0]
@@ -290,9 +328,9 @@ if __name__ == '__main__':
 
     trimesh_optimise_topology(
         mesh,
-        0.5,
+        0.3,
         tol=0.05,
-        kmax=200,
+        kmax=500,
         allow_boundary_split=True,
         allow_boundary_swap=True,
         fixed=mesh.vertices_on_boundary(),
@@ -309,5 +347,6 @@ if __name__ == '__main__':
 
     plotter.draw_vertices(radius=0.02)
     plotter.draw_faces()
+    plotter.update()
 
     plotter.show()

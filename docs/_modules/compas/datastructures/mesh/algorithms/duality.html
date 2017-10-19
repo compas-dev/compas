@@ -49,45 +49,50 @@
 <div class="viewcode-block" id="mesh_dual"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.mesh_dual.html#compas.datastructures.mesh_dual">[docs]</a><span class="k">def</span> <span class="nf">mesh_dual</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""Construct the dual of a mesh.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        mesh (compas.datastructures.mesh.Mesh): The mesh object.</span>
-<span class="sd">        cls (compas.datastructures.mesh.Mesh): Optional. Mesh class of the dual.</span>
-<span class="sd">            Defaults to the type of the provided mesh object.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+<span class="sd">    cls : Mesh, optional [None]</span>
+<span class="sd">        The type of the dual mesh.</span>
+<span class="sd">        Defaults to the type of the provided mesh object.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        compas.datastructures.Mesh: The dual mesh.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mesh</span>
+<span class="sd">        The dual mesh object.</span>
 
-<span class="sd">    Example:</span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
 
-<span class="sd">        .. plot::</span>
-<span class="sd">            :include-source:</span>
+<span class="sd">        import compas</span>
+<span class="sd">        from compas.datastructures import Mesh</span>
+<span class="sd">        from compas.datastructures import mesh_dual</span>
+<span class="sd">        from compas.visualization import MeshPlotter</span>
 
-<span class="sd">            import compas</span>
-<span class="sd">            from compas.datastructures import Mesh</span>
-<span class="sd">            from compas.datastructures import mesh_dual</span>
-<span class="sd">            from compas.visualization import MeshPlotter</span>
+<span class="sd">        mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
 
-<span class="sd">            mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
+<span class="sd">        dual = mesh_dual(mesh)</span>
 
-<span class="sd">            dual = mesh_dual(mesh)</span>
+<span class="sd">        lines = []</span>
+<span class="sd">        for u, v in mesh.edges():</span>
+<span class="sd">            lines.append({</span>
+<span class="sd">                'start': mesh.vertex_coordinates(u, 'xy'),</span>
+<span class="sd">                'end'  : mesh.vertex_coordinates(v, 'xy'),</span>
+<span class="sd">                'color': '#cccccc',</span>
+<span class="sd">                'width': 1.0</span>
+<span class="sd">            })</span>
 
-<span class="sd">            plotter = MeshPlotter(dual)</span>
+<span class="sd">        plotter = MeshPlotter(dual)</span>
 
-<span class="sd">            lines = []</span>
-<span class="sd">            for u, v in mesh.edges():</span>
-<span class="sd">                lines.append({</span>
-<span class="sd">                    'start': mesh.vertex_coordinates(u, 'xy'),</span>
-<span class="sd">                    'end'  : mesh.vertex_coordinates(v, 'xy'),</span>
-<span class="sd">                    'color': '#cccccc',</span>
-<span class="sd">                    'width': 1.0</span>
-<span class="sd">                })</span>
+<span class="sd">        plotter.draw_xlines(lines)</span>
 
-<span class="sd">            plotter.draw_xlines(lines)</span>
+<span class="sd">        plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text={key: key for key in dual.vertices()})</span>
+<span class="sd">        plotter.draw_edges()</span>
 
-<span class="sd">            plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text={key: key for key in dual.vertices()})</span>
-<span class="sd">            plotter.draw_edges(color='#000000', width=2.0)</span>
-
-<span class="sd">            plotter.show()</span>
+<span class="sd">        plotter.show()</span>
 
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cls</span><span class="p">:</span>
@@ -120,38 +125,27 @@
     <span class="kn">import</span> <span class="nn">compas</span>
     <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
     <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">mesh_dual</span>
-
-    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.meshplotter</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
 
     <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
     <span class="n">dual</span> <span class="o">=</span> <span class="n">mesh_dual</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
     <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dual</span><span class="o">.</span><span class="n">wireframe</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'start'</span><span class="p">:</span> <span class="n">dual</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
-            <span class="s1">'end'</span>  <span class="p">:</span> <span class="n">dual</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
-            <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'width'</span><span class="p">:</span> <span class="mf">2.0</span>
+            <span class="s1">'start'</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+            <span class="s1">'end'</span>  <span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+            <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#cccccc'</span><span class="p">,</span>
+            <span class="s1">'width'</span><span class="p">:</span> <span class="mf">1.0</span>
         <span class="p">})</span>
 
-    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dual</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
-        <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'pos'</span>      <span class="p">:</span> <span class="n">dual</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
-            <span class="s1">'text'</span>     <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-            <span class="s1">'textcolor'</span><span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'facecolor'</span><span class="p">:</span> <span class="s1">'#eeeeee'</span><span class="p">,</span>
-            <span class="s1">'edgecolor'</span><span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'radius'</span>   <span class="p">:</span> <span class="mf">0.2</span>
-        <span class="p">})</span>
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">dual</span><span class="p">)</span>
 
-    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="s1">'#cccccc'</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()})</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xpoints</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">'#eeeeee'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'#000000'</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dual</span><span class="o">.</span><span class="n">vertices</span><span class="p">()})</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>

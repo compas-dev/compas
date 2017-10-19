@@ -118,7 +118,7 @@ class Mesh(FromToJson,
 
         import compas
         from compas.datastructures import Mesh
-        from compas.visualization.plotters import MeshPlotter
+        from compas.visualization import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -134,7 +134,7 @@ class Mesh(FromToJson,
 
         import compas
         from compas.datastructures import Mesh
-        from compas.visualization.plotters import MeshPlotter
+        from compas.visualization import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -150,7 +150,7 @@ class Mesh(FromToJson,
 
         import compas
         from compas.datastructures import Mesh
-        from compas.visualization.plotters import MeshPlotter
+        from compas.visualization import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -1514,7 +1514,7 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas.visualization.plotters.meshplotter import MeshPlotter
+    from compas.visualization import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 

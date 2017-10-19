@@ -130,6 +130,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span> <span class="o">=</span> <span class="n">collection</span>
         <span class="k">return</span> <span class="n">collection</span>
 
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_vertices</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_edges</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+
     <span class="k">def</span> <span class="nf">update_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">circles</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
@@ -170,12 +177,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span> <span class="o">=</span> <span class="n">collection</span>
         <span class="k">return</span> <span class="n">collection</span>
 
+    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+
     <span class="k">def</span> <span class="nf">update_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
             <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span><span class="o">.</span><span class="n">set_segments</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
 
+    <span class="c1"># move to face network!</span>
     <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                    <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>

@@ -53,21 +53,29 @@
 </ul>
 </div></blockquote>
 <p>The minimum and maximum lengths are calculated based on a desired target
-length:</p>
+length.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>mesh</strong> (<em>Mesh</em>) – A triangle mesh.</li>
-<li><strong>target</strong> (<em>float</em>) – The target length.</li>
-<li><strong>tol</strong> (<em>float</em>) – Length deviation tolerance. Defaults to <cite>0.1</cite></li>
-<li><strong>kmax</strong> (<em>int</em>) – The number of iterations.</li>
-<li><strong>verbose</strong> (<em>bool</em>) – Print feedback messages, if True.</li>
+<li><strong>target</strong> (<em>float</em>) – The target length for the mesh edges.</li>
+<li><strong>kmax</strong> (<em>int, optional [100]</em>) – The number of iterations.</li>
+<li><strong>tol</strong> (<em>float, optional [0.1]</em>) – Length deviation tolerance.</li>
+<li><strong>divergence</strong> (<em>float, optional [0.01]</em>) – ??</li>
+<li><strong>verbose</strong> (<em>bool, optional [False]</em>) – Print feedback messages.</li>
+<li><strong>allow_boundary_split</strong> (<em>bool, optional [False]</em>) – Allow boundary edges to be split.</li>
+<li><strong>allow_boundary_swap</strong> (<em>bool, optional [False]</em>) – Allow boundary edges or edges connected to the boundary to be swapped.</li>
+<li><strong>allow_boundary_collapse</strong> (<em>bool, optional [False]</em>) – Allow boundary edges or edges connected to the boundary to be collapsed.</li>
+<li><strong>smooth</strong> (<em>bool, optional [True]</em>) – Apply smoothing at every iteration.</li>
+<li><strong>fixed</strong> (<em>list, optional [None]</em>) – A list of vertices that have to stay fixed.</li>
+<li><strong>callback</strong> (<em>callable, optional [None]</em>) – A user-defined function that is called after every iteration.</li>
+<li><strong>callback_args</strong> (<em>list, optional [None]</em>) – A list of additional parameters to be passed to the callback function.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>None</em></p>
 </td>
 </tr>
 </tbody>
@@ -78,6 +86,16 @@ length:</p>
 topology as needed to achieve the specified target lengths.
 Topological changes are made such that vertex valencies are well-balanced
 and close to six.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Smoothing is done with area-based smoothing.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference internal" href="compas.geometry.smooth_area.html#compas.geometry.smooth_area" title="compas.geometry.smooth_area"><code class="xref py py-func docutils literal">compas.geometry.smooth_area()</code></a></li>
+</ul>
 </div>
 <p class="rubric">Examples</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
@@ -121,6 +139,10 @@ and close to six.</p>
 <figure class="figure">
 <img alt="../../images/compas-datastructures-trimesh_optimise_topology-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-trimesh_optimise_topology-1.png"/>
 </figure>
+<p class="rubric">References</p>
+<ul class="simple">
+<li>...</li>
+</ul>
 </dd></dl>
 </div>
 <nav class="compas-sideways">
@@ -154,6 +176,7 @@ and close to six.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
