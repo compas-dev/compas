@@ -338,19 +338,6 @@ This package provides an object-oriented interface to the above functionality.
     Vector
 
 
-.. code-block:: python
-
-    >>> from compas.geometry import distance_point_point
-    >>> distance_point_point([0.0 0.0 0.0] [1.0 1.0 1.0])
-    1.7320508075688772
-
-    >>> from compas.geometry.objects import Point
-    >>> p1 = Point(0.0 0.0 0.0)
-    >>> p2 = Point(1.0 1.0 1.0)
-    >>> p1.distance_to_point(p2)
-    1.7320508075688772
-
-
 Algorithms
 ==========
 
@@ -472,6 +459,8 @@ from .queries import __all__ as i
 from .size import __all__ as j
 from .transformations import __all__ as k
 from .xforms import __all__ as l
+
+# more imports
 
 from .objects import *
 from .objects import __all__ as m
