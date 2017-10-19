@@ -465,6 +465,9 @@ from .xforms import __all__ as l
 from .objects import *
 from .objects import __all__ as m
 
+from .algorithms import *
+from .algorithms import __all__ as n
+
 
 __all__  = ['is_point', 'is_vector', 'is_line', 'is_segment', 'is_plane', 'is_circle', 'is_polygon', 'is_polyline', 'is_polyhedron', 'is_frame']
-__all__ += a + b + c + d + e + f + g + h + i + j + k + l + m
+__all__ += a + b + c + d + e + f + g + h + i + j + k + l + m + n

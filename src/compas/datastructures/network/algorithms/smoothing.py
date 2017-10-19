@@ -15,7 +15,7 @@ __email__      = '<vanmelet@ethz.ch>'
 __all__ = [
     'network_smooth_mixed',
     'network_smooth_centroid',
-    'network_smooth_mass',
+    'network_smooth_centerofmass',
     'network_smooth_area',
     'network_smooth_length',
 ]
@@ -360,12 +360,12 @@ def network_smooth_area(network,
             callback(network, k, callback_args)
 
 
-def network_smooth_mass(network,
-                        fixed=None,
-                        kmax=1,
-                        d=0.5,
-                        callback=None,
-                        callback_args=None):
+def network_smooth_centerofmass(network,
+                                fixed=None,
+                                kmax=1,
+                                d=0.5,
+                                callback=None,
+                                callback_args=None):
     """Smooth a network using per vertex the center of mass of the polygon formed by the neighbouring vertices.
 
     Parameters:
@@ -391,13 +391,13 @@ def network_smooth_mass(network,
             import compas
             from compas.datastructures import FaceNetwork
             from compas.datastructures import network_find_faces
-            from compas.datastructures import network_smooth_mass
+            from compas.datastructures import network_smooth_centerofmass
             from compas.visualization import NetworkPlotter
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
             network_find_faces(network, network.leaves())
-            network_smooth_mass(network, fixed=network.leaves(), kmax=10)
+            network_smooth_centerofmass(network, fixed=network.leaves(), kmax=10)
 
             plotter = NetworkPlotter(network)
 

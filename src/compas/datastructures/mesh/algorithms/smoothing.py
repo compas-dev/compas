@@ -17,8 +17,58 @@ __all__ = [
 ]
 
 
-def mesh_smooth_centroid(mesh, fixed=None, kmax=1, d=1.0, callback=None, callback_args=None):
-    """"""
+def mesh_smooth_centroid(mesh,
+                         fixed=None,
+                         kmax=1,
+                         d=0.5,
+                         callback=None,
+                         callback_args=None):
+    """Smooth a mesh using per vertex the centroid of its neighbours.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    fixed : list, optional [None]
+        The fixed vertices of the mesh.
+    kmax : int, optional [1]
+        The maximum number of iterations.
+    d : float, optional [0.5]
+        The damping factor.
+    callback : callable, optional [None]
+        A user-defined callback function to be executed after every iteration.
+    callback_args : list, optional [None]
+        A list of arguments to be passed to the callback.
+
+    Raises
+    ------
+    Exception
+        If a callback is provided, but not callable.
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+        from compas.datastructures import Mesh
+        from compas.datastructures import mesh_smooth_centroid
+        from compas.visualization import MeshPlotter
+
+        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+
+        fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+
+        mesh_smooth_centroid(mesh, fixed=fixed, kmax=10)
+
+        plotter = MeshPlotter(mesh)
+
+        plotter.draw_vertices()
+        plotter.draw_edges()
+
+        plotter.show()
+
+    """
 
     if callback:
         if not callable(callback):
@@ -247,7 +297,6 @@ if __name__ == '__main__':
         plotter.update_vertices()
         plotter.update_edges()
         plotter.update(pause=0.01)
-
 
     mesh_smooth_centroid(mesh, fixed=fixed, kmax=100, callback=callback, callback_args=(plotter, ))
 

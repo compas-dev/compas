@@ -51,8 +51,8 @@ network.algorithms
     network_shortest_path
     network_smooth_area
     network_smooth_centroid
+    network_smooth_centerofmass
     network_smooth_length
-    network_smooth_mass
     network_smooth_mixed
     network_vertex_coloring
 
@@ -80,7 +80,10 @@ mesh.operations
     mesh_unweld_vertices
 
 
-The following operations are specifically designed for triangle meshes.
+.. note::
+
+    The following operations are specifically designed for triangle meshes.
+
 
 .. autosummary::
     :toctree: generated/
@@ -114,7 +117,10 @@ mesh.algorithms
     mesh_voronoi_from_points
 
 
-The following algorithms are specifically designed for triangle meshes.
+.. note::
+
+    The following algorithms are specifically designed for triangle meshes.
+
 
 .. autosummary::
     :toctree: generated/
