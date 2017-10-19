@@ -81,6 +81,7 @@
 
         <span class="n">density_u</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">du</span><span class="p">)</span>
         <span class="n">density_v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+
         <span class="n">uv</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
@@ -109,6 +110,9 @@
 
         <span class="k">return</span> <span class="n">uv</span>
 
+    <span class="c1"># not taking the heighfield over the space is only possible</span>
+    <span class="c1"># if the surface is in fact a height field</span>
+    <span class="c1"># split up and rename!</span>
     <span class="k">def</span> <span class="nf">heightfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">over_space</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">""""""</span>
         <span class="k">try</span><span class="p">:</span>
@@ -360,7 +364,7 @@
             
 
             
-                Last updated on Oct 18, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

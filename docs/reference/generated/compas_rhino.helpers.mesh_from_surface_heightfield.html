@@ -42,25 +42,34 @@
 <h1>mesh_from_surface_heightfield</h1>
 <dl class="function">
 <dt id="compas_rhino.helpers.mesh_from_surface_heightfield">
-<code class="descclassname">compas_rhino.helpers.</code><code class="descname">mesh_from_surface_heightfield</code><span class="sig-paren">(</span><em>cls</em>, <em>guid</em>, <em>density=(10</em>, <em>10)</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/helpers/mesh.html#mesh_from_surface_heightfield"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas_rhino.helpers.</code><code class="descname">mesh_from_surface_heightfield</code><span class="sig-paren">(</span><em>cls</em>, <em>guid</em>, <em>density=(10</em>, <em>10)</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/helpers/mesh.html#mesh_from_surface_heightfield"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Create a mesh data structure from a point grid aligned with the uv space of a Rhino NURBS surface.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>cls</strong> (<em>compas.datastructures.mesh.Mesh</em>) – The class of mesh that will be created.</li>
-<li><strong>guid</strong> (<em>str</em>) – The GUID of the Rhino surface.</li>
-<li><strong>density</strong> (<em>tuple</em>) – Optional. The density of the grid in the direction of u and v.</li>
-<li><strong>kwargs</strong> (<em>dict</em>) – Optional. Mesh attributes in the form of keyword arguments.</li>
+<li><strong>cls</strong> (<em>Mesh</em>) – The mesh type.</li>
+<li><strong>guid</strong> (<em>str</em>) – The GUID of the surface.</li>
+<li><strong>density</strong> (<em>tuple</em>) – The density of the point grid in the u and v directions.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>compas.datastructures.mesh.Mesh</em> – The mesh that was created.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>Mesh</em> – A mesh object.</p>
 </td>
 </tr>
 </tbody>
 </table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference internal" href="compas_rhino.geometry.RhinoSurface.html#compas_rhino.geometry.RhinoSurface" title="compas_rhino.geometry.RhinoSurface"><code class="xref py py-class docutils literal">compas_rhino.geometry.RhinoSurface</code></a></li>
+</ul>
+</div>
+<p class="rubric">Examples</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="go">&gt;&gt;&gt;</span>
+</code></pre></div>
+
 </dd></dl>
 </div>
 <nav class="compas-sideways">
@@ -122,7 +131,7 @@
             
 
             
-                Last updated on Oct 18, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

@@ -63,15 +63,44 @@ __all__ = [
 # ==============================================================================
 
 
-def mesh_from_guid(cls, guid, **kwargs):
+def mesh_from_guid(cls, guid):
+    """Construct a mesh from a Rhino mesh.
+
+    Parameters
+    ----------
+    cls : Mesh
+        A mesh type.
+    guid : str
+        The GUID of the Rhino mesh.
+
+    Returns
+    -------
+    Mesh
+        A mesh object.
+
+    """
     vertices, faces = compas_rhino.get_mesh_vertices_and_faces(guid)
     faces = [face[:-1] if face[-2] == face[-1] else face for face in faces]
     mesh  = cls.from_vertices_and_faces(vertices, faces)
-    mesh.attributes.update(kwargs)
     return mesh
 
 
-def mesh_from_surface(cls, guid, **kwargs):
+def mesh_from_surface(cls, guid):
+    """Construct a mesh from a Rhino surface.
+
+    Parameters
+    ----------
+    cls : Mesh
+        A mesh type.
+    guid : str
+        The GUID of the Rhino surface.
+
+    Returns
+    -------
+    Mesh
+        A mesh object.
+
+    """
     gkey_xyz = {}
     faces = []
     obj = sc.doc.Objects.Find(guid)
@@ -106,26 +135,63 @@ def mesh_from_surface(cls, guid, **kwargs):
     vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
     faces = [[gkey_index[gkey] for gkey in f] for f in faces]
     mesh = cls.from_vertices_and_faces(vertices, faces)
-    mesh.attributes.update(kwargs)
 
     return mesh
 
 
-def mesh_from_surface_uv(cls, guid, density=(10, 10), **kwargs):
-    return mesh_from_surface_heightfield(cls, guid, density=density, **kwargs)
+def mesh_from_surface_uv(cls, guid, density=(10, 10)):
+    """Construct a mesh from a point cloud aligned with the uv space of a Rhino NURBS surface.
+
+    Parameters
+    ----------
+    cls : Mesh
+        The mesh type.
+    guid : str
+        The GUID of the surface.
+    density : tuple
+        The density of the point grid in the u and v directions.
+
+    Returns
+    -------
+    Mesh
+        A mesh object.
+
+    See Also
+    --------
+    * :class:`compas_rhino.geometry.RhinoSurface`
+
+    Examples
+    --------
+    >>>
+
+    """
+    return mesh_from_surface_heightfield(cls, guid, density=density)
 
 
-def mesh_from_surface_heightfield(cls, guid, density=(10, 10), **kwargs):
+def mesh_from_surface_heightfield(cls, guid, density=(10, 10)):
     """Create a mesh data structure from a point grid aligned with the uv space of a Rhino NURBS surface.
 
-    Parameters:
-        cls (compas.datastructures.mesh.Mesh): The class of mesh that will be created.
-        guid (str): The GUID of the Rhino surface.
-        density (tuple): Optional. The density of the grid in the direction of u and v.
-        kwargs (dict): Optional. Mesh attributes in the form of keyword arguments.
+    Parameters
+    ----------
+    cls : Mesh
+        The mesh type.
+    guid : str
+        The GUID of the surface.
+    density : tuple
+        The density of the point grid in the u and v directions.
 
-    Returns:
-        compas.datastructures.mesh.Mesh: The mesh that was created.
+    Returns
+    -------
+    Mesh
+        A mesh object.
+
+    See Also
+    --------
+    * :class:`compas_rhino.geometry.RhinoSurface`
+
+    Examples
+    --------
+    >>>
 
     """
     try:
@@ -136,7 +202,6 @@ def mesh_from_surface_heightfield(cls, guid, density=(10, 10), **kwargs):
     surface = RhinoSurface(guid)
 
     mesh = cls()
-    mesh.attributes.update(kwargs)
 
     vertices = surface.heightfield(density=(u, v), over_space=True)
 

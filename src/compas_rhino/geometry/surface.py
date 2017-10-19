@@ -44,6 +44,7 @@ class RhinoSurface(SurfaceGeometryInterface):
 
         density_u = int(du)
         density_v = int(dv)
+
         uv = []
 
         rs.EnableRedraw(False)
@@ -72,6 +73,9 @@ class RhinoSurface(SurfaceGeometryInterface):
 
         return uv
 
+    # not taking the heighfield over the space is only possible
+    # if the surface is in fact a height field
+    # split up and rename!
     def heightfield(self, density=10, over_space=True):
         """"""
         try:
