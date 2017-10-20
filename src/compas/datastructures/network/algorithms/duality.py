@@ -1,5 +1,5 @@
 from compas.geometry import angle_smallest_vectors
-from compas.geometry.queries import is_ccw_xy
+from compas.geometry import is_ccw_xy
 
 
 __author__     = 'Tom Van Mele'

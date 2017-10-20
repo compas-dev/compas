@@ -148,7 +148,7 @@ class FaceHelpers(object):
             The identifier of the face.
 
         """
-        raise NotImplementedError
+        return next(iter(self.faces()))
 
     def get_any_face_vertex(self, fkey):
         """Get the identifier of a random vertex of a specific face.

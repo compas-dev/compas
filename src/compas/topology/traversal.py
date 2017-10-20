@@ -17,6 +17,7 @@ __all__ = [
     'dfs_ordering',
     'dfs_paths',
     'bfs_ordering',
+    'bfs_traverse',
     'bfs_paths',
     'shortest_path',
     'dijkstra_distances',
@@ -181,23 +182,20 @@ def bfs_ordering(adjacency, root):
     return ordering
 
 
-# def network_bfs2(adjacency, root):
-#     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
-#     tovisit = deque([root])
-#     visited = set()
+def bfs_traverse(adjacency, root, callback=None):
+    tovisit  = deque([root])
+    visited  = set([root])
 
-#     while tovisit:
-#         # visit all the neighbours of a node first
-#         # before moving on to their respective neighbours in the same order
-#         node = tovisit.popleft()
-#         if node not in visited:
-#             visited.add(node)
-#             # add all the neighbours of the current node that have not yet been visited
-#             tovisit.extend(adjacency[node] - visited)
-#     # returning this is pointless
-#     # since visited is a set
-#     # and sets have no order
-#     return visited
+    while tovisit:
+        node = tovisit.popleft()
+
+        for nbr in adjacency[node]:
+            if nbr not in visited:
+                tovisit.append(nbr)
+                visited.add(nbr)
+
+                if callback:
+                    callback(node, nbr)
 
 
 def bfs_paths(adjacency, root, goal):
@@ -253,6 +251,50 @@ def shortest_path(adjacency, root, goal):
         The path from root to goal.
     None
         If no path exists between the vertices.
+
+    Examples
+    --------
+
+    .. plot::
+        :include-source:
+
+        import compas
+
+        from compas.datastructures import Network
+        from compas.topology import shortest_path
+        from compas.visualization import NetworkPlotter
+
+        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+
+        adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+
+        start = 21
+        end = 2
+
+        path = shortest_path(adjacency, start, end)
+
+        edges = []
+        for i in range(len(path) - 1):
+            u = path[i]
+            v = path[i + 1]
+            if v not in network.edge[u]:
+                u, v = v, u
+            edges.append([u, v])
+
+        plotter = NetworkPlotter(network)
+
+        plotter.draw_vertices(
+            text={key: key for key in path},
+            facecolor={key: '#ff0000' for key in (path[0], path[-1])},
+            radius=0.15
+        )
+
+        plotter.draw_edges(
+            color={(u, v): '#ff0000' for u, v in edges},
+            width={(u, v): 2.0 for u, v in edges}
+        )
+
+        plotter.show()
 
     """
     try:
@@ -471,36 +513,74 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Network
-    from compas.topology import dijkstra_distances
+    from compas.topology import shortest_path
     from compas.visualization import NetworkPlotter
-    from compas.utilities import i_to_red
 
     network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
     adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 
-    weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
-    weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
+    start = 21
+    end = 2
 
-    target = 22
+    path = shortest_path(adjacency, start, end)
 
-    distances = dijkstra_distances(adjacency, weight, target)
+    edges = []
+    for i in range(len(path) - 1):
+        u = path[i]
+        v = path[i + 1]
+        if v not in network.edge[u]:
+            u, v = v, u
+        edges.append([u, v])
 
     plotter = NetworkPlotter(network)
 
-    dmax = max(distances.values())
-
-    facecolor = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}
-    text = {key: '{:.1f}'.format(distances[key]) for key in network.vertices()}
-
     plotter.draw_vertices(
-        text=text,
-        facecolor=facecolor,
+        text={key: key for key in network.vertices()},
+        facecolor={key: '#ff0000' for key in (path[0], path[-1])},
         radius=0.15
     )
-    plotter.draw_edges()
+
+    plotter.draw_edges(
+        color={(u, v): '#ff0000' for u, v in edges},
+        width={(u, v): 2.0 for u, v in edges}
+    )
 
     plotter.show()
+
+    # import compas
+
+    # from compas.datastructures import Network
+    # from compas.topology import dijkstra_distances
+    # from compas.visualization import NetworkPlotter
+    # from compas.utilities import i_to_red
+
+    # network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+
+    # adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+
+    # weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
+    # weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
+
+    # target = 22
+
+    # distances = dijkstra_distances(adjacency, weight, target)
+
+    # plotter = NetworkPlotter(network)
+
+    # dmax = max(distances.values())
+
+    # facecolor = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}
+    # text = {key: '{:.1f}'.format(distances[key]) for key in network.vertices()}
+
+    # plotter.draw_vertices(
+    #     text=text,
+    #     facecolor=facecolor,
+    #     radius=0.15
+    # )
+    # plotter.draw_edges()
+
+    # plotter.show()
 
     # import compas
 

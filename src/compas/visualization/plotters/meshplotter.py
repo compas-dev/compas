@@ -74,6 +74,13 @@ class MeshPlotter(Plotter):
 
         keys = keys or list(self.mesh.vertices())
 
+        if text == 'key':
+            text = {key: str(key) for key in mesh.vertices()}
+        elif text == 'index':
+            text = {key: str(index) for index, key in enumerate(mesh.vertices())}
+        else:
+            pass
+
         radiusdict    = to_valuedict(keys, radius, self.defaults['vertex.radius'])
         textdict      = to_valuedict(keys, text, '')
         facecolordict = to_valuedict(keys, facecolor, self.defaults['vertex.facecolor'])

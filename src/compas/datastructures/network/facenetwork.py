@@ -276,20 +276,22 @@ class FaceNetwork(FaceHelpers,
         """Add a face and specify its attributes (optional).
 
         Note:
-            * A dictionary key for the face will be generated automatically, based on
-              the keys of its vertices.
             * All faces are closed. The closing link is implied and, therefore,
               the last vertex in the list should be different from the first.
             * Building a face_adjacency list is slow, if we can't rely on the fact
               that all faces have the same cycle directions. Therefore, it is
               worth considering to ensure unified cycle directions upon addition
               of a new face.
+            * A check could be added that no face is added that would leave edges
+              without halfedges.
+            * Adding a face does not change the layout of edges.
 
         Parameters:
             vertices (list): A list of vertex keys.
 
         Returns:
             str: The key of the face.
+
         """
         attr = self.default_face_attributes.copy()
         if attr_dict is None:

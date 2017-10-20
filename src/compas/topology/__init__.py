@@ -13,6 +13,7 @@ topology
     dfs_ordering
     dfs_paths
     bfs_ordering
+    bfs_traverse
     bfs_paths
     shortest_path
     dijkstra_distances
