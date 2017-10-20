@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.datastructures.network.algorithms.graph</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">cos</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sin</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">angle_smallest_vectors_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">is_intersection_segment_segment_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">is_ccw_xy</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">'Tom Van Mele'</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, Block Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'&lt;vanmelet@ethz.ch&gt;'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'network_is_crossed'</span><span class="p">,</span>
+    <span class="s1">'network_count_crossings'</span><span class="p">,</span>
+    <span class="s1">'network_find_crossings'</span><span class="p">,</span>
+    <span class="s1">'network_is_xy'</span><span class="p">,</span>
+    <span class="s1">'network_is_planar'</span><span class="p">,</span>
+    <span class="s1">'network_is_planar_embedding'</span><span class="p">,</span>
+    <span class="s1">'network_embed_in_plane'</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="network_is_crossed"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_is_crossed.html#compas.datastructures.network_is_crossed">[docs]</a><span class="k">def</span> <span class="nf">network_is_crossed</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Verify if a network has crossing edges.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This algorithm assumes that the network lies in the XY plane.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the network has at least one pair of crossing edges.</span>
+<span class="sd">        False otherwise.</span>
+
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">u2</span> <span class="ow">or</span> <span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u2</span> <span class="o">==</span> <span class="n">v1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u1</span><span class="p">][</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u1</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v1</span><span class="p">][</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v1</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u2</span><span class="p">][</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u2</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v2</span><span class="p">][</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v2</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">is_intersection_segment_segment_xy</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<span class="k">def</span> <span class="nf">_network_are_edges_crossed</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">u2</span> <span class="ow">or</span> <span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u2</span> <span class="o">==</span> <span class="n">v1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">u1</span><span class="p">]</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">v1</span><span class="p">]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">u2</span><span class="p">]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">v2</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">is_intersection_segment_segment_xy</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="network_count_crossings"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_count_crossings.html#compas.datastructures.network_count_crossings">[docs]</a><span class="k">def</span> <span class="nf">network_count_crossings</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Count the number of crossings (pairs of crossing edges) in the network.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This algorithm assumes that the network lies in the XY plane.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        The number of crossings.</span>
+
+<span class="sd">    """</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">u2</span> <span class="ow">or</span> <span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u2</span> <span class="o">==</span> <span class="n">v1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u1</span><span class="p">][</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u1</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v1</span><span class="p">][</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v1</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u2</span><span class="p">][</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u2</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v2</span><span class="p">][</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">v2</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">is_intersection_segment_segment_xy</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)):</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">count</span></div>
+
+
+<div class="viewcode-block" id="network_find_crossings"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_find_crossings.html#compas.datastructures.network_find_crossings">[docs]</a><span class="k">def</span> <span class="nf">network_find_crossings</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Identify all pairs of crossing edges in a network.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This algorithm assumes that the network lies in the XY plane.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list of edge pairs, with each edge represented by two vertex keys.</span>
+
+<span class="sd">    """</span>
+    <span class="n">crossings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">u1</span><span class="p">,</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">u2</span> <span class="ow">or</span> <span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">v2</span> <span class="ow">or</span> <span class="n">u2</span> <span class="o">==</span> <span class="n">v1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">is_intersection_segment_segment_xy</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)):</span>
+                    <span class="n">crossings</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">u1</span><span class="p">,</span> <span class="n">v1</span><span class="p">),</span> <span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">v2</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">crossings</span></div>
+
+
+<div class="viewcode-block" id="network_is_xy"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_is_xy.html#compas.datastructures.network_is_xy">[docs]</a><span class="k">def</span> <span class="nf">network_is_xy</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Verify that a network lies in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the Z coordinate of all vertices is zero.</span>
+<span class="sd">        False otherwise.</span>
+
+<span class="sd">    """</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">z</span> <span class="o">!=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="network_is_planar"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_is_planar.html#compas.datastructures.network_is_planar">[docs]</a><span class="k">def</span> <span class="nf">network_is_planar</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Check if the network is planar.</span>
+
+<span class="sd">    A network is planar if it can be drawn in the plane without crossing edges.</span>
+<span class="sd">    If a network is planar, it can be shown that an embedding of the network in</span>
+<span class="sd">    the plane exists, and, furthermore, that straight-line embedding in the plane</span>
+<span class="sd">    exists.</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    This function uses the python binding of the *edge addition planarity suite*.</span>
+<span class="sd">    It is available on GitHub: https://github.com/hagberg/planarity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the network is planar.</span>
+<span class="sd">        False otherwise.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ImportError</span>
+<span class="sd">        If the planarity package is not installed.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        import compas</span>
+
+<span class="sd">        from compas.datastructures import Network</span>
+<span class="sd">        from compas.datastructures import network_is_planar</span>
+<span class="sd">        from compas.datastructures import network_find_crossings</span>
+<span class="sd">        from compas.visualization import NetworkPlotter</span>
+
+<span class="sd">        network = Network.from_obj(compas.get_data('lines.obj'))</span>
+
+<span class="sd">        network.add_edge(21, 29)</span>
+<span class="sd">        network.add_edge(17, 28)</span>
+
+<span class="sd">        if not network_is_planar(network):</span>
+<span class="sd">            crossings = network_find_crossings(network)</span>
+<span class="sd">        else:</span>
+<span class="sd">            crossings = []</span>
+
+<span class="sd">        plotter = NetworkPlotter(network)</span>
+
+<span class="sd">        plotter.draw_vertices(radius=0.15, text={key: key for key in network.vertices()})</span>
+<span class="sd">        plotter.draw_edges(color={edge: '#ff0000' for edges in crossings for edge in edges})</span>
+
+<span class="sd">        plotter.show()</span>
+
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">planarity</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Planarity is not installed. Get Planarity at https://github.com/hagberg/planarity."</span><span class="p">)</span>
+        <span class="k">raise</span>
+    <span class="k">return</span> <span class="n">planarity</span><span class="o">.</span><span class="n">is_planar</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="network_is_planar_embedding"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_is_planar_embedding.html#compas.datastructures.network_is_planar_embedding">[docs]</a><span class="k">def</span> <span class="nf">network_is_planar_embedding</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">"""Verify that a network is embedded in the plane without crossing edges.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the network is embedded in the plane without crossing edges.</span>
+<span class="sd">        Fase otherwise.</span>
+
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">network_is_planar</span><span class="p">(</span><span class="n">network</span><span class="p">)</span> <span class="ow">and</span>
+            <span class="n">network_is_xy</span><span class="p">(</span><span class="n">network</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span>
+            <span class="n">network_is_crossed</span><span class="p">(</span><span class="n">network</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="network_embed_in_plane"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.network_embed_in_plane.html#compas.datastructures.network_embed_in_plane">[docs]</a><span class="k">def</span> <span class="nf">network_embed_in_plane</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">fix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">straightline</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">"""Embed the network in the plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object.</span>
+<span class="sd">    fix : list (None)</span>
+<span class="sd">        Two fixed points.</span>
+<span class="sd">    straightline : bool (True)</span>
+<span class="sd">        Embed using straight lines.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the embedding was successful.</span>
+<span class="sd">        False otherwise.</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    This function uses the Python package NetworkX. NetworkX can be *pip installed*.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ImportError</span>
+<span class="sd">        If NetworkX is not installed.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        import compas</span>
+
+<span class="sd">        from compas.datastructures import Network</span>
+<span class="sd">        from compas.datastructures import network_embed_in_plane</span>
+<span class="sd">        from compas.visualization import NetworkPlotter</span>
+
+<span class="sd">        network = Network.from_obj(compas.get_data('fink.obj'))</span>
+
+<span class="sd">        embedding = network.copy()</span>
+
+<span class="sd">        fix = (1, 12)</span>
+
+<span class="sd">        if network_embed_in_plane(embedding, fix=fix):</span>
+
+<span class="sd">            plotter = NetworkPlotter(embedding)</span>
+
+<span class="sd">            plotter.draw_xlines([{'start': network.vertex_coordinates(u, 'xy'),</span>
+<span class="sd">                                  'end': network.vertex_coordinates(v, 'xy'),</span>
+<span class="sd">                                  'color': '#cccccc'} for u, v in network.edges()])</span>
+
+<span class="sd">            plotter.draw_vertices(radius=0.3,</span>
+<span class="sd">                                  text={key: key for key in embedding.vertices()},</span>
+<span class="sd">                                  facecolor={key: '#ff0000' for key in fix})</span>
+
+<span class="sd">            plotter.draw_edges()</span>
+<span class="sd">            plotter.show()</span>
+
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"NetworkX is not installed. Get NetworkX at https://networkx.github.io/."</span><span class="p">)</span>
+        <span class="k">raise</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_vertices_attribute</span><span class="p">(</span><span class="s1">'x'</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_vertices_attribute</span><span class="p">(</span><span class="s1">'y'</span><span class="p">)</span>
+    <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">xspan</span> <span class="o">=</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span>
+    <span class="n">yspan</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
+
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">network</span><span class="o">.</span><span class="n">is_vertex_leaf</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">network</span><span class="o">.</span><span class="n">is_vertex_leaf</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
+
+    <span class="n">is_embedded</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="k">while</span> <span class="n">count</span><span class="p">:</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span>
+                               <span class="mi">2</span><span class="p">,</span>
+                               <span class="n">iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                               <span class="n">scale</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">xspan</span><span class="p">,</span> <span class="n">yspan</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_network_are_edges_crossed</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+            <span class="n">is_embedded</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">break</span>
+        <span class="n">count</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_embedded</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">fix</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">fix</span>
+        <span class="n">p0</span>   <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span>
+        <span class="n">p1</span>   <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span>
+        <span class="n">p2</span>   <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+        <span class="n">vec0</span> <span class="o">=</span> <span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="s1">'xy'</span><span class="p">]</span>
+        <span class="n">vec1</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="c1"># rotate</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">angle_smallest_vectors_xy</span><span class="p">(</span><span class="n">vec0</span><span class="p">,</span> <span class="n">vec1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_ccw_xy</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">-</span> <span class="n">a</span>
+        <span class="n">cosa</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">sina</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cosa</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">sina</span> <span class="o">*</span> <span class="n">y</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sina</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">cosa</span> <span class="o">*</span> <span class="n">y</span>
+        <span class="c1"># scale</span>
+        <span class="n">l0</span> <span class="o">=</span> <span class="p">(</span><span class="n">vec0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">vec0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="n">l1</span> <span class="o">=</span> <span class="p">(</span><span class="n">vec1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">vec1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">l0</span> <span class="o">/</span> <span class="n">l1</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="n">scale</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="n">scale</span>
+        <span class="c1"># translate</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">],</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="n">fix</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># update network vertex coordinates</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">compas</span>
+
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Network</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
+
+    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'fink.obj'</span><span class="p">))</span>
+
+    <span class="n">embedding</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">fix</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">network_embed_in_plane</span><span class="p">(</span><span class="n">embedding</span><span class="p">,</span> <span class="n">fix</span><span class="o">=</span><span class="n">fix</span><span class="p">):</span>
+
+        <span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">embedding</span><span class="p">)</span>
+
+        <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">([{</span><span class="s1">'start'</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+                              <span class="s1">'end'</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+                              <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#cccccc'</span><span class="p">}</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()])</span>
+
+        <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+                              <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">embedding</span><span class="o">.</span><span class="n">vertices</span><span class="p">()},</span>
+                              <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fix</span><span class="p">})</span>
+
+        <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+
+        <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 19, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

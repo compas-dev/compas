@@ -42,7 +42,7 @@
 <h1>dfs_ordering</h1>
 <dl class="function">
 <dt id="compas.topology.dfs_ordering">
-<code class="descclassname">compas.topology.</code><code class="descname">dfs_ordering</code><span class="sig-paren">(</span><em>adjacency</em>, <em>root</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/topology/traversal.html#dfs_ordering"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.topology.</code><code class="descname">dfs_ordering</code><span class="sig-paren">(</span><em>adjacency</em>, <em>root</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/topology/traversal.html#dfs_ordering"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Return all nodes of a connected component containing ‘root’ of a network
 represented by an adjacency dictionary.</p>
 <p>This implementation uses a <em>to visit</em> stack. The principle of a stack
@@ -82,7 +82,6 @@ and maps to a list of neighbouring vertex keys.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dfs</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">get_any_vertex</span><span class="p">()))</span>
 </code></pre></div>
-
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last">...</p>

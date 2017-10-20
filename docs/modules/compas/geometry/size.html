@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../geometry.html">compas.geometry</a>
+</nav>
+<h1>Source code for compas.geometry.size</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="sd">""""""</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">subtract_vectors_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">length_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">length_vector_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">cross_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">cross_vectors_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">dot_vectors</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry.average</span> <span class="k">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.average</span> <span class="k">import</span> <span class="n">centroid_points_xy</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry.orientation</span> <span class="k">import</span> <span class="n">normal_triangle</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.orientation</span> <span class="k">import</span> <span class="n">normal_triangle_xy</span>
+
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'bounding_box'</span><span class="p">,</span>
+    <span class="s1">'bounding_box_xy'</span><span class="p">,</span>
+    <span class="s1">'area_polygon'</span><span class="p">,</span>
+    <span class="s1">'area_polygon_xy'</span><span class="p">,</span>
+    <span class="s1">'area_triangle'</span><span class="p">,</span>
+    <span class="s1">'area_triangle_xy'</span><span class="p">,</span>
+    <span class="s1">'volume_polyhedron'</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="bounding_box"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.bounding_box.html#compas.geometry.bounding_box">[docs]</a><span class="k">def</span> <span class="nf">bounding_box</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">"""Computes the bounding box of a list of points.</span>
+<span class="sd">    """</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">min_z</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">max_z</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">min_z</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">min_z</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">,</span> <span class="n">min_z</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">,</span> <span class="n">min_z</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_z</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_z</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">,</span> <span class="n">max_z</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">,</span> <span class="n">max_z</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="bounding_box_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.bounding_box_xy.html#compas.geometry.bounding_box_xy">[docs]</a><span class="k">def</span> <span class="nf">bounding_box_xy</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">"""Compute the bounding box of a list of points lying in the XY-plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    points : sequence</span>
+<span class="sd">        A sequence of XY(Z) coordinates of a 2D or 3D points.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sequence of float</span>
+<span class="sd">        XYZ coordinates of four points defining a rectangle (Z components = 0).</span>
+
+<span class="sd">    """</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="area_polygon"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.area_polygon.html#compas.geometry.area_polygon">[docs]</a><span class="k">def</span> <span class="nf">area_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+    <span class="sd">"""Compute the area of a polygon.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    polygon : sequence</span>
+<span class="sd">        The XYZ coordinates of the vertices/corners of the polygon.</span>
+<span class="sd">        The vertices are assumed to be in order.</span>
+<span class="sd">        The polygon is assumed to be closed:</span>
+<span class="sd">        the first and last vertex in the sequence should not be the same.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The area of the polygon.</span>
+
+<span class="sd">    """</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">polygon</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">o</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">polygon</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">o</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">polygon</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">o</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">+=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">a</span></div>
+
+
+<div class="viewcode-block" id="area_polygon_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.area_polygon_xy.html#compas.geometry.area_polygon_xy">[docs]</a><span class="k">def</span> <span class="nf">area_polygon_xy</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+    <span class="sd">"""Compute the area of a polygon lying in the XY-plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    polygon : sequence</span>
+<span class="sd">        A sequence of XY(Z) coordinates of 2D or 3D points</span>
+<span class="sd">        representing the locations of the corners of a polygon.</span>
+<span class="sd">        The vertices are assumed to be in order. The polygon is assumed to be closed:</span>
+<span class="sd">        the first and last vertex in the sequence should not be the same.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The area of the polygon.</span>
+
+<span class="sd">    """</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">centroid_points_xy</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">polygon</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">o</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">polygon</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">o</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">cross_vectors_xy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">polygon</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">o</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">+=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">cross_vectors_xy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="area_triangle"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.area_triangle.html#compas.geometry.area_triangle">[docs]</a><span class="k">def</span> <span class="nf">area_triangle</span><span class="p">(</span><span class="n">triangle</span><span class="p">):</span>
+    <span class="sd">"""Compute the area of a triangle defined by three points.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">normal_triangle</span><span class="p">(</span><span class="n">triangle</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="area_triangle_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.area_triangle_xy.html#compas.geometry.area_triangle_xy">[docs]</a><span class="k">def</span> <span class="nf">area_triangle_xy</span><span class="p">(</span><span class="n">triangle</span><span class="p">):</span>
+    <span class="sd">"""Compute the area of a triangle defined by three points lying in the XY-plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    triangle : list of list</span>
+<span class="sd">        XY(Z) coordinates of the corners of the triangle.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The area of the triangle.</span>
+
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length_vector_xy</span><span class="p">(</span><span class="n">normal_triangle_xy</span><span class="p">(</span><span class="n">triangle</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="volume_polyhedron"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.volume_polyhedron.html#compas.geometry.volume_polyhedron">[docs]</a><span class="k">def</span> <span class="nf">volume_polyhedron</span><span class="p">(</span><span class="n">polyhedron</span><span class="p">):</span>
+    <span class="sd">r"""Compute the volume of a polyhedron represented by a closed mesh.</span>
+
+<span class="sd">    This implementation is based on the divergence theorem, the fact that the</span>
+<span class="sd">    *area vector* is constant for each face, and the fact that the area of each</span>
+<span class="sd">    face can be computed as half the length of the cross product of two adjacent</span>
+<span class="sd">    edge vectors.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        :nowrap:</span>
+
+<span class="sd">        \begin{align}</span>
+<span class="sd">            V  = \int_{P} 1</span>
+<span class="sd">              &amp;= \frac{1}{3} \int_{\partial P} \mathbf{x} \cdot \mathbf{n} \\</span>
+<span class="sd">              &amp;= \frac{1}{3} \sum_{i=0}^{N-1} \int{A_{i}} a_{i} \cdot n_{i} \\</span>
+<span class="sd">              &amp;= \frac{1}{6} \sum_{i=0}^{N-1} a_{i} \cdot \hat n_{i}</span>
+<span class="sd">        \end{align}</span>
+
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    http://www.ma.ic.ac.uk/~rn/centroid.pdf</span>
+
+<span class="sd">    """</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">polyhedron</span><span class="o">.</span><span class="n">face</span><span class="p">:</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">polyhedron</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">faces</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertices</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+            <span class="n">a</span>  <span class="o">=</span> <span class="n">polyhedron</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">b</span>  <span class="o">=</span> <span class="n">polyhedron</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">c</span>  <span class="o">=</span> <span class="n">polyhedron</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="n">ac</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="n">n</span>  <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">ac</span><span class="p">)</span>
+            <span class="n">V</span> <span class="o">+=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">V</span> <span class="o">/</span> <span class="mf">6.</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 19, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

@@ -1,0 +1,873 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../geometry.html">compas.geometry</a>
+</nav>
+<h1>Source code for compas.geometry.transformations</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="sd">""""""</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sin</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">cos</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">radians</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">scale_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">scale_vector_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">normalize_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">normalize_vector_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">add_vectors_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">subtract_vectors_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">cross_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">dot_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">multiply_matrix_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">multiply_matrices</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">transpose_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">vector_component</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">vector_component_xy</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry.angles</span> <span class="k">import</span> <span class="n">angle_smallest_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.average</span> <span class="k">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.intersections</span> <span class="k">import</span> <span class="n">intersection_line_line</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.intersections</span> <span class="k">import</span> <span class="n">intersection_line_plane</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.intersections</span> <span class="k">import</span> <span class="n">intersection_line_triangle</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry.orientation</span> <span class="k">import</span> <span class="n">normal_polygon</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.orientation</span> <span class="k">import</span> <span class="n">normal_triangle</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">transform</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">translation_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">rotation_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">scale_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">shear_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">projection_matrix</span>
+
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'translate_points'</span><span class="p">,</span>
+    <span class="s1">'translate_points_xy'</span><span class="p">,</span>
+    <span class="s1">'translate_lines'</span><span class="p">,</span>
+    <span class="s1">'translate_lines_xy'</span><span class="p">,</span>
+    <span class="s1">'scale_points'</span><span class="p">,</span>
+    <span class="s1">'rotate_points'</span><span class="p">,</span>
+    <span class="s1">'rotate_points_xy'</span><span class="p">,</span>
+    <span class="s1">'rotate_points_degrees'</span><span class="p">,</span>
+    <span class="s1">'offset_line'</span><span class="p">,</span>
+    <span class="s1">'offset_polygon'</span><span class="p">,</span>
+    <span class="s1">'orient_points'</span><span class="p">,</span>
+    <span class="s1">'mirror_point_point'</span><span class="p">,</span>
+    <span class="s1">'mirror_point_point_xy'</span><span class="p">,</span>
+    <span class="s1">'mirror_points_point'</span><span class="p">,</span>
+    <span class="s1">'mirror_points_point_xy'</span><span class="p">,</span>
+    <span class="s1">'mirror_point_line'</span><span class="p">,</span>
+    <span class="s1">'mirror_point_line_xy'</span><span class="p">,</span>
+    <span class="s1">'mirror_points_line'</span><span class="p">,</span>
+    <span class="s1">'mirror_points_line_xy'</span><span class="p">,</span>
+    <span class="s1">'mirror_point_plane'</span><span class="p">,</span>
+    <span class="s1">'mirror_points_plane'</span><span class="p">,</span>
+    <span class="s1">'mirror_vector_vector'</span><span class="p">,</span>
+    <span class="s1">'reflect_line_plane'</span><span class="p">,</span>
+    <span class="s1">'reflect_line_triangle'</span><span class="p">,</span>
+    <span class="s1">'project_point_plane'</span><span class="p">,</span>
+    <span class="s1">'project_points_plane'</span><span class="p">,</span>
+    <span class="s1">'project_point_line'</span><span class="p">,</span>
+    <span class="s1">'project_point_line_xy'</span><span class="p">,</span>
+    <span class="s1">'project_points_line'</span><span class="p">,</span>
+    <span class="s1">'project_points_line_xy'</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># translate</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="translate_points"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.translate_points.html#compas.geometry.translate_points">[docs]</a><span class="k">def</span> <span class="nf">translate_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">add_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="translate_points_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.translate_points_xy.html#compas.geometry.translate_points_xy">[docs]</a><span class="k">def</span> <span class="nf">translate_points_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">add_vectors_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="translate_lines"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.translate_lines.html#compas.geometry.translate_lines">[docs]</a><span class="k">def</span> <span class="nf">translate_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+    <span class="n">sps</span><span class="p">,</span> <span class="n">eps</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">sps</span> <span class="o">=</span> <span class="n">translate_points</span><span class="p">(</span><span class="n">sps</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">translate_points</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sps</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="translate_lines_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.translate_lines_xy.html#compas.geometry.translate_lines_xy">[docs]</a><span class="k">def</span> <span class="nf">translate_lines_xy</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+    <span class="n">sps</span><span class="p">,</span> <span class="n">eps</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">sps</span> <span class="o">=</span> <span class="n">translate_points_xy</span><span class="p">(</span><span class="n">sps</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">translate_points_xy</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sps</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># scale</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="scale_points"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.scale_points.html#compas.geometry.scale_points">[docs]</a><span class="k">def</span> <span class="nf">scale_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">scale_matrix</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">transform</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># rotate</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="rotate_points_degrees"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.rotate_points_degrees.html#compas.geometry.rotate_points_degrees">[docs]</a><span class="k">def</span> <span class="nf">rotate_points_degrees</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Rotates points around an arbitrary axis in 3D (degrees).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points (sequence of sequence of float): XYZ coordinates of the points.</span>
+<span class="sd">        axis (sequence of float): The rotation axis.</span>
+<span class="sd">        angle (float): the angle of rotation in degrees.</span>
+<span class="sd">        origin (sequence of float): Optional. The origin of the rotation axis.</span>
+<span class="sd">            Default is ``[0.0, 0.0, 0.0]``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: the rotated points</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        https://en.wikipedia.org/wiki/Rotation_matrix</span>
+
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">rotate_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span> <span class="n">origin</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="rotate_points"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.rotate_points.html#compas.geometry.rotate_points">[docs]</a><span class="k">def</span> <span class="nf">rotate_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Rotates points around an arbitrary axis in 3D (radians).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points (sequence of sequence of float): XYZ coordinates of the points.</span>
+<span class="sd">        axis (sequence of float): The rotation axis.</span>
+<span class="sd">        angle (float): the angle of rotation in radians.</span>
+<span class="sd">        origin (sequence of float): Optional. The origin of the rotation axis.</span>
+<span class="sd">            Default is ``[0.0, 0.0, 0.0]``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: the rotated points</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        https://en.wikipedia.org/wiki/Rotation_matrix</span>
+
+<span class="sd">    """</span>
+    <span class="c1"># rotation matrix</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">rotation_matrix</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">origin</span><span class="p">)</span>
+    <span class="c1"># apply rotation</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">points</span></div>
+
+
+<div class="viewcode-block" id="rotate_points_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.rotate_points_xy.html#compas.geometry.rotate_points_xy">[docs]</a><span class="k">def</span> <span class="nf">rotate_points_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Rotates points around an arbitrary axis in 2D.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points (sequence of sequence of float): XY coordinates of the points.</span>
+<span class="sd">        axis (sequence of float): The rotation axis.</span>
+<span class="sd">        angle (float): the angle of rotation in radians.</span>
+<span class="sd">        origin (sequence of float): Optional. The origin of the rotation axis.</span>
+<span class="sd">            Default is ``[0.0, 0.0, 0.0]``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: the rotated points</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        https://en.wikipedia.org/wiki/Rotation_matrix</span>
+
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span><span class="p">:</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="c1"># rotation matrix</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">normalize_vector_xy</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">cosa</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">sina</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="p">[[</span><span class="n">cosa</span><span class="p">,</span> <span class="o">-</span><span class="n">sina</span><span class="p">],</span> <span class="p">[</span><span class="n">sina</span><span class="p">,</span> <span class="n">cosa</span><span class="p">]]</span>
+    <span class="c1"># translate points</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">translate_points_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">scale_vector_xy</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">))</span>
+    <span class="c1"># rotate points</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">multiply_matrix_vector</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+    <span class="c1"># translate points back</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">translate_points_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">origin</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">points</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># offset</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="offset_line"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.offset_line.html#compas.geometry.offset_line">[docs]</a><span class="k">def</span> <span class="nf">offset_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">normal</span><span class="o">=</span><span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]):</span>
+    <span class="sd">"""Offset a line by a distance</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        line (tuple): Two points defining the line.</span>
+<span class="sd">        distances (float or tuples of floats): The offset distance as float.</span>
+<span class="sd">            A single value determines a constant offset. Alternatively, two</span>
+<span class="sd">            offset values for the start and end point of the line can be used to</span>
+<span class="sd">            a create variable offset.</span>
+<span class="sd">        normal (tuple): The normal of the offset plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        offset line (tuple): Two points defining the offset line.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            line = [(0.0, 0.0, 0.0), (3.0, 3.0, 0.0)]</span>
+
+<span class="sd">            distance = 0.2 # constant offset</span>
+<span class="sd">            line_offset = offset_line(line, distance)</span>
+<span class="sd">            print(line_offset)</span>
+
+<span class="sd">            distance = [0.2, 0.1] # variable offset</span>
+<span class="sd">            line_offset = offset_line(line, distance)</span>
+<span class="sd">            print(line_offset)</span>
+
+<span class="sd">    """</span>
+    <span class="n">pt1</span><span class="p">,</span> <span class="n">pt2</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">vec</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">pt2</span><span class="p">)</span>
+    <span class="n">dir_vec</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">normal</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">distance</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="p">[</span><span class="n">distance</span><span class="p">,</span> <span class="n">distance</span><span class="p">]</span>
+
+    <span class="n">vec_pt1</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">dir_vec</span><span class="p">,</span> <span class="n">distances</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">vec_pt2</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">dir_vec</span><span class="p">,</span> <span class="n">distances</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">pt1_new</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">vec_pt1</span><span class="p">)</span>
+    <span class="n">pt2_new</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">pt2</span><span class="p">,</span> <span class="n">vec_pt2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pt1_new</span><span class="p">,</span> <span class="n">pt2_new</span></div>
+
+
+<div class="viewcode-block" id="offset_polygon"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.offset_polygon.html#compas.geometry.offset_polygon">[docs]</a><span class="k">def</span> <span class="nf">offset_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
+    <span class="sd">"""Offset a polygon (closed) by a distance.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        polygon (sequence of sequence of floats): The XYZ coordinates of the</span>
+<span class="sd">            corners of the polygon. The first and last coordinates must be identical.</span>
+<span class="sd">        distance (float or list of tuples of floats): The offset distance as float.</span>
+<span class="sd">            A single value determines a constant offset globally. Alternatively, pairs of local</span>
+<span class="sd">            offset values per line segment can be used to create variable offsets.</span>
+<span class="sd">            Distance &gt; 0: offset to the outside, distance &lt; 0: offset to the inside</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        offset polygon (sequence of sequence of floats): The XYZ coordinates of the</span>
+<span class="sd">            corners of the offset polygon. The first and last coordinates are identical.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The offset direction is determined by the normal of the polygon. The</span>
+<span class="sd">        algorithm works also for spatial polygons that do not perfectly fit a plane.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            polygon = [</span>
+<span class="sd">                (0.0, 0.0, 0.0),</span>
+<span class="sd">                (3.0, 0.0, 1.0),</span>
+<span class="sd">                (3.0, 3.0, 2.0),</span>
+<span class="sd">                (1.5, 1.5, 2.0),</span>
+<span class="sd">                (0.0, 3.0, 1.0),</span>
+<span class="sd">                (0.0, 0.0, 0.0)</span>
+<span class="sd">                ]</span>
+
+<span class="sd">            distance = 0.5 # constant offset</span>
+<span class="sd">            polygon_offset = offset_polygon(polygon, distance)</span>
+<span class="sd">            print(polygon_offset)</span>
+
+<span class="sd">            distance = [</span>
+<span class="sd">                (0.1, 0.2),</span>
+<span class="sd">                (0.2, 0.3),</span>
+<span class="sd">                (0.3, 0.4),</span>
+<span class="sd">                (0.4, 0.3),</span>
+<span class="sd">                (0.3, 0.1)</span>
+<span class="sd">                ] # variable offset</span>
+<span class="sd">            polygon_offset = offset_polygon(polygon, distance)</span>
+<span class="sd">            print(polygon_offset)</span>
+
+<span class="sd">    """</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">distance</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">distances</span> <span class="o">+</span> <span class="p">[</span><span class="n">distances</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="p">[[</span><span class="n">distance</span><span class="p">,</span> <span class="n">distance</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">polygon</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))]</span>
+    <span class="n">lines_offset</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+        <span class="n">lines_offset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">offset_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">normal</span><span class="p">))</span>
+
+    <span class="n">polygon_offset</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines_offset</span><span class="p">)):</span>
+        <span class="n">intx_pt1</span><span class="p">,</span> <span class="n">intx_pt2</span> <span class="o">=</span> <span class="n">intersection_line_line</span><span class="p">(</span><span class="n">lines_offset</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lines_offset</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">intx_pt1</span> <span class="ow">and</span> <span class="n">intx_pt2</span><span class="p">:</span>
+            <span class="n">polygon_offset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">([</span><span class="n">intx_pt1</span><span class="p">,</span> <span class="n">intx_pt2</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">polygon_offset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lines_offset</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">polygon_offset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">polygon_offset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">polygon_offset</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># orientation</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="orient_points"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.orient_points.html#compas.geometry.orient_points">[docs]</a><span class="k">def</span> <span class="nf">orient_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">reference_plane</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_plane</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Orient points from one plane to another.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points (sequence of sequence of float): XYZ coordinates of the points.</span>
+<span class="sd">        reference_plane (tuple): Base point and normal defining a reference plane.</span>
+<span class="sd">        target_plane (tuple): Base point and normal defining a target plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        points (sequence of sequence of float): XYZ coordinates of the oriented points.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This function is useful to orient a planar problem in the xy-plane to simplify</span>
+<span class="sd">        the calculation (see example).</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from compas.geometry.spatial import orient_points</span>
+<span class="sd">            from compas.geometry._planar import intersection_segment_segment_xy</span>
+
+<span class="sd">            reference_plane = [(0.57735,0.57735,0.57735),(1.0, 1.0, 1.0)]</span>
+
+<span class="sd">            line_a = [</span>
+<span class="sd">                (0.288675,0.288675,1.1547),</span>
+<span class="sd">                (0.866025,0.866025, 0.)</span>
+<span class="sd">                ]</span>
+
+<span class="sd">            line_b = [</span>
+<span class="sd">                (1.07735,0.0773503,0.57735),</span>
+<span class="sd">                (0.0773503,1.07735,0.57735)</span>
+<span class="sd">                ]</span>
+
+<span class="sd">            # orient lines to lie in the xy-plane</span>
+<span class="sd">            line_a_xy = orient_points(line_a, reference_plane)</span>
+<span class="sd">            line_b_xy = orient_points(line_b, reference_plane)</span>
+
+<span class="sd">            # compute intersection in 2d in the xy-plane</span>
+<span class="sd">            intx_point_xy = intersection_segment_segment_xy(line_a_xy, line_b_xy)</span>
+
+<span class="sd">            # re-orient resulting intersection point to lie in the reference plane</span>
+<span class="sd">            intx_point = orient_points([intx_point_xy], target_plane=reference_plane)[0]</span>
+<span class="sd">            print(intx_point)</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">target_plane</span><span class="p">:</span>
+        <span class="n">target_plane</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">reference_plane</span><span class="p">:</span>
+        <span class="n">reference_plane</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)]</span>
+
+    <span class="n">vec_rot</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">reference_plane</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">target_plane</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">angle_smallest_vectors</span><span class="p">(</span><span class="n">reference_plane</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">target_plane</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">rotate_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">vec_rot</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">reference_plane</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">vec_trans</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">target_plane</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">reference_plane</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">translate_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">vec_trans</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">points</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># mirror</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="mirror_point_point"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_point_point.html#compas.geometry.mirror_point_point">[docs]</a><span class="k">def</span> <span class="nf">mirror_point_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">mirror</span><span class="p">):</span>
+    <span class="sd">"""Mirror a point about a point.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        point (sequence of float): XYZ coordinates of the point to mirror.</span>
+<span class="sd">        mirror (sequence of float): XYZ coordinates of the mirror point.</span>
+
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">mirror</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">mirror</span><span class="p">,</span> <span class="n">point</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="mirror_point_point_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_point_point_xy.html#compas.geometry.mirror_point_point_xy">[docs]</a><span class="k">def</span> <span class="nf">mirror_point_point_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">mirror</span><span class="p">):</span>
+    <span class="sd">"""Mirror a point about a point.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        point (sequence of float): XY coordinates of the point to mirror.</span>
+<span class="sd">        mirror (sequence of float): XY coordinates of the mirror point.</span>
+
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">add_vectors_xy</span><span class="p">(</span><span class="n">mirror</span><span class="p">,</span> <span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">mirror</span><span class="p">,</span> <span class="n">point</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="mirror_points_point"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_points_point.html#compas.geometry.mirror_points_point">[docs]</a><span class="k">def</span> <span class="nf">mirror_points_point</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">mirror</span><span class="p">):</span>
+    <span class="sd">"""Mirror multiple points about a point."""</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">mirror_point_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">mirror</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="mirror_points_point_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_points_point_xy.html#compas.geometry.mirror_points_point_xy">[docs]</a><span class="k">def</span> <span class="nf">mirror_points_point_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">mirror</span><span class="p">):</span>
+    <span class="sd">"""Mirror multiple points about a point."""</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">mirror_point_point_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">mirror</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="mirror_point_line"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_point_line.html#compas.geometry.mirror_point_line">[docs]</a><span class="k">def</span> <span class="nf">mirror_point_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="mirror_point_line_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_point_line_xy.html#compas.geometry.mirror_point_line_xy">[docs]</a><span class="k">def</span> <span class="nf">mirror_point_line_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="mirror_points_line"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_points_line.html#compas.geometry.mirror_points_line">[docs]</a><span class="k">def</span> <span class="nf">mirror_points_line</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="mirror_points_line_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_points_line_xy.html#compas.geometry.mirror_points_line_xy">[docs]</a><span class="k">def</span> <span class="nf">mirror_points_line_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="mirror_point_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_point_plane.html#compas.geometry.mirror_point_plane">[docs]</a><span class="k">def</span> <span class="nf">mirror_point_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="mirror_points_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_points_plane.html#compas.geometry.mirror_points_plane">[docs]</a><span class="k">def</span> <span class="nf">mirror_points_plane</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="mirror_vector_vector"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_vector_vector.html#compas.geometry.mirror_vector_vector">[docs]</a><span class="k">def</span> <span class="nf">mirror_vector_vector</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+    <span class="sd">"""Mirrors vector about vector.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        v1 (tuple, list, Vector): The vector.</span>
+<span class="sd">        v2 (tuple, list, Vector): The normalized vector as mirror axis</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple: mirrored vector</span>
+
+<span class="sd">    Resources:</span>
+<span class="sd">        http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)))</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># reflect</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="reflect_line_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.reflect_line_plane.html#compas.geometry.reflect_line_plane">[docs]</a><span class="k">def</span> <span class="nf">reflect_line_plane</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">):</span>
+    <span class="sd">"""Reflects a line at plane.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        line (tuple): Two points defining the line.</span>
+<span class="sd">        plane (tuple): The base point and normal (normalized) defining the plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        line (tuple): The reflected line starting at the reflection point on the plane,</span>
+<span class="sd">        None otherwise.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The directions of the line and plane are important! The line will only be</span>
+<span class="sd">        reflected if it points (direction start -&gt; end) in the direction of the plane</span>
+<span class="sd">        and if the line intersects with the front face of the plane (normal direction</span>
+<span class="sd">        of the plane).</span>
+
+<span class="sd">    Resources:</span>
+<span class="sd">        http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from math import pi, sin, cos, radians</span>
+
+<span class="sd">            from compas.geometry.spatial import rotate_points</span>
+<span class="sd">            from compas.geometry.spatial import intersection_line_plane</span>
+<span class="sd">            from compas.geometry.spatial import reflect_line_plane</span>
+
+<span class="sd">            # planes</span>
+<span class="sd">            mirror_plane = [(0.0, 0.0, 0.0),(1.0, 0.0, 0.0)]</span>
+<span class="sd">            projection_plane = [(40.0, 0.0, 0.0),(1.0, 0.0, 0.0)]</span>
+
+<span class="sd">            # initial line (starting laser ray)</span>
+<span class="sd">            line = [(30., 0.0, -10.0),(0.0, 0.0, 0.0)]</span>
+
+<span class="sd">            dmax = 75 # steps (resolution)</span>
+<span class="sd">            angle = radians(12)  # max rotation of mirror plane in degrees</span>
+<span class="sd">            axis_z = [0.0, 0.0, 1.0] # rotation z-axis of mirror plane</span>
+<span class="sd">            axis_y = [0.0, 1.0, 0.0] # rotation y-axis of mirror plane</span>
+
+<span class="sd">            polyline_projection = []</span>
+<span class="sd">            for i in range(dmax):</span>
+<span class="sd">                plane_norm = rotate_points([mirror_plane[1]], axis_z, angle * sin(i / dmax * 2 * pi))[0]</span>
+<span class="sd">                plane_norm = rotate_points([plane_norm], axis_y, angle * sin(i / dmax * 4 * pi))[0]</span>
+<span class="sd">                reflected_line = reflect_line_plane(line, [mirror_plane[0],plane_norm])</span>
+<span class="sd">                if not reflected_line:</span>
+<span class="sd">                    continue</span>
+<span class="sd">                intx_pt = intersection_line_plane(reflected_line,projection_plane)</span>
+<span class="sd">                if intx_pt:</span>
+<span class="sd">                    polyline_projection.append(intx_pt)</span>
+
+<span class="sd">            print(polyline_projection)</span>
+
+
+<span class="sd">    Note:</span>
+<span class="sd">        This example visualized in Rhino:</span>
+
+
+<span class="sd">    .. image:: /_images/reflect_line_plane.*</span>
+
+<span class="sd">    """</span>
+    <span class="n">intx_pt</span> <span class="o">=</span> <span class="n">intersection_line_plane</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">intx_pt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">vec_line</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">vec_reflect</span> <span class="o">=</span> <span class="n">mirror_vector_vector</span><span class="p">(</span><span class="n">vec_line</span><span class="p">,</span> <span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">angle_smallest_vectors</span><span class="p">(</span><span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">vec_reflect</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">pi</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">vec_reflect</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="reflect_line_triangle"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.reflect_line_triangle.html#compas.geometry.reflect_line_triangle">[docs]</a><span class="k">def</span> <span class="nf">reflect_line_triangle</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">triangle</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">):</span>
+    <span class="sd">"""Reflects a line at a triangle.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        line (tuple): Two points defining the line.</span>
+<span class="sd">        triangle (sequence of sequence of float): XYZ coordinates of the triangle corners.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        line (tuple): The reflected line starting at the reflection point on the plane,</span>
+<span class="sd">        None otherwise.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The directions of the line and triangular face are important! The line will only be</span>
+<span class="sd">        reflected if it points (direction start -&gt; end) in the direction of the triangular</span>
+<span class="sd">        face and if the line intersects with the front face of the triangular face (normal</span>
+<span class="sd">        direction of the face).</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            # tetrahedron points</span>
+<span class="sd">            pt1 = (0.0, 0.0, 0.0)</span>
+<span class="sd">            pt2 = (6.0, 0.0, 0.0)</span>
+<span class="sd">            pt3 = (3.0, 5.0, 0.0)</span>
+<span class="sd">            pt4 = (3.0, 2.0, 4.0)</span>
+
+<span class="sd">            # triangular tetrahedron faces</span>
+<span class="sd">            tris = []</span>
+<span class="sd">            tris.append([pt4,pt2,pt1])</span>
+<span class="sd">            tris.append([pt4,pt3,pt2])</span>
+<span class="sd">            tris.append([pt4,pt1,pt3])</span>
+<span class="sd">            tris.append([pt1,pt2,pt3])</span>
+
+<span class="sd">            # initial line (starting ray)</span>
+<span class="sd">            line = [(1.0,1.0,0.0),(1.0,1.0,1.0)]</span>
+
+<span class="sd">            # start reflection cycle inside the prism</span>
+<span class="sd">            polyline = []</span>
+<span class="sd">            polyline.append(line[0])</span>
+<span class="sd">            for i in range(10):</span>
+<span class="sd">                for tri in tris:</span>
+<span class="sd">                    reflected_line = reflect_line_triangle(line, tri)</span>
+<span class="sd">                    if reflected_line:</span>
+<span class="sd">                        line = reflected_line</span>
+<span class="sd">                        polyline.append(line[0])</span>
+<span class="sd">                        break</span>
+
+<span class="sd">            print(polyline)</span>
+
+
+<span class="sd">    Note:</span>
+<span class="sd">        This example visualized in Rhino:</span>
+
+
+<span class="sd">    .. image:: /_images/reflect_line_triangle.*</span>
+
+<span class="sd">    """</span>
+    <span class="n">intx_pt</span> <span class="o">=</span> <span class="n">intersection_line_triangle</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">triangle</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">intx_pt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">vec_line</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">vec_normal</span> <span class="o">=</span> <span class="n">normal_triangle</span><span class="p">(</span><span class="n">triangle</span><span class="p">,</span> <span class="n">normalised</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">vec_reflect</span> <span class="o">=</span> <span class="n">mirror_vector_vector</span><span class="p">(</span><span class="n">vec_line</span><span class="p">,</span> <span class="n">vec_normal</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">angle_smallest_vectors</span><span class="p">(</span><span class="n">vec_normal</span><span class="p">,</span> <span class="n">vec_reflect</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">pi</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">vec_reflect</span><span class="p">)]</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># project</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="project_point_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.project_point_plane.html#compas.geometry.project_point_plane">[docs]</a><span class="k">def</span> <span class="nf">project_point_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
+    <span class="sd">"""Project a point onto a plane.</span>
+
+<span class="sd">    The projection is in the direction perpendicular to the plane.</span>
+<span class="sd">    The projected point is thus the closest point on the plane to the original</span>
+<span class="sd">    point.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        point (sequence of float): XYZ coordinates of the original point.</span>
+<span class="sd">        plane (tuple): Base poin.t and normal vector defining the plane</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: XYZ coordinates of the projected point.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        &gt;&gt;&gt; from compas.geometry.transformations import project_point_plane</span>
+<span class="sd">        &gt;&gt;&gt; point = [3.0, 3.0, 3.0]</span>
+<span class="sd">        &gt;&gt;&gt; plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])  # the XY plane</span>
+<span class="sd">        &gt;&gt;&gt; project_point_plane(point, plane)</span>
+<span class="sd">        [3.0, 3.0, 3.0]</span>
+
+
+<span class="sd">    References:</span>
+<span class="sd">        http://stackoverflow.com/questions/8942950/how-do-i-find-the-orthogonal-projection-of-a-point-onto-a-plane</span>
+<span class="sd">        http://math.stackexchange.com/questions/444968/project-a-point-in-3d-on-a-given-plane</span>
+
+<span class="sd">    """</span>
+    <span class="n">base</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">plane</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span>
+    <span class="n">vector</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
+    <span class="n">snormal</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">normal</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">snormal</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="project_points_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.project_points_plane.html#compas.geometry.project_points_plane">[docs]</a><span class="k">def</span> <span class="nf">project_points_plane</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
+    <span class="sd">"""Project multiple points onto a plane.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points (sequence of sequence of float): Cloud of XYZ coordinates.</span>
+<span class="sd">        plane (tuple): Base point and normal vector defining the projection plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of list: The XYZ coordinates of the projected points.</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        :func:`project_point_plane`</span>
+
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">project_point_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="project_point_line"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.project_point_line.html#compas.geometry.project_point_line">[docs]</a><span class="k">def</span> <span class="nf">project_point_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="sd">"""Project a point onto a line.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        point (sequence of float): XYZ coordinates.</span>
+<span class="sd">        line (tuple): Two points defining a line.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: XYZ coordinates of the projected point.</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line</span>
+
+<span class="sd">    """</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">line</span>
+    <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">ap</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">vector_component</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span> <span class="n">ab</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="project_point_line_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.project_point_line_xy.html#compas.geometry.project_point_line_xy">[docs]</a><span class="k">def</span> <span class="nf">project_point_line_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="sd">"""Project a point onto a line.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        point (sequence of float): XY coordinates.</span>
+<span class="sd">        line (tuple): Two points defining a line.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: XY coordinates of the projected point.</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line</span>
+
+<span class="sd">    """</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">line</span>
+    <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">ap</span> <span class="o">=</span> <span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">vector_component_xy</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span> <span class="n">ab</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">add_vectors_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="project_points_line"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.project_points_line.html#compas.geometry.project_points_line">[docs]</a><span class="k">def</span> <span class="nf">project_points_line</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="sd">"""Project multiple points onto a line."""</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">project_point_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="project_points_line_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.project_points_line_xy.html#compas.geometry.project_points_line_xy">[docs]</a><span class="k">def</span> <span class="nf">project_points_line_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="sd">"""Project multiple points onto a line."""</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">project_point_line_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">array</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">asarray</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">vstack</span>
+
+    <span class="kn">from</span> <span class="nn">numpy.random</span> <span class="k">import</span> <span class="n">randint</span>
+
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">200</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">((</span><span class="n">points</span><span class="p">,</span> <span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">/</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+    <span class="n">points_</span> <span class="o">=</span> <span class="n">rotate_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">points_</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">points_</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'bo'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">points_</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points_</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'ro'</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'b-'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'before'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">points_</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points_</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'r-'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'after'</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Rotation </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">180</span> <span class="o">*</span> <span class="n">a</span> <span class="o">/</span> <span class="n">pi</span><span class="p">),</span> <span class="n">fancybox</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 19, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

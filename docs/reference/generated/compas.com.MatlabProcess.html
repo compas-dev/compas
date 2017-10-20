@@ -42,7 +42,7 @@
 <h1>MatlabProcess</h1>
 <dl class="class">
 <dt id="compas.com.MatlabProcess">
-<em class="property">class </em><code class="descclassname">compas.com.</code><code class="descname">MatlabProcess</code><span class="sig-paren">(</span><em>matlab_exec=None</em>, <em>ws_data=None</em>, <em>ws_filename=None</em>, <em>timeout=None</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/com/mlab/process.html#MatlabProcess"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="descclassname">compas.com.</code><code class="descname">MatlabProcess</code><span class="sig-paren">(</span><em>matlab_exec=None</em>, <em>ws_data=None</em>, <em>ws_filename=None</em>, <em>timeout=None</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/com/mlab/process.html#MatlabProcess"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal">object</code></a></p>
 <p>Communicate with Matlab through a subprocess.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
@@ -64,7 +64,6 @@ Defaults to <cite>‘./workspace.mat’</cite>.</li>
 <p class="rubric">Examples</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabProcess</span><span class="p">()</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="mi">37</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'tf = isprime(a);'</span><span class="p">)</span>
@@ -72,22 +71,18 @@ Defaults to <cite>‘./workspace.mat’</cite>.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">ws_data</span><span class="p">)</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'res = isprime(a);'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">read_value</span><span class="p">(</span><span class="s1">'res'</span><span class="p">)</span>
 <span class="go">True</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'res = isprime(a);'</span><span class="p">,</span> <span class="n">ivars</span><span class="o">=</span><span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">17</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">read_value</span><span class="p">(</span><span class="s1">'res'</span><span class="p">)</span>
 <span class="go">True</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'res = isprime(a);'</span><span class="p">,</span> <span class="n">ivars</span><span class="o">=</span><span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">17</span><span class="p">},</span> <span class="n">ovars</span><span class="o">=</span><span class="p">{</span><span class="s1">'res'</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
 <span class="go">{'res': True}</span>
 </code></pre></div>
-
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>

@@ -1,0 +1,628 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../geometry.html">compas.geometry</a>
+</nav>
+<h1>Source code for compas.geometry.intersections</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="sd">""""""</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">fabs</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">scale_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">cross_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">dot_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">length_vector_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">subtract_vectors_xy</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry.queries</span> <span class="k">import</span> <span class="n">is_point_on_segment</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.queries</span> <span class="k">import</span> <span class="n">is_point_on_segment_xy</span>
+
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'intersection_line_line'</span><span class="p">,</span>
+    <span class="s1">'intersection_line_line_xy'</span><span class="p">,</span>
+    <span class="s1">'intersection_segment_segment'</span><span class="p">,</span>
+    <span class="s1">'intersection_segment_segment_xy'</span><span class="p">,</span>
+    <span class="s1">'intersection_circle_circle'</span><span class="p">,</span>
+    <span class="s1">'intersection_circle_circle_xy'</span><span class="p">,</span>
+    <span class="s1">'intersection_line_triangle'</span><span class="p">,</span>
+    <span class="s1">'intersection_line_plane'</span><span class="p">,</span>
+    <span class="s1">'intersection_segment_plane'</span><span class="p">,</span>
+    <span class="s1">'intersection_plane_plane'</span><span class="p">,</span>
+    <span class="s1">'intersection_plane_plane_plane'</span><span class="p">,</span>
+    <span class="s1">'intersection_lines'</span><span class="p">,</span>
+    <span class="s1">'intersection_lines_xy'</span><span class="p">,</span>
+    <span class="s1">'intersection_planes'</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># is_intersection_line_line =&gt; line_line_intersect</span>
+<span class="c1"># if is_intersection_line_line ... =&gt; if line_line_intersect ...</span>
+<span class="c1"># =&gt; if lines_intersect ...</span>
+
+<span class="c1"># ..._xy =&gt; ..._xy</span>
+
+
+<div class="viewcode-block" id="intersection_line_line"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_line_line.html#compas.geometry.intersection_line_line">[docs]</a><span class="k">def</span> <span class="nf">intersection_line_line</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">):</span>
+    <span class="sd">"""Computes the intersection of two lines.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    l1 : tuple, list</span>
+<span class="sd">        XYZ coordinates of two points defining the first line.</span>
+<span class="sd">    l2 : tuple, list</span>
+<span class="sd">        XYZ coordinates of two points defining the second line.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        XYZ coordinates of the two points marking the shortest distance between the lines.</span>
+<span class="sd">        If the lines intersect, these two points are identical.</span>
+<span class="sd">        If the lines are skewed and thus only have an apparent intersection, the two</span>
+<span class="sd">        points are different.</span>
+<span class="sd">        If the lines are parallel, ...</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">l1</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">l2</span>
+
+    <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">cd</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+    <span class="n">n</span>  <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">)</span>
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="n">plane_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">n1</span><span class="p">)</span>
+    <span class="n">plane_2</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span>
+
+    <span class="n">i1</span> <span class="o">=</span> <span class="n">intersection_line_plane</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">plane_2</span><span class="p">)</span>
+    <span class="n">i2</span> <span class="o">=</span> <span class="n">intersection_line_plane</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span> <span class="n">plane_1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="intersection_line_line_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_line_line_xy.html#compas.geometry.intersection_line_line_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_line_line_xy</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">):</span>
+    <span class="sd">"""Compute the intersection of two lines, assuming they lie in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ab : tuple</span>
+<span class="sd">        XY(Z) coordinates of two points defining a line.</span>
+<span class="sd">    cd : tuple</span>
+<span class="sd">        XY(Z) coordinates of two points defining another line.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        If there is no intersection point (parallel lines).</span>
+<span class="sd">    list</span>
+<span class="sd">        XYZ coordinates of intersection point if one exists (Z = 0).</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    Only if the lines are parallel, there is no intersection point.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection</span>
+
+<span class="sd">    """</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">l1</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">l2</span>
+
+    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">b</span>
+    <span class="n">x3</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="n">x4</span><span class="p">,</span> <span class="n">y4</span> <span class="o">=</span> <span class="n">d</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y3</span> <span class="o">-</span> <span class="n">y4</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x3</span> <span class="o">-</span> <span class="n">x4</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">x2</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">x3</span> <span class="o">*</span> <span class="n">y4</span> <span class="o">-</span> <span class="n">y3</span> <span class="o">*</span> <span class="n">x4</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">x3</span> <span class="o">-</span> <span class="n">x4</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">y3</span> <span class="o">-</span> <span class="n">y4</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mf">0.0</span></div>
+
+
+<div class="viewcode-block" id="intersection_segment_segment"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_segment_segment.html#compas.geometry.intersection_segment_segment">[docs]</a><span class="k">def</span> <span class="nf">intersection_segment_segment</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="sd">""""""</span>
+    <span class="n">intx_pt</span> <span class="o">=</span> <span class="n">intersection_line_line</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">intx_pt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment</span><span class="p">(</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">ab</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment</span><span class="p">(</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">intx_pt</span></div>
+
+
+<div class="viewcode-block" id="intersection_segment_segment_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_segment_segment_xy.html#compas.geometry.intersection_segment_segment_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_segment_segment_xy</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
+    <span class="sd">""""""</span>
+    <span class="n">intx_pt</span> <span class="o">=</span> <span class="n">intersection_line_line_xy</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">intx_pt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment_xy</span><span class="p">(</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">ab</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment_xy</span><span class="p">(</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">intx_pt</span></div>
+
+
+<div class="viewcode-block" id="intersection_circle_circle"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_circle_circle.html#compas.geometry.intersection_circle_circle">[docs]</a><span class="k">def</span> <span class="nf">intersection_circle_circle</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="intersection_circle_circle_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_circle_circle_xy.html#compas.geometry.intersection_circle_circle_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_circle_circle_xy</span><span class="p">(</span><span class="n">circle1</span><span class="p">,</span> <span class="n">circle2</span><span class="p">):</span>
+    <span class="sd">"""Calculates the intersection points of two circles in 2d lying in the XY plane.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        circle1 (tuple): center, radius of the first circle in the xy plane.</span>
+<span class="sd">        circle2 (tuple): center, radius of the second circle in the xy plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        points (list of tuples): the intersection points if there are any</span>
+<span class="sd">        None: if there are no intersection points</span>
+
+<span class="sd">    """</span>
+    <span class="n">p1</span><span class="p">,</span> <span class="n">r1</span> <span class="o">=</span> <span class="n">circle1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">circle1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">p2</span><span class="p">,</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">circle2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">circle2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">length_vector_xy</span><span class="p">(</span><span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p1</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">r1</span> <span class="o">==</span> <span class="n">r2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">a</span>   <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">h</span>   <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r1</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="n">cx2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span>
+    <span class="n">cy2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span>
+    <span class="n">i1</span>  <span class="o">=</span> <span class="p">((</span><span class="n">cx2</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="p">(</span><span class="n">cy2</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">i2</span>  <span class="o">=</span> <span class="p">((</span><span class="n">cx2</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="p">(</span><span class="n">cy2</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span></div>
+
+
+<div class="viewcode-block" id="intersection_line_triangle"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_line_triangle.html#compas.geometry.intersection_line_triangle">[docs]</a><span class="k">def</span> <span class="nf">intersection_line_triangle</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">triangle</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Computes the intersection point of a line (ray) and a triangle</span>
+<span class="sd">    based on the Moeller Trumbore intersection algorithm</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        line (tuple): Two points defining the line.</span>
+<span class="sd">        triangle (sequence of sequence of float): XYZ coordinates of the triangle corners.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        point (tuple) if the line (ray) intersects with the triangle, None otherwise.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The line is treated as continues, directed ray and not as line segment with a start and end point</span>
+<span class="sd">    """</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">triangle</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Find vectors for two edges sharing V1</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">e2</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="c1"># Begin calculating determinant - also used to calculate u parameter</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
+    <span class="c1"># if determinant is near zero, ray lies in plane of triangle</span>
+    <span class="n">det</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="c1"># NOT CULLING</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">det</span> <span class="o">&gt;</span> <span class="o">-</span> <span class="n">epsilon</span> <span class="ow">and</span> <span class="n">det</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">inv_det</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">det</span>
+    <span class="c1"># calculate distance from V1 to ray origin</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="c1"># Calculate u parameter and make_blocks bound</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
+    <span class="c1"># The intersection lies outside of the triangle</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">u</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">u</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="c1"># Prepare to make_blocks v parameter</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
+    <span class="c1"># Calculate V parameter and make_blocks bound</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
+    <span class="c1"># The intersection lies outside of the triangle</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">v</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">u</span> <span class="o">+</span> <span class="n">v</span>  <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="n">epsilon</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+    <span class="c1"># No hit</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="intersection_line_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_line_plane.html#compas.geometry.intersection_line_plane">[docs]</a><span class="k">def</span> <span class="nf">intersection_line_plane</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">):</span>
+    <span class="sd">"""Computes the intersection point of a line (ray) and a plane</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        line (tuple): Two points defining the line.</span>
+<span class="sd">        plane (tuple): The base point and normal defining the plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        point (tuple) if the line (ray) intersects with the plane, None otherwise.</span>
+
+<span class="sd">    """</span>
+    <span class="n">pt1</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pt2</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">p_cent</span> <span class="o">=</span> <span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">p_norm</span> <span class="o">=</span> <span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pt2</span><span class="p">,</span> <span class="n">pt1</span><span class="p">)</span>
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">p_norm</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">dot</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">epsilon</span><span class="p">:</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">p_cent</span><span class="p">)</span>
+        <span class="n">fac</span> <span class="o">=</span> <span class="o">-</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">p_norm</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="n">dot</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">fac</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">vec</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="intersection_segment_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_segment_plane.html#compas.geometry.intersection_segment_plane">[docs]</a><span class="k">def</span> <span class="nf">intersection_segment_plane</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">):</span>
+    <span class="sd">"""Computes the intersection point of a line segment and a plane</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        segment (tuple): Two points defining the line segment.</span>
+<span class="sd">        plane (tuple): The base point and normal defining the plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        point (tuple) if the line segment intersects with the plane, None otherwise.</span>
+
+<span class="sd">    """</span>
+    <span class="n">pt1</span> <span class="o">=</span> <span class="n">segment</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pt2</span> <span class="o">=</span> <span class="n">segment</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">p_cent</span> <span class="o">=</span> <span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">p_norm</span> <span class="o">=</span> <span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pt2</span><span class="p">,</span> <span class="n">pt1</span><span class="p">)</span>
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">p_norm</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">dot</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">epsilon</span><span class="p">:</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">p_cent</span><span class="p">)</span>
+        <span class="n">fac</span> <span class="o">=</span> <span class="o">-</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">p_norm</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="n">dot</span>
+        <span class="k">if</span> <span class="n">fac</span> <span class="o">&gt;</span> <span class="mf">0.</span> <span class="ow">and</span> <span class="n">fac</span> <span class="o">&lt;</span> <span class="mf">1.</span><span class="p">:</span>
+            <span class="n">vec</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">fac</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">vec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="intersection_plane_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_plane_plane.html#compas.geometry.intersection_plane_plane">[docs]</a><span class="k">def</span> <span class="nf">intersection_plane_plane</span><span class="p">(</span><span class="n">plane1</span><span class="p">,</span> <span class="n">plane2</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">):</span>
+    <span class="sd">"""Computes the intersection of two planes</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.</span>
+<span class="sd">        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        line (tuple): Two points defining the intersection line. None if planes are parallel.</span>
+
+<span class="sd">    """</span>
+    <span class="c1"># check for parallelity of planes</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">plane1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plane2</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">epsilon</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">vec</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">plane1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plane2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># direction of intersection line</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">plane1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">vec_inplane</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">plane1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">vec_inplane</span><span class="p">)</span>
+    <span class="n">px1</span> <span class="o">=</span> <span class="n">intersection_line_plane</span><span class="p">((</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">),</span> <span class="n">plane2</span><span class="p">)</span>
+    <span class="n">px2</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">px1</span><span class="p">,</span> <span class="n">vec</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">px1</span><span class="p">,</span> <span class="n">px2</span></div>
+
+
+<div class="viewcode-block" id="intersection_plane_plane_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_plane_plane_plane.html#compas.geometry.intersection_plane_plane_plane">[docs]</a><span class="k">def</span> <span class="nf">intersection_plane_plane_plane</span><span class="p">(</span><span class="n">plane1</span><span class="p">,</span> <span class="n">plane2</span><span class="p">,</span> <span class="n">plane3</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">):</span>
+    <span class="sd">"""Computes the intersection of three planes</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.</span>
+<span class="sd">        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        point (tuple): The intersection point. None if two (or all three) planes are parallel.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Currently this only computes the intersection point. E.g.: If two planes</span>
+<span class="sd">        are parallel the intersection lines are not computed. see:</span>
+<span class="sd">        http://geomalgorithms.com/Pic_3-planes.gif</span>
+<span class="sd">    """</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">intersection_plane_plane</span><span class="p">(</span><span class="n">plane1</span><span class="p">,</span> <span class="n">plane2</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">pt</span> <span class="o">=</span> <span class="n">intersection_line_plane</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">plane3</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pt</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="intersection_lines"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_lines.html#compas.geometry.intersection_lines">[docs]</a><span class="k">def</span> <span class="nf">intersection_lines</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="intersection_lines_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_lines_xy.html#compas.geometry.intersection_lines_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_lines_xy</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+    <span class="sd">"""Compute the intersections of mulitple lines in the XY plane.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        lines: (sequence): A list of sequences of XY(Z) coordinates of two 2D or 3D points</span>
+<span class="sd">        (Z will be ignored) representing the lines.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None: if there is no intersection point (parallel lines).</span>
+<span class="sd">        list: XY coordinates of intersection point.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        If the lines are parallel, there is no intersection point.</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection</span>
+
+<span class="sd">    """</span>
+    <span class="kn">import</span> <span class="nn">itertools</span>
+
+    <span class="n">pdic</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">intx</span> <span class="o">=</span> <span class="n">intersection_line_line_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">intx</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">pdic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">intx</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pdic</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pdic</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="intersection_planes"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_planes.html#compas.geometry.intersection_planes">[docs]</a><span class="k">def</span> <span class="nf">intersection_planes</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<span class="c1"># def is_intersection_box_box(box_1, box_2):</span>
+<span class="c1">#     """Checks if two boxes are intersecting in 3D.</span>
+
+<span class="c1">#     Parameters:</span>
+<span class="c1">#         box_1 (list of tuples): list of 8 points (bottom: 0,1,2,3 top: 4,5,6,7)</span>
+<span class="c1">#         box_2 (list of tuples): list of 8 points (bottom: 0,1,2,3 top: 4,5,6,7)</span>
+
+<span class="c1">#     Returns:</span>
+<span class="c1">#         bool: True if the boxes intersect, False otherwise.</span>
+
+<span class="c1">#     Examples:</span>
+
+<span class="c1">#         .. code-block:: python</span>
+
+<span class="c1">#             x, y, z = 1, 1, 1</span>
+<span class="c1">#             box_a = [</span>
+<span class="c1">#                 (0.0, 0.0, 0.0),</span>
+<span class="c1">#                 (x,   0.0, 0.0),</span>
+<span class="c1">#                 (x,   y,   0.0),</span>
+<span class="c1">#                 (0.0, y,   0.0),</span>
+<span class="c1">#                 (0.0, 0.0, z),</span>
+<span class="c1">#                 (x,   0.0, z),</span>
+<span class="c1">#                 (x,   y,   z),</span>
+<span class="c1">#                 (0.0, y,   z)</span>
+<span class="c1">#             ]</span>
+<span class="c1">#             box_b = [</span>
+<span class="c1">#                 (0.5, 0.5, 0.0),</span>
+<span class="c1">#                 (1.5, 0.5, 0.0),</span>
+<span class="c1">#                 (1.5, 1.5, 0.0),</span>
+<span class="c1">#                 (0.5, 1.5, 0.0),</span>
+<span class="c1">#                 (0.5, 0.5, 1.0),</span>
+<span class="c1">#                 (1.5, 0.5, 1.0),</span>
+<span class="c1">#                 (1.5, 1.5, 1.0),</span>
+<span class="c1">#                 (0.5, 1.5, 1.0)</span>
+<span class="c1">#             ]</span>
+<span class="c1">#             if is_box_intersecting_box(box_a, box_b):</span>
+<span class="c1">#                 print("intersection found")</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 print("no intersection found")</span>
+
+<span class="c1">#     Warning:</span>
+<span class="c1">#         Does not check if one box is completely enclosed by the other.</span>
+
+<span class="c1">#     """</span>
+<span class="c1">#     # all edges of box one</span>
+<span class="c1">#     edges = [</span>
+<span class="c1">#         (box_1[0], box_1[1]),</span>
+<span class="c1">#         (box_1[1], box_1[2]),</span>
+<span class="c1">#         (box_1[2], box_1[3]),</span>
+<span class="c1">#         (box_1[3], box_1[0])</span>
+<span class="c1">#     ]</span>
+<span class="c1">#     edges += [</span>
+<span class="c1">#         (box_1[4], box_1[5]),</span>
+<span class="c1">#         (box_1[5], box_1[6]),</span>
+<span class="c1">#         (box_1[6], box_1[7]),</span>
+<span class="c1">#         (box_1[7], box_1[4])</span>
+<span class="c1">#     ]</span>
+<span class="c1">#     edges += [</span>
+<span class="c1">#         (box_1[0], box_1[4]),</span>
+<span class="c1">#         (box_1[1], box_1[5]),</span>
+<span class="c1">#         (box_1[2], box_1[6]),</span>
+<span class="c1">#         (box_1[3], box_1[7])</span>
+<span class="c1">#     ]</span>
+<span class="c1">#     # triangulation of box two</span>
+<span class="c1">#     tris = [</span>
+<span class="c1">#         (box_2[0], box_2[1], box_2[2]),</span>
+<span class="c1">#         (box_2[0], box_2[2], box_2[3])</span>
+<span class="c1">#     ]  # bottom</span>
+<span class="c1">#     tris += [</span>
+<span class="c1">#         (box_2[4], box_2[5], box_2[6]),</span>
+<span class="c1">#         (box_2[4], box_2[6], box_2[7])</span>
+<span class="c1">#     ]  # top</span>
+<span class="c1">#     tris += [</span>
+<span class="c1">#         (box_2[0], box_2[4], box_2[7]),</span>
+<span class="c1">#         (box_2[0], box_2[7], box_2[3])</span>
+<span class="c1">#     ]  # side 1</span>
+<span class="c1">#     tris += [</span>
+<span class="c1">#         (box_2[0], box_2[1], box_2[5]),</span>
+<span class="c1">#         (box_2[0], box_2[5], box_2[4])</span>
+<span class="c1">#     ]  # side 2</span>
+<span class="c1">#     tris += [</span>
+<span class="c1">#         (box_2[1], box_2[2], box_2[6]),</span>
+<span class="c1">#         (box_2[1], box_2[6], box_2[5])</span>
+<span class="c1">#     ]  # side 3</span>
+<span class="c1">#     tris += [</span>
+<span class="c1">#         (box_2[2], box_2[3], box_2[7]),</span>
+<span class="c1">#         (box_2[2], box_2[7], box_2[6])</span>
+<span class="c1">#     ]  # side 4</span>
+<span class="c1">#     # checks for edge triangle intersections</span>
+<span class="c1">#     intx = False</span>
+<span class="c1">#     for pt1, pt2 in edges:</span>
+<span class="c1">#         for tri in tris:</span>
+<span class="c1">#             for line in [(pt1, pt2), (pt2, pt1)]:</span>
+<span class="c1">#                 test_pt = intersection_line_triangle(line, tri)</span>
+<span class="c1">#                 if test_pt:</span>
+<span class="c1">#                     if is_point_on_segment(test_pt, line):</span>
+<span class="c1">#                         # intersection found</span>
+<span class="c1">#                         intx = True</span>
+<span class="c1">#                         break</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 continue</span>
+<span class="c1">#             break</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             continue</span>
+<span class="c1">#         break</span>
+<span class="c1">#     return intx</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 19, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

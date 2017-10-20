@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.numerical.statistics</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">asarray</span>
+
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">svd</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele &lt;vanmelet@ethz.ch&gt;'</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2016, BLOCK Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'principal_components'</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="principal_components"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.principal_components.html#compas.numerical.principal_components">[docs]</a><span class="k">def</span> <span class="nf">principal_components</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">"""Compute the principle components of a set of data points.</span>
+
+<span class="sd">    PCA of a dataset finds the directions along which the variance of the data</span>
+<span class="sd">    is largest, i.e. the directions along which the data is most spread out.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        data (list):</span>
+<span class="sd">            A list of `m` observations, measuring `n` variables.</span>
+<span class="sd">            For example, if the data are points in 2D space, the data parameter</span>
+<span class="sd">            should contain `m` nested lists of `2` variables, the `x` and `y`</span>
+<span class="sd">            coordinates.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list:</span>
+<span class="sd">            A list of principle directions. The number of principle directions</span>
+<span class="sd">            is equal to the dimensionality of the problem(?!).</span>
+<span class="sd">            For example, if the data points are locations in 3D space, three</span>
+<span class="sd">            principle components will be returned. If the data points are</span>
+<span class="sd">            locations in 2D space, only two principle components will be returned.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. plot::</span>
+<span class="sd">            :include-source:</span>
+
+<span class="sd">            from numpy import random</span>
+
+<span class="sd">            import matplotlib.pyplot as plt</span>
+
+<span class="sd">            from compas.numerical.xforms import rotation_matrix</span>
+<span class="sd">            from compas.numerical.transformations import transform</span>
+
+<span class="sd">            from compas.visualization.plotters.core.helpers import Axes3D</span>
+<span class="sd">            from compas.visualization.plotters.core.helpers import Cloud3D</span>
+<span class="sd">            from compas.visualization.plotters.core.helpers import Bounds</span>
+<span class="sd">            from compas.visualization.plotters.core.drawing import create_axes_3d</span>
+
+<span class="sd">            from compas.numerical.statistics import principal_components</span>
+
+<span class="sd">            data = random.rand(300, 3)</span>
+<span class="sd">            data[:, 0] *= 10.0</span>
+<span class="sd">            data[:, 1] *= 1.0</span>
+<span class="sd">            data[:, 2] *= 4.0</span>
+
+<span class="sd">            a = 3.14159 * 30.0 / 180</span>
+<span class="sd">            Ry = rotation_matrix(a, [0, 1.0, 0.0])</span>
+
+<span class="sd">            a = -3.14159 * 45.0 / 180</span>
+<span class="sd">            Rz = rotation_matrix(a, [0, 0, 1.0])</span>
+
+<span class="sd">            R = Rz.dot(Ry)</span>
+
+<span class="sd">            data = transform(data, R)</span>
+
+<span class="sd">            average, vectors, values = principal_components(data)</span>
+
+<span class="sd">            axes = create_axes_3d()</span>
+
+<span class="sd">            Bounds(data).plot(axes)</span>
+<span class="sd">            Cloud3D(data).plot(axes)</span>
+<span class="sd">            Axes3D(average, vectors).plot(axes)</span>
+
+<span class="sd">            plt.show()</span>
+
+<span class="sd">    """</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="n">dim</span><span class="p">,</span> <span class="s2">"The number of observations (n) should be higher than the number of measured variables (dimensions)."</span>
+    <span class="c1"># the average of the observations for each of the variables</span>
+    <span class="c1"># for example, if the data are 2D point coordinates,</span>
+    <span class="c1"># the average is the average of the x-coordinate across all observations</span>
+    <span class="c1"># and the average of the y-coordinate across all observations</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+    <span class="c1"># the spread matrix</span>
+    <span class="c1"># i.e. the variation of each variable compared to the average of the variable</span>
+    <span class="c1"># across all observations</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">mean</span>
+    <span class="c1"># covariance matrix of spread</span>
+    <span class="c1"># note: there is a covariance function in NumPy...</span>
+    <span class="c1"># the shape of the covariance matrix is dim x dim</span>
+    <span class="c1"># for example, if the data are 2D point coordinates, the shape of C is 2 x 2</span>
+    <span class="c1"># the diagonal of the covariance matrix contains the variance of each variable</span>
+    <span class="c1"># the off-diagonal elements of the covariannce matrix contain the covariance</span>
+    <span class="c1"># of two independent variables</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">dim</span><span class="p">,</span> <span class="s2">"The shape of the covariance matrix is not correct."</span>
+    <span class="c1"># SVD of covariance matrix</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vT</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># eigenvectors</span>
+    <span class="c1"># ------------</span>
+    <span class="c1"># note: the eigenvectors are normalised</span>
+    <span class="c1"># note: vT is exactly what it says it will be =&gt; the transposed eigenvectors</span>
+    <span class="c1"># =&gt; take the rows of vT, or the columns of v</span>
+    <span class="c1"># the right-singular vectors of C (the columns of V or the rows of Vt)</span>
+    <span class="c1"># are the eigenvectors of CtC</span>
+    <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">vT</span>
+    <span class="c1"># eigenvalues</span>
+    <span class="c1"># -----------</span>
+    <span class="c1"># the nonzero singular values of C are the square roots</span>
+    <span class="c1"># of the nonzero eigenvalues of CtC and CCt</span>
+    <span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">s</span>
+    <span class="c1"># return</span>
+    <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">eigenvectors</span><span class="p">,</span> <span class="n">eigenvalues</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">random</span>
+
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+    <span class="kn">from</span> <span class="nn">compas.numerical.xforms</span> <span class="k">import</span> <span class="n">rotation_matrix</span>
+    <span class="kn">from</span> <span class="nn">compas.numerical.transformations</span> <span class="k">import</span> <span class="n">transform</span>
+
+    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.helpers</span> <span class="k">import</span> <span class="n">Axes3D</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.helpers</span> <span class="k">import</span> <span class="n">Cloud3D</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.helpers</span> <span class="k">import</span> <span class="n">Bounds</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.drawing</span> <span class="k">import</span> <span class="n">create_axes_3d</span>
+
+    <span class="kn">from</span> <span class="nn">compas.numerical.statistics</span> <span class="k">import</span> <span class="n">principal_components</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">10.0</span>
+    <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">1.0</span>
+    <span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">4.0</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">3.14159</span> <span class="o">*</span> <span class="mf">30.0</span> <span class="o">/</span> <span class="mi">180</span>
+    <span class="n">Ry</span> <span class="o">=</span> <span class="n">rotation_matrix</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.14159</span> <span class="o">*</span> <span class="mf">45.0</span> <span class="o">/</span> <span class="mi">180</span>
+    <span class="n">Rz</span> <span class="o">=</span> <span class="n">rotation_matrix</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="n">Rz</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ry</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+
+    <span class="n">average</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">principal_components</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">create_axes_3d</span><span class="p">()</span>
+
+    <span class="n">Bounds</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span>
+    <span class="n">Cloud3D</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span>
+    <span class="n">Axes3D</span><span class="p">(</span><span class="n">average</span><span class="p">,</span> <span class="n">vectors</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 19, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

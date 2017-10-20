@@ -42,7 +42,7 @@
 <h1>volmesh_draw_edges</h1>
 <dl class="function">
 <dt id="compas_rhino.helpers.volmesh_draw_edges">
-<code class="descclassname">compas_rhino.helpers.</code><code class="descname">volmesh_draw_edges</code><span class="sig-paren">(</span><em>volmesh</em>, <em>keys=None</em>, <em>color=None</em>, <em>layer=None</em>, <em>clear_layer=False</em>, <em>redraw=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/helpers/volmesh.html#volmesh_draw_edges"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas_rhino.helpers.</code><code class="descname">volmesh_draw_edges</code><span class="sig-paren">(</span><em>volmesh</em>, <em>keys=None</em>, <em>color=None</em>, <em>layer=None</em>, <em>clear_layer=False</em>, <em>redraw=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas_rhino/helpers/volmesh.html#volmesh_draw_edges"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw the edges of a volmesh.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
@@ -74,7 +74,6 @@ Default is to draw in the current layer.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">color</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">((</span><span class="s1">'#ff0000'</span><span class="p">)</span> <span class="k">if</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_is_on_boundary</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="s1">'#00ff00'</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh_draw_edges</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
 </code></pre></div>
-
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">

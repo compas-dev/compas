@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.interop.shapeop.shapeop</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="sd">"""Wrapper for the ShapeOp library."""</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">compas.interop.shapeop._shapeop</span> <span class="k">import</span> <span class="o">*</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">compas.interop.shapeop._shapeop_windows</span> <span class="k">import</span> <span class="o">*</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span>
+
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'planarize_mesh'</span><span class="p">,</span>
+    <span class="s1">'circularize_mesh'</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="planarize_mesh"><a class="viewcode-back" href="../../../../reference/generated/compas.interop.shapeop.planarize_mesh.html#compas.interop.shapeop.planarize_mesh">[docs]</a><span class="k">def</span> <span class="nf">planarize_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">""""""</span>
+
+    <span class="c1"># replace this by explicit closeness values</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="n">fixed</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
+
+    <span class="c1"># create a shapeop solver</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">ShapeOpSolver</span><span class="p">(</span><span class="n">kmax</span><span class="o">=</span><span class="n">kmax</span><span class="p">)</span>
+
+    <span class="c1"># make a key-index map</span>
+    <span class="c1"># and count the number of vertices in the mesh</span>
+    <span class="n">key_index</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+
+    <span class="c1"># get the vertex coordinates</span>
+    <span class="n">xyz</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">(</span><span class="s1">'xyz'</span><span class="p">)</span>
+
+    <span class="c1"># set the coordinates in the solver</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">set_points</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+
+    <span class="c1"># add a plane constraint to all faces</span>
+    <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">add_plane_constraint</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># add a closeness constraint to the fixed vertices</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">:</span>
+        <span class="n">vertex</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">add_closeness_constraint</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># solve</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+    <span class="c1"># update the points array</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
+
+    <span class="c1"># clean up</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+    <span class="c1"># update</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)):</span>
+        <span class="n">index</span> <span class="o">*=</span> <span class="mi">3</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="circularize_mesh"><a class="viewcode-back" href="../../../../reference/generated/compas.interop.shapeop.circularize_mesh.html#compas.interop.shapeop.circularize_mesh">[docs]</a><span class="k">def</span> <span class="nf">circularize_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">""""""</span>
+
+    <span class="c1"># replace this by explicit closeness values</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="n">fixed</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
+
+    <span class="c1"># create a shapeop solver</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">ShapeOpSolver</span><span class="p">(</span><span class="n">kmax</span><span class="o">=</span><span class="n">kmax</span><span class="p">)</span>
+
+    <span class="c1"># make a key-index map</span>
+    <span class="c1"># and count the number of vertices in the mesh</span>
+    <span class="n">key_index</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+
+    <span class="c1"># get the vertex coordinates</span>
+    <span class="n">xyz</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">(</span><span class="s1">'xyz'</span><span class="p">)</span>
+
+    <span class="c1"># set the coordinates in the solver</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">set_points</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+
+    <span class="c1"># add a plane constraint to all faces</span>
+    <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">add_circle_constraint</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># add a closeness constraint to the fixed vertices</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">:</span>
+        <span class="n">vertex</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">add_closeness_constraint</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># solve</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+    <span class="c1"># update the points array</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
+
+    <span class="c1"># clean up</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+    <span class="c1"># update</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)):</span>
+        <span class="n">index</span> <span class="o">*=</span> <span class="mi">3</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">compas</span>
+
+    <span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.viewer</span> <span class="k">import</span> <span class="n">MeshViewer</span>
+
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'hypar.obj'</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'is_fixed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+
+    <span class="n">circularize_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">'is_fixed'</span><span class="p">:</span> <span class="kc">True</span><span class="p">}),</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="c1"># ideally:</span>
+    <span class="c1"># viewer = Viewer()</span>
+    <span class="c1"># viewer.draw_points(points)</span>
+    <span class="c1"># viewer.draw_lines(lines)</span>
+    <span class="c1"># viewer.draw_polygons(polygons)</span>
+    <span class="c1"># viewer.draw_vectors(vectors)</span>
+    <span class="c1"># viewer.draw_...</span>
+    <span class="c1"># viewer.draw_network(network)</span>
+    <span class="c1"># viewer.draw_mesh(mesh)</span>
+
+    <span class="n">viewer</span> <span class="o">=</span> <span class="n">MeshViewer</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+    <span class="n">viewer</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+    <span class="n">viewer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 19, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>
