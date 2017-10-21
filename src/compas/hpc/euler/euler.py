@@ -254,5 +254,3 @@ if __name__ == '__main__':
     show_euler_jobs(client=client, type='all')
     submit_job(client=client, command='./test', time='5', output='output.txt', cpus=2)
     client.close()
-
-    # -n 24 python script.py

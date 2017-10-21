@@ -1,7 +1,7 @@
 from math import atan2
 from math import acos
 
-from compas_blender.utilities import delete_objects
+from compas_blender.utilities import delete_object
 from compas_blender.utilities import deselect_all_objects
 from compas_blender.utilities import set_object_layer
 from compas_blender.utilities import set_objects_show_name
@@ -71,23 +71,19 @@ def create_material(color, alpha=1):
         - If the material already exists, the existing object is returned.
 
     Parameters:
-        name (str): Name of the material.
         color (list): [R, G, B] with values in range [0, 1].
         alpha (float): Alpha value in range [0, 1].
 
     Returns:
         obj: Created/existing material object.
     """
-    ckey = '-'.join(['{0:.2f}'.format(i) for i in color])
+    ckey = '-'.join(['{0:.2f}'.format(i) for i in color + [alpha]])
     names = [i.name for i in list(bpy.data.materials)]
     if ckey not in names:
         material = bpy.data.materials.new(name=ckey)
         material.diffuse_color = color
-        material.diffuse_shader = 'LAMBERT'
-        material.diffuse_intensity = 1
         material.use_transparency = True
         material.alpha = alpha
-        material.ambient = 1
         material.emit = 2
         return material
     else:
@@ -102,35 +98,38 @@ def draw_cubes(pos=[[0, 0, 0]], radius=1, layer=0, color=[1, 1, 1]):
     """ Draw multiple cubes.
 
     Parameters:
-        pos (list): Centroid locations [x, y, z].
+        pos (list): Centroid locations [[x, y, z], ..].
         radius (float): Radius of cubes.
         layer (int): Layer number.
         color (list): Material color.
 
     Returns:
-        obj: Created cube objects.
+        list: Created cube objects.
     """
     return xdraw_cubes([{'pos': i, 'radius': radius, 'layer': layer, 'color': color} for i in pos])
 
 
-def draw_cuboid(Lx=1, Ly=1, Lz=1, location=[0, 0, 0], layer=0, wire=True):
+def draw_cuboid(Lx=1, Ly=1, Lz=1, pos=[0, 0, 0], layer=0, color=[1, 1, 1], wire=True):
     """ Draw a cuboid.
 
     Parameters:
         Lx (float): Length in x.
         Ly (float): Length in y.
         Lz (float): Length in z.
-        location (list): Centroid location [x, y, z].
+        pos (list): Centroid position [x, y, z].
         layer (int): Layer number.
+        color (list): Material color.
         wire (bool): Show wires for faces.
 
     Returns:
         obj: Created cube object.
     """
-    bpy.ops.mesh.primitive_cube_add(radius=1, location=location)
+    bpy.ops.mesh.primitive_cube_add(radius=1, location=pos)
     cube = bpy.context.object
     cube.dimensions = [Lx, Ly, Lz]
     cube.show_wire = wire
+    material = create_material(color=color)
+    cube.data.materials.append(material)
     set_object_layer(object=cube, layer=layer)
     cube.select = False
     return cube
@@ -144,10 +143,10 @@ def draw_lines(start=[[0, 0, 0]], end=[[1, 1, 1]], width=1, layer=0, color=[1, 1
         end (list): Line end points.
         width (float): Width of lines.
         layer (int): Layer number.
-        color (str): Material color.
+        color (list): Material color.
 
     Returns:
-        obj: Created line objects.
+        list: Created line objects.
     """
     return xdraw_lines([{'start': u, 'end': v, 'width': width, 'layer': layer, 'color': color}
                         for u, v in zip(start, end)])
@@ -212,7 +211,7 @@ def draw_pipes(start=[[0, 0, 0]], end=[[1, 1, 1]], radius=1, layer=0, color=[1, 
         color (list): Material color.
 
     Returns:
-        obj: Created pipe objects.
+        list: Created pipe objects.
     """
     return xdraw_pipes([{'start': u, 'end': v, 'radius': radius, 'layer': layer, 'color': color}
                         for u, v in zip(start, end)])
@@ -222,12 +221,12 @@ def draw_points(pos=[[0, 0, 0]], radius=1, layer=0):
     """ Draw multiple points (empties).
 
     Parameters:
-        pos (list): Centroid locations [x, y, z].
+        pos (list): Centroid locations [[x, y, z], ...].
         radius (float): Radius of points.
         layer (int): Layer number.
 
     Returns:
-        obj: Created point objects.
+        list: Created point objects.
     """
     return xdraw_points([{'pos': i, 'radius': radius, 'layer': layer} for i in pos])
 
@@ -236,13 +235,13 @@ def draw_spheres(pos=[[0, 0, 0]], radius=1, layer=0, color=[1, 1, 1]):
     """ Draw multiple spheres.
 
     Parameters:
-        pos (list): Centroid locations [x, y, z].
+        pos (list): Centroid locations [[x, y, z], ...].
         radius (float): Radius of spheres.
         layer (int): Layer number.
         color (list): Material color.
 
     Returns:
-        obj: Created sphere objects.
+        list: Created sphere objects.
     """
     return xdraw_spheres([{'pos': i, 'radius': radius, 'layer': layer, 'color': color} for i in pos])
 
@@ -282,7 +281,7 @@ def xdraw_cubes(cubes):
         copy.data = copy.data.copy()
         set_object_layer(object=copy, layer=cube.get('layer', 0))
         objects.append(copy)
-    delete_objects(objects=[object])
+    delete_object(object=object)
     return _link_objects(objects)
 
 
@@ -296,13 +295,13 @@ def xdraw_faces(faces, alpha=1):
     Returns:
         None
     """
-    for face in iter(faces):
-        name = face.get('name')
+    for face in faces:
+        color = face.get('color', [1, 1, 1])
         points = face['points']
-        mfaces = [list(range(len(points)))]
-        color = face.get('color')
+        name = face.get('name', 'face')
+        indices = [list(range(len(points)))]
         layer = face.get('layer')
-        xdraw_mesh(name=name, vertices=points, faces=mfaces, color=color, layer=layer, alpha=alpha)
+        xdraw_mesh(name=name, vertices=points, faces=indices, color=color, layer=layer, alpha=alpha)
 
 
 def xdraw_labels(labels):
@@ -316,7 +315,6 @@ def xdraw_labels(labels):
     """
     objects = xdraw_pointcloud(points=labels)
     set_objects_show_name(objects=objects, show=True)
-    deselect_all_objects()
     return objects
 
 
@@ -352,7 +350,7 @@ def xdraw_lines(lines):
 
 
 def xdraw_mesh(name, vertices=[], edges=[], faces=[], layer=0, color=[1, 1, 1], alpha=1, wire=True):
-    """ Draws a Blender mesh in the given layer.
+    """ Draws a Blender mesh.
 
     Parameters:
         name (str): Blender mesh name.
@@ -411,7 +409,7 @@ def xdraw_pipes(pipes, div=8):
         copy.data.materials.append(material)
         set_object_layer(object=copy, layer=pipe.get('layer', 0))
         objects.append(copy)
-    delete_objects(objects=[object])
+    delete_object(object=object)
     return _link_objects(objects)
 
 
@@ -433,7 +431,7 @@ def xdraw_pointcloud(points):
         copy.data = copy.data.copy()
         set_object_layer(object=copy, layer=point.get('layer', 0))
         objects.append(copy)
-    delete_objects(objects=[object])
+    delete_object(object=object)
     return _link_objects(objects)
 
 
@@ -456,7 +454,7 @@ def xdraw_points(points):
         copy.name = point.get('name', 'point')
         set_object_layer(object=copy, layer=point.get('layer', 0))
         objects.append(copy)
-    delete_objects(objects=[object])
+    delete_object(object=object)
     return _link_objects(objects)
 
 
@@ -483,7 +481,7 @@ def xdraw_spheres(spheres, div=20):
         copy.data.materials.append(material)
         set_object_layer(object=copy, layer=sphere.get('layer', 0))
         objects.append(copy)
-    delete_objects(objects=[object])
+    delete_object(object=object)
     return _link_objects(objects)
 
 
@@ -501,16 +499,16 @@ def xdraw_texts(texts):
     objects = []
     for text in texts:
         copy = object.copy()
+        copy.scale *= text.get('radius', 1)
+        copy.location = Vector(text.get('pos', [0, 0, 0]))
         copy.name = text.get('name', 'text')
         copy.data.body = text.get('text', 'text')
-        copy.location = Vector(text.get('pos', [0, 0, 0]))
-        copy.scale *= text.get('radius', 1)
         copy.data = copy.data.copy()
         material = create_material(color=text.get('color', [1, 1, 1]))
         copy.data.materials.append(material)
         set_object_layer(object=copy, layer=text.get('layer', 0))
         objects.append(copy)
-    delete_objects(objects=[object])
+    delete_object(object=object)
     return _link_objects(objects)
 
 
@@ -532,29 +530,28 @@ if __name__ == '__main__':
     from numpy.random import rand
 
     clear_layer(layer=1)
-    delete_all_materials()
 
-    vertices = [[5, 0, 0], [6, 0, 0], [6, 1, 0], [5, 1, 0]]
+    vertices = [[-1, 0, 0], [-2, 0, 0], [-2, 1, 0], [-1, 1, 0]]
     faces = [[0, 1, 2], [2, 3, 0]]
-    bmesh = xdraw_mesh(name='bmesh', vertices=vertices, faces=faces, color=[1, 1, 0], alpha=0.5, layer=1)
+    bmesh = xdraw_mesh(name='bmesh', vertices=vertices, faces=faces, color=[1, 1, 1], alpha=0.5, layer=1)
 
-    draw_cubes(pos=[[0, 2, 0]], radius=0.5, color=[1, 0, 0])
-    xdraw_cubes([{'radius': 0.5, 'pos': [0, 0, 0], 'color': [1, 0, 0], 'layer': 1}])
+    draw_cubes(pos=[[0, 3, 0]], radius=0.5, color=[1, 1, 0], layer=1)
+    xdraw_cubes([{'radius': 0.5, 'pos': [0, 2, 0], 'color': [1, 0, 0], 'layer': 1}])
 
-    draw_spheres(pos=[[2, 2, 0]], radius=0.5, color=[0, 1, 0])
-    xdraw_spheres([{'radius': 0.5, 'pos': [2, 0, 0]}])
+    draw_spheres(pos=[[-2, 2, 0]], radius=0.5, color=[0, 1, 0], layer=1)
+    xdraw_spheres([{'radius': 0.5, 'pos': [-2, -1, 0], 'layer': 1}])
 
-    xdraw_texts([{'radius': 0.5, 'pos': [4, 0, 0], 'color': [0, 0, 1], 'text': 'TEXT'}])
+    xdraw_texts([{'radius': 0.5, 'pos': [5, 0, 0], 'color': [0, 0, 1], 'text': 'TEXT', 'layer': 1}])
 
-    points = [{'pos': [i[0], i[1], i[2] + 2], 'radius': 0.01} for i in list(rand(10, 3))]
+    points = [{'pos': [i[0], i[1], i[2] + 2], 'radius': 0.01, 'layer': 1} for i in list(rand(10, 3))]
     xdraw_points(points)
 
-    draw_lines(start=[[3, 0, 0]], end=[[5, 2, 0]], width=0.1, color=[0, 0, 0])
-    xdraw_lines([{'color': [0, 0.5, 1], 'start': [3, 1, 0], 'end': [5, 3, 0], 'width': 0.1}])
+    draw_lines(start=[[3, 0, 0]], end=[[5, 2, 0]], width=0.1, color=[0, 0, 0], layer=1)
+    xdraw_lines([{'color': [0, 0.5, 1], 'start': [3, 1, 0], 'end': [5, -1, 0], 'width': 0.1, 'layer': 1}])
 
-    draw_pipes(start=[[0, -3, 0]], end=[[0, -3, 1]], radius=0.1, color=[0, 0, 1])
-    xdraw_pipes([{'radius': 0.1, 'start': [0, -2, 0], 'end': [0, -2, 1], 'color': [0, 1, 0]}])
+    draw_pipes(start=[[0, -2, 0]], end=[[0, -2, 1]], radius=0.1, color=[0, 0, 1], layer=1)
+    xdraw_pipes([{'radius': 0.1, 'start': [0, -1, 0], 'end': [0, -1, 1], 'color': [0, 1, 0], 'layer': 1}])
 
     draw_plane(Lx=1, Ly=1, dx=0.5, dy=0.5, bracing='cross', color=[1, 0, 1], layer=1)
 
-    draw_cuboid(Lx=1, Ly=1, Lz=1, location=[0, 0, 3], layer=1)
+    draw_cuboid(Lx=1, Ly=3, Lz=2, pos=[2, 0, 0], color=[1, 1, 0], layer=1)
