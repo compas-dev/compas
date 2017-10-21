@@ -4,14 +4,7 @@ __license__   = 'MIT license'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = [
-    'mesh_insert_edge',
-]
-
-
-# this is the same as split_face
-def mesh_insert_edge(u, v):
-    pass
+__all__ = []
 
 
 # ==============================================================================

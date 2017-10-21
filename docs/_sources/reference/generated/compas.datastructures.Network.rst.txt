@@ -29,7 +29,6 @@ Network
       ~Network.edge_point
       ~Network.edge_vector
       ~Network.edges
-      ~Network.edges_where
       ~Network.from_data
       ~Network.from_json
       ~Network.from_lines
@@ -46,6 +45,7 @@ Network
       ~Network.get_vertex_attributes
       ~Network.get_vertices_attribute
       ~Network.get_vertices_attributes
+      ~Network.gkey_key
       ~Network.has_edge
       ~Network.has_vertex
       ~Network.index_key
@@ -55,10 +55,9 @@ Network
       ~Network.is_vertex_connected
       ~Network.is_vertex_leaf
       ~Network.is_vertex_orphan
+      ~Network.key_gkey
       ~Network.key_index
       ~Network.leaves
-      ~Network.max_vertex_attribute_value
-      ~Network.min_vertex_attribute_value
       ~Network.number_of_edges
       ~Network.number_of_halfedges
       ~Network.number_of_vertices
@@ -93,7 +92,6 @@ Network
       ~Network.vertex_neighbours_in
       ~Network.vertex_neighbours_out
       ~Network.vertices
-      ~Network.vertices_where
    
    
 

@@ -42,7 +42,7 @@
 <h1>scalarfield_contours</h1>
 <dl class="function">
 <dt id="compas.numerical.scalarfield_contours">
-<code class="descclassname">compas.numerical.</code><code class="descname">scalarfield_contours</code><span class="sig-paren">(</span><em>xy</em>, <em>s</em>, <em>N=50</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/numerical/geometry.html#scalarfield_contours"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.numerical.</code><code class="descname">scalarfield_contours</code><span class="sig-paren">(</span><em>xy</em>, <em>s</em>, <em>N=50</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/numerical/geometry.html#scalarfield_contours"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Compute the contour lines of a scalarfield.</p>
 <p>The computation of the contour lines is based on the <code class="docutils literal">contours</code> function
 available through matplotlib
@@ -69,20 +69,21 @@ Each contour line is a list of paths, and each path is a list polygons.</p>
 </table>
 <p class="rubric">Examples</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="kn">import</span> <span class="n">scalarfield_contours</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
-<span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="p">]</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
 <span class="n">centroid</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
 
 <span class="n">distances</span> <span class="o">=</span> <span class="p">[</span><span class="n">distance_point_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">centroid</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
 
 <span class="n">xy</span> <span class="o">=</span> <span class="p">[[</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">))]</span>
 
-<span class="n">levels</span><span class="p">,</span> <span class="n">contours</span> <span class="o">=</span> <span class="n">contours_scalarfield</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">distances</span><span class="p">)</span>
+<span class="n">levels</span><span class="p">,</span> <span class="n">contours</span> <span class="o">=</span> <span class="n">scalarfield_contours</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">distances</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">contours</span><span class="p">)):</span>
     <span class="n">level</span> <span class="o">=</span> <span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -92,7 +93,6 @@ Each contour line is a list of paths, and each path is a list polygons.</p>
         <span class="k">for</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
             <span class="k">print</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
 </code></pre></div>
-
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><code class="xref py py-func docutils literal">compas.datastructures.numerical.geometry.mesh_contours()</code></p>
@@ -130,6 +130,7 @@ Each contour line is a list of paths, and each path is a list polygons.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -161,7 +162,7 @@ Each contour line is a list of paths, and each path is a list polygons.</p>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

@@ -42,7 +42,7 @@
 <h1>trimesh_collapse_edge</h1>
 <dl class="function">
 <dt id="compas.datastructures.trimesh_collapse_edge">
-<code class="descclassname">compas.datastructures.</code><code class="descname">trimesh_collapse_edge</code><span class="sig-paren">(</span><em>mesh</em>, <em>u</em>, <em>v</em>, <em>t=0.5</em>, <em>allow_boundary=False</em>, <em>fixed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/mesh/operations/collapse.html#trimesh_collapse_edge"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.datastructures.</code><code class="descname">trimesh_collapse_edge</code><span class="sig-paren">(</span><em>mesh</em>, <em>u</em>, <em>v</em>, <em>t=0.5</em>, <em>allow_boundary=False</em>, <em>fixed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/datastructures/mesh/operations/collapse.html#trimesh_collapse_edge"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Collapse an edge to its first or second vertex, or to an intermediate
 point.</p>
 <p>An edge can only be collapsed if the collapse is <cite>legal</cite>. A collapse is
@@ -80,8 +80,8 @@ collapse to a point between <cite>u</cite> and <cite>v</cite>.</li>
 <p class="rubric">Example</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
@@ -92,17 +92,16 @@ collapse to a point between <cite>u</cite> and <cite>v</cite>.</li>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-trimesh_collapse_edge-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-trimesh_collapse_edge-1.png"/>
 </figure>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.operations</span> <span class="kn">import</span> <span class="n">mesh_split_face</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.operations</span> <span class="kn">import</span> <span class="n">trimesh_swap_edge</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.operations</span> <span class="kn">import</span> <span class="n">trimesh_collapse_edge</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">mesh_split_face</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">trimesh_swap_edge</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">trimesh_collapse_edge</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
 
@@ -132,7 +131,6 @@ collapse to a point between <cite>u</cite> and <cite>v</cite>.</li>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-trimesh_collapse_edge-2.png" class="figure-img img-fluid" src="../../images/compas-datastructures-trimesh_collapse_edge-2.png"/>
 </figure>
@@ -169,6 +167,7 @@ collapse to a point between <cite>u</cite> and <cite>v</cite>.</li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -200,7 +199,7 @@ collapse to a point between <cite>u</cite> and <cite>v</cite>.</li>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

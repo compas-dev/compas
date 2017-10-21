@@ -42,7 +42,7 @@
 <h1>network_find_faces</h1>
 <dl class="function">
 <dt id="compas.datastructures.network_find_faces">
-<code class="descclassname">compas.datastructures.</code><code class="descname">network_find_faces</code><span class="sig-paren">(</span><em>network</em>, <em>breakpoints=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/network/algorithms/duality.html#network_find_faces"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.datastructures.</code><code class="descname">network_find_faces</code><span class="sig-paren">(</span><em>network</em>, <em>breakpoints=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/datastructures/network/algorithms/duality.html#network_find_faces"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Find the faces of a network.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
@@ -83,9 +83,9 @@ from the highest number of the faces found initially.</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># no breakpoints</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="kn">import</span> <span class="n">FaceNetwork</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms</span> <span class="kn">import</span> <span class="n">network_find_faces</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">FaceNetwork</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_find_faces</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 
 <span class="n">network</span> <span class="o">=</span> <span class="n">FaceNetwork</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
 
@@ -99,16 +99,15 @@ from the highest number of the faces found initially.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-network_find_faces-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-network_find_faces-1.png"/>
 </figure>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># leaves as breakpoints</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="kn">import</span> <span class="n">FaceNetwork</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms</span> <span class="kn">import</span> <span class="n">network_find_faces</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">FaceNetwork</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_find_faces</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 
 <span class="n">network</span> <span class="o">=</span> <span class="n">FaceNetwork</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
 
@@ -122,7 +121,6 @@ from the highest number of the faces found initially.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-network_find_faces-2.png" class="figure-img img-fluid" src="../../images/compas-datastructures-network_find_faces-2.png"/>
 </figure>
@@ -159,6 +157,7 @@ from the highest number of the faces found initially.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -190,7 +189,7 @@ from the highest number of the faces found initially.</p>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

@@ -42,9 +42,9 @@
 <h1>Mesh</h1>
 <dl class="class">
 <dt id="compas.datastructures.Mesh">
-<em class="property">class </em><code class="descclassname">compas.datastructures.</code><code class="descname">Mesh</code><a class="reference internal" href="../../_modules/compas/datastructures/mesh/mesh.html#Mesh"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal">compas.datastructures.mixins.MagicMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.ConversionMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.FactoryMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.FaceHelpersMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.FaceAttributesMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.EdgeGeometryMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.EdgeHelpersMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.EdgeAttributesMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.VertexCoordinatesDescriptorsMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.VertexHelpersMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.VertexAttributesMixin</code>, <code class="xref py py-class docutils literal">compas.datastructures.Datastructure</code></p>
-<p>Class representing a mesh.</p>
+<em class="property">class </em><code class="descclassname">compas.datastructures.</code><code class="descname">Mesh</code><a class="reference internal" href="../../modules/compas/datastructures/mesh/mesh.html#Mesh"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal">compas.datastructures.mixins.fromto.FromToJson</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.fromto.FromToData</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.geometry.EdgeGeometry</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.helpers.FaceHelpers</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.helpers.EdgeHelpers</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.helpers.VertexHelpers</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.mappings.FaceMappings</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.mappings.EdgeMappings</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.mappings.VertexMappings</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.descriptors.VertexCoordinatesDescriptors</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.attributes.FaceAttributesManagement</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.attributes.EdgeAttributesManagement</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.attributes.VertexAttributesManagement</code>, <code class="xref py py-class docutils literal">compas.datastructures.Datastructure</code></p>
+<p>Definition of a mesh.</p>
 <p>The datastructure of the mesh is implemented as a half-edge.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
@@ -105,7 +105,7 @@ by storing them on dual vertices.</p>
 <p class="rubric">Examples</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
@@ -115,13 +115,12 @@ by storing them on dual vertices.</p>
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-Mesh-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Mesh-1.png"/>
 </figure>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
@@ -131,13 +130,12 @@ by storing them on dual vertices.</p>
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-Mesh-2.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Mesh-2.png"/>
 </figure>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
@@ -147,7 +145,6 @@ by storing them on dual vertices.</p>
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">fkey</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()})</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-Mesh-3.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Mesh-3.png"/>
 </figure>
@@ -155,12 +152,10 @@ by storing them on dual vertices.</p>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="gp">...</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
 <span class="gp">...</span>
 </code></pre></div>
-
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -214,7 +209,7 @@ by storing them on dual vertices.</p>
 <td></td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">edge_coordinates</code>(u, v[, axes])</td>
-<td></td>
+<td>Return the coordinates of the start and end point of an edge.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">edge_direction</code>(u, v)</td>
 <td>Return the direction vector of an edge.</td>
@@ -223,7 +218,7 @@ by storing them on dual vertices.</p>
 <td></td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">edge_label_name</code>(u, v)</td>
-<td></td>
+<td>Get the name of an edge label.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">edge_length</code>(u, v)</td>
 <td>Return the length of an edge.</td>
@@ -232,7 +227,7 @@ by storing them on dual vertices.</p>
 <td>Return the location of the midpoint of an edge.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">edge_name</code>(u, v)</td>
-<td></td>
+<td>Get the name of an edge.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">edge_point</code>(u, v[, t])</td>
 <td>Return the location of a point along an edge.</td>
@@ -245,9 +240,6 @@ by storing them on dual vertices.</p>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">edges_on_boundary</code>()</td>
 <td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">edges_where</code>(conditions)</td>
-<td>Get edges for which a certain condition or set of conditions is <code class="docutils literal">True</code>.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">face_adjacency</code>()</td>
 <td></td>
@@ -268,7 +260,7 @@ by storing them on dual vertices.</p>
 <td>Return the coordinates of the vertices of a face.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">face_corners</code>(fkey)</td>
-<td></td>
+<td>Return triplets of face vertices forming the corners of the face.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">face_edges</code>(fkey)</td>
 <td>Return the edges corresponding to the halfedges of a face.</td>
@@ -277,10 +269,10 @@ by storing them on dual vertices.</p>
 <td>Return the halfedges of a face.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">face_label_name</code>(fkey)</td>
-<td></td>
+<td>Get the name of a face label.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">face_name</code>(fkey)</td>
-<td></td>
+<td>Get the name of a face.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">face_neighbourhood</code>(fkey)</td>
 <td>Return the neighbours of a face across both edges and corners.</td>
@@ -309,14 +301,11 @@ by storing them on dual vertices.</p>
 <tr class=""><td><code class="xref py py-obj docutils literal">faces_on_boundary</code>()</td>
 <td>Return the faces on the boundary.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">faces_where</code>(conditions)</td>
-<td></td>
-</tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">from_data</code>(data)</td>
-<td>Construct a mesh from actual mesh data.</td>
+<td>Construct a datastructure from structured data.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">from_json</code>(filepath)</td>
-<td></td>
+<td>Construct a datastructure from structured data contained in a json file.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">from_lines</code>(lines[, boundary_face, precision])</td>
 <td></td>
@@ -331,55 +320,58 @@ by storing them on dual vertices.</p>
 <td>Initialise a mesh from a list of vertices and faces.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_any_edge</code>()</td>
-<td></td>
+<td>Get the identifier of a random edge.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_any_face</code>()</td>
-<td></td>
+<td>Get the identifier of a random face.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_any_face_vertex</code>(fkey)</td>
-<td></td>
+<td>Get the identifier of a random vertex of a specific face.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_any_vertex</code>()</td>
-<td></td>
+<td>Get the identifier of a random vertex.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_any_vertices</code>(n[, exclude_leaves])</td>
-<td></td>
+<td>Get a list of identifiers of a random set of n vertices.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_edge_attribute</code>(u, v, name[, value])</td>
-<td></td>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_edge_attribute</code>(key, name[, value])</td>
+<td>Get the value of a named attribute of one edge.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">get_edge_attributes</code>(u, v, names[, values])</td>
-<td></td>
+<tr class=""><td><code class="xref py py-obj docutils literal">get_edge_attributes</code>(key, names[, values])</td>
+<td>Get the value of a named attribute of one edge.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_edges_attribute</code>(name[, value, keys])</td>
-<td></td>
+<td>Get the value of a named attribute of multiple edges.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_edges_attributes</code>(names[, values, keys])</td>
-<td></td>
+<td>Get the values of multiple named attribute of multiple edges.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_face_attribute</code>(fkey, name[, value])</td>
-<td></td>
+<td>Get the value of a named attribute of one face.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_face_attributes</code>(fkey, names[, values])</td>
-<td></td>
+<td>Get the value of a named attribute of one face.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_faces_attribute</code>(name[, value, fkeys])</td>
-<td></td>
+<td>Get the value of a named attribute of multiple faces.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_faces_attributes</code>(names[, values, fkeys])</td>
-<td></td>
+<td>Get the values of multiple named attribute of multiple faces.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_vertex_attribute</code>(key, name[, value])</td>
-<td></td>
+<td>Get the value of a named attribute of one vertex.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_vertex_attributes</code>(key, names[, values])</td>
-<td></td>
+<td>Get the value of a named attribute of one vertex.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_vertices_attribute</code>(name[, value, keys])</td>
-<td></td>
+<td>Get the value of a named attribute of multiple vertices.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">get_vertices_attributes</code>(names[, values, keys])</td>
-<td></td>
+<td>Get the values of multiple named attribute of multiple vertices.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">gkey_key</code>([precision])</td>
+<td>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">halfedges</code>()</td>
 <td></td>
@@ -391,10 +383,10 @@ by storing them on dual vertices.</p>
 <td></td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">index_key</code>()</td>
-<td>Returns an <em>index-to-key</em> map.</td>
+<td>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">index_uv</code>()</td>
-<td></td>
+<td>Returns a dictionary that maps edges in a list to the corresponding vertex key pairs.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">indexed_edges</code>()</td>
 <td></td>
@@ -447,16 +439,13 @@ by storing them on dual vertices.</p>
 <tr class=""><td><code class="xref py py-obj docutils literal">is_vertex_orphan</code>(key)</td>
 <td></td>
 </tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">key_gkey</code>([precision])</td>
+<td>Returns a dictionary that maps vertex dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</td>
+</tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">key_index</code>()</td>
-<td>Returns a <em>key-to-index</em> map.</td>
+<td>Returns a dictionary that maps vertex dictionary keys to the corresponding index in a vertex list or array.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">leaves</code>()</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">max_vertex_attribute_value</code>(name)</td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">min_vertex_attribute_value</code>(name)</td>
 <td></td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">number_of_edges</code>()</td>
@@ -474,47 +463,47 @@ by storing them on dual vertices.</p>
 <tr class=""><td><code class="xref py py-obj docutils literal">remove_vertex</code>(key)</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">set_edge_attribute</code>(u, v, name, value)</td>
-<td></td>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_edge_attribute</code>(key, name, value)</td>
+<td>Set one attribute of one edge.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">set_edge_attributes</code>(u, v[, attr_dict])</td>
-<td></td>
+<tr class=""><td><code class="xref py py-obj docutils literal">set_edge_attributes</code>(key[, attr_dict])</td>
+<td>Set multiple attributes of one edge.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">set_edges_attribute</code>(name, value[, keys])</td>
-<td></td>
+<td>Set one attribute of multiple edges.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">set_edges_attributes</code>([keys, attr_dict])</td>
-<td></td>
+<td>Set multiple attributes of multiple edges.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">set_face_attribute</code>(fkey, name, value)</td>
-<td></td>
+<td>Set one attribute of one face.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">set_face_attributes</code>(fkey[, attr_dict])</td>
-<td></td>
+<td>Set multiple attributes of one face.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">set_faces_attribute</code>(name, value[, fkeys])</td>
-<td></td>
+<td>Set one attribute of multiple faces.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">set_faces_attributes</code>([fkeys, attr_dict])</td>
-<td></td>
+<td>Set multiple attributes of multiple faces.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">set_vertex_attribute</code>(key, name, value)</td>
-<td></td>
+<td>Set one attribute of one vertex.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">set_vertex_attributes</code>(key[, attr_dict])</td>
-<td></td>
+<td>Set multiple attributes of one vertex.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">set_vertices_attribute</code>(name, value[, keys])</td>
-<td></td>
+<td>Set one attribute of multiple vertices.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">set_vertices_attributes</code>([keys, attr_dict])</td>
-<td></td>
+<td>Set multiple attributes of multiple vertices.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">to_data</code>()</td>
-<td>Return the data dict that represents the mesh, and from which it can be reconstructed.</td>
+<td>Returns a dictionary of structured data representing the data structure.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">to_json</code>([filepath])</td>
-<td>Serialize the mesh data to a JSON file.</td>
+<td>Serialise the structured data representing the data structure to json.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">to_obj</code>(filepath)</td>
 <td>Write the mesh to an OBJ file.</td>
@@ -523,16 +512,16 @@ by storing them on dual vertices.</p>
 <td>Return the vertices and faces of a mesh.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">update_default_edge_attributes</code>([attr_dict])</td>
-<td></td>
+<td>Update the default edge attributes (this also affects already existing edges).</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">update_default_face_attributes</code>([attr_dict])</td>
-<td></td>
+<td>Update the default face attributes (this also affects already existing faces).</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">update_default_vertex_attributes</code>([attr_dict])</td>
-<td></td>
+<td>Update the default vertex attributes (this also affects already existing vertices).</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">uv_index</code>()</td>
-<td></td>
+<td>Returns a dictionary that maps edge keys (i.e.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">vertex_area</code>(key)</td>
 <td>Return the tributary area of a vertex.</td>
@@ -556,13 +545,13 @@ by storing them on dual vertices.</p>
 <td>Return the faces connected to a vertex.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">vertex_label_name</code>(key)</td>
-<td></td>
+<td>Get the name of a vertex label.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">vertex_laplacian</code>(key)</td>
 <td>Return the vector from the vertex to the centroid of its 1-ring neighbourhood.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">vertex_name</code>(key)</td>
-<td></td>
+<td>Get the name of a vertex.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">vertex_neighbourhood</code>(key[, ring])</td>
 <td>Return the vertices in the neighbourhood of a vertex.</td>
@@ -588,9 +577,6 @@ by storing them on dual vertices.</p>
 <tr class=""><td><code class="xref py py-obj docutils literal">vertices_on_boundary</code>([ordered])</td>
 <td>Return the vertices on the boundary.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">vertices_where</code>(conditions)</td>
-<td>Get vertices for which a certain condition or set of conditions is <code class="docutils literal">True</code>.</td>
-</tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">wireframe</code>()</td>
 <td></td>
 </tr>
@@ -610,19 +596,19 @@ by storing them on dual vertices.</p>
 <td><a class="reference external" href="https://docs.python.org/2/library/functions.html" title="(in Python v2.7)"><code class="xref py py-obj docutils literal">str</code></a> – The name of the data structure.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">x</code></td>
-<td><code class="xref py py-obj docutils literal">list</code> – The <cite>x</cite> coordinates of the vertices.</td>
+<td><em>list</em> – The X coordinates of the vertices.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">xy</code></td>
-<td><code class="xref py py-obj docutils literal">list</code> – The <cite>xy</cite> coordinates of the vertices.</td>
+<td><em>list</em> – The XY coordinates of the vertices.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">xyz</code></td>
-<td><code class="xref py py-obj docutils literal">list</code> – The <cite>xyz</cite> coordinates of the vertices.</td>
+<td><em>list</em> – The XYZ coordinates of the vertices.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">y</code></td>
-<td><code class="xref py py-obj docutils literal">list</code> – The <cite>y</cite> coordinates of the vertices.</td>
+<td><em>list</em> – The Y coordinates of the vertices.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">z</code></td>
-<td><code class="xref py py-obj docutils literal">list</code> – The <cite>z</cite> coordinates of the vertices.</td>
+<td><em>list</em> – The Z coordinates of the vertices.</td>
 </tr>
 </tbody>
 </table>
@@ -659,6 +645,7 @@ by storing them on dual vertices.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -690,7 +677,7 @@ by storing them on dual vertices.</p>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

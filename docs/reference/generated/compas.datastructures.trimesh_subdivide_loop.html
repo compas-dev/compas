@@ -42,13 +42,13 @@
 <h1>trimesh_subdivide_loop</h1>
 <dl class="function">
 <dt id="compas.datastructures.trimesh_subdivide_loop">
-<code class="descclassname">compas.datastructures.</code><code class="descname">trimesh_subdivide_loop</code><span class="sig-paren">(</span><em>mesh</em>, <em>k=1</em>, <em>fixed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/mesh/algorithms/subdivision.html#trimesh_subdivide_loop"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.datastructures.</code><code class="descname">trimesh_subdivide_loop</code><span class="sig-paren">(</span><em>mesh</em>, <em>k=1</em>, <em>fixed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/datastructures/mesh/algorithms/subdivision.html#trimesh_subdivide_loop"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Subdivide a triangle mesh using the Loop algorithm.</p>
 <p class="rubric">Examples</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.elements</span> <span class="kn">import</span> <span class="n">Polyhedron</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="kn">import</span> <span class="n">mesh_flip_cycle_directions</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.viewers.meshviewer</span> <span class="kn">import</span> <span class="n">SubdMeshViewer</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Polyhedron</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">mesh_flip_cycle_directions</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">SubdMeshViewer</span>
 
 <span class="n">tet</span> <span class="o">=</span> <span class="n">Polyhedron</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 
@@ -66,7 +66,6 @@
 <span class="n">viewer</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
 <span class="n">viewer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 </dd></dl>
 </div>
 <nav class="compas-sideways">
@@ -100,6 +99,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -131,7 +131,7 @@
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

@@ -49,11 +49,6 @@ network.algorithms
     network_is_planar
     network_is_planar_embedding
     network_shortest_path
-    network_smooth_area
-    network_smooth_centroid
-    network_smooth_length
-    network_smooth_mass
-    network_smooth_mixed
     network_vertex_coloring
 
 
@@ -75,10 +70,14 @@ mesh.operations
     :toctree: generated/
 
     mesh_collapse_edge
-    mesh_insert_edge
     mesh_split_edge
     mesh_split_face
     mesh_unweld_vertices
+
+
+.. note::
+
+    The following operations are specifically designed for triangle meshes.
 
 
 .. autosummary::
@@ -100,17 +99,17 @@ mesh.algorithms
     mesh_dual
     mesh_flip_cycles
     mesh_planarize
-    mesh_smooth_centroid
-    mesh_smooth_centerofmass
-    mesh_smooth_length
-    mesh_smooth_area
-    mesh_smooth_angle
     mesh_subdivide
     mesh_subdivide_tri
     mesh_subdivide_catmullclark
     mesh_subdivide_doosabin
     mesh_unify_cycles
     mesh_voronoi_from_points
+
+
+.. note::
+
+    The following algorithms are specifically designed for triangle meshes.
 
 
 .. autosummary::

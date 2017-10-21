@@ -8,32 +8,14 @@ geometry
 .. module:: compas_blender.geometry
 
 
-curve
------
+Object-oriented wrappers for native Blender geometry.
+
 
 .. autosummary::
     :toctree: generated/
 
-
-mesh
-----
-
-.. autosummary::
-    :toctree: generated/
-
-
-point
------
-
-.. autosummary::
-    :toctree: generated/
-
-
-surface
--------
-
-.. autosummary::
-    :toctree: generated/
-
-
+    BlenderPoint
+    BlenderCurve
+    BlenderMesh
+    BlenderSurface
 

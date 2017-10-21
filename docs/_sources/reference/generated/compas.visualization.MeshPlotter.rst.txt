@@ -12,6 +12,11 @@ MeshPlotter
    .. autosummary::
    
       ~MeshPlotter.__init__
+      ~MeshPlotter.clear
+      ~MeshPlotter.clear_collection
+      ~MeshPlotter.clear_edges
+      ~MeshPlotter.clear_faces
+      ~MeshPlotter.clear_vertices
       ~MeshPlotter.draw_edges
       ~MeshPlotter.draw_faces
       ~MeshPlotter.draw_lines

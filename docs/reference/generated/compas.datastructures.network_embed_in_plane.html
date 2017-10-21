@@ -42,39 +42,46 @@
 <h1>network_embed_in_plane</h1>
 <dl class="function">
 <dt id="compas.datastructures.network_embed_in_plane">
-<code class="descclassname">compas.datastructures.</code><code class="descname">network_embed_in_plane</code><span class="sig-paren">(</span><em>network</em>, <em>fix=None</em>, <em>straightline=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/network/algorithms/graph.html#network_embed_in_plane"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.datastructures.</code><code class="descname">network_embed_in_plane</code><span class="sig-paren">(</span><em>network</em>, <em>fix=None</em>, <em>straightline=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/datastructures/network/algorithms/graph.html#network_embed_in_plane"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Embed the network in the plane.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>network</strong> (<em>compas.datastructures.network.Network</em>) – The network object.</li>
-<li><strong>fix</strong> (<em>list</em>) – Optional.
-Two fixed points.
-Default is <code class="docutils literal">None</code>.</li>
-<li><strong>straightline</strong> (<em>bool</em>) – Optional.
-Embed using straight lines.
-Default is <code class="docutils literal">True</code>.</li>
+<li><strong>network</strong> (<em>Network</em>) – A network object.</li>
+<li><strong>fix</strong> (<em>list (None)</em>) – Two fixed points.</li>
+<li><strong>straightline</strong> (<em>bool (True)</em>) – Embed using straight lines.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>bool</em> – <code class="docutils literal">True</code> if the embedding was successful.
-<code class="docutils literal">False</code> otherwise.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>bool</em> – True if the embedding was successful.
+False otherwise.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal">ImportError</code> – If NetworkX is not installed.</p>
-</td>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This function uses the Python package NetworkX. NetworkX can be <em>pip installed</em>.</p>
+</div>
+<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
+<col class="field-name"/>
+<col class="field-body"/>
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal">ImportError</code> – If NetworkX is not installed.</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Example</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="kn">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms</span> <span class="kn">import</span> <span class="n">network_embed_in_plane</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_embed_in_plane</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 
 <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'fink.obj'</span><span class="p">))</span>
+
 <span class="n">embedding</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">fix</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
@@ -83,30 +90,17 @@ Default is <code class="docutils literal">True</code>.</li>
 
     <span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">embedding</span><span class="p">)</span>
 
-    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="p">:</span>
-        <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'pos'</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
-            <span class="s1">'radius'</span><span class="p">:</span> <span class="mf">0.1</span>
-        <span class="p">})</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">([{</span><span class="s1">'start'</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+                          <span class="s1">'end'</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+                          <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#cccccc'</span><span class="p">}</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()])</span>
 
-    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
-        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'start'</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
-            <span class="s1">'end'</span>  <span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
-            <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#cccccc'</span><span class="p">,</span>
-        <span class="p">})</span>
-
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xpoints</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+                          <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">embedding</span><span class="o">.</span><span class="n">vertices</span><span class="p">()},</span>
+                          <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fix</span><span class="p">})</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">(</span><span class="s1">'#ff0000'</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fix</span> <span class="k">else</span> <span class="s1">'#ffffff'</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">embedding</span><span class="o">.</span><span class="n">vertices</span><span class="p">()},</span> <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fix</span><span class="p">})</span>
-
     <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-network_embed_in_plane-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-network_embed_in_plane-1.png"/>
 </figure>
@@ -143,6 +137,7 @@ Default is <code class="docutils literal">True</code>.</li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -174,7 +169,7 @@ Default is <code class="docutils literal">True</code>.</li>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

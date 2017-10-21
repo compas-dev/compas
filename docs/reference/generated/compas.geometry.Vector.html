@@ -12,7 +12,7 @@
 <link href="/css/github.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="../compas.hpc.html" rel="next" title="hpc"/>
+<link href="compas.geometry.smooth_centroid.html" rel="next" title="smooth_centroid"/>
 <link href="compas.geometry.Surface.html" rel="prev" title="Surface"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
@@ -42,7 +42,7 @@
 <h1>Vector</h1>
 <dl class="class">
 <dt id="compas.geometry.Vector">
-<em class="property">class </em><code class="descclassname">compas.geometry.</code><code class="descname">Vector</code><span class="sig-paren">(</span><em>x=0.0</em>, <em>y=0.0</em>, <em>z=0.0</em>, <em>w=1.0</em>, <em>unitize=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/objects/vector.html#Vector"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="descclassname">compas.geometry.</code><code class="descname">Vector</code><span class="sig-paren">(</span><em>x=0.0</em>, <em>y=0.0</em>, <em>z=0.0</em>, <em>w=1.0</em>, <em>unitize=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/geometry/objects/vector.html#Vector"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal">object</code></a></p>
 <p>A vector object represents a vector in three-dimensional space.</p>
 <p>The vector is defined as the difference vector between the start and end
@@ -76,7 +76,7 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 </dd></dl>
 <dl class="attribute">
 <dt id="compas.geometry.Vector.length">
-<code class="descname">length</code><a class="reference internal" href="../../_modules/compas/geometry/objects/vector.html#Vector.length"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">length</code><a class="reference internal" href="../../modules/compas/geometry/objects/vector.html#Vector.length"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p><em>float</em> – (<strong>read-only</strong>) The length of the vector.</p>
 </dd></dl>
 <p class="rubric">Examples</p>
@@ -103,7 +103,6 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 <span class="go">[0.0, 0.0, 1.0]</span>
 </code></pre></div>
-
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -213,7 +212,7 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="compas.geometry.Surface.html" role="button">Surface</a>
-<a class="btn btn-primary compas-next" href="../compas.hpc.html" role="button">hpc</a>
+<a class="btn btn-primary compas-next" href="compas.geometry.smooth_centroid.html" role="button">smooth_centroid</a>
 </nav>
 </main>
 <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
@@ -242,6 +241,7 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -273,7 +273,7 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

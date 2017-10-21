@@ -17,7 +17,7 @@ def network_vertex_coloring(network):
 
     Parameters
     ----------
-    network : compas.datastructures.network.Network
+    network : compas.datastructures.Network
         The network object.
 
     Warning
@@ -31,9 +31,9 @@ def network_vertex_coloring(network):
         :include-source:
 
         import compas
-        from compas.datastructures.network import Network
-        from compas.visualization.plotters import NetworkPlotter
-        from compas.datastructures.network.algorithms import network_vertex_coloring
+        from compas.datastructures import Network
+        from compas.visualization import NetworkPlotter
+        from compas.datastructures import network_vertex_coloring
 
         network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 

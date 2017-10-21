@@ -1,5 +1,3 @@
-""""""
-
 from compas.geometry import scale_points
 
 

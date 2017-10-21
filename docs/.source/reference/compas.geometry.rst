@@ -338,16 +338,14 @@ This package provides an object-oriented interface to the above functionality.
     Vector
 
 
-.. code-block:: python
+Algorithms
+==========
 
-    >>> from compas.geometry import distance_point_point
-    >>> distance_point_point([0.0 0.0 0.0] [1.0 1.0 1.0])
-    1.7320508075688772
+.. autosummary::
+    :toctree: generated/
 
-    >>> from compas.geometry.objects import Point
-    >>> p1 = Point(0.0 0.0 0.0)
-    >>> p2 = Point(1.0 1.0 1.0)
-    >>> p1.distance_to_point(p2)
-    1.7320508075688772
+    smooth_centroid
+    smooth_centerofmass
+    smooth_area
 
 

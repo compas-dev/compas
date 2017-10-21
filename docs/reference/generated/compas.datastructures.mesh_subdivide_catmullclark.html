@@ -42,7 +42,7 @@
 <h1>mesh_subdivide_catmullclark</h1>
 <dl class="function">
 <dt id="compas.datastructures.mesh_subdivide_catmullclark">
-<code class="descclassname">compas.datastructures.</code><code class="descname">mesh_subdivide_catmullclark</code><span class="sig-paren">(</span><em>mesh</em>, <em>k=1</em>, <em>fixed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/mesh/algorithms/subdivision.html#mesh_subdivide_catmullclark"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.datastructures.</code><code class="descname">mesh_subdivide_catmullclark</code><span class="sig-paren">(</span><em>mesh</em>, <em>k=1</em>, <em>fixed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/datastructures/mesh/algorithms/subdivision.html#mesh_subdivide_catmullclark"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Subdivide a mesh using the Catmull-Clark algorithm.</p>
 <p>Note that <em>Catmull-Clark</em> subdivision is like <em>Quad</em> subdivision, but with
 smoothing after every level of further subdivision. Smoothing is done
@@ -68,9 +68,9 @@ Default is <code class="docutils literal">None</code>.</li>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="kn">import</span> <span class="n">mesh_subdivide_catmullclark</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">mesh_subdivide_catmullclark</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
 <span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]</span>
 <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">]</span>
@@ -85,13 +85,12 @@ Default is <code class="docutils literal">None</code>.</li>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-mesh_subdivide_catmullclark-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-mesh_subdivide_catmullclark-1.png"/>
 </figure>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="kn">import</span> <span class="n">mesh_subdivide_catmullclark</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">mesh_subdivide_catmullclark</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
 <span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]</span>
 <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">]</span>
@@ -106,15 +105,14 @@ Default is <code class="docutils literal">None</code>.</li>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-mesh_subdivide_catmullclark-2.png" class="figure-img img-fluid" src="../../images/compas-datastructures-mesh_subdivide_catmullclark-2.png"/>
 </figure>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="kn">import</span> <span class="n">mesh_subdivide_catmullclark</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.elements.polyhedron</span> <span class="kn">import</span> <span class="n">Polyhedron</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.viewers.meshviewer</span> <span class="kn">import</span> <span class="n">SubdMeshViewer</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">mesh_subdivide_catmullclark</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Polyhedron</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">SubdMeshViewer</span>
 
 <span class="n">cube</span> <span class="o">=</span> <span class="n">Polyhedron</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 
@@ -133,7 +131,6 @@ Default is <code class="docutils literal">None</code>.</li>
 <span class="n">viewer</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
 <span class="n">viewer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <img alt="../../images/subdivide_mesh_catmullclark-screenshot.jpg" src="../../images/subdivide_mesh_catmullclark-screenshot.jpg"/>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -172,6 +169,7 @@ Default is <code class="docutils literal">None</code>.</li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -203,7 +201,7 @@ Default is <code class="docutils literal">None</code>.</li>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

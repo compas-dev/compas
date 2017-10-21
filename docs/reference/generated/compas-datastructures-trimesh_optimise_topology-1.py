@@ -1,6 +1,6 @@
-from compas.datastructures.mesh import Mesh
-from compas.visualization.plotters import MeshPlotter
-from compas.datastructures.mesh.algorithms import trimesh_optimise_topology
+from compas.datastructures import Mesh
+from compas.visualization import MeshPlotter
+from compas.datastructures import trimesh_optimise_topology
 
 vertices = [
     (0.0, 0.0, 0.0),

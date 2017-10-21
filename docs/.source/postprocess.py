@@ -42,6 +42,11 @@ for path, dirs, files in os.walk('../'):
                     src = img.attrs['src']
                     img.attrs['src'] = src.replace("_images", "images")
 
+                # change underscored links
+                for a in soup.select('a'):
+                    href = a.attrs['href']
+                    a.attrs['href'] = href.replace("_downloads", "downloads").replace("_modules", "modules")
+
                 # modify matplotlib figures
                 for img in soup.select('.figure-plot img'):
                     img.attrs['class'] = ['figure-img', 'img-fluid']

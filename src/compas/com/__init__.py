@@ -24,7 +24,7 @@ Matlab
 
 
 ssh
-======
+===
 
 .. autosummary::
     :toctree: generated/
@@ -56,7 +56,6 @@ class Process(object):
 
 class Client(object):
     pass
-
 
 
 from .mlab import *

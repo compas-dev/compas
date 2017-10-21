@@ -23,6 +23,21 @@ Matlab
     MatlabSession
 
 
+ssh
+===
+
+.. autosummary::
+    :toctree: generated/
+
+    connect_to_server
+    local_command
+    receive_file
+    send_file
+    send_folder
+    sync_folder
+    server_command
+
+
 ============= ============
 Interface     Case
 ============= ============

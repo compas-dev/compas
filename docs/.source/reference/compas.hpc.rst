@@ -69,6 +69,23 @@ cuda
 euler
 =====
 
+.. autosummary::
+    :toctree: generated/
+
+    connect_to_euler
+    load_euler_module
+    recieve_file_from_euler
+    send_file_to_euler
+    send_folder_to_euler
+    show_euler_jobs
+    show_euler_quotas
+    show_euler_modules
+    show_euler_module_info
+    show_euler_resources
+    submit_job
+    kill_job
+    sync_folder_to_euler
+
 
 geometry
 ========

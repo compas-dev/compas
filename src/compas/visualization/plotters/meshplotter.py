@@ -57,6 +57,11 @@ class MeshPlotter(Plotter):
             'face.fontsize'  : 10.0,
         }
 
+    def clear(self):
+        self.clear_vertices()
+        self.clear_edges()
+        self.clear_faces()
+
     def draw_vertices(self,
                       keys=None,
                       radius=None,
@@ -68,6 +73,13 @@ class MeshPlotter(Plotter):
                       fontsize=None):
 
         keys = keys or list(self.mesh.vertices())
+
+        if text == 'key':
+            text = {key: str(key) for key in mesh.vertices()}
+        elif text == 'index':
+            text = {key: str(index) for index, key in enumerate(mesh.vertices())}
+        else:
+            pass
 
         radiusdict    = to_valuedict(keys, radius, self.defaults['vertex.radius'])
         textdict      = to_valuedict(keys, text, '')
@@ -93,6 +105,9 @@ class MeshPlotter(Plotter):
         collection = self.draw_xpoints(points)
         self.vertexcollection = collection
         return collection
+
+    def clear_vertices(self):
+        self.vertexcollection.remove()
 
     def update_vertices(self):
         circles = []
@@ -134,6 +149,9 @@ class MeshPlotter(Plotter):
         self.edgecollection = collection
         return collection
 
+    def clear_edges(self):
+        self.edgecollection.remove()
+
     def update_edges(self):
         segments = []
         for u, v in self.mesh.edges():
@@ -173,6 +191,9 @@ class MeshPlotter(Plotter):
         collection = self.draw_xpolygons(polygons)
         self.facecollection = collection
         return collection
+
+    def clear_faces(self):
+        self.facecollection.remove()
 
     def update_faces(self):
         polygons = []

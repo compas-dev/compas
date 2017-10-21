@@ -338,17 +338,15 @@ This package provides an object-oriented interface to the above functionality.
     Vector
 
 
-.. code-block:: python
+Algorithms
+==========
 
-    >>> from compas.geometry import distance_point_point
-    >>> distance_point_point([0.0 0.0 0.0] [1.0 1.0 1.0])
-    1.7320508075688772
+.. autosummary::
+    :toctree: generated/
 
-    >>> from compas.geometry.objects import Point
-    >>> p1 = Point(0.0 0.0 0.0)
-    >>> p2 = Point(1.0 1.0 1.0)
-    >>> p1.distance_to_point(p2)
-    1.7320508075688772
+    smooth_centroid
+    smooth_centerofmass
+    smooth_area
 
 
 """
@@ -462,9 +460,14 @@ from .size import __all__ as j
 from .transformations import __all__ as k
 from .xforms import __all__ as l
 
+# more imports
+
 from .objects import *
 from .objects import __all__ as m
 
+from .algorithms import *
+from .algorithms import __all__ as n
+
 
 __all__  = ['is_point', 'is_vector', 'is_line', 'is_segment', 'is_plane', 'is_circle', 'is_polygon', 'is_polyline', 'is_polyhedron', 'is_frame']
-__all__ += a + b + c + d + e + f + g + h + i + j + k + l + m
+__all__ += a + b + c + d + e + f + g + h + i + j + k + l + m + n

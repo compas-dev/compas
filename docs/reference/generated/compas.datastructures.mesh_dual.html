@@ -42,20 +42,20 @@
 <h1>mesh_dual</h1>
 <dl class="function">
 <dt id="compas.datastructures.mesh_dual">
-<code class="descclassname">compas.datastructures.</code><code class="descname">mesh_dual</code><span class="sig-paren">(</span><em>mesh</em>, <em>cls=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/mesh/algorithms/duality.html#mesh_dual"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.datastructures.</code><code class="descname">mesh_dual</code><span class="sig-paren">(</span><em>mesh</em>, <em>cls=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/datastructures/mesh/algorithms/duality.html#mesh_dual"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Construct the dual of a mesh.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mesh</strong> (<em>compas.datastructures.mesh.Mesh</em>) – The mesh object.</li>
-<li><strong>cls</strong> (<em>compas.datastructures.mesh.Mesh</em>) – Optional. Mesh class of the dual.
+<li><strong>mesh</strong> (<em>Mesh</em>) – A mesh object.</li>
+<li><strong>cls</strong> (<em>Mesh, optional [None]</em>) – The type of the dual mesh.
 Defaults to the type of the provided mesh object.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>compas.datastructures.mesh.Mesh</em> – The dual mesh.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>Mesh</em> – The dual mesh object.</p>
 </td>
 </tr>
 </tbody>
@@ -63,14 +63,12 @@ Defaults to the type of the provided mesh object.</li>
 <p class="rubric">Example</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="kn">import</span> <span class="n">mesh_dual</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">mesh_dual</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
 <span class="n">dual</span> <span class="o">=</span> <span class="n">mesh_dual</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">dual</span><span class="p">)</span>
 
 <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
@@ -81,14 +79,15 @@ Defaults to the type of the provided mesh object.</li>
         <span class="s1">'width'</span><span class="p">:</span> <span class="mf">1.0</span>
     <span class="p">})</span>
 
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">dual</span><span class="p">)</span>
+
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">'#eeeeee'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'#000000'</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dual</span><span class="o">.</span><span class="n">vertices</span><span class="p">()})</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'#000000'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-mesh_dual-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-mesh_dual-1.png"/>
 </figure>
@@ -125,6 +124,7 @@ Defaults to the type of the provided mesh object.</li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -156,7 +156,7 @@ Defaults to the type of the provided mesh object.</li>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

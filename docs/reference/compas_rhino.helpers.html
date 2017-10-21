@@ -48,61 +48,67 @@
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_from_guid.html" title="compas_rhino.helpers.mesh_from_guid"><code class="xref py py-obj docutils literal">mesh_from_guid</code></a>(cls, guid, \*\*kwargs)</td>
-<td></td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_from_guid.html" title="compas_rhino.helpers.mesh_from_guid"><code class="xref py py-obj docutils literal">mesh_from_guid</code></a>(cls, guid)</td>
+<td>Construct a mesh from a Rhino mesh.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_from_surface.html" title="compas_rhino.helpers.mesh_from_surface"><code class="xref py py-obj docutils literal">mesh_from_surface</code></a>(cls, guid, \*\*kwargs)</td>
-<td></td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_from_surface.html" title="compas_rhino.helpers.mesh_from_surface"><code class="xref py py-obj docutils literal">mesh_from_surface</code></a>(cls, guid)</td>
+<td>Construct a mesh from a Rhino surface.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_from_surface_uv.html" title="compas_rhino.helpers.mesh_from_surface_uv"><code class="xref py py-obj docutils literal">mesh_from_surface_uv</code></a>(cls, guid[, density])</td>
-<td></td>
+<td>Construct a mesh from a point cloud aligned with the uv space of a Rhino NURBS surface.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_from_surface_heightfield.html" title="compas_rhino.helpers.mesh_from_surface_heightfield"><code class="xref py py-obj docutils literal">mesh_from_surface_heightfield</code></a>(cls, guid[, ...])</td>
 <td>Create a mesh data structure from a point grid aligned with the uv space of a Rhino NURBS surface.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.draw_mesh.html" title="compas_rhino.helpers.draw_mesh"><code class="xref py py-obj docutils literal">draw_mesh</code></a>(mesh[, layer, clear_layer, ...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_draw.html" title="compas_rhino.helpers.mesh_draw"><code class="xref py py-obj docutils literal">mesh_draw</code></a>(mesh[, layer, clear_layer, ...])</td>
 <td>Draw a mesh object in Rhino.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.draw_mesh_as_faces.html" title="compas_rhino.helpers.draw_mesh_as_faces"><code class="xref py py-obj docutils literal">draw_mesh_as_faces</code></a>(mesh[, layer, ...])</td>
-<td></td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_draw_vertices.html" title="compas_rhino.helpers.mesh_draw_vertices"><code class="xref py py-obj docutils literal">mesh_draw_vertices</code></a>(mesh[, keys, color, ...])</td>
+<td>Draw a selection of vertices of the mesh.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_mesh_vertices.html" title="compas_rhino.helpers.select_mesh_vertices"><code class="xref py py-obj docutils literal">select_mesh_vertices</code></a>(mesh[, message])</td>
-<td>Select vertices of a mesh.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_draw_edges.html" title="compas_rhino.helpers.mesh_draw_edges"><code class="xref py py-obj docutils literal">mesh_draw_edges</code></a>(mesh[, keys, color, layer, ...])</td>
+<td>Draw a selection of edges of the mesh.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_mesh_vertex.html" title="compas_rhino.helpers.select_mesh_vertex"><code class="xref py py-obj docutils literal">select_mesh_vertex</code></a>(mesh[, message])</td>
-<td>Select one vertex of a mesh.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_draw_faces.html" title="compas_rhino.helpers.mesh_draw_faces"><code class="xref py py-obj docutils literal">mesh_draw_faces</code></a>(mesh[, keys, color, layer, ...])</td>
+<td>Draw a selection of faces of the mesh.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_mesh_edges.html" title="compas_rhino.helpers.select_mesh_edges"><code class="xref py py-obj docutils literal">select_mesh_edges</code></a>(mesh[, message])</td>
-<td>Select edges of a mesh.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_draw_vertex_labels.html" title="compas_rhino.helpers.mesh_draw_vertex_labels"><code class="xref py py-obj docutils literal">mesh_draw_vertex_labels</code></a>(mesh[, attr_name, ...])</td>
+<td>Draw labels for the vertices of a mesh.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_mesh_edge.html" title="compas_rhino.helpers.select_mesh_edge"><code class="xref py py-obj docutils literal">select_mesh_edge</code></a>(mesh[, message])</td>
-<td>Select one edge of a mesh.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_mesh_faces.html" title="compas_rhino.helpers.select_mesh_faces"><code class="xref py py-obj docutils literal">select_mesh_faces</code></a>(mesh[, message])</td>
-<td>Select faces of a mesh.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_mesh_face.html" title="compas_rhino.helpers.select_mesh_face"><code class="xref py py-obj docutils literal">select_mesh_face</code></a>(mesh[, message])</td>
-<td>Select one face of a mesh.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.update_mesh_vertex_attributes.html" title="compas_rhino.helpers.update_mesh_vertex_attributes"><code class="xref py py-obj docutils literal">update_mesh_vertex_attributes</code></a>(mesh, keys[, ...])</td>
-<td>Update the attributes of the vertices of a mesh.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.update_mesh_edge_attributes.html" title="compas_rhino.helpers.update_mesh_edge_attributes"><code class="xref py py-obj docutils literal">update_mesh_edge_attributes</code></a>(mesh, keys[, names])</td>
-<td>Update the attributes of the edges of a mesh.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.update_mesh_face_attributes.html" title="compas_rhino.helpers.update_mesh_face_attributes"><code class="xref py py-obj docutils literal">update_mesh_face_attributes</code></a>(mesh, fkeys[, names])</td>
-<td>Update the attributes of the faces of a mesh.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_mesh_vertex_labels.html" title="compas_rhino.helpers.display_mesh_vertex_labels"><code class="xref py py-obj docutils literal">display_mesh_vertex_labels</code></a>(mesh[, ...])</td>
-<td>Display labels for the vertices of a mesh.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_mesh_edge_labels.html" title="compas_rhino.helpers.display_mesh_edge_labels"><code class="xref py py-obj docutils literal">display_mesh_edge_labels</code></a>(mesh[, attr_name, ...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_draw_edge_labels.html" title="compas_rhino.helpers.mesh_draw_edge_labels"><code class="xref py py-obj docutils literal">mesh_draw_edge_labels</code></a>(mesh[, attr_name, ...])</td>
 <td>Display labels for the edges of a mesh.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_mesh_face_labels.html" title="compas_rhino.helpers.display_mesh_face_labels"><code class="xref py py-obj docutils literal">display_mesh_face_labels</code></a>(mesh[, attr_name, ...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_draw_face_labels.html" title="compas_rhino.helpers.mesh_draw_face_labels"><code class="xref py py-obj docutils literal">mesh_draw_face_labels</code></a>(mesh[, attr_name, ...])</td>
 <td>Display labels for the faces of a mesh.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.move_mesh_vertex.html" title="compas_rhino.helpers.move_mesh_vertex"><code class="xref py py-obj docutils literal">move_mesh_vertex</code></a>(mesh, key[, constraint, ...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_select_vertices.html" title="compas_rhino.helpers.mesh_select_vertices"><code class="xref py py-obj docutils literal">mesh_select_vertices</code></a>(mesh[, message])</td>
+<td>Select vertices of a mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_select_vertex.html" title="compas_rhino.helpers.mesh_select_vertex"><code class="xref py py-obj docutils literal">mesh_select_vertex</code></a>(mesh[, message])</td>
+<td>Select one vertex of a mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_select_edges.html" title="compas_rhino.helpers.mesh_select_edges"><code class="xref py py-obj docutils literal">mesh_select_edges</code></a>(mesh[, message])</td>
+<td>Select edges of a mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_select_edge.html" title="compas_rhino.helpers.mesh_select_edge"><code class="xref py py-obj docutils literal">mesh_select_edge</code></a>(mesh[, message])</td>
+<td>Select one edge of a mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_select_faces.html" title="compas_rhino.helpers.mesh_select_faces"><code class="xref py py-obj docutils literal">mesh_select_faces</code></a>(mesh[, message])</td>
+<td>Select faces of a mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_select_face.html" title="compas_rhino.helpers.mesh_select_face"><code class="xref py py-obj docutils literal">mesh_select_face</code></a>(mesh[, message])</td>
+<td>Select one face of a mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_update_vertex_attributes.html" title="compas_rhino.helpers.mesh_update_vertex_attributes"><code class="xref py py-obj docutils literal">mesh_update_vertex_attributes</code></a>(mesh, keys[, ...])</td>
+<td>Update the attributes of the vertices of a mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_update_edge_attributes.html" title="compas_rhino.helpers.mesh_update_edge_attributes"><code class="xref py py-obj docutils literal">mesh_update_edge_attributes</code></a>(mesh, keys[, names])</td>
+<td>Update the attributes of the edges of a mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_update_face_attributes.html" title="compas_rhino.helpers.mesh_update_face_attributes"><code class="xref py py-obj docutils literal">mesh_update_face_attributes</code></a>(mesh, fkeys[, names])</td>
+<td>Update the attributes of the faces of a mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.mesh_move_vertex.html" title="compas_rhino.helpers.mesh_move_vertex"><code class="xref py py-obj docutils literal">mesh_move_vertex</code></a>(mesh, key[, constraint, ...])</td>
 <td>Move on vertex of the mesh.</td>
 </tr>
 </tbody>
@@ -116,74 +122,47 @@
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.draw_network.html" title="compas_rhino.helpers.draw_network"><code class="xref py py-obj docutils literal">draw_network</code></a>(network[, layer, clear_layer, ...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_draw.html" title="compas_rhino.helpers.network_draw"><code class="xref py py-obj docutils literal">network_draw</code></a>(network[, layer, clear_layer, ...])</td>
 <td>Draw a network data structure in Rhino.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_network_vertices.html" title="compas_rhino.helpers.select_network_vertices"><code class="xref py py-obj docutils literal">select_network_vertices</code></a>(network[, message])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_draw_vertices.html" title="compas_rhino.helpers.network_draw_vertices"><code class="xref py py-obj docutils literal">network_draw_vertices</code></a>(network[, keys, ...])</td>
+<td>Draw a selection of vertices of a network.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_draw_edges.html" title="compas_rhino.helpers.network_draw_edges"><code class="xref py py-obj docutils literal">network_draw_edges</code></a>(network[, keys, color, ...])</td>
+<td>Draw a selection of edges of the network.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_draw_vertex_labels.html" title="compas_rhino.helpers.network_draw_vertex_labels"><code class="xref py py-obj docutils literal">network_draw_vertex_labels</code></a>(network[, ...])</td>
+<td>Draw labels for the vertices of the network.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_draw_edge_labels.html" title="compas_rhino.helpers.network_draw_edge_labels"><code class="xref py py-obj docutils literal">network_draw_edge_labels</code></a>(network[, ...])</td>
+<td>Draw labels for the edges of a network.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_select_vertices.html" title="compas_rhino.helpers.network_select_vertices"><code class="xref py py-obj docutils literal">network_select_vertices</code></a>(network[, message])</td>
 <td>Select vertices of a network.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_network_vertex.html" title="compas_rhino.helpers.select_network_vertex"><code class="xref py py-obj docutils literal">select_network_vertex</code></a>(network[, message])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_select_vertex.html" title="compas_rhino.helpers.network_select_vertex"><code class="xref py py-obj docutils literal">network_select_vertex</code></a>(network[, message])</td>
 <td>Select one vertex of a network.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_network_edges.html" title="compas_rhino.helpers.select_network_edges"><code class="xref py py-obj docutils literal">select_network_edges</code></a>(network[, message])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_select_edges.html" title="compas_rhino.helpers.network_select_edges"><code class="xref py py-obj docutils literal">network_select_edges</code></a>(network[, message])</td>
 <td>Select edges of a network.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_network_edge.html" title="compas_rhino.helpers.select_network_edge"><code class="xref py py-obj docutils literal">select_network_edge</code></a>(network[, message])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_select_edge.html" title="compas_rhino.helpers.network_select_edge"><code class="xref py py-obj docutils literal">network_select_edge</code></a>(network[, message])</td>
 <td>Select one edge of a network.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_network_faces.html" title="compas_rhino.helpers.select_network_faces"><code class="xref py py-obj docutils literal">select_network_faces</code></a>(network[, message])</td>
-<td>Select faces of a network.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.select_network_face.html" title="compas_rhino.helpers.select_network_face"><code class="xref py py-obj docutils literal">select_network_face</code></a>(network[, message])</td>
-<td>Select one face of a network.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.update_network_attributes.html" title="compas_rhino.helpers.update_network_attributes"><code class="xref py py-obj docutils literal">update_network_attributes</code></a>(network)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_update_attributes.html" title="compas_rhino.helpers.network_update_attributes"><code class="xref py py-obj docutils literal">network_update_attributes</code></a>(network)</td>
 <td>Update the attributes of a network.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.update_network_vertex_attributes.html" title="compas_rhino.helpers.update_network_vertex_attributes"><code class="xref py py-obj docutils literal">update_network_vertex_attributes</code></a>(network, keys)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_update_vertex_attributes.html" title="compas_rhino.helpers.network_update_vertex_attributes"><code class="xref py py-obj docutils literal">network_update_vertex_attributes</code></a>(network, keys)</td>
 <td>Update the attributes of the vertices of a network.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.update_network_from_points.html" title="compas_rhino.helpers.update_network_from_points"><code class="xref py py-obj docutils literal">update_network_from_points</code></a>(network, guids)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.update_network_edge_attributes.html" title="compas_rhino.helpers.update_network_edge_attributes"><code class="xref py py-obj docutils literal">update_network_edge_attributes</code></a>(network, keys)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_update_edge_attributes.html" title="compas_rhino.helpers.network_update_edge_attributes"><code class="xref py py-obj docutils literal">network_update_edge_attributes</code></a>(network, keys)</td>
 <td>Update the attributes of the edges of a network.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.update_network_from_lines.html" title="compas_rhino.helpers.update_network_from_lines"><code class="xref py py-obj docutils literal">update_network_from_lines</code></a>(network, guids)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.update_network_face_attributes.html" title="compas_rhino.helpers.update_network_face_attributes"><code class="xref py py-obj docutils literal">update_network_face_attributes</code></a>(network, fkeys)</td>
-<td>Update the attributes of the faces of a network.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_network_vertex_labels.html" title="compas_rhino.helpers.display_network_vertex_labels"><code class="xref py py-obj docutils literal">display_network_vertex_labels</code></a>(network[, ...])</td>
-<td>Display labels for the vertices of a network.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_network_edge_labels.html" title="compas_rhino.helpers.display_network_edge_labels"><code class="xref py py-obj docutils literal">display_network_edge_labels</code></a>(network[, ...])</td>
-<td>Display labels for the edges of a network.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_network_face_labels.html" title="compas_rhino.helpers.display_network_face_labels"><code class="xref py py-obj docutils literal">display_network_face_labels</code></a>(network[, ...])</td>
-<td>Display labels for the faces of a network.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.move_network.html" title="compas_rhino.helpers.move_network"><code class="xref py py-obj docutils literal">move_network</code></a>(network)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_move.html" title="compas_rhino.helpers.network_move"><code class="xref py py-obj docutils literal">network_move</code></a>(network)</td>
 <td>Move the entire network.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.move_network_vertex.html" title="compas_rhino.helpers.move_network_vertex"><code class="xref py py-obj docutils literal">move_network_vertex</code></a>(network, key[, ...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.network_move_vertex.html" title="compas_rhino.helpers.network_move_vertex"><code class="xref py py-obj docutils literal">network_move_vertex</code></a>(network, key[, ...])</td>
 <td>Move on vertex of the network.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_network_axial_forces.html" title="compas_rhino.helpers.display_network_axial_forces"><code class="xref py py-obj docutils literal">display_network_axial_forces</code></a>(network[, ...])</td>
-<td>Display the axial forces in the edges of a network.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_network_reaction_forces.html" title="compas_rhino.helpers.display_network_reaction_forces"><code class="xref py py-obj docutils literal">display_network_reaction_forces</code></a>(network[, ...])</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_network_residual_forces.html" title="compas_rhino.helpers.display_network_residual_forces"><code class="xref py py-obj docutils literal">display_network_residual_forces</code></a>(network[, ...])</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_network_selfweight.html" title="compas_rhino.helpers.display_network_selfweight"><code class="xref py py-obj docutils literal">display_network_selfweight</code></a>(network[, ...])</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.display_network_applied_loads.html" title="compas_rhino.helpers.display_network_applied_loads"><code class="xref py py-obj docutils literal">display_network_applied_loads</code></a>(network[, ...])</td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -202,7 +181,37 @@
 <tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_from_wireframe.html" title="compas_rhino.helpers.volmesh_from_wireframe"><code class="xref py py-obj docutils literal">volmesh_from_wireframe</code></a>(cls, edges)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.draw_volmesh.html" title="compas_rhino.helpers.draw_volmesh"><code class="xref py py-obj docutils literal">draw_volmesh</code></a>(volmesh[, name, layer, clear, ...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_draw.html" title="compas_rhino.helpers.volmesh_draw"><code class="xref py py-obj docutils literal">volmesh_draw</code></a>(volmesh[, layer, clear_layer, ...])</td>
+<td>Draw a volmesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_draw_vertices.html" title="compas_rhino.helpers.volmesh_draw_vertices"><code class="xref py py-obj docutils literal">volmesh_draw_vertices</code></a>(volmesh[, keys, ...])</td>
+<td>Draw the vertices of a volmesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_draw_edges.html" title="compas_rhino.helpers.volmesh_draw_edges"><code class="xref py py-obj docutils literal">volmesh_draw_edges</code></a>(volmesh[, keys, color, ...])</td>
+<td>Draw the edges of a volmesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_draw_faces.html" title="compas_rhino.helpers.volmesh_draw_faces"><code class="xref py py-obj docutils literal">volmesh_draw_faces</code></a>(volmesh[, keys, color, ...])</td>
+<td>Draw the faces of a volmesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_draw_cells.html" title="compas_rhino.helpers.volmesh_draw_cells"><code class="xref py py-obj docutils literal">volmesh_draw_cells</code></a>(volmesh)</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_select_vertex.html" title="compas_rhino.helpers.volmesh_select_vertex"><code class="xref py py-obj docutils literal">volmesh_select_vertex</code></a>(volmesh)</td>
+<td>Select a vertex of a volmesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_select_vertices.html" title="compas_rhino.helpers.volmesh_select_vertices"><code class="xref py py-obj docutils literal">volmesh_select_vertices</code></a>(volmesh)</td>
+<td>Select multiple vertices of a volmesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_select_edge.html" title="compas_rhino.helpers.volmesh_select_edge"><code class="xref py py-obj docutils literal">volmesh_select_edge</code></a>(volmesh)</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_select_edges.html" title="compas_rhino.helpers.volmesh_select_edges"><code class="xref py py-obj docutils literal">volmesh_select_edges</code></a>(volmesh)</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_select_face.html" title="compas_rhino.helpers.volmesh_select_face"><code class="xref py py-obj docutils literal">volmesh_select_face</code></a>(volmesh)</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_rhino.helpers.volmesh_select_faces.html" title="compas_rhino.helpers.volmesh_select_faces"><code class="xref py py-obj docutils literal">volmesh_select_faces</code></a>(volmesh)</td>
 <td></td>
 </tr>
 </tbody>
@@ -233,7 +242,6 @@
 <li class="nav-item active"><a class="nav-link reference internal" href="../reference.html">Reference</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="compas.html">compas</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a><ul class="nav active">
-<li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.artists.html">artists</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.conduits.html">conduits</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.forms.html">forms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.geometry.html">geometry</a></li>
@@ -274,7 +282,7 @@
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

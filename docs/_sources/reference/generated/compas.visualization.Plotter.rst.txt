@@ -12,6 +12,7 @@ Plotter
    .. autosummary::
    
       ~Plotter.__init__
+      ~Plotter.clear_collection
       ~Plotter.draw_lines
       ~Plotter.draw_points
       ~Plotter.draw_polygons

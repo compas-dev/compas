@@ -42,7 +42,7 @@
 <h1>is_ccw_xy</h1>
 <dl class="function">
 <dt id="compas.geometry.is_ccw_xy">
-<code class="descclassname">compas.geometry.</code><code class="descname">is_ccw_xy</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>c</em>, <em>colinear=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/queries.html#is_ccw_xy"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.geometry.</code><code class="descname">is_ccw_xy</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>c</em>, <em>colinear=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/geometry/queries.html#is_ccw_xy"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Verify if <code class="docutils literal">c</code> is on the left of <code class="docutils literal">ab</code> when looking from <code class="docutils literal">a</code> to <code class="docutils literal">b</code>,
 and assuming that all points lie in the XY plane.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
@@ -68,19 +68,15 @@ Default is <code class="docutils literal">False</code>.</li>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">is_ccw_xy</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
 <span class="go">True</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">is_ccw_xy</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
 <span class="go">False</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">is_ccw_xy</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
 <span class="go">False</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">is_ccw_xy</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="kc">True</span><span class="p">))</span>
 <span class="go">True</span>
 </code></pre></div>
-
 <p class="rubric">References</p>
 <p><a class="reference external" href="https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation">https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation</a></p>
 </dd></dl>
@@ -116,6 +112,7 @@ Default is <code class="docutils literal">False</code>.</li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -147,7 +144,7 @@ Default is <code class="docutils literal">False</code>.</li>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

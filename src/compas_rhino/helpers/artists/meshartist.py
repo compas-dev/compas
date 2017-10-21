@@ -32,9 +32,9 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, ArtistInterface):
         self.datastructure = mesh
         self.layer = layer
         self.defaults = {
-            'vertex.color' : (255, 0, 0),
-            'face.color'   : (255, 255, 255),
-            'edge.color'   : (0, 0, 0),
+            'color.vertex' : (255, 0, 0),
+            'color.face'   : (255, 255, 255),
+            'color.edge'   : (0, 0, 0),
         }
 
     def redraw(self, timeout=None):

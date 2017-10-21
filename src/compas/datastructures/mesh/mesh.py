@@ -66,7 +66,7 @@ class Mesh(FromToJson,
            EdgeAttributesManagement,
            VertexAttributesManagement,
            Datastructure):
-    """Class representing a mesh.
+    """Definition of a mesh.
 
     The datastructure of the mesh is implemented as a half-edge.
 
@@ -118,7 +118,7 @@ class Mesh(FromToJson,
 
         import compas
         from compas.datastructures import Mesh
-        from compas.visualization.plotters import MeshPlotter
+        from compas.visualization import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -134,7 +134,7 @@ class Mesh(FromToJson,
 
         import compas
         from compas.datastructures import Mesh
-        from compas.visualization.plotters import MeshPlotter
+        from compas.visualization import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -150,7 +150,7 @@ class Mesh(FromToJson,
 
         import compas
         from compas.datastructures import Mesh
-        from compas.visualization.plotters import MeshPlotter
+        from compas.visualization import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -1099,7 +1099,32 @@ mesh: {}
         raise NotImplementedError
 
     def vertex_neighbours(self, key, ordered=False):
-        """Return the neighbours of a vertex."""
+        """Return the neighbours of a vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+        ordered : bool, optional
+            Return the neighbours in the cycling order of the faces.
+            Default is false.
+        
+        Returns
+        -------
+        list
+            The list of neighbouring vertices.
+            If the vertex lies on the boundary of the mesh,
+            an ordered list always starts and ends with with boundary vertices.
+
+        Note
+        ----
+        Due to the nature of the ordering algorithm, the neighbours cycle around
+        the node in the opposite direction as the cycling direction of the faces.
+        For some algorithms this produces the expected results. For others it doesn't.
+        For example, a dual mesh constructed relying on these conventions will have
+        oposite face cycle directions compared to the original.
+
+        """
 
         temp = list(self.halfedge[key])
 
@@ -1111,12 +1136,17 @@ mesh: {}
         if len(temp) == 1:
             return temp
 
+        # if one of the neighbours points to the *outside* face
+        # start there
+        # otherwise the starting point can be random
         start = temp[0]
         for nbr in temp:
             if self.halfedge[key][nbr] is None:
                 start = nbr
                 break
 
+        # start in the opposite direction
+        # to avoid pointing at an *outside* face again
         fkey = self.halfedge[start][key]
         nbrs = [start]
         count = 1000
@@ -1312,8 +1342,8 @@ mesh: {}
         # so the premise is that halfedge data is not valid/reliable
         from scipy.spatial import cKDTree
 
-        fkey_index = {fkey: index for index, fkey in self.faces_enum()}
-        index_fkey = dict(self.faces_enum())
+        fkey_index = {fkey: index for index, fkey in enumerate(self.faces())}
+        index_fkey = {index: fkey for index, fkey in enumerate(self.faces())}
         points = [self.face_centroid(fkey) for fkey in self.faces()]
 
         tree = cKDTree(points)
@@ -1321,26 +1351,36 @@ mesh: {}
         _, closest = tree.query(points, k=10, n_jobs=-1)
 
         adjacency = {}
-        for fkey in self.face:
+        for fkey in self.faces():
             nbrs  = []
             index = fkey_index[fkey]
             nnbrs = closest[index]
             found = set()
-            for u, v in iter(self.face[fkey].items()):
+            for u, v in self.face_halfedges(fkey):
                 for index in nnbrs:
                     nbr = index_fkey[index]
+
                     if nbr == fkey:
                         continue
                     if nbr in found:
                         continue
-                    if v in self.face[nbr] and u == self.face[nbr][v]:
-                        nbrs.append(nbr)
-                        found.add(nbr)
-                        break
-                    if u in self.face[nbr] and v == self.face[nbr][u]:
-                        nbrs.append(nbr)
-                        found.add(nbr)
-                        break
+
+                    # if v in self.face[nbr] and u == self.face[nbr][v]:
+                    # if u == self.face_vertex_descendant(nbr, v):
+                    for a, b in self.face_halfedges(nbr):
+                        if v == a and u == b:
+                            nbrs.append(nbr)
+                            found.add(nbr)
+                            break
+
+                    # if u in self.face[nbr] and v == self.face[nbr][u]:
+                    # if v == self.face_vertex_descendant(nbr, u):
+                    for a, b in self.face_halfedges(nbr):
+                        if u == a and v == b:
+                            nbrs.append(nbr)
+                            found.add(nbr)
+                            break
+
             adjacency[fkey] = nbrs
         return adjacency
 
@@ -1514,7 +1554,7 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas.visualization.plotters.meshplotter import MeshPlotter
+    from compas.visualization import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 

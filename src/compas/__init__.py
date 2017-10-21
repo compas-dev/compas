@@ -19,6 +19,7 @@ compas
     compas.interop
     compas.numerical
     compas.utilities
+    compas.topology
     compas.visualization
 
 """

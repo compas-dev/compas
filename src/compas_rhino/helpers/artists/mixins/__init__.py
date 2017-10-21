@@ -8,4 +8,4 @@ from .edgeartist import __all__ as b
 from .faceartist import __all__ as c
 from .pathartist import __all__ as d
 
-__all__ = a + b + d
+__all__ = a + b + c + d

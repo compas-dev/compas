@@ -93,6 +93,13 @@ class NetworkPlotter(Plotter):
         self.vertexcollection = collection
         return collection
 
+    def clear(self):
+        self.clear_vertices()
+        self.clear_edges()
+
+    def clear_vertices(self):
+        self.vertexcollection.remove()
+
     def update_vertices(self):
         circles = []
         for key in self.network.vertices():
@@ -133,12 +140,16 @@ class NetworkPlotter(Plotter):
         self.edgecollection = collection
         return collection
 
+    def clear_edges(self):
+        self.edgecollection.remove()
+
     def update_edges(self):
         segments = []
         for u, v in self.network.edges():
             segments.append([self.network.vertex_coordinates(u, 'xy'), self.network.vertex_coordinates(v, 'xy')])
         self.edgecollection.set_segments(segments)
 
+    # move to face network!
     def draw_faces(self,
                    keys=None,
                    text=None,

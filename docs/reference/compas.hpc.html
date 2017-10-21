@@ -13,7 +13,7 @@
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
 <link href="generated/compas.hpc.cuda_diag.html" rel="next" title="cuda_diag"/>
-<link href="generated/compas.geometry.Vector.html" rel="prev" title="Vector"/>
+<link href="generated/compas.geometry.smooth_area.html" rel="prev" title="smooth_area"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -192,6 +192,53 @@ For now, don’t use it for anything important :)</p>
 </div>
 <div class="section">
 <h2>euler</h2>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.connect_to_euler.html" title="compas.hpc.connect_to_euler"><code class="xref py py-obj docutils literal">connect_to_euler</code></a>(username)</td>
+<td>Connect to the ETHZ Euler cluster.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.load_euler_module.html" title="compas.hpc.load_euler_module"><code class="xref py py-obj docutils literal">load_euler_module</code></a>(client, module)</td>
+<td>Load a specific Euler module.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.recieve_file_from_euler.html" title="compas.hpc.recieve_file_from_euler"><code class="xref py py-obj docutils literal">recieve_file_from_euler</code></a>(username, ...)</td>
+<td>Recieve a remote file from the ETHZ Euler cluster (home folder).</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.send_file_to_euler.html" title="compas.hpc.send_file_to_euler"><code class="xref py py-obj docutils literal">send_file_to_euler</code></a>(username, local_file)</td>
+<td>Send a local file to the ETHZ Euler cluster (home folder).</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.send_folder_to_euler.html" title="compas.hpc.send_folder_to_euler"><code class="xref py py-obj docutils literal">send_folder_to_euler</code></a>(username, local_folder)</td>
+<td>Send a local folder to the ETHZ Euler cluster (home folder).</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.show_euler_jobs.html" title="compas.hpc.show_euler_jobs"><code class="xref py py-obj docutils literal">show_euler_jobs</code></a>(client[, type])</td>
+<td>Show the jobs in queue on Euler.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.show_euler_quotas.html" title="compas.hpc.show_euler_quotas"><code class="xref py py-obj docutils literal">show_euler_quotas</code></a>(username, client)</td>
+<td>Show the storage quotas for Euler user.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.show_eulermodules.html" title="compas.hpc.show_euler_modules"><code class="xref py py-obj docutils literal">show_euler_modules</code></a>(client)</td>
+<td>Show the available Euler modules.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.show_euler_module_info.html" title="compas.hpc.show_euler_module_info"><code class="xref py py-obj docutils literal">show_euler_module_info</code></a>(client, module)</td>
+<td>Show the information on a specific Euler module.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.show_euler_resources.html" title="compas.hpc.show_euler_resources"><code class="xref py py-obj docutils literal">show_euler_resources</code></a>(client)</td>
+<td>Show the available Euler resources for user.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.submit_job.html" title="compas.hpc.submit_job"><code class="xref py py-obj docutils literal">submit_job</code></a>(client, command[, time, output, cpus])</td>
+<td>Submit a job to Euler.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.kill_job.html" title="compas.hpc.kill_job"><code class="xref py py-obj docutils literal">kill_job</code></a>(client, job)</td>
+<td>Kill a specific submitted job on Euler.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.sync_folder_to_euler.html" title="compas.hpc.sync_folder_to_euler"><code class="xref py py-obj docutils literal">sync_folder_to_euler</code></a>(username, local_folder, ...)</td>
+<td>Sync (rsync) a local folder to the ETHZ Euler cluster (home folder).</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section">
 <h2>geometry</h2>
@@ -207,8 +254,8 @@ For now, don’t use it for anything important :)</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.hpc.numba_devo.html" title="compas.hpc.numba_devo"><code class="xref py py-obj docutils literal">numba_devo</code></a></td>
 <td>Call the Numba accelerated differential evolution solver.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.hpc.numba_drx.html" title="compas.hpc.numba_drx"><code class="xref py py-obj docutils literal">numba_drx</code></a></td>
-<td>Numba accelerated dynamic relaxation solver.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.hpc.numba_drx.html" title="compas.hpc.numba_drx"><code class="xref py py-obj docutils literal">numba_drx</code></a>(network[, factor, tol, steps, ...])</td>
+<td>Run Numba accelerated dynamic relaxation analysis.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.hpc.numba_cross.html" title="compas.hpc.numba_cross"><code class="xref py py-obj docutils literal">numba_cross</code></a></td>
 <td>The cross-product of vectors.</td>
@@ -238,7 +285,7 @@ For now, don’t use it for anything important :)</p>
 </div>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="generated/compas.geometry.Vector.html" role="button">Vector</a>
+<a class="btn btn-primary compas-prev" href="generated/compas.geometry.smooth_area.html" role="button">smooth_area</a>
 <a class="btn btn-primary compas-next" href="generated/compas.hpc.cuda_diag.html" role="button">cuda_diag</a>
 </nav>
 </main>
@@ -268,6 +315,7 @@ For now, don’t use it for anything important :)</p>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -306,7 +354,7 @@ For now, don’t use it for anything important :)</p>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

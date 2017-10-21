@@ -21,7 +21,7 @@ __all__ = [
 ]
 
 
-# @todo: rempove the callbacks
+# @todo: remove the callbacks
 # @todo: add specialised bfs to mesh orientation module
 # @todo: move to _graph module
 
@@ -223,7 +223,24 @@ def network_bfs2(adjacency, root):
 def network_bfs_paths(adjacency, root, goal):
     """Return all paths from root to goal.
 
+    Parameters
+    ----------
+    adjacency : dict
+        An adjacency dictionary.
+    root : hashable
+        The identifier of the starting node.
+    goal : hashable
+        The identifier of the ending node.
+
+    Yields
+    ------
+    list
+        A path from root to goal.
+
+    Note
+    ----
     Due to the nature of the search, the first path returned is the shortest.
+
     """
     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
     tovisit = deque([(root, [root])])
@@ -237,7 +254,25 @@ def network_bfs_paths(adjacency, root, goal):
 
 
 def network_shortest_path(adjacency, root, goal):
-    """"""
+    """Find the shortest path between two vertices of a network.
+
+    Parameters
+    ----------
+    adjacency : dict
+        An adjacency dictionary.
+    root : hashable
+        The identifier of the starting node.
+    goal : hashable
+        The identifier of the ending node.
+
+    Returns
+    -------
+    list
+        The path from root to goal.
+    None
+        If no path exists between the vertices.
+
+    """
     try:
         return next(network_bfs_paths(adjacency, root, goal))
     except StopIteration:
@@ -310,9 +345,9 @@ def network_dijkstra_path(adjacency, weight, source, target, dist=None):
 
             import compas
 
-            from compas.datastructures.network import Network
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_dijkstra_path
+            from compas.datastructures import Network
+            from compas.datastructures import network_dijkstra_path
+            from compas.visualization import NetworkPlotter
 
             network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -353,9 +388,9 @@ def network_dijkstra_path(adjacency, weight, source, target, dist=None):
 
             import compas
 
-            from compas.datastructures.network import Network
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_dijkstra_path
+            from compas.datastructures import Network
+            from compas.datastructures import network_dijkstra_path
+            from compas.visualization import NetworkPlotter
 
             network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -415,10 +450,9 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas.datastructures.network import Network
-    from compas.datastructures.network.algorithms import network_dijkstra_path
-
-    from compas.visualization.plotters.networkplotter import NetworkPlotter
+    from compas.datastructures import Network
+    from compas.datastructures import network_dijkstra_path
+    from compas.visualization import NetworkPlotter
 
     network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 

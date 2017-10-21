@@ -12,7 +12,7 @@
 <link href="/css/github.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="compas.datastructures.mesh_smooth_centroid.html" rel="next" title="mesh_smooth_centroid"/>
+<link href="compas.datastructures.mesh_subdivide.html" rel="next" title="mesh_subdivide"/>
 <link href="compas.datastructures.mesh_flip_cycles.html" rel="prev" title="mesh_flip_cycles"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
@@ -42,7 +42,7 @@
 <h1>mesh_planarize</h1>
 <dl class="function">
 <dt id="compas.datastructures.mesh_planarize">
-<code class="descclassname">compas.datastructures.</code><code class="descname">mesh_planarize</code><span class="sig-paren">(</span><em>mesh</em>, <em>fixed=None</em>, <em>kmax=100</em>, <em>d=1.0</em>, <em>callback=None</em>, <em>callback_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/mesh/algorithms/planarisation.html#mesh_planarize"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.datastructures.</code><code class="descname">mesh_planarize</code><span class="sig-paren">(</span><em>mesh</em>, <em>fixed=None</em>, <em>kmax=100</em>, <em>d=1.0</em>, <em>callback=None</em>, <em>callback_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/datastructures/mesh/algorithms/planarisation.html#mesh_planarize"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Planarise the faces of a mesh.</p>
 <p>Planarisation is implemented as a two-step iterative procedure. At every
 iteration, faces are first individually projected to their best-fit plane,
@@ -52,17 +52,14 @@ corners of the faces.</p>
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mesh</strong></li>
-<li><strong>fixed</strong></li>
-<li><strong>kmax</strong></li>
-<li><strong>d</strong></li>
-<li><strong>callback</strong></li>
-<li><strong>callback_args</strong></li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mesh</strong> (<em>Mesh</em>) – A mesh object.</li>
+<li><strong>fixed</strong> (<em>list, optional [None]</em>) – A list of fixed vertices.</li>
+<li><strong>kmax</strong> (<em>int, optional [100]</em>) – The number of iterations.</li>
+<li><strong>d</strong> (<em>float, optional [1.0]</em>) – A damping factor.</li>
+<li><strong>callback</strong> (<em>callable, optional [None]</em>) – A user-defined callback that is called after every iteration.</li>
+<li><strong>callback_args</strong> (<em>list, optional [None]</em>) – A list of arguments to be passed to the callback function.</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
 </td>
 </tr>
 </tbody>
@@ -71,7 +68,7 @@ corners of the faces.</p>
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="compas.datastructures.mesh_flip_cycles.html" role="button">mesh_flip_cycles</a>
-<a class="btn btn-primary compas-next" href="compas.datastructures.mesh_smooth_centroid.html" role="button">mesh_smooth_centroid</a>
+<a class="btn btn-primary compas-next" href="compas.datastructures.mesh_subdivide.html" role="button">mesh_subdivide</a>
 </nav>
 </main>
 <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
@@ -100,6 +97,7 @@ corners of the faces.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -131,7 +129,7 @@ corners of the faces.</p>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

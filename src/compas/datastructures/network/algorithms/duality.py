@@ -1,5 +1,5 @@
 from compas.geometry import angle_smallest_vectors
-from compas.geometry.queries import is_ccw_xy
+from compas.geometry import is_ccw_xy
 
 
 __author__     = 'Tom Van Mele'
@@ -50,7 +50,7 @@ def network_dual(network, cls=None):
             from compas.datastructures import FaceNetwork
             from compas.datastructures import network_find_faces
             from compas.datastructures import network_dual
-            from compas.visualization.plotters import NetworkPlotter
+            from compas.visualization import NetworkPlotter
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -89,14 +89,18 @@ def network_dual(network, cls=None):
         cls = type(network)
 
     dual = cls()
+
     for fkey in network.faces():
         x, y, z = network.face_center(fkey)
         dual.add_vertex(fkey, x=x, y=y, z=z)
+
     for u, v in network.edges():
         f1 = network.halfedge[u][v]
         f2 = network.halfedge[v][u]
+
         if f1 is not None and f2 is not None:
             dual.add_edge(f1, f2)
+
     return dual
 
 
@@ -140,9 +144,9 @@ def network_find_faces(network, breakpoints=None):
             # no breakpoints
 
             import compas
-            from compas.datastructures.network import FaceNetwork
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_find_faces
+            from compas.datastructures import FaceNetwork
+            from compas.datastructures import network_find_faces
+            from compas.visualization import NetworkPlotter
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -162,9 +166,9 @@ def network_find_faces(network, breakpoints=None):
             # leaves as breakpoints
 
             import compas
-            from compas.datastructures.network import FaceNetwork
-            from compas.visualization.plotters import NetworkPlotter
-            from compas.datastructures.network.algorithms import network_find_faces
+            from compas.datastructures import FaceNetwork
+            from compas.datastructures import network_find_faces
+            from compas.visualization import NetworkPlotter
 
             network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 
@@ -330,7 +334,7 @@ if __name__ == '__main__':
 
     import compas
     from compas.datastructures import FaceNetwork
-    from compas.visualization.plotters.networkplotter import NetworkPlotter
+    from compas.visualization import NetworkPlotter
 
     network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))
 

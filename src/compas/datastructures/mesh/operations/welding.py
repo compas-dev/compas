@@ -13,8 +13,52 @@ __all__ = [
 
 
 def mesh_unweld_vertices(mesh, fkey, where=None):
+    """Unweld a face of the mesh.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    fkey : hashable
+        The identifier of a face.
+    where : list (None)
+        A list of vertices to unweld.
+        Default is to unweld all vertices of the face.
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+
+        from compas.datastructures import Mesh
+        from compas.datastructures import mesh_unweld_vertices
+
+        from compas.visualization import MeshPlotter
+
+        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+
+        fkey  = 12
+        where = mesh.face_vertices(fkey)[0:1]
+        xyz   = mesh.face_centroid(fkey)
+
+        mesh_unweld_vertices(mesh, fkey, where)
+
+        mesh.vertex[36]['x'] = xyz[0]
+        mesh.vertex[36]['y'] = xyz[1]
+        mesh.vertex[36]['z'] = xyz[2]
+
+        plotter = MeshPlotter(mesh)
+
+        plotter.draw_vertices()
+        plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
+
+        plotter.show()
+
+    """
     face = []
-    vertices = mesh.face_vertices(fkey, ordered=True)
+    vertices = mesh.face_vertices(fkey)
 
     if not where:
         where = vertices
@@ -42,25 +86,23 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
 if __name__ == "__main__":
 
     import compas
-    from compas.datastructures.mesh.mesh import Mesh
-    from compas.visualization.plotters.meshplotter import MeshPlotter
 
-    data = compas.get_data('faces.obj')
-    mesh = Mesh.from_obj(data)
+    from compas.datastructures import Mesh
+    from compas.datastructures import mesh_unweld_vertices
+
+    from compas.visualization import MeshPlotter
+
+    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
     fkey  = 12
     where = mesh.face_vertices(fkey)[0:1]
     xyz   = mesh.face_centroid(fkey)
 
-    unweld_vertices_mesh(mesh, fkey, where)
+    mesh_unweld_vertices(mesh, fkey, where)
 
-    # move the unwelded vertex to the original centroid of the face it (partially)
-    # disconnects
     mesh.vertex[36]['x'] = xyz[0]
     mesh.vertex[36]['y'] = xyz[1]
     mesh.vertex[36]['z'] = xyz[2]
-
-    print(mesh)
 
     plotter = MeshPlotter(mesh)
 

@@ -35,6 +35,10 @@ layers
 .. autosummary::
     :toctree: generated/
 
+    clear_layer
+    clear_layers
+    layer_mask
+
 
 misc
 ----

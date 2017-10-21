@@ -31,6 +31,12 @@ __all__ = [
     'volmesh_draw_edges',
     'volmesh_draw_faces',
     'volmesh_draw_cells',
+    'volmesh_select_vertex',
+    'volmesh_select_vertices',
+    'volmesh_select_edge',
+    'volmesh_select_edges',
+    'volmesh_select_face',
+    'volmesh_select_faces',
 ]
 
 
@@ -100,7 +106,7 @@ def volmesh_from_wireframe(cls, edges):
 
 
 # ==============================================================================
-# drawing (artists)
+# drawing
 # ==============================================================================
 
 
@@ -320,7 +326,7 @@ def volmesh_draw_cells(volmesh):
 
 
 # ==============================================================================
-# selection (selectors)
+# selections
 # ==============================================================================
 
 
@@ -405,7 +411,7 @@ def volmesh_select_cells():
 
 
 # ==============================================================================
-# move (modifiers)
+# modifications
 # ==============================================================================
 
 
@@ -416,14 +422,18 @@ def volmesh_select_cells():
 if __name__ == "__main__":
 
     import compas
-
     from compas.datastructures import VolMesh
-    from compas_rhino.helpers.volmesh import *
+    from compas_rhino.helpers import volmesh_draw
+    from compas_rhino.helpers import volmesh_select_vertex
+    # from compas_rhino.helpers import volmesh_move_vertex
 
     volmesh = VolMesh.from_obj(compas.get_data('boxes.obj'))
 
-    volmesh_draw(volmesh)
+    volmesh_draw(volmesh, layer='test', clear_layer=True)
 
-    key = volmesh_select_face(volmesh)
+    key = volmesh_select_vertex(volmesh)
 
     print(key)
+
+    # if volmesh_move_vertex(volmesh, key):
+    #     volmesh_draw(volmesh, layer='test', clear_layer=True)

@@ -42,7 +42,7 @@
 <h1>drx</h1>
 <dl class="function">
 <dt id="compas.numerical.methods.drx">
-<code class="descclassname">compas.numerical.methods.</code><code class="descname">drx</code><span class="sig-paren">(</span><em>network</em>, <em>factor=1.0</em>, <em>tol=1</em>, <em>steps=10000</em>, <em>refresh=0</em>, <em>beams=None</em>, <em>scale=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/numerical/methods/drx.html#drx"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.numerical.methods.</code><code class="descname">drx</code><span class="sig-paren">(</span><em>network</em>, <em>factor=1.0</em>, <em>tol=0.1</em>, <em>steps=10000</em>, <em>refresh=0</em>, <em>update=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/numerical/methods/drx.html#drx"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Run dynamic relaxation analysis.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
@@ -52,10 +52,9 @@
 <li><strong>network</strong> (<em>obj</em>) – Network to analyse.</li>
 <li><strong>factor</strong> (<em>float</em>) – Convergence factor.</li>
 <li><strong>tol</strong> (<em>float</em>) – Tolerance value.</li>
-<li><strong>steps</strong> (<em>int</em>) – Maximum number of iteration steps.</li>
+<li><strong>steps</strong> (<em>int</em>) – Maximum number of steps.</li>
 <li><strong>refresh</strong> (<em>int</em>) – Update progress every n steps.</li>
-<li><strong>beams</strong> (<em>dic</em>) – Beam members data.</li>
-<li><strong>scale</strong> (<em>float</em>) – Scale on plotting axial forces.</li>
+<li><strong>update</strong> (<em>bool</em>) – Update the co-ordinates of the Network.</li>
 </ul>
 </td>
 </tr>
@@ -99,6 +98,7 @@ array: Edge lengths.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -130,7 +130,7 @@ array: Edge lengths.</p>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

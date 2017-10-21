@@ -813,17 +813,26 @@ way.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">distance_point_point</span><span class="p">([</span><span class="mf">0.0</span> <span class="mf">0.0</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">[</span><span class="mf">1.0</span> <span class="mf">1.0</span> <span class="mf">1.0</span><span class="p">])</span>
-<span class="go">1.7320508075688772</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry.objects</span> <span class="kn">import</span> <span class="n">Point</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mf">0.0</span> <span class="mf">0.0</span> <span class="mf">0.0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mf">1.0</span> <span class="mf">1.0</span> <span class="mf">1.0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">distance_to_point</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
-<span class="go">1.7320508075688772</span>
-</code></pre></div>
-
+</div>
+<div class="section">
+<h2>Algorithms</h2>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centroid.html" title="compas.geometry.smooth_centroid"><code class="xref py py-obj docutils literal">smooth_centroid</code></a>(vertices, adjacency[, ...])</td>
+<td>Smooth a connected set of vertices by moving each vertex to the centroid of its neighbours.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centerofmass.html" title="compas.geometry.smooth_centerofmass"><code class="xref py py-obj docutils literal">smooth_centerofmass</code></a>(vertices, adjacency[, ...])</td>
+<td>Smooth a connected set of vertices by moving each vertex to the center of mass of the polygon formed by the neighbouring vertices.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_area.html" title="compas.geometry.smooth_area"><code class="xref py py-obj docutils literal">smooth_area</code></a>(vertices, faces, adjacency[, ...])</td>
+<td>Smooth a set of connected vertices by moving each vertex to the centroid of the surrounding faces, weighted by the area of the face.</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <nav class="compas-sideways">
@@ -857,6 +866,7 @@ way.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.interop.html">interop</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.numerical.html">numerical</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.topology.html">topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.visualization.html">visualization</a></li>
 </ul>
 </li>
@@ -892,6 +902,7 @@ way.</p>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#objects">Objects</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#algorithms">Algorithms</a></li>
 </ul>
 </li>
 </ul>
@@ -906,7 +917,7 @@ way.</p>
             
 
             
-                Last updated on Oct 07, 2017.
+                Last updated on Oct 19, 2017.
             
 
             

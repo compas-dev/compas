@@ -12,6 +12,10 @@ NetworkPlotter
    .. autosummary::
    
       ~NetworkPlotter.__init__
+      ~NetworkPlotter.clear
+      ~NetworkPlotter.clear_collection
+      ~NetworkPlotter.clear_edges
+      ~NetworkPlotter.clear_vertices
       ~NetworkPlotter.draw_edges
       ~NetworkPlotter.draw_faces
       ~NetworkPlotter.draw_lines
