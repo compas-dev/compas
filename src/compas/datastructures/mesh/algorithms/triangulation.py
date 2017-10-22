@@ -3,7 +3,7 @@ import random
 from compas.datastructures.mesh import Mesh
 
 from compas.datastructures.mesh.algorithms import mesh_dual
-from compas.datastructures.mesh.algorithms import trimesh_optimise_topology
+from compas.datastructures.mesh.algorithms import trimesh_remesh
 from compas.datastructures.mesh.operations import trimesh_swap_edge
 from compas.datastructures.mesh.operations import mesh_split_face
 
@@ -133,7 +133,7 @@ def mesh_delaunay_from_points(points, polygon=None, polygons=None):
 
             if is_point_in_triangle_xy(pt, [a, b, c]):
                 # generate 3 new triangles (faces) and delete surrounding triangle
-                newtris = mesh.insert_vertex(fkey, key=key, xyz=pt)
+                key, newtris = mesh.insert_vertex(fkey, key=key, xyz=pt, return_fkeys=True)
                 break
 
         while newtris:
@@ -168,7 +168,7 @@ def mesh_delaunay_from_points(points, polygon=None, polygons=None):
 
     # Delete faces adjacent to supertriangle
     for key in super_keys:
-        mesh.remove_vertex(key)
+        mesh.delete_vertex(key)
 
     # Delete faces outside of boundary
     if polygon:
@@ -211,18 +211,18 @@ def mesh_voronoi_from_points(points, boundary=None, holes=None, return_delaunay=
             from numpy import zeros
 
             from compas.datastructures import Mesh
-            from compas.datastructures import trimesh_optimise_topology
+            from compas.datastructures import trimesh_remesh
             from compas.datastructures import mesh_delaunay_from_points
             from compas.datastructures import mesh_voronoi_from_points
+
             from compas.visualization import MeshPlotter
 
             points = hstack((10.0 * random.random_sample((20, 2)), zeros((20, 1)))).tolist()
             mesh = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
 
-            trimesh_optimise_topology(mesh, 1.0, allow_boundary_split=True)
+            trimesh_remesh(mesh, 1.0, allow_boundary_split=True)
 
             points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-
             voronoi, delaunay = mesh_voronoi_from_points(points, return_delaunay=True)
 
             lines = []
@@ -238,7 +238,9 @@ def mesh_voronoi_from_points(points, boundary=None, holes=None, return_delaunay=
 
             plotter.draw_xlines(lines)
 
-            plotter.draw_vertices(radius=0.075, facecolor={key: '#0092d2' for key in delaunay.vertices() if key not in boundary})
+            facecolor = {key: '#0092d2' for key in delaunay.vertices() if key not in boundary}
+
+            plotter.draw_vertices(radius=0.075, facecolor=facecolor)
             plotter.draw_edges(color='#cccccc')
 
             plotter.show()
@@ -271,19 +273,21 @@ if __name__ == "__main__":
     from numpy import zeros
 
     from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
+    from compas.datastructures import trimesh_remesh
     from compas.datastructures import mesh_delaunay_from_points
+    from compas.datastructures import mesh_voronoi_from_points
+
+    from compas.visualization import MeshPlotter
 
     points = hstack((10.0 * random.random_sample((20, 2)), zeros((20, 1)))).tolist()
-
     mesh = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
-    trimesh_optimise_topology(mesh, 1.0, allow_boundary_split=True)
-    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
 
+    trimesh_remesh(mesh, 1.0, allow_boundary_split=True)
+
+    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
     voronoi, delaunay = mesh_voronoi_from_points(points, return_delaunay=True)
 
     lines = []
-
     for u, v in voronoi.edges():
         lines.append({
             'start': voronoi.vertex_coordinates(u, 'xy'),
@@ -291,34 +295,15 @@ if __name__ == "__main__":
             'width': 1.0
         })
 
-    # for u, v in delaunay.edges_on_boundary():
-    #     uv = delaunay.halfedge[u][v]
-    #     vu = delaunay.halfedge[v][u]
-
-    #     if uv is None:
-    #         # compute midpoint of uv
-    #         # get coordinates of voronoi vertex vu
-    #         start = delaunay.edge_midpoint(u, v)[0:2]
-    #         end = voronoi.vertex_coordinates(vu, 'xy')
-    #     else:
-    #         # compute midpoint of vu
-    #         # get coordinates of voronoi vertex uv
-    #         start = delaunay.edge_midpoint(v, u)[0:2]
-    #         end = voronoi.vertex_coordinates(uv, 'xy')
-
-    #     lines.append({
-    #         'start': start,
-    #         'end'  : end,
-    #         'width': 1.0,
-    #         'color': '#ff0000'
-    #     })
-
     boundary = set(delaunay.vertices_on_boundary())
 
     plotter = MeshPlotter(delaunay)
 
-    plotter.draw_vertices(radius=0.075, facecolor={key: '#0092d2' for key in delaunay.vertices() if key not in boundary})
-    plotter.draw_edges(color='#cccccc')
     plotter.draw_xlines(lines)
+
+    facecolor = {key: '#0092d2' for key in delaunay.vertices() if key not in boundary}
+
+    plotter.draw_vertices(radius=0.075, facecolor=facecolor)
+    plotter.draw_edges(color='#cccccc')
 
     plotter.show()

@@ -57,12 +57,12 @@ def mesh_subdivide(mesh, scheme='tri', **options):
         MeshError
 
     """
-    options = options or {}
-
     if scheme == 'tri':
-        return mesh_subdivide_tri(mesh)
+        return mesh_subdivide_tri(mesh, **options)
+    if scheme == 'quad':
+        return mesh_subdivide_quad(mesh, **options)
     if scheme == 'corner':
-        return mesh_subdivide_corner(mesh)
+        return mesh_subdivide_corner(mesh, **options)
     if scheme == 'catmullclark':
         return mesh_subdivide_catmullclark(mesh, **options)
     if scheme == 'doosabin':
@@ -92,7 +92,7 @@ def mesh_subdivide_quad(mesh, k=1):
     for _ in range(k):
         subd = mesh.copy()
 
-        for u, v in subd.halfedges():
+        for u, v in list(subd.halfedges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
 
         for fkey in mesh.faces():
@@ -134,7 +134,7 @@ def mesh_subdivide_corner(mesh, k=1):
         subd = mesh.copy()
 
         # split every edge
-        for u, v in subd.halfedges():
+        for u, v in list(subd.halfedges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
 
         # create 4 new faces for every old face
@@ -251,7 +251,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
             viewer.show()
 
 
-    .. image:: /_images/subdivide_mesh_catmullclark-screenshot.*
+    .. figure:: /_images/subdivide_mesh_catmullclark-screenshot.*
+        :figclass: figure
+        :class: figure-img img-fluid
 
     .. note::
 
@@ -279,7 +281,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         edgepoints = []
 
-        for u, v in subd.halfedges():
+        for u, v in list(subd.halfedges()):
 
             w = mesh_split_edge(subd, u, v, allow_boundary=True)
 
@@ -502,8 +504,10 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
             subd.vertex[key]['y'] = xyz[1]
             subd.vertex[key]['z'] = xyz[2]
 
-        for u, v in subd.edges():
+        for u, v in list(subd.edges()):
+
             w = split_edge(subd, u, v, allow_boundary=True)
+
             edgepoints[(u, v)] = w
             edgepoints[(v, u)] = w
             v1 = key_xyz[u]
@@ -533,7 +537,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 # # and the update of catmull-clark
 # # don't use this for anything other then an example...
 # # this implementation assumes the mesh is closed
-# # when extraordinary vertices exist in the control mesh, any subd mesh has gas faces with more than 4 vertices
+# # when extraordinary vertices exist in the control mesh, any subd mesh has faces with more than 4 vertices
 # def subdivide_quadmesh_quad(mesh, k=1):
 #     """Subdivide a quad mesh using the quad algorithm.
 #     """
@@ -620,28 +624,30 @@ if __name__ == "__main__":
 
     import compas
 
-    from compas.geometry.elements.polyhedron import Polyhedron
+    from compas.geometry import Polyhedron
+    from compas.datastructures import Mesh
+    from compas.datastructures import mesh_subdivide
 
-    from compas.datastructures.mesh.mesh import Mesh
-
+    from compas.visualization import MeshPlotter
     from compas.visualization.viewers.meshviewer import MeshViewer
 
-    # from compas.datastructures.mesh.algorithms import subdivide_tri
-    # from compas.datastructures.mesh.algorithms import subdivide_quad
-    # from compas.datastructures.mesh.algorithms import subdivide_corner
-    # from compas.datastructures.mesh.algorithms import subdivide_catmullclark
-    # from compas.datastructures.mesh.algorithms import subdivide_doosabin
-
     cube = Polyhedron.generate(6)
-
     mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
+    # mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-    mesh = mesh_subdivide_doosabin(mesh, k=3)
+    mesh = mesh_subdivide(mesh, scheme='doosabin', k=2)
 
     print(mesh.number_of_vertices())
     print(mesh.number_of_faces())
     print(mesh.number_of_edges())
     print(mesh.number_of_halfedges())
+
+    # plotter = MeshPlotter(mesh)
+
+    # plotter.draw_vertices()
+    # plotter.draw_faces()
+
+    # plotter.show()
 
     viewer = MeshViewer(mesh, width=1440, height=900)
 

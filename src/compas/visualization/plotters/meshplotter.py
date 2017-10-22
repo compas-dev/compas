@@ -75,9 +75,9 @@ class MeshPlotter(Plotter):
         keys = keys or list(self.mesh.vertices())
 
         if text == 'key':
-            text = {key: str(key) for key in mesh.vertices()}
+            text = {key: str(key) for key in self.mesh.vertices()}
         elif text == 'index':
-            text = {key: str(index) for index, key in enumerate(mesh.vertices())}
+            text = {key: str(index) for index, key in enumerate(self.mesh.vertices())}
         else:
             pass
 
@@ -127,6 +127,13 @@ class MeshPlotter(Plotter):
 
         keys = keys or list(self.mesh.edges())
 
+        if text == 'key':
+            text = {(u, v): '{}-{}'.format(u, v) for u, v in self.mesh.edges()}
+        elif text == 'index':
+            text = {(u, v): str(index) for index, (u, v) in enumerate(self.mesh.edges())}
+        else:
+            pass
+
         widthdict     = to_valuedict(keys, width, self.defaults['edge.width'])
         colordict     = to_valuedict(keys, color, self.defaults['edge.color'])
         textdict      = to_valuedict(keys, text, '')
@@ -168,6 +175,13 @@ class MeshPlotter(Plotter):
                    fontsize=None):
 
         keys = keys or list(self.mesh.faces())
+
+        if text == 'key':
+            text = {key: str(key) for key in self.mesh.faces()}
+        elif text == 'index':
+            text = {key: str(index) for index, key in enumerate(self.mesh.faces())}
+        else:
+            pass
 
         textdict      = to_valuedict(keys, text, '')
         facecolordict = to_valuedict(keys, facecolor, self.defaults['face.facecolor'])

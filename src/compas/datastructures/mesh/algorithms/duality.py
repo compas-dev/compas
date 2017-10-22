@@ -56,7 +56,7 @@ def mesh_dual(mesh, cls=None):
 
         plotter.draw_xlines(lines)
 
-        plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text={key: key for key in dual.vertices()})
+        plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text='key')
         plotter.draw_edges()
 
         plotter.show()
@@ -120,14 +120,14 @@ def mesh_voronoi(mesh, cls=None, update_coordinates=True):
         from compas.datastructures import mesh_dual
         from compas.datastructures import mesh_voronoi
         from compas.datastructures import mesh_delaunay_from_points
-        from compas.datastructures import trimesh_optimise_topology
+        from compas.datastructures import trimesh_remesh
 
         from compas.visualization import MeshPlotter
 
         points = hstack((10.0 * random.random_sample((10, 2)), zeros((10, 1)))).tolist()
         mesh = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
 
-        trimesh_optimise_topology(mesh, 1.0, allow_boundary_split=True)
+        trimesh_remesh(mesh, 1.0, allow_boundary_split=True)
 
         points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
         mesh = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
@@ -147,7 +147,7 @@ def mesh_voronoi(mesh, cls=None, update_coordinates=True):
 
         plotter.draw_xlines(lines)
         plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.05)
-        plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text={fkey: str(fkey) for fkey in dual.faces()})
+        plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text='key')
         plotter.draw_edges(keys=[(u, v) for u, v in dual.edges() if not dual.is_edge_naked(u, v)])
 
         plotter.show()
@@ -162,7 +162,7 @@ def mesh_voronoi(mesh, cls=None, update_coordinates=True):
     outer = mesh.vertices_on_boundary(ordered=True)[::-1]
     inner = list(set(mesh.vertices()) - set(outer))
 
-    f = mesh._get_facekey(None)
+    f = mesh._get_face_key(None)
 
     for i in range(-1, len(outer) - 1):
         u = outer[i]
@@ -239,7 +239,7 @@ if __name__ == '__main__':
     from compas.datastructures import mesh_dual
     from compas.datastructures import mesh_voronoi
     from compas.datastructures import mesh_delaunay_from_points
-    from compas.datastructures import trimesh_optimise_topology
+    from compas.datastructures import trimesh_remesh
     from compas.visualization import MeshPlotter
 
     # points = [[2853.0, -29.0, 594.0], [2922.0, -29.0, 594.0], [2922.0, 59.0, 594.0], [2853.0, 59.0, 594.0], [3028.0, -29.0, 594.0], [3097.0, -29.0, 594.0], [3097.0, 59.0, 594.0], [3028.0, 59.0, 594.0]]
@@ -248,7 +248,7 @@ if __name__ == '__main__':
 
     points = hstack((10.0 * random.random_sample((10, 2)), zeros((10, 1)))).tolist()
     mesh = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
-    trimesh_optimise_topology(mesh, 1.0, allow_boundary_split=True)
+    trimesh_remesh(mesh, 1.0, allow_boundary_split=True)
     points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
     mesh = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
 
@@ -267,7 +267,7 @@ if __name__ == '__main__':
 
     plotter.draw_xlines(lines)
     plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.05)
-    plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text={fkey: str(fkey) for fkey in dual.faces()})
+    plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text='key')
     plotter.draw_edges(keys=[(u, v) for u, v in dual.edges() if not dual.is_edge_naked(u, v)])
 
     plotter.show()

@@ -16,23 +16,23 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'trimesh_optimise_topology',
+    'trimesh_remesh',
 ]
 
 
-def trimesh_optimise_topology(mesh,
-                              target,
-                              kmax=100,
-                              tol=0.1,
-                              divergence=0.01,
-                              verbose=False,
-                              allow_boundary_split=False,
-                              allow_boundary_swap=False,
-                              allow_boundary_collapse=False,
-                              smooth=True,
-                              fixed=None,
-                              callback=None,
-                              callback_args=None):
+def trimesh_remesh(mesh,
+                   target,
+                   kmax=100,
+                   tol=0.1,
+                   divergence=0.01,
+                   verbose=False,
+                   allow_boundary_split=False,
+                   allow_boundary_swap=False,
+                   allow_boundary_collapse=False,
+                   smooth=True,
+                   fixed=None,
+                   callback=None,
+                   callback_args=None):
     """Remesh until all edges have a specified target length.
 
     This involves three operations:
@@ -86,7 +86,12 @@ def trimesh_optimise_topology(mesh,
 
     Note
     ----
-    Smoothing is done with area-based smoothing.
+    Smoothing is done with area-based smoothing as this tends to produce better results.
+
+    Warning
+    -------
+    In the current implementation, allowing boundary collapses may lead to unexpected
+    results since it will not preserve the gometry of the original boundary.
 
     See Also
     --------
@@ -99,7 +104,7 @@ def trimesh_optimise_topology(mesh,
 
         from compas.datastructures import Mesh
         from compas.visualization import MeshPlotter
-        from compas.datastructures import trimesh_optimise_topology
+        from compas.datastructures import trimesh_remesh
 
         vertices = [
             (0.0, 0.0, 0.0),
@@ -117,7 +122,7 @@ def trimesh_optimise_topology(mesh,
 
         mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-        trimesh_optimise_topology(
+        trimesh_remesh(
             mesh,
             target=0.5,
             tol=0.05,
@@ -158,9 +163,9 @@ def trimesh_optimise_topology(mesh,
     for k in xrange(kmax):
 
         if k <= kmax_start:
-            scale_val = fac * (1.0 - k / kmax_start)
-            dlmin = lmin * scale_val
-            dlmax = lmax * scale_val
+            scale = fac * (1.0 - k / kmax_start)
+            dlmin = lmin * scale
+            dlmax = lmax * scale
         else:
             dlmin = 0
             dlmax = 0
@@ -171,17 +176,18 @@ def trimesh_optimise_topology(mesh,
         count += 1
 
         if k % 20 == 0:
-            num_vertices_1 = len(mesh.vertex)
+            num_vertices_1 = mesh.number_of_vertices()
 
         # split
         if count == 1:
             visited = set()
 
-            for u, v in mesh.edges():
+            for u, v in list(mesh.halfedges()):
                 if u in visited or v in visited:
                     continue
                 if mesh.edge_length(u, v) <= lmax + dlmax:
                     continue
+
                 if verbose:
                     print('split edge: {0} - {1}'.format(u, v))
 
@@ -194,7 +200,7 @@ def trimesh_optimise_topology(mesh,
         elif count == 2:
             visited = set()
 
-            for u, v in mesh.edges():
+            for u, v in list(mesh.halfedges()):
                 if u in visited or v in visited:
                     continue
                 if mesh.edge_length(u, v) >= lmin - dlmin:
@@ -213,7 +219,7 @@ def trimesh_optimise_topology(mesh,
         elif count == 3:
             visited = set()
 
-            for u, v in mesh.edges():
+            for u, v in list(mesh.halfedges()):
                 if u in visited or v in visited:
                     continue
 
@@ -248,6 +254,7 @@ def trimesh_optimise_topology(mesh,
 
                 if current_error <= flipped_error:
                     continue
+
                 if verbose:
                     print('swap edge: {0} - {1}'.format(u, v))
 
@@ -260,7 +267,7 @@ def trimesh_optimise_topology(mesh,
             count = 0
 
         if (k - 10) % 20 == 0:
-            num_vertices_2 = len(mesh.vertex)
+            num_vertices_2 = mesh.number_of_vertices()
 
             if abs(1 - num_vertices_1 / num_vertices_2) < divergence and k > kmax_start:
                 break
@@ -279,6 +286,7 @@ def trimesh_optimise_topology(mesh,
                 attr['y'] = vertices[key][1]
                 attr['z'] = vertices[key][2]
 
+        # callback
         if callback:
             callback(mesh, k, callback_args)
 
@@ -289,7 +297,7 @@ def trimesh_optimise_topology(mesh,
 
 if __name__ == '__main__':
 
-    import time
+    from compas.geometry import smooth_area
 
     from compas.datastructures import Mesh
     from compas.visualization import MeshPlotter
@@ -314,9 +322,10 @@ if __name__ == '__main__':
     plotter = MeshPlotter(mesh)
 
     plotter.defaults['vertex.edgewidth'] = 0.1
+    plotter.defaults['edge.width'] = 0.5
     plotter.defaults['face.facecolor'] = '#eeeeee'
-    plotter.defaults['face.edgecolor'] = '#222222'
-    plotter.defaults['face.edgewidth'] = 0.1
+    # plotter.defaults['face.edgecolor'] = '#222222'
+    plotter.defaults['face.edgewidth'] = 0.0
 
     plotter.draw_edges()
 
@@ -324,29 +333,32 @@ if __name__ == '__main__':
         plotter.update_edges()
         plotter.update(pause=0.001)
 
-    t0 = time.time()
-
-    trimesh_optimise_topology(
+    trimesh_remesh(
         mesh,
-        0.3,
+        0.5,
         tol=0.05,
         kmax=500,
         allow_boundary_split=True,
         allow_boundary_swap=True,
+        allow_boundary_collapse=False,
         fixed=mesh.vertices_on_boundary(),
         callback=callback,
         callback_args=None,
     )
 
-    t1 = time.time()
+    # boundary  = set(mesh.vertices_on_boundary())
+    # vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    # faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
+    # adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
 
-    print(t1 - t0)
+    # smooth_area(vertices, faces, adjacency, fixed=boundary, kmax=50)
 
     plotter.clear_edges()
     plotter.update()
 
-    plotter.draw_vertices(radius=0.02)
+    plotter.draw_vertices(radius=0.03)
     plotter.draw_faces()
+    plotter.draw_edges()
     plotter.update()
 
     plotter.show()
