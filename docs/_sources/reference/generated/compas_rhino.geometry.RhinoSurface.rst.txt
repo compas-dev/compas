@@ -10,6 +10,8 @@ RhinoSurface
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~RhinoSurface.__init__
       ~RhinoSurface.borders

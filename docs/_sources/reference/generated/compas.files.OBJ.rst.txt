@@ -10,6 +10,8 @@ OBJ
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~OBJ.__init__
    

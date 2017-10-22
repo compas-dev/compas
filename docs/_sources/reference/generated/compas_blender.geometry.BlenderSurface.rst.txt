@@ -10,6 +10,8 @@ BlenderSurface
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~BlenderSurface.__init__
       ~BlenderSurface.find

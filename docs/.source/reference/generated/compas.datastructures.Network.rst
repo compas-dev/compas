@@ -10,6 +10,8 @@ Network
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~Network.__init__
       ~Network.add_edge

@@ -10,6 +10,8 @@ Point
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~Point.__init__
       ~Point.distance_to_line

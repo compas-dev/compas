@@ -10,6 +10,8 @@ ImageForm
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~ImageForm.__init__
       ~ImageForm.init

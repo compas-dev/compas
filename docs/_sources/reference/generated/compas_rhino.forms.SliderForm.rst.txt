@@ -10,6 +10,8 @@ SliderForm
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~SliderForm.__init__
       ~SliderForm.init

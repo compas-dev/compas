@@ -10,6 +10,8 @@ NetworkPlotter
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~NetworkPlotter.__init__
       ~NetworkPlotter.clear

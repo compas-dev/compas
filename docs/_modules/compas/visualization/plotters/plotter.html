@@ -67,7 +67,7 @@
 
 <div class="viewcode-block" id="Plotter"><a class="viewcode-back" href="../../../../reference/generated/compas.visualization.Plotter.html#compas.visualization.Plotter">[docs]</a><span class="k">class</span> <span class="nc">Plotter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">16.0</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mf">100.0</span><span class="p">):</span>
+<div class="viewcode-block" id="Plotter.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.__init__.html#compas.visualization.Plotter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">16.0</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mf">100.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interactive</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># use descriptors for these</span>
@@ -102,7 +102,7 @@
             <span class="s1">'polygon.textcolor'</span> <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
             <span class="s1">'polygon.fontsize'</span>  <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tight</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tight</span> <span class="o">=</span> <span class="kc">False</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -154,59 +154,59 @@
     <span class="c1"># def clear(self):</span>
     <span class="c1">#     raise NotImplementedError</span>
 
-    <span class="k">def</span> <span class="nf">clear_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
-        <span class="n">collection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<div class="viewcode-block" id="Plotter.clear_collection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.clear_collection.html#compas.visualization.Plotter.clear_collection">[docs]</a>    <span class="k">def</span> <span class="nf">clear_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
+        <span class="n">collection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Plotter.show"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.show.html#compas.visualization.Plotter.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tight</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Plotter.save"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.save.html#compas.visualization.Plotter.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pause</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">):</span>
+<div class="viewcode-block" id="Plotter.update"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update.html#compas.visualization.Plotter.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pause</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">pause</span><span class="p">(</span><span class="n">pause</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">pause</span><span class="p">(</span><span class="n">pause</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">update_pointcollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<div class="viewcode-block" id="Plotter.update_pointcollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_pointcollection.html#compas.visualization.Plotter.update_pointcollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_pointcollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="nb">len</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">radius</span> <span class="o">=</span> <span class="p">[</span><span class="n">radius</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">centers</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">centers</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
         <span class="n">circles</span> <span class="o">=</span> <span class="p">[</span><span class="n">Circle</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
-        <span class="n">collection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span>
+        <span class="n">collection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">update_linecollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">segments</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="Plotter.update_linecollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_linecollection.html#compas.visualization.Plotter.update_linecollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_linecollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">segments</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">update_polygoncollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="Plotter.update_polygoncollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_polygoncollection.html#compas.visualization.Plotter.update_polygoncollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_polygoncollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<div class="viewcode-block" id="Plotter.draw_points"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_points.html#compas.visualization.Plotter.draw_points">[docs]</a>    <span class="k">def</span> <span class="nf">draw_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<div class="viewcode-block" id="Plotter.draw_lines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_lines.html#compas.visualization.Plotter.draw_lines">[docs]</a>    <span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<div class="viewcode-block" id="Plotter.draw_polygons"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_polygons.html#compas.visualization.Plotter.draw_polygons">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_xpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">draw_xpoints_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span>
+<div class="viewcode-block" id="Plotter.draw_xpoints"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_xpoints.html#compas.visualization.Plotter.draw_xpoints">[docs]</a>    <span class="k">def</span> <span class="nf">draw_xpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">draw_xpoints_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_xlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">draw_xlines_xy</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span>
+<div class="viewcode-block" id="Plotter.draw_xlines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_xlines.html#compas.visualization.Plotter.draw_xlines">[docs]</a>    <span class="k">def</span> <span class="nf">draw_xlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">draw_xlines_xy</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_xpolygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">draw_xpolygons_xy</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span>
+<div class="viewcode-block" id="Plotter.draw_xpolygons"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_xpolygons.html#compas.visualization.Plotter.draw_xpolygons">[docs]</a>    <span class="k">def</span> <span class="nf">draw_xpolygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">draw_xpolygons_xy</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_xarrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrows</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">draw_xarrows_xy</span><span class="p">(</span><span class="n">arrows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Plotter.draw_xarrows"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_xarrows.html#compas.visualization.Plotter.draw_xarrows">[docs]</a>    <span class="k">def</span> <span class="nf">draw_xarrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrows</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">draw_xarrows_xy</span><span class="p">(</span><span class="n">arrows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

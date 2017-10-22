@@ -10,6 +10,8 @@ Line
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~Line.__init__
       ~Line.rotate

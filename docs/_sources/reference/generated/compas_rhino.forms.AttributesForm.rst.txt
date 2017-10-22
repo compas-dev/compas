@@ -10,6 +10,8 @@ AttributesForm
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~AttributesForm.__init__
       ~AttributesForm.init

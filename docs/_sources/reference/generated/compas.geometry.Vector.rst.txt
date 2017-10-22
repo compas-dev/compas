@@ -10,6 +10,8 @@ Vector
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~Vector.__init__
       ~Vector.angle

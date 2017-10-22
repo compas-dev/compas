@@ -10,6 +10,8 @@ FaceNetwork
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~FaceNetwork.__init__
       ~FaceNetwork.add_edge

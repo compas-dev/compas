@@ -10,6 +10,8 @@ MatlabClient
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~MatlabClient.__init__
       ~MatlabClient.double

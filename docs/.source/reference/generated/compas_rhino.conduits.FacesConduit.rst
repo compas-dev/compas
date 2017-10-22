@@ -10,6 +10,8 @@ FacesConduit
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~FacesConduit.DrawForeground
       ~FacesConduit.__init__

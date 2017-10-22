@@ -10,6 +10,8 @@ Mesh
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~Mesh.__init__
       ~Mesh.add_edge
@@ -100,12 +102,10 @@ Mesh
       ~Mesh.is_valid
       ~Mesh.is_vertex_connected
       ~Mesh.is_vertex_extraordinary
-      ~Mesh.is_vertex_leaf
       ~Mesh.is_vertex_on_boundary
       ~Mesh.is_vertex_orphan
       ~Mesh.key_gkey
       ~Mesh.key_index
-      ~Mesh.leaves
       ~Mesh.number_of_edges
       ~Mesh.number_of_faces
       ~Mesh.number_of_halfedges

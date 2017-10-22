@@ -10,7 +10,7 @@
    .. rubric:: Methods
 
    .. autosummary::
-      :troctree: generated/
+      :toctree: generated/
 
    {% for item in methods %}
       ~{{ name }}.{{ item }}

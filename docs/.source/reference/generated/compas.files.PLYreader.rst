@@ -10,6 +10,8 @@ PLYreader
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~PLYreader.__init__
       ~PLYreader.is_ascii

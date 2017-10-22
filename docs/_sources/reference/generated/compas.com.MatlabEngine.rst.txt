@@ -10,6 +10,8 @@ MatlabEngine
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~MatlabEngine.__init__
       ~MatlabEngine.connect

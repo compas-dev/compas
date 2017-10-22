@@ -10,6 +10,8 @@ BrowserForm
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~BrowserForm.__init__
       ~BrowserForm.init

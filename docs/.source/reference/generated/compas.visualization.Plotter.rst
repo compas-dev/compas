@@ -10,6 +10,8 @@ Plotter
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~Plotter.__init__
       ~Plotter.clear_collection

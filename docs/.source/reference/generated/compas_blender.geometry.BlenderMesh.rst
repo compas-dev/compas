@@ -10,13 +10,22 @@ BlenderMesh
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~BlenderMesh.__init__
       ~BlenderMesh.closest_point
       ~BlenderMesh.closest_points
+      ~BlenderMesh.edge_length
+      ~BlenderMesh.edge_lengths
+      ~BlenderMesh.face_area
+      ~BlenderMesh.face_areas
+      ~BlenderMesh.face_normal
+      ~BlenderMesh.face_normals
       ~BlenderMesh.find
       ~BlenderMesh.from_selection
       ~BlenderMesh.get_border
+      ~BlenderMesh.get_edge_index
       ~BlenderMesh.get_edge_indices
       ~BlenderMesh.get_edge_vertex_indices
       ~BlenderMesh.get_face_index
@@ -37,6 +46,7 @@ BlenderMesh
       ~BlenderMesh.show
       ~BlenderMesh.unselect
       ~BlenderMesh.unset_vertex_colors
+      ~BlenderMesh.update_vertices
    
    
 

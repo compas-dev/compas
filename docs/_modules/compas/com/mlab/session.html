@@ -83,17 +83,17 @@
 
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabSession.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabSession.__init__.html#compas.com.MatlabSession.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matlab</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session_name</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabSession.init"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabSession.init.html#compas.com.MatlabSession.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">matlab.engine</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matlab</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">engine</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">:</span>
@@ -104,10 +104,10 @@
 
             <span class="k">return</span> <span class="n">wrapper</span>
 
-    <span class="k">def</span> <span class="nf">find_sessions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matlab</span><span class="o">.</span><span class="n">find_matlab</span><span class="p">()</span>
+<div class="viewcode-block" id="MatlabSession.find_sessions"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabSession.find_sessions.html#compas.com.MatlabSession.find_sessions">[docs]</a>    <span class="k">def</span> <span class="nf">find_sessions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matlab</span><span class="o">.</span><span class="n">find_matlab</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabSession.connect"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabSession.connect.html#compas.com.MatlabSession.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">sessions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_sessions</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sessions</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">'connecting to a shared session: </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
@@ -120,7 +120,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">:</span>
                 <span class="n">sessions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_sessions</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">session_name</span> <span class="o">=</span> <span class="n">sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'connected!'</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'connected!'</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

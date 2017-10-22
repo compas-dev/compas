@@ -10,6 +10,8 @@ MeshConduit
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~MeshConduit.DrawForeground
       ~MeshConduit.__init__

@@ -10,6 +10,8 @@ Array1D
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~Array1D.__init__
    

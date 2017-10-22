@@ -10,6 +10,8 @@ BlenderPoint
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~BlenderPoint.__init__
       ~BlenderPoint.closest_point

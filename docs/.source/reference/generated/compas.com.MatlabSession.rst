@@ -10,6 +10,8 @@ MatlabSession
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~MatlabSession.__init__
       ~MatlabSession.connect

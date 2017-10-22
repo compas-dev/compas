@@ -60,45 +60,45 @@
 <div class="viewcode-block" id="RhinoPoint"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.geometry.RhinoPoint.html#compas_rhino.geometry.RhinoPoint">[docs]</a><span class="k">class</span> <span class="nc">RhinoPoint</span><span class="p">(</span><span class="n">PointGeometryInterface</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoPoint.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoPoint.__init__.html#compas_rhino.geometry.RhinoPoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="n">guid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="n">RhinoPoint</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">Geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">Attributes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_selection</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoPoint.from_selection"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoPoint.from_selection.html#compas_rhino.geometry.RhinoPoint.from_selection">[docs]</a>    <span class="k">def</span> <span class="nf">from_selection</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
         <span class="n">guid</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">select</span><span class="p">():</span>
-        <span class="k">return</span> <span class="n">select_point</span><span class="p">()</span>
+<div class="viewcode-block" id="RhinoPoint.select"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoPoint.select.html#compas_rhino.geometry.RhinoPoint.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">select_point</span><span class="p">()</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+<div class="viewcode-block" id="RhinoPoint.find"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoPoint.find.html#compas_rhino.geometry.RhinoPoint.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Location</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">loc</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">Z</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span>
+<div class="viewcode-block" id="RhinoPoint.closest_point"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoPoint.closest_point.html#compas_rhino.geometry.RhinoPoint.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span></div>
 
-    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+<div class="viewcode-block" id="RhinoPoint.closest_points"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoPoint.closest_points.html#compas_rhino.geometry.RhinoPoint.closest_points">[docs]</a>    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">project_to_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">project_to_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">project_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+<div class="viewcode-block" id="RhinoPoint.project_to_curve"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoPoint.project_to_curve.html#compas_rhino.geometry.RhinoPoint.project_to_curve">[docs]</a>    <span class="k">def</span> <span class="nf">project_to_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
         <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="RhinoPoint.project_to_surface"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoPoint.project_to_surface.html#compas_rhino.geometry.RhinoPoint.project_to_surface">[docs]</a>    <span class="k">def</span> <span class="nf">project_to_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="RhinoPoint.project_to_mesh"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoPoint.project_to_mesh.html#compas_rhino.geometry.RhinoPoint.project_to_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">project_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="k">pass</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

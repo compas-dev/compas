@@ -10,6 +10,8 @@ TableForm
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~TableForm.__init__
       ~TableForm.init

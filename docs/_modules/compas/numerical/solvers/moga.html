@@ -95,7 +95,7 @@
 <span class="sd">    this starts the multi objective optimization process.</span>
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.__init__.html#compas.numerical.solvers.MOGA.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""</span>
 <span class="sd">        Populations are kept in dictionaries with the following data structure_ansys:</span>
 <span class="sd">        pop = {'binary':binary_dict,'decoded':decoded_dict,'scaled':scaled_dict,</span>
@@ -126,9 +126,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span>  <span class="o">=</span> <span class="p">{</span><span class="s1">'binary'</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">'decoded'</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">'scaled'</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">'fit_values'</span><span class="p">:</span> <span class="p">[]}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">combined_pop</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'binary'</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">'decoded'</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">'scaled'</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">'fit_values'</span><span class="p">:</span> <span class="p">[]}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># {'binary':{},'decoded':{},'scaled':{}}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># {'binary':{},'decoded':{},'scaled':{}}</span></div>
 
-    <span class="k">def</span> <span class="nf">moga</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.moga"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.moga.html#compas.numerical.solvers.MOGA.moga">[docs]</a>    <span class="k">def</span> <span class="nf">moga</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">""" This is the main optimization function, this function permorms the multi objective</span>
 <span class="sd">        GA optimization, performing all genetic operators.</span>
 <span class="sd">        """</span>
@@ -188,9 +188,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">simple_crossover</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">random_mutation</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">'end of MOGA'</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">'end of MOGA'</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">write_out_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generation</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.write_out_file"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.write_out_file.html#compas.numerical.solvers.MOGA.write_out_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_out_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generation</span><span class="p">):</span>
         <span class="sd">"""This function writes a file containing all of the population data for</span>
 <span class="sd">        the given ``generation``.</span>
 
@@ -235,9 +235,9 @@
         <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
 
         <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
-        <span class="n">pf_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">generate_random_bin_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.generate_random_bin_pop"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.generate_random_bin_pop.html#compas.numerical.solvers.MOGA.generate_random_bin_pop">[docs]</a>    <span class="k">def</span> <span class="nf">generate_random_bin_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This function generates a random binary population</span>
 
 <span class="sd">        Retunrs</span>
@@ -254,9 +254,9 @@
                     <span class="n">chrom_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
                 <span class="n">random_bin_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">chrom_list</span>
 
-        <span class="k">return</span> <span class="n">random_bin_pop</span>
+        <span class="k">return</span> <span class="n">random_bin_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">decode_binary_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_pop</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.decode_binary_pop"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.decode_binary_pop.html#compas.numerical.solvers.MOGA.decode_binary_pop">[docs]</a>    <span class="k">def</span> <span class="nf">decode_binary_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_pop</span><span class="p">):</span>
         <span class="sd">"""This function decodes the given binary population</span>
 
 <span class="sd">        Parameters</span>
@@ -279,9 +279,9 @@
                     <span class="k">if</span> <span class="n">gene</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                         <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">2</span><span class="o">**</span><span class="n">u</span>
                 <span class="n">decoded_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">return</span> <span class="n">decoded_pop</span>
+        <span class="k">return</span> <span class="n">decoded_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">scale_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decoded_pop</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.scale_population"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.scale_population.html#compas.numerical.solvers.MOGA.scale_population">[docs]</a>    <span class="k">def</span> <span class="nf">scale_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decoded_pop</span><span class="p">):</span>
 
         <span class="sd">"""Scales the decoded population, variable values are scaled according to each</span>
 <span class="sd">        of their bounds contained in ``GA.boundaries``.</span>
@@ -302,9 +302,9 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
                 <span class="n">maxbin</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
                 <span class="n">scaled_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">decoded_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">((</span><span class="n">maxbin</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
-        <span class="k">return</span> <span class="n">scaled_pop</span>
+        <span class="k">return</span> <span class="n">scaled_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">combine_populations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.combine_populations"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.combine_populations.html#compas.numerical.solvers.MOGA.combine_populations">[docs]</a>    <span class="k">def</span> <span class="nf">combine_populations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This function combines the parent population with the current population</span>
 <span class="sd">        to create a 2 x ``MOGA.num_pop`` long current population.</span>
 <span class="sd">        """</span>
@@ -325,9 +325,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">combined_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">combined_pop</span><span class="p">[</span><span class="s1">'fit_values'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_pop</span><span class="p">[</span><span class="s1">'fit_values'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">combined_pop</span><span class="p">[</span><span class="s1">'fit_values'</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'fit_values'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">combined_pop</span><span class="p">[</span><span class="s1">'fit_values'</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'fit_values'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">non_dom_sort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.non_dom_sort"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.non_dom_sort.html#compas.numerical.solvers.MOGA.non_dom_sort">[docs]</a>    <span class="k">def</span> <span class="nf">non_dom_sort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This function performs the non dominated sorting operator of the NSGA-II</span>
 <span class="sd">        algorithm. It assigns each individual in the population a Pareto front level,</span>
 <span class="sd">        according to their fitness values.</span>
@@ -387,16 +387,16 @@
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">domination_count</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dominated_set</span><span class="p">[</span><span class="n">h</span><span class="p">]]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">domination_count</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dominated_set</span><span class="p">[</span><span class="n">h</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domination_count</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dominated_set</span><span class="p">[</span><span class="n">h</span><span class="p">]]</span> <span class="o">-</span> <span class="mi">1</span>
 
-            <span class="n">pareto_front_number</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">pareto_front_number</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
-    <span class="k">def</span> <span class="nf">extract_pareto_front</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.extract_pareto_front"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.extract_pareto_front.html#compas.numerical.solvers.MOGA.extract_pareto_front">[docs]</a>    <span class="k">def</span> <span class="nf">extract_pareto_front</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
         <span class="sd">"""Adds each new level of pareto front individuals to the ``MOGA.i_pareto_front`` list.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">i_pareto_front</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pareto_front_indices</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">pareto_front_indices</span><span class="p">[</span><span class="n">u</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">i_pareto_front</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pareto_front_individuals</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">i_pareto_front</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pareto_front_individuals</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
 
-    <span class="k">def</span> <span class="nf">calculate_crowding_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.calculate_crowding_distance"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.calculate_crowding_distance.html#compas.numerical.solvers.MOGA.calculate_crowding_distance">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_crowding_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This function calculates the crowding distance for all inividuals in the population.</span>
 <span class="sd">        The crowding distance computes the volume of the hypercube that surrounds each individual</span>
 <span class="sd">        and whose boundaries are determined by their closest neighbors in the objective space. The</span>
@@ -427,9 +427,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">crowding_distance</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sorted_indices</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">formula</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_i_pareto_front</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crowding_distance</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crowding_distance</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
 
-    <span class="k">def</span> <span class="nf">get_sorting_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.get_sorting_indices"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.get_sorting_indices.html#compas.numerical.solvers.MOGA.get_sorting_indices">[docs]</a>    <span class="k">def</span> <span class="nf">get_sorting_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">"""Reurns the indices that would sort a list of floats.</span>
 
 <span class="sd">        Parameters</span>
@@ -447,9 +447,9 @@
         <span class="n">sorting_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l</span><span class="p">))]</span>
         <span class="k">if</span> <span class="n">reverse</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">sorting_index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">sorting_index</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">sorting_index</span>
+        <span class="k">return</span> <span class="n">sorting_index</span></div>
 
-    <span class="k">def</span> <span class="nf">crowding_distance_sorting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.crowding_distance_sorting"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.crowding_distance_sorting.html#compas.numerical.solvers.MOGA.crowding_distance_sorting">[docs]</a>    <span class="k">def</span> <span class="nf">crowding_distance_sorting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This function sorts the individuals in the population according</span>
 <span class="sd">        to their crowding distance.</span>
 <span class="sd">        """</span>
@@ -462,9 +462,9 @@
             <span class="n">cd_sorted_last_pf_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i_pareto_front</span><span class="p">[</span><span class="n">sorting_index</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_i_pareto_front</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span><span class="p">)]</span> <span class="o">=</span> <span class="n">sorted_last_pf_cd</span><span class="p">[:]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pareto_front_individuals</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_i_pareto_front</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span><span class="p">)]</span> <span class="o">=</span> <span class="n">cd_sorted_last_pf_index</span><span class="p">[:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pareto_front_individuals</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_i_pareto_front</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span><span class="p">)]</span> <span class="o">=</span> <span class="n">cd_sorted_last_pf_index</span><span class="p">[:]</span></div>
 
-    <span class="k">def</span> <span class="nf">parent_reseting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.parent_reseting"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.parent_reseting.html#compas.numerical.solvers.MOGA.parent_reseting">[docs]</a>    <span class="k">def</span> <span class="nf">parent_reseting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This function updates the patent population, selecting the individuals that are higher</span>
 <span class="sd">        in the pareto front level, and have the largest crowding distance.</span>
 <span class="sd">        """</span>
@@ -479,9 +479,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">parent_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_binary_pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">]</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_population</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parent_pop</span><span class="p">[</span><span class="s1">'pf'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_pop_pf_dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_pop</span><span class="p">[</span><span class="s1">'pf'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_pop_pf_dict</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">nsga_tournament</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.nsga_tournament"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.nsga_tournament.html#compas.numerical.solvers.MOGA.nsga_tournament">[docs]</a>    <span class="k">def</span> <span class="nf">nsga_tournament</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This function performs the tournament selection operator of the NSGA-II</span>
 <span class="sd">        algorithm.</span>
 <span class="sd">        """</span>
@@ -540,9 +540,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dominated_set</span>              <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dominating_individuals</span>     <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pareto_front_individuals</span>   <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span>                 <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_pop_cd</span>                 <span class="o">=</span> <span class="p">[]</span></div>
 
-    <span class="k">def</span> <span class="nf">create_mating_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.create_mating_pool"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.create_mating_pool.html#compas.numerical.solvers.MOGA.create_mating_pool">[docs]</a>    <span class="k">def</span> <span class="nf">create_mating_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Creates two lists of cromosomes to be used by the crossover operator.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_a</span> <span class="o">=</span> <span class="p">[]</span>
@@ -554,9 +554,9 @@
                 <span class="n">chrom_a</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combined_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">mp_individual_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="n">j</span><span class="p">]</span>
                 <span class="n">chrom_b</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combined_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">mp_individual_indices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]][</span><span class="n">j</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chrom_a</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chrom_b</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chrom_b</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">simple_crossover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.simple_crossover"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.simple_crossover.html#compas.numerical.solvers.MOGA.simple_crossover">[docs]</a>    <span class="k">def</span> <span class="nf">simple_crossover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Performs the simple crossover operator. Individuals in ``MOGA.mating_pool_a`` are</span>
 <span class="sd">        combined with individuals in ``MOGA.mating_pool_b`` using a single, randomly selected</span>
 <span class="sd">        crossover point.</span>
@@ -578,9 +578,9 @@
                 <span class="n">variable_b</span> <span class="o">=</span> <span class="n">d</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
                 <span class="k">del</span> <span class="n">d</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_a</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">j</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_b</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">j</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_b</span></div>
 
-    <span class="k">def</span> <span class="nf">random_mutation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.random_mutation"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.random_mutation.html#compas.numerical.solvers.MOGA.random_mutation">[docs]</a>    <span class="k">def</span> <span class="nf">random_mutation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This mutation operator replaces a gene from 0 to 1 or viceversa</span>
 <span class="sd">        with a probability of ``MOGA.mutation_probability``.</span>
 <span class="sd">        """</span>
@@ -592,9 +592,9 @@
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-    <span class="k">def</span> <span class="nf">get_pop_from_pf_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.get_pop_from_pf_file"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.get_pop_from_pf_file.html#compas.numerical.solvers.MOGA.get_pop_from_pf_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_pop_from_pf_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Reads the pareto front file corresponding to the ``MOGA.start_from_gen``</span>
 <span class="sd">        generation and returns the saved population data. The pareto front file</span>
 <span class="sd">        must be in ``GA.output_path``.</span>
@@ -644,9 +644,9 @@
 
         <span class="n">file_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscale_pop</span><span class="p">(</span><span class="n">file_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">])</span>
         <span class="n">file_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">]</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_decoded</span><span class="p">(</span><span class="n">file_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">file_pop</span>
+        <span class="k">return</span> <span class="n">file_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">code_decoded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decoded_pop</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.code_decoded"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.code_decoded.html#compas.numerical.solvers.MOGA.code_decoded">[docs]</a>    <span class="k">def</span> <span class="nf">code_decoded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decoded_pop</span><span class="p">):</span>
         <span class="sd">"""Returns a binary coded population from a decoded population</span>
 
 <span class="sd">        Parameters</span>
@@ -672,9 +672,9 @@
                 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">j</span><span class="p">]):</span>
                     <span class="n">bin_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">temp_bin</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
                 <span class="n">binary_pop</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">bin_list</span>
-        <span class="k">return</span> <span class="n">binary_pop</span>
+        <span class="k">return</span> <span class="n">binary_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">unscale_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaled_pop</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.unscale_pop"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.unscale_pop.html#compas.numerical.solvers.MOGA.unscale_pop">[docs]</a>    <span class="k">def</span> <span class="nf">unscale_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaled_pop</span><span class="p">):</span>
         <span class="sd">"""Returns an unscaled population from a scaled one. The variable values are scaled</span>
 <span class="sd">        from 0 to x, where x is the highest number described by the number of binary digits</span>
 <span class="sd">        used to encode that variable. For example, if ``GA.num_bin_dig`` for a variable is 8, that</span>
@@ -703,9 +703,9 @@
                 <span class="n">unscaled</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="n">max_unscaled_value</span><span class="p">)</span>
                 <span class="n">unscaled_pop</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">unscaled</span>
 
-        <span class="k">return</span> <span class="n">unscaled_pop</span>
+        <span class="k">return</span> <span class="n">unscaled_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">get_max_value_from_bin_big</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_dig</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.get_max_value_from_bin_big"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.get_max_value_from_bin_big.html#compas.numerical.solvers.MOGA.get_max_value_from_bin_big">[docs]</a>    <span class="k">def</span> <span class="nf">get_max_value_from_bin_big</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_dig</span><span class="p">):</span>
         <span class="sd">"""Returns the highest number described by a ``GA.bin_dig`` long binary number.</span>
 
 <span class="sd">        Parameters</span>
@@ -724,9 +724,9 @@
         <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bin_dig</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
-        <span class="k">return</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">value</span></div>
 
-    <span class="k">def</span> <span class="nf">make_pop_pf_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.make_pop_pf_dict"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.make_pop_pf_dict.html#compas.numerical.solvers.MOGA.make_pop_pf_dict">[docs]</a>    <span class="k">def</span> <span class="nf">make_pop_pf_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This function returns a dictionary containing the pareto front level of</span>
 <span class="sd">        all individuals in the population</span>
 
@@ -744,9 +744,9 @@
                 <span class="k">if</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">pf_ind</span><span class="p">:</span>
                     <span class="n">pf_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
 
-        <span class="k">return</span> <span class="n">pf_dict</span>
+        <span class="k">return</span> <span class="n">pf_dict</span></div>
 
-    <span class="k">def</span> <span class="nf">make_moga_input_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.make_moga_input_data"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.make_moga_input_data.html#compas.numerical.solvers.MOGA.make_moga_input_data">[docs]</a>    <span class="k">def</span> <span class="nf">make_moga_input_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Returns a dictionary containing the most relavant genetic data present in the instance</span>
 <span class="sd">        of ``MOGA``. This is the data required to restart a genetic optimization process or to</span>
 <span class="sd">        launch a visualization using ``compas_ga.visualization.moga_visualization``.</span>
@@ -772,9 +772,9 @@
                 <span class="s1">'fixed_start_pop'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span>
                 <span class="c1"># 'additional_data':self.additional_data,</span>
                 <span class="p">}</span>
-        <span class="k">return</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">data</span></div>
 
-    <span class="k">def</span> <span class="nf">make_gen_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.make_gen_data"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.make_gen_data.html#compas.numerical.solvers.MOGA.make_gen_data">[docs]</a>    <span class="k">def</span> <span class="nf">make_gen_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Returns a dictionary containing the most relavant genetic data present in the instance</span>
 <span class="sd">        of ``MOGA`` for the current generation only.</span>
 
@@ -788,9 +788,9 @@
                 <span class="s1">'parent_scaled'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">],</span>
                 <span class="s1">'parent_pf'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_pop</span><span class="p">[</span><span class="s1">'pf'</span><span class="p">]</span>
                 <span class="p">}</span>
-        <span class="k">return</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">data</span></div>
 
-    <span class="k">def</span> <span class="nf">write_moga_json_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.write_moga_json_file"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.write_moga_json_file.html#compas.numerical.solvers.MOGA.write_moga_json_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_moga_json_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Writes a JSON file containing the most relevant data for MOGA optimization and</span>
 <span class="sd">        visualization using ``compas_ga.visualization.moga_visualization``.</span>
 <span class="sd">        """</span>
@@ -800,9 +800,9 @@
             <span class="n">filename</span> <span class="o">+=</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">'-'</span>
         <span class="n">filename</span> <span class="o">+=</span> <span class="s1">'.json'</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="s1">'wb+'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fh</span><span class="p">)</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fh</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">write_gen_json_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generation</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.write_gen_json_file"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.write_gen_json_file.html#compas.numerical.solvers.MOGA.write_gen_json_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_gen_json_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generation</span><span class="p">):</span>
         <span class="sd">"""Writes a JSON file containing the most relevant data for MOGA optimization and</span>
 <span class="sd">        visualization using ``compas_ga.visualization.ga_visualization`` for the given</span>
 <span class="sd">        generation ``generation``.</span>
@@ -815,9 +815,9 @@
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_gen_data</span><span class="p">()</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="s1">'generation '</span> <span class="o">+</span> <span class="s2">"</span><span class="si">%03d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">generation</span> <span class="o">+</span> <span class="s1">'_pareto_front'</span> <span class="o">+</span> <span class="s2">".json"</span>
         <span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="s1">'wb+'</span><span class="p">)</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fh</span><span class="p">)</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fh</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">create_fixed_start_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaled</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MOGA.create_fixed_start_pop"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.create_fixed_start_pop.html#compas.numerical.solvers.MOGA.create_fixed_start_pop">[docs]</a>    <span class="k">def</span> <span class="nf">create_fixed_start_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaled</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">"""This function creates a population to start the MOGA from a given scaled</span>
 <span class="sd">        or binary populaiton. This function is used then the start of the MOGA</span>
 <span class="sd">        should not be with a random population, but with a user defined population.</span>
@@ -852,7 +852,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">binary</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_binary_pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_population</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">])</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_population</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">])</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

@@ -106,7 +106,7 @@
 
 <div class="viewcode-block" id="ScriptServer"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.ScriptServer.html#compas.utilities.ScriptServer">[docs]</a><span class="k">class</span> <span class="nc">ScriptServer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">""""""</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scriptdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tempdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">python</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ScriptServer.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas.utilities.ScriptServer.__init__.html#compas.utilities.ScriptServer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scriptdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tempdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">python</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scriptdir</span> <span class="o">=</span> <span class="n">scriptdir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span> <span class="o">=</span> <span class="n">tempdir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">python</span> <span class="o">=</span> <span class="n">python</span> <span class="ow">or</span> <span class="s1">'pythonw'</span>
@@ -120,20 +120,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waitfunc</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">updatefunc</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">updateconduit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateconduit</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScriptServer.reset"><a class="viewcode-back" href="../../../reference/generated/generated/compas.utilities.ScriptServer.reset.html#compas.utilities.ScriptServer.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">funcname</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prefunc</span><span class="p">(</span><span class="n">funcname</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span>
 
-    <span class="k">def</span> <span class="nf">prefunc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">funcname</span><span class="p">):</span>
+<div class="viewcode-block" id="ScriptServer.prefunc"><a class="viewcode-back" href="../../../reference/generated/generated/compas.utilities.ScriptServer.prefunc.html#compas.utilities.ScriptServer.prefunc">[docs]</a>    <span class="k">def</span> <span class="nf">prefunc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">funcname</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">funcname</span> <span class="o">=</span> <span class="n">funcname</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scriptdir</span><span class="p">,</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">.py'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">funcname</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">script</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">script</span><span class="p">):</span>
@@ -148,9 +148,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="s1">'The tempdir is writable: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span>
             <span class="k">raise</span> <span class="n">ScriptServerError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ipath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">,</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">.in'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">funcname</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">opath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">,</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">.out'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">funcname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">,</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">.out'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">funcname</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ScriptServer.func"><a class="viewcode-back" href="../../../reference/generated/generated/compas.utilities.ScriptServer.func.html#compas.utilities.ScriptServer.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">idict</span><span class="p">:</span>
             <span class="n">idict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">idict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
@@ -188,37 +188,37 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'profile'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'iterations'</span><span class="p">,</span> <span class="p">[])</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
 
-    <span class="k">def</span> <span class="nf">print_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScriptServer.print_error"><a class="viewcode-back" href="../../../reference/generated/generated/compas.utilities.ScriptServer.print_error.html#compas.utilities.ScriptServer.print_error">[docs]</a>    <span class="k">def</span> <span class="nf">print_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'Error'</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'-'</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">print_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScriptServer.print_profile"><a class="viewcode-back" href="../../../reference/generated/generated/compas.utilities.ScriptServer.print_profile.html#compas.utilities.ScriptServer.print_profile">[docs]</a>    <span class="k">def</span> <span class="nf">print_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'Profile'</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'-'</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">print_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScriptServer.print_data"><a class="viewcode-back" href="../../../reference/generated/generated/compas.utilities.ScriptServer.print_data.html#compas.utilities.ScriptServer.print_data">[docs]</a>    <span class="k">def</span> <span class="nf">print_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'Data'</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'-'</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">print_iterations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScriptServer.print_iterations"><a class="viewcode-back" href="../../../reference/generated/generated/compas.utilities.ScriptServer.print_iterations.html#compas.utilities.ScriptServer.print_iterations">[docs]</a>    <span class="k">def</span> <span class="nf">print_iterations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'Iterations'</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">'-'</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">print_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ScriptServer.print_output"><a class="viewcode-back" href="../../../reference/generated/generated/compas.utilities.ScriptServer.print_output.html#compas.utilities.ScriptServer.print_output">[docs]</a>    <span class="k">def</span> <span class="nf">print_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">'#'</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
@@ -226,7 +226,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">print_error</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">print_data</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">print_iterations</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">print_profile</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_profile</span><span class="p">()</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">ScriptWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
