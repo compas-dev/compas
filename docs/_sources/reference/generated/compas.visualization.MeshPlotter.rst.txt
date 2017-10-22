@@ -10,6 +10,8 @@ MeshPlotter
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~MeshPlotter.__init__
       ~MeshPlotter.clear

@@ -10,6 +10,8 @@ MultiPageForm
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~MultiPageForm.__init__
       ~MultiPageForm.add_page

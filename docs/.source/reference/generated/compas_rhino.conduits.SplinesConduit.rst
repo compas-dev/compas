@@ -10,6 +10,8 @@ SplinesConduit
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~SplinesConduit.DrawForeground
       ~SplinesConduit.__init__

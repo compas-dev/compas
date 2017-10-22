@@ -10,6 +10,8 @@ MatlabProcess
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~MatlabProcess.__init__
       ~MatlabProcess.init

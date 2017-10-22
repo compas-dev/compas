@@ -248,7 +248,7 @@ class FaceNetwork(FaceHelpers,
     # helpers
     # --------------------------------------------------------------------------
 
-    def _get_facekey(self, fkey):
+    def _get_face_key(self, fkey):
         if fkey is None:
             fkey = self._max_int_fkey = self._max_int_fkey + 1
         else:
@@ -312,7 +312,7 @@ class FaceNetwork(FaceHelpers,
                 key = self.add_vertex(key)
             keys.append(key)
 
-        fkey = self._get_facekey(fkey)
+        fkey = self._get_face_key(fkey)
 
         self.face[fkey] = keys
         self.facedata[fkey] = attr

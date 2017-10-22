@@ -10,6 +10,8 @@ RhinoMesh
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~RhinoMesh.__init__
       ~RhinoMesh.closest_point

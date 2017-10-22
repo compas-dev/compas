@@ -36,7 +36,16 @@
 </nav>
 <h1>Source code for compas_blender.geometry.curve</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas.cad</span> <span class="k">import</span> <span class="n">CurveGeometryInterface</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">add_vectors</span>
+
 <span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">select_curve</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">bpy</span>
+    <span class="kn">from</span> <span class="nn">mathutils.geometry</span> <span class="k">import</span> <span class="n">interpolate_bezier</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
@@ -51,66 +60,78 @@
 <div class="viewcode-block" id="BlenderCurve"><a class="viewcode-back" href="../../../reference/generated/compas_blender.geometry.BlenderCurve.html#compas_blender.geometry.BlenderCurve">[docs]</a><span class="k">class</span> <span class="nc">BlenderCurve</span><span class="p">(</span><span class="n">CurveGeometryInterface</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="BlenderCurve.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.__init__.html#compas_blender.geometry.BlenderCurve.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">curve</span> <span class="o">=</span> <span class="nb">object</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">type</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_selection</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="BlenderCurve.from_selection"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.from_selection.html#compas_blender.geometry.BlenderCurve.from_selection">[docs]</a>    <span class="k">def</span> <span class="nf">from_selection</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
         <span class="nb">object</span> <span class="o">=</span> <span class="n">select_curve</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="viewcode-block" id="BlenderCurve.hide"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.hide.html#compas_blender.geometry.BlenderCurve.hide">[docs]</a>    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="viewcode-block" id="BlenderCurve.show"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.show.html#compas_blender.geometry.BlenderCurve.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="viewcode-block" id="BlenderCurve.select"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.select.html#compas_blender.geometry.BlenderCurve.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">unselect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="viewcode-block" id="BlenderCurve.unselect"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.unselect.html#compas_blender.geometry.BlenderCurve.unselect">[docs]</a>    <span class="k">def</span> <span class="nf">unselect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-    <span class="k">def</span> <span class="nf">is_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">is_polyline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">heightfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">tangents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">descent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_segments</span><span class="p">,</span> <span class="n">over_space</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">divide_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length_of_segments</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="BlenderCurve.space"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.space.html#compas_blender.geometry.BlenderCurve.space">[docs]</a>    <span class="k">def</span> <span class="nf">space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="BlenderCurve.heightfield"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.heightfield.html#compas_blender.geometry.BlenderCurve.heightfield">[docs]</a>    <span class="k">def</span> <span class="nf">heightfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="BlenderCurve.curvature"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.curvature.html#compas_blender.geometry.BlenderCurve.curvature">[docs]</a>    <span class="k">def</span> <span class="nf">curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="BlenderCurve.tangents"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.tangents.html#compas_blender.geometry.BlenderCurve.tangents">[docs]</a>    <span class="k">def</span> <span class="nf">tangents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="BlenderCurve.descent"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.descent.html#compas_blender.geometry.BlenderCurve.descent">[docs]</a>    <span class="k">def</span> <span class="nf">descent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        
+<div class="viewcode-block" id="BlenderCurve.handles"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.handles.html#compas_blender.geometry.BlenderCurve.handles">[docs]</a>    <span class="k">def</span> <span class="nf">handles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">splines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bezier_points</span>
+        <span class="n">middle</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">co</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">handle_left</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">handle_right</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">middle</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span></div>
+
+<div class="viewcode-block" id="BlenderCurve.divide"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.divide.html#compas_blender.geometry.BlenderCurve.divide">[docs]</a>    <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_segments</span><span class="p">):</span>
+        <span class="n">middle</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="p">()</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">number_of_segments</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">interpolate_bezier</span><span class="p">(</span><span class="n">middle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">left</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">middle</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">add_vectors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+        
+<div class="viewcode-block" id="BlenderCurve.divide_length"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.divide_length.html#compas_blender.geometry.BlenderCurve.divide_length">[docs]</a>    <span class="k">def</span> <span class="nf">divide_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length_of_segments</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="BlenderCurve.closest_point"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.closest_point.html#compas_blender.geometry.BlenderCurve.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="BlenderCurve.closest_points"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.closest_points.html#compas_blender.geometry.BlenderCurve.closest_points">[docs]</a>    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        
+<div class="viewcode-block" id="BlenderCurve.to_bmesh"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderCurve.to_bmesh.html#compas_blender.geometry.BlenderCurve.to_bmesh">[docs]</a>    <span class="k">def</span> <span class="nf">to_bmesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">divisions</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">resolution_u</span> <span class="o">=</span> <span class="n">divisions</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">to_mesh</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">'PREVIEW'</span><span class="p">)</span>
+        <span class="n">bmesh</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">+</span> <span class="s1">'-bmesh'</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
+        <span class="n">bmesh</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">bmesh</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bmesh</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -119,6 +140,8 @@
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
 
+    <span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">draw_cuboid</span>
+
     <span class="n">curve</span> <span class="o">=</span> <span class="n">BlenderCurve</span><span class="o">.</span><span class="n">from_selection</span><span class="p">()</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span>
@@ -126,133 +149,17 @@
     <span class="nb">print</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">xyz</span><span class="p">)</span>
+    
+    <span class="n">curve</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+    <span class="n">curve</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="n">curve</span><span class="o">.</span><span class="n">unselect</span><span class="p">()</span>
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="c1"># from compas_blender.utilities.layers import layer_mask</span>
-
-<span class="c1"># try:</span>
-<span class="c1">#     import bpy</span>
-<span class="c1">#     from mathutils.geometry import interpolate_bezier</span>
-<span class="c1"># except ImportError:</span>
-<span class="c1">#     pass</span>
-
-
-<span class="c1"># __author__     = ['Andrew Liew &lt;liew@arch.ethz.ch&gt;']</span>
-<span class="c1"># __copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'</span>
-<span class="c1"># __license__    = 'MIT License'</span>
-<span class="c1"># __email__      = 'liew@arch.ethz.ch'</span>
-
-
-<span class="c1"># __all__ = [</span>
-<span class="c1">#     'bezier_curve_interpolate',</span>
-<span class="c1">#     'bezier_curve_points',</span>
-<span class="c1">#     'curve_to_bmesh',</span>
-<span class="c1">#     'curve_geometry'</span>
-<span class="c1"># ]</span>
-
-
-
-<span class="c1"># def bezier_curve_interpolate(curve, number=3):</span>
-<span class="c1">#     """Interpolate points along a Bezier curve object.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         curve (obj): Bezier curve object.</span>
-<span class="c1">#         number (int): Number of interpolation points.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         list: Interpolated points [x, y, z.]</span>
-<span class="c1">#     """</span>
-<span class="c1">#     co, left, right = bezier_curve_points(curve)</span>
-<span class="c1">#     vectors = interpolate_bezier(co[0], right[0], left[1], co[1], number)</span>
-<span class="c1">#     points = [list(point) for point in vectors]</span>
-<span class="c1">#     return points</span>
-
-
-<span class="c1"># def bezier_curve_points(curve):</span>
-<span class="c1">#     """Return a Bezier curve's control points.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         curve (obj): Bezier curve object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         list: Control point locations.</span>
-<span class="c1">#         list: Control point left handles.</span>
-<span class="c1">#         list: Control point right handles.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     points = curve.data.splines[0].bezier_points</span>
-<span class="c1">#     co = [list(point.co) for point in points]</span>
-<span class="c1">#     left = [list(point.handle_left) for point in points]</span>
-<span class="c1">#     right = [list(point.handle_right) for point in points]</span>
-<span class="c1">#     return co, left, right</span>
-
-
-<span class="c1"># # ==============================================================================</span>
-<span class="c1"># # General</span>
-<span class="c1"># # ==============================================================================</span>
-
-<span class="c1"># def curve_to_bmesh(curve, name, divisions=10, delete=False):</span>
-<span class="c1">#     """Convert a Blender curve object into a bmesh of edges.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         curve (obj): Curve object.</span>
-<span class="c1">#         divisions (int): Number of divisions along curve length.</span>
-<span class="c1">#         delete (bool): Delete original curve.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         obj: Resulting bmesh object.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     curve.data.resolution_u = divisions</span>
-<span class="c1">#     mesh = curve.to_mesh(bpy.context.scene, True, 'PREVIEW')</span>
-<span class="c1">#     if delete:</span>
-<span class="c1">#         bpy.ops.object.delete()</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         curve.select = False</span>
-<span class="c1">#     bmesh = bpy.data.objects.new(name, mesh)</span>
-<span class="c1">#     bmesh.location = [0, 0, 0]</span>
-<span class="c1">#     bpy.context.scene.objects.link(bmesh)</span>
-<span class="c1">#     return bmesh</span>
-
-
-<span class="c1"># def curve_geometry(curve, extrude=0, bevel=0, bevel_resolution=1, fill='HALF'):</span>
-<span class="c1">#     """Alter the geometry of the Blender curve object.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         curve (obj): Curve object.</span>
-<span class="c1">#         extrude (float): Extrude depth along local z.</span>
-<span class="c1">#         bevel (float): Bevel depth.</span>
-<span class="c1">#         bevel_resolution (int): Number of sides for bevel face.</span>
-<span class="c1">#         fill (str): 'HALF' or 'FULL' solid fill.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         None</span>
-<span class="c1">#     """</span>
-<span class="c1">#     curve.data.extrude = extrude</span>
-<span class="c1">#     curve.data.bevel_depth = bevel</span>
-<span class="c1">#     curve.data.bevel_resolution = bevel_resolution</span>
-<span class="c1">#     curve.data.fill_mode = fill</span>
-
-
-<span class="c1"># # ==============================================================================</span>
-<span class="c1"># # Debugging</span>
-<span class="c1"># # ==============================================================================</span>
-
-<span class="c1"># if __name__ == "__main__":</span>
-
-<span class="c1">#     curve = add_bezier_curve()</span>
-<span class="c1">#     print(bezier_curve_points(curve))</span>
-<span class="c1">#     print(bezier_curve_interpolate(curve, number=4))</span>
-<span class="c1">#     curve_to_bmesh(curve, name='bmesh', divisions=20)</span>
+    <span class="n">curve</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+    <span class="n">curve</span><span class="o">.</span><span class="n">to_bmesh</span><span class="p">()</span>
+    
+    <span class="n">points</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">number_of_segments</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">draw_cuboid</span><span class="p">(</span><span class="n">Lx</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">Ly</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">Lz</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">point</span><span class="p">)</span>
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>
@@ -292,7 +199,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             

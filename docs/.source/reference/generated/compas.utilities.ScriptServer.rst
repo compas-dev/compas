@@ -10,6 +10,8 @@ ScriptServer
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~ScriptServer.__init__
       ~ScriptServer.func

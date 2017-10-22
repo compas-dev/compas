@@ -12,8 +12,8 @@
 <link href="/css/github.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="compas.com.MatlabSession.html" rel="next" title="MatlabSession"/>
-<link href="compas.com.MatlabEngine.html" rel="prev" title="MatlabEngine"/>
+<link href="generated/compas.com.MatlabProcess.__init__.html" rel="next" title="MatlabProcess.__init__"/>
+<link href="generated/compas.com.MatlabEngine.stop.html" rel="prev" title="MatlabEngine.stop"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -64,6 +64,7 @@ Defaults to <cite>‘./workspace.mat’</cite>.</li>
 <p class="rubric">Examples</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabProcess</span><span class="p">()</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="mi">37</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'tf = isprime(a);'</span><span class="p">)</span>
@@ -71,18 +72,22 @@ Defaults to <cite>‘./workspace.mat’</cite>.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">ws_data</span><span class="p">)</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'res = isprime(a);'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">read_value</span><span class="p">(</span><span class="s1">'res'</span><span class="p">)</span>
 <span class="go">True</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'res = isprime(a);'</span><span class="p">,</span> <span class="n">ivars</span><span class="o">=</span><span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">17</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">read_value</span><span class="p">(</span><span class="s1">'res'</span><span class="p">)</span>
 <span class="go">True</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'res = isprime(a);'</span><span class="p">,</span> <span class="n">ivars</span><span class="o">=</span><span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">17</span><span class="p">},</span> <span class="n">ovars</span><span class="o">=</span><span class="p">{</span><span class="s1">'res'</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
 <span class="go">{'res': True}</span>
 </code></pre></div>
+
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -90,31 +95,31 @@ Defaults to <cite>‘./workspace.mat’</cite>.</li>
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><code class="xref py py-obj docutils literal">__init__</code>([matlab_exec, ws_data, ...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabProcess.__init__.html" title="compas.com.MatlabProcess.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>([matlab_exec, ws_data, ...])</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">init</code>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabProcess.init.html" title="compas.com.MatlabProcess.init"><code class="xref py py-obj docutils literal">init</code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">read_value</code>(name[, default])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabProcess.read_value.html" title="compas.com.MatlabProcess.read_value"><code class="xref py py-obj docutils literal">read_value</code></a>(name[, default])</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">read_workspace</code>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabProcess.read_workspace.html" title="compas.com.MatlabProcess.read_workspace"><code class="xref py py-obj docutils literal">read_workspace</code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">run_command</code>(command[, ivars, ovars])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabProcess.run_command.html" title="compas.com.MatlabProcess.run_command"><code class="xref py py-obj docutils literal">run_command</code></a>(command[, ivars, ovars])</td>
 <td>Run a command in Matlab.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">start</code>([options])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabProcess.start.html" title="compas.com.MatlabProcess.start"><code class="xref py py-obj docutils literal">start</code></a>([options])</td>
 <td>Start the subprocess.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">stop</code>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabProcess.stop.html" title="compas.com.MatlabProcess.stop"><code class="xref py py-obj docutils literal">stop</code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">write_value</code>(name, value)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabProcess.write_value.html" title="compas.com.MatlabProcess.write_value"><code class="xref py py-obj docutils literal">write_value</code></a>(name, value)</td>
 <td></td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">write_workspace</code>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabProcess.write_workspace.html" title="compas.com.MatlabProcess.write_workspace"><code class="xref py py-obj docutils literal">write_workspace</code></a>()</td>
 <td></td>
 </tr>
 </tbody>
@@ -122,8 +127,8 @@ Defaults to <cite>‘./workspace.mat’</cite>.</li>
 </dd></dl>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="compas.com.MatlabEngine.html" role="button">MatlabEngine</a>
-<a class="btn btn-primary compas-next" href="compas.com.MatlabSession.html" role="button">MatlabSession</a>
+<a class="btn btn-primary compas-prev" href="generated/compas.com.MatlabEngine.stop.html" role="button">MatlabEngine.stop</a>
+<a class="btn btn-primary compas-next" href="generated/compas.com.MatlabProcess.__init__.html" role="button">MatlabProcess.__init__</a>
 </nav>
 </main>
 <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
@@ -184,7 +189,7 @@ Defaults to <cite>‘./workspace.mat’</cite>.</li>
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             

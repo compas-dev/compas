@@ -132,7 +132,7 @@
 
     <span class="n">binary_byte_order</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'binary_big_endian'</span><span class="p">:</span> <span class="s1">'&gt;'</span><span class="p">,</span> <span class="s1">'binary_little_endian'</span><span class="p">:</span> <span class="s1">'&lt;'</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.__init__.html#compas.files.PLYreader.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="kc">None</span>
@@ -149,38 +149,38 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.is_valid"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.is_valid.html#compas.files.PLYreader.is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">read_header</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_header</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_header</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="k">def</span> <span class="nf">is_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.is_binary"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.is_binary.html#compas.files.PLYreader.is_binary">[docs]</a>    <span class="k">def</span> <span class="nf">is_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">'binary_big_endian'</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">'binary_little_endian'</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="k">def</span> <span class="nf">is_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.is_ascii"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.is_ascii.html#compas.files.PLYreader.is_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">is_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">'ascii'</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.read"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read.html#compas.files.PLYreader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">read_header</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">'ascii'</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">read_data</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">read_data_binary</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">read_data_binary</span><span class="p">()</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># read the header</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">read_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.read_header"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_header.html#compas.files.PLYreader.read_header">[docs]</a>    <span class="k">def</span> <span class="nf">read_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># the header is always in ascii format</span>
         <span class="c1"># read it as text</span>
         <span class="c1"># otherwise file.tell() can't be used reliably</span>
@@ -259,13 +259,13 @@
                 <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s1">'end_header'</span><span class="p">:</span>
                     <span class="n">element_type</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">end_header</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
-                    <span class="k">break</span>
+                    <span class="k">break</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># read the data</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.read_data"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_data.html#compas.files.PLYreader.read_data">[docs]</a>    <span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_header</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'header has not been read, or the file is not valid'</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
@@ -279,9 +279,9 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">read_faces</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">'user-defined elements are not supported: </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">section</span><span class="p">))</span>
-                    <span class="k">pass</span>
+                    <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">read_data_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.read_data_binary"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_data_binary.html#compas.files.PLYreader.read_data_binary">[docs]</a>    <span class="k">def</span> <span class="nf">read_data_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_header</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'header has not been read, or the file is not valid'</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
@@ -295,13 +295,13 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">read_faces_binary_wo_numpy</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">'user-defined elements are not supported: </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">section</span><span class="p">))</span>
-                    <span class="k">pass</span>
+                    <span class="k">pass</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># read the individual section</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">read_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.read_vertices"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_vertices.html#compas.files.PLYreader.read_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">read_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
@@ -313,12 +313,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
             <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">:</span>
-                <span class="k">break</span>
+                <span class="k">break</span></div>
 
-    <span class="k">def</span> <span class="nf">read_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="PLYreader.read_edges"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_edges.html#compas.files.PLYreader.read_edges">[docs]</a>    <span class="k">def</span> <span class="nf">read_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">read_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.read_faces"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_faces.html#compas.files.PLYreader.read_faces">[docs]</a>    <span class="k">def</span> <span class="nf">read_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
@@ -330,7 +330,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
             <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">:</span>
-                <span class="k">break</span>
+                <span class="k">break</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># binary read the individual section</span>
@@ -341,15 +341,15 @@
     <span class="c1"># see: http://stackoverflow.com/questions/4566498/python-file-iterator-over-a-binary-file-with-newer-idiom</span>
     <span class="c1"># see: http://stackoverflow.com/questions/27532738/python-iterate-through-binary-file-without-lines</span>
 
-    <span class="k">def</span> <span class="nf">numpy_vertex_ptypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.numpy_vertex_ptypes"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.numpy_vertex_ptypes.html#compas.files.PLYreader.numpy_vertex_ptypes">[docs]</a>    <span class="k">def</span> <span class="nf">numpy_vertex_ptypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_byte_order</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">]</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">:</span>
             <span class="n">pname</span><span class="p">,</span> <span class="n">ptype</span> <span class="o">=</span> <span class="n">prop</span>
             <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pname</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">ptype</span><span class="p">]))</span>
-        <span class="k">return</span> <span class="n">dt</span>
+        <span class="k">return</span> <span class="n">dt</span></div>
 
-    <span class="k">def</span> <span class="nf">numpy_face_ptypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.numpy_face_ptypes"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.numpy_face_ptypes.html#compas.files.PLYreader.numpy_face_ptypes">[docs]</a>    <span class="k">def</span> <span class="nf">numpy_face_ptypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_byte_order</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">]</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_properties</span><span class="p">:</span>
@@ -365,9 +365,9 @@
                 <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'v3'</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">ptype</span><span class="p">]))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">pass</span>
-        <span class="k">return</span> <span class="n">dt</span>
+        <span class="k">return</span> <span class="n">dt</span></div>
 
-    <span class="k">def</span> <span class="nf">read_vertices_binary_wo_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.read_vertices_binary_wo_numpy"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_vertices_binary_wo_numpy.html#compas.files.PLYreader.read_vertices_binary_wo_numpy">[docs]</a>    <span class="k">def</span> <span class="nf">read_vertices_binary_wo_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_byte_order</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">]</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="n">ext</span>
         <span class="n">chunk</span> <span class="o">=</span> <span class="mi">0</span>
@@ -382,9 +382,9 @@
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">):</span>
                 <span class="n">pname</span><span class="p">,</span> <span class="n">ptype</span> <span class="o">=</span> <span class="n">prop</span>
                 <span class="n">vertex</span><span class="p">[</span><span class="n">pname</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">read_vertices_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.read_vertices_binary"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_vertices_binary.html#compas.files.PLYreader.read_vertices_binary">[docs]</a>    <span class="k">def</span> <span class="nf">read_vertices_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># use pandas to read the data frames</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numpy_vertex_ptypes</span><span class="p">()),</span> <span class="n">count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">):</span>
@@ -392,15 +392,15 @@
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_properties</span><span class="p">):</span>
                 <span class="n">pname</span><span class="p">,</span> <span class="n">ptype</span> <span class="o">=</span> <span class="n">prop</span>
                 <span class="n">vertex</span><span class="p">[</span><span class="n">pname</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">read_edges_binary_wo_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="PLYreader.read_edges_binary_wo_numpy"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_edges_binary_wo_numpy.html#compas.files.PLYreader.read_edges_binary_wo_numpy">[docs]</a>    <span class="k">def</span> <span class="nf">read_edges_binary_wo_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">read_edges_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="PLYreader.read_edges_binary"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_edges_binary.html#compas.files.PLYreader.read_edges_binary">[docs]</a>    <span class="k">def</span> <span class="nf">read_edges_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">read_faces_binary_wo_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.read_faces_binary_wo_numpy"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_faces_binary_wo_numpy.html#compas.files.PLYreader.read_faces_binary_wo_numpy">[docs]</a>    <span class="k">def</span> <span class="nf">read_faces_binary_wo_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_byte_order</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">]</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="n">ext</span>
         <span class="n">chunk</span> <span class="o">=</span> <span class="mi">0</span>
@@ -428,9 +428,9 @@
                 <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                     <span class="n">pname</span><span class="p">,</span> <span class="n">ptype</span><span class="p">,</span> <span class="n">plen</span> <span class="o">=</span> <span class="n">prop</span>
                     <span class="n">face</span><span class="p">[</span><span class="n">pname</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">read_faces_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLYreader.read_faces_binary"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_faces_binary.html#compas.files.PLYreader.read_faces_binary">[docs]</a>    <span class="k">def</span> <span class="nf">read_faces_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># use pandas to read the data frames</span>
         <span class="c1"># how to deal with faces of variable length?</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -448,7 +448,7 @@
                     <span class="n">face</span><span class="p">[</span><span class="n">pname</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">pass</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">PLYparser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -530,7 +530,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             

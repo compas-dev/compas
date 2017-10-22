@@ -347,7 +347,7 @@ network: {0}
     # move to mixin
     # --------------------------------------------------------------------------
 
-    def _get_vertexkey(self, key):
+    def _get_vertex_key(self, key):
         if key is None:
             key = self._max_int_key = self._max_int_key + 1
         else:
@@ -431,7 +431,7 @@ network: {0}
         attr_dict.update(kwattr)
         attr.update(attr_dict)
 
-        key = self._get_vertexkey(key)
+        key = self._get_vertex_key(key)
 
         if key not in self.vertex:
             self.vertex[key] = {}
@@ -470,10 +470,10 @@ network: {0}
     # modifiers
     # --------------------------------------------------------------------------
 
-    # def remove_vertex(self, key):
+    # def delete_vertex(self, key):
     #     pass
 
-    # def remove_edge(self, u, v):
+    # def delete_edge(self, u, v):
     #     raise NotImplementedError
     #     if self.face:
     #         # there are faces

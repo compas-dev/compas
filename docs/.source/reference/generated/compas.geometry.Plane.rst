@@ -10,6 +10,8 @@ Plane
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~Plane.__init__
       ~Plane.basis

@@ -10,10 +10,12 @@ Mesh
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~Mesh.__init__
+      ~Mesh.add_edge
       ~Mesh.add_face
-      ~Mesh.add_faces
       ~Mesh.add_vertex
       ~Mesh.clear
       ~Mesh.clear_edgedict
@@ -21,11 +23,10 @@ Mesh
       ~Mesh.clear_halfedgedict
       ~Mesh.clear_vertexdict
       ~Mesh.copy
-      ~Mesh.cull_unused_edges
-      ~Mesh.cull_unused_vertices
+      ~Mesh.cull_edges
+      ~Mesh.cull_vertices
       ~Mesh.delete_face
       ~Mesh.delete_vertex
-      ~Mesh.edge_connected_edges
       ~Mesh.edge_coordinates
       ~Mesh.edge_direction
       ~Mesh.edge_faces
@@ -38,22 +39,22 @@ Mesh
       ~Mesh.edges
       ~Mesh.edges_on_boundary
       ~Mesh.face_adjacency
-      ~Mesh.face_adjacency_edge
+      ~Mesh.face_adjacency_halfedge
       ~Mesh.face_area
       ~Mesh.face_center
       ~Mesh.face_centroid
       ~Mesh.face_coordinates
       ~Mesh.face_corners
-      ~Mesh.face_edges
+      ~Mesh.face_degree
       ~Mesh.face_halfedges
       ~Mesh.face_label_name
+      ~Mesh.face_max_degree
+      ~Mesh.face_min_degree
       ~Mesh.face_name
-      ~Mesh.face_neighbourhood
       ~Mesh.face_neighbours
       ~Mesh.face_normal
       ~Mesh.face_vertex_ancestor
       ~Mesh.face_vertex_descendant
-      ~Mesh.face_vertex_neighbours
       ~Mesh.face_vertices
       ~Mesh.faces
       ~Mesh.faces_on_boundary
@@ -86,12 +87,9 @@ Mesh
       ~Mesh.has_vertex
       ~Mesh.index_key
       ~Mesh.index_uv
-      ~Mesh.indexed_edges
-      ~Mesh.indexed_face_vertices
       ~Mesh.insert_vertex
-      ~Mesh.is_closed
       ~Mesh.is_connected
-      ~Mesh.is_edge_naked
+      ~Mesh.is_edge_on_boundary
       ~Mesh.is_manifold
       ~Mesh.is_orientable
       ~Mesh.is_quadmesh
@@ -99,18 +97,13 @@ Mesh
       ~Mesh.is_trimesh
       ~Mesh.is_valid
       ~Mesh.is_vertex_connected
-      ~Mesh.is_vertex_extraordinary
-      ~Mesh.is_vertex_leaf
       ~Mesh.is_vertex_on_boundary
-      ~Mesh.is_vertex_orphan
       ~Mesh.key_gkey
       ~Mesh.key_index
-      ~Mesh.leaves
       ~Mesh.number_of_edges
       ~Mesh.number_of_faces
       ~Mesh.number_of_halfedges
       ~Mesh.number_of_vertices
-      ~Mesh.remove_vertex
       ~Mesh.set_edge_attribute
       ~Mesh.set_edge_attributes
       ~Mesh.set_edges_attribute
@@ -123,6 +116,7 @@ Mesh
       ~Mesh.set_vertex_attributes
       ~Mesh.set_vertices_attribute
       ~Mesh.set_vertices_attributes
+      ~Mesh.summary
       ~Mesh.to_data
       ~Mesh.to_json
       ~Mesh.to_obj
@@ -132,23 +126,21 @@ Mesh
       ~Mesh.update_default_vertex_attributes
       ~Mesh.uv_index
       ~Mesh.vertex_area
-      ~Mesh.vertex_connected_edges
       ~Mesh.vertex_coordinates
       ~Mesh.vertex_degree
-      ~Mesh.vertex_degree_in
-      ~Mesh.vertex_degree_out
       ~Mesh.vertex_faces
       ~Mesh.vertex_label_name
       ~Mesh.vertex_laplacian
+      ~Mesh.vertex_max_degree
+      ~Mesh.vertex_min_degree
       ~Mesh.vertex_name
       ~Mesh.vertex_neighbourhood
       ~Mesh.vertex_neighbourhood_centroid
       ~Mesh.vertex_neighbours
-      ~Mesh.vertex_neighbours_in
-      ~Mesh.vertex_neighbours_out
       ~Mesh.vertex_normal
       ~Mesh.vertices
       ~Mesh.vertices_on_boundary
+      ~Mesh.vertices_where
       ~Mesh.wireframe
    
    

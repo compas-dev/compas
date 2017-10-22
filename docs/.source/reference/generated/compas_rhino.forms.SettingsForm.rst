@@ -10,6 +10,8 @@ SettingsForm
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~SettingsForm.__init__
       ~SettingsForm.init

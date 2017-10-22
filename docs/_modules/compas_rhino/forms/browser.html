@@ -32,7 +32,8 @@
 <nav class="breadcrumb">
 <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
 <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+<a class="breadcrumb-item" href="../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../forms.html">compas_rhino.forms</a>
 </nav>
 <h1>Source code for compas_rhino.forms.browser</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas_rhino.forms</span> <span class="k">import</span> <span class="n">Form</span>
@@ -62,12 +63,12 @@
 
 <div class="viewcode-block" id="BrowserForm"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.BrowserForm.html#compas_rhino.forms.BrowserForm">[docs]</a><span class="k">class</span> <span class="nc">BrowserForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'BrowserForm'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">786</span><span class="p">):</span>
+<div class="viewcode-block" id="BrowserForm.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.BrowserForm.__init__.html#compas_rhino.forms.BrowserForm.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'BrowserForm'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">786</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BrowserForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">FormBorderStyle</span> <span class="o">=</span> <span class="n">FormBorderStyle</span><span class="o">.</span><span class="n">Sizable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">FormBorderStyle</span> <span class="o">=</span> <span class="n">FormBorderStyle</span><span class="o">.</span><span class="n">Sizable</span></div>
 
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BrowserForm.init"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.BrowserForm.init.html#compas_rhino.forms.BrowserForm.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">WebBrowser</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">Url</span> <span class="o">=</span> <span class="n">Uri</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">StatusTextChanged</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_statustext_changed</span>
@@ -76,10 +77,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">ToolStripStatusLabel</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status_strip</span><span class="o">.</span><span class="n">Items</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status_strip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status_strip</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">on_statustext_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">eargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">StatusText</span></div>
+<div class="viewcode-block" id="BrowserForm.on_statustext_changed"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.BrowserForm.on_statustext_changed.html#compas_rhino.forms.BrowserForm.on_statustext_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_statustext_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">eargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">StatusText</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -129,7 +130,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             

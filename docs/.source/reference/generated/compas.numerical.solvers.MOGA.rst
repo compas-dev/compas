@@ -10,6 +10,8 @@ MOGA
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~MOGA.__init__
       ~MOGA.calculate_crowding_distance

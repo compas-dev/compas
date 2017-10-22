@@ -10,6 +10,8 @@ DXF
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~DXF.__init__
       ~DXF.read

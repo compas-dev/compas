@@ -10,6 +10,8 @@ OBJReader
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~OBJReader.__init__
       ~OBJReader.open

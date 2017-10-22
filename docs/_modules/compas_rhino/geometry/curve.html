@@ -52,7 +52,7 @@
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, BLOCK Research Group - ETH Zurich'</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2017, BLOCK Research Group - ETH Zurich'</span>
 <span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
 <span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
@@ -63,36 +63,36 @@
 <div class="viewcode-block" id="RhinoCurve"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.geometry.RhinoCurve.html#compas_rhino.geometry.RhinoCurve">[docs]</a><span class="k">class</span> <span class="nc">RhinoCurve</span><span class="p">(</span><span class="n">CurveGeometryInterface</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.__init__.html#compas_rhino.geometry.RhinoCurve.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="n">guid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">curve</span> <span class="o">=</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">Geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">Attributes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">otype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span></div>
 
-    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">HideObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span>
+<div class="viewcode-block" id="RhinoCurve.hide"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.hide.html#compas_rhino.geometry.RhinoCurve.hide">[docs]</a>    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">HideObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">ShowObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span>
+<div class="viewcode-block" id="RhinoCurve.show"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.show.html#compas_rhino.geometry.RhinoCurve.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">ShowObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">SelectObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span>
+<div class="viewcode-block" id="RhinoCurve.select"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.select.html#compas_rhino.geometry.RhinoCurve.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">SelectObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">unselect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">UnselectObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span>
+<div class="viewcode-block" id="RhinoCurve.unselect"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.unselect.html#compas_rhino.geometry.RhinoCurve.unselect">[docs]</a>    <span class="k">def</span> <span class="nf">unselect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">UnselectObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">is_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve.is_line"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.is_line.html#compas_rhino.geometry.RhinoCurve.is_line">[docs]</a>    <span class="k">def</span> <span class="nf">is_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">IsLine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span> <span class="ow">and</span>
                 <span class="n">rs</span><span class="o">.</span><span class="n">CurveDegree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span>
-                <span class="nb">len</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">CurvePoints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">))</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">CurvePoints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">))</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">is_polyline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve.is_polyline"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.is_polyline.html#compas_rhino.geometry.RhinoCurve.is_polyline">[docs]</a>    <span class="k">def</span> <span class="nf">is_polyline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">IsPolyline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span> <span class="ow">and</span>
                 <span class="n">rs</span><span class="o">.</span><span class="n">CurveDegree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span>
-                <span class="nb">len</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">CurvePoints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">CurvePoints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve.space"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.space.html#compas_rhino.geometry.RhinoCurve.space">[docs]</a>    <span class="k">def</span> <span class="nf">space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
         <span class="n">space</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">density</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">density</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsCurve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">):</span>
@@ -112,20 +112,20 @@
             <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Object is not a curve.'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">space</span>
+        <span class="k">return</span> <span class="n">space</span></div>
 
-    <span class="k">def</span> <span class="nf">heightfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve.heightfield"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.heightfield.html#compas_rhino.geometry.RhinoCurve.heightfield">[docs]</a>    <span class="k">def</span> <span class="nf">heightfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
         <span class="n">heightfield</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">space</span><span class="p">(</span><span class="n">density</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">space</span><span class="p">:</span>
             <span class="n">xyz</span> <span class="o">=</span> <span class="p">[</span><span class="n">rs</span><span class="o">.</span><span class="n">EvaluateCurve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">space</span><span class="p">]</span>
             <span class="n">heightfield</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">xyz</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">heightfield</span>
+        <span class="k">return</span> <span class="n">heightfield</span></div>
 
-    <span class="k">def</span> <span class="nf">curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<div class="viewcode-block" id="RhinoCurve.curvature"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.curvature.html#compas_rhino.geometry.RhinoCurve.curvature">[docs]</a>    <span class="k">def</span> <span class="nf">curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">tangents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve.tangents"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.tangents.html#compas_rhino.geometry.RhinoCurve.tangents">[docs]</a>    <span class="k">def</span> <span class="nf">tangents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="n">tangents</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsPolyCurve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">):</span>
             <span class="k">pass</span>
@@ -136,17 +136,17 @@
                 <span class="n">tangents</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Object is not a curve.'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tangents</span>
+        <span class="k">return</span> <span class="n">tangents</span></div>
 
-    <span class="k">def</span> <span class="nf">descent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve.descent"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.descent.html#compas_rhino.geometry.RhinoCurve.descent">[docs]</a>    <span class="k">def</span> <span class="nf">descent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="n">tangents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tangents</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="n">tangents</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span> <span class="k">if</span> <span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">tangents</span>
         <span class="p">]</span>
-        <span class="k">return</span> <span class="n">tangents</span>
+        <span class="k">return</span> <span class="n">tangents</span></div>
 
-    <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_segments</span><span class="p">,</span> <span class="n">over_space</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve.divide"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.divide.html#compas_rhino.geometry.RhinoCurve.divide">[docs]</a>    <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_segments</span><span class="p">,</span> <span class="n">over_space</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">over_space</span><span class="p">:</span>
@@ -157,22 +157,22 @@
             <span class="n">points</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DivideCurve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">,</span> <span class="n">number_of_segments</span><span class="p">,</span> <span class="n">create_points</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_points</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">points</span><span class="p">[:]</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
         <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">points</span>
+        <span class="k">return</span> <span class="n">points</span></div>
 
-    <span class="k">def</span> <span class="nf">divide_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length_of_segments</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve.divide_length"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.divide_length.html#compas_rhino.geometry.RhinoCurve.divide_length">[docs]</a>    <span class="k">def</span> <span class="nf">divide_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length_of_segments</span><span class="p">):</span>
         <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">points</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DivideCurveLength</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">,</span> <span class="n">length_of_segments</span><span class="p">,</span> <span class="n">create_points</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_points</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">points</span><span class="p">[:]</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
         <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">points</span>
+        <span class="k">return</span> <span class="n">points</span></div>
 
-    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoCurve.closest_point"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.closest_point.html#compas_rhino.geometry.RhinoCurve.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">maxdist</span> <span class="o">=</span> <span class="n">maxdist</span> <span class="ow">or</span> <span class="mf">0.0</span>
         <span class="n">rc</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ClosestPoint</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">),</span> <span class="n">maxdist</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">PointAt</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">PointAt</span><span class="p">(</span><span class="n">t</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+<div class="viewcode-block" id="RhinoCurve.closest_points"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.closest_points.html#compas_rhino.geometry.RhinoCurve.closest_points">[docs]</a>    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -221,7 +221,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             

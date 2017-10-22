@@ -26,7 +26,7 @@ __all__ = [
 ]
 
 
-def normal_polygon(points, normalised=True):
+def normal_polygon(points, unitized=True):
     """Compute the normal of a polygon defined by a sequence of points.
 
     Note:
@@ -56,13 +56,13 @@ def normal_polygon(points, normalised=True):
         nx += n[0]
         ny += n[1]
         nz += n[2]
-    if not normalised:
+    if not unitized:
         return nx, ny, nz
     l = length_vector([nx, ny, nz])
     return nx / l, ny / l, nz / l
 
 
-def _normal_polygon(points, normalised=True):
+def _normal_polygon(points, unitized=True):
     """Compute the normal of a polygon defined by a sequence of points.
 
     Note:
@@ -93,13 +93,13 @@ def _normal_polygon(points, normalised=True):
         nx += n[0]
         ny += n[1]
         nz += n[2]
-    if not normalised:
+    if not unitized:
         return nx, ny, nz
     l = length_vector([nx, ny, nz])
     return nx / l, ny / l, nz / l
 
 
-def normal_triangle(triangle, normalised=True):
+def normal_triangle(triangle, unitized=True):
     """Compute the normal vector of a triangle.
     """
     assert len(triangle) == 3, "Three points are required."
@@ -107,18 +107,18 @@ def normal_triangle(triangle, normalised=True):
     ab = subtract_vectors(b, a)
     ac = subtract_vectors(c, a)
     n  = cross_vectors(ab, ac)
-    if not normalised:
+    if not unitized:
         return n
     lvec = length_vector(n)
     return n[0] / lvec, n[1] / lvec, n[2] / lvec
 
 
-def normal_triangle_xy(triangle, normalised=True):
+def normal_triangle_xy(triangle, unitized=True):
     a, b, c = triangle
     ab = subtract_vectors_xy(b, a)
     ac = subtract_vectors_xy(c, a)
     n  = cross_vectors_xy(ab, ac)
-    if not normalised:
+    if not unitized:
         return n
     lvec = length_vector_xy(n)
     return n[0] / lvec, n[1] / lvec, n[2] / lvec

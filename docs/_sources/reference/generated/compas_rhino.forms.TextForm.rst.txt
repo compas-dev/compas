@@ -10,6 +10,8 @@ TextForm
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~TextForm.__init__
       ~TextForm.init

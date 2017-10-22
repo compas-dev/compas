@@ -91,9 +91,9 @@
 
 
 <span class="sd">    """</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+<div class="viewcode-block" id="Line.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Line.__init__.html#compas.geometry.Line.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">'(</span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1">)'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
@@ -183,18 +183,18 @@
     <span class="c1"># transformations</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<div class="viewcode-block" id="Line.translate"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Line.translate.html#compas.geometry.Line.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
         <span class="sd">"""Translate the line by a vector."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Line.rotate"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Line.rotate.html#compas.geometry.Line.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">"""Rotate the line around the origin, or around a specified origin."""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span><span class="p">:</span>
             <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="n">origin</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="viewcode-block" id="Line.scale"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Line.scale.html#compas.geometry.Line.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="sd">"""Increase the distance between start and end by a factor n, while</span>
 <span class="sd">        keeping the start point fixed.</span>
 
@@ -204,7 +204,7 @@
 <span class="sd">        Note:</span>
 <span class="sd">            This is an alias for self \*= n</span>
 <span class="sd">        """</span>
-        <span class="bp">self</span> <span class="o">*=</span> <span class="n">n</span></div>
+        <span class="bp">self</span> <span class="o">*=</span> <span class="n">n</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -267,7 +267,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             

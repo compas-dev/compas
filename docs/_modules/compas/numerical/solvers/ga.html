@@ -98,31 +98,31 @@
 <span class="sd">    required genetic operators.</span>
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.__init__.html#compas.numerical.solvers.GA.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">""" Initializes the GA object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        best_fit: float</span>
+<span class="sd">        best_fit : float</span>
 <span class="sd">            The fitness value of the best performing solution for the current generation.</span>
 <span class="sd">        best_individual_index: int</span>
 <span class="sd">            The index of the best performing individual for the current generation.</span>
-<span class="sd">        boundaries: dict</span>
+<span class="sd">        boundaries : dict</span>
 <span class="sd">            This dictionary contains all the max and min bounds for each optimization variable.</span>
 <span class="sd">            ``GA.boundaries[index] = [min,max]``.</span>
-<span class="sd">        current_pop: dict</span>
+<span class="sd">        current_pop : dict</span>
 <span class="sd">            This dictionary contains the coded, decoded and scaled population of the current</span>
 <span class="sd">            generation, as well as their fitness values.</span>
-<span class="sd">        elite_pop: dict</span>
+<span class="sd">        elite_pop : dict</span>
 <span class="sd">            This dictionary contains the coded, decoded and scaled data for the elite</span>
 <span class="sd">            population of the current generation, as well as their fitness values.</span>
-<span class="sd">        end_gen: int</span>
+<span class="sd">        end_gen : int</span>
 <span class="sd">            The maximum number of generations the GA is allowed to run.</span>
 <span class="sd">        fit_function: function</span>
 <span class="sd">            The fitness function.</span>
-<span class="sd">        fit_name: str</span>
+<span class="sd">        fit_name : str</span>
 <span class="sd">            The name of the python file containing the fitness function (without extension).</span>
-<span class="sd">        fit_type: str</span>
+<span class="sd">        fit_type : str</span>
 <span class="sd">            String that indicates if the fitness function is to be minimized or maximized.</span>
 <span class="sd">            "min" for minimization and "max" for maximization.</span>
 <span class="sd">        input_path: str</span>
@@ -131,44 +131,45 @@
 <span class="sd">            This dictionary will be passed as a keyword argument to all fitness functions.</span>
 <span class="sd">            It can be used to pass required data, objects, that are not related to the</span>
 <span class="sd">            optimmization variables but are required to run the fitness function.</span>
-<span class="sd">        max_bin_digit: int</span>
+<span class="sd">        max_bin_digit : int</span>
 <span class="sd">            The maximum number of binary digits that are used to code a variable values.</span>
 <span class="sd">            The number of binary digits assigned to code a variable determine the number</span>
 <span class="sd">            of discrete steps inside the variable bounds. For example, an 8 digit binary</span>
-<span class="sd">             number will produce 256 steps.</span>
-<span class="sd">        min_fit: float</span>
+<span class="sd">            number will produce 256 steps.</span>
+<span class="sd">        min_fit : float</span>
 <span class="sd">            An end condition related to fitness value. If it is set, the GA will stop</span>
 <span class="sd">            when any individual achieves a fitness equal or better that ``GA.min_fit``. If</span>
 <span class="sd">            it is not set, the GA will end after ``GA.num_gen`` generations.</span>
-<span class="sd">        min_fit_flag: bool</span>
+<span class="sd">        min_fit_flag : bool</span>
 <span class="sd">            Flag the GA uses to determine if the ``GA.min_fit`` value has been achieved.</span>
-<span class="sd">        mutation_probability: float</span>
+<span class="sd">        mutation_probability : float</span>
 <span class="sd">            Determines the probability that the mutation operator will mutate each gene.</span>
 <span class="sd">            For each gene a random number ``x`` between 0 and 1 is generated, if ``x``</span>
 <span class="sd">            is higher than ``GA.mutation_probability`` it will be mutated.</span>
-<span class="sd">        num_bin_dig: list</span>
+<span class="sd">        num_bin_dig : list</span>
 <span class="sd">            List of the number of binary digits for each variable. The number of binary</span>
 <span class="sd">            digits assigned to code a variable determine the number of discrete steps</span>
 <span class="sd">            inside the variable bounds. For example, an 8 digit binary number will</span>
 <span class="sd">            produce 256 steps.</span>
-<span class="sd">        num_elite: int</span>
+<span class="sd">        num_elite : int</span>
 <span class="sd">            The number of top performing individuals in the population that are not subject</span>
 <span class="sd">            to genetic operators, but are simply copied to the next generation.</span>
-<span class="sd">        num_gen: int</span>
+<span class="sd">        num_gen : int</span>
 <span class="sd">            The number of genertions the GA will run.</span>
-<span class="sd">        num_pop: int</span>
+<span class="sd">        num_pop : int</span>
 <span class="sd">            The number of individuals per generation.</span>
-<span class="sd">        num_var: int</span>
+<span class="sd">        num_var : int</span>
 <span class="sd">            The number of variables in the optimization problem.</span>
-<span class="sd">        output_path: str</span>
+<span class="sd">        output_path : str</span>
 <span class="sd">            The path to which the GA outputs result files.</span>
-<span class="sd">        start_from_gen: int</span>
+<span class="sd">        start_from_gen : int</span>
 <span class="sd">            The generation from which the GA will restart. If this number is given, the GA</span>
 <span class="sd">            will look for generation output files in the ``GA.input_path`` and if found,</span>
 <span class="sd">            the GA will resume optimization from the ``GA.start_from_gen`` generation.</span>
-<span class="sd">        total_bin_dig: int</span>
+<span class="sd">        total_bin_dig : int</span>
 <span class="sd">            The total number of binary digits. It is the sum of the ``GA.num_bin_dig`` of</span>
 <span class="sd">            all variables.</span>
+
 <span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -198,9 +199,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_from_gen</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_bin_dig</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">check_diversity</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_diversity</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-    <span class="k">def</span> <span class="nf">ga</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.ga"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.ga.html#compas.numerical.solvers.GA.ga">[docs]</a>    <span class="k">def</span> <span class="nf">ga</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">""" This is the main optimization function, this function permorms the GA optimization,</span>
 <span class="sd">        performing all genetic operators.</span>
 <span class="sd">        """</span>
@@ -255,18 +256,18 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">get_best_individual_index</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">write_ga_json_file</span><span class="p">()</span>
                 <span class="nb">print</span> <span class="p">(</span><span class="s1">'GA ended at generation '</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_gen</span><span class="p">,</span> <span class="s1">' with an optimal fitness of '</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span><span class="p">)</span>
-                <span class="k">break</span>
+                <span class="k">break</span></div>
 
-    <span class="k">def</span> <span class="nf">check_pop_diversity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.check_pop_diversity"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.check_pop_diversity.html#compas.numerical.solvers.GA.check_pop_diversity">[docs]</a>    <span class="k">def</span> <span class="nf">check_pop_diversity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">seen</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">all_</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">ind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
                 <span class="n">seen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
             <span class="n">all_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">decode_binary_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_pop</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.decode_binary_pop"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.decode_binary_pop.html#compas.numerical.solvers.GA.decode_binary_pop">[docs]</a>    <span class="k">def</span> <span class="nf">decode_binary_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_pop</span><span class="p">):</span>
         <span class="sd">"""Decodes the binary population, from binary to unscaled variable values</span>
 
 <span class="sd">        Parameters</span>
@@ -288,9 +289,9 @@
                     <span class="k">if</span> <span class="n">gene</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                         <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">2</span><span class="o">**</span><span class="n">u</span>
                 <span class="n">decoded_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">return</span> <span class="n">decoded_pop</span>
+        <span class="k">return</span> <span class="n">decoded_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">generate_random_bin_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.generate_random_bin_pop"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.generate_random_bin_pop.html#compas.numerical.solvers.GA.generate_random_bin_pop">[docs]</a>    <span class="k">def</span> <span class="nf">generate_random_bin_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">""" Generates random binary population of ``GA.num_pop`` size.</span>
 
 <span class="sd">        Returns</span>
@@ -302,9 +303,9 @@
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
                 <span class="n">random_bin_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span>
-        <span class="k">return</span> <span class="n">random_bin_pop</span>
+        <span class="k">return</span> <span class="n">random_bin_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">scale_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decoded_pop</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.scale_population"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.scale_population.html#compas.numerical.solvers.GA.scale_population">[docs]</a>    <span class="k">def</span> <span class="nf">scale_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decoded_pop</span><span class="p">):</span>
 
         <span class="sd">"""Scales the decoded population, variable values are scaled according to each</span>
 <span class="sd">        of their bounds contained in ``GA.boundaries``.</span>
@@ -325,9 +326,9 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_var</span><span class="p">):</span>
                 <span class="n">maxbin</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
                 <span class="n">scaled_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">decoded_pop</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">((</span><span class="n">maxbin</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
-        <span class="k">return</span> <span class="n">scaled_pop</span>
+        <span class="k">return</span> <span class="n">scaled_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">tournament_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.tournament_selection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.tournament_selection.html#compas.numerical.solvers.GA.tournament_selection">[docs]</a>    <span class="k">def</span> <span class="nf">tournament_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Performs the tournament selection operator on the current population.</span>
 <span class="sd">        """</span>
         <span class="n">pop_a</span> <span class="o">=</span> <span class="p">[]</span>
@@ -352,9 +353,9 @@
                 <span class="k">if</span> <span class="n">fit_a</span> <span class="o">&gt;</span> <span class="n">fit_b</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop_a</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop_b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop_b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
 
-    <span class="k">def</span> <span class="nf">select_elite_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">num_elite</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.select_elite_pop"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.select_elite_pop.html#compas.numerical.solvers.GA.select_elite_pop">[docs]</a>    <span class="k">def</span> <span class="nf">select_elite_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">num_elite</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">"""Saves the elite population in the elite population dictionary</span>
 
 <span class="sd">        Parameters</span>
@@ -383,9 +384,9 @@
             <span class="n">elite_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">][</span><span class="n">sorted_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
             <span class="n">elite_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">][</span><span class="n">sorted_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
             <span class="n">elite_pop</span><span class="p">[</span><span class="s1">'fit_value'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="s1">'fit_value'</span><span class="p">][</span><span class="n">sorted_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
-        <span class="k">return</span> <span class="n">elite_pop</span>
+        <span class="k">return</span> <span class="n">elite_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">get_sorting_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.get_sorting_indices"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.get_sorting_indices.html#compas.numerical.solvers.GA.get_sorting_indices">[docs]</a>    <span class="k">def</span> <span class="nf">get_sorting_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">"""Reurns the indices that would sort a list of floats. If floats are</span>
 <span class="sd">        repeated in the list, only one instance is considered. The index of</span>
 <span class="sd">        repeaded floats are included in the end of the index list.</span>
@@ -415,9 +416,9 @@
         <span class="n">sorting_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l_</span><span class="p">))]</span>
         <span class="k">if</span> <span class="n">reverse</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">sorting_index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">sorting_index</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">sorting_index</span>
+        <span class="k">return</span> <span class="n">sorting_index</span></div>
 
-    <span class="k">def</span> <span class="nf">create_mating_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.create_mating_pool"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.create_mating_pool.html#compas.numerical.solvers.GA.create_mating_pool">[docs]</a>    <span class="k">def</span> <span class="nf">create_mating_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Creates two lists of cromosomes to be used by the crossover operator.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_a</span> <span class="o">=</span> <span class="p">[]</span>
@@ -429,9 +430,9 @@
                 <span class="n">chrom_a</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="n">j</span><span class="p">]</span>
                 <span class="n">chrom_b</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">mp_indices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]][</span><span class="n">j</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chrom_a</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chrom_b</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mating_pool_b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chrom_b</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">simple_crossover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.simple_crossover"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.simple_crossover.html#compas.numerical.solvers.GA.simple_crossover">[docs]</a>    <span class="k">def</span> <span class="nf">simple_crossover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Performs the simple crossover operator. Individuals in ``GA.mating_pool_a`` are</span>
 <span class="sd">        combined with individuals in ``GA.mating_pool_b`` using a single, randomly selected</span>
 <span class="sd">        crossover point.</span>
@@ -452,9 +453,9 @@
                 <span class="n">variable_b</span> <span class="o">=</span> <span class="n">d</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
                 <span class="k">del</span> <span class="n">d</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_a</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">j</span> <span class="o">+</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_b</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">j</span> <span class="o">+</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_b</span></div>
 
-    <span class="k">def</span> <span class="nf">random_mutation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.random_mutation"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.random_mutation.html#compas.numerical.solvers.GA.random_mutation">[docs]</a>    <span class="k">def</span> <span class="nf">random_mutation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This mutation operator replaces a gene from 0 to 1 or viceversa</span>
 <span class="sd">        with a probability of ``GA.mutation_probability``.</span>
 <span class="sd">        """</span>
@@ -466,9 +467,9 @@
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-    <span class="k">def</span> <span class="nf">code_decoded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decoded_pop</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.code_decoded"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.code_decoded.html#compas.numerical.solvers.GA.code_decoded">[docs]</a>    <span class="k">def</span> <span class="nf">code_decoded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">decoded_pop</span><span class="p">):</span>
         <span class="sd">"""Returns a binary coded population from a decoded population</span>
 
 <span class="sd">        Parameters</span>
@@ -494,9 +495,9 @@
                 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_dig</span><span class="p">[</span><span class="n">j</span><span class="p">]):</span>
                     <span class="n">bin_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">temp_bin</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
                 <span class="n">binary_pop</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">bin_list</span>
-        <span class="k">return</span> <span class="n">binary_pop</span>
+        <span class="k">return</span> <span class="n">binary_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">unscale_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaled_pop</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.unscale_pop"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.unscale_pop.html#compas.numerical.solvers.GA.unscale_pop">[docs]</a>    <span class="k">def</span> <span class="nf">unscale_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaled_pop</span><span class="p">):</span>
         <span class="sd">"""Returns an unscaled population from a scaled one. The variable values are scaled</span>
 <span class="sd">        from 0 to x, where x is the highest number described by the number of binary digits</span>
 <span class="sd">        used to encode that variable. For example, if ``GA.num_bin_dig`` for a variable is 8, that</span>
@@ -526,9 +527,9 @@
                 <span class="n">unscaled</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="n">max_unscaled_value</span><span class="p">)</span>
                 <span class="n">unscaled_pop</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">unscaled</span>
 
-        <span class="k">return</span> <span class="n">unscaled_pop</span>
+        <span class="k">return</span> <span class="n">unscaled_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">get_max_value_from_bin_big</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_dig</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.get_max_value_from_bin_big"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.get_max_value_from_bin_big.html#compas.numerical.solvers.GA.get_max_value_from_bin_big">[docs]</a>    <span class="k">def</span> <span class="nf">get_max_value_from_bin_big</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_dig</span><span class="p">):</span>
         <span class="sd">"""Returns the highest number described by a ``GA.bin_dig`` long binary number.</span>
 
 <span class="sd">        Parameters</span>
@@ -547,9 +548,9 @@
         <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bin_dig</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">2</span><span class="o">**</span><span class="n">i</span>
-        <span class="k">return</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">value</span></div>
 
-    <span class="k">def</span> <span class="nf">write_out_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generation</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.write_out_file"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.write_out_file.html#compas.numerical.solvers.GA.write_out_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_out_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generation</span><span class="p">):</span>
         <span class="sd">"""Writes the population data for a given generation.</span>
 
 <span class="sd">        Parameters</span>
@@ -584,9 +585,9 @@
             <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
         <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
         <span class="n">pf_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
-        <span class="n">pf_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">pf_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">add_elite_to_current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.add_elite_to_current"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.add_elite_to_current.html#compas.numerical.solvers.GA.add_elite_to_current">[docs]</a>    <span class="k">def</span> <span class="nf">add_elite_to_current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Adds the elite population to the current population dictionary.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[[]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span><span class="p">)]</span>
@@ -597,9 +598,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'fit_value'</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span><span class="p">[</span><span class="s1">'fit_value'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'fit_value'</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">num_pop</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_elite</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elite_pop</span><span class="p">[</span><span class="s1">'fit_value'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">make_ga_input_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.make_ga_input_data"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.make_ga_input_data.html#compas.numerical.solvers.GA.make_ga_input_data">[docs]</a>    <span class="k">def</span> <span class="nf">make_ga_input_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Returns a dictionary containing the most relavant genetic data present in the instance</span>
 <span class="sd">        of ``GA``. This is the data required to restart a genetic optimization process or to</span>
 <span class="sd">        launch a visualization using ``compas_ga.visualization.ga_visualization``.</span>
@@ -626,18 +627,18 @@
                 <span class="s1">'end_gen'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_gen</span><span class="p">,</span>
                 <span class="s1">'best_individual_index'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_individual_index</span>
                 <span class="p">}</span>
-        <span class="k">return</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">data</span></div>
 
-    <span class="k">def</span> <span class="nf">write_ga_json_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.write_ga_json_file"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.write_ga_json_file.html#compas.numerical.solvers.GA.write_ga_json_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_ga_json_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Writes a JSON file containing the most relevant data for GA optimization and</span>
 <span class="sd">        visualization using ``compas_ga.visualization.ga_visualization``.</span>
 <span class="sd">        """</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_ga_input_data</span><span class="p">()</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_name</span> <span class="o">+</span> <span class="s1">'.json'</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="s1">'wb+'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fh</span><span class="p">)</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fh</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">update_min_fit_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.update_min_fit_flag"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.update_min_fit_flag.html#compas.numerical.solvers.GA.update_min_fit_flag">[docs]</a>    <span class="k">def</span> <span class="nf">update_min_fit_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Checks if the minimum desired fitness value has been achieved during optimization</span>
 <span class="sd">        and saves the result in ``GA.min_fit_flag``.</span>
 <span class="sd">        """</span>
@@ -649,17 +650,17 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">'max'</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_fit</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">min_fit_flag</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">min_fit_flag</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">get_best_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.get_best_fit"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.get_best_fit.html#compas.numerical.solvers.GA.get_best_fit">[docs]</a>    <span class="k">def</span> <span class="nf">get_best_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Saves the best fitness value in ``GA.best_fit``</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">'min'</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'fit_value'</span><span class="p">])</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">'max'</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'fit_value'</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_fit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pop</span><span class="p">[</span><span class="s1">'fit_value'</span><span class="p">])</span></div>
 
-    <span class="k">def</span> <span class="nf">get_pop_from_pop_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.get_pop_from_pop_file"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.get_pop_from_pop_file.html#compas.numerical.solvers.GA.get_pop_from_pop_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_pop_from_pop_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
         <span class="sd">"""Reads the population file corresponding to the ``gen`` generation and returns</span>
 <span class="sd">        the saved population data. The population file must be in ``GA.input_path``.</span>
 
@@ -700,9 +701,9 @@
 
         <span class="n">file_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscale_pop</span><span class="p">(</span><span class="n">file_pop</span><span class="p">[</span><span class="s1">'scaled'</span><span class="p">])</span>
         <span class="n">file_pop</span><span class="p">[</span><span class="s1">'binary'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_decoded</span><span class="p">(</span><span class="n">file_pop</span><span class="p">[</span><span class="s1">'decoded'</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">file_pop</span>
+        <span class="k">return</span> <span class="n">file_pop</span></div>
 
-    <span class="k">def</span> <span class="nf">get_best_individual_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GA.get_best_individual_index"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.GA.get_best_individual_index.html#compas.numerical.solvers.GA.get_best_individual_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_best_individual_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Saves the index of the best performing individual of the current population</span>
 <span class="sd">         in ``GA.best_individual_index``.</span>
 <span class="sd">        """</span>
@@ -712,7 +713,7 @@
             <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sorting_indices</span><span class="p">(</span><span class="n">fit_values</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_type</span> <span class="o">==</span> <span class="s1">'max'</span><span class="p">:</span>
             <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sorting_indices</span><span class="p">(</span><span class="n">fit_values</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">best_individual_index</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_individual_index</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div></div>
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>
@@ -752,7 +753,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             

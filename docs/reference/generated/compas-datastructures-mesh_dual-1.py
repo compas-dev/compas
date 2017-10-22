@@ -20,7 +20,7 @@ plotter = MeshPlotter(dual)
 
 plotter.draw_xlines(lines)
 
-plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text={key: key for key in dual.vertices()})
+plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text='key')
 plotter.draw_edges()
 
 plotter.show()

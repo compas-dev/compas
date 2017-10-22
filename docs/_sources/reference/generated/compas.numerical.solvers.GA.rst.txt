@@ -10,6 +10,8 @@ GA
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~GA.__init__
       ~GA.add_elite_to_current

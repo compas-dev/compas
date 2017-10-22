@@ -10,6 +10,8 @@ Polygon
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~Polygon.__init__
       ~Polygon.is_convex

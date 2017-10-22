@@ -364,7 +364,7 @@ under construction
     # helpers
     # --------------------------------------------------------------------------
 
-    def _get_vertexkey(self, key):
+    def _get_vertex_key(self, key):
         if key is None:
             key = self._max_int_key = self._max_int_key + 1
         else:
@@ -379,7 +379,7 @@ under construction
             return str(key)
         return key
 
-    def _get_facekey(self, fkey):
+    def _get_face_key(self, fkey):
         if fkey is None:
             fkey = self._max_int_fkey = self._max_int_fkey + 1
         else:
@@ -442,7 +442,7 @@ under construction
 
         attr.update(kwattr)
 
-        vkey = self._get_vertexkey(vkey)
+        vkey = self._get_vertex_key(vkey)
 
         if vkey not in self.vertex:
             self.vertex[vkey] = attr
@@ -461,7 +461,7 @@ under construction
         if len(vertices) < 3:
             raise Exception('Corrupt halfface.')
 
-        fkey = self._get_facekey(fkey)
+        fkey = self._get_face_key(fkey)
 
         self.halfface[fkey] = {}
 

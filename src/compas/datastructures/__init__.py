@@ -33,13 +33,7 @@ network.algorithms
 .. autosummary::
     :toctree: generated/
 
-    network_bfs
-    network_bfs_paths
     network_count_crossings
-    network_dfs
-    network_dfs_paths
-    network_dijkstra_distances
-    network_dijkstra_path
     network_dual
     network_embed_in_plane
     network_find_faces
@@ -48,7 +42,6 @@ network.algorithms
     network_is_crossed
     network_is_planar
     network_is_planar_embedding
-    network_shortest_path
     network_vertex_coloring
 
 
@@ -94,11 +87,9 @@ mesh.algorithms
 .. autosummary::
     :toctree: generated/
 
-    mesh_circularize
     mesh_delaunay_from_points
     mesh_dual
     mesh_flip_cycles
-    mesh_planarize
     mesh_subdivide
     mesh_subdivide_tri
     mesh_subdivide_catmullclark
@@ -115,7 +106,7 @@ mesh.algorithms
 .. autosummary::
     :toctree: generated/
 
-    trimesh_optimise_topology
+    trimesh_remesh
     trimesh_subdivide_loop
 
 

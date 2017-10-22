@@ -1,0 +1,664 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas_blender.utilities.drawing</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">atan2</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">acos</span>
+
+<span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">delete_object</span>
+<span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">deselect_all_objects</span>
+<span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">set_object_layer</span>
+<span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">set_objects_show_name</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">distance_point_point</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">bpy</span>
+    <span class="kn">from</span> <span class="nn">mathutils</span> <span class="k">import</span> <span class="n">Vector</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2017, Block Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'liew@arch.ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'delete_all_materials'</span><span class="p">,</span>
+    <span class="s1">'create_material'</span><span class="p">,</span>
+    <span class="s1">'draw_cuboid'</span><span class="p">,</span>
+    <span class="s1">'draw_cubes'</span><span class="p">,</span>
+    <span class="s1">'draw_pipes'</span><span class="p">,</span>
+    <span class="s1">'draw_plane'</span><span class="p">,</span>
+    <span class="s1">'draw_spheres'</span><span class="p">,</span>
+    <span class="s1">'draw_lines'</span><span class="p">,</span>
+    <span class="s1">'draw_points'</span><span class="p">,</span>
+    <span class="s1">'xdraw_cubes'</span><span class="p">,</span>
+    <span class="s1">'xdraw_faces'</span><span class="p">,</span>
+    <span class="s1">'xdraw_labels'</span><span class="p">,</span>
+    <span class="s1">'xdraw_lines'</span><span class="p">,</span>
+    <span class="s1">'xdraw_mesh'</span><span class="p">,</span>
+    <span class="s1">'xdraw_pipes'</span><span class="p">,</span>
+    <span class="s1">'xdraw_pointcloud'</span><span class="p">,</span>
+    <span class="s1">'xdraw_points'</span><span class="p">,</span>
+    <span class="s1">'xdraw_spheres'</span><span class="p">,</span>
+    <span class="s1">'xdraw_texts'</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># materials</span>
+<span class="c1"># ==============================================================================</span>
+
+<div class="viewcode-block" id="delete_all_materials"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.delete_all_materials.html#compas_blender.utilities.delete_all_materials">[docs]</a><span class="k">def</span> <span class="nf">delete_all_materials</span><span class="p">():</span>
+    <span class="sd">""" Delete all scene materials.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    """</span>
+    <span class="n">materials</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span>
+    <span class="k">for</span> <span class="n">material</span> <span class="ow">in</span> <span class="n">materials</span><span class="p">:</span>
+        <span class="n">material</span><span class="o">.</span><span class="n">user_clear</span><span class="p">()</span>
+        <span class="n">materials</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">material</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_material"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.create_material.html#compas_blender.utilities.create_material">[docs]</a><span class="k">def</span> <span class="nf">create_material</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">""" Create a material of given RGB color and alpha.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        - If the material already exists, the existing object is returned.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        color (list): [R, G, B] with values in range [0, 1].</span>
+<span class="sd">        alpha (float): Alpha value in range [0, 1].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        obj: Created/existing material object.</span>
+<span class="sd">    """</span>
+    <span class="n">ckey</span> <span class="o">=</span> <span class="s1">'-'</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">'</span><span class="si">{0:.2f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">color</span> <span class="o">+</span> <span class="p">[</span><span class="n">alpha</span><span class="p">]])</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">ckey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">ckey</span><span class="p">)</span>
+        <span class="n">material</span><span class="o">.</span><span class="n">diffuse_color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="n">material</span><span class="o">.</span><span class="n">use_transparency</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">material</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="n">material</span><span class="o">.</span><span class="n">emit</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">material</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="n">ckey</span><span class="p">]</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># draw functions</span>
+<span class="c1"># ==============================================================================</span>
+
+<div class="viewcode-block" id="draw_cubes"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.draw_cubes.html#compas_blender.utilities.draw_cubes">[docs]</a><span class="k">def</span> <span class="nf">draw_cubes</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>
+    <span class="sd">""" Draw multiple cubes.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        pos (list): Centroid locations [[x, y, z], ..].</span>
+<span class="sd">        radius (float): Radius of cubes.</span>
+<span class="sd">        layer (int): Layer number.</span>
+<span class="sd">        color (list): Material color.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created cube objects.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">xdraw_cubes</span><span class="p">([{</span><span class="s1">'pos'</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">'radius'</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="n">layer</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="n">color</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="draw_cuboid"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.draw_cuboid.html#compas_blender.utilities.draw_cuboid">[docs]</a><span class="k">def</span> <span class="nf">draw_cuboid</span><span class="p">(</span><span class="n">Lx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Ly</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Lz</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">layer</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">wire</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">""" Draw a cuboid.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        Lx (float): Length in x.</span>
+<span class="sd">        Ly (float): Length in y.</span>
+<span class="sd">        Lz (float): Length in z.</span>
+<span class="sd">        pos (list): Centroid position [x, y, z].</span>
+<span class="sd">        layer (int): Layer number.</span>
+<span class="sd">        color (list): Material color.</span>
+<span class="sd">        wire (bool): Show wires for faces.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        obj: Created cube object.</span>
+<span class="sd">    """</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">primitive_cube_add</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
+    <span class="n">cube</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span>
+    <span class="n">cube</span><span class="o">.</span><span class="n">dimensions</span> <span class="o">=</span> <span class="p">[</span><span class="n">Lx</span><span class="p">,</span> <span class="n">Ly</span><span class="p">,</span> <span class="n">Lz</span><span class="p">]</span>
+    <span class="n">cube</span><span class="o">.</span><span class="n">show_wire</span> <span class="o">=</span> <span class="n">wire</span>
+    <span class="n">material</span> <span class="o">=</span> <span class="n">create_material</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">cube</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
+    <span class="n">set_object_layer</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">cube</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
+    <span class="n">cube</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">cube</span></div>
+
+
+<div class="viewcode-block" id="draw_lines"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.draw_lines.html#compas_blender.utilities.draw_lines">[docs]</a><span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">end</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>
+    <span class="sd">""" Draw multiple lines.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        start (list): Line start points.</span>
+<span class="sd">        end (list): Line end points.</span>
+<span class="sd">        width (float): Width of lines.</span>
+<span class="sd">        layer (int): Layer number.</span>
+<span class="sd">        color (list): Material color.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created line objects.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">xdraw_lines</span><span class="p">([{</span><span class="s1">'start'</span><span class="p">:</span> <span class="n">u</span><span class="p">,</span> <span class="s1">'end'</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span> <span class="s1">'width'</span><span class="p">:</span> <span class="n">width</span><span class="p">,</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="n">layer</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="n">color</span><span class="p">}</span>
+                        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="draw_plane"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.draw_plane.html#compas_blender.utilities.draw_plane">[docs]</a><span class="k">def</span> <span class="nf">draw_plane</span><span class="p">(</span><span class="n">Lx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Ly</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'plane'</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">wire</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bracing</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">""" Create a plane mesh in x-y.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        Lx (float): Length of the plane in x.</span>
+<span class="sd">        Ly (float): Length of the plane in y.</span>
+<span class="sd">        dx (float): Spacing in x direction.</span>
+<span class="sd">        dy (float): Spacing in y direction.</span>
+<span class="sd">        name (str): Name for Blender mesh.</span>
+<span class="sd">        layer (int): Layer to draw the plane on.</span>
+<span class="sd">        color (list): Material color.</span>
+<span class="sd">        wire (bool): Show wires for faces.</span>
+<span class="sd">        bracing (str): None, 'cross', 'diagonals-right' or 'diagonals-left'.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        obj: Created plane Blender mesh object.</span>
+<span class="sd">    """</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Lx</span> <span class="o">/</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">ny</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Ly</span> <span class="o">/</span> <span class="n">dy</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">dx</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">dy</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ny</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bracing</span><span class="p">:</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">[[(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                  <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span>
+                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ny</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nx</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ny</span><span class="p">):</span>
+                <span class="n">face</span> <span class="o">=</span> <span class="p">[(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">bracing</span> <span class="o">==</span> <span class="s1">'cross'</span><span class="p">:</span>
+                    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+                    <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">([</span><span class="n">vertices</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]))</span>
+                    <span class="n">faces</span><span class="o">.</span><span class="n">extend</span><span class="p">([[</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n</span><span class="p">],</span> <span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">n</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">n</span><span class="p">],</span> <span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n</span><span class="p">]])</span>
+                <span class="k">elif</span> <span class="n">bracing</span> <span class="o">==</span> <span class="s1">'diagonals-right'</span><span class="p">:</span>
+                    <span class="n">faces</span><span class="o">.</span><span class="n">extend</span><span class="p">([[</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">]]])</span>
+                <span class="k">elif</span> <span class="n">bracing</span> <span class="o">==</span> <span class="s1">'diagonals-left'</span><span class="p">:</span>
+                    <span class="n">faces</span><span class="o">.</span><span class="n">extend</span><span class="p">([[</span><span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">3</span><span class="p">]],</span> <span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">]]])</span>
+    <span class="n">bmesh</span> <span class="o">=</span> <span class="n">xdraw_mesh</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="n">faces</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">wire</span><span class="o">=</span><span class="n">wire</span><span class="p">)</span>
+    <span class="n">material</span> <span class="o">=</span> <span class="n">create_material</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">bmesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
+    <span class="n">bmesh</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">bmesh</span></div>
+
+
+<div class="viewcode-block" id="draw_pipes"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.draw_pipes.html#compas_blender.utilities.draw_pipes">[docs]</a><span class="k">def</span> <span class="nf">draw_pipes</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">end</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>
+    <span class="sd">""" Draw multiple pipes.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        start (list): Pipe start points.</span>
+<span class="sd">        end (list): Pipe end points.</span>
+<span class="sd">        radius (float): Radius of pipes.</span>
+<span class="sd">        layer (int): Layer number.</span>
+<span class="sd">        color (list): Material color.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created pipe objects.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">xdraw_pipes</span><span class="p">([{</span><span class="s1">'start'</span><span class="p">:</span> <span class="n">u</span><span class="p">,</span> <span class="s1">'end'</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span> <span class="s1">'radius'</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="n">layer</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="n">color</span><span class="p">}</span>
+                        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="draw_points"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.draw_points.html#compas_blender.utilities.draw_points">[docs]</a><span class="k">def</span> <span class="nf">draw_points</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">""" Draw multiple points (empties).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        pos (list): Centroid locations [[x, y, z], ...].</span>
+<span class="sd">        radius (float): Radius of points.</span>
+<span class="sd">        layer (int): Layer number.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created point objects.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">xdraw_points</span><span class="p">([{</span><span class="s1">'pos'</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">'radius'</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="n">layer</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="draw_spheres"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.draw_spheres.html#compas_blender.utilities.draw_spheres">[docs]</a><span class="k">def</span> <span class="nf">draw_spheres</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>
+    <span class="sd">""" Draw multiple spheres.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        pos (list): Centroid locations [[x, y, z], ...].</span>
+<span class="sd">        radius (float): Radius of spheres.</span>
+<span class="sd">        layer (int): Layer number.</span>
+<span class="sd">        color (list): Material color.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created sphere objects.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">xdraw_spheres</span><span class="p">([{</span><span class="s1">'pos'</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">'radius'</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="n">layer</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="n">color</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pos</span><span class="p">])</span></div>
+
+
+<span class="k">def</span> <span class="nf">_link_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
+    <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">object</span><span class="o">.</span><span class="n">layers</span><span class="p">]</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="n">layers</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">mask</span>
+    <span class="n">deselect_all_objects</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">objects</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># xdraw functions</span>
+<span class="c1"># ==============================================================================</span>
+
+<div class="viewcode-block" id="xdraw_cubes"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.xdraw_cubes.html#compas_blender.utilities.xdraw_cubes">[docs]</a><span class="k">def</span> <span class="nf">xdraw_cubes</span><span class="p">(</span><span class="n">cubes</span><span class="p">):</span>
+    <span class="sd">""" Draw a set of cubes.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        cubes (list): {'radius':, 'pos':, 'color':, 'name':, 'layer':}.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created cube objects.</span>
+<span class="sd">    """</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">primitive_cube_add</span><span class="p">()</span>
+    <span class="nb">object</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cubes</span><span class="p">:</span>
+        <span class="n">copy</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">scale</span> <span class="o">*=</span> <span class="n">cube</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'radius'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'pos'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="n">create_material</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">cube</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'cube'</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">set_object_layer</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">cube</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="p">)</span>
+    <span class="n">delete_object</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_link_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="xdraw_faces"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.xdraw_faces.html#compas_blender.utilities.xdraw_faces">[docs]</a><span class="k">def</span> <span class="nf">xdraw_faces</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">""" Draw a set of faces.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        faces (list): {'color':, 'points':, 'name':, 'layer': }.</span>
+<span class="sd">        alpha (float): Alpha [0, 1].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">face</span><span class="p">[</span><span class="s1">'points'</span><span class="p">]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'face'</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)))]</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">)</span>
+        <span class="n">xdraw_mesh</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="n">points</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="n">indices</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="xdraw_labels"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.xdraw_labels.html#compas_blender.utilities.xdraw_labels">[docs]</a><span class="k">def</span> <span class="nf">xdraw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+    <span class="sd">""" Draw pointcloud text labels.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        labels (dic): {'pos':, 'name':, 'layer':}.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created label objects (bmeshes).</span>
+<span class="sd">    """</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">xdraw_pointcloud</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+    <span class="n">set_objects_show_name</span><span class="p">(</span><span class="n">objects</span><span class="o">=</span><span class="n">objects</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">objects</span></div>
+
+
+<div class="viewcode-block" id="xdraw_lines"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.xdraw_lines.html#compas_blender.utilities.xdraw_lines">[docs]</a><span class="k">def</span> <span class="nf">xdraw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+    <span class="sd">""" Draw a set of lines.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        lines (list): {'color':, 'start':, 'end':, 'name':, 'width':, 'layer': }.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created line objects.</span>
+<span class="sd">    """</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">curve</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">curves</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'line'</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">'CURVE'</span><span class="p">)</span>
+        <span class="n">curve</span><span class="o">.</span><span class="n">dimensions</span> <span class="o">=</span> <span class="s1">'3D'</span>
+        <span class="nb">object</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'line'</span><span class="p">),</span> <span class="n">curve</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">line_</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">splines</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">'NURBS'</span><span class="p">)</span>
+        <span class="n">line_</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">line_</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">co</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'start'</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">line_</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">co</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'end'</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">line_</span><span class="o">.</span><span class="n">order_u</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="n">create_material</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+        <span class="nb">object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">=</span> <span class="s1">'FULL'</span>
+        <span class="nb">object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">bevel_depth</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'width'</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">bevel_resolution</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="nb">object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
+        <span class="n">set_object_layer</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="nb">object</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+    <span class="n">deselect_all_objects</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">_link_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="xdraw_mesh"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.xdraw_mesh.html#compas_blender.utilities.xdraw_mesh">[docs]</a><span class="k">def</span> <span class="nf">xdraw_mesh</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="p">[],</span> <span class="n">edges</span><span class="o">=</span><span class="p">[],</span> <span class="n">faces</span><span class="o">=</span><span class="p">[],</span> <span class="n">layer</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">wire</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">""" Draws a Blender mesh.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        name (str): Blender mesh name.</span>
+<span class="sd">        vertices (list): Vertices co-ordinates.</span>
+<span class="sd">        edges (list): Edge vertex indices.</span>
+<span class="sd">        faces (list): Face vertex indices.</span>
+<span class="sd">        layer (int): Layer number.</span>
+<span class="sd">        color (list): Material color.</span>
+<span class="sd">        alpha (float): Alpha [0, 1].</span>
+<span class="sd">        wire (bool): Show wires for faces.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        obj: Created Blender mesh object.</span>
+<span class="sd">    """</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meshes</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">mesh</span><span class="o">.</span><span class="n">from_pydata</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+    <span class="n">mesh</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">calc_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">bmesh</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">bmesh</span><span class="p">)</span>
+    <span class="n">bmesh</span><span class="o">.</span><span class="n">show_wire</span> <span class="o">=</span> <span class="n">wire</span>
+    <span class="n">material</span> <span class="o">=</span> <span class="n">create_material</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">bmesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
+    <span class="n">set_object_layer</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">bmesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
+    <span class="n">bmesh</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">bmesh</span></div>
+
+
+<div class="viewcode-block" id="xdraw_pipes"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.xdraw_pipes.html#compas_blender.utilities.xdraw_pipes">[docs]</a><span class="k">def</span> <span class="nf">xdraw_pipes</span><span class="p">(</span><span class="n">pipes</span><span class="p">,</span> <span class="n">div</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
+    <span class="sd">""" Draw a set of pipes.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        pipes (list): {'radius':, 'start':, 'end':, 'color':, 'name':, 'layer':}.</span>
+<span class="sd">        div (int): Divisions around cross-section.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created pipe objects.</span>
+<span class="sd">    """</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">primitive_cylinder_add</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="n">div</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="nb">object</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">pipe</span> <span class="ow">in</span> <span class="n">pipes</span><span class="p">:</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'radius'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'end'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
+        <span class="n">copy</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'pipe'</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">acos</span><span class="p">((</span><span class="n">end</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">start</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">rotation_euler</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="p">((</span><span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">show_wire</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="n">create_material</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
+        <span class="n">set_object_layer</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="p">)</span>
+    <span class="n">delete_object</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_link_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="xdraw_pointcloud"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.xdraw_pointcloud.html#compas_blender.utilities.xdraw_pointcloud">[docs]</a><span class="k">def</span> <span class="nf">xdraw_pointcloud</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">""" Draw a set of points using Blender mesh vertices.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points (dic): {'pos':, 'name':, 'layer':}.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created point objects (bmeshes).</span>
+<span class="sd">    """</span>
+    <span class="nb">object</span> <span class="o">=</span> <span class="n">xdraw_mesh</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'pt'</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">copy</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'pos'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'point'</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">set_object_layer</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">point</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="p">)</span>
+    <span class="n">delete_object</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_link_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="xdraw_points"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.xdraw_points.html#compas_blender.utilities.xdraw_points">[docs]</a><span class="k">def</span> <span class="nf">xdraw_points</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="sd">""" Draw a set of points (empties).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        points (list): {'radius':, 'pos':, 'name':, 'layer':}.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created empty objects.</span>
+<span class="sd">    """</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">empty_add</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">'SPHERE'</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="nb">object</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">copy</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">scale</span> <span class="o">*=</span> <span class="n">point</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'radius'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'pos'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'point'</span><span class="p">)</span>
+        <span class="n">set_object_layer</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">point</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="p">)</span>
+    <span class="n">delete_object</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_link_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="xdraw_spheres"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.xdraw_spheres.html#compas_blender.utilities.xdraw_spheres">[docs]</a><span class="k">def</span> <span class="nf">xdraw_spheres</span><span class="p">(</span><span class="n">spheres</span><span class="p">,</span> <span class="n">div</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="sd">""" Draw a set of spheres.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        spheres (dic): {'radius':, 'pos':, 'color':, 'name':, 'layer':}.</span>
+<span class="sd">        div (int): Divisions for spheres.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created sphere objects.</span>
+<span class="sd">    """</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">primitive_uv_sphere_add</span><span class="p">(</span><span class="n">ring_count</span><span class="o">=</span><span class="n">div</span><span class="p">,</span> <span class="n">segments</span><span class="o">=</span><span class="n">div</span><span class="p">)</span>
+    <span class="nb">object</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sphere</span> <span class="ow">in</span> <span class="n">spheres</span><span class="p">:</span>
+        <span class="n">copy</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">scale</span> <span class="o">*=</span> <span class="n">sphere</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'radius'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">sphere</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'pos'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">sphere</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'sphere'</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="n">create_material</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">sphere</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
+        <span class="n">set_object_layer</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">sphere</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="p">)</span>
+    <span class="n">delete_object</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_link_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="xdraw_texts"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.xdraw_texts.html#compas_blender.utilities.xdraw_texts">[docs]</a><span class="k">def</span> <span class="nf">xdraw_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+    <span class="sd">""" Draw a set of text objects.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        texts (list): {'radius':, 'pos':, 'color':, 'name':, 'text':, 'layer':}.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Created text objects.</span>
+<span class="sd">    """</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">text_add</span><span class="p">(</span><span class="n">view_align</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">object</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">object</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+        <span class="n">copy</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">scale</span> <span class="o">*=</span> <span class="n">text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'radius'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'pos'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'text'</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'text'</span><span class="p">,</span> <span class="s1">'text'</span><span class="p">)</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="n">create_material</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+        <span class="n">copy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
+        <span class="n">set_object_layer</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="p">)</span>
+    <span class="n">delete_object</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_link_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">xdraw_polylines</span><span class="p">():</span>
+    <span class="ne">NotImplementedError</span>
+
+
+<span class="k">def</span> <span class="nf">xdraw_geodesics</span><span class="p">():</span>
+    <span class="ne">NotImplementedError</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+
+    <span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">clear_layer</span>
+    <span class="kn">from</span> <span class="nn">numpy.random</span> <span class="k">import</span> <span class="n">rand</span>
+
+    <span class="n">clear_layer</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+    <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+    <span class="n">bmesh</span> <span class="o">=</span> <span class="n">xdraw_mesh</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'bmesh'</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="n">faces</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">draw_cubes</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">xdraw_cubes</span><span class="p">([{</span><span class="s1">'radius'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">'pos'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'color'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+
+    <span class="n">draw_spheres</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">xdraw_spheres</span><span class="p">([{</span><span class="s1">'radius'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">'pos'</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+
+    <span class="n">xdraw_texts</span><span class="p">([{</span><span class="s1">'radius'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">'pos'</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'color'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'text'</span><span class="p">:</span> <span class="s1">'TEXT'</span><span class="p">,</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'pos'</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">'radius'</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span>
+    <span class="n">xdraw_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="n">draw_lines</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">end</span><span class="o">=</span><span class="p">[[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">xdraw_lines</span><span class="p">([{</span><span class="s1">'color'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'start'</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'end'</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'width'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+
+    <span class="n">draw_pipes</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">end</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">xdraw_pipes</span><span class="p">([{</span><span class="s1">'radius'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">'start'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'end'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'color'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'layer'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+
+    <span class="n">draw_plane</span><span class="p">(</span><span class="n">Lx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Ly</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">bracing</span><span class="o">=</span><span class="s1">'cross'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">draw_cuboid</span><span class="p">(</span><span class="n">Lx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Ly</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">Lz</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">layer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 22, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

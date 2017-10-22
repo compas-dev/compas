@@ -52,6 +52,10 @@ def get_data(filename):
     return _find_resource(filename)
 
 
+def get(filename):
+    return _find_resource(filename)
+
+
 def get_license():
     with open(os.path.join(HOME, 'LICENSE')) as fp:
         return fp.read()

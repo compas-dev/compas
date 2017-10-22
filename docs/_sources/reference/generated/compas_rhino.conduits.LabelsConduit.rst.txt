@@ -10,6 +10,8 @@ LabelsConduit
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~LabelsConduit.DrawForeground
       ~LabelsConduit.__init__

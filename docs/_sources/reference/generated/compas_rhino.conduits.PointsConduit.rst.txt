@@ -10,6 +10,8 @@ PointsConduit
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~PointsConduit.DrawForeground
       ~PointsConduit.__init__

@@ -137,6 +137,26 @@ xfunc
 """
 
 
+def is_list_of_int():
+    pass
+
+
+def is_list_of_float():
+    pass
+
+
+def is_list_of_str():
+    pass
+
+
+def is_list_of_list():
+    pass
+
+
+def is_list_of_dict():
+    pass
+
+
 def to_valuedict(keys, value, default):
     value = value or default
 

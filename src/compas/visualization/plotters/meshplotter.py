@@ -41,18 +41,18 @@ class MeshPlotter(Plotter):
             'vertex.radius'    : 0.1,
             'vertex.facecolor' : '#ffffff',
             'vertex.edgecolor' : '#000000',
-            'vertex.edgewidth' : 1.0,
+            'vertex.edgewidth' : 0.1,
             'vertex.textcolor' : '#000000',
             'vertex.fontsize'  : 10.0,
 
-            'edge.width'    : 1.0,
+            'edge.width'    : 0.5,
             'edge.color'    : '#000000',
             'edge.textcolor': '#000000',
             'edge.fontsize' : 10.0,
 
-            'face.facecolor' : '#ffffff',
-            'face.edgecolor' : '#000000',
-            'face.edgewidth' : 1.0,
+            'face.facecolor' : '#eeeeee',
+            'face.edgecolor' : '#eeeeee',
+            'face.edgewidth' : 0.1,
             'face.textcolor' : '#000000',
             'face.fontsize'  : 10.0,
         }
@@ -75,9 +75,9 @@ class MeshPlotter(Plotter):
         keys = keys or list(self.mesh.vertices())
 
         if text == 'key':
-            text = {key: str(key) for key in mesh.vertices()}
+            text = {key: str(key) for key in self.mesh.vertices()}
         elif text == 'index':
-            text = {key: str(index) for index, key in enumerate(mesh.vertices())}
+            text = {key: str(index) for index, key in enumerate(self.mesh.vertices())}
         else:
             pass
 
@@ -127,6 +127,13 @@ class MeshPlotter(Plotter):
 
         keys = keys or list(self.mesh.edges())
 
+        if text == 'key':
+            text = {(u, v): '{}-{}'.format(u, v) for u, v in self.mesh.edges()}
+        elif text == 'index':
+            text = {(u, v): str(index) for index, (u, v) in enumerate(self.mesh.edges())}
+        else:
+            pass
+
         widthdict     = to_valuedict(keys, width, self.defaults['edge.width'])
         colordict     = to_valuedict(keys, color, self.defaults['edge.color'])
         textdict      = to_valuedict(keys, text, '')
@@ -168,6 +175,13 @@ class MeshPlotter(Plotter):
                    fontsize=None):
 
         keys = keys or list(self.mesh.faces())
+
+        if text == 'key':
+            text = {key: str(key) for key in self.mesh.faces()}
+        elif text == 'index':
+            text = {key: str(index) for index, key in enumerate(self.mesh.faces())}
+        else:
+            pass
 
         textdict      = to_valuedict(keys, text, '')
         facecolordict = to_valuedict(keys, facecolor, self.defaults['face.facecolor'])

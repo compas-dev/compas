@@ -191,7 +191,7 @@ class VertexAttributesManagement(object):
             A list of attribute names.
         values : list (None)
             A list of default values.
-            Defaults to a list of ``None``s.
+            Defaults to a list of ``None`` s.
 
         Returns
         -------
@@ -249,7 +249,7 @@ class VertexAttributesManagement(object):
             The names of the attributes.
         values : list (None)
             A list of default values.
-            Defaults to a list of ``None``s.
+            Defaults to a list of ``None`` s.
         keys : list (None)
             A list of vertex identifiers.
             Defaults to all vertices.
@@ -463,7 +463,7 @@ class EdgeAttributesManagement(object):
             A list of attribute names.
         values : list (None)
             A list of default values.
-            Defaults to a list of ``None``s.
+            Defaults to a list of ``None`` s.
 
         Returns
         -------
@@ -525,7 +525,7 @@ class EdgeAttributesManagement(object):
             The names of the attributes.
         values : list (None)
             A list of default values.
-            Defaults to a list of ``None``s.
+            Defaults to a list of ``None`` s.
         keys : iterable (None)
             A list of edge identifiers.
             Each edge identifier is a pair of vertex identifiers.
@@ -744,7 +744,7 @@ class FaceAttributesManagement(object):
             A list of attribute names.
         values : list (None)
             A list of default values.
-            Defaults to a list of ``None``s.
+            Defaults to a list of ``None`` s.
 
         Returns
         -------
@@ -810,7 +810,7 @@ class FaceAttributesManagement(object):
             The names of the attributes.
         values : list (None)
             A list of default values.
-            Defaults to a list of ``None``s.
+            Defaults to a list of ``None`` s.
         keys : list (None)
             A list of face identifiers.
             Defaults to all faces.

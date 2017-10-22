@@ -32,7 +32,8 @@
 <nav class="breadcrumb">
 <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
 <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+<a class="breadcrumb-item" href="../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../conduits.html">compas_rhino.conduits</a>
 </nav>
 <h1>Source code for compas_rhino.conduits.splines</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
@@ -63,7 +64,7 @@
 
 <div class="viewcode-block" id="SplinesConduit"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.conduits.SplinesConduit.html#compas_rhino.conduits.SplinesConduit">[docs]</a><span class="k">class</span> <span class="nc">SplinesConduit</span><span class="p">(</span><span class="n">Conduit</span><span class="p">):</span>
     <span class="sd">""""""</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">splines</span><span class="p">,</span>
+<div class="viewcode-block" id="SplinesConduit.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.conduits.SplinesConduit.__init__.html#compas_rhino.conduits.SplinesConduit.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">splines</span><span class="p">,</span>
                  <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                  <span class="n">spline_thickness</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
                  <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -80,9 +81,9 @@
         <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">spline_color</span> <span class="o">=</span> <span class="n">spline_color</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spline_color</span> <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">spline_color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spline_color</span> <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">spline_color</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">DrawForeground</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<div class="viewcode-block" id="SplinesConduit.DrawForeground"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.conduits.SplinesConduit.DrawForeground.html#compas_rhino.conduits.SplinesConduit.DrawForeground">[docs]</a>    <span class="k">def</span> <span class="nf">DrawForeground</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
 
         <span class="n">lines</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="n">Line</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">lines_count</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">:</span>
@@ -94,7 +95,7 @@
             <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
             <span class="n">ep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
             <span class="n">th</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_thickness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">e</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">DrawLine</span><span class="p">(</span><span class="n">Line</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">sp</span><span class="p">),</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">ep</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_color</span><span class="p">,</span> <span class="n">th</span><span class="p">)</span></div>
+            <span class="n">e</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">DrawLine</span><span class="p">(</span><span class="n">Line</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">sp</span><span class="p">),</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">ep</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_color</span><span class="p">,</span> <span class="n">th</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -167,7 +168,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             

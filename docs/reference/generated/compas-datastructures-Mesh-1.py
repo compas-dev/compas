@@ -7,5 +7,5 @@ mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 plotter = MeshPlotter(mesh)
 
 plotter.draw_vertices(radius=0.2)
-plotter.draw_faces()
+plotter.draw_faces(text='key')
 plotter.show()

@@ -10,6 +10,8 @@ RhinoCurve
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree: generated/
+
    
       ~RhinoCurve.__init__
       ~RhinoCurve.closest_point
