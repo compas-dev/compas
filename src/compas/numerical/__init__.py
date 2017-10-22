@@ -166,6 +166,8 @@ from .transformations import *
 from .triangulation import *
 from .utilities import *
 from .xforms import *
+from .methods import *
+from .solvers import *
 
 from .geometry import __all__ as a
 from .linalg import __all__ as b
@@ -177,5 +179,7 @@ from .transformations import __all__ as g
 from .triangulation import __all__ as h
 from .utilities import __all__ as i
 from .xforms import __all__ as j
+from .methods import __all__ as k
+from .solvers import __all__ as l
 
-__all__ = a + b + c + d + e + f + g + h + i + j
+__all__ = a + b + c + d + e + f + g + h + i + j + k + l

@@ -12,14 +12,15 @@
 """
 
 import compas
-import compas.cad.blender as compas_blender
+
+from compas_blender.helpers import NetworkArtist
 
 from compas.datastructures.network import Network
 
-from compas.numerical.methods.forcedensity import fd
+from compas.numerical import fd
 
 
-__author__    = ['Tom Van Mele', ]
+__author__    = ['Tom Van Mele', 'Andrew Liew']
 __copyright__ = 'Copyright 2017, BRG - ETH Zurich',
 __license__   = 'MIT'
 __email__     = 'van.mele@arch.ethz.ch'
@@ -28,9 +29,6 @@ __email__     = 'van.mele@arch.ethz.ch'
 # make a network from sample data
 
 network = Network.from_obj(compas.get_data('saddle.obj'))
-
-compas_blender.delete_objects_all()
-compas_blender.draw_network(network, type="lines")
 
 # set default vertex and edge attributes
 
@@ -42,7 +40,7 @@ network.update_default_edge_attributes(dea)
 
 # identify *anchored* vertices
 
-for key in network:
+for key in network.vertices():
     network.vertex[key]['is_anchor'] = network.is_vertex_leaf(key)
 
 # convert network data to numerical data
@@ -55,10 +53,10 @@ q     = network.get_edges_attribute('q')
 
 key_index = network.key_index()
 
-fixed = network.vertices_where({'is_anchor': True})
+fixed = [key for key in network.vertices() if network.vertex[key]['is_anchor']]
 fixed = [key_index[key] for key in fixed]
 
-edges = [(key_index[u], key_index[v]) for u, v in network.edges_iter()]
+edges = [(key_index[u], key_index[v]) for u, v in network.edges()]
 
 # run the force density method
 
@@ -67,7 +65,7 @@ xyz = res[0]
 
 # update the network
 
-for key in network:
+for key in network.vertices():
     index = key_index[key]
     network.vertex[key]['x'] = xyz[index][0]
     network.vertex[key]['y'] = xyz[index][1]
@@ -75,5 +73,11 @@ for key in network:
 
 # display the result
 
-compas_blender.delete_objects_all()
-compas_blender.draw_network(network, type="lines")
+networkartist = NetworkArtist(network=network)
+networkartist.clear_layer()
+
+networkartist.draw_vertices(radius=0.05)
+networkartist.draw_vertexlabels()
+
+networkartist.draw_edges()
+networkartist.draw_edgelabels()
