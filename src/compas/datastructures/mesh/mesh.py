@@ -105,24 +105,6 @@ class Mesh(FromToJson,
     attributes : dict
         General mesh attributes.
 
-    Examples
-    --------
-
-    .. plot::
-        :include-source:
-
-        import compas
-        from compas.datastructures import Mesh
-        from compas.visualization import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
-
-        plotter = MeshPlotter(mesh)
-
-        plotter.draw_vertices(radius=0.2)
-        plotter.draw_faces(text='key')
-        plotter.show()
-
     """
 
     def __init__(self):

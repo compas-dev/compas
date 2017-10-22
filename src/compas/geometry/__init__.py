@@ -344,6 +344,8 @@ Algorithms
 .. autosummary::
     :toctree: generated/
 
+    planarize_faces
+    flattness
     smooth_centroid
     smooth_centerofmass
     smooth_area

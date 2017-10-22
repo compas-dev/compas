@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from compas.geometry import bestfit_plane_from_points
 from compas.geometry import project_points_plane
 from compas.geometry import centroid_points
@@ -18,10 +22,8 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'mesh_planarize',
-    'mesh_planarize_shapeop',
-    'mesh_circularize',
-    'mesh_flatness',
+    'planarize_faces',
+    'flatness',
 ]
 
 
@@ -30,7 +32,7 @@ __all__ = [
 # this should not exceed 2%
 # note that this only works for quad meshes
 
-def mesh_flatness(mesh):
+def flatness(vertices, faces):
     """Compute mesh flatness per face.
 
     Parameters
@@ -49,9 +51,9 @@ def mesh_flatness(mesh):
     the normal at each face corner and the normal of the best-fit plane.
 
     """
-    dev = {}
-    for fkey in mesh.faces():
-        points = mesh.face_coordinates(fkey)
+    dev = []
+    for face in faces:
+        points = [vertices[index] for index in face]
         base, normal = bestfit_plane_from_points(points)
         angles = []
         for a, b, c in window(points + points[0:2], 3):
@@ -63,16 +65,17 @@ def mesh_flatness(mesh):
             else:
                 angle = angle_smallest_vectors(n, scale_vector(normal, -1))
             angles.append(angle)
-        dev[fkey] = sum(angles) / len(angles)
+        dev.append(sum(angles) / len(angles))
     return dev
 
 
-def mesh_planarize(mesh,
-                   fixed=None,
-                   kmax=100,
-                   d=1.0,
-                   callback=None,
-                   callback_args=None):
+def planarize_faces(vertices,
+                    faces,
+                    fixed=None,
+                    kmax=100,
+                    d=1.0,
+                    callback=None,
+                    callback_args=None):
     """Planarise the faces of a mesh.
 
     Planarisation is implemented as a two-step iterative procedure. At every
@@ -82,8 +85,10 @@ def mesh_planarize(mesh,
 
     Parameters
     ----------
-    mesh : Mesh
-        A mesh object.
+    vertices : dict
+        The vertex coordinates.
+    faces : list
+        The vertex identifiers per face.
     fixed : list, optional [None]
         A list of fixed vertices.
     kmax : int, optional [100]
@@ -96,10 +101,6 @@ def mesh_planarize(mesh,
         A list of arguments to be passed to the callback function.
 
     """
-    # planarize every face individually
-    # by projecting all vertices onto the best-fit plane
-    # reconnect the corners of the faces
-    # by mapping the vertices to the centroids of the face corners
 
     if callback:
         if not callable(callback):
@@ -110,112 +111,112 @@ def mesh_planarize(mesh,
 
     for k in range(kmax):
 
-        key_xyz = {key: [] for key in mesh.vertices()}
+        positions = {key: [] for key in vertices}
 
-        for fkey in mesh.faces():
-            points = mesh.face_coordinates(fkey)
+        for face in iter(faces):
+            points = [vertices[key] for key in face]
             plane = bestfit_plane_from_points(points)
             projections = project_points_plane(points, plane)
 
-            for index, key in enumerate(mesh.face_vertices(fkey)):
-                key_xyz[key].append(projections[index])
+            for index, key in enumerate(face):
+                positions[key].append(projections[index])
 
-        for key, attr in mesh.vertices(data=True):
+        for key, xyz in vertices.items():
             if key in fixed:
                 continue
 
-            x, y, z = centroid_points(key_xyz[key])
-            attr['x'] = x
-            attr['y'] = y
-            attr['z'] = z
+            x, y, z = centroid_points(positions[key])
+            xyz[0] = x
+            xyz[1] = y
+            xyz[2] = z
 
         if callback:
             callback(mesh, k, callback_args)
 
 
-def mesh_planarize_shapeop(mesh,
-                           fixed=None,
-                           kmax=100,
-                           d=0.1,
-                           callback=None,
-                           callback_args=None):
-    """Planarize the faces of a mesh using ShapeOp.
+# def planarize_shapeop(mesh,
+#                       fixed=None,
+#                       kmax=100,
+#                       d=0.1,
+#                       callback=None,
+#                       callback_args=None):
+#     """Planarize the faces of a mesh using ShapeOp.
 
-    Parameters
-    ----------
-    mesh : Mesh
-        A mesh object.
-    fixed : list, optional [None]
-        A list of fixed vertices.
-    kmax : int, optional [100]
-        The number of iterations.
-    d : float, optional [0.1]
-        A damping factor.
-    callback : callable, optional [None]
-        A user-defined callback that is called after every iteration.
-    callback_args : list, optional [None]
-        A list of arguments to be passed to the callback function.
+#     Parameters
+#     ----------
+#     mesh : Mesh
+#         A mesh object.
+#     fixed : list, optional [None]
+#         A list of fixed vertices.
+#     kmax : int, optional [100]
+#         The number of iterations.
+#     d : float, optional [0.1]
+#         A damping factor.
+#     callback : callable, optional [None]
+#         A user-defined callback that is called after every iteration.
+#     callback_args : list, optional [None]
+#         A list of arguments to be passed to the callback function.
 
-    Note
-    ----
-    This planarization algorithm relies on the Python binding of the ShapeOp
-    library. Installation instructions are available in ``compas.interop.shapeop``.
+#     Note
+#     ----
+#     This planarization algorithm relies on the Python binding of the ShapeOp
+#     library. Installation instructions are available in ``compas.interop.shapeop``.
 
-    Examples
-    --------
-    >>>
+#     Examples
+#     --------
+#     >>>
 
-    """
-    from compas.interop import shapeop
+#     """
+#     from compas.interop import shapeop
 
-    if callback:
-        if not callable(callback):
-            raise Exception('The callback is not callable.')
+#     if callback:
+#         if not callable(callback):
+#             raise Exception('The callback is not callable.')
 
-    fixed = fixed or []
-    fixed = set(fixed)
+#     fixed = fixed or []
+#     fixed = set(fixed)
 
-    shapeop.planarize_mesh(mesh, fixed=fixed, kmax=kmax)
+#     shapeop.planarize_mesh(mesh, fixed=fixed, kmax=kmax)
 
 
-def mesh_circularize(mesh,
-                     fixed=None,
-                     kmax=100,
-                     d=1.0,
-                     callback=None,
-                     callback_args=None):
-    """Circularize the faces of a mesh using ShapeOp.
+# def mesh_circularize(mesh,
+#                      fixed=None,
+#                      kmax=100,
+#                      d=1.0,
+#                      callback=None,
+#                      callback_args=None):
+#     """Circularize the faces of a mesh using ShapeOp.
 
-    Parameters
-    ----------
-    mesh : Mesh
-        A mesh object.
-    fixed : list, optional [None]
-        A list of fixed vertices.
-    kmax : int, optional [100]
-        The number of iterations.
-    d : float, optional [1.0]
-        A damping factor.
-    callback : callable, optional [None]
-        A user-defined callback that is called after every iteration.
-    callback_args : list, optional [None]
-        A list of arguments to be passed to the callback function.
+#     Parameters
+#     ----------
+#     mesh : Mesh
+#         A mesh object.
+#     fixed : list, optional [None]
+#         A list of fixed vertices.
+#     kmax : int, optional [100]
+#         The number of iterations.
+#     d : float, optional [1.0]
+#         A damping factor.
+#     callback : callable, optional [None]
+#         A user-defined callback that is called after every iteration.
+#     callback_args : list, optional [None]
+#         A list of arguments to be passed to the callback function.
 
-    Note
-    ----
-    ...
+#     Note
+#     ----
+#     ...
 
-    Examples
-    --------
-    >>>
+#     Examples
+#     --------
+#     >>>
 
-    """
+#     """
 
-    # map the corners of the faces to a circle on the nearest plane
-    # use circle from points
-    # map vertices to the centroids of the face corners
+#     # map the corners of the faces to a circle on the nearest plane
+#     # use circle from points
+#     # map vertices to the centroids of the face corners
 
-    raise NotImplementedError
+#     raise NotImplementedError
 
 
 # ==============================================================================
@@ -239,7 +240,16 @@ if __name__ == "__main__":
     for key, attr in mesh.vertices(True):
         attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
-    mesh_planarize_shapeop(mesh, fixed=mesh.vertices_where({'is_fixed': True}), kmax=100)
+    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
+    fixed = mesh.vertices_where({'is_fixed': True})
+
+    planarize_faces(vertices, faces, fixed=fixed, kmax=100)
+
+    for key, xyz in vertices.items():
+        mesh.vertex[key]['x'] = xyz[0]
+        mesh.vertex[key]['y'] = xyz[1]
+        mesh.vertex[key]['z'] = xyz[2]
 
     # deviations = []
 
