@@ -45,6 +45,12 @@
     <span class="k">pass</span>
 
 
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2017, Block Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'liew@arch.ethz.ch'</span>
+
+
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">'clear_layer'</span><span class="p">,</span>
     <span class="s1">'clear_layers'</span><span class="p">,</span>
@@ -52,17 +58,11 @@
 <span class="p">]</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2017, Block Research Group - ETH Zurich'</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'liew@arch.ethz.ch'</span>
-
-
 <div class="viewcode-block" id="clear_layer"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.clear_layer.html#compas_blender.utilities.clear_layer">[docs]</a><span class="k">def</span> <span class="nf">clear_layer</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
     <span class="sd">""" Deletes objects in given layer.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        layers (int): Layer number.</span>
+<span class="sd">        layer (int): Layer number.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
@@ -84,6 +84,10 @@
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">layers</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
             <span class="n">delete_objects</span><span class="p">(</span><span class="n">get_objects</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">clear_current_layer</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 
 <div class="viewcode-block" id="layer_mask"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.layer_mask.html#compas_blender.utilities.layer_mask">[docs]</a><span class="k">def</span> <span class="nf">layer_mask</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>

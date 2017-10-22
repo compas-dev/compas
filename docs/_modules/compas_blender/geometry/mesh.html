@@ -36,7 +36,10 @@
 </nav>
 <h1>Source code for compas_blender.geometry.mesh</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas.cad</span> <span class="k">import</span> <span class="n">MeshGeometryInterface</span>
+
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">distance_point_point</span>
+
 <span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">select_mesh</span>
 
 <span class="k">try</span><span class="p">:</span>
@@ -60,7 +63,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="nb">object</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">type</span>
 
@@ -86,69 +89,99 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">get_vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span>
         <span class="n">pts_</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="n">co</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">]</span>
-        <span class="n">pts</span> <span class="o">=</span> <span class="p">[</span><span class="n">add_vectors</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pts_</span><span class="p">]</span>
+        <span class="n">pts</span> <span class="o">=</span> <span class="p">[</span><span class="n">add_vectors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pts_</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">pts</span>
 
     <span class="k">def</span> <span class="nf">get_face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_face_vertex_indices</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">co</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">get_vertex_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">set_vertex_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
-        <span class="n">bmesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="n">bmesh</span>
-        <span class="n">bmesh</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="n">bmesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">:</span>
-            <span class="n">col</span> <span class="o">=</span> <span class="n">bmesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertex_colors</span><span class="o">.</span><span class="n">active</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">col</span> <span class="o">=</span> <span class="n">bmesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertex_colors</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="n">bmesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span>
-        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertex_colors</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">loop_indices</span><span class="p">:</span>
-                <span class="n">j</span> <span class="o">=</span> <span class="n">bmesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loops</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">vertex_index</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loops</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">vertex_index</span>
+                <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+                    <span class="n">ind</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                    <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">color</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">colors</span>
+        
+    <span class="k">def</span> <span class="nf">set_vertex_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">:</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertex_colors</span><span class="o">.</span><span class="n">active</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertex_colors</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">loop_indices</span><span class="p">:</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loops</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">vertex_index</span>
                 <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
                     <span class="n">ind</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
                     <span class="n">col</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
-        <span class="n">bmesh</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">unset_vertex_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vertex_indices</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_vertex_colors</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">))</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">))</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_vertex_colors</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">vertices</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vertex_coordinates</span><span class="p">()</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_face_indices</span><span class="p">()</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_face_vertex_indices</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span>
 
     <span class="k">def</span> <span class="nf">get_border</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">get_vertex_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="c1"># User must be in object mode, with vertex selected from edit mode.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_vertex_indices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">get_face_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="c1"># User must be in object mode, with face selected from edit mode.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_face_indices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">get_edge_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># User must be in object mode, with edge selected from edit mode.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_edge_indices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">get_vertex_face_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">get_vertex_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">))</span>
+        <span class="c1"># User must be in object mode, with vertices selected from edit mode.</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">vertex</span><span class="o">.</span><span class="n">index</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span> <span class="k">if</span> <span class="n">vertex</span><span class="o">.</span><span class="n">select</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">get_edge_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">edges</span><span class="p">))</span>
+        <span class="c1"># User must be in object mode, with edges selected from edit mode.</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">edge</span><span class="o">.</span><span class="n">index</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">edges</span> <span class="k">if</span> <span class="n">edge</span><span class="o">.</span><span class="n">select</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">get_face_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span><span class="p">))</span>
+        <span class="c1"># User must be in object mode, with faces selected from edit mode.</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">face</span><span class="o">.</span><span class="n">index</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span> <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">select</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">get_edge_vertex_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">edge</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">edges</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">get_face_vertex_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">update_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">co</span> <span class="o">=</span> <span class="n">xyz</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">wm</span><span class="o">.</span><span class="n">redraw_timer</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">'DRAW_WIN_SWAP'</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># geometric</span>
@@ -159,6 +192,26 @@
 
     <span class="k">def</span> <span class="nf">normals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        
+    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">edge</span><span class="p">]</span><span class="o">.</span><span class="n">vertices</span>
+        <span class="n">sp</span><span class="p">,</span> <span class="n">ep</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">co</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">ep</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">edge_lengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">edge</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">edges</span><span class="p">))]</span>
+        
+    <span class="k">def</span> <span class="nf">face_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span><span class="p">[</span><span class="n">face</span><span class="p">]</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">face_normals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span><span class="p">[</span><span class="n">face</span><span class="p">]</span><span class="o">.</span><span class="n">area</span>
+
+    <span class="k">def</span> <span class="nf">face_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">face</span><span class="o">.</span><span class="n">area</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -172,225 +225,44 @@
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    
+    <span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">get_objects</span>
 
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">BlenderMesh</span><span class="o">.</span><span class="n">from_selection</span><span class="p">()</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">BlenderMesh</span><span class="p">(</span><span class="n">get_objects</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">mesh</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+    
+    <span class="n">mesh</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+    <span class="n">mesh</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">mesh</span><span class="o">.</span><span class="n">unselect</span><span class="p">()</span>
+    <span class="n">mesh</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+    
     <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_vertex_coordinates</span><span class="p">())</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_edge_vertex_indices</span><span class="p">())</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_face_vertex_indices</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_edge_indices</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_face_indices</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_vertices_and_faces</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_normals</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">face</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_areas</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">edge</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">edge_lengths</span><span class="p">())</span>
+    
+    <span class="n">mesh</span><span class="o">.</span><span class="n">set_vertex_colors</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_vertex_colors</span><span class="p">())</span>
     <span class="n">mesh</span><span class="o">.</span><span class="n">unset_vertex_colors</span><span class="p">()</span>
-
-
-
-<span class="c1"># from compas.geometry import area_polygon</span>
-<span class="c1"># from compas.geometry import distance_point_point</span>
-<span class="c1"># from compas.geometry import normal_polygon</span>
-
-<span class="c1"># def remove_duplicate_bmesh_vertices(bmesh):</span>
-<span class="c1">#     """ Remove duplicate overlapping vertices of a Blender mesh object.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         obj: New Blender mesh.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     bmesh.select = True</span>
-<span class="c1">#     bpy.ops.object.mode_set(mode='EDIT')</span>
-<span class="c1">#     bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='VERT')</span>
-<span class="c1">#     mesh = bmesh.from_edit_mesh(bpy.context.object.data)</span>
-<span class="c1">#     for vertex in mesh.verts:</span>
-<span class="c1">#         vertex.select = True</span>
-<span class="c1">#     bpy.ops.mesh.remove_doubles()</span>
-<span class="c1">#     bpy.ops.object.mode_set(mode='OBJECT')</span>
-<span class="c1">#     bmesh.select = False</span>
-<span class="c1">#     return mesh</span>
-
-
-<span class="c1"># def update_bmesh_vertices(bmesh, X, winswap=False):</span>
-<span class="c1">#     """ Update the vertex co-ordinates of a Blender mesh.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-<span class="c1">#         X (array, list): New x, y, z co-ordinates.</span>
-<span class="c1">#         winswap (bool): Update workspace window.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         None</span>
-<span class="c1">#     """</span>
-<span class="c1">#     for c, Xi in enumerate(list(X)):</span>
-<span class="c1">#         bmesh.data.vertices[c].co = Xi</span>
-<span class="c1">#     if winswap:</span>
-<span class="c1">#         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)</span>
-
-
-<span class="c1"># def bmesh_edge_lengths(bmesh):</span>
-<span class="c1">#     """ Retrieve the edge legnths of a Blender mesh.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         list: Lengths of each edge.</span>
-<span class="c1">#         float: Total length.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     X, uv, _ = bmesh_data(bmesh)</span>
-<span class="c1">#     lengths = [distance_point_point(X[u], X[v]) for u, v in uv]</span>
-<span class="c1">#     L = sum(lengths)</span>
-<span class="c1">#     return lengths, L</span>
-
-
-<span class="c1"># def bmesh_face_areas(bmesh):</span>
-<span class="c1">#     """ Retrieve the face areas of a Blender mesh.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         list: Areas of each face.</span>
-<span class="c1">#         float: Total area.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     vertices, edges, faces = bmesh_data(bmesh)</span>
-<span class="c1">#     polygons = [[vertices[i] for i in face] for face in faces]</span>
-<span class="c1">#     areas = [area_polygon(polygon) for polygon in polygons]</span>
-<span class="c1">#     A = sum(areas)</span>
-<span class="c1">#     return areas, A</span>
-
-
-<span class="c1"># def bmesh_face_normals(bmesh):</span>
-<span class="c1">#     """ Retrieve the face normals of a Blender mesh.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         list: Normals of each face.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     vertices, edges, faces = bmesh_data(bmesh)</span>
-<span class="c1">#     polygons = [[vertices[i] for i in face] for face in faces]</span>
-<span class="c1">#     normals = [normal_polygon(polygon) for polygon in polygons]</span>
-<span class="c1">#     return normals</span>
-
-
-<span class="c1"># def unify_bmesh_normals(bmesh):</span>
-<span class="c1">#     """ Make the Blender mesh face normals consistent.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         None</span>
-<span class="c1">#     """</span>
-<span class="c1">#     bmesh.mode_set(mode='EDIT')</span>
-<span class="c1">#     bmesh.normals_make_consistent(inside=False)</span>
-<span class="c1">#     bmesh.mode_set(mode='OBJECT')</span>
-
-
-<span class="c1"># def remove_duplicate_bmesh_vertices(bmesh):</span>
-<span class="c1">#     """ Remove duplicate overlapping vertices of a Blender mesh object.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         obj: New Blender mesh.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     bmesh.select = True</span>
-<span class="c1">#     bpy.ops.object.mode_set(mode='EDIT')</span>
-<span class="c1">#     bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='VERT')</span>
-<span class="c1">#     mesh = bmesh.from_edit_mesh(bpy.context.object.data)</span>
-<span class="c1">#     for vertex in mesh.verts:</span>
-<span class="c1">#         vertex.select = True</span>
-<span class="c1">#     bpy.ops.mesh.remove_doubles()</span>
-<span class="c1">#     bpy.ops.object.mode_set(mode='OBJECT')</span>
-<span class="c1">#     bmesh.select = False</span>
-<span class="c1">#     return mesh</span>
-
-
-<span class="c1"># def update_bmesh_vertices(bmesh, X, winswap=False):</span>
-<span class="c1">#     """ Update the vertex co-ordinates of a Blender mesh.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-<span class="c1">#         X (array, list): New x, y, z co-ordinates.</span>
-<span class="c1">#         winswap (bool): Update workspace window.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         None</span>
-<span class="c1">#     """</span>
-<span class="c1">#     for c, Xi in enumerate(list(X)):</span>
-<span class="c1">#         bmesh.data.vertices[c].co = Xi</span>
-<span class="c1">#     if winswap:</span>
-<span class="c1">#         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)</span>
-
-
-<span class="c1"># def bmesh_edge_lengths(bmesh):</span>
-<span class="c1">#     """ Retrieve the edge legnths of a Blender mesh.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         list: Lengths of each edge.</span>
-<span class="c1">#         float: Total length.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     X, uv, _ = bmesh_data(bmesh)</span>
-<span class="c1">#     lengths = [distance_point_point(X[u], X[v]) for u, v in uv]</span>
-<span class="c1">#     L = sum(lengths)</span>
-<span class="c1">#     return lengths, L</span>
-
-
-<span class="c1"># def bmesh_face_areas(bmesh):</span>
-<span class="c1">#     """ Retrieve the face areas of a Blender mesh.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         list: Areas of each face.</span>
-<span class="c1">#         float: Total area.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     vertices, edges, faces = bmesh_data(bmesh)</span>
-<span class="c1">#     polygons = [[vertices[i] for i in face] for face in faces]</span>
-<span class="c1">#     areas = [area_polygon(polygon) for polygon in polygons]</span>
-<span class="c1">#     A = sum(areas)</span>
-<span class="c1">#     return areas, A</span>
-
-
-<span class="c1"># def bmesh_face_normals(bmesh):</span>
-<span class="c1">#     """ Retrieve the face normals of a Blender mesh.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         list: Normals of each face.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     vertices, edges, faces = bmesh_data(bmesh)</span>
-<span class="c1">#     polygons = [[vertices[i] for i in face] for face in faces]</span>
-<span class="c1">#     normals = [normal_polygon(polygon) for polygon in polygons]</span>
-<span class="c1">#     return normals</span>
-
-
-<span class="c1"># def unify_bmesh_normals(bmesh):</span>
-<span class="c1">#     """ Make the Blender mesh face normals consistent.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         bmesh (obj): Blender mesh object.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         None</span>
-<span class="c1">#     """</span>
-<span class="c1">#     bmesh.mode_set(mode='EDIT')</span>
-<span class="c1">#     bmesh.normals_make_consistent(inside=False)</span>
-<span class="c1">#     bmesh.mode_set(mode='OBJECT')</span>
+    
+    <span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_vertex_coordinates</span><span class="p">()]</span>
+    <span class="n">mesh</span><span class="o">.</span><span class="n">update_vertices</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_face_index</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_edge_index</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_vertex_index</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_face_vertices</span><span class="p">())</span>
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>

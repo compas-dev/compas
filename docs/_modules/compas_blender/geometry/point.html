@@ -36,6 +36,7 @@
 </nav>
 <h1>Source code for compas_blender.geometry.point</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas.cad</span> <span class="k">import</span> <span class="n">PointGeometryInterface</span>
+
 <span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">select_point</span>
 
 
@@ -54,7 +55,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="nb">object</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">type</span>
 
@@ -109,7 +110,12 @@
     <span class="nb">print</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">xyz</span><span class="p">)</span>
+    
+    <span class="n">point</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+    <span class="n">point</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="n">point</span><span class="o">.</span><span class="n">unselect</span><span class="p">()</span>
+    <span class="n">point</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+    
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>

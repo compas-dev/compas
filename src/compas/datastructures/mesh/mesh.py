@@ -1446,13 +1446,25 @@ class Mesh(FromToJson,
         """
         return key in self.vertex
 
-    def is_vertex_leaf(self, key):
-        return self.vertex_degree(key) == 1
-
-    def leaves(self):
-        return [key for key in self.vertices() if self.is_vertex_leaf(key)]
-
     def is_vertex_orphan(self, key):
+        """Verify that a mesh is an orphan.
+
+        Note
+        ----
+        A vertex is an orphan if it is not connected to any other vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        bool
+            True if the vertex is an orphan.
+            False otherwise.
+
+        """
         return not self.vertex_degree(key) > 0
 
     def is_vertex_connected(self, key):
