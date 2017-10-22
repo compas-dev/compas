@@ -185,7 +185,7 @@ def mesh_delaunay_from_points(points, polygon=None, polygons=None):
                 if is_point_in_polygon_xy(cent, polygon):
                     mesh.delete_face(fkey)
 
-    return [[int(key) for key in mesh.face_vertices(fkey, True)] for fkey in mesh.faces()]
+    return [[int(key) for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
 
 def mesh_voronoi_from_points(points, boundary=None, holes=None, return_delaunay=False):

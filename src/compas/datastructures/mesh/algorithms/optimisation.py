@@ -134,14 +134,16 @@ def trimesh_remesh(mesh,
 
         plotter = MeshPlotter(mesh)
 
-        plotter.draw_vertices(radius=0.05)
+        plotter.draw_vertices(radius=0.03)
         plotter.draw_faces()
+        plotter.draw_edges()
 
         plotter.show()
 
     References
     ----------
-    * ...
+    * Botsch, M. & Kobbelt, L., 2004. A remeshing approach to multiresolution modeling. Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
+      Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457
 
     """
     if verbose:
@@ -321,12 +323,6 @@ if __name__ == '__main__':
 
     plotter = MeshPlotter(mesh)
 
-    plotter.defaults['vertex.edgewidth'] = 0.1
-    plotter.defaults['edge.width'] = 0.5
-    plotter.defaults['face.facecolor'] = '#eeeeee'
-    # plotter.defaults['face.edgecolor'] = '#222222'
-    plotter.defaults['face.edgewidth'] = 0.0
-
     plotter.draw_edges()
 
     def callback(mesh, k, args):
@@ -345,13 +341,6 @@ if __name__ == '__main__':
         callback=callback,
         callback_args=None,
     )
-
-    # boundary  = set(mesh.vertices_on_boundary())
-    # vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-    # faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
-    # adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
-
-    # smooth_area(vertices, faces, adjacency, fixed=boundary, kmax=50)
 
     plotter.clear_edges()
     plotter.update()

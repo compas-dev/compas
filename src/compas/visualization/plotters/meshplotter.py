@@ -41,18 +41,18 @@ class MeshPlotter(Plotter):
             'vertex.radius'    : 0.1,
             'vertex.facecolor' : '#ffffff',
             'vertex.edgecolor' : '#000000',
-            'vertex.edgewidth' : 1.0,
+            'vertex.edgewidth' : 0.1,
             'vertex.textcolor' : '#000000',
             'vertex.fontsize'  : 10.0,
 
-            'edge.width'    : 1.0,
+            'edge.width'    : 0.5,
             'edge.color'    : '#000000',
             'edge.textcolor': '#000000',
             'edge.fontsize' : 10.0,
 
-            'face.facecolor' : '#ffffff',
-            'face.edgecolor' : '#000000',
-            'face.edgewidth' : 1.0,
+            'face.facecolor' : '#eeeeee',
+            'face.edgecolor' : '#eeeeee',
+            'face.edgewidth' : 0.1,
             'face.textcolor' : '#000000',
             'face.fontsize'  : 10.0,
         }
