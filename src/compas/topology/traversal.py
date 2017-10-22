@@ -197,6 +197,8 @@ def bfs_traverse(adjacency, root, callback=None):
                 if callback:
                     callback(node, nbr)
 
+    return visited
+
 
 def bfs_paths(adjacency, root, goal):
     """Return all paths from root to goal.

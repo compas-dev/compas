@@ -12,8 +12,8 @@ Mesh
    .. autosummary::
    
       ~Mesh.__init__
+      ~Mesh.add_edge
       ~Mesh.add_face
-      ~Mesh.add_faces
       ~Mesh.add_vertex
       ~Mesh.clear
       ~Mesh.clear_edgedict
@@ -21,8 +21,8 @@ Mesh
       ~Mesh.clear_halfedgedict
       ~Mesh.clear_vertexdict
       ~Mesh.copy
-      ~Mesh.cull_unused_edges
-      ~Mesh.cull_unused_vertices
+      ~Mesh.cull_edges
+      ~Mesh.cull_vertices
       ~Mesh.delete_face
       ~Mesh.delete_vertex
       ~Mesh.edge_connected_edges
@@ -38,15 +38,18 @@ Mesh
       ~Mesh.edges
       ~Mesh.edges_on_boundary
       ~Mesh.face_adjacency
-      ~Mesh.face_adjacency_edge
+      ~Mesh.face_adjacency_halfedge
       ~Mesh.face_area
       ~Mesh.face_center
       ~Mesh.face_centroid
       ~Mesh.face_coordinates
       ~Mesh.face_corners
+      ~Mesh.face_degree
       ~Mesh.face_edges
       ~Mesh.face_halfedges
       ~Mesh.face_label_name
+      ~Mesh.face_max_degree
+      ~Mesh.face_min_degree
       ~Mesh.face_name
       ~Mesh.face_neighbourhood
       ~Mesh.face_neighbours
@@ -86,10 +89,7 @@ Mesh
       ~Mesh.has_vertex
       ~Mesh.index_key
       ~Mesh.index_uv
-      ~Mesh.indexed_edges
-      ~Mesh.indexed_face_vertices
       ~Mesh.insert_vertex
-      ~Mesh.is_closed
       ~Mesh.is_connected
       ~Mesh.is_edge_naked
       ~Mesh.is_manifold
@@ -110,7 +110,6 @@ Mesh
       ~Mesh.number_of_faces
       ~Mesh.number_of_halfedges
       ~Mesh.number_of_vertices
-      ~Mesh.remove_vertex
       ~Mesh.set_edge_attribute
       ~Mesh.set_edge_attributes
       ~Mesh.set_edges_attribute
@@ -123,6 +122,7 @@ Mesh
       ~Mesh.set_vertex_attributes
       ~Mesh.set_vertices_attribute
       ~Mesh.set_vertices_attributes
+      ~Mesh.summary
       ~Mesh.to_data
       ~Mesh.to_json
       ~Mesh.to_obj
@@ -140,6 +140,8 @@ Mesh
       ~Mesh.vertex_faces
       ~Mesh.vertex_label_name
       ~Mesh.vertex_laplacian
+      ~Mesh.vertex_max_degree
+      ~Mesh.vertex_min_degree
       ~Mesh.vertex_name
       ~Mesh.vertex_neighbourhood
       ~Mesh.vertex_neighbourhood_centroid
@@ -149,6 +151,7 @@ Mesh
       ~Mesh.vertex_normal
       ~Mesh.vertices
       ~Mesh.vertices_on_boundary
+      ~Mesh.vertices_where
       ~Mesh.wireframe
    
    

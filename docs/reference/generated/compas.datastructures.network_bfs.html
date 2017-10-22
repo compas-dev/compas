@@ -42,7 +42,7 @@
 <h1>network_bfs</h1>
 <dl class="function">
 <dt id="compas.datastructures.network_bfs">
-<code class="descclassname">compas.datastructures.</code><code class="descname">network_bfs</code><span class="sig-paren">(</span><em>adjacency</em>, <em>root</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/datastructures/network/algorithms/traversal.html#network_bfs"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.datastructures.</code><code class="descname">network_bfs</code><span class="sig-paren">(</span><em>adjacency</em>, <em>root</em>, <em>callback=None</em><span class="sig-paren">)</span></dt>
 <dd><p>Return all nodes of a connected component containing ‘root’ of a network
 represented by an adjacency dictionary.</p>
 <p>This implementation uses a queue to keep track of nodes to visit.
@@ -76,6 +76,7 @@ when it is found. Default is <code class="docutils literal">None</code>.</li>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
 </code></pre></div>
+
 <p class="rubric">Notes</p>
 <p>By appending the neighbours to the end of the list of nodes to visit,
 and by visiting the nodes at the start of the list first, the network is
@@ -145,7 +146,7 @@ traversed in <em>breadth-first</em> order.</p>
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 21, 2017.
             
 
             

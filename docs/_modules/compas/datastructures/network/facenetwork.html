@@ -285,7 +285,7 @@
     <span class="c1"># helpers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">_get_facekey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_face_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">fkey</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_fkey</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
@@ -313,20 +313,22 @@
         <span class="sd">"""Add a face and specify its attributes (optional).</span>
 
 <span class="sd">        Note:</span>
-<span class="sd">            * A dictionary key for the face will be generated automatically, based on</span>
-<span class="sd">              the keys of its vertices.</span>
 <span class="sd">            * All faces are closed. The closing link is implied and, therefore,</span>
 <span class="sd">              the last vertex in the list should be different from the first.</span>
 <span class="sd">            * Building a face_adjacency list is slow, if we can't rely on the fact</span>
 <span class="sd">              that all faces have the same cycle directions. Therefore, it is</span>
 <span class="sd">              worth considering to ensure unified cycle directions upon addition</span>
 <span class="sd">              of a new face.</span>
+<span class="sd">            * A check could be added that no face is added that would leave edges</span>
+<span class="sd">              without halfedges.</span>
+<span class="sd">            * Adding a face does not change the layout of edges.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            vertices (list): A list of vertex keys.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: The key of the face.</span>
+
 <span class="sd">        """</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">attr_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -347,7 +349,7 @@
                 <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
             <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
-        <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_facekey</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_face_key</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">keys</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span>
@@ -788,7 +790,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             

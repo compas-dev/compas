@@ -1,6 +1,6 @@
-mesh_planarize
+trimesh_remesh
 ====================================
 
 .. currentmodule:: compas.datastructures
 
-.. autofunction:: mesh_planarize
+.. autofunction:: trimesh_remesh

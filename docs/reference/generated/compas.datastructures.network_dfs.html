@@ -42,7 +42,7 @@
 <h1>network_dfs</h1>
 <dl class="function">
 <dt id="compas.datastructures.network_dfs">
-<code class="descclassname">compas.datastructures.</code><code class="descname">network_dfs</code><span class="sig-paren">(</span><em>adjacency</em>, <em>root</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/datastructures/network/algorithms/traversal.html#network_dfs"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.datastructures.</code><code class="descname">network_dfs</code><span class="sig-paren">(</span><em>adjacency</em>, <em>root</em>, <em>callback=None</em><span class="sig-paren">)</span></dt>
 <dd><p>Return all nodes of a connected component containing ‘root’ of a network
 represented by an adjacency dictionary.</p>
 <p>This implementation uses a ‘to visit’ stack. The principle of a stack
@@ -85,6 +85,7 @@ when it is found. Default is <code class="docutils literal">None</code>.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network_dfs</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">get_any_vertex</span><span class="p">()))</span>
 </code></pre></div>
+
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last">...</p>
@@ -154,7 +155,7 @@ when it is found. Default is <code class="docutils literal">None</code>.</li>
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 21, 2017.
             
 
             

@@ -77,26 +77,8 @@
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_bfs.html" title="compas.datastructures.network_bfs"><code class="xref py py-obj docutils literal">network_bfs</code></a>(adjacency, root[, callback])</td>
-<td>Return all nodes of a connected component containing ‘root’ of a network represented by an adjacency dictionary.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_bfs_paths.html" title="compas.datastructures.network_bfs_paths"><code class="xref py py-obj docutils literal">network_bfs_paths</code></a>(adjacency, root, goal)</td>
-<td>Return all paths from root to goal.</td>
-</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_count_crossings.html" title="compas.datastructures.network_count_crossings"><code class="xref py py-obj docutils literal">network_count_crossings</code></a>(network)</td>
 <td>Count the number of crossings (pairs of crossing edges) in the network.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_dfs.html" title="compas.datastructures.network_dfs"><code class="xref py py-obj docutils literal">network_dfs</code></a>(adjacency, root[, callback])</td>
-<td>Return all nodes of a connected component containing ‘root’ of a network represented by an adjacency dictionary.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_dfs_paths.html" title="compas.datastructures.network_dfs_paths"><code class="xref py py-obj docutils literal">network_dfs_paths</code></a>(adjacency, root, goal)</td>
-<td>Yield all paths that lead from a root node to a specific goal.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_dijkstra_distances.html" title="compas.datastructures.network_dijkstra_distances"><code class="xref py py-obj docutils literal">network_dijkstra_distances</code></a>(adjacency, ...)</td>
-<td>Compute Dijkstra distances to a specific vertex of a network to every other vertex of the network.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_dijkstra_path.html" title="compas.datastructures.network_dijkstra_path"><code class="xref py py-obj docutils literal">network_dijkstra_path</code></a>(adjacency, weight, ...)</td>
-<td>Find the shortest path between two vertices if the edge weights are not all one.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_dual.html" title="compas.datastructures.network_dual"><code class="xref py py-obj docutils literal">network_dual</code></a>(network[, cls])</td>
 <td>Construct the dual of a network.</td>
@@ -121,9 +103,6 @@
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_is_planar_embedding.html" title="compas.datastructures.network_is_planar_embedding"><code class="xref py py-obj docutils literal">network_is_planar_embedding</code></a>(network)</td>
 <td>Verify that a network is embedded in the plane without crossing edges.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_shortest_path.html" title="compas.datastructures.network_shortest_path"><code class="xref py py-obj docutils literal">network_shortest_path</code></a>(adjacency, root, goal)</td>
-<td>Find the shortest path between two vertices of a network.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.network_vertex_coloring.html" title="compas.datastructures.network_vertex_coloring"><code class="xref py py-obj docutils literal">network_vertex_coloring</code></a>(network)</td>
 <td>Color the vertices of a network such that no two colors are adjacent.</td>
@@ -198,9 +177,6 @@
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.mesh_circularize.html" title="compas.datastructures.mesh_circularize"><code class="xref py py-obj docutils literal">mesh_circularize</code></a>(mesh[, fixed, kmax, d, ...])</td>
-<td>Circularize the faces of a mesh using ShapeOp.</td>
-</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.mesh_delaunay_from_points.html" title="compas.datastructures.mesh_delaunay_from_points"><code class="xref py py-obj docutils literal">mesh_delaunay_from_points</code></a>(points[, polygon, ...])</td>
 <td>Computes the delaunay triangulation for a list of points.</td>
 </tr>
@@ -209,9 +185,6 @@
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.mesh_flip_cycles.html" title="compas.datastructures.mesh_flip_cycles"><code class="xref py py-obj docutils literal">mesh_flip_cycles</code></a>(mesh)</td>
 <td>Flip the cycle directions of all faces.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.mesh_planarize.html" title="compas.datastructures.mesh_planarize"><code class="xref py py-obj docutils literal">mesh_planarize</code></a>(mesh[, fixed, kmax, d, ...])</td>
-<td>Planarise the faces of a mesh.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.mesh_subdivide.html" title="compas.datastructures.mesh_subdivide"><code class="xref py py-obj docutils literal">mesh_subdivide</code></a>(mesh[, scheme])</td>
 <td>Subdivide the input mesh.</td>
@@ -243,7 +216,7 @@
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.trimesh_optimise_topology.html" title="compas.datastructures.trimesh_optimise_topology"><code class="xref py py-obj docutils literal">trimesh_optimise_topology</code></a>(mesh, target[, ...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.trimesh_remesh.html" title="compas.datastructures.trimesh_remesh"><code class="xref py py-obj docutils literal">trimesh_remesh</code></a>(mesh, target[, kmax, tol, ...])</td>
 <td>Remesh until all edges have a specified target length.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.trimesh_subdivide_loop.html" title="compas.datastructures.trimesh_subdivide_loop"><code class="xref py py-obj docutils literal">trimesh_subdivide_loop</code></a>(mesh[, k, fixed])</td>
@@ -347,7 +320,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             

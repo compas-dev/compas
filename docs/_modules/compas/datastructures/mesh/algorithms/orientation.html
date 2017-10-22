@@ -37,7 +37,7 @@
 <h1>Source code for compas.datastructures.mesh.algorithms.orientation</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.network.algorithms</span> <span class="k">import</span> <span class="n">network_bfs</span>
+<span class="kn">from</span> <span class="nn">compas.topology</span> <span class="k">import</span> <span class="n">bfs_traverse</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="s1">'Tom Van Mele'</span>
@@ -82,7 +82,7 @@
     <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_any_face</span><span class="p">()</span>
 
-    <span class="n">network_bfs</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_adjacency</span><span class="p">(),</span> <span class="n">root</span><span class="p">,</span> <span class="n">unify</span><span class="p">)</span>
+    <span class="n">bfs_traverse</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_adjacency</span><span class="p">(),</span> <span class="n">root</span><span class="p">,</span> <span class="n">unify</span><span class="p">)</span>
 
     <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
     <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
@@ -95,6 +95,13 @@
 <div class="viewcode-block" id="mesh_flip_cycles"><a class="viewcode-back" href="../../../../../reference/generated/compas.datastructures.mesh_flip_cycles.html#compas.datastructures.mesh_flip_cycles">[docs]</a><span class="k">def</span> <span class="nf">mesh_flip_cycles</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
     <span class="sd">"""Flip the cycle directions of all faces.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    This function does not care about the directions being unified or not. It</span>
 <span class="sd">    just reverses whatever direction it finds.</span>
 
@@ -108,108 +115,19 @@
                 <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
-<span class="k">def</span> <span class="nf">_mesh_unify_cycles</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Unify the cycle directions of all faces.</span>
-
-<span class="sd">    Unified cycle directions is a necessary condition for the data structure to</span>
-<span class="sd">    work properly. When in doubt, run this function on your mesh.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">        root: The key of the root face. Defaults to None.</span>
-
-<span class="sd">    """</span>
-
-    <span class="k">def</span> <span class="nf">is_flipped</span><span class="p">(</span><span class="n">face_vertices1</span><span class="p">,</span> <span class="n">face_vertices2</span><span class="p">):</span>
-        <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">face_vertices1</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">face_vertices1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">face_vertices1</span><span class="p">))]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">face_vertices2</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">face_vertices2</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">face_vertices2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="k">def</span> <span class="nf">is_neighbor</span><span class="p">(</span><span class="n">face_edges1</span><span class="p">,</span> <span class="n">face_edges2</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">face_edges1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">face_edges2</span> <span class="ow">or</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="ow">in</span> <span class="n">face_edges2</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="c1"># initialize lists and dictionaries</span>
-    <span class="n">faces</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
-    <span class="n">faces_vertices_dic</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">faces_edges</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">index_key</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
-        <span class="n">face_vertices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="n">faces_vertices_dic</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">face_vertices</span>
-        <span class="n">faces_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">set</span><span class="p">([(</span><span class="n">face_vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">face_vertices</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">face_vertices</span><span class="p">))]))</span>
-        <span class="n">index_key</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
-
-    <span class="c1"># find neighboring faces</span>
-    <span class="n">face_nbr</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">index_key</span><span class="p">}</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">faces_edges</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">keyi</span> <span class="o">=</span> <span class="n">index_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">fece_edges_i</span> <span class="o">=</span> <span class="n">faces_edges</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">is_neighbor</span><span class="p">(</span><span class="n">fece_edges_i</span><span class="p">,</span> <span class="n">faces_edges</span><span class="p">[</span><span class="n">j</span><span class="p">]):</span>
-                <span class="n">keyj</span> <span class="o">=</span> <span class="n">index_key</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-                <span class="n">face_nbr</span><span class="p">[</span><span class="n">keyi</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">keyj</span><span class="p">)</span>
-                <span class="n">face_nbr</span><span class="p">[</span><span class="n">keyj</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">keyi</span><span class="p">)</span>
-
-    <span class="c1"># define root face key</span>
-    <span class="k">if</span> <span class="n">root</span><span class="p">:</span>
-        <span class="n">fkeys</span> <span class="o">=</span> <span class="p">[</span><span class="n">root</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">fkeys</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_any_face</span><span class="p">()]</span>
-
-    <span class="c1"># march over faces and flip if necessary</span>
-    <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="k">while</span> <span class="n">fkeys</span><span class="p">:</span>
-        <span class="n">fkey</span> <span class="o">=</span> <span class="n">fkeys</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
-        <span class="n">nbrs</span> <span class="o">=</span> <span class="n">face_nbr</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">is_flipped</span><span class="p">(</span><span class="n">faces_vertices_dic</span><span class="p">[</span><span class="n">fkey</span><span class="p">],</span> <span class="n">faces_vertices_dic</span><span class="p">[</span><span class="n">nbr</span><span class="p">]):</span>
-                <span class="n">faces_vertices_dic</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="o">=</span> <span class="n">faces_vertices_dic</span><span class="p">[</span><span class="n">nbr</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
-            <span class="n">fkeys</span> <span class="o">+=</span> <span class="p">[</span><span class="n">nbr</span><span class="p">]</span>
-
-    <span class="c1"># reconstruct faces</span>
-    <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces_vertices_dic</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-        <span class="k">del</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
-        <span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">fkey</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">mesh</span>
-
-
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
-    <span class="kn">import</span> <span class="nn">time</span>
     <span class="kn">import</span> <span class="nn">compas</span>
 
     <span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
 
     <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces_big.obj'</span><span class="p">))</span>
 
-    <span class="c1"># tic = time.time()</span>
-    <span class="c1"># unify_cycles_mesh(mesh)</span>
-    <span class="c1"># tac = time.time()</span>
-    <span class="c1"># print (tac - tic)</span>
-
-    <span class="c1"># tic = time.time()</span>
-    <span class="c1"># _unify_cycles_mesh(mesh)</span>
-    <span class="c1"># tac = time.time()</span>
-    <span class="c1"># print (tac - tic)</span>
-
-    <span class="n">mesh_flip_cycles</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="n">mesh_unify_cycles</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>
@@ -249,7 +167,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 22, 2017.
             
 
             
