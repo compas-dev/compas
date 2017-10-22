@@ -27,7 +27,6 @@ Mesh
       ~Mesh.cull_vertices
       ~Mesh.delete_face
       ~Mesh.delete_vertex
-      ~Mesh.edge_connected_edges
       ~Mesh.edge_coordinates
       ~Mesh.edge_direction
       ~Mesh.edge_faces
@@ -47,18 +46,15 @@ Mesh
       ~Mesh.face_coordinates
       ~Mesh.face_corners
       ~Mesh.face_degree
-      ~Mesh.face_edges
       ~Mesh.face_halfedges
       ~Mesh.face_label_name
       ~Mesh.face_max_degree
       ~Mesh.face_min_degree
       ~Mesh.face_name
-      ~Mesh.face_neighbourhood
       ~Mesh.face_neighbours
       ~Mesh.face_normal
       ~Mesh.face_vertex_ancestor
       ~Mesh.face_vertex_descendant
-      ~Mesh.face_vertex_neighbours
       ~Mesh.face_vertices
       ~Mesh.faces
       ~Mesh.faces_on_boundary
@@ -93,7 +89,7 @@ Mesh
       ~Mesh.index_uv
       ~Mesh.insert_vertex
       ~Mesh.is_connected
-      ~Mesh.is_edge_naked
+      ~Mesh.is_edge_on_boundary
       ~Mesh.is_manifold
       ~Mesh.is_orientable
       ~Mesh.is_quadmesh
@@ -101,9 +97,7 @@ Mesh
       ~Mesh.is_trimesh
       ~Mesh.is_valid
       ~Mesh.is_vertex_connected
-      ~Mesh.is_vertex_extraordinary
       ~Mesh.is_vertex_on_boundary
-      ~Mesh.is_vertex_orphan
       ~Mesh.key_gkey
       ~Mesh.key_index
       ~Mesh.number_of_edges
@@ -132,11 +126,8 @@ Mesh
       ~Mesh.update_default_vertex_attributes
       ~Mesh.uv_index
       ~Mesh.vertex_area
-      ~Mesh.vertex_connected_edges
       ~Mesh.vertex_coordinates
       ~Mesh.vertex_degree
-      ~Mesh.vertex_degree_in
-      ~Mesh.vertex_degree_out
       ~Mesh.vertex_faces
       ~Mesh.vertex_label_name
       ~Mesh.vertex_laplacian
@@ -146,8 +137,6 @@ Mesh
       ~Mesh.vertex_neighbourhood
       ~Mesh.vertex_neighbourhood_centroid
       ~Mesh.vertex_neighbours
-      ~Mesh.vertex_neighbours_in
-      ~Mesh.vertex_neighbours_out
       ~Mesh.vertex_normal
       ~Mesh.vertices
       ~Mesh.vertices_on_boundary

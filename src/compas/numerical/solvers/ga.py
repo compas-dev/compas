@@ -66,26 +66,26 @@ class GA:
 
         Parameters
         ----------
-        best_fit: float
+        best_fit : float
             The fitness value of the best performing solution for the current generation.
         best_individual_index: int
             The index of the best performing individual for the current generation.
-        boundaries: dict
+        boundaries : dict
             This dictionary contains all the max and min bounds for each optimization variable.
             ``GA.boundaries[index] = [min,max]``.
-        current_pop: dict
+        current_pop : dict
             This dictionary contains the coded, decoded and scaled population of the current
             generation, as well as their fitness values.
-        elite_pop: dict
+        elite_pop : dict
             This dictionary contains the coded, decoded and scaled data for the elite
             population of the current generation, as well as their fitness values.
-        end_gen: int
+        end_gen : int
             The maximum number of generations the GA is allowed to run.
         fit_function: function
             The fitness function.
-        fit_name: str
+        fit_name : str
             The name of the python file containing the fitness function (without extension).
-        fit_type: str
+        fit_type : str
             String that indicates if the fitness function is to be minimized or maximized.
             "min" for minimization and "max" for maximization.
         input_path: str
@@ -94,44 +94,45 @@ class GA:
             This dictionary will be passed as a keyword argument to all fitness functions.
             It can be used to pass required data, objects, that are not related to the
             optimmization variables but are required to run the fitness function.
-        max_bin_digit: int
+        max_bin_digit : int
             The maximum number of binary digits that are used to code a variable values.
             The number of binary digits assigned to code a variable determine the number
             of discrete steps inside the variable bounds. For example, an 8 digit binary
-             number will produce 256 steps.
-        min_fit: float
+            number will produce 256 steps.
+        min_fit : float
             An end condition related to fitness value. If it is set, the GA will stop
             when any individual achieves a fitness equal or better that ``GA.min_fit``. If
             it is not set, the GA will end after ``GA.num_gen`` generations.
-        min_fit_flag: bool
+        min_fit_flag : bool
             Flag the GA uses to determine if the ``GA.min_fit`` value has been achieved.
-        mutation_probability: float
+        mutation_probability : float
             Determines the probability that the mutation operator will mutate each gene.
             For each gene a random number ``x`` between 0 and 1 is generated, if ``x``
             is higher than ``GA.mutation_probability`` it will be mutated.
-        num_bin_dig: list
+        num_bin_dig : list
             List of the number of binary digits for each variable. The number of binary
             digits assigned to code a variable determine the number of discrete steps
             inside the variable bounds. For example, an 8 digit binary number will
             produce 256 steps.
-        num_elite: int
+        num_elite : int
             The number of top performing individuals in the population that are not subject
             to genetic operators, but are simply copied to the next generation.
-        num_gen: int
+        num_gen : int
             The number of genertions the GA will run.
-        num_pop: int
+        num_pop : int
             The number of individuals per generation.
-        num_var: int
+        num_var : int
             The number of variables in the optimization problem.
-        output_path: str
+        output_path : str
             The path to which the GA outputs result files.
-        start_from_gen: int
+        start_from_gen : int
             The generation from which the GA will restart. If this number is given, the GA
             will look for generation output files in the ``GA.input_path`` and if found,
             the GA will resume optimization from the ``GA.start_from_gen`` generation.
-        total_bin_dig: int
+        total_bin_dig : int
             The total number of binary digits. It is the sum of the ``GA.num_bin_dig`` of
             all variables.
+
         """
 
         self.kwargs = {}

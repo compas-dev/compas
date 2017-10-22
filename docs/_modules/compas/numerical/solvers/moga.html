@@ -97,14 +97,14 @@
 
 <div class="viewcode-block" id="MOGA.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.__init__.html#compas.numerical.solvers.MOGA.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""</span>
-<span class="sd">        Populations are kept in dictionaries with the following data structure_ansys:</span>
-<span class="sd">        pop = {'binary':binary_dict,'decoded':decoded_dict,'scaled':scaled_dict,</span>
-<span class="sd">                'fit_values':fit_values_dict,'pf':pf_dict}</span>
-<span class="sd">        binary_dict     = {individual index: {variable index : binary list}}</span>
-<span class="sd">        decoded_dict    = {individual index: {variable index : decoded variable}}</span>
-<span class="sd">        scaled_dict     = {individual index: {variable index : scaled variable}}</span>
-<span class="sd">        fit_values_dict = {individual index: {fit function index : fitness value}}</span>
-<span class="sd">        pf_dict         = {individual index: pf number}</span>
+<span class="sd">        # Populations are kept in dictionaries with the following data structure_ansys:</span>
+<span class="sd">        # pop = {'binary':binary_dict,'decoded':decoded_dict,'scaled':scaled_dict,</span>
+<span class="sd">        #         'fit_values':fit_values_dict,'pf':pf_dict}</span>
+<span class="sd">        # binary_dict     = {individual index: {variable index : binary list}}</span>
+<span class="sd">        # decoded_dict    = {individual index: {variable index : decoded variable}}</span>
+<span class="sd">        # scaled_dict     = {individual index: {variable index : scaled variable}}</span>
+<span class="sd">        # fit_values_dict = {individual index: {fit function index : fitness value}}</span>
+<span class="sd">        # pf_dict         = {individual index: pf number}</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fit_functions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_var</span> <span class="o">=</span> <span class="mi">0</span>
@@ -129,7 +129,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fixed_start_pop</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># {'binary':{},'decoded':{},'scaled':{}}</span></div>
 
 <div class="viewcode-block" id="MOGA.moga"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.moga.html#compas.numerical.solvers.MOGA.moga">[docs]</a>    <span class="k">def</span> <span class="nf">moga</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">""" This is the main optimization function, this function permorms the multi objective</span>
+        <span class="sd">"""This is the main optimization function, this function permorms the multi objective</span>
 <span class="sd">        GA optimization, performing all genetic operators.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write_moga_json_file</span><span class="p">()</span>
@@ -240,7 +240,7 @@
 <div class="viewcode-block" id="MOGA.generate_random_bin_pop"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.numerical.solvers.MOGA.generate_random_bin_pop.html#compas.numerical.solvers.MOGA.generate_random_bin_pop">[docs]</a>    <span class="k">def</span> <span class="nf">generate_random_bin_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""This function generates a random binary population</span>
 
-<span class="sd">        Retunrs</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        rendom_bin_pop: dict</span>
 <span class="sd">            The generated random binary population dictionary.</span>
@@ -807,10 +807,11 @@
 <span class="sd">        visualization using ``compas_ga.visualization.ga_visualization`` for the given</span>
 <span class="sd">        generation ``generation``.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        -----------</span>
-<span class="sd">        generation:int</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        generation : int</span>
 <span class="sd">            The generation to write the JSON file for.</span>
+
 <span class="sd">        """</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_gen_data</span><span class="p">()</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="s1">'generation '</span> <span class="o">+</span> <span class="s2">"</span><span class="si">%03d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">generation</span> <span class="o">+</span> <span class="s1">'_pareto_front'</span> <span class="o">+</span> <span class="s2">".json"</span>

@@ -8,15 +8,29 @@ helpers
 .. module:: compas_blender.helpers
 
 
-meshartist
-----------
+Helpers make it easier to work with datastructures in Blender.
+
+
+mesh
+====
 
 .. autosummary::
     :toctree: generated/
 
+    mesh_from_bmesh
 
-networkartist
--------------
+
+network
+=======
+
+.. autosummary::
+    :toctree: generated/
+
+    network_from_bmesh
+
+
+volmesh
+=======
 
 .. autosummary::
     :toctree: generated/

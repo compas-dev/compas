@@ -60,11 +60,40 @@
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
 <p>Mesh edges have no topological meaning. They are only used to store data.
 Edges are not automatically created when vertices and faces are added to
 the mesh. Instead, they are created when data is stored on them, or when
 they are accessed using this method.</p>
+<p class="last">This method yields the directed edges of the mesh.
+Unless edges were added explicitly using <a class="reference internal" href="compas.datastructures.Mesh.add_edge.html#compas.datastructures.Mesh.add_edge" title="compas.datastructures.Mesh.add_edge"><code class="xref py py-meth docutils literal">add_edge()</code></a> the order of
+edges is <em>as they come out</em>. However, as long as the toplogy remains
+unchanged, the order is consistent.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)):</span>
+    <span class="n">attr</span><span class="p">[</span><span class="s1">'index1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
+
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)):</span>
+    <span class="n">attr</span><span class="p">[</span><span class="s1">'index2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="s1">'{}-{}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="s1">'index1'</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="s1">'index2'</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)}</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
 </dd></dl>
 </div>
 <nav class="compas-sideways">

@@ -44,7 +44,24 @@
 <dl class="method">
 <dt id="compas.datastructures.Mesh.edge_faces">
 <code class="descclassname">Mesh.</code><code class="descname">edge_faces</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../../../modules/compas/datastructures/mesh/mesh.html#Mesh.edge_faces"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
+<dd><p>Find the two faces adjacent to an edge.</p>
+<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
+<col class="field-name"/>
+<col class="field-body"/>
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>hashable</em>) – The identifier of the first vertex.</li>
+<li><strong>v</strong> (<em>hashable</em>) – The identifier of the second vertex.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> – The identifiers of the adjacent faces.
+If the edge is on the bboundary, one of the identifiers is <code class="docutils literal">None</code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="compas.datastructures.Mesh.edge_direction.html" role="button">Mesh.edge_direction</a>

@@ -66,7 +66,6 @@ class VertexMappings(object):
         --------
         * :meth:`gkey_key`
         * :func:`compas.utilities.geometric_key`
-        * :ref:`using-geometric-maps`
 
         """
         gkey = geometric_key
@@ -91,7 +90,6 @@ class VertexMappings(object):
         --------
         * :meth:`key_gkey`
         * :func:`compas.utilities.geometric_key`
-        * :ref:`using-geometric-maps`
 
         """
         gkey = geometric_key

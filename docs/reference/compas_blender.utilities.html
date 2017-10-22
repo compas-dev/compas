@@ -39,30 +39,10 @@
 </nav>
 <div class="section">
 <span id="utilities"></span><span id="compas-blender-utilities"></span><h1>utilities</h1>
-<div class="section">
-<h2>animation</h2>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
-<colgroup>
-<col width="10%"/>
-<col width="90%"/>
-</colgroup>
-<tbody valign="top">
-</tbody>
-</table>
-</div>
+<p>This package contains many convenience functions for working and interacting
+with Blender.</p>
 <div class="section">
 <h2>document</h2>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
-<colgroup>
-<col width="10%"/>
-<col width="90%"/>
-</colgroup>
-<tbody valign="top">
-</tbody>
-</table>
-</div>
-<div class="section">
-<h2>drawing</h2>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -93,6 +73,137 @@
 </table>
 </div>
 <div class="section">
+<h2>objects</h2>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.delete_object.html" title="compas_blender.utilities.delete_object"><code class="xref py py-obj docutils literal">delete_object</code></a>(object)</td>
+<td>Delete an object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.delete_objects.html" title="compas_blender.utilities.delete_objects"><code class="xref py py-obj docutils literal">delete_objects</code></a>(objects)</td>
+<td>Delete a list of objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.delete_all_objects.html" title="compas_blender.utilities.delete_all_objects"><code class="xref py py-obj docutils literal">delete_all_objects</code></a>()</td>
+<td>Delete all scene objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.get_objects.html" title="compas_blender.utilities.get_objects"><code class="xref py py-obj docutils literal">get_objects</code></a>([layer, name])</td>
+<td>Retrieves the objects on a given layer or by its name.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.get_object_name.html" title="compas_blender.utilities.get_object_name"><code class="xref py py-obj docutils literal">get_object_name</code></a>(object)</td>
+<td>Retrieves the name of object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.get_objects_name.html" title="compas_blender.utilities.get_objects_name"><code class="xref py py-obj docutils literal">get_objects_name</code></a>(objects)</td>
+<td>Retrieves the names of objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.get_object_attributes.html" title="compas_blender.utilities.get_object_attributes"><code class="xref py py-obj docutils literal">get_object_attributes</code></a>(object)</td>
+<td>Retrieves the attributes from the names of object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.get_objects_attributes.html" title="compas_blender.utilities.get_objects_attributes"><code class="xref py py-obj docutils literal">get_objects_attributes</code></a>(objects)</td>
+<td>Retrieves the attributes from the names of objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.get_object_location.html" title="compas_blender.utilities.get_object_location"><code class="xref py py-obj docutils literal">get_object_location</code></a>(object)</td>
+<td>Retrieves the location of an object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.get_objects_location.html" title="compas_blender.utilities.get_objects_location"><code class="xref py py-obj docutils literal">get_objects_location</code></a>(objects)</td>
+<td>Retrieves the location of objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.get_points.html" title="compas_blender.utilities.get_points"><code class="xref py py-obj docutils literal">get_points</code></a>()</td>
+<td>Retrieves all Empty objects in scene.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.get_curves.html" title="compas_blender.utilities.get_curves"><code class="xref py py-obj docutils literal">get_curves</code></a>()</td>
+<td>Retrieves all Curve objects in scene.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.get_meshes.html" title="compas_blender.utilities.get_meshes"><code class="xref py py-obj docutils literal">get_meshes</code></a>()</td>
+<td>Retrieves all Mesh objects in scene.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.set_object_layer.html" title="compas_blender.utilities.set_object_layer"><code class="xref py py-obj docutils literal">set_object_layer</code></a>(object, layer)</td>
+<td>Changes the layer of the object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.set_objects_layer.html" title="compas_blender.utilities.set_objects_layer"><code class="xref py py-obj docutils literal">set_objects_layer</code></a>(objects, layer)</td>
+<td>Changes the layer of the objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.set_object_show_name.html" title="compas_blender.utilities.set_object_show_name"><code class="xref py py-obj docutils literal">set_object_show_name</code></a>(object[, show])</td>
+<td>Display the name of an object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.set_objects_show_name.html" title="compas_blender.utilities.set_objects_show_name"><code class="xref py py-obj docutils literal">set_objects_show_name</code></a>(objects[, show])</td>
+<td>Display the name of objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.set_object_location.html" title="compas_blender.utilities.set_object_location"><code class="xref py py-obj docutils literal">set_object_location</code></a>(object, location)</td>
+<td>Set the location of an object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.set_objects_location.html" title="compas_blender.utilities.set_objects_location"><code class="xref py py-obj docutils literal">set_objects_location</code></a>(objects, locations)</td>
+<td>Set the location of objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.set_object_rotation.html" title="compas_blender.utilities.set_object_rotation"><code class="xref py py-obj docutils literal">set_object_rotation</code></a>(object, rotation)</td>
+<td>Set the rotation of an object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.set_objects_rotation.html" title="compas_blender.utilities.set_objects_rotation"><code class="xref py py-obj docutils literal">set_objects_rotation</code></a>(objects, rotations)</td>
+<td>Set the rotation of objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.set_object_scale.html" title="compas_blender.utilities.set_object_scale"><code class="xref py py-obj docutils literal">set_object_scale</code></a>(object, scale)</td>
+<td>Set the scale of an object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.set_objects_scale.html" title="compas_blender.utilities.set_objects_scale"><code class="xref py py-obj docutils literal">set_objects_scale</code></a>(objects, scales)</td>
+<td>Set the scale of objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.join_objects.html" title="compas_blender.utilities.join_objects"><code class="xref py py-obj docutils literal">join_objects</code></a>(objects)</td>
+<td>Join a list of objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.select_point.html" title="compas_blender.utilities.select_point"><code class="xref py py-obj docutils literal">select_point</code></a>()</td>
+<td>Select point (empty) object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.select_points.html" title="compas_blender.utilities.select_points"><code class="xref py py-obj docutils literal">select_points</code></a>()</td>
+<td>Select points (empty) objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.select_curve.html" title="compas_blender.utilities.select_curve"><code class="xref py py-obj docutils literal">select_curve</code></a>()</td>
+<td>Select curve object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.select_curves.html" title="compas_blender.utilities.select_curves"><code class="xref py py-obj docutils literal">select_curves</code></a>()</td>
+<td>Select curve objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.select_mesh.html" title="compas_blender.utilities.select_mesh"><code class="xref py py-obj docutils literal">select_mesh</code></a>()</td>
+<td>Select Blender mesh object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.select_meshes.html" title="compas_blender.utilities.select_meshes"><code class="xref py py-obj docutils literal">select_meshes</code></a>()</td>
+<td>Select Blender mesh objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.select_object.html" title="compas_blender.utilities.select_object"><code class="xref py py-obj docutils literal">select_object</code></a>(object)</td>
+<td>Select specific object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.select_objects.html" title="compas_blender.utilities.select_objects"><code class="xref py py-obj docutils literal">select_objects</code></a>(objects)</td>
+<td>Select specific objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.select_all_objects.html" title="compas_blender.utilities.select_all_objects"><code class="xref py py-obj docutils literal">select_all_objects</code></a>()</td>
+<td>Select all objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.deselect_object.html" title="compas_blender.utilities.deselect_object"><code class="xref py py-obj docutils literal">deselect_object</code></a>(object)</td>
+<td>De-select a specific object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.deselect_objects.html" title="compas_blender.utilities.deselect_objects"><code class="xref py py-obj docutils literal">deselect_objects</code></a>(objects)</td>
+<td>De-select specific objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.deselect_all_objects.html" title="compas_blender.utilities.deselect_all_objects"><code class="xref py py-obj docutils literal">deselect_all_objects</code></a>()</td>
+<td>De-select all objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.hide_object.html" title="compas_blender.utilities.hide_object"><code class="xref py py-obj docutils literal">hide_object</code></a>(object)</td>
+<td>Hide specific object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.hide_objects.html" title="compas_blender.utilities.hide_objects"><code class="xref py py-obj docutils literal">hide_objects</code></a>(objects)</td>
+<td>Hide specific objects.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.show_object.html" title="compas_blender.utilities.show_object"><code class="xref py py-obj docutils literal">show_object</code></a>(object)</td>
+<td>Show specific object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.show_objects.html" title="compas_blender.utilities.show_objects"><code class="xref py py-obj docutils literal">show_objects</code></a>(objects)</td>
+<td>Show specific objects.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
 <h2>misc</h2>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -104,6 +215,74 @@
 </table>
 </div>
 <div class="section">
+<h2>drawing</h2>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.delete_all_materials.html" title="compas_blender.utilities.delete_all_materials"><code class="xref py py-obj docutils literal">delete_all_materials</code></a>()</td>
+<td>Delete all scene materials.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.create_material.html" title="compas_blender.utilities.create_material"><code class="xref py py-obj docutils literal">create_material</code></a>(color[, alpha])</td>
+<td>Create a material of given RGB color and alpha.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.draw_cuboid.html" title="compas_blender.utilities.draw_cuboid"><code class="xref py py-obj docutils literal">draw_cuboid</code></a>([Lx, Ly, Lz, pos, layer, color, ...])</td>
+<td>Draw a cuboid.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.draw_cubes.html" title="compas_blender.utilities.draw_cubes"><code class="xref py py-obj docutils literal">draw_cubes</code></a>([pos, radius, layer, color])</td>
+<td>Draw multiple cubes.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.draw_pipes.html" title="compas_blender.utilities.draw_pipes"><code class="xref py py-obj docutils literal">draw_pipes</code></a>([start, end, radius, layer, color])</td>
+<td>Draw multiple pipes.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.draw_plane.html" title="compas_blender.utilities.draw_plane"><code class="xref py py-obj docutils literal">draw_plane</code></a>([Lx, Ly, dx, dy, name, layer, ...])</td>
+<td>Create a plane mesh in x-y.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.draw_spheres.html" title="compas_blender.utilities.draw_spheres"><code class="xref py py-obj docutils literal">draw_spheres</code></a>([pos, radius, layer, color])</td>
+<td>Draw multiple spheres.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.draw_lines.html" title="compas_blender.utilities.draw_lines"><code class="xref py py-obj docutils literal">draw_lines</code></a>([start, end, width, layer, color])</td>
+<td>Draw multiple lines.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.draw_points.html" title="compas_blender.utilities.draw_points"><code class="xref py py-obj docutils literal">draw_points</code></a>([pos, radius, layer])</td>
+<td>Draw multiple points (empties).</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.xdraw_cubes.html" title="compas_blender.utilities.xdraw_cubes"><code class="xref py py-obj docutils literal">xdraw_cubes</code></a>(cubes)</td>
+<td>Draw a set of cubes.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.xdraw_faces.html" title="compas_blender.utilities.xdraw_faces"><code class="xref py py-obj docutils literal">xdraw_faces</code></a>(faces[, alpha])</td>
+<td>Draw a set of faces.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.xdraw_labels.html" title="compas_blender.utilities.xdraw_labels"><code class="xref py py-obj docutils literal">xdraw_labels</code></a>(labels)</td>
+<td>Draw pointcloud text labels.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.xdraw_lines.html" title="compas_blender.utilities.xdraw_lines"><code class="xref py py-obj docutils literal">xdraw_lines</code></a>(lines)</td>
+<td>Draw a set of lines.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.xdraw_mesh.html" title="compas_blender.utilities.xdraw_mesh"><code class="xref py py-obj docutils literal">xdraw_mesh</code></a>(name[, vertices, edges, faces, ...])</td>
+<td>Draws a Blender mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.xdraw_pipes.html" title="compas_blender.utilities.xdraw_pipes"><code class="xref py py-obj docutils literal">xdraw_pipes</code></a>(pipes[, div])</td>
+<td>Draw a set of pipes.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.xdraw_pointcloud.html" title="compas_blender.utilities.xdraw_pointcloud"><code class="xref py py-obj docutils literal">xdraw_pointcloud</code></a>(points)</td>
+<td>Draw a set of points using Blender mesh vertices.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.xdraw_points.html" title="compas_blender.utilities.xdraw_points"><code class="xref py py-obj docutils literal">xdraw_points</code></a>(points)</td>
+<td>Draw a set of points (empties).</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.xdraw_spheres.html" title="compas_blender.utilities.xdraw_spheres"><code class="xref py py-obj docutils literal">xdraw_spheres</code></a>(spheres[, div])</td>
+<td>Draw a set of spheres.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.xdraw_texts.html" title="compas_blender.utilities.xdraw_texts"><code class="xref py py-obj docutils literal">xdraw_texts</code></a>(texts)</td>
+<td>Draw a set of text objects.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
 <h2>modifiers</h2>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -111,17 +290,18 @@
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-</tbody>
-</table>
-</div>
-<div class="section">
-<h2>objects</h2>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
-<colgroup>
-<col width="10%"/>
-<col width="90%"/>
-</colgroup>
-<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.bevel.html" title="compas_blender.utilities.bevel"><code class="xref py py-obj docutils literal">bevel</code></a>(object[, width, segments, only_vertices])</td>
+<td>Bevel a Blender mesh object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.linear_array.html" title="compas_blender.utilities.linear_array"><code class="xref py py-obj docutils literal">linear_array</code></a>(object[, count, displace])</td>
+<td>Create a linear array from a Blender mesh object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.subdivide.html" title="compas_blender.utilities.subdivide"><code class="xref py py-obj docutils literal">subdivide</code></a>(object[, levels, type])</td>
+<td>Subdivides a Blender mesh object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas_blender.utilities.triangulate.html" title="compas_blender.utilities.triangulate"><code class="xref py py-obj docutils literal">triangulate</code></a>(object)</td>
+<td>Triangulate a Blender mesh object.</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -172,13 +352,12 @@
 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">utilities</a><ul class="nav">
-<li class="nav-item"><a class="nav-link reference internal" href="#animation">animation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#document">document</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#drawing">drawing</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#layers">layers</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#misc">misc</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#modifiers">modifiers</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#objects">objects</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#misc">misc</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#drawing">drawing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#modifiers">modifiers</a></li>
 </ul>
 </li>
 </ul>

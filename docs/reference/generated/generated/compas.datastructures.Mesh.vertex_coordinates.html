@@ -13,7 +13,7 @@
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
 <link href="compas.datastructures.Mesh.vertex_degree.html" rel="next" title="Mesh.vertex_degree"/>
-<link href="compas.datastructures.Mesh.vertex_connected_edges.html" rel="prev" title="Mesh.vertex_connected_edges"/>
+<link href="compas.datastructures.Mesh.vertex_area.html" rel="prev" title="Mesh.vertex_area"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -45,10 +45,27 @@
 <dt id="compas.datastructures.Mesh.vertex_coordinates">
 <code class="descclassname">Mesh.</code><code class="descname">vertex_coordinates</code><span class="sig-paren">(</span><em>key</em>, <em>axes='xyz'</em><span class="sig-paren">)</span><a class="reference internal" href="../../../modules/compas/datastructures/mesh/mesh.html#Mesh.vertex_coordinates"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Return the coordinates of a vertex.</p>
+<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
+<col class="field-name"/>
+<col class="field-body"/>
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>hashable</em>) – The identifier of the vertex.</li>
+<li><strong>axes</strong> (<em>str, optional</em>) – The axes alon which to take the coordinates.
+Should be a combination of <code class="docutils literal">'x'</code>, <code class="docutils literal">'y'</code>, <code class="docutils literal">'z'</code>.
+Default is <code class="docutils literal">'xyz'</code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>list</em> – Coordinates of the vertex.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="compas.datastructures.Mesh.vertex_connected_edges.html" role="button">Mesh.vertex_connected_edges</a>
+<a class="btn btn-primary compas-prev" href="compas.datastructures.Mesh.vertex_area.html" role="button">Mesh.vertex_area</a>
 <a class="btn btn-primary compas-next" href="compas.datastructures.Mesh.vertex_degree.html" role="button">Mesh.vertex_degree</a>
 </nav>
 </main>

@@ -60,14 +60,14 @@ class MOGA:
 
     def __init__(self):
         """
-        Populations are kept in dictionaries with the following data structure_ansys:
-        pop = {'binary':binary_dict,'decoded':decoded_dict,'scaled':scaled_dict,
-                'fit_values':fit_values_dict,'pf':pf_dict}
-        binary_dict     = {individual index: {variable index : binary list}}
-        decoded_dict    = {individual index: {variable index : decoded variable}}
-        scaled_dict     = {individual index: {variable index : scaled variable}}
-        fit_values_dict = {individual index: {fit function index : fitness value}}
-        pf_dict         = {individual index: pf number}
+        # Populations are kept in dictionaries with the following data structure_ansys:
+        # pop = {'binary':binary_dict,'decoded':decoded_dict,'scaled':scaled_dict,
+        #         'fit_values':fit_values_dict,'pf':pf_dict}
+        # binary_dict     = {individual index: {variable index : binary list}}
+        # decoded_dict    = {individual index: {variable index : decoded variable}}
+        # scaled_dict     = {individual index: {variable index : scaled variable}}
+        # fit_values_dict = {individual index: {fit function index : fitness value}}
+        # pf_dict         = {individual index: pf number}
         """
         self.fit_functions = []
         self.num_var = 0
@@ -92,7 +92,7 @@ class MOGA:
         self.fixed_start_pop = None  # {'binary':{},'decoded':{},'scaled':{}}
 
     def moga(self):
-        """ This is the main optimization function, this function permorms the multi objective
+        """This is the main optimization function, this function permorms the multi objective
         GA optimization, performing all genetic operators.
         """
         self.write_moga_json_file()
@@ -203,7 +203,7 @@ class MOGA:
     def generate_random_bin_pop(self):
         """This function generates a random binary population
 
-        Retunrs
+        Returns
         -------
         rendom_bin_pop: dict
             The generated random binary population dictionary.
@@ -770,10 +770,11 @@ class MOGA:
         visualization using ``compas_ga.visualization.ga_visualization`` for the given
         generation ``generation``.
 
-        Parameters:
-        -----------
-        generation:int
+        Parameters
+        ----------
+        generation : int
             The generation to write the JSON file for.
+
         """
         data = self.make_gen_data()
         filename = 'generation ' + "%03d" % generation + '_pareto_front' + ".json"

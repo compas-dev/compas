@@ -30,7 +30,8 @@ trimesh_remesh(
 
 plotter = MeshPlotter(mesh)
 
-plotter.draw_vertices(radius=0.05)
+plotter.draw_vertices(radius=0.03)
 plotter.draw_faces()
+plotter.draw_edges()
 
 plotter.show()

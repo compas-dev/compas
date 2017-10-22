@@ -93,55 +93,13 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">'key'</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
 
 <figure class="figure">
 <img alt="../../images/compas-datastructures-Mesh-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Mesh-1.png"/>
 </figure>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">'key'</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
-
-<figure class="figure">
-<img alt="../../images/compas-datastructures-Mesh-2.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Mesh-2.png"/>
-</figure>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">'key'</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
-
-<figure class="figure">
-<img alt="../../images/compas-datastructures-Mesh-3.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Mesh-3.png"/>
-</figure>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="gp">...</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-<span class="gp">...</span>
-</code></pre></div>
-
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -191,9 +149,6 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.delete_vertex.html" title="compas.datastructures.Mesh.delete_vertex"><code class="xref py py-obj docutils literal">delete_vertex</code></a>(key)</td>
 <td>Delete a vertex from the mesh and everything that is attached to it.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.edge_connected_edges.html" title="compas.datastructures.Mesh.edge_connected_edges"><code class="xref py py-obj docutils literal">edge_connected_edges</code></a>(u, v)</td>
-<td></td>
-</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.edge_coordinates.html" title="compas.datastructures.Mesh.edge_coordinates"><code class="xref py py-obj docutils literal">edge_coordinates</code></a>(u, v[, axes])</td>
 <td>Return the coordinates of the start and end point of an edge.</td>
 </tr>
@@ -201,7 +156,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <td>Return the direction vector of an edge.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.edge_faces.html" title="compas.datastructures.Mesh.edge_faces"><code class="xref py py-obj docutils literal">edge_faces</code></a>(u, v)</td>
-<td></td>
+<td>Find the two faces adjacent to an edge.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.edge_label_name.html" title="compas.datastructures.Mesh.edge_label_name"><code class="xref py py-obj docutils literal">edge_label_name</code></a>(u, v)</td>
 <td>Get the name of an edge label.</td>
@@ -225,7 +180,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <td>Iterate over the edges of the mesh.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.edges_on_boundary.html" title="compas.datastructures.Mesh.edges_on_boundary"><code class="xref py py-obj docutils literal">edges_on_boundary</code></a>()</td>
-<td></td>
+<td>Find the edges on the boundary.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_adjacency.html" title="compas.datastructures.Mesh.face_adjacency"><code class="xref py py-obj docutils literal">face_adjacency</code></a>()</td>
 <td></td>
@@ -234,49 +189,43 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <td>Find the half-edge over which tow faces are adjacent.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_area.html" title="compas.datastructures.Mesh.face_area"><code class="xref py py-obj docutils literal">face_area</code></a>(fkey)</td>
-<td>Return the area of a face.</td>
+<td>Compute the area of a face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_center.html" title="compas.datastructures.Mesh.face_center"><code class="xref py py-obj docutils literal">face_center</code></a>(fkey)</td>
-<td>Return the location of the center of mass of a face.</td>
+<td>Compute the location of the center of mass of a face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_centroid.html" title="compas.datastructures.Mesh.face_centroid"><code class="xref py py-obj docutils literal">face_centroid</code></a>(fkey)</td>
-<td>Return the location of the centroid of a face.</td>
+<td>Compute the location of the centroid of a face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_coordinates.html" title="compas.datastructures.Mesh.face_coordinates"><code class="xref py py-obj docutils literal">face_coordinates</code></a>(fkey[, axes])</td>
-<td>Return the coordinates of the vertices of a face.</td>
+<td>Compute the coordinates of the vertices of a face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_corners.html" title="compas.datastructures.Mesh.face_corners"><code class="xref py py-obj docutils literal">face_corners</code></a>(fkey)</td>
 <td>Return triplets of face vertices forming the corners of the face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_degree.html" title="compas.datastructures.Mesh.face_degree"><code class="xref py py-obj docutils literal">face_degree</code></a>(fkey)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_edges.html" title="compas.datastructures.Mesh.face_edges"><code class="xref py py-obj docutils literal">face_edges</code></a>(fkey)</td>
-<td>Return the edges corresponding to the halfedges of a face.</td>
+<td>Count the neighbours of a face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_halfedges.html" title="compas.datastructures.Mesh.face_halfedges"><code class="xref py py-obj docutils literal">face_halfedges</code></a>(fkey)</td>
-<td>Return the halfedges of a face.</td>
+<td>The halfedges of a face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_label_name.html" title="compas.datastructures.Mesh.face_label_name"><code class="xref py py-obj docutils literal">face_label_name</code></a>(fkey)</td>
 <td>Get the name of a face label.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_max_degree.html" title="compas.datastructures.Mesh.face_max_degree"><code class="xref py py-obj docutils literal">face_max_degree</code></a>()</td>
-<td></td>
+<td>Compute the maximum degree of all faces.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_min_degree.html" title="compas.datastructures.Mesh.face_min_degree"><code class="xref py py-obj docutils literal">face_min_degree</code></a>()</td>
-<td></td>
+<td>Compute the minimum degree of all faces.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_name.html" title="compas.datastructures.Mesh.face_name"><code class="xref py py-obj docutils literal">face_name</code></a>(fkey)</td>
 <td>Get the name of a face.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_neighbourhood.html" title="compas.datastructures.Mesh.face_neighbourhood"><code class="xref py py-obj docutils literal">face_neighbourhood</code></a>(fkey)</td>
-<td>Return the neighbours of a face across both edges and corners.</td>
-</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_neighbours.html" title="compas.datastructures.Mesh.face_neighbours"><code class="xref py py-obj docutils literal">face_neighbours</code></a>(fkey)</td>
 <td>Return the neighbours of a face across its edges.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_normal.html" title="compas.datastructures.Mesh.face_normal"><code class="xref py py-obj docutils literal">face_normal</code></a>(fkey[, normalised])</td>
-<td>Return the normal of a face.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_normal.html" title="compas.datastructures.Mesh.face_normal"><code class="xref py py-obj docutils literal">face_normal</code></a>(fkey[, unitized])</td>
+<td>Compute the normal of a face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_vertex_ancestor.html" title="compas.datastructures.Mesh.face_vertex_ancestor"><code class="xref py py-obj docutils literal">face_vertex_ancestor</code></a>(fkey, key)</td>
 <td>Return the vertex before the specified vertex in a specific face.</td>
@@ -284,17 +233,14 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_vertex_descendant.html" title="compas.datastructures.Mesh.face_vertex_descendant"><code class="xref py py-obj docutils literal">face_vertex_descendant</code></a>(fkey, key)</td>
 <td>Return the vertex after the specified vertex in a specific face.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_vertex_neighbours.html" title="compas.datastructures.Mesh.face_vertex_neighbours"><code class="xref py py-obj docutils literal">face_vertex_neighbours</code></a>(fkey)</td>
-<td>Return the neighbours of a face across its corners.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_vertices.html" title="compas.datastructures.Mesh.face_vertices"><code class="xref py py-obj docutils literal">face_vertices</code></a>(fkey[, ordered])</td>
-<td>Return the vertices of the face.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_vertices.html" title="compas.datastructures.Mesh.face_vertices"><code class="xref py py-obj docutils literal">face_vertices</code></a>(fkey)</td>
+<td>The vertices of a face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.faces.html" title="compas.datastructures.Mesh.faces"><code class="xref py py-obj docutils literal">faces</code></a>([data])</td>
 <td>Iterate over the faces of the mesh.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.faces_on_boundary.html" title="compas.datastructures.Mesh.faces_on_boundary"><code class="xref py py-obj docutils literal">faces_on_boundary</code></a>()</td>
-<td>Return the faces on the boundary.</td>
+<td>Find the faces on the boundary.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.from_data.html" title="compas.datastructures.Mesh.from_data"><code class="xref py py-obj docutils literal">from_data</code></a>(data)</td>
 <td>Construct a datastructure from structured data.</td>
@@ -308,7 +254,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.from_obj.html" title="compas.datastructures.Mesh.from_obj"><code class="xref py py-obj docutils literal">from_obj</code></a>(filepath)</td>
 <td>Construct a mesh object from the data described in an OBJ file.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.from_ply.html" title="compas.datastructures.Mesh.from_ply"><code class="xref py py-obj docutils literal">from_ply</code></a>(filepath, \*\*kwargs)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.from_ply.html" title="compas.datastructures.Mesh.from_ply"><code class="xref py py-obj docutils literal">from_ply</code></a>(filepath)</td>
 <td>Construct a mesh object from the data described in a PLY file.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.from_vertices_and_faces.html" title="compas.datastructures.Mesh.from_vertices_and_faces"><code class="xref py py-obj docutils literal">from_vertices_and_faces</code></a>(vertices, faces)</td>
@@ -372,7 +318,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <td>Iterate ove the halfedges of the mesh.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.has_edge.html" title="compas.datastructures.Mesh.has_edge"><code class="xref py py-obj docutils literal">has_edge</code></a>(u, v[, directed])</td>
-<td></td>
+<td>Verify that the mesh contains a specific edge.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.has_vertex.html" title="compas.datastructures.Mesh.has_vertex"><code class="xref py py-obj docutils literal">has_vertex</code></a>(key)</td>
 <td>Verify that a vertex is in the mesh.</td>
@@ -389,8 +335,8 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.is_connected.html" title="compas.datastructures.Mesh.is_connected"><code class="xref py py-obj docutils literal">is_connected</code></a>()</td>
 <td>Verify that the mesh is connected.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.is_edge_naked.html" title="compas.datastructures.Mesh.is_edge_naked"><code class="xref py py-obj docutils literal">is_edge_naked</code></a>(u, v)</td>
-<td></td>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.is_edge_on_boundary.html" title="compas.datastructures.Mesh.is_edge_on_boundary"><code class="xref py py-obj docutils literal">is_edge_on_boundary</code></a>(u, v)</td>
+<td>Verify that an edge is on the boundary.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.is_manifold.html" title="compas.datastructures.Mesh.is_manifold"><code class="xref py py-obj docutils literal">is_manifold</code></a>()</td>
 <td>Verify that the mesh is manifold.</td>
@@ -411,16 +357,10 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <td>Verify that the mesh is valid.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.is_vertex_connected.html" title="compas.datastructures.Mesh.is_vertex_connected"><code class="xref py py-obj docutils literal">is_vertex_connected</code></a>(key)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.is_vertex_extraordinary.html" title="compas.datastructures.Mesh.is_vertex_extraordinary"><code class="xref py py-obj docutils literal">is_vertex_extraordinary</code></a>(key[, mtype])</td>
-<td></td>
+<td>Verify that a vertex is connected.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.is_vertex_on_boundary.html" title="compas.datastructures.Mesh.is_vertex_on_boundary"><code class="xref py py-obj docutils literal">is_vertex_on_boundary</code></a>(key)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.is_vertex_orphan.html" title="compas.datastructures.Mesh.is_vertex_orphan"><code class="xref py py-obj docutils literal">is_vertex_orphan</code></a>(key)</td>
-<td>Verify that a mesh is an orphan.</td>
+<td>Verify that a vertex is on a boundary.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.key_gkey.html" title="compas.datastructures.Mesh.key_gkey"><code class="xref py py-obj docutils literal">key_gkey</code></a>([precision])</td>
 <td>Returns a dictionary that maps vertex dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</td>
@@ -504,37 +444,28 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <td>Returns a dictionary that maps edge keys (i.e.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_area.html" title="compas.datastructures.Mesh.vertex_area"><code class="xref py py-obj docutils literal">vertex_area</code></a>(key)</td>
-<td>Return the tributary area of a vertex.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_connected_edges.html" title="compas.datastructures.Mesh.vertex_connected_edges"><code class="xref py py-obj docutils literal">vertex_connected_edges</code></a>(key)</td>
-<td>Return the edges connected to a vertex.</td>
+<td>Compute the tributary area of a vertex.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_coordinates.html" title="compas.datastructures.Mesh.vertex_coordinates"><code class="xref py py-obj docutils literal">vertex_coordinates</code></a>(key[, axes])</td>
 <td>Return the coordinates of a vertex.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_degree.html" title="compas.datastructures.Mesh.vertex_degree"><code class="xref py py-obj docutils literal">vertex_degree</code></a>(key)</td>
-<td>Return the number of neighbours of a vertex.</td>
+<td>Count the neighbours of a vertex.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_degree_in.html" title="compas.datastructures.Mesh.vertex_degree_in"><code class="xref py py-obj docutils literal">vertex_degree_in</code></a>(key)</td>
-<td>Return the numer of incoming neighbours of a vertex.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_degree_out.html" title="compas.datastructures.Mesh.vertex_degree_out"><code class="xref py py-obj docutils literal">vertex_degree_out</code></a>(key)</td>
-<td>Return the number of outgoing neighbours of a vertex.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_faces.html" title="compas.datastructures.Mesh.vertex_faces"><code class="xref py py-obj docutils literal">vertex_faces</code></a>(key[, ordered, include_None])</td>
-<td>Return the faces connected to a vertex.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_faces.html" title="compas.datastructures.Mesh.vertex_faces"><code class="xref py py-obj docutils literal">vertex_faces</code></a>(key[, ordered, include_none])</td>
+<td>The faces connected to a vertex.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_label_name.html" title="compas.datastructures.Mesh.vertex_label_name"><code class="xref py py-obj docutils literal">vertex_label_name</code></a>(key)</td>
 <td>Get the name of a vertex label.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_laplacian.html" title="compas.datastructures.Mesh.vertex_laplacian"><code class="xref py py-obj docutils literal">vertex_laplacian</code></a>(key)</td>
-<td>Return the vector from the vertex to the centroid of its 1-ring neighbourhood.</td>
+<td>Compute the vector from a vertex to the centroid of its neighbours.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_max_degree.html" title="compas.datastructures.Mesh.vertex_max_degree"><code class="xref py py-obj docutils literal">vertex_max_degree</code></a>()</td>
-<td></td>
+<td>Compute the maximum degree of all vertices.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_min_degree.html" title="compas.datastructures.Mesh.vertex_min_degree"><code class="xref py py-obj docutils literal">vertex_min_degree</code></a>()</td>
-<td></td>
+<td>Compute the minimum degree of all vertices.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_name.html" title="compas.datastructures.Mesh.vertex_name"><code class="xref py py-obj docutils literal">vertex_name</code></a>(key)</td>
 <td>Get the name of a vertex.</td>
@@ -543,16 +474,10 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <td>Return the vertices in the neighbourhood of a vertex.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_neighbourhood_centroid.html" title="compas.datastructures.Mesh.vertex_neighbourhood_centroid"><code class="xref py py-obj docutils literal">vertex_neighbourhood_centroid</code></a>(key)</td>
-<td></td>
+<td>Compute the centroid of the neighbours of a vertex.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_neighbours.html" title="compas.datastructures.Mesh.vertex_neighbours"><code class="xref py py-obj docutils literal">vertex_neighbours</code></a>(key[, ordered])</td>
 <td>Return the neighbours of a vertex.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_neighbours_in.html" title="compas.datastructures.Mesh.vertex_neighbours_in"><code class="xref py py-obj docutils literal">vertex_neighbours_in</code></a>(key)</td>
-<td>Return the incoming neighbours of a vertex.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_neighbours_out.html" title="compas.datastructures.Mesh.vertex_neighbours_out"><code class="xref py py-obj docutils literal">vertex_neighbours_out</code></a>(key)</td>
-<td>Return the outgoing neighbours of a vertex.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertex_normal.html" title="compas.datastructures.Mesh.vertex_normal"><code class="xref py py-obj docutils literal">vertex_normal</code></a>(key)</td>
 <td>Return the normal vector at the vertex as the weighted average of the normals of the neighbouring faces.</td>
@@ -561,7 +486,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <td>Iterate over the vertices of the mesh.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertices_on_boundary.html" title="compas.datastructures.Mesh.vertices_on_boundary"><code class="xref py py-obj docutils literal">vertices_on_boundary</code></a>([ordered])</td>
-<td>Return the vertices on the boundary.</td>
+<td>Find the vertices on the boundary.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertices_where.html" title="compas.datastructures.Mesh.vertices_where"><code class="xref py py-obj docutils literal">vertices_where</code></a>(conditions)</td>
 <td>Get vertices for which a certain condition or set of conditions is true.</td>

@@ -49,75 +49,50 @@
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last">
-<li><p class="first"><strong>best_fit</strong> (<em>float</em>) – The fitness value of the best performing solution for the current generation.</p>
-</li>
-<li><p class="first"><strong>best_individual_index</strong> (<em>int</em>) – The index of the best performing individual for the current generation.</p>
-</li>
-<li><p class="first"><strong>boundaries</strong> (<em>dict</em>) – This dictionary contains all the max and min bounds for each optimization variable.
-<code class="docutils literal">GA.boundaries[index] = [min,max]</code>.</p>
-</li>
-<li><p class="first"><strong>current_pop</strong> (<em>dict</em>) – This dictionary contains the coded, decoded and scaled population of the current
-generation, as well as their fitness values.</p>
-</li>
-<li><p class="first"><strong>elite_pop</strong> (<em>dict</em>) – This dictionary contains the coded, decoded and scaled data for the elite
-population of the current generation, as well as their fitness values.</p>
-</li>
-<li><p class="first"><strong>end_gen</strong> (<em>int</em>) – The maximum number of generations the GA is allowed to run.</p>
-</li>
-<li><p class="first"><strong>fit_function</strong> (<em>function</em>) – The fitness function.</p>
-</li>
-<li><p class="first"><strong>fit_name</strong> (<em>str</em>) – The name of the python file containing the fitness function (without extension).</p>
-</li>
-<li><p class="first"><strong>fit_type</strong> (<em>str</em>) – String that indicates if the fitness function is to be minimized or maximized.
-“min” for minimization and “max” for maximization.</p>
-</li>
-<li><p class="first"><strong>input_path</strong> (<em>str</em>) – Path to the fitness function file.</p>
-</li>
-<li><p class="first"><strong>kwargs</strong> (<em>dict</em>) – This dictionary will be passed as a keyword argument to all fitness functions.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>best_fit</strong> (<em>float</em>) – The fitness value of the best performing solution for the current generation.</li>
+<li><strong>best_individual_index</strong> (<em>int</em>) – The index of the best performing individual for the current generation.</li>
+<li><strong>boundaries</strong> (<em>dict</em>) – This dictionary contains all the max and min bounds for each optimization variable.
+<code class="docutils literal">GA.boundaries[index] = [min,max]</code>.</li>
+<li><strong>current_pop</strong> (<em>dict</em>) – This dictionary contains the coded, decoded and scaled population of the current
+generation, as well as their fitness values.</li>
+<li><strong>elite_pop</strong> (<em>dict</em>) – This dictionary contains the coded, decoded and scaled data for the elite
+population of the current generation, as well as their fitness values.</li>
+<li><strong>end_gen</strong> (<em>int</em>) – The maximum number of generations the GA is allowed to run.</li>
+<li><strong>fit_function</strong> (<em>function</em>) – The fitness function.</li>
+<li><strong>fit_name</strong> (<em>str</em>) – The name of the python file containing the fitness function (without extension).</li>
+<li><strong>fit_type</strong> (<em>str</em>) – String that indicates if the fitness function is to be minimized or maximized.
+“min” for minimization and “max” for maximization.</li>
+<li><strong>input_path</strong> (<em>str</em>) – Path to the fitness function file.</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – This dictionary will be passed as a keyword argument to all fitness functions.
 It can be used to pass required data, objects, that are not related to the
-optimmization variables but are required to run the fitness function.</p>
-</li>
-<li><p class="first"><strong>max_bin_digit</strong> (<em>int</em>) – The maximum number of binary digits that are used to code a variable values.
+optimmization variables but are required to run the fitness function.</li>
+<li><strong>max_bin_digit</strong> (<em>int</em>) – The maximum number of binary digits that are used to code a variable values.
 The number of binary digits assigned to code a variable determine the number
-of discrete steps inside the variable bounds. For example, an 8 digit binary</p>
-<blockquote>
-<div><p>number will produce 256 steps.</p>
-</div></blockquote>
-</li>
-<li><p class="first"><strong>min_fit</strong> (<em>float</em>) – An end condition related to fitness value. If it is set, the GA will stop
+of discrete steps inside the variable bounds. For example, an 8 digit binary
+number will produce 256 steps.</li>
+<li><strong>min_fit</strong> (<em>float</em>) – An end condition related to fitness value. If it is set, the GA will stop
 when any individual achieves a fitness equal or better that <code class="docutils literal">GA.min_fit</code>. If
-it is not set, the GA will end after <code class="docutils literal">GA.num_gen</code> generations.</p>
-</li>
-<li><p class="first"><strong>min_fit_flag</strong> (<em>bool</em>) – Flag the GA uses to determine if the <code class="docutils literal">GA.min_fit</code> value has been achieved.</p>
-</li>
-<li><p class="first"><strong>mutation_probability</strong> (<em>float</em>) – Determines the probability that the mutation operator will mutate each gene.
+it is not set, the GA will end after <code class="docutils literal">GA.num_gen</code> generations.</li>
+<li><strong>min_fit_flag</strong> (<em>bool</em>) – Flag the GA uses to determine if the <code class="docutils literal">GA.min_fit</code> value has been achieved.</li>
+<li><strong>mutation_probability</strong> (<em>float</em>) – Determines the probability that the mutation operator will mutate each gene.
 For each gene a random number <code class="docutils literal">x</code> between 0 and 1 is generated, if <code class="docutils literal">x</code>
-is higher than <code class="docutils literal">GA.mutation_probability</code> it will be mutated.</p>
-</li>
-<li><p class="first"><strong>num_bin_dig</strong> (<em>list</em>) – List of the number of binary digits for each variable. The number of binary
+is higher than <code class="docutils literal">GA.mutation_probability</code> it will be mutated.</li>
+<li><strong>num_bin_dig</strong> (<em>list</em>) – List of the number of binary digits for each variable. The number of binary
 digits assigned to code a variable determine the number of discrete steps
 inside the variable bounds. For example, an 8 digit binary number will
-produce 256 steps.</p>
-</li>
-<li><p class="first"><strong>num_elite</strong> (<em>int</em>) – The number of top performing individuals in the population that are not subject
-to genetic operators, but are simply copied to the next generation.</p>
-</li>
-<li><p class="first"><strong>num_gen</strong> (<em>int</em>) – The number of genertions the GA will run.</p>
-</li>
-<li><p class="first"><strong>num_pop</strong> (<em>int</em>) – The number of individuals per generation.</p>
-</li>
-<li><p class="first"><strong>num_var</strong> (<em>int</em>) – The number of variables in the optimization problem.</p>
-</li>
-<li><p class="first"><strong>output_path</strong> (<em>str</em>) – The path to which the GA outputs result files.</p>
-</li>
-<li><p class="first"><strong>start_from_gen</strong> (<em>int</em>) – The generation from which the GA will restart. If this number is given, the GA
+produce 256 steps.</li>
+<li><strong>num_elite</strong> (<em>int</em>) – The number of top performing individuals in the population that are not subject
+to genetic operators, but are simply copied to the next generation.</li>
+<li><strong>num_gen</strong> (<em>int</em>) – The number of genertions the GA will run.</li>
+<li><strong>num_pop</strong> (<em>int</em>) – The number of individuals per generation.</li>
+<li><strong>num_var</strong> (<em>int</em>) – The number of variables in the optimization problem.</li>
+<li><strong>output_path</strong> (<em>str</em>) – The path to which the GA outputs result files.</li>
+<li><strong>start_from_gen</strong> (<em>int</em>) – The generation from which the GA will restart. If this number is given, the GA
 will look for generation output files in the <code class="docutils literal">GA.input_path</code> and if found,
-the GA will resume optimization from the <code class="docutils literal">GA.start_from_gen</code> generation.</p>
-</li>
-<li><p class="first"><strong>total_bin_dig</strong> (<em>int</em>) – The total number of binary digits. It is the sum of the <code class="docutils literal">GA.num_bin_dig</code> of
-all variables.</p>
-</li>
+the GA will resume optimization from the <code class="docutils literal">GA.start_from_gen</code> generation.</li>
+<li><strong>total_bin_dig</strong> (<em>int</em>) – The total number of binary digits. It is the sum of the <code class="docutils literal">GA.num_bin_dig</code> of
+all variables.</li>
 </ul>
 </td>
 </tr>
