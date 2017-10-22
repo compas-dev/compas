@@ -8,22 +8,12 @@ utilities
 .. module:: compas_blender.utilities
 
 
-animation
----------
-
-.. autosummary::
-    :toctree: generated/
+This package contains many convenience functions for working and interacting
+with Blender.
 
 
 document
 --------
-
-.. autosummary::
-    :toctree: generated/
-
-
-drawing
--------
 
 .. autosummary::
     :toctree: generated/
@@ -40,11 +30,86 @@ layers
     layer_mask
 
 
+objects
+-------
+
+.. autosummary::
+    :toctree: generated/
+
+    delete_object
+    delete_objects
+    delete_all_objects
+    get_objects
+    get_object_name
+    get_objects_name
+    get_object_attributes
+    get_objects_attributes
+    get_object_location
+    get_objects_location
+    get_points
+    get_curves
+    get_meshes
+    set_object_layer
+    set_objects_layer
+    set_object_show_name
+    set_objects_show_name
+    set_object_location
+    set_objects_location
+    set_object_rotation
+    set_objects_rotation
+    set_object_scale
+    set_objects_scale
+    join_objects
+    select_point
+    select_points
+    select_curve
+    select_curves
+    select_mesh
+    select_meshes
+    select_object
+    select_objects
+    select_all_objects
+    deselect_object
+    deselect_objects
+    deselect_all_objects
+    hide_object
+    hide_objects
+    show_object
+    show_objects
+
+
 misc
 ----
 
 .. autosummary::
     :toctree: generated/
+
+
+drawing
+-------
+
+.. autosummary::
+    :toctree: generated/
+
+    delete_all_materials
+    create_material
+    draw_cuboid
+    draw_cubes
+    draw_pipes
+    draw_plane
+    draw_spheres
+    draw_lines
+    draw_points
+    xdraw_cubes
+    xdraw_faces
+    xdraw_labels
+    xdraw_lines
+    xdraw_mesh
+    xdraw_pipes
+    xdraw_pointcloud
+    xdraw_points
+    xdraw_spheres
+    xdraw_texts
 
 
 modifiers
@@ -53,21 +118,26 @@ modifiers
 .. autosummary::
     :toctree: generated/
 
+    bevel
+    linear_array
+    subdivide
+    triangulate
 
-objects
--------
-
-.. autosummary::
-    :toctree: generated/
 
 """
 
-# from .document import *
+from .document import *
 from .objects import *
-from .layers import *
+from .misc import *
 from .drawing import *
-# from .animation import *
-# from .misc import *
-# from .modifiers import *
+from .modifiers import *
+from .layers import *
 
-__all__ = []
+from .document import __all__ as a
+from .layers import __all__ as b
+from .objects import __all__ as c
+from .misc import __all__ as d
+from .drawing import __all__ as e
+from .modifiers import __all__ as f
+
+__all__ = a + b + c + d + e + f

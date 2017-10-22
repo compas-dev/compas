@@ -1,4 +1,8 @@
-from compas.datastructures.network import Network
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+from compas.datastructures import Network
 
 from compas_blender.geometry import BlenderMesh
 
@@ -28,3 +32,16 @@ def network_from_bmesh(bmesh):
     edges = blendermesh.get_edge_vertex_indices()
     network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
     return network
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    from compas_blender.utilities import get_objects
+    
+    network = network_from_bmesh(bmesh=get_objects(layer=0)[0])
+    
+    print(network)

@@ -1,4 +1,5 @@
 from compas.cad import PointGeometryInterface
+
 from compas_blender.utilities import select_point
 
 
@@ -17,7 +18,7 @@ class BlenderPoint(PointGeometryInterface):
     def __init__(self, object):
         self.guid = object.name
         self.object = object
-        self.geometry = None
+        self.geometry = self.object.data
         self.attributes = {}
         self.type = self.object.type
 
@@ -72,4 +73,9 @@ if __name__ == "__main__":
     print(point.attributes)
     print(point.type)
     print(point.xyz)
+    
+    point.hide()
+    point.show()
     point.unselect()
+    point.select()
+    

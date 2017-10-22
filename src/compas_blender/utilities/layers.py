@@ -8,6 +8,12 @@ except ImportError:
     pass
 
 
+__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'liew@arch.ethz.ch'
+
+
 __all__ = [
     'clear_layer',
     'clear_layers',
@@ -15,17 +21,11 @@ __all__ = [
 ]
 
 
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
-
-
 def clear_layer(layer):
     """ Deletes objects in given layer.
 
     Parameters:
-        layers (int): Layer number.
+        layer (int): Layer number.
 
     Returns:
         None
@@ -47,6 +47,10 @@ def clear_layers(layers):
     elif isinstance(layers, list):
         for layer in layers:
             delete_objects(get_objects(layer=layer))
+
+
+def clear_current_layer():
+    raise NotImplementedError
 
 
 def layer_mask(layer):

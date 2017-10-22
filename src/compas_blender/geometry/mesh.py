@@ -1,5 +1,8 @@
 from compas.cad import MeshGeometryInterface
+
 from compas.geometry import add_vectors
+from compas.geometry import distance_point_point
+
 from compas_blender.utilities import select_mesh
 
 try:
@@ -23,7 +26,7 @@ class BlenderMesh(MeshGeometryInterface):
     def __init__(self, object):
         self.guid = object.name
         self.mesh = object
-        self.geometry = None
+        self.geometry = object.data
         self.attributes = {}
         self.type = self.mesh.type
 
@@ -49,69 +52,99 @@ class BlenderMesh(MeshGeometryInterface):
         self.mesh.select = False
 
     def get_vertex_coordinates(self):
-        location = self.xyz
         pts_ = [list(vertex.co) for vertex in self.mesh.data.vertices]
-        pts = [add_vectors(location, i) for i in pts_]
+        pts = [add_vectors(self.xyz, i) for i in pts_]
         return pts
 
     def get_face_vertices(self):
-        raise NotImplementedError
+        faces = self.get_face_vertex_indices()
+        return [[list(self.mesh.data.vertices[i].co) for i in face] for face in faces]
 
     def get_vertex_colors(self):
-        raise NotImplementedError
-
-    def set_vertex_colors(self, vertices, colors):
-        bmesh = self.mesh
-        bpy.context.scene.objects.active = bmesh
-        bmesh.select = True
-        if bmesh.data.vertex_colors:
-            col = bmesh.data.vertex_colors.active
-        else:
-            col = bmesh.data.vertex_colors.new()
-        faces = bmesh.data.polygons
-        for face in faces:
+        colors = []
+        self.mesh.select = True
+        col = self.mesh.data.vertex_colors.new()
+        vertices = range(len(self.mesh.data.vertices))
+        for face in self.mesh.data.polygons:
             for i in face.loop_indices:
-                j = bmesh.data.loops[i].vertex_index
+                j = self.mesh.data.loops[i].vertex_index
+                if j in vertices:
+                    ind = vertices.index(j)
+                    colors.append(list(col.data[i].color))
+        return colors
+        
+    def set_vertex_colors(self, vertices, colors):
+        self.mesh.select = True
+        if self.mesh.data.vertex_colors:
+            col = self.mesh.data.vertex_colors.active
+        else:
+            col = self.mesh.data.vertex_colors.new()
+        for face in self.mesh.data.polygons:
+            for i in face.loop_indices:
+                j = self.mesh.data.loops[i].vertex_index
                 if j in vertices:
                     ind = vertices.index(j)
                     col.data[i].color = colors[ind]
-        bmesh.select = False
 
     def unset_vertex_colors(self):
-        vertices = self.get_vertex_indices()
-        self.set_vertex_colors(vertices, [[1, 1, 1]] * len(vertices))
+        vertices = range(len(self.mesh.data.vertices))
+        colors = [[1, 1, 1]] * len(vertices)
+        self.set_vertex_colors(vertices=vertices, colors=colors)
 
     def get_vertices_and_faces(self):
         vertices = self.get_vertex_coordinates()
-        faces = self.get_face_indices()
+        faces = self.get_face_vertex_indices()
         return vertices, faces
 
     def get_border(self):
         raise NotImplementedError
 
     def get_vertex_index(self):
-        raise NotImplementedError
+        # User must be in object mode, with vertex selected from edit mode.
+        try:
+            return mesh.get_vertex_indices()[0]
+        except:
+            return None
 
     def get_face_index(self):
-        raise NotImplementedError
+        # User must be in object mode, with face selected from edit mode.
+        try:
+            return mesh.get_face_indices()[0]
+        except:
+            return None
+
+    def get_edge_index(self):
+        # User must be in object mode, with edge selected from edit mode.
+        try:
+            return mesh.get_edge_indices()[0]
+        except:
+            return None
 
     def get_vertex_face_indices(self):
         raise NotImplementedError
 
     def get_vertex_indices(self):
-        return range(len(self.mesh.data.vertices))
+        # User must be in object mode, with vertices selected from edit mode.
+        return [vertex.index for vertex in self.mesh.data.vertices if vertex.select]
 
     def get_edge_indices(self):
-        return range(len(self.mesh.data.edges))
+        # User must be in object mode, with edges selected from edit mode.
+        return [edge.index for edge in self.mesh.data.edges if edge.select]
 
     def get_face_indices(self):
-        return range(len(self.mesh.data.polygons))
+        # User must be in object mode, with faces selected from edit mode.
+        return [face.index for face in self.mesh.data.polygons if face.select]
 
     def get_edge_vertex_indices(self):
         return [list(edge.vertices) for edge in self.mesh.data.edges]
 
     def get_face_vertex_indices(self):
         return [list(face.vertices) for face in self.mesh.data.polygons]
+    
+    def update_vertices(self, X):
+        for c, xyz in enumerate(list(X)):
+            self.mesh.data.vertices[c].co = xyz
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
     # ==========================================================================
     # geometric
@@ -122,6 +155,26 @@ class BlenderMesh(MeshGeometryInterface):
 
     def normals(self, points):
         raise NotImplementedError
+        
+    def edge_length(self, edge):
+        u, v = self.mesh.data.edges[edge].vertices
+        sp, ep = [list(self.mesh.data.vertices[i].co) for i in [u, v]]
+        return distance_point_point(sp, ep)
+    
+    def edge_lengths(self):
+        return [self.edge_length(edge=i) for i in range(len(self.mesh.data.edges))]
+        
+    def face_normal(self, face):
+        return list(self.mesh.data.polygons[face].normal)
+
+    def face_normals(self):
+        return [list(face.normal) for face in self.mesh.data.polygons]
+    
+    def face_area(self, face):
+        return self.mesh.data.polygons[face].area
+
+    def face_areas(self):
+        return [face.area for face in self.mesh.data.polygons]
 
     def closest_point(self, point, maxdist=None):
         raise NotImplementedError
@@ -135,222 +188,41 @@ class BlenderMesh(MeshGeometryInterface):
 # ==============================================================================
 
 if __name__ == '__main__':
+    
+    from compas_blender.utilities import get_objects
 
-    mesh = BlenderMesh.from_selection()
+    mesh = BlenderMesh(get_objects(layer=0)[0])
 
     print(mesh.guid)
     print(mesh.mesh)
     print(mesh.geometry)
     print(mesh.attributes)
     print(mesh.type)
+    
+    mesh.hide()
+    mesh.show()
+    mesh.unselect()
+    mesh.select()
+    
     print(mesh.get_vertex_coordinates())
     print(mesh.get_edge_vertex_indices())
     print(mesh.get_face_vertex_indices())
-    print(mesh.get_edge_indices())
-    print(mesh.get_face_indices())
+    print(mesh.get_vertices_and_faces())
+    print(mesh.face_normals())
+    print(mesh.face_normal(face=4))
+    print(mesh.face_area(face=4))
+    print(mesh.face_areas())
+    print(mesh.edge_length(edge=4))
+    print(mesh.edge_lengths())
+    
+    mesh.set_vertex_colors(vertices=[0, 1], colors=[[1, 0, 0], [0, 0, 1]])
+    print(mesh.get_vertex_colors())
     mesh.unset_vertex_colors()
-
-
-
-# from compas.geometry import area_polygon
-# from compas.geometry import distance_point_point
-# from compas.geometry import normal_polygon
-
-# def remove_duplicate_bmesh_vertices(bmesh):
-#     """ Remove duplicate overlapping vertices of a Blender mesh object.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-
-#     Returns:
-#         obj: New Blender mesh.
-#     """
-#     bmesh.select = True
-#     bpy.ops.object.mode_set(mode='EDIT')
-#     bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='VERT')
-#     mesh = bmesh.from_edit_mesh(bpy.context.object.data)
-#     for vertex in mesh.verts:
-#         vertex.select = True
-#     bpy.ops.mesh.remove_doubles()
-#     bpy.ops.object.mode_set(mode='OBJECT')
-#     bmesh.select = False
-#     return mesh
-
-
-# def update_bmesh_vertices(bmesh, X, winswap=False):
-#     """ Update the vertex co-ordinates of a Blender mesh.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-#         X (array, list): New x, y, z co-ordinates.
-#         winswap (bool): Update workspace window.
-
-#     Returns:
-#         None
-#     """
-#     for c, Xi in enumerate(list(X)):
-#         bmesh.data.vertices[c].co = Xi
-#     if winswap:
-#         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
-
-
-# def bmesh_edge_lengths(bmesh):
-#     """ Retrieve the edge legnths of a Blender mesh.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-
-#     Returns:
-#         list: Lengths of each edge.
-#         float: Total length.
-#     """
-#     X, uv, _ = bmesh_data(bmesh)
-#     lengths = [distance_point_point(X[u], X[v]) for u, v in uv]
-#     L = sum(lengths)
-#     return lengths, L
-
-
-# def bmesh_face_areas(bmesh):
-#     """ Retrieve the face areas of a Blender mesh.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-
-#     Returns:
-#         list: Areas of each face.
-#         float: Total area.
-#     """
-#     vertices, edges, faces = bmesh_data(bmesh)
-#     polygons = [[vertices[i] for i in face] for face in faces]
-#     areas = [area_polygon(polygon) for polygon in polygons]
-#     A = sum(areas)
-#     return areas, A
-
-
-# def bmesh_face_normals(bmesh):
-#     """ Retrieve the face normals of a Blender mesh.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-
-#     Returns:
-#         list: Normals of each face.
-#     """
-#     vertices, edges, faces = bmesh_data(bmesh)
-#     polygons = [[vertices[i] for i in face] for face in faces]
-#     normals = [normal_polygon(polygon) for polygon in polygons]
-#     return normals
-
-
-# def unify_bmesh_normals(bmesh):
-#     """ Make the Blender mesh face normals consistent.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-
-#     Returns:
-#         None
-#     """
-#     bmesh.mode_set(mode='EDIT')
-#     bmesh.normals_make_consistent(inside=False)
-#     bmesh.mode_set(mode='OBJECT')
-
-
-# def remove_duplicate_bmesh_vertices(bmesh):
-#     """ Remove duplicate overlapping vertices of a Blender mesh object.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-
-#     Returns:
-#         obj: New Blender mesh.
-#     """
-#     bmesh.select = True
-#     bpy.ops.object.mode_set(mode='EDIT')
-#     bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='VERT')
-#     mesh = bmesh.from_edit_mesh(bpy.context.object.data)
-#     for vertex in mesh.verts:
-#         vertex.select = True
-#     bpy.ops.mesh.remove_doubles()
-#     bpy.ops.object.mode_set(mode='OBJECT')
-#     bmesh.select = False
-#     return mesh
-
-
-# def update_bmesh_vertices(bmesh, X, winswap=False):
-#     """ Update the vertex co-ordinates of a Blender mesh.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-#         X (array, list): New x, y, z co-ordinates.
-#         winswap (bool): Update workspace window.
-
-#     Returns:
-#         None
-#     """
-#     for c, Xi in enumerate(list(X)):
-#         bmesh.data.vertices[c].co = Xi
-#     if winswap:
-#         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
-
-
-# def bmesh_edge_lengths(bmesh):
-#     """ Retrieve the edge legnths of a Blender mesh.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-
-#     Returns:
-#         list: Lengths of each edge.
-#         float: Total length.
-#     """
-#     X, uv, _ = bmesh_data(bmesh)
-#     lengths = [distance_point_point(X[u], X[v]) for u, v in uv]
-#     L = sum(lengths)
-#     return lengths, L
-
-
-# def bmesh_face_areas(bmesh):
-#     """ Retrieve the face areas of a Blender mesh.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-
-#     Returns:
-#         list: Areas of each face.
-#         float: Total area.
-#     """
-#     vertices, edges, faces = bmesh_data(bmesh)
-#     polygons = [[vertices[i] for i in face] for face in faces]
-#     areas = [area_polygon(polygon) for polygon in polygons]
-#     A = sum(areas)
-#     return areas, A
-
-
-# def bmesh_face_normals(bmesh):
-#     """ Retrieve the face normals of a Blender mesh.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-
-#     Returns:
-#         list: Normals of each face.
-#     """
-#     vertices, edges, faces = bmesh_data(bmesh)
-#     polygons = [[vertices[i] for i in face] for face in faces]
-#     normals = [normal_polygon(polygon) for polygon in polygons]
-#     return normals
-
-
-# def unify_bmesh_normals(bmesh):
-#     """ Make the Blender mesh face normals consistent.
-
-#     Parameters:
-#         bmesh (obj): Blender mesh object.
-
-#     Returns:
-#         None
-#     """
-#     bmesh.mode_set(mode='EDIT')
-#     bmesh.normals_make_consistent(inside=False)
-#     bmesh.mode_set(mode='OBJECT')
+    
+    X = [[x, y, z + 1] for x, y, z in mesh.get_vertex_coordinates()]
+    mesh.update_vertices(X)
+    
+    print(mesh.get_face_index())
+    print(mesh.get_edge_index())
+    print(mesh.get_vertex_index())
+    print(mesh.get_face_vertices())

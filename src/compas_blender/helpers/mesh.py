@@ -1,4 +1,8 @@
-from compas.datastructures.mesh import Mesh
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+from compas.datastructures import Mesh
 
 from compas_blender.geometry import BlenderMesh
 
@@ -27,5 +31,17 @@ def mesh_from_bmesh(bmesh):
     vertices = blendermesh.get_vertex_coordinates()
     faces = blendermesh.get_face_vertex_indices()
     mesh = Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)
-    # mesh.add_edges_from_faces()
     return mesh
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    from compas_blender.utilities import get_objects
+    
+    mesh = mesh_from_bmesh(bmesh=get_objects(layer=0)[0])
+    
+    print(mesh)

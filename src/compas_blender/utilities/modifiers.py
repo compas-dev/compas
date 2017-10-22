@@ -89,9 +89,9 @@ if __name__ == "__main__":
     from compas_blender.utilities import draw_cuboid
     from compas_blender.utilities import clear_layer
 
-    clear_layer(layer=0)
+    clear_layer(layer=1)
 
-    cube = draw_cuboid()
+    cube = draw_cuboid(layer=1)
 
     subdivide(object=cube, levels=2, type='CATMULL_CLARK')
     triangulate(object=cube)

@@ -18,7 +18,7 @@ except ImportError:
 
 
 __author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT'
 __email__      = 'vanmelet@ethz.ch'
 
