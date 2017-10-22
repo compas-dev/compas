@@ -1,14 +1,14 @@
 from __future__ import print_function
 
 
-__author__    = ['Tom Van Mele', ]
+__author__    = ['Tom Van Mele', 'Matthias Rippmann']
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'geometric_key', 'geometric_key2'
+    'geometric_key', 'geometric_key2', 'normalize_values'
 ]
 
 
