@@ -28,10 +28,14 @@ class RhinoCurve(CurveGeometryInterface):
 
     def __init__(self, guid):
         self.guid = guid
-        self.curve = find_object(guid)
+        self.curve = RhinoCurve.find(self.guid)
         self.geometry = self.curve.Geometry
         self.attributes = self.curve.Attributes
         self.otype = self.geometry.ObjectType
+
+    @staticmethod
+    def find(guid):
+        return find_object(guid)
 
     def hide(self):
         return rs.HideObject(self.guid)

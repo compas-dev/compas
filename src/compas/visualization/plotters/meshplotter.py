@@ -102,7 +102,7 @@ class MeshPlotter(Plotter):
                 'fontsize' : fontsizedict[key]
             })
 
-        collection = self.draw_xpoints(points)
+        collection = self.draw_points(points)
         self.vertexcollection = collection
         return collection
 
@@ -152,7 +152,7 @@ class MeshPlotter(Plotter):
                 'fontsize' : fontsizedict[(u, v)]
             })
 
-        collection = self.draw_xlines(lines)
+        collection = self.draw_lines(lines)
         self.edgecollection = collection
         return collection
 
@@ -202,7 +202,7 @@ class MeshPlotter(Plotter):
                 'fontsize' : fontsizedict[key]
             })
 
-        collection = self.draw_xpolygons(polygons)
+        collection = self.draw_polygons(polygons)
         self.facecollection = collection
         return collection
 
@@ -226,22 +226,12 @@ if __name__ == "__main__":
     import compas
     from compas.datastructures.mesh import Mesh
 
-    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
-
-    mesh.add_edges_from_faces()
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     plotter = MeshPlotter(mesh)
 
-    plotter.defaults['vertex.facecolor'] = '#000000'
-    plotter.defaults['vertex.edgecolor'] = '#ffffff'
-
-    plotter.defaults['face.facecolor'] = '#eeeeee'
-    plotter.defaults['face.edgewidth'] = 0.0
-
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2},
-                          edgecolor={key: '#ffffff' for key in mesh.vertices() if mesh.vertex_degree(key) == 2})
-
+    plotter.draw_vertices()
     plotter.draw_edges()
-    plotter.draw_faces(text={key: str(key) for key in mesh.faces()})
+    plotter.draw_faces()
 
     plotter.show()

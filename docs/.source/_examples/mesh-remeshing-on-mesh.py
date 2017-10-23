@@ -1,23 +1,17 @@
-"""Remeshing a 3D mesh."""
-
 from __future__ import print_function
 
-import rhinoscriptsyntax as rs
+from compas.utilities import geometric_key
+from compas.geometry import centroid_points
+from compas.datastructures import Mesh
+from compas.datastructures import trimesh_remesh
+from compas.geometry import smooth_centroid
+from compas.datastructures import mesh_quads_to_triangles
 
 import compas_rhino
 
-from compas.utilities import geometric_key
-
-from compas.geometry import centroid_points
-
-from compas.datastructures.mesh import Mesh
-from compas.datastructures.mesh.algorithms import smooth_mesh_centroid
-from compas.datastructures.mesh.algorithms import optimise_trimesh_topology
-
-from compas.cad.rhino.geometry.mesh import RhinoMesh
-from compas.cad.rhino.geometry.curve import RhinoCurve
-
-from compas.cad.rhino.conduits.mesh import MeshConduit
+from compas_rhino.geometry import RhinoMesh
+from compas_rhino.geometry import RhinoCurve
+from compas_rhino.conduits import MeshConduit
 
 
 __author__    = ['Tom Van Mele', 'Matthias Rippmann']
@@ -26,41 +20,13 @@ __license__   = 'MIT'
 __email__     = 'van.mele@arch.ethz.ch'
 
 
-# define the mesh boundary smoother
-
-def smooth_mesh_boundary(mesh, boundary, fixed=None):
-    for i in range(10):
-        key_xyz = {key: mesh.vertex_coordinates(key) for key in boundary}
-        for key in boundary:
-            if key in fixed:
-                continue
-            points = []
-            for nbr in mesh.vertex_neighbours(key):
-                if key not in boundary:
-                    continue
-                points.append(key_xyz[key])
-            x, y, z = centroid_points(points)
-            mesh.vertex[key]['x'] = x
-            mesh.vertex[key]['y'] = y
-            mesh.vertex[key]['z'] = z
-
-
-# define the post-processing function
-# that will be called at every iteration
-
 def callback(mesh, k, args):
+    conduit, fixed, target, border = args
+
     # prevent the dreaded Rhino spinning wheel
     compas_rhino.wait()
 
-    # unpack the user-defined argument list
-    conduit, fixed, target, border = args
-
-    # find the boundary vertices
     boundary = set(mesh.vertices_on_boundary())
-
-    # smooth
-    smooth_mesh_centroid(mesh, fixed=boundary, kmax=1)
-    smooth_mesh_boundary(mesh, boundary, fixed=fixed)
 
     # pull the mesh vertices back to the target and border
     for key, attr in mesh.vertices(data=True):
@@ -91,17 +57,14 @@ guid_border = compas_rhino.select_polyline()
 
 points = compas_rhino.get_point_coordinates(compas_rhino.select_points())
 
-# triangulate the input mesh
-
-rs.MeshQuadsToTriangles(guid_target)
-
 # make a remeshing mesh
 
 mesh = compas_rhino.mesh_from_guid(Mesh, guid_target)
 
+mesh_quads_to_triangles(mesh)
+
 # update its attributes
 
-mesh.attributes['name'] = 'Remeshed'
 mesh.update_default_vertex_attributes({'is_fixed': False})
 
 # make the target and border objects
@@ -136,16 +99,18 @@ target_length = 0.25
 
 # visualise the process with a conduit
 with conduit.enabled():
-    optimise_trimesh_topology(mesh,
-                              target_length,
-                              tol=0.1,
-                              divergence=0.01,
-                              kmax=500,
-                              allow_boundary_split=True,
-                              allow_boundary_collapse=True,
-                              smooth=False,
-                              fixed=fixed,
-                              callback=callback,
-                              callback_args=(conduit, fixed, target, border))
+    trimesh_remesh(
+        mesh,
+        target_length,
+        tol=0.1,
+        divergence=0.01,
+        kmax=500,
+        allow_boundary_split=True,
+        allow_boundary_collapse=True,
+        smooth=True,
+        fixed=fixed,
+        callback=callback,
+        callback_args=(conduit, fixed, target, border)
+    )
 
-compas_rhino.draw_mesh(mesh, layer='remeshed', clear_layer=True)
+compas_rhino.mesh_draw(mesh, layer='remeshed', clear_layer=True)
