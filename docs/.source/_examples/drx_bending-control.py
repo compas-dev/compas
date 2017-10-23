@@ -1,0 +1,111 @@
+# """A dynamic relaxation example for controlling beam elements."""
+
+from compas.datastructures import Network
+
+from compas_blender.geometry import bezier_curve_interpolate
+from compas_blender.utilities import clear_layers
+from compas_blender.utilities import draw_bmesh
+from compas_blender.utilities import get_objects
+
+from compas.hpc.numba_.drx import numba_drx
+
+from compas.numerical import normrow
+from compas.numerical import closest_points_points
+from compas.numerical.solvers import devo
+
+from numpy import array
+from numpy import arctan2
+from numpy import cos
+from numpy import mean
+from numpy import pi
+from numpy import sin
+from numpy import vstack
+
+
+__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'liew@arch.ethz.ch'
+
+
+def update(dofs, network, tol, plot, Xt):
+    x1, z1, r1, x2, z2, r2 = dofs
+    dx1 = ds * cos(r1)
+    dx2 = ds * cos(r2)
+    dz1 = ds * sin(r1)
+    dz2 = ds * sin(r2)
+    sp, ep = network.leaves()
+    network.set_vertex_attributes(sp, {'x': x1, 'z': z1})
+    network.set_vertex_attributes(ep, {'x': x2, 'z': z2})
+    network.set_vertex_attributes(sp + 1, {'x': dx1 + x1, 'z': dz1 + z1})
+    network.set_vertex_attributes(ep - 1, {'x': dx2 + x2, 'z': dz2 + z2})
+    X, f, l = numba_drx(network=network, factor=1, tol=tol)
+    if plot:
+        ind = closest_points_points(X, Xt, distances=False)
+        vertices = vstack([X, Xt[ind, :]])
+        n = X.shape[0]
+        edges = [[i, i + n] for i in range(n)] + list(network.edges())
+        draw_bmesh(name='norms', vertices=vertices, edges=edges)
+    return X
+
+
+def fn(dofs, *args):
+    network, Xt, tol = args
+    X = update(dofs=dofs, network=network, tol=tol, plot=False, Xt=Xt)
+    ind = closest_points_points(X, Xt, distances=False)
+    return 1000 * mean(normrow(X - Xt[ind, :]))
+
+
+clear_layers(layers=[0])
+
+# Beam input
+
+L = 0.88
+m = 20
+ds = L / m
+div = 10
+E = 5 * 10**9
+I = 2 * 10**(-11)
+A = 0.005**2
+
+# Solver input
+
+mi = div * m + 1
+tol = 0.01
+deg = pi / 180.
+du = 0.02
+dr = 15 * deg
+curve = get_objects(layer=1)[0]
+Xt = array(bezier_curve_interpolate(curve=curve, number=mi))
+
+# Network
+
+vertices = [list(Xi) for Xi in list(Xt[0:mi:div, :])]
+edges = [[i, i + 1] for i in range(m)]
+network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+network.update_default_vertex_attributes({'EIx': E * I, 'EIy': E * I})
+network.update_default_edge_attributes({'E': E, 'A': A, 'l0': ds})
+network.set_vertices_attributes([0, 1, m - 1, m], {'B': [0, 0, 0]})
+network.beams = {'beam': {'nodes': list(range(m + 1))}}
+
+# Manual
+
+#dofs = 0, 0, 45 * deg, 0.6, 0, 155 * deg
+#Xs = update(dofs=dofs, network=network, tol=tol, plot=True, Xt=Xt)
+
+# Optimise
+
+xa, za = Xt[+0, [0, 2]]
+xb, zb = Xt[+1, [0, 2]]
+xc, zc = Xt[-2, [0, 2]]
+xd, zd = Xt[-1, [0, 2]]
+r1 = arctan2(zb - za, xb - xa)
+r2 = arctan2(zc - zd, xc - xd)
+bounds = [(xa - du, xa + du), (za - du, za + du), (r1 - dr, r1 + dr),
+          (xd - du, xd + du), (zd - du, zd + du), (r2 - dr, r2 + dr)]
+args = network, Xt, tol
+fopt, uopt = devo(fn=fn, bounds=bounds, population=20, iterations=30, args=args)
+
+# Plot
+
+update(dofs=uopt, network=network, tol=tol, plot=True, Xt=Xt)

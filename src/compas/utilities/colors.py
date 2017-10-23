@@ -56,6 +56,8 @@ class Color(object):
 
 
 def i_to_rgb(i):
+    i  = max(i, 0.0)
+    i  = min(i, 1.0)
     if i == 0.0:
         return 0, 0, 255
     if 0.0 < i < 0.25:

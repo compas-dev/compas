@@ -313,17 +313,16 @@ def network_draw_vertex_labels(network,
 
 
 def network_draw_edge_labels(network,
-                             attr_name=None,
+                             text=None,
                              layer=None,
-                             color=None,
-                             formatter=None):
+                             color=None):
     """Draw labels for the edges of a network.
 
     Parameters
     ----------
     network : compas.datastructures.Network
         A network object.
-    attr_name : str (None)
+    text : str (None)
         The name of the attribute value to display in the label.
         Default is to display the edge keys.
     layer : str (None)
@@ -352,23 +351,17 @@ def network_draw_edge_labels(network,
 
     """
 
-    if not attr_name:
-        attr_name = 'key'
+    # if formatter:
+    #     assert callable(formatter), 'The provided formatter is not callable.'
+    # else:
+    #     formatter = str
 
-    if formatter:
-        assert callable(formatter), 'The provided formatter is not callable.'
+    if not text or text == 'key':
+        text = {(u, v): '{}-{}'.format(u, v) for u, v in network.edges()}
+    elif text == 'index':
+        text = {(u, v): str(index) for index, (u, v) in enumerate(network.edges())}
     else:
-        formatter = str
-
-    text = {}
-    for index, (u, v, attr) in enumerate(network.vertices(True)):
-        if 'key' == attr_name:
-            value = '{}-{}'.format(u, v)
-        elif 'index' == attr_name:
-            value = index
-        else:
-            value = attr[attr_name]
-        text[(u, v)] = formatter(value)
+        pass
 
     artist = NetworkArtist(network)
     artist.layer = layer

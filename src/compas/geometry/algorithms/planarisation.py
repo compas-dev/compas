@@ -11,6 +11,8 @@ from compas.geometry import subtract_vectors
 from compas.geometry import angle_smallest_vectors
 from compas.geometry import dot_vectors
 from compas.geometry import scale_vector
+from compas.geometry import distance_point_point
+from compas.geometry import distance_line_line
 
 from compas.utilities import window
 
@@ -24,13 +26,9 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = [
     'planarize_faces',
     'flatness',
+    'flatness2'
 ]
 
-
-# flatness should be measured as the ratio of the distance between the diagonals
-# and the average edge length
-# this should not exceed 2%
-# note that this only works for quad meshes
 
 def flatness(vertices, faces):
     """Compute mesh flatness per face.
@@ -53,7 +51,7 @@ def flatness(vertices, faces):
     """
     dev = []
     for face in faces:
-        points = [vertices[index] for index in face]
+        points = [vertices[key] for key in face]
         base, normal = bestfit_plane_from_points(points)
         angles = []
         for a, b, c in window(points + points[0:2], 3):
@@ -66,6 +64,35 @@ def flatness(vertices, faces):
                 angle = angle_smallest_vectors(n, scale_vector(normal, -1))
             angles.append(angle)
         dev.append(sum(angles) / len(angles))
+    return dev
+
+
+def flatness2(vertices, faces, maxdev=0.02):
+    """Compute mesh flatness per face.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+
+    Returns
+    -------
+    dict
+        For each face, a deviation from *flatness*.
+
+    Note
+    ----
+    The "flatness" of a face is expressed as the average of the angles between
+    the normal at each face corner and the normal of the best-fit plane.
+
+    """
+    dev = []
+    for face in faces:
+        points = [vertices[key] for key in face]
+        lengths = [distance_point_point(a, b) for a, b in window(points + points[0:1], 2)]
+        l = sum(lengths) / len(lengths)
+        d = distance_line_line((points[0], points[2]), (points[1], points[3]))
+        dev.append((d / l) / maxdev)
     return dev
 
 
@@ -131,7 +158,7 @@ def planarize_faces(vertices,
             xyz[2] = z
 
         if callback:
-            callback(mesh, k, callback_args)
+            callback(vertices, faces, k, callback_args)
 
 
 # def planarize_shapeop(mesh,

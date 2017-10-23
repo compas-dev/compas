@@ -27,7 +27,7 @@ from compas.datastructures.mixins import EdgeMappings
 from compas.datastructures.mixins import FromToData
 from compas.datastructures.mixins import FromToJson
 
-from compas.datastructures.network.algorithms import network_bfs2
+from compas.topology import bfs_traverse
 
 
 __author__     = 'Tom Van Mele'
@@ -507,7 +507,7 @@ network: {0}
             return False
 
         root = self.get_any_vertex()
-        nodes = network_bfs2(self.halfedge, root)
+        nodes = bfs_traverse(self.halfedge, root)
 
         return len(nodes) == self.number_of_vertices()
 

@@ -23,4 +23,7 @@ compas_rhino
 from .utilities import *
 from .utilities import __all__ as a
 
-__all__ = a
+from .helpers import *
+from .helpers import __all__ as b
+
+__all__ = a + b

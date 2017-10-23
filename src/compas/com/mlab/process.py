@@ -5,9 +5,14 @@ import time
 from subprocess import Popen
 from subprocess import PIPE
 
-from scipy.io import savemat
-from scipy.io import loadmat
-
+try:
+    from scipy.io import savemat
+    from scipy.io import loadmat
+except ImportError:
+    pass
+    # import platform
+    # if platform.python_implementation() != 'IronPython':
+    #     raise
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
