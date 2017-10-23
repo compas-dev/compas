@@ -8,10 +8,10 @@
 
 from __future__ import print_function
 
-from compas.datastructures.mesh import Mesh
-from compas.datastructures.mesh.algorithms import smooth_mesh_area
+from compas.datastructures import Mesh
+from compas.geometry import smooth_area
 
-from compas.cad.rhino.conduits.mesh import MeshConduit
+from compas_rhino.conduits import LinesConduit
 
 import compas_rhino
 
@@ -22,8 +22,9 @@ __license__   = 'MIT'
 __email__     = 'van.mele@arch.ethz.ch'
 
 
-def callback(mesh, k, args):
-    conduit = args[0]
+def callback(vertices, k, args):
+    conduit, edges = args
+    conduit.lines = [[vertices[u], vertices[v]] for u, v in iter(edges)]
     conduit.redraw(k)
 
 
@@ -36,9 +37,29 @@ for key in [161, 256]:
     mesh.vertex[key]['z'] -= 15
     fixed.add(key)
 
-conduit = MeshConduit(mesh, refreshrate=5)
+vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+faces = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
+adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
+
+edges = list(mesh.edges())
+lines = [[vertices[u], vertices[v]] for u, v in edges]
+
+conduit = LinesConduit(lines, refreshrate=5)
 
 with conduit.enabled():
-    smooth_mesh_area(mesh, fixed, kmax=100, callback=callback, callback_args=(conduit, ))
+    smooth_area(
+        vertices,
+        faces,
+        adjacency,
+        fixed=fixed,
+        kmax=100,
+        callback=callback,
+        callback_args=(conduit, edges)
+    )
 
-compas_rhino.draw_mesh(mesh)
+for key, attr in mesh.vertices(True):
+    attr['x'] = vertices[key][0]
+    attr['y'] = vertices[key][1]
+    attr['z'] = vertices[key][2]
+
+compas_rhino.mesh_draw(mesh)

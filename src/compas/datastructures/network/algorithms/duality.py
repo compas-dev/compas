@@ -77,8 +77,8 @@ def network_dual(network, cls=None):
                     'radius': 0.075,
                 })
 
-            plotter.draw_xlines(lines)
-            plotter.draw_xpoints(points)
+            plotter.draw_lines(lines)
+            plotter.draw_points(points)
             plotter.draw_vertices(radius=0.15, facecolor='#ffffff', edgecolor='#444444', text={key: key for key in network.vertices()})
             plotter.draw_edges()
 

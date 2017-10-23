@@ -236,7 +236,7 @@ def mesh_voronoi_from_points(points, boundary=None, holes=None, return_delaunay=
 
             plotter = MeshPlotter(delaunay)
 
-            plotter.draw_xlines(lines)
+            plotter.draw_lines(lines)
 
             facecolor = {key: '#0092d2' for key in delaunay.vertices() if key not in boundary}
 
@@ -299,7 +299,7 @@ if __name__ == "__main__":
 
     plotter = MeshPlotter(delaunay)
 
-    plotter.draw_xlines(lines)
+    plotter.draw_lines(lines)
 
     facecolor = {key: '#0092d2' for key in delaunay.vertices() if key not in boundary}
 

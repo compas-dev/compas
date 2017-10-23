@@ -18,7 +18,6 @@ Definition of display conduits.
     LabelsConduit
     LinesConduit
     MeshConduit
-    PointPairsConduit
     PointsConduit
     SplinesConduit
 
@@ -74,7 +73,6 @@ from .faces import *
 from .labels import *
 from .lines import *
 from .mesh import *
-from .pointpairs import *
 from .points import *
 from .splines import *
 
@@ -82,8 +80,7 @@ from .faces import __all__ as a
 from .labels import __all__ as b
 from .lines import __all__ as c
 from .mesh import __all__ as d
-from .pointpairs import __all__ as e
 from .points import __all__ as f
 from .splines import __all__ as g
 
-__all__ = a + b + c + d + e + f + g
+__all__ = a + b + c + d + f + g
