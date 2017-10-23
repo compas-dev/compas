@@ -27,7 +27,7 @@ from compas.datastructures.mixins import EdgeMappings
 from compas.datastructures.mixins import FromToData
 from compas.datastructures.mixins import FromToJson
 
-from compas.datastructures.network.algorithms import network_bfs2
+#from compas.datastructures.network.algorithms import network_bfs2
 
 
 __author__     = 'Tom Van Mele'

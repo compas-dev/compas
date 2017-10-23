@@ -12,7 +12,7 @@ __email__      = 'liew@arch.ethz.ch'
 # ==============================================================================
 
 n = 10  # number of points along x and y
-ds = 0.2  # spacing of each x and y step
+ds = 0.1  # spacing of each x and y step
 delta = 10**(-5)  # small finite difference
 offset = 0.2  # offset between two surfaces
 x = [ds * i for i in range(n)]  # domain for x
@@ -86,7 +86,6 @@ def f(x, y):
 tic = time()
 
 X, Y = meshgrid(x, y)
-
 delta_ = ones(X.shape) * delta
 Z = f(X, Y)
 zx = f(X + delta_, Y)
@@ -128,9 +127,11 @@ def njit(x, y, n, delta, offset):
 
     i = 0
     for i in range(n):
+
         xi = x[i]
 
         for j in range(n):
+
             yi = y[i]
 
             zij = f(xi, yi)
