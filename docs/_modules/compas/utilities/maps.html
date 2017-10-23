@@ -38,14 +38,14 @@
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 
-<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="s1">'Matthias Rippmann'</span><span class="p">]</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
 <span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
 <span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'geometric_key'</span><span class="p">,</span> <span class="s1">'geometric_key2'</span>
+    <span class="s1">'geometric_key'</span><span class="p">,</span> <span class="s1">'geometric_key2'</span><span class="p">,</span> <span class="s1">'normalize_values'</span>
 <span class="p">]</span>
 
 
@@ -111,13 +111,13 @@
     <span class="k">return</span> <span class="s1">'{0:.</span><span class="si">{2}</span><span class="s1">},{1:.</span><span class="si">{2}</span><span class="s1">}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">normalize_values</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">new_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">new_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<div class="viewcode-block" id="normalize_values"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.normalize_values.html#compas.utilities.normalize_values">[docs]</a><span class="k">def</span> <span class="nf">normalize_values</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">new_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">new_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
     <span class="sd">"""Normalize a list of numbers to the range between new_min and new_max."""</span>
     <span class="n">old_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> 
     <span class="n">old_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
     <span class="n">old_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">old_max</span> <span class="o">-</span> <span class="n">old_min</span><span class="p">)</span> 
     <span class="n">new_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_max</span> <span class="o">-</span> <span class="n">new_min</span><span class="p">)</span>  
-    <span class="k">return</span> <span class="p">[(((</span><span class="n">item</span> <span class="o">-</span> <span class="n">old_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">new_range</span><span class="p">)</span> <span class="o">/</span> <span class="n">old_range</span><span class="p">)</span> <span class="o">+</span> <span class="n">new_min</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">l</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[(((</span><span class="n">item</span> <span class="o">-</span> <span class="n">old_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">new_range</span><span class="p">)</span> <span class="o">/</span> <span class="n">old_range</span><span class="p">)</span> <span class="o">+</span> <span class="n">new_min</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">l</span><span class="p">]</span></div>
 
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Debugging</span>
@@ -171,7 +171,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

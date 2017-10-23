@@ -4,7 +4,7 @@ from compas.datastructures import Mesh
 from compas.geometry import smooth_area
 from compas.visualization import MeshPlotter
 
-mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+mesh = Mesh.from_obj(compas.get('faces.obj'))
 
 vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
 faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
@@ -29,7 +29,7 @@ for key, attr in mesh.vertices(True):
 
 plotter = MeshPlotter(mesh)
 
-plotter.draw_xlines(lines)
+plotter.draw_lines(lines)
 plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
 plotter.draw_edges()
 

@@ -72,11 +72,11 @@
 
 <span class="kn">import</span> <span class="nn">compas</span>
 
-<span class="kn">from</span> <span class="nn">compas.com.mlab.engine</span> <span class="k">import</span> <span class="n">MatlabEngine</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="k">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">compas.numerical.matrices</span> <span class="k">import</span> <span class="n">connectivity_matrix</span>
-<span class="kn">from</span> <span class="nn">compas.numerical.linalg</span> <span class="k">import</span> <span class="n">normrow</span>
-<span class="kn">from</span> <span class="nn">compas.visualization.plotters.networkplotter</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.com</span> <span class="k">import</span> <span class="n">MatlabEngine</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">connectivity_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">normrow</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
 
 
 <span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
@@ -93,7 +93,7 @@
 
 <span class="c1"># make a network from sample data</span>
 
-<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
 
 <span class="c1"># extract vertex coordinates and connectivity matrix</span>
 <span class="c1"># and convert to Matlab matrices</span>
@@ -188,7 +188,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

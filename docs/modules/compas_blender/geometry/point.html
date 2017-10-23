@@ -36,6 +36,7 @@
 </nav>
 <h1>Source code for compas_blender.geometry.point</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas.cad</span> <span class="k">import</span> <span class="n">PointGeometryInterface</span>
+
 <span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="k">import</span> <span class="n">select_point</span>
 
 
@@ -51,48 +52,48 @@
 <div class="viewcode-block" id="BlenderPoint"><a class="viewcode-back" href="../../../reference/generated/compas_blender.geometry.BlenderPoint.html#compas_blender.geometry.BlenderPoint">[docs]</a><span class="k">class</span> <span class="nc">BlenderPoint</span><span class="p">(</span><span class="n">PointGeometryInterface</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="BlenderPoint.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.__init__.html#compas_blender.geometry.BlenderPoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="nb">object</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">type</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_selection</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="BlenderPoint.from_selection"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.from_selection.html#compas_blender.geometry.BlenderPoint.from_selection">[docs]</a>    <span class="k">def</span> <span class="nf">from_selection</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
         <span class="nb">object</span> <span class="o">=</span> <span class="n">select_point</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="viewcode-block" id="BlenderPoint.hide"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.hide.html#compas_blender.geometry.BlenderPoint.hide">[docs]</a>    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="viewcode-block" id="BlenderPoint.show"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.show.html#compas_blender.geometry.BlenderPoint.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="viewcode-block" id="BlenderPoint.select"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.select.html#compas_blender.geometry.BlenderPoint.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">unselect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="viewcode-block" id="BlenderPoint.unselect"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.unselect.html#compas_blender.geometry.BlenderPoint.unselect">[docs]</a>    <span class="k">def</span> <span class="nf">unselect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span>
+<div class="viewcode-block" id="BlenderPoint.closest_point"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.closest_point.html#compas_blender.geometry.BlenderPoint.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span></div>
 
-    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+<div class="viewcode-block" id="BlenderPoint.closest_points"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.closest_points.html#compas_blender.geometry.BlenderPoint.closest_points">[docs]</a>    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">project_to_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">project_to_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">project_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+<div class="viewcode-block" id="BlenderPoint.project_to_curve"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.project_to_curve.html#compas_blender.geometry.BlenderPoint.project_to_curve">[docs]</a>    <span class="k">def</span> <span class="nf">project_to_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="BlenderPoint.project_to_surface"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.project_to_surface.html#compas_blender.geometry.BlenderPoint.project_to_surface">[docs]</a>    <span class="k">def</span> <span class="nf">project_to_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="BlenderPoint.project_to_mesh"><a class="viewcode-back" href="../../../reference/generated/generated/compas_blender.geometry.BlenderPoint.project_to_mesh.html#compas_blender.geometry.BlenderPoint.project_to_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">project_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -109,7 +110,12 @@
     <span class="nb">print</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">xyz</span><span class="p">)</span>
+    
+    <span class="n">point</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+    <span class="n">point</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="n">point</span><span class="o">.</span><span class="n">unselect</span><span class="p">()</span>
+    <span class="n">point</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+    
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>
@@ -149,7 +155,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

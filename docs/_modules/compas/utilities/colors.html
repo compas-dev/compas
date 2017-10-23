@@ -93,6 +93,8 @@
 
 
 <div class="viewcode-block" id="i_to_rgb"><a class="viewcode-back" href="../../../reference/generated/compas.utilities.i_to_rgb.html#compas.utilities.i_to_rgb">[docs]</a><span class="k">def</span> <span class="nf">i_to_rgb</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="n">i</span>  <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">i</span>  <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span>
     <span class="k">if</span> <span class="mf">0.0</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mf">0.25</span><span class="p">:</span>
@@ -320,7 +322,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

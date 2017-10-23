@@ -1,14 +1,19 @@
+from __future__ import print_function
+from __future__ import division
+
+from copy import deepcopy
+
 import compas_rhino
 
-from compas.cad.rhino.conduits import MeshConduit
-from compas.cad.rhino.geometry import RhinoSurface
+from compas_rhino.conduits import FacesConduit
+from compas_rhino.geometry import RhinoSurface
 
 from compas.utilities import i_to_rgb
 
-from compas.datastructures.mesh import Mesh
-from compas.datastructures.mesh.algorithms import planarize_mesh
-from compas.datastructures.mesh.algorithms import planarize_mesh_shapeop
-from compas.datastructures.mesh.algorithms import flatness
+from compas.datastructures import Mesh
+
+from compas.geometry import planarize_faces
+from compas.geometry import flatness2
 
 
 __author__    = ['Tom Van Mele', ]
@@ -19,14 +24,12 @@ __email__     = 'vanmelet@ethz.ch'
 
 # define a callback to visualise the planarisation process
 
-def callback(mesh, k, args):
+def callback(vertices, faces, k, args):
     conduit, surf, fixed = args
 
-    for key, attr in mesh.vertices(True):
+    for key in vertices:
         if key in fixed:
-            attr['z'] = 0
-
-    # surf.pull_mesh(mesh, fixed=fixed, d=0.1)
+            vertices[key][2] = 0
 
     conduit.redraw(k)
 
@@ -42,44 +45,54 @@ fixed = mesh.vertices_where({'z': (-0.5, 0.1)})
 
 surf = RhinoSurface(guid)
 
-# make a copy for planarisation
+# vertices and faces
 
-flat = mesh.copy()
+vertices_0 = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+vertices_1 = deepcopy(vertices_0)
 
-mesh.attributes['name'] = 'Mesh'
-flat.attributes['name'] = 'FlatMesh'
+faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
 
-# draw the original mesh
+# planarize with a conduit for visualization
 
-dev0 = flatness(mesh)
-dmax = max(dev0.values())
+conduit = FacesConduit(vertices_1, faces, refreshrate=5)
 
-compas_rhino.helpers.mesh.draw_mesh_as_faces(
+with conduit.enabled():
+    planarize_faces(
+        vertices_1,
+        faces,
+        kmax=500,
+        callback=callback,
+        callback_args=(conduit, surf, fixed)
+    )
+
+# compute the *flatness*
+
+dev0 = flatness2(vertices_0, faces)
+dev1 = flatness2(vertices_1, faces)
+
+# draw the original
+
+compas_rhino.mesh_draw_faces(
     mesh,
     layer='mesh_start',
     clear_layer=True,
-    facecolor={fkey: i_to_rgb(dev0[fkey] / dmax) for fkey in mesh.faces()}
+    color={fkey: i_to_rgb(dev0[index]) for index, fkey in enumerate(mesh.faces())}
 )
 
-# make a conduit for visualisation of the planarisation process
+# draw the result
 
-conduit = MeshConduit(flat, color=(255, 255, 255), refreshrate=5)
+mesh.name = 'Flat'
 
-# run the planarisation algorithm with the conduit enabled
+for key, attr in mesh.vertices(True):
+    attr['x'] = vertices_1[key][0]
+    attr['y'] = vertices_1[key][1]
+    attr['z'] = vertices_1[key][2]
 
-with conduit.enabled():
-    planarize_mesh(flat, kmax=500, callback=callback, callback_args=(conduit, surf, fixed))
+color = {fkey: i_to_rgb(dev1[index]) for index, fkey in enumerate(mesh.faces())}
 
-# planarize_mesh_shapeop(flat, kmax=500, fixed=fixed)
-
-# compute the *flatness*
-# and draw the result
-
-dev1 = flatness(flat)
-
-compas_rhino.helpers.mesh.draw_mesh_as_faces(
-    flat,
+compas_rhino.mesh_draw_faces(
+    mesh,
     layer='mesh_end',
     clear_layer=True,
-    facecolor={fkey: i_to_rgb(dev1[fkey] / dmax) for fkey in flat.faces()}
+    color=color
 )

@@ -18,7 +18,7 @@ for u, v in mesh.edges():
 
 plotter = MeshPlotter(dual)
 
-plotter.draw_xlines(lines)
+plotter.draw_lines(lines)
 
 plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text='key')
 plotter.draw_edges()

@@ -14,14 +14,14 @@ The Stanford Bunny
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`mesh-stanford-bunny.py </_examples/mesh-stanford-bunny.py>`
+* :download:`mesh-stanford-bunny.py </../../examples/mesh-stanford-bunny.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-stanford-bunny.py
+.. literalinclude:: /../../examples/mesh-stanford-bunny.py
 
 .. code-block:: none
     

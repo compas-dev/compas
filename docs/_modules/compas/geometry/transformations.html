@@ -57,8 +57,6 @@
 <span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">cross_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">dot_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">multiply_matrix_vector</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">multiply_matrices</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">transpose_matrix</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">vector_component</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">vector_component_xy</span>
 
@@ -72,11 +70,8 @@
 <span class="kn">from</span> <span class="nn">compas.geometry.orientation</span> <span class="k">import</span> <span class="n">normal_triangle</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">transform</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">translation_matrix</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">rotation_matrix</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">scale_matrix</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">shear_matrix</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">projection_matrix</span>
 
 
 <span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
@@ -646,7 +641,7 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">intx_pt</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="n">vec_line</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">vec_normal</span> <span class="o">=</span> <span class="n">normal_triangle</span><span class="p">(</span><span class="n">triangle</span><span class="p">,</span> <span class="n">normalised</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">vec_normal</span> <span class="o">=</span> <span class="n">normal_triangle</span><span class="p">(</span><span class="n">triangle</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">vec_reflect</span> <span class="o">=</span> <span class="n">mirror_vector_vector</span><span class="p">(</span><span class="n">vec_line</span><span class="p">,</span> <span class="n">vec_normal</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">angle_smallest_vectors</span><span class="p">(</span><span class="n">vec_normal</span><span class="p">,</span> <span class="n">vec_reflect</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">pi</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -840,7 +835,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

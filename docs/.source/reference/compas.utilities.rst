@@ -86,6 +86,7 @@ maps
 
     geometric_key
     geometric_key2
+    normalize_values
 
 
 mixing

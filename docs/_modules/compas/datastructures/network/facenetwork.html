@@ -87,13 +87,13 @@
 <span class="sd">        import compas</span>
 <span class="sd">        from compas.datastructures import FaceNetwork</span>
 <span class="sd">        from compas.datastructures import network_find_faces</span>
-<span class="sd">        from compas.visualization import NetworkPlotter</span>
+<span class="sd">        from compas.visualization import FaceNetworkPlotter</span>
 
 <span class="sd">        network = FaceNetwork.from_obj(compas.get_data('lines.obj'))</span>
 
 <span class="sd">        network_find_faces(network, breakpoints=network.leaves())</span>
 
-<span class="sd">        plotter = NetworkPlotter(network)</span>
+<span class="sd">        plotter = FaceNetworkPlotter(network)</span>
 
 <span class="sd">        plotter.draw_vertices(</span>
 <span class="sd">            facecolor={key: '#ff0000' for key in network.leaves()},</span>
@@ -790,7 +790,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

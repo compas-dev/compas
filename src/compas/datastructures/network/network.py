@@ -18,11 +18,13 @@ from compas.datastructures.mixins import VertexAttributesManagement
 from compas.datastructures.mixins import VertexHelpers
 from compas.datastructures.mixins import VertexCoordinatesDescriptors
 from compas.datastructures.mixins import VertexMappings
+from compas.datastructures.mixins import VertexFilter
 
 from compas.datastructures.mixins import EdgeAttributesManagement
 from compas.datastructures.mixins import EdgeHelpers
 from compas.datastructures.mixins import EdgeGeometry
 from compas.datastructures.mixins import EdgeMappings
+from compas.datastructures.mixins import EdgeFilter
 
 from compas.datastructures.mixins import FromToData
 from compas.datastructures.mixins import FromToJson
@@ -46,6 +48,8 @@ class Network(FromToJson,
               VertexHelpers,
               VertexMappings,
               EdgeMappings,
+              VertexFilter,
+              EdgeFilter,
               VertexCoordinatesDescriptors,
               EdgeAttributesManagement,
               VertexAttributesManagement,

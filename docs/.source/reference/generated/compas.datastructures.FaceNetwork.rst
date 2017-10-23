@@ -35,6 +35,7 @@ FaceNetwork
       ~FaceNetwork.edge_vector
       ~FaceNetwork.edges
       ~FaceNetwork.edges_on_boundary
+      ~FaceNetwork.edges_where
       ~FaceNetwork.face_adjacency
       ~FaceNetwork.face_adjacency_edge
       ~FaceNetwork.face_area
@@ -137,6 +138,7 @@ FaceNetwork
       ~FaceNetwork.vertex_normal
       ~FaceNetwork.vertices
       ~FaceNetwork.vertices_on_boundary
+      ~FaceNetwork.vertices_where
       ~FaceNetwork.wireframe
    
    

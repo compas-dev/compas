@@ -42,7 +42,7 @@
 <h1>network_draw_edge_labels</h1>
 <dl class="function">
 <dt id="compas_rhino.helpers.network_draw_edge_labels">
-<code class="descclassname">compas_rhino.helpers.</code><code class="descname">network_draw_edge_labels</code><span class="sig-paren">(</span><em>network</em>, <em>attr_name=None</em>, <em>layer=None</em>, <em>color=None</em>, <em>formatter=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas_rhino/helpers/network.html#network_draw_edge_labels"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas_rhino.helpers.</code><code class="descname">network_draw_edge_labels</code><span class="sig-paren">(</span><em>network</em>, <em>text=None</em>, <em>layer=None</em>, <em>color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas_rhino/helpers/network.html#network_draw_edge_labels"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw labels for the edges of a network.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
@@ -50,7 +50,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>network</strong> (<em>compas.datastructures.Network</em>) – A network object.</li>
-<li><strong>attr_name</strong> (<em>str (None)</em>) – The name of the attribute value to display in the label.
+<li><strong>text</strong> (<em>str (None)</em>) – The name of the attribute value to display in the label.
 Default is to display the edge keys.</li>
 <li><strong>layer</strong> (<em>str (None)</em>) – The layer to draw in.
 Default is to draw in the current layer.</li>
@@ -136,7 +136,7 @@ This name is used afterwards to identify edges of the network in the Rhino model
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

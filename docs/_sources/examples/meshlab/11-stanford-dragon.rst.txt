@@ -14,14 +14,14 @@ The Stanford Dragon
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`mesh-stanford-dragon.py </_examples/mesh-stanford-dragon.py>`
+* :download:`mesh-stanford-dragon.py </../../examples/mesh-stanford-dragon.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-stanford-dragon.py
+.. literalinclude:: /../../examples/mesh-stanford-dragon.py
 
 .. code-block:: none
     

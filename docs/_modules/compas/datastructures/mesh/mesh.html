@@ -142,24 +142,6 @@
 <span class="sd">    attributes : dict</span>
 <span class="sd">        General mesh attributes.</span>
 
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    .. plot::</span>
-<span class="sd">        :include-source:</span>
-
-<span class="sd">        import compas</span>
-<span class="sd">        from compas.datastructures import Mesh</span>
-<span class="sd">        from compas.visualization import MeshPlotter</span>
-
-<span class="sd">        mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
-
-<span class="sd">        plotter = MeshPlotter(mesh)</span>
-
-<span class="sd">        plotter.draw_vertices(radius=0.2)</span>
-<span class="sd">        plotter.draw_faces(text='key')</span>
-<span class="sd">        plotter.show()</span>
-
 <span class="sd">    """</span>
 
 <div class="viewcode-block" id="Mesh.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Mesh.__init__.html#compas.datastructures.Mesh.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1449,6 +1431,18 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedges</span><span class="p">()</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># special accessors</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Mesh.indexed_edges"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Mesh.indexed_edges.html#compas.datastructures.Mesh.indexed_edges">[docs]</a>    <span class="k">def</span> <span class="nf">indexed_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">key_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span></div>
+
+<div class="viewcode-block" id="Mesh.indexed_face_vertices"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Mesh.indexed_face_vertices.html#compas.datastructures.Mesh.indexed_face_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">indexed_face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">key_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># vertex topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
@@ -2526,7 +2520,7 @@
 <span class="sd">            The edges on the boundary.</span>
 
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_edge_naked</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span></div></div>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_edge_on_boundary</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -2663,7 +2657,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

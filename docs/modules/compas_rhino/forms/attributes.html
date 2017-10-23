@@ -32,7 +32,8 @@
 <nav class="breadcrumb">
 <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
 <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+<a class="breadcrumb-item" href="../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../forms.html">compas_rhino.forms</a>
 </nav>
 <h1>Source code for compas_rhino.forms.attributes</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
@@ -83,7 +84,7 @@
 <div class="viewcode-block" id="AttributesForm"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.AttributesForm.html#compas_rhino.forms.AttributesForm">[docs]</a><span class="k">class</span> <span class="nc">AttributesForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">types</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="AttributesForm.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.AttributesForm.__init__.html#compas_rhino.forms.AttributesForm.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">types</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="n">types</span>
@@ -92,9 +93,9 @@
             <span class="s1">'1f'</span> <span class="p">:</span> <span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="s1">'</span><span class="si">{0:.1f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
             <span class="s1">'2f'</span> <span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">AttributesForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AttributesForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AttributesForm.init"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.AttributesForm.init.html#compas_rhino.forms.AttributesForm.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># table</span>
         <span class="n">table</span> <span class="o">=</span> <span class="n">make_table</span><span class="p">(</span><span class="s1">'main'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="n">table</span><span class="o">.</span><span class="n">Size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">980</span><span class="p">,</span> <span class="mi">700</span><span class="p">)</span>
@@ -137,9 +138,9 @@
         <span class="c1"># layout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">buttons</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">buttons</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">on_form_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<div class="viewcode-block" id="AttributesForm.on_form_closed"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.AttributesForm.on_form_closed.html#compas_rhino.forms.AttributesForm.on_form_closed">[docs]</a>    <span class="k">def</span> <span class="nf">on_form_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">sender</span><span class="o">.</span><span class="n">DialogResult</span> <span class="o">==</span> <span class="n">DialogResult</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">Rows</span><span class="p">:</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">Cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Value</span>
@@ -149,7 +150,7 @@
                     <span class="k">try</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
                     <span class="k">except</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div></div>
 
 
 <span class="c1"># class SectionedAttributesForm(Form):</span>
@@ -377,7 +378,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

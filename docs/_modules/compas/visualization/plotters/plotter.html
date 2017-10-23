@@ -42,7 +42,6 @@
 <span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="k">import</span> <span class="n">Circle</span>
 
 <span class="kn">from</span> <span class="nn">compas.visualization.plotters.core.drawing</span> <span class="k">import</span> <span class="n">create_axes_xy</span>
-
 <span class="kn">from</span> <span class="nn">compas.visualization.plotters.core.drawing</span> <span class="k">import</span> <span class="n">draw_xpoints_xy</span>
 <span class="kn">from</span> <span class="nn">compas.visualization.plotters.core.drawing</span> <span class="k">import</span> <span class="n">draw_xlines_xy</span>
 <span class="kn">from</span> <span class="nn">compas.visualization.plotters.core.drawing</span> <span class="k">import</span> <span class="n">draw_xpolygons_xy</span>
@@ -55,7 +54,7 @@
 <span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Plotter'</span><span class="p">,</span> <span class="p">]</span>
 
 
 <span class="c1"># https://matplotlib.org/faq/usage_faq.html#what-is-interactive-mode</span>
@@ -151,9 +150,6 @@
     <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">set_window_title</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="c1"># def clear(self):</span>
-    <span class="c1">#     raise NotImplementedError</span>
-
 <div class="viewcode-block" id="Plotter.clear_collection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.clear_collection.html#compas.visualization.Plotter.clear_collection">[docs]</a>    <span class="k">def</span> <span class="nf">clear_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
         <span class="n">collection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
 
@@ -182,30 +178,21 @@
         <span class="n">collection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.update_linecollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_linecollection.html#compas.visualization.Plotter.update_linecollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_linecollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">segments</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+        <span class="n">collection</span><span class="o">.</span><span class="n">set_segments</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.update_polygoncollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_polygoncollection.html#compas.visualization.Plotter.update_polygoncollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_polygoncollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="Plotter.draw_points"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_points.html#compas.visualization.Plotter.draw_points">[docs]</a>    <span class="k">def</span> <span class="nf">draw_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
-
-<div class="viewcode-block" id="Plotter.draw_lines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_lines.html#compas.visualization.Plotter.draw_lines">[docs]</a>    <span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
-
-<div class="viewcode-block" id="Plotter.draw_polygons"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_polygons.html#compas.visualization.Plotter.draw_polygons">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
-
-<div class="viewcode-block" id="Plotter.draw_xpoints"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_xpoints.html#compas.visualization.Plotter.draw_xpoints">[docs]</a>    <span class="k">def</span> <span class="nf">draw_xpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">draw_xpoints_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Plotter.draw_xlines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_xlines.html#compas.visualization.Plotter.draw_xlines">[docs]</a>    <span class="k">def</span> <span class="nf">draw_xlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+<div class="viewcode-block" id="Plotter.draw_lines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_lines.html#compas.visualization.Plotter.draw_lines">[docs]</a>    <span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">draw_xlines_xy</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Plotter.draw_xpolygons"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_xpolygons.html#compas.visualization.Plotter.draw_xpolygons">[docs]</a>    <span class="k">def</span> <span class="nf">draw_xpolygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
+<div class="viewcode-block" id="Plotter.draw_polygons"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_polygons.html#compas.visualization.Plotter.draw_polygons">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">draw_xpolygons_xy</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Plotter.draw_xarrows"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_xarrows.html#compas.visualization.Plotter.draw_xarrows">[docs]</a>    <span class="k">def</span> <span class="nf">draw_xarrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrows</span><span class="p">):</span>
+<div class="viewcode-block" id="Plotter.draw_arrows"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_arrows.html#compas.visualization.Plotter.draw_arrows">[docs]</a>    <span class="k">def</span> <span class="nf">draw_arrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrows</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">draw_xarrows_xy</span><span class="p">(</span><span class="n">arrows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div></div>
 
 
@@ -217,14 +204,10 @@
 
     <span class="kn">import</span> <span class="nn">compas</span>
 
-    <span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
-    <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="k">import</span> <span class="n">smooth_mesh_centroid</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">smooth_centroid</span>
 
-    <span class="c1"># make a mesh</span>
-
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
-
-    <span class="c1"># make lists of plotting geometry</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
     <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
@@ -242,48 +225,37 @@
             <span class="s1">'width'</span><span class="p">:</span> <span class="mf">1.0</span>
         <span class="p">})</span>
 
-    <span class="n">polygons</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
-        <span class="n">polygons</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'points'</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
-            <span class="s1">'edgecolor'</span><span class="p">:</span> <span class="s1">'#ff0000'</span><span class="p">,</span>
-            <span class="s1">'linewidth'</span><span class="p">:</span> <span class="mf">3.0</span>
-        <span class="p">})</span>
-
     <span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
-
-    <span class="c1"># make a plotter</span>
-    <span class="c1"># provide customisation options here</span>
 
     <span class="n">plotter</span> <span class="o">=</span> <span class="n">Plotter</span><span class="p">()</span>
 
-    <span class="c1"># extract collections</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
-    <span class="n">points</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xpoints</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-    <span class="n">lines</span> <span class="o">=</span> <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="n">plotter</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">pause</span> <span class="o">=</span> <span class="n">args</span>
 
-    <span class="c1"># a callback function for live updates</span>
-
-    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="n">plotter</span><span class="p">,</span> <span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">lines</span><span class="p">),</span> <span class="n">pause</span> <span class="o">=</span> <span class="n">args</span>
-
-        <span class="n">plotter</span><span class="o">.</span><span class="n">update_pointcollection</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">],</span> <span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">]</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">update_pointcollection</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 
         <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
-            <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)])</span>
-
-        <span class="n">lines</span><span class="o">.</span><span class="n">set_segments</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">update_linecollection</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">segments</span><span class="p">)</span>
 
         <span class="n">plotter</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pause</span><span class="o">=</span><span class="n">pause</span><span class="p">)</span>
 
-    <span class="c1"># live visualisation of smoothing</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+    <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
 
-    <span class="n">smooth_mesh_centroid</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span>
-                         <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span>
-                         <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                         <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
-                         <span class="n">callback_args</span><span class="o">=</span><span class="p">(</span><span class="n">plotter</span><span class="p">,</span> <span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">lines</span><span class="p">),</span> <span class="mf">0.01</span><span class="p">))</span>
+    <span class="n">smooth_centroid</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span>
+                    <span class="n">adjacency</span><span class="p">,</span>
+                    <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span>
+                    <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                    <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
+                    <span class="n">callback_args</span><span class="o">=</span><span class="p">(</span><span class="n">plotter</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">))</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
@@ -325,7 +297,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

@@ -45,24 +45,24 @@
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Downloads</div><ul class="simple">
-<li><a class="reference download internal" download="" href="../../downloads/example-mesh-remeshing.3dm"><code class="xref download docutils literal">example-mesh-remeshing.3dm</code></a></li>
+<li><a class="reference download internal" download="" href="../../downloads/mesh-remeshing.3dm"><code class="xref download docutils literal">mesh-remeshing.3dm</code></a></li>
 <li><a class="reference download internal" download="" href="../../downloads/mesh-remeshing.py"><code class="xref download docutils literal">mesh-remeshing.py</code></a></li>
 </ul>
 </div>
 </div><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="sd">"""Remeshing a 2D mesh."""</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
 
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">mesh_delaunay_from_points</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">trimesh_remesh</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="k">import</span> <span class="n">delaunay_from_points</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="k">import</span> <span class="n">optimise_trimesh_topology</span>
-
-<span class="kn">from</span> <span class="nn">compas.cad.rhino.conduits.mesh</span> <span class="k">import</span> <span class="n">MeshConduit</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.conduits</span> <span class="k">import</span> <span class="n">MeshConduit</span>
 
 
 <span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="s1">'Matthias Rippmann'</span><span class="p">]</span>
@@ -77,23 +77,26 @@
 
 
 <span class="n">boundary</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select Boundary Curve"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">target_length</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s2">"Select Edge Target Length"</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
-<span class="n">points</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DivideCurve</span><span class="p">(</span><span class="n">boundary</span><span class="p">,</span> <span class="n">rs</span><span class="o">.</span><span class="n">CurveLength</span><span class="p">(</span><span class="n">boundary</span><span class="p">)</span> <span class="o">/</span> <span class="n">target_length</span><span class="p">)</span>
+<span class="n">length</span>   <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s2">"Select Edge Target Length"</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="n">points</span>   <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DivideCurve</span><span class="p">(</span><span class="n">boundary</span><span class="p">,</span> <span class="n">rs</span><span class="o">.</span><span class="n">CurveLength</span><span class="p">(</span><span class="n">boundary</span><span class="p">)</span> <span class="o">/</span> <span class="n">length</span><span class="p">)</span>
 
-<span class="n">faces</span> <span class="o">=</span> <span class="n">delaunay_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+<span class="n">faces</span> <span class="o">=</span> <span class="n">mesh_delaunay_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+<span class="n">mesh</span>  <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
 <span class="n">conduit</span> <span class="o">=</span> <span class="n">MeshConduit</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">refreshrate</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="k">with</span> <span class="n">conduit</span><span class="o">.</span><span class="n">enabled</span><span class="p">():</span>
-    <span class="n">optimise_trimesh_topology</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span>
-                              <span class="n">target_length</span><span class="p">,</span>
-                              <span class="n">kmax</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
-                              <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
-                              <span class="n">callback_args</span><span class="o">=</span><span class="p">(</span><span class="n">conduit</span><span class="p">,</span> <span class="p">))</span>
+    <span class="n">trimesh_remesh</span><span class="p">(</span>
+        <span class="n">mesh</span><span class="p">,</span>
+        <span class="n">target</span><span class="o">=</span><span class="n">length</span><span class="p">,</span>
+        <span class="n">kmax</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">allow_boundary_split</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">allow_boundary_swap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
+        <span class="n">callback_args</span><span class="o">=</span><span class="p">(</span><span class="n">conduit</span><span class="p">,</span> <span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">compas_rhino</span><span class="o">.</span><span class="n">mesh_draw</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">vertexcolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">()})</span>
 </code></pre></div>
 
 </div>
@@ -163,7 +166,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

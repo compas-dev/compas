@@ -62,14 +62,15 @@
 <span class="sd">"""</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">import</span> <span class="nn">compas.cad.blender</span> <span class="k">as</span> <span class="nn">compas_blender</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="k">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas_blender.helpers</span> <span class="k">import</span> <span class="n">NetworkArtist</span>
 
-<span class="kn">from</span> <span class="nn">compas.numerical.methods.forcedensity</span> <span class="k">import</span> <span class="n">fd</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Network</span>
+
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">fd</span>
 
 
-<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="s1">'Andrew Liew'</span><span class="p">]</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2017, BRG - ETH Zurich'</span><span class="p">,</span>
 <span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT'</span>
 <span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'van.mele@arch.ethz.ch'</span>
@@ -78,9 +79,6 @@
 <span class="c1"># make a network from sample data</span>
 
 <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'saddle.obj'</span><span class="p">))</span>
-
-<span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects_all</span><span class="p">()</span>
-<span class="n">compas_blender</span><span class="o">.</span><span class="n">draw_network</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"lines"</span><span class="p">)</span>
 
 <span class="c1"># set default vertex and edge attributes</span>
 
@@ -92,7 +90,7 @@
 
 <span class="c1"># identify *anchored* vertices</span>
 
-<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
     <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'is_anchor'</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">is_vertex_leaf</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
 <span class="c1"># convert network data to numerical data</span>
@@ -105,10 +103,10 @@
 
 <span class="n">key_index</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
 
-<span class="n">fixed</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">'is_anchor'</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'is_anchor'</span><span class="p">]]</span>
 <span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">]</span>
 
-<span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges_iter</span><span class="p">()]</span>
+<span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
 
 <span class="c1"># run the force density method</span>
 
@@ -117,7 +115,7 @@
 
 <span class="c1"># update the network</span>
 
-<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
     <span class="n">index</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
     <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
@@ -125,8 +123,14 @@
 
 <span class="c1"># display the result</span>
 
-<span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects_all</span><span class="p">()</span>
-<span class="n">compas_blender</span><span class="o">.</span><span class="n">draw_network</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"lines"</span><span class="p">)</span>
+<span class="n">networkartist</span> <span class="o">=</span> <span class="n">NetworkArtist</span><span class="p">(</span><span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">)</span>
+<span class="n">networkartist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
+
+<span class="n">networkartist</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">networkartist</span><span class="o">.</span><span class="n">draw_vertexlabels</span><span class="p">()</span>
+
+<span class="n">networkartist</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+<span class="n">networkartist</span><span class="o">.</span><span class="n">draw_edgelabels</span><span class="p">()</span>
 </code></pre></div>
 
 </div>
@@ -183,7 +187,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

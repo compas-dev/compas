@@ -14,13 +14,13 @@ Remeshing 2D
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`example-mesh-remeshing.3dm </_examples/example-mesh-remeshing.3dm>`
-* :download:`mesh-remeshing.py </_examples/mesh-remeshing.py>`
+* :download:`mesh-remeshing.3dm </../../examples/mesh-remeshing.3dm>`
+* :download:`mesh-remeshing.py </../../examples/mesh-remeshing.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-remeshing.py
+.. literalinclude:: /../../examples/mesh-remeshing.py
 

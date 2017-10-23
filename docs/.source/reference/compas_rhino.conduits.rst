@@ -18,7 +18,6 @@ Definition of display conduits.
     LabelsConduit
     LinesConduit
     MeshConduit
-    PointPairsConduit
     PointsConduit
     SplinesConduit
 

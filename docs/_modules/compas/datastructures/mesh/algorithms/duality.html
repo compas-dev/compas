@@ -91,7 +91,7 @@
 
 <span class="sd">        plotter = MeshPlotter(dual)</span>
 
-<span class="sd">        plotter.draw_xlines(lines)</span>
+<span class="sd">        plotter.draw_lines(lines)</span>
 
 <span class="sd">        plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text='key')</span>
 <span class="sd">        plotter.draw_edges()</span>
@@ -182,7 +182,7 @@
 
 <span class="sd">        plotter = MeshPlotter(dual, figsize=(10, 7))</span>
 
-<span class="sd">        plotter.draw_xlines(lines)</span>
+<span class="sd">        plotter.draw_lines(lines)</span>
 <span class="sd">        plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.05)</span>
 <span class="sd">        plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text='key')</span>
 <span class="sd">        plotter.draw_edges(keys=[(u, v) for u, v in dual.edges() if not dual.is_edge_naked(u, v)])</span>
@@ -302,7 +302,7 @@
 
     <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">dual</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">'#eeeeee'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'#000000'</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">'#eeeeee'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'#eeeeee'</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">'key'</span><span class="p">)</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dual</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">dual</span><span class="o">.</span><span class="n">is_edge_naked</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)])</span>
@@ -347,7 +347,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

@@ -65,10 +65,14 @@
 
 <div class="viewcode-block" id="RhinoCurve.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.__init__.html#compas_rhino.geometry.RhinoCurve.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="n">guid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span> <span class="o">=</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span> <span class="o">=</span> <span class="n">RhinoCurve</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">Geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">Attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">otype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="RhinoCurve.find"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.find.html#compas_rhino.geometry.RhinoCurve.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RhinoCurve.hide"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoCurve.hide.html#compas_rhino.geometry.RhinoCurve.hide">[docs]</a>    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">HideObject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span></div>
@@ -221,7 +225,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

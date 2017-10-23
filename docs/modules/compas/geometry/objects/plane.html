@@ -51,20 +51,20 @@
 <div class="viewcode-block" id="Plane"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Plane.html#compas.geometry.Plane">[docs]</a><span class="k">class</span> <span class="nc">Plane</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Plane.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Plane.__init__.html#compas.geometry.Plane.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_point_and_normal</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">):</span>
+<div class="viewcode-block" id="Plane.from_point_and_normal"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Plane.from_point_and_normal.html#compas.geometry.Plane.from_point_and_normal">[docs]</a>    <span class="k">def</span> <span class="nf">from_point_and_normal</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">):</span>
         <span class="n">plane</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
         <span class="n">plane</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
         <span class="n">plane</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">normal</span><span class="p">)</span>
         <span class="n">plane</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">plane</span>
+        <span class="k">return</span> <span class="n">plane</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_three_points</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">):</span>
+<div class="viewcode-block" id="Plane.from_three_points"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Plane.from_three_points.html#compas.geometry.Plane.from_three_points">[docs]</a>    <span class="k">def</span> <span class="nf">from_three_points</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">):</span>
         <span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">p1</span><span class="p">)</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">p2</span><span class="p">)</span>
         <span class="n">p3</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">p3</span><span class="p">)</span>
@@ -74,10 +74,10 @@
         <span class="n">plane</span><span class="o">.</span><span class="n">point</span>  <span class="o">=</span> <span class="n">p1</span>
         <span class="n">plane</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
         <span class="n">plane</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">plane</span>
+        <span class="k">return</span> <span class="n">plane</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_point_and_two_vectors</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+<div class="viewcode-block" id="Plane.from_point_and_two_vectors"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Plane.from_point_and_two_vectors.html#compas.geometry.Plane.from_point_and_two_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">from_point_and_two_vectors</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
         <span class="n">v1</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">v1</span><span class="p">)</span>
         <span class="n">v2</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">v2</span><span class="p">)</span>
         <span class="n">n</span>  <span class="o">=</span> <span class="n">Vector</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
@@ -85,11 +85,11 @@
         <span class="n">plane</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
         <span class="n">plane</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
         <span class="n">plane</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">n</span>
-        <span class="k">return</span> <span class="n">plane</span>
+        <span class="k">return</span> <span class="n">plane</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="Plane.from_points"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Plane.from_points.html#compas.geometry.Plane.from_points">[docs]</a>    <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -97,11 +97,11 @@
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span>
         <span class="k">return</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="n">y</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">z</span>
 
-    <span class="k">def</span> <span class="nf">basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Plane.basis"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Plane.basis.html#compas.geometry.Plane.basis">[docs]</a>    <span class="k">def</span> <span class="nf">basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span>
         <span class="n">u</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span> <span class="n">a</span> <span class="o">/</span> <span class="n">c</span>
         <span class="n">v</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span> <span class="n">b</span> <span class="o">/</span> <span class="n">c</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">vector</span><span class="p">,</span> <span class="n">unitize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">orthonormalise_vectors</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">])]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">vector</span><span class="p">,</span> <span class="n">unitize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">orthonormalise_vectors</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">])]</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -186,7 +186,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

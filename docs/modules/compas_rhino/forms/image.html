@@ -32,7 +32,8 @@
 <nav class="breadcrumb">
 <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
 <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+<a class="breadcrumb-item" href="../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../forms.html">compas_rhino.forms</a>
 </nav>
 <h1>Source code for compas_rhino.forms.image</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas_rhino.forms</span> <span class="k">import</span> <span class="n">Form</span>
@@ -61,21 +62,21 @@
 <div class="viewcode-block" id="ImageForm"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.ImageForm.html#compas_rhino.forms.ImageForm">[docs]</a><span class="k">class</span> <span class="nc">ImageForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imagepath</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'ImageForm'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageForm.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.ImageForm.__init__.html#compas_rhino.forms.ImageForm.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imagepath</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'ImageForm'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imagepath</span> <span class="o">=</span> <span class="n">imagepath</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ImageForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ImageForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageForm.init"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.ImageForm.init.html#compas_rhino.forms.ImageForm.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">box</span> <span class="o">=</span> <span class="n">PictureBox</span><span class="p">()</span>
         <span class="n">box</span><span class="o">.</span><span class="n">Dock</span> <span class="o">=</span> <span class="n">DockStyle</span><span class="o">.</span><span class="n">Fill</span>
         <span class="n">box</span><span class="o">.</span><span class="n">SizeMode</span> <span class="o">=</span> <span class="n">PictureBoxSizeMode</span><span class="o">.</span><span class="n">AutoSize</span>
         <span class="n">box</span><span class="o">.</span><span class="n">Image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">FromFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imagepath</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">Image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">Size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">Size</span></div>
 
-    <span class="k">def</span> <span class="nf">on_form_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">Dispose</span><span class="p">()</span></div>
+<div class="viewcode-block" id="ImageForm.on_form_closed"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.ImageForm.on_form_closed.html#compas_rhino.forms.ImageForm.on_form_closed">[docs]</a>    <span class="k">def</span> <span class="nf">on_form_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">Dispose</span><span class="p">()</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -125,7 +126,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

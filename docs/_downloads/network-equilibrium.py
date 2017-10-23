@@ -13,10 +13,10 @@
 
 import compas
 
-from compas.datastructures.network import Network
+from compas.datastructures import Network
 from compas.visualization.viewers.networkviewer import NetworkViewer
 
-from compas.numerical.methods.forcedensity import fd
+from compas.numerical import fd
 
 
 __author__    = ['Tom Van Mele', ]
@@ -39,7 +39,7 @@ network.update_default_edge_attributes(dea)
 
 # identify *anchored* vertices
 
-for key in network:
+for key in network.vertices():
     network.vertex[key]['is_anchor'] = network.is_vertex_leaf(key)
 
 # convert network data to numerical data
@@ -64,11 +64,11 @@ xyz = res[0]
 
 # update the network
 
-for key in network:
+for key, attr in network.vertices(True):
     index = key_index[key]
-    network.vertex[key]['x'] = xyz[index][0]
-    network.vertex[key]['y'] = xyz[index][1]
-    network.vertex[key]['z'] = xyz[index][2]
+    attr['x'] = xyz[index][0]
+    attr['y'] = xyz[index][1]
+    attr['z'] = xyz[index][2]
 
 # make a viewer and display the result
 

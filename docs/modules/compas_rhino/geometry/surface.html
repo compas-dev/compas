@@ -53,7 +53,7 @@
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, BLOCK Research Group - ETH Zurich'</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2017, BLOCK Research Group - ETH Zurich'</span>
 <span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
 <span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
@@ -64,14 +64,18 @@
 <div class="viewcode-block" id="RhinoSurface"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.geometry.RhinoSurface.html#compas_rhino.geometry.RhinoSurface">[docs]</a><span class="k">class</span> <span class="nc">RhinoSurface</span><span class="p">(</span><span class="n">SurfaceGeometryInterface</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSurface.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.__init__.html#compas_rhino.geometry.RhinoSurface.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="n">guid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">RhinoSurface</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">Geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">Attributes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">otype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span></div>
 
-    <span class="k">def</span> <span class="nf">space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="RhinoSurface.find"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.find.html#compas_rhino.geometry.RhinoSurface.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RhinoSurface.space"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.space.html#compas_rhino.geometry.RhinoSurface.space">[docs]</a>    <span class="k">def</span> <span class="nf">space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">""""""</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">du</span><span class="p">,</span> <span class="n">dv</span> <span class="o">=</span> <span class="n">density</span>
@@ -108,12 +112,12 @@
 
         <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">uv</span>
+        <span class="k">return</span> <span class="n">uv</span></div>
 
     <span class="c1"># not taking the heighfield over the space is only possible</span>
     <span class="c1"># if the surface is in fact a height field</span>
     <span class="c1"># split up and rename!</span>
-    <span class="k">def</span> <span class="nf">heightfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">over_space</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSurface.heightfield"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.heightfield.html#compas_rhino.geometry.RhinoSurface.heightfield">[docs]</a>    <span class="k">def</span> <span class="nf">heightfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">over_space</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">""""""</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">du</span><span class="p">,</span> <span class="n">dv</span> <span class="o">=</span> <span class="n">density</span>
@@ -163,9 +167,9 @@
 
         <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">xyz</span>
+        <span class="k">return</span> <span class="n">xyz</span></div>
 
-    <span class="k">def</span> <span class="nf">descent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSurface.descent"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.descent.html#compas_rhino.geometry.RhinoSurface.descent">[docs]</a>    <span class="k">def</span> <span class="nf">descent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">""""""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">points</span><span class="p">:</span>
             <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">heightfield</span><span class="p">()</span>
@@ -205,9 +209,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Object is not a surface.'</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">descent</span>
+        <span class="k">return</span> <span class="n">descent</span></div>
 
-    <span class="k">def</span> <span class="nf">curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSurface.curvature"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.curvature.html#compas_rhino.geometry.RhinoSurface.curvature">[docs]</a>    <span class="k">def</span> <span class="nf">curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">""""""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">points</span><span class="p">:</span>
             <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">heightfield</span><span class="p">()</span>
@@ -239,13 +243,13 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Object is not a surface.'</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">curvature</span>
+        <span class="k">return</span> <span class="n">curvature</span></div>
 
-    <span class="k">def</span> <span class="nf">borders</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSurface.borders"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.borders.html#compas_rhino.geometry.RhinoSurface.borders">[docs]</a>    <span class="k">def</span> <span class="nf">borders</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">""""""</span>
         <span class="n">border</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DuplicateSurfaceBorder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">curves</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">ExplodeCurves</span><span class="p">(</span><span class="n">border</span><span class="p">,</span> <span class="n">delete_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">curves</span>
+        <span class="k">return</span> <span class="n">curves</span></div>
 
     <span class="c1"># def project_point(self, point, direction=(0, 0, 1)):</span>
     <span class="c1">#     ppoints = rs.ProjectPointToSurface(point, self.guid, direction)</span>
@@ -267,26 +271,26 @@
     <span class="c1">#     #     projections.append(list(ppoint))</span>
     <span class="c1">#     # return projections</span>
 
-    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSurface.closest_point"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.closest_point.html#compas_rhino.geometry.RhinoSurface.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ClosestPoint</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">))</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">point</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+<div class="viewcode-block" id="RhinoSurface.closest_points"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.closest_points.html#compas_rhino.geometry.RhinoSurface.closest_points">[docs]</a>    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">pull_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="RhinoSurface.pull_point"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.pull_point.html#compas_rhino.geometry.RhinoSurface.pull_point">[docs]</a>    <span class="k">def</span> <span class="nf">pull_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">pull_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="RhinoSurface.pull_points"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.pull_points.html#compas_rhino.geometry.RhinoSurface.pull_points">[docs]</a>    <span class="k">def</span> <span class="nf">pull_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">pull_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="RhinoSurface.pull_curve"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.pull_curve.html#compas_rhino.geometry.RhinoSurface.pull_curve">[docs]</a>    <span class="k">def</span> <span class="nf">pull_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">pull_curves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curves</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="RhinoSurface.pull_curves"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.pull_curves.html#compas_rhino.geometry.RhinoSurface.pull_curves">[docs]</a>    <span class="k">def</span> <span class="nf">pull_curves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curves</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">pull_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSurface.pull_mesh"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.pull_mesh.html#compas_rhino.geometry.RhinoSurface.pull_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">pull_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">fixed</span><span class="p">:</span>
             <span class="n">fixed</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
@@ -298,10 +302,10 @@
             <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xyz</span><span class="p">)</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">dx</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">dy</span>
-            <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">dz</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">dz</span></div>
 
-    <span class="k">def</span> <span class="nf">pull_meshes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meshes</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+<div class="viewcode-block" id="RhinoSurface.pull_meshes"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoSurface.pull_meshes.html#compas_rhino.geometry.RhinoSurface.pull_meshes">[docs]</a>    <span class="k">def</span> <span class="nf">pull_meshes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meshes</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -364,7 +368,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

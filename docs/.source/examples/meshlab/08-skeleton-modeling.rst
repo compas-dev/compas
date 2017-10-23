@@ -14,8 +14,8 @@ Skeleton mesh modeling
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`example-mesh-skeleton-modeling.3dm </_examples/example-mesh-skeleton-modeling.3dm>`
-* :download:`mesh-skeleton-modeling.py </_examples/mesh-subd-modeling.py>`
+* :download:`mesh-skeleton-modeling.3dm </../../examples/mesh-skeleton-modeling.3dm>`
+* :download:`mesh-skeleton-modeling.py </../../examples/mesh-skeleton-modeling.py>`
 
 .. raw:: html
 
@@ -30,4 +30,4 @@ Skeleton mesh modeling
     code might produce incompatible convex hull geometries and therefore 
     degenerate subdivision meshes.  
  
-.. literalinclude:: /_examples/mesh-subd-modeling.py
+.. literalinclude:: /../../examples/mesh-subd-modeling.py

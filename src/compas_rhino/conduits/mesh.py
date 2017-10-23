@@ -63,11 +63,11 @@ class MeshConduit(Conduit):
     def __init__(self, mesh, color=None, **kwargs):
         super(MeshConduit, self).__init__(**kwargs)
         self.mesh = mesh
-        color = color or (255, 0, 0)
+        color = color or (255, 255, 255)
         self.color = FromArgb(*color)
 
     def DrawForeground(self, e):
-        edges = self.mesh.wireframe()
+        edges = list(self.mesh.wireframe())
         lines = List[Line](len(edges))
         for u, v in edges:
             sp = self.mesh.vertex_coordinates(u)

@@ -19,16 +19,13 @@ MeshPlotter
       ~MeshPlotter.clear_edges
       ~MeshPlotter.clear_faces
       ~MeshPlotter.clear_vertices
+      ~MeshPlotter.draw_arrows
       ~MeshPlotter.draw_edges
       ~MeshPlotter.draw_faces
       ~MeshPlotter.draw_lines
       ~MeshPlotter.draw_points
       ~MeshPlotter.draw_polygons
       ~MeshPlotter.draw_vertices
-      ~MeshPlotter.draw_xarrows
-      ~MeshPlotter.draw_xlines
-      ~MeshPlotter.draw_xpoints
-      ~MeshPlotter.draw_xpolygons
       ~MeshPlotter.save
       ~MeshPlotter.show
       ~MeshPlotter.update

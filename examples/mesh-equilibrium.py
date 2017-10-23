@@ -2,10 +2,10 @@
 
 import compas
 
-from compas.datastructures.mesh import Mesh
-from compas.datastructures.mesh.viewer import MeshViewer
+from compas.datastructures import Mesh
+from compas.visualization.viewers.meshviewer import MeshViewer
 
-from compas.numerical.methods.forcedensity import fd
+from compas.numerical import fd
 
 
 __author__    = 'Tom Van Mele'

@@ -120,6 +120,11 @@ Distance
 Angles
 ======
 
+.. note::
+
+    All angle functions return a result in radians.
+    For a result in degrees, use the *degrees* variation.
+
 .. autosummary::
     :toctree: generated/
 
@@ -344,6 +349,9 @@ Algorithms
 .. autosummary::
     :toctree: generated/
 
+    planarize_faces
+    flatness
+    flatness2
     smooth_centroid
     smooth_centerofmass
     smooth_area

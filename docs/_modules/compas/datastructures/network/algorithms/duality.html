@@ -114,8 +114,8 @@
 <span class="sd">                    'radius': 0.075,</span>
 <span class="sd">                })</span>
 
-<span class="sd">            plotter.draw_xlines(lines)</span>
-<span class="sd">            plotter.draw_xpoints(points)</span>
+<span class="sd">            plotter.draw_lines(lines)</span>
+<span class="sd">            plotter.draw_points(points)</span>
 <span class="sd">            plotter.draw_vertices(radius=0.15, facecolor='#ffffff', edgecolor='#444444', text={key: key for key in network.vertices()})</span>
 <span class="sd">            plotter.draw_edges()</span>
 
@@ -183,17 +183,25 @@
 <span class="sd">            import compas</span>
 <span class="sd">            from compas.datastructures import FaceNetwork</span>
 <span class="sd">            from compas.datastructures import network_find_faces</span>
-<span class="sd">            from compas.visualization import NetworkPlotter</span>
+<span class="sd">            from compas.visualization import FaceNetworkPlotter</span>
 
 <span class="sd">            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))</span>
 
 <span class="sd">            network_find_faces(network)</span>
 
-<span class="sd">            plotter = NetworkPlotter(network)</span>
+<span class="sd">            plotter = FaceNetworkPlotter(network)</span>
 
-<span class="sd">            plotter.draw_vertices(radius=0.075, facecolor={key: '#cccccc' for key in network.leaves()})</span>
-<span class="sd">            plotter.draw_edges(color={(u, v): '#cccccc' for u, v in network.edges()})</span>
-<span class="sd">            plotter.draw_faces(facecolor={fkey: '#eeeeee' for fkey in network.faces()}, text={fkey: fkey for fkey in network.faces()})</span>
+<span class="sd">            plotter.draw_vertices(</span>
+<span class="sd">                radius=0.075,</span>
+<span class="sd">                facecolor={key: '#cccccc' for key in network.leaves()}</span>
+<span class="sd">            )</span>
+<span class="sd">            plotter.draw_edges(</span>
+<span class="sd">                color={(u, v): '#cccccc' for u, v in network.edges()}</span>
+<span class="sd">            )</span>
+<span class="sd">            plotter.draw_faces(</span>
+<span class="sd">                facecolor={fkey: '#eeeeee' for fkey in network.faces()},</span>
+<span class="sd">                text={fkey: fkey for fkey in network.faces()}</span>
+<span class="sd">            )</span>
 
 <span class="sd">            plotter.show()</span>
 
@@ -205,17 +213,25 @@
 <span class="sd">            import compas</span>
 <span class="sd">            from compas.datastructures import FaceNetwork</span>
 <span class="sd">            from compas.datastructures import network_find_faces</span>
-<span class="sd">            from compas.visualization import NetworkPlotter</span>
+<span class="sd">            from compas.visualization import FaceNetworkPlotter</span>
 
 <span class="sd">            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))</span>
 
 <span class="sd">            network_find_faces(network, breakpoints=network.leaves())</span>
 
-<span class="sd">            plotter = NetworkPlotter(network)</span>
+<span class="sd">            plotter = FaceNetworkPlotter(network)</span>
 
-<span class="sd">            plotter.draw_vertices(radius=0.075, facecolor={key: '#cccccc' for key in network.leaves()})</span>
-<span class="sd">            plotter.draw_edges(color={(u, v): '#cccccc' for u, v in network.edges()})</span>
-<span class="sd">            plotter.draw_faces(facecolor={fkey: '#eeeeee' for fkey in network.faces()}, text={fkey: fkey for fkey in network.faces()})</span>
+<span class="sd">            plotter.draw_vertices(</span>
+<span class="sd">                radius=0.075,</span>
+<span class="sd">                facecolor={key: '#cccccc' for key in network.leaves()}</span>
+<span class="sd">            )</span>
+<span class="sd">            plotter.draw_edges(</span>
+<span class="sd">                color={(u, v): '#cccccc' for u, v in network.edges()}</span>
+<span class="sd">            )</span>
+<span class="sd">            plotter.draw_faces(</span>
+<span class="sd">                facecolor={fkey: '#eeeeee' for fkey in network.faces()},</span>
+<span class="sd">                text={fkey: fkey for fkey in network.faces()}</span>
+<span class="sd">            )</span>
 
 <span class="sd">            plotter.show()</span>
 
@@ -424,7 +440,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

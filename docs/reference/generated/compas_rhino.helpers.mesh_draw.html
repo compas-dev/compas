@@ -42,7 +42,7 @@
 <h1>mesh_draw</h1>
 <dl class="function">
 <dt id="compas_rhino.helpers.mesh_draw">
-<code class="descclassname">compas_rhino.helpers.</code><code class="descname">mesh_draw</code><span class="sig-paren">(</span><em>mesh</em>, <em>layer=None</em>, <em>clear_layer=False</em>, <em>show_faces=True</em>, <em>show_vertices=True</em>, <em>show_edges=False</em>, <em>vertexcolor=None</em>, <em>edgecolor=None</em>, <em>facecolor=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas_rhino/helpers/mesh.html#mesh_draw"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas_rhino.helpers.</code><code class="descname">mesh_draw</code><span class="sig-paren">(</span><em>mesh</em>, <em>layer=None</em>, <em>clear_layer=False</em>, <em>show_faces=True</em>, <em>show_vertices=False</em>, <em>show_edges=False</em>, <em>vertexcolor=None</em>, <em>edgecolor=None</em>, <em>facecolor=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas_rhino/helpers/mesh.html#mesh_draw"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a mesh object in Rhino.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
@@ -54,7 +54,7 @@
 Default is to draw in the current layer.</li>
 <li><strong>clear_layer</strong> (<em>bool (False)</em>) – Clear the drawing layer.</li>
 <li><strong>show_faces</strong> (<em>bool (True)</em>) – Draw the faces.</li>
-<li><strong>show_vertices</strong> (<em>bool (True)</em>) – Draw the vertices.</li>
+<li><strong>show_vertices</strong> (<em>bool (False)</em>) – Draw the vertices.</li>
 <li><strong>show_edges</strong> (<em>bool (False)</em>) – Draw the edges.</li>
 <li><strong>vertexcolor</strong> (<em>str, tuple, list, dict (None)</em>) – The vertex color specification.
 Default is to use the color of the parent layer.</li>
@@ -142,7 +142,7 @@ RGB colors specified as values between 0.0 and 1.0, should be floats.</p>
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

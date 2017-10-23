@@ -28,7 +28,7 @@ boundary = set(delaunay.vertices_on_boundary())
 
 plotter = MeshPlotter(delaunay)
 
-plotter.draw_xlines(lines)
+plotter.draw_lines(lines)
 
 facecolor = {key: '#0092d2' for key in delaunay.vertices() if key not in boundary}
 
