@@ -407,4 +407,3 @@ if __name__ == "__main__":
                     callback_args=(plotter, points, lines, 0.01))
 
     plotter.show()
-    print plotter.bgcolor

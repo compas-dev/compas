@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 <!DOCTYPE html>
 
@@ -45,6 +44,57 @@
 <dt id="compas.visualization.Plotter">
 <em class="property">class </em><code class="descclassname">compas.visualization.</code><code class="descname">Plotter</code><span class="sig-paren">(</span><em>figsize=(16.0</em>, <em>12.0)</em>, <em>dpi=100.0</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/visualization/plotters/plotter.html#Plotter"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal">object</code></a></p>
+<p>Definition of a plotter object based on matplotlib.</p>
+<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
+<col class="field-name"/>
+<col class="field-body"/>
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>figsize</strong> (<em>tuple, optional [16.0, 12.0]</em>) – The size of the plot in inches (width, length).</li>
+<li><strong>dpi</strong> (<em>float, optional [100.0]</em>) – The resolution of the plot.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.figure_size">
+<code class="descname">figure_size</code></dt>
+<dd><p><em>tuple</em> – The size of the plot in inches (width, length).</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.figure_dpi">
+<code class="descname">figure_dpi</code></dt>
+<dd><p><em>float</em> – The resolution of the plot.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.figure_bgcolor">
+<code class="descname">figure_bgcolor</code></dt>
+<dd><p><em>str, tuple, dict</em> – The color specififcation for the figure background.
+Colors should be specified in the form of a string (hex colors) or
+as a tuple of RGB components.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.axes_xlabel">
+<code class="descname">axes_xlabel</code></dt>
+<dd><p><em>str</em> – The label on the X axis of the plot.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.axes_ylabel">
+<code class="descname">axes_ylabel</code></dt>
+<dd><p><em>str</em> – The label on the Y axis of the plot.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.defaults">
+<code class="descname">defaults</code></dt>
+<dd><p><em>dict</em> – Dictionary containing default attributes for points, edges, lines, text
+and polygons.</p>
+</dd></dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li>Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science &amp; Engineering (9) 3, p.90-95.
+Available at: <a class="reference external" href="http://ieeexplore.ieee.org/document/4160265/citations">http://ieeexplore.ieee.org/document/4160265/citations</a></li>
+</ul>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -56,34 +106,34 @@
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.clear_collection.html" title="compas.visualization.Plotter.clear_collection"><code class="xref py py-obj docutils literal">clear_collection</code></a>(collection)</td>
-<td></td>
+<td>Clears a matplotlib collection object.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_arrows.html" title="compas.visualization.Plotter.draw_arrows"><code class="xref py py-obj docutils literal">draw_arrows</code></a>(arrows)</td>
-<td></td>
+<td>Draws arrows on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_lines.html" title="compas.visualization.Plotter.draw_lines"><code class="xref py py-obj docutils literal">draw_lines</code></a>(lines)</td>
-<td></td>
+<td>Draws lines on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_points.html" title="compas.visualization.Plotter.draw_points"><code class="xref py py-obj docutils literal">draw_points</code></a>(points)</td>
-<td></td>
+<td>Draws points on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_polygons.html" title="compas.visualization.Plotter.draw_polygons"><code class="xref py py-obj docutils literal">draw_polygons</code></a>(polygons)</td>
-<td></td>
+<td>Draws polygons on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.save.html" title="compas.visualization.Plotter.save"><code class="xref py py-obj docutils literal">save</code></a>(filepath, \*\*kwargs)</td>
-<td></td>
+<td>Saves the plot on a file.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.show.html" title="compas.visualization.Plotter.show"><code class="xref py py-obj docutils literal">show</code></a>()</td>
-<td></td>
+<td>Displays the plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update.html" title="compas.visualization.Plotter.update"><code class="xref py py-obj docutils literal">update</code></a>([pause])</td>
-<td></td>
+<td>Updates and pauses the plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update_linecollection.html" title="compas.visualization.Plotter.update_linecollection"><code class="xref py py-obj docutils literal">update_linecollection</code></a>(collection, segments)</td>
-<td></td>
+<td>Updates a line collection.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update_pointcollection.html" title="compas.visualization.Plotter.update_pointcollection"><code class="xref py py-obj docutils literal">update_pointcollection</code></a>(collection, centers)</td>
-<td></td>
+<td>Updates the location and radii of a point collection.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update_polygoncollection.html" title="compas.visualization.Plotter.update_polygoncollection"><code class="xref py py-obj docutils literal">update_polygoncollection</code></a>(collection, polygons)</td>
 <td></td>
@@ -98,19 +148,19 @@
 </colgroup>
 <tbody valign="top">
 <tr class=""><td><code class="xref py py-obj docutils literal">axes</code></td>
-<td></td>
+<td>Returns the axes subplot matplotlib object.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">bgcolor</code></td>
-<td></td>
+<td>Returns the background color.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">figure</code></td>
-<td></td>
+<td>Returns the matplotlib figure instance.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">interactive</code></td>
-<td></td>
+<td>Returns a boolean describing of the plot is interactive.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">title</code></td>
-<td></td>
+<td>Returns the title of the plot.</td>
 </tr>
 </tbody>
 </table>
@@ -209,225 +259,4 @@ var DOCUMENTATION_OPTIONS = {
                 anchors.add();
             </script>
 </body>
-=======
-
-<!DOCTYPE html>
-
-<html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="generated/compas.visualization.Plotter.__init__.html" rel="next" title="Plotter.__init__"/>
-<link href="../compas.visualization.html" rel="prev" title="visualization"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a class="breadcrumb-item" href="../../reference.html">reference</a>
-<a class="breadcrumb-item" href="../compas.html">compas</a>
-<a accesskey="U" class="breadcrumb-item" href="../compas.visualization.html">visualization</a>
-</nav>
-<div class="section">
-<h1>Plotter</h1>
-<dl class="class">
-<dt id="compas.visualization.Plotter">
-<em class="property">class </em><code class="descclassname">compas.visualization.</code><code class="descname">Plotter</code><span class="sig-paren">(</span><em>figsize=(16.0</em>, <em>12.0)</em>, <em>dpi=100.0</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/visualization/plotters/plotter.html#Plotter"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal">object</code></a></p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
-<colgroup>
-<col width="10%"/>
-<col width="90%"/>
-</colgroup>
-<tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.__init__.html" title="compas.visualization.Plotter.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>([figsize, dpi])</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.clear_collection.html" title="compas.visualization.Plotter.clear_collection"><code class="xref py py-obj docutils literal">clear_collection</code></a>(collection)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_lines.html" title="compas.visualization.Plotter.draw_lines"><code class="xref py py-obj docutils literal">draw_lines</code></a>(lines)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_points.html" title="compas.visualization.Plotter.draw_points"><code class="xref py py-obj docutils literal">draw_points</code></a>(points)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_polygons.html" title="compas.visualization.Plotter.draw_polygons"><code class="xref py py-obj docutils literal">draw_polygons</code></a>(polygons)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_xarrows.html" title="compas.visualization.Plotter.draw_xarrows"><code class="xref py py-obj docutils literal">draw_xarrows</code></a>(arrows)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_xlines.html" title="compas.visualization.Plotter.draw_xlines"><code class="xref py py-obj docutils literal">draw_xlines</code></a>(lines)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_xpoints.html" title="compas.visualization.Plotter.draw_xpoints"><code class="xref py py-obj docutils literal">draw_xpoints</code></a>(points)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_xpolygons.html" title="compas.visualization.Plotter.draw_xpolygons"><code class="xref py py-obj docutils literal">draw_xpolygons</code></a>(polygons)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.save.html" title="compas.visualization.Plotter.save"><code class="xref py py-obj docutils literal">save</code></a>(filepath, \*\*kwargs)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.show.html" title="compas.visualization.Plotter.show"><code class="xref py py-obj docutils literal">show</code></a>()</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update.html" title="compas.visualization.Plotter.update"><code class="xref py py-obj docutils literal">update</code></a>([pause])</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update_linecollection.html" title="compas.visualization.Plotter.update_linecollection"><code class="xref py py-obj docutils literal">update_linecollection</code></a>(collection, segments)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update_pointcollection.html" title="compas.visualization.Plotter.update_pointcollection"><code class="xref py py-obj docutils literal">update_pointcollection</code></a>(collection, centers)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update_polygoncollection.html" title="compas.visualization.Plotter.update_polygoncollection"><code class="xref py py-obj docutils literal">update_polygoncollection</code></a>(collection, polygons)</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
-<colgroup>
-<col width="10%"/>
-<col width="90%"/>
-</colgroup>
-<tbody valign="top">
-<tr class=""><td><code class="xref py py-obj docutils literal">axes</code></td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">bgcolor</code></td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">figure</code></td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">interactive</code></td>
-<td></td>
-</tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">title</code></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-</div>
-<nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="../compas.visualization.html" role="button">visualization</a>
-<a class="btn btn-primary compas-next" href="generated/compas.visualization.Plotter.__init__.html" role="button">Plotter.__init__</a>
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">Reference</a><ul class="nav active">
-<li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav active">
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.com.html">com</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.hpc.html">hpc</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
-</ul>
-</li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_maya.html">compas_maya</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_grasshopper.html">compas_grasshopper</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
-</ul>
-</li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-<ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Plotter</a></li>
-</ul>
-</div>
-</div>
-</div>
-<footer class="compas-footer">
-            
-                
-                    © Copyright 2017, Block Research Group - ETH Zurich.
-                
-            
-
-            
-                Last updated on Oct 22, 2017.
-            
-
-            
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-            
-        </footer>
-<script type="text/javascript">
-var DOCUMENTATION_OPTIONS = {
-    URL_ROOT:    '',
-    VERSION:     '',
-    COLLAPSE_INDEX: false,
-    FILE_SUFFIX: '.html',
-    HAS_SOURCE:  true,
-    SOURCELINK_SUFFIX: '.txt'
-};
-            </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
-                hljs.initHighlightingOnLoad();
-                anchors.add();
-            </script>
-</body>
->>>>>>> f771242a02ffb1c1d3fab21eccdf9d53daf0a4fd
 </html>
