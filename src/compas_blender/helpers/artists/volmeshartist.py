@@ -8,7 +8,6 @@ except ImportError:
 from compas.cad import ArtistInterface
 
 from compas_blender.utilities import clear_layer
-
 from compas_blender.helpers.artists.mixins import VertexArtist
 from compas_blender.helpers.artists.mixins import EdgeArtist
 from compas_blender.helpers.artists.mixins import FaceArtist

@@ -8,7 +8,6 @@ except ImportError:
 from compas.cad import ArtistInterface
 
 from compas_blender.utilities import clear_layer
-
 from compas_blender.helpers.artists.mixins import VertexArtist
 from compas_blender.helpers.artists.mixins import EdgeArtist
 from compas_blender.helpers.artists.mixins import PathArtist
@@ -54,20 +53,20 @@ class NetworkArtist(PathArtist, EdgeArtist, VertexArtist, ArtistInterface):
 if __name__ == "__main__":
 
     from compas_blender.utilities import get_objects
-    
+
     from compas_blender.helpers import network_from_bmesh
-    
+
     network = network_from_bmesh(bmesh=get_objects(layer=0)[0])
-    
+
     networkartist = NetworkArtist(network=network, layer=1)
-    
+
     networkartist.clear_layer()
-    
+
     networkartist.draw_vertices()
     networkartist.draw_vertexlabels()
     networkartist.clear_vertices(keys=[4])
     networkartist.clear_vertexlabels(keys=[6])
-    
+
     networkartist.draw_edges()
     networkartist.draw_edgelabels()
     networkartist.clear_edges(keys=[(0, 4)])
