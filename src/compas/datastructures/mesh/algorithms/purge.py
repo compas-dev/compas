@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+from compas.utilities import geometric_key
 
 __author__    = ['Matthias Rippmann']
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
