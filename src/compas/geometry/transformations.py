@@ -344,8 +344,8 @@ def orient_points(points, reference_plane=None, target_plane=None):
 
         .. code-block:: python
 
-            from compas.geometry.spatial import orient_points
-            from compas.geometry._planar import intersection_segment_segment_xy
+            from compas.geometry import orient_points
+            from compas.geometry import intersection_segment_segment_xy
 
             reference_plane = [(0.57735,0.57735,0.57735),(1.0, 1.0, 1.0)]
 
@@ -494,9 +494,9 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
 
             from math import pi, sin, cos, radians
 
-            from compas.geometry.spatial import rotate_points
-            from compas.geometry.spatial import intersection_line_plane
-            from compas.geometry.spatial import reflect_line_plane
+            from compas.geometry import rotate_points
+            from compas.geometry import intersection_line_plane
+            from compas.geometry import reflect_line_plane
 
             # planes
             mirror_plane = [(0.0, 0.0, 0.0),(1.0, 0.0, 0.0)]
@@ -631,7 +631,7 @@ def project_point_plane(point, plane):
 
     Examples:
 
-        >>> from compas.geometry.transformations import project_point_plane
+        >>> from compas.geometry import project_point_plane
         >>> point = [3.0, 3.0, 3.0]
         >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])  # the XY plane
         >>> project_point_plane(point, plane)

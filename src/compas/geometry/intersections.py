@@ -113,10 +113,10 @@ def intersection_line_line_xy(l1, l2):
     a, b = l1
     c, d = l2
 
-    x1, y1 = a
-    x2, y2 = b
-    x3, y3 = c
-    x4, y4 = d
+    x1, y1 = a[0], a[1]
+    x2, y2 = b[0], b[1]
+    x3, y3 = c[0], c[1]
+    x4, y4 = d[0], d[1]
 
     d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
 

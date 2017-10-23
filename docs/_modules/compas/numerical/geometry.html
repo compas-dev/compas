@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <!DOCTYPE html>
 
@@ -687,4 +688,695 @@ var DOCUMENTATION_OPTIONS = {
                 anchors.add();
             </script>
 </body>
+=======
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.numerical.geometry</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">asarray</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">array</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">meshgrid</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">linspace</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">amax</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">amin</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="nb">sum</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">newaxis</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">ones</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">hstack</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">mean</span>
+
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">svd</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">solve</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">minimize</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">leastsq</span>
+
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">griddata</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">cross_vectors</span>
+
+<span class="kn">from</span> <span class="nn">compas.numerical.linalg</span> <span class="k">import</span> <span class="n">normrow</span>
+<span class="kn">from</span> <span class="nn">compas.numerical.statistics</span> <span class="k">import</span> <span class="n">principal_components</span> <span class="k">as</span> <span class="n">pca</span>
+<span class="kn">from</span> <span class="nn">compas.numerical.spatial</span> <span class="k">import</span> <span class="n">_compute_local_coords</span>
+<span class="kn">from</span> <span class="nn">compas.numerical.spatial</span> <span class="k">import</span> <span class="n">_compute_global_coords</span>
+<span class="kn">from</span> <span class="nn">compas.numerical.operators</span> <span class="k">import</span> <span class="n">grad</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele &lt;vanmelet@ethz.ch&gt;'</span><span class="p">,</span>
+                  <span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2016, Block Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'liew@arch.ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'uvw_lengths'</span><span class="p">,</span>
+    <span class="s1">'scalarfield_contours'</span><span class="p">,</span>
+    <span class="s1">'plot_scalarfield_contours'</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">uvw_lengths</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+    <span class="sd">r"""Calculates the lengths and co-ordinate differences.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        C (sparse): Connectivity matrix (m x n)</span>
+<span class="sd">        X (array): Co-ordinates of vertices/points (n x 3).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        array: Vectors of co-ordinate differences in x, y and z (m x 3).</span>
+<span class="sd">        array: Lengths of members (m x 1)</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; C = connectivity_matrix([[0, 1], [1, 2]], 'csr')</span>
+<span class="sd">        &gt;&gt;&gt; X = array([[0, 0, 0], [1, 1, 0], [0, 0, 1]])</span>
+<span class="sd">        &gt;&gt;&gt; uvw</span>
+<span class="sd">        array([[ 1,  1,  0],</span>
+<span class="sd">               [-1, -1,  1]])</span>
+<span class="sd">        &gt;&gt;&gt; l</span>
+<span class="sd">        array([[ 1.41421356],</span>
+<span class="sd">               [ 1.73205081]])</span>
+<span class="sd">    """</span>
+    <span class="n">uvw</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">uvw</span><span class="p">,</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uvw</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">trimesh_descent</span><span class="p">(</span><span class="n">trimesh</span><span class="p">):</span>
+    <span class="sd">""""""</span>
+    <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">trimesh</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">()</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
+    <span class="n">sfield</span> <span class="o">=</span> <span class="n">V</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">vfield</span> <span class="o">=</span> <span class="o">-</span> <span class="n">G</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sfield</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vfield</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">'F'</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># contours</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="scalarfield_contours"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.scalarfield_contours.html#compas.numerical.scalarfield_contours">[docs]</a><span class="k">def</span> <span class="nf">scalarfield_contours</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sd">r"""Compute the contour lines of a scalarfield.</span>
+
+<span class="sd">    The computation of the contour lines is based on the ``contours`` function</span>
+<span class="sd">    available through matplotlib</span>
+<span class="sd">    (`&lt;http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour&gt;`_).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        xy (array-like): The xy-coordinates at which the scalar field is defined.</span>
+<span class="sd">        s (array-like): The values of the scalar field.</span>
+<span class="sd">        N (int): Optional. The number of contour lines to compute. Default is ``50``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: A tuple of a list of levels and a list of contour geometry.</span>
+
+<span class="sd">        The list of levels contains the values of the scalarfield at each of</span>
+<span class="sd">        the contours. The second item in the tuple is a list of contour lines.</span>
+<span class="sd">        Each contour line is a list of paths, and each path is a list polygons.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import compas</span>
+<span class="sd">            from compas.datastructures import Mesh</span>
+<span class="sd">            from compas.geometry import centroid_points</span>
+<span class="sd">            from compas.geometry import distance_point_point</span>
+<span class="sd">            from compas.numerical import scalarfield_contours</span>
+
+<span class="sd">            mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
+
+<span class="sd">            points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]</span>
+<span class="sd">            centroid = centroid_points(points)</span>
+
+<span class="sd">            distances = [distance_point_point(point, centroid) for point in points]</span>
+
+<span class="sd">            xy = [[points[i][0], points[i][1]] for i in range(len(points))]</span>
+
+<span class="sd">            levels, contours = scalarfield_contours(xy, distances)</span>
+
+<span class="sd">            for i in range(len(contours)):</span>
+<span class="sd">                level = levels[i]</span>
+<span class="sd">                contour = contours[i]</span>
+<span class="sd">                print(level)</span>
+<span class="sd">                for path in contour:</span>
+<span class="sd">                    for polygon in path:</span>
+<span class="sd">                        print(polygon)</span>
+
+
+<span class="sd">    See Also:</span>
+
+<span class="sd">        :func:`compas.datastructures.numerical.geometry.mesh_contours`</span>
+
+<span class="sd">    """</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span>
+        <span class="n">linspace</span><span class="p">(</span><span class="n">amin</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">amax</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">N</span><span class="p">),</span>
+        <span class="n">linspace</span><span class="p">(</span><span class="n">amin</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">amax</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">N</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">s</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">'cubic'</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">'equal'</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">contours</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">collections</span><span class="p">)</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">levels</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coll</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">collections</span><span class="p">)):</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="n">coll</span><span class="o">.</span><span class="n">get_paths</span><span class="p">()</span>
+        <span class="n">contours</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">paths</span><span class="p">)):</span>
+            <span class="n">polygons</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">to_polygons</span><span class="p">()</span>
+            <span class="n">contours</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">polygons</span><span class="p">)):</span>
+                <span class="n">contours</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">levels</span><span class="p">,</span> <span class="n">contours</span></div>
+
+
+<div class="viewcode-block" id="plot_scalarfield_contours"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.plot_scalarfield_contours.html#compas.numerical.plot_scalarfield_contours">[docs]</a><span class="k">def</span> <span class="nf">plot_scalarfield_contours</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sd">r"""Plot the contours of a scalarfield.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        xy (array-like): The xy-coordinates at which the scalar field is defined.</span>
+<span class="sd">        s (array-like): The values of the scalar field.</span>
+<span class="sd">        N (int): Optional. The number of contour lines to compute. Default is ``30``.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import compas</span>
+
+<span class="sd">            from compas.datastructures import Mesh</span>
+<span class="sd">            from compas.geometry import centroid_points</span>
+<span class="sd">            from compas.geometry import distance_point_point</span>
+<span class="sd">            from compas.numerical import plot_scalarfield_contours</span>
+
+<span class="sd">            mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
+
+<span class="sd">            points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]</span>
+<span class="sd">            centroid = centroid_points(points)</span>
+
+<span class="sd">            xy = [[points[i][0], points[i][1]] for i in range(len(points))]</span>
+<span class="sd">            d = [distance_point_point(point, centroid) for point in points]</span>
+
+<span class="sd">            plot_scalarfield_contours(xy, d)</span>
+
+
+<span class="sd">        .. plot::</span>
+
+<span class="sd">            import compas</span>
+<span class="sd">            from compas.datastructures import Mesh</span>
+<span class="sd">            from compas.geometry import centroid_points</span>
+<span class="sd">            from compas.geometry import distance_point_point</span>
+<span class="sd">            from compas.numerical import plot_scalarfield_contours</span>
+
+<span class="sd">            mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
+<span class="sd">            points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]</span>
+<span class="sd">            centroid = centroid_points(points)</span>
+<span class="sd">            d = [distance_point_point(point, centroid) for point in points]</span>
+<span class="sd">            xy = [[points[i][0], points[i][1]] for i in range(len(points))]</span>
+
+<span class="sd">            plot_scalarfield_contours(xy, d)</span>
+
+<span class="sd">    See Also:</span>
+
+<span class="sd">        :func:`compas.datastructures.mesh.numerical.geometry.plot_mesh_contours`</span>
+
+<span class="sd">    """</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span>
+        <span class="n">linspace</span><span class="p">(</span><span class="n">amin</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">amax</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">N</span><span class="p">),</span>
+        <span class="n">linspace</span><span class="p">(</span><span class="n">amin</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">amax</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">N</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">s</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">'cubic'</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">'equal'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<span class="k">def</span> <span class="nf">mesh_contours</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sd">"""Compute the contours of the mesh.</span>
+
+<span class="sd">    The contours are defined as the isolines of the z-coordinates of the vertices</span>
+<span class="sd">    of the mesh.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        mesh (:class:`compas.datastructures.mesh.Mesh`): The mesh object.</span>
+<span class="sd">        N (int): Optional. The density of the contours. Default is ``50``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: A tuple of a list of levels and a list of contours.</span>
+
+<span class="sd">        The list of levels contains the z-values at each of the contours.</span>
+<span class="sd">        Each contour is a list of paths, and each path is a list polygons.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import compas</span>
+<span class="sd">            from compas.datastructures import Mesh</span>
+<span class="sd">            from compas.numerical import mesh_contours</span>
+
+<span class="sd">            mesh = Mesh.from_obj(compas.get_data('hypar.obj'))</span>
+<span class="sd">            print(mesh_contours(mesh))</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        :func:`compas.numerical.geometry.scalarfield_contours`</span>
+
+<span class="sd">    """</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">scalarfield_contours</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">mesh_isolines</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sd">"""Compute the isolines of a specified attribute of the vertices of a mesh.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        mesh (:class:`compas.datastructures.mesh.Mesh`): A mesh object.</span>
+<span class="sd">        attr_name (str): The name of the vertex attribute.</span>
+<span class="sd">        N (int): Optional. The density of the isolines. Default is ``50``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: A tuple of a list of levels and a list of isolines.</span>
+
+<span class="sd">        The list of levels contains the z-values at each of the isolines.</span>
+<span class="sd">        Each isoline is a list of paths, and each path is a list polygons.</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        :func:`compas.numerical.geometry.scalarfield_contours`</span>
+
+<span class="sd">    """</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">attr_name</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">scalarfield_contours</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">plot_mesh_contours</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sd">"""Plot the contours of a mesh.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        mesh (:class:`compas.datastructures.mesh.Mesh`): The mesh object.</span>
+<span class="sd">        N (int): The density of the plot.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import compas</span>
+<span class="sd">            from compas.datastructures import Mesh</span>
+<span class="sd">            from compas.numerical import plot_mesh_contours</span>
+
+<span class="sd">            mesh = Mesh.from_obj(compas.get_data('hypar.obj'))</span>
+
+<span class="sd">            plot_mesh_contours(mesh, N=50)</span>
+
+
+<span class="sd">        .. plot::</span>
+
+<span class="sd">            import compas</span>
+<span class="sd">            from compas.datastructures import Mesh</span>
+<span class="sd">            from compas.numerical import plot_mesh_contours</span>
+<span class="sd">            mesh = Mesh.from_obj(compas.get_data('hypar.obj'))</span>
+<span class="sd">            plot_mesh_contours(mesh, N=50)</span>
+
+
+<span class="sd">    See Also:</span>
+<span class="sd">        :func:`compas.numerical.geometry.plot_scalarfield_contours`</span>
+
+<span class="sd">    """</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+    <span class="n">plot_scalarfield_contours</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">plot_mesh_isolines</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sd">"""Plot the isolines of a vertex attribute of the mesh.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        mesh (:class:`compas.datastructures.mesh.Mesh`): A mesh object.</span>
+<span class="sd">        attr_name (str): The name of the vertex attribute.</span>
+<span class="sd">        N (int): Optional. The density of the isolines. Default is ``50``.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import compas</span>
+<span class="sd">            from compas.datastructures import Mesh</span>
+<span class="sd">            from compas.geometry import centroid_points</span>
+<span class="sd">            from compas.geometry import distance_point_point</span>
+<span class="sd">            from compas.numerical import plot_mesh_isolines</span>
+
+<span class="sd">            mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
+<span class="sd">            points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]</span>
+<span class="sd">            centroid = centroid_points(points)</span>
+
+<span class="sd">            for key, attr in mesh.vertices_iter(True):</span>
+<span class="sd">                xyz = mesh.vertex_coordinates(key)</span>
+<span class="sd">    `            attr['d'] = distance_point_point(xyz, centroid)</span>
+
+<span class="sd">            plot_mesh_isolines(mesh, 'd')</span>
+
+
+<span class="sd">        .. plot::</span>
+
+<span class="sd">            import compas</span>
+<span class="sd">            from compas.datastructures import Mesh</span>
+<span class="sd">            from compas.geometry import centroid_points</span>
+<span class="sd">            from compas.geometry import distance_point_point</span>
+<span class="sd">            from compas.numerical import plot_mesh_isolines</span>
+<span class="sd">            mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
+<span class="sd">            points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]</span>
+<span class="sd">            centroid = centroid_points(points)</span>
+<span class="sd">            for key, attr in mesh.vertices_iter(True):</span>
+<span class="sd">                xyz = mesh.vertex_coordinates(key)</span>
+<span class="sd">                attr['d'] = distance_point_point(xyz, centroid)</span>
+<span class="sd">            plot_mesh_isolines(mesh, 'd')</span>
+
+
+<span class="sd">    See Also:</span>
+<span class="sd">        :func:`compas.numerical.geometry.plot_scalarfield_contours`</span>
+
+<span class="sd">    """</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">attr_name</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+    <span class="n">plot_scalarfield_contours</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># bestfit plane</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="c1"># @see: https://stackoverflow.com/questions/35070178/fit-plane-to-a-set-of-points-in-3d-scipy-optimize-minimize-vs-scipy-linalg-lsts</span>
+<span class="c1"># @see: https://stackoverflow.com/questions/20699821/find-and-draw-regression-plane-to-a-set-of-points/20700063#20700063</span>
+<span class="c1"># @see: http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points</span>
+<span class="c1"># @see: https://math.stackexchange.com/questions/99299/best-fitting-plane-given-a-set-of-points</span>
+
+
+<span class="k">def</span> <span class="nf">bestfit_plane</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="n">xyz</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">points</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">Yt</span> <span class="o">=</span> <span class="n">xyz</span> <span class="o">-</span> <span class="n">c</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">Yt</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Yt</span><span class="p">)</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vT</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">vT</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span>
+
+
+<span class="k">def</span> <span class="nf">bestfit_plane2</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="n">xyz</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">points</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">hstack</span><span class="p">((</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">ones</span><span class="p">((</span><span class="n">xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))))</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span>
+
+
+<span class="k">def</span> <span class="nf">bestfit_plane3</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">plane</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">abc</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">abc</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">c</span>
+    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="n">abc</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+            <span class="n">znew</span> <span class="o">=</span> <span class="n">plane</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">abc</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="p">(</span><span class="n">znew</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">asarray</span><span class="p">(</span><span class="n">points</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">objective</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">a</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span>
+
+
+<span class="k">def</span> <span class="nf">bestfit_plane4</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pca</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span>
+
+
+<span class="k">def</span> <span class="nf">bestfit_plane5</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># http://scipy-cookbook.readthedocs.io/items/Least_Squares_Circle.html</span>
+
+<span class="k">def</span> <span class="nf">bestfit_circle</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="n">o</span><span class="p">,</span> <span class="n">uvw</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pca</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">rst</span> <span class="o">=</span> <span class="n">_compute_local_coords</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">uvw</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rst</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rst</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sqrt</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">xc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">yc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+        <span class="n">Ri</span> <span class="o">=</span> <span class="n">dist</span><span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Ri</span> <span class="o">-</span> <span class="n">Ri</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="n">xm</span>     <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">ym</span>     <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">c0</span>     <span class="o">=</span> <span class="n">xm</span><span class="p">,</span> <span class="n">ym</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">ier</span> <span class="o">=</span> <span class="n">leastsq</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">c0</span><span class="p">)</span>
+    <span class="n">Ri</span>     <span class="o">=</span> <span class="n">dist</span><span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">R</span>      <span class="o">=</span> <span class="n">Ri</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">residu</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">Ri</span> <span class="o">-</span> <span class="n">R</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">residu</span><span class="p">)</span>
+
+    <span class="n">xyz</span> <span class="o">=</span> <span class="n">_compute_global_coords</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">uvw</span><span class="p">,</span> <span class="p">[[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">]])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">xyz</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">uvw</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">R</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># intersections</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="k">def</span> <span class="nf">betfit_intersection</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+    <span class="n">l1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">l2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">l3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">l4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">l1</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">l2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">p3</span> <span class="o">=</span> <span class="n">l3</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">p4</span> <span class="o">=</span> <span class="n">l4</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">n1</span> <span class="o">=</span> <span class="p">(</span><span class="n">l1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">l1</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="p">(</span><span class="n">l2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">l2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">n3</span> <span class="o">=</span> <span class="p">(</span><span class="n">l3</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">l3</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">n4</span> <span class="o">=</span> <span class="p">(</span><span class="n">l4</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">l4</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">n1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="n">n2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+    <span class="n">n3</span> <span class="o">=</span> <span class="n">n3</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n3</span><span class="p">)</span>
+    <span class="n">n4</span> <span class="o">=</span> <span class="n">n4</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n4</span><span class="p">)</span>
+
+    <span class="c1"># an eye matrix (ones on the diagonal)</span>
+
+    <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># R.p = q</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">n1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">T</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">n2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n2</span><span class="o">.</span><span class="n">T</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">n3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n3</span><span class="o">.</span><span class="n">T</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">n4</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n4</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">n1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">T</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">n2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n2</span><span class="o">.</span><span class="n">T</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">n3</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n3</span><span class="o">.</span><span class="n">T</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">p3</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">n4</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n4</span><span class="o">.</span><span class="n">T</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">p4</span><span class="p">)</span>
+
+    <span class="n">RtR</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+    <span class="n">Rtq</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">RtR</span><span class="p">,</span> <span class="n">Rtq</span><span class="p">)</span>
+
+    <span class="c1"># plot the lines</span>
+
+    <span class="n">xy1</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">+</span> <span class="n">n1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">xy2</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">+</span> <span class="n">n2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">xy3</span> <span class="o">=</span> <span class="n">p3</span> <span class="o">+</span> <span class="n">n3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">xy4</span> <span class="o">=</span> <span class="n">p4</span> <span class="o">+</span> <span class="n">n4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+
+    <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
+
+    <span class="kn">import</span> <span class="nn">compas</span>
+
+    <span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">normalize_vector</span>
+
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'hypar.obj'</span><span class="p">))</span>
+
+    <span class="c1"># points = [mesh.vertex_coordinates(key) for key in mesh]</span>
+    <span class="c1"># centroid = centroid_points(points)</span>
+
+    <span class="c1"># distances = [distance_point_point(point, centroid) for point in points]</span>
+
+    <span class="c1"># xy = [[points[i][0], points[i][1]] for i in range(len(points))]</span>
+
+    <span class="c1"># plot_scalarfield_contours(xy, distances, 20)</span>
+
+    <span class="n">fkey</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_any_face</span><span class="p">()</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+
+    <span class="n">n0</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span>
+
+    <span class="n">c</span><span class="p">,</span> <span class="n">uvw</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">bestfit_circle</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">n1</span> <span class="o">=</span> <span class="n">bestfit_plane</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">bestfit_plane2</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">n3</span> <span class="o">=</span> <span class="n">bestfit_plane3</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">n4</span> <span class="o">=</span> <span class="n">bestfit_plane4</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">n0</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n3</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n4</span><span class="p">)</span>
+
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">'3d'</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="s1">'ro'</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlim</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 22, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+>>>>>>> f771242a02ffb1c1d3fab21eccdf9d53daf0a4fd
 </html>

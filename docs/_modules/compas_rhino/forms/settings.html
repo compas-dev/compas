@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <!DOCTYPE html>
 
@@ -390,4 +391,398 @@ var DOCUMENTATION_OPTIONS = {
                 anchors.add();
             </script>
 </body>
+=======
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../forms.html">compas_rhino.forms</a>
+</nav>
+<h1>Source code for compas_rhino.forms.settings</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">compas_rhino.forms</span> <span class="k">import</span> <span class="n">Form</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">System</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">TabControl</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">Button</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">DialogResult</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">FlowLayoutPanel</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">DataGridViewColumnSortMode</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">TabPage</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">Padding</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">BorderStyle</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">DockStyle</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">FlowDirection</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">DataGridView</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">DataGridViewAutoSizeColumnsMode</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">DataGridViewAutoSizeRowsMode</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">DataGridViewCellBorderStyle</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">DataGridViewHeaderBorderStyle</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">DataGridViewSelectionMode</span>
+    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="k">import</span> <span class="n">DataGridViewContentAlignment</span>
+    <span class="kn">from</span> <span class="nn">System.Drawing</span> <span class="k">import</span> <span class="n">Point</span>
+    <span class="kn">from</span> <span class="nn">System.Drawing</span> <span class="k">import</span> <span class="n">Size</span>
+    <span class="kn">from</span> <span class="nn">System.Drawing</span> <span class="k">import</span> <span class="n">Color</span>
+    <span class="kn">from</span> <span class="nn">System.Drawing</span> <span class="k">import</span> <span class="n">Font</span>
+    <span class="kn">from</span> <span class="nn">System.Drawing</span> <span class="k">import</span> <span class="n">FontStyle</span>
+
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">platform</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'IronPython'</span><span class="p">:</span>
+        <span class="k">raise</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, BLOCK Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'SettingsForm'</span><span class="p">,</span> <span class="p">]</span>
+
+
+<div class="viewcode-block" id="SettingsForm"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.SettingsForm.html#compas_rhino.forms.SettingsForm">[docs]</a><span class="k">class</span> <span class="nc">SettingsForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
+    <span class="sd">""""""</span>
+
+<div class="viewcode-block" id="SettingsForm.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.SettingsForm.__init__.html#compas_rhino.forms.SettingsForm.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SettingsForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SettingsForm.init"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.SettingsForm.init.html#compas_rhino.forms.SettingsForm.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># table</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">make_table</span><span class="p">(</span><span class="s1">'main'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">Size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">580</span><span class="p">,</span> <span class="mi">700</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">Location</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">ColumnCount</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="s1">'Key'</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">SortMode</span> <span class="o">=</span> <span class="n">DataGridViewColumnSortMode</span><span class="o">.</span><span class="n">NotSortable</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ReadOnly</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">DefaultCellStyle</span><span class="o">.</span><span class="n">SelectionBackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">FromArgb</span><span class="p">(</span><span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">DefaultCellStyle</span><span class="o">.</span><span class="n">BackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">FromArgb</span><span class="p">(</span><span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="s1">'Value'</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">SortMode</span> <span class="o">=</span> <span class="n">DataGridViewColumnSortMode</span><span class="o">.</span><span class="n">NotSortable</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">Rows</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">table</span>
+        <span class="c1"># buttons</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">Button</span><span class="p">()</span>
+        <span class="n">ok</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="s1">'OK'</span>
+        <span class="n">ok</span><span class="o">.</span><span class="n">DialogResult</span> <span class="o">=</span> <span class="n">DialogResult</span><span class="o">.</span><span class="n">OK</span>
+        <span class="n">cancel</span> <span class="o">=</span> <span class="n">Button</span><span class="p">()</span>
+        <span class="n">cancel</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="s1">'Cancel'</span>
+        <span class="n">cancel</span><span class="o">.</span><span class="n">DialogResult</span> <span class="o">=</span> <span class="n">DialogResult</span><span class="o">.</span><span class="n">Cancel</span>
+        <span class="n">buttons</span> <span class="o">=</span> <span class="n">FlowLayoutPanel</span><span class="p">()</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">FlowDirection</span> <span class="o">=</span> <span class="n">FlowDirection</span><span class="o">.</span><span class="n">RightToLeft</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">BorderStyle</span> <span class="o">=</span> <span class="n">BorderStyle</span><span class="o">.</span><span class="kc">None</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">cancel</span><span class="p">)</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">Size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">580</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">Location</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">720</span><span class="p">)</span>
+        <span class="c1"># layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">buttons</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SettingsForm.on_form_closed"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.SettingsForm.on_form_closed.html#compas_rhino.forms.SettingsForm.on_form_closed">[docs]</a>    <span class="k">def</span> <span class="nf">on_form_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sender</span><span class="o">.</span><span class="n">DialogResult</span> <span class="o">==</span> <span class="n">DialogResult</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">Rows</span><span class="p">:</span>
+                <span class="n">key</span>   <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">Cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Value</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">Cells</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">Value</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">SectionedSettingsForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
+    <span class="sd">""""""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tables</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SectionedSettingsForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># tabs</span>
+        <span class="n">tabs</span> <span class="o">=</span> <span class="n">TabControl</span><span class="p">()</span>
+        <span class="n">tabs</span><span class="o">.</span><span class="n">Size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">580</span><span class="p">,</span> <span class="mi">700</span><span class="p">)</span>
+        <span class="n">tabs</span><span class="o">.</span><span class="n">Location</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="c1"># buttons</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">Button</span><span class="p">()</span>
+        <span class="n">ok</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="s1">'OK'</span>
+        <span class="n">ok</span><span class="o">.</span><span class="n">DialogResult</span> <span class="o">=</span> <span class="n">DialogResult</span><span class="o">.</span><span class="n">OK</span>
+        <span class="n">cancel</span> <span class="o">=</span> <span class="n">Button</span><span class="p">()</span>
+        <span class="n">cancel</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="s1">'Cancel'</span>
+        <span class="n">cancel</span><span class="o">.</span><span class="n">DialogResult</span> <span class="o">=</span> <span class="n">DialogResult</span><span class="o">.</span><span class="n">Cancel</span>
+        <span class="n">buttons</span> <span class="o">=</span> <span class="n">FlowLayoutPanel</span><span class="p">()</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">FlowDirection</span> <span class="o">=</span> <span class="n">FlowDirection</span><span class="o">.</span><span class="n">RightToLeft</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">BorderStyle</span> <span class="o">=</span> <span class="n">BorderStyle</span><span class="o">.</span><span class="kc">None</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">cancel</span><span class="p">)</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">Size</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">580</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="n">buttons</span><span class="o">.</span><span class="n">Location</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">720</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">tabs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">buttons</span><span class="p">)</span>
+        <span class="c1"># pages and tables</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">:</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">make_page</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+            <span class="n">page</span><span class="o">.</span><span class="n">TabIndex</span> <span class="o">=</span> <span class="n">index</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">make_table</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">ColumnCount</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="s1">'Key'</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">SortMode</span> <span class="o">=</span> <span class="n">DataGridViewColumnSortMode</span><span class="o">.</span><span class="n">NotSortable</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ReadOnly</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">DefaultCellStyle</span><span class="o">.</span><span class="n">SelectionBackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">FromArgb</span><span class="p">(</span><span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">DefaultCellStyle</span><span class="o">.</span><span class="n">BackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">FromArgb</span><span class="p">(</span><span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="s1">'Value'</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">SortMode</span> <span class="o">=</span> <span class="n">DataGridViewColumnSortMode</span><span class="o">.</span><span class="n">NotSortable</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">Rows</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">settings</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+            <span class="n">page</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+            <span class="n">tabs</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span>
+            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">on_form_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sender</span><span class="o">.</span><span class="n">DialogResult</span> <span class="o">==</span> <span class="n">DialogResult</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
+                <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">Rows</span><span class="p">:</span>
+                    <span class="n">key</span>   <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">Cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Value</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">Cells</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">Value</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="c1">#     def on_key_down(self, sender, e):</span>
+<span class="c1">#         if e.KeyCode == Keys.Tab:</span>
+<span class="c1">#             e.SuppressKeyPress = True</span>
+<span class="c1">#             print(sender.CurrentCell)</span>
+<span class="c1">#             i = sender.CurrentCell.RowIndex</span>
+<span class="c1">#             j = sender.CurrentCell.ColumnIndex</span>
+<span class="c1">#             print(i, j)</span>
+<span class="c1">#             if i == sender.Rows.Count - 1:</span>
+<span class="c1">#                 sender.CurrentCell = sender[1, 0]</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 sender.CurrentCell = sender[1, i+1]</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Helpers</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="k">def</span> <span class="nf">depth</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span> <span class="ow">and</span> <span class="n">x</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="n">depth</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">a</span><span class="p">])</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+
+<span class="k">def</span> <span class="nf">make_table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">autosize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">DataGridView</span><span class="p">()</span>
+    <span class="c1"># allow user</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">AllowUserToResizeColumns</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">AllowUserToResizeRows</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">AllowUserToAddRows</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">AllowUserToDeleteRows</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># auto size</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">AutoSize</span> <span class="o">=</span> <span class="n">autosize</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">AutoSizeColumnsMode</span> <span class="o">=</span> <span class="n">DataGridViewAutoSizeColumnsMode</span><span class="o">.</span><span class="n">Fill</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">AutoSizeRowsMode</span> <span class="o">=</span> <span class="n">DataGridViewAutoSizeRowsMode</span><span class="o">.</span><span class="n">AllCells</span>
+    <span class="c1"># back</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">BackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">White</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">BackgroundColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">White</span>
+    <span class="c1"># border</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">BorderStyle</span> <span class="o">=</span> <span class="n">BorderStyle</span><span class="o">.</span><span class="kc">None</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">CellBorderStyle</span> <span class="o">=</span> <span class="n">DataGridViewCellBorderStyle</span><span class="o">.</span><span class="n">Single</span>
+    <span class="c1"># column header</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">ColumnHeadersVisible</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">ColumnHeadersDefaultCellStyle</span><span class="o">.</span><span class="n">BackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">FromArgb</span><span class="p">(</span><span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">,</span> <span class="mi">238</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">ColumnHeadersDefaultCellStyle</span><span class="o">.</span><span class="n">Font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">Font</span><span class="p">,</span> <span class="n">FontStyle</span><span class="o">.</span><span class="n">Bold</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">ColumnHeadersDefaultCellStyle</span><span class="o">.</span><span class="n">ForeColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">Black</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">ColumnHeadersBorderStyle</span> <span class="o">=</span> <span class="n">DataGridViewHeaderBorderStyle</span><span class="o">.</span><span class="n">Single</span>
+    <span class="c1"># default cell</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">DefaultCellStyle</span><span class="o">.</span><span class="n">SelectionBackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">White</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">DefaultCellStyle</span><span class="o">.</span><span class="n">SelectionForeColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">Black</span>
+    <span class="c1"># dock</span>
+    <span class="k">if</span> <span class="n">autosize</span><span class="p">:</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">Dock</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Windows</span><span class="o">.</span><span class="n">Forms</span><span class="o">.</span><span class="n">DockStyle</span><span class="o">.</span><span class="n">Fill</span>
+    <span class="c1"># enable</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">EnableHeadersVisualStyles</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># grid</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">GridColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">FromArgb</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="c1"># select</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">MultiSelect</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># name</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="c1"># row header</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">RowHeadersBorderStyle</span> <span class="o">=</span> <span class="n">DataGridViewHeaderBorderStyle</span><span class="o">.</span><span class="n">Single</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">RowHeadersDefaultCellStyle</span><span class="o">.</span><span class="n">BackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">FromArgb</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">240</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">RowHeadersDefaultCellStyle</span><span class="o">.</span><span class="n">ForeColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">Empty</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">RowHeadersDefaultCellStyle</span><span class="o">.</span><span class="n">SelectionBackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">Empty</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">RowHeadersDefaultCellStyle</span><span class="o">.</span><span class="n">SelectionForeColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">Empty</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">RowHeadersVisible</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># scrolling</span>
+    <span class="c1"># table.ScrollBars = ScrollBars.None</span>
+    <span class="c1"># select</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">SelectionMode</span> <span class="o">=</span> <span class="n">DataGridViewSelectionMode</span><span class="o">.</span><span class="n">FullRowSelect</span>
+    <span class="c1"># top left header</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">TopLeftHeaderCell</span><span class="o">.</span><span class="n">Style</span><span class="o">.</span><span class="n">Alignment</span> <span class="o">=</span> <span class="n">DataGridViewContentAlignment</span><span class="o">.</span><span class="n">MiddleCenter</span>
+    <span class="k">return</span> <span class="n">table</span>
+
+
+<span class="k">def</span> <span class="nf">make_page</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">TabPage</span><span class="p">()</span>
+    <span class="n">page</span><span class="o">.</span><span class="n">BackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">White</span>
+    <span class="n">page</span><span class="o">.</span><span class="n">Dock</span> <span class="o">=</span> <span class="n">DockStyle</span><span class="o">.</span><span class="n">Fill</span>
+    <span class="n">page</span><span class="o">.</span><span class="n">Padding</span> <span class="o">=</span> <span class="n">Padding</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span>
+    <span class="n">page</span><span class="o">.</span><span class="n">TabIndex</span> <span class="o">=</span> <span class="n">index</span>
+    <span class="n">page</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="n">title</span>
+    <span class="k">return</span> <span class="n">page</span>
+
+
+<span class="k">def</span> <span class="nf">make_button_layout</span><span class="p">():</span>
+    <span class="n">layout</span> <span class="o">=</span> <span class="n">FlowLayoutPanel</span><span class="p">()</span>
+    <span class="n">layout</span><span class="o">.</span><span class="n">BorderStyle</span> <span class="o">=</span> <span class="n">BorderStyle</span><span class="o">.</span><span class="kc">None</span>
+    <span class="n">layout</span><span class="o">.</span><span class="n">FlowDirection</span> <span class="o">=</span> <span class="n">FlowDirection</span><span class="o">.</span><span class="n">RightToLeft</span>
+    <span class="k">return</span> <span class="n">layout</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+
+    <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'section1'</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s1">'name1'</span> <span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span>
+            <span class="s1">'name2'</span> <span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span>
+            <span class="s1">'name3'</span> <span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span>
+            <span class="s1">'name4'</span> <span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span>
+            <span class="s1">'name5'</span> <span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s1">'section2'</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s1">'name1'</span> <span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span>
+            <span class="s1">'name2'</span> <span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span>
+            <span class="s1">'name3'</span> <span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span>
+            <span class="s1">'name4'</span> <span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span>
+            <span class="s1">'name5'</span> <span class="p">:</span> <span class="s1">'value'</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">form</span> <span class="o">=</span> <span class="n">SettingsForm</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 22, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+>>>>>>> f771242a02ffb1c1d3fab21eccdf9d53daf0a4fd
 </html>
