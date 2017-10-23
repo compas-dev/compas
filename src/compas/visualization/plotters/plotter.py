@@ -28,7 +28,7 @@ __all__ = ['Plotter', ]
 
 
 class Plotter(object):
-    """Definition of a 2D plotter object based on matplotlib.
+    """Definition of a plotter object based on matplotlib.
 
     Parameters
     ----------
@@ -101,7 +101,13 @@ class Plotter(object):
 
     @property
     def interactive(self):
-        """Returns a boolean describing of the plot is interactive."""
+        """Returns a boolean describing of the plot is interactive.
+
+        Returns
+        -------
+        bool
+            True if plot is interactive.
+        """
         return self._interactive
 
     @interactive.setter
@@ -124,7 +130,14 @@ class Plotter(object):
 
     @property
     def axes(self):
-        """Returns the axes subplot matplotlib object."""
+        """Returns the axes subplot matplotlib object.
+
+        Returns
+        -------
+        object
+            The matplotlib axes object.
+
+        """
         if self._axes is None:
             # customise the use of this function
             # using attributes of the plotter class
@@ -134,16 +147,29 @@ class Plotter(object):
                 xlabel=self.axes_xlabel,
                 ylabel=self.axes_ylabel
             )
+
         return self._axes
 
     @property
     def figure(self):
-        """Returns the matplotlib figure instance."""
+        """Returns the matplotlib figure instance.
+
+        Returns
+        -------
+        object
+            The matplotlib figure instance.
+        """
         return self.axes.get_figure()
 
     @property
     def bgcolor(self):
-        """Returns the background color."""
+        """Returns the background color.
+
+        Returns
+        -------
+        str
+            The color as a string (hex colors).
+        """
         return self.figure.get_facecolor()
 
     @bgcolor.setter
@@ -163,7 +189,14 @@ class Plotter(object):
 
     @property
     def title(self):
-        """Returns the title of the plot."""
+        """Returns the title of the plot.
+
+        Returns
+        -------
+        str
+            The title of the plot.
+
+        """
         return self.figure.canvas.get_window_title()
 
     @title.setter
@@ -259,6 +292,10 @@ class Plotter(object):
         points : list
             List of dictionaries containing the point properties.
 
+        Returns
+        -------
+        object
+            The matplotlib point collection object.
         """
         return draw_xpoints_xy(points, self.axes)
 
@@ -269,6 +306,11 @@ class Plotter(object):
         ----------
         lines : list
             List of dictionaries containing the line properties.
+
+        Returns
+        -------
+        object
+            The matplotlib line collection object.
         """
         return draw_xlines_xy(lines, self.axes)
 
@@ -279,6 +321,11 @@ class Plotter(object):
         ----------
         polygons : list
             List of dictionaries containing the polygon properties.
+
+        Returns
+        -------
+        object
+            The matplotlib polygon collection object.
         """
         return draw_xpolygons_xy(polygons, self.axes)
 
@@ -289,6 +336,11 @@ class Plotter(object):
         ----------
         arrows : list
             List of dictionaries containing the arrow properties.
+
+        Returns
+        -------
+        object
+            The matplotlib arrow collection object.
         """
         return draw_xarrows_xy(arrows, self.axes)
 
@@ -355,3 +407,4 @@ if __name__ == "__main__":
                     callback_args=(plotter, points, lines, 0.01))
 
     plotter.show()
+    print plotter.bgcolor
