@@ -1,5 +1,3 @@
-""""""
-
 from __future__ import print_function
 from __future__ import division
 
@@ -237,6 +235,28 @@ def pointcloud(n, xbounds, ybounds=None, zbounds=None):
 
 
 def pointcloud_xy(n, xbounds, ybounds=None):
+    """Construct a point cloud in the XY plane.
+
+    Parameters
+    ----------
+    n : int
+        The number of points in the cloud.
+    xbounds : 2-tuple of int
+        The min/max values for the x-coordinates of the points in the cloud.
+    ybounds : 2-tuple of int, optional
+        The min/max values for the y-coordinates of the points in the cloud.
+        If ``None``, defaults to the value of the ``xbounds``.
+
+    Returns
+    -------
+    list:
+        A list of points in the XY plane (Z = 0).
+
+    Examples
+    --------
+    >>>
+
+    """
     if ybounds is None:
         ybounds = xbounds
     xmin, xmax = map(int, xbounds)

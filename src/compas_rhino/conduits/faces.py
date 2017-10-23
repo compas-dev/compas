@@ -59,15 +59,16 @@ class FacesConduit(Conduit):
                 del conduit
 
     """
-    def __init__(self, faces, color=None, **kwargs):
+    def __init__(self, vertices, faces, color=None, **kwargs):
         super(FacesConduit, self).__init__(**kwargs)
+        self.vertices = vertices
         self.faces = faces
         color = color or (255, 0, 0)
         self.color = FromArgb(*color)
 
     def DrawForeground(self, e):
-        for points in self.faces:
-            points = [Point3d(*point) for point in points]
+        for face in self.faces:
+            points = [Point3d(* self.vertices[key]) for key in face]
             e.Display.DrawPolygon(points, self.color, True)
 
 

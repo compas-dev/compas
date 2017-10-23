@@ -244,7 +244,25 @@ def distance_point_line_xy(point, line):
 
 
 def distance_point_line_sqrd(point, line):
-    """Compute the squared distance between a point and a line."""
+    """Compute the squared distance between a point and a line.
+
+    Parameters
+    ----------
+    point : sequence of float
+        XYZ coordinates of the point.
+    line : list, tuple
+        Line defined by two points.
+
+    Returns
+    -------
+    float
+        The squared distance between the point and the line.
+
+    References
+    ----------
+    https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
+
+    """
     a, b = line
     ab   = subtract_vectors(b, a)
     pa   = subtract_vectors(a, point)
@@ -511,8 +529,7 @@ def closest_point_in_cloud_xy(point, cloud):
 
 
 def closest_point_on_line(point, line):
-    """
-    Computes closest point on line to a given point.
+    """Computes closest point on line to a given point.
 
     Parameters
     ----------
@@ -543,8 +560,7 @@ def closest_point_on_line(point, line):
 
 
 def closest_point_on_line_xy(point, line):
-    """
-    Compute closest point on line (continuous) to a given point lying in the XY-plane.
+    """Compute closest point on line (continuous) to a given point lying in the XY-plane.
 
     Parameters
     ----------
@@ -567,8 +583,7 @@ def closest_point_on_line_xy(point, line):
 
 
 def closest_point_on_segment(point, segment):
-    """
-    Computes closest point on line segment (p1, p2) to testpoint.
+    """Computes closest point on line segment (p1, p2) to testpoint.
 
     Parameters
     ----------
@@ -600,8 +615,7 @@ def closest_point_on_segment(point, segment):
 
 
 def closest_point_on_segment_xy(point, segment):
-    """
-    Compute closest point on line segment to a given point lying in the XY-plane.
+    """Compute closest point on line segment to a given point lying in the XY-plane.
 
     Parameters
     ----------
@@ -629,7 +643,23 @@ def closest_point_on_segment_xy(point, segment):
 
 
 def closest_point_on_polyline(point, polyline):
-    """"""
+    """Find the closest point on a polyline to a given point.
+
+    Parameters
+    ----------
+    point : list
+        XYZ coordinates of a 2D or 3D point (Z will be ignored).
+    polygon : sequence
+        A sequence of XYZ coordinates representing the locations of the corners of a polygon.
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
+
+    Returns
+    -------
+    list
+        XYZ coordinates of closest point.
+
+    """
     cloud = []
 
     for segment in pairwise(polyline):
@@ -724,51 +754,6 @@ def closest_point_on_plane(point, plane):
     return [x1 - k * a,
             y1 - k * b,
             z1 - k * c]
-
-
-# # this function seems to be rather specific.
-# # where is it used?
-# # is it needed in the geometry package?
-# def closest_part_of_triangle(point, triangle):
-#     """Computes the closest part (edge or point) of a triangle to a test point
-#     lying in the XY-plane.
-
-#     Parameters:
-#         point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-#         triangle (sequence): A sequence of three points representing the triangle.
-
-#     Returns:
-#         The coordinates of the corner point if a corner point is closest. Two corner points defining
-#         the edge, if an edge is closest to the test point.
-#     """
-#     a, b, c = triangle
-#     ab = subtract_vectors_xy(b, a)
-#     bc = subtract_vectors_xy(c, b)
-#     ca = subtract_vectors_xy(a, c)
-#     # closest to edge ab?
-#     ab_ = cross_vectors_xy(ab, [0, 0, 1])
-#     ba_ = add_vectors_xy(ab, ab_)
-#     if not is_ccw_xy(a, b, point) and not is_ccw_xy(b, ba_, point) and is_ccw_xy(a, ab_, point):
-#         return a, b
-#     # closest to edge bc?
-#     bc_ = cross_vectors_xy(bc, [0, 0, 1])
-#     cb_ = add_vectors_xy(bc, bc_)
-#     if not is_ccw_xy(b, c, point) and not is_ccw_xy(c, cb_, point) and is_ccw_xy(b, bc_, point):
-#         return b, c
-#     # closest to edge ac?
-#     ca_ = cross_vectors_xy(ca, [0, 0, 1])
-#     ac_ = add_vectors_xy(ca, ca_)
-#     if not is_ccw_xy(c, a, point) and not is_ccw_xy(a, ac_, point) and is_ccw_xy(c, ca_, point):
-#         return c, a
-#     # closest to a?
-#     if not is_ccw_xy(a, ab_, point) and is_ccw_xy(a, ac_, point):
-#         return a
-#     # closest to b?
-#     if not is_ccw_xy(b, bc_, point) and is_ccw_xy(b, ba_, point):
-#         return b
-#     # closest to c?
-#     if not is_ccw_xy(c, ca_, point) and is_ccw_xy(c, cb_, point):
-#         return c
 
 
 # ==============================================================================

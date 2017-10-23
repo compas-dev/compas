@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     plotter = NetworkPlotter(network)
 
-    plotter.draw_vertices(facecolor={key: colors[key_color[key]] for key in network})
+    plotter.draw_vertices(facecolor={key: colors[key_color[key]] for key in network.vertices()})
     plotter.draw_edges()
 
     plotter.show()

@@ -16,8 +16,8 @@ from scipy.sparse import block_diag
 
 from scipy.sparse.linalg import spsolve
 
-from compas.datastructures.mesh import Mesh
-from compas.visualization.plotters.meshplotter import MeshPlotter
+from compas.datastructures import Mesh
+from compas.visualization import MeshPlotter
 
 
 __author__    = ['Tom Van Mele', ]
@@ -28,15 +28,12 @@ __email__     = 'van.mele@arch.ethz.ch'
 
 # make a *stanford bunny* mesh
 
-file = compas.get_data('stanford/bunny/reconstruction/bun_zipper.ply')
+file = compas.get('stanford_bunny.ply')
 mesh = Mesh.from_ply(file)
 
 # there seem to be one or more disconnected vertices
 
-for key in list(mesh.vertices()):
-    if mesh.vertex_degree(key) == 0:
-        del mesh.vertex[key]
-        del mesh.halfedge[key]
+mesh.cull_vertices()
 
 # get any vertex of the mesh
 # and its neighbours
@@ -70,10 +67,12 @@ for key in mesh.vertices():
     data.append(1)
     rows.append(r)
     cols.append(r)
+
     if key not in anchors:
         nbrs = mesh.vertex_neighbours(key)
         w = len(nbrs)
         d = - 1. / w
+
         for nbr in nbrs:
             c = key_index[nbr]
             data.append(d)
@@ -136,5 +135,4 @@ for u, v in mesh.wireframe():
 plotter = MeshPlotter(mesh)
 
 plotter.draw_xlines(lines)
-
 plotter.show()

@@ -1394,6 +1394,18 @@ class Mesh(FromToJson,
         return self.halfedges()
 
     # --------------------------------------------------------------------------
+    # special accessors
+    # --------------------------------------------------------------------------
+
+    def indexed_edges(self):
+        key_index = self.key_index()
+        return [(key_index[u], key_index[v]) for u, v in self.edges()]
+
+    def indexed_face_vertices(self):
+        key_index = self.key_index()
+        return [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
+
+    # --------------------------------------------------------------------------
     # vertex topology
     # --------------------------------------------------------------------------
 
@@ -2471,7 +2483,7 @@ class Mesh(FromToJson,
             The edges on the boundary.
 
         """
-        return [(u, v) for u, v in self.edges() if self.is_edge_naked(u, v)]
+        return [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
 
 # ==============================================================================

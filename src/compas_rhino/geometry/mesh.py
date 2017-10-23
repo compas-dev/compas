@@ -31,10 +31,14 @@ class RhinoMesh(MeshGeometryInterface):
 
     def __init__(self, guid):
         self.guid = guid
-        self.mesh = find_object(self.guid)
+        self.mesh = RhinoMesh.find(self.guid)
         self.geometry = self.mesh.Geometry
         self.attributes = self.mesh.Attributes
         self.otype = self.geometry.ObjectType
+
+    @staticmethod
+    def find(guid):
+        return find_object(guid)
 
     def get_vertex_coordinates(self):
         return [map(float, vertex) for vertex in rs.MeshVertices(self.guid)]

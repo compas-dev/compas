@@ -1,7 +1,7 @@
 try:
     from paramiko import AutoAddPolicy
     from paramiko import SSHClient
-except:
+except ImportError:
     pass
 
 import os

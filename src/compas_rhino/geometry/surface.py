@@ -29,10 +29,14 @@ class RhinoSurface(SurfaceGeometryInterface):
 
     def __init__(self, guid=None):
         self.guid = guid
-        self.surface = find_object(guid)
+        self.surface = RhinoSurface.find(guid)
         self.geometry = self.surface.Geometry
         self.attributes = self.surface.Attributes
         self.otype = self.geometry.ObjectType
+
+    @staticmethod
+    def find(guid):
+        return find_object(guid)
 
     def space(self, density=10):
         """"""

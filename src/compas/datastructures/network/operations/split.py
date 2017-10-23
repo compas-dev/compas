@@ -62,7 +62,7 @@ def network_split_edge(network, u, v, t=0.5, allow_boundary=True):
 
             plotter = NetworkPlotter(network)
 
-            plotter.draw_xlines(lines)
+            plotter.draw_lines(lines)
 
             plotter.draw_vertices(radius=0.2, text={key: key for key in network.vertices()}, facecolor={key: '#ff0000' for key in (a, b, c, d)})
             plotter.draw_edges()
@@ -178,6 +178,6 @@ if __name__ == "__main__":
     plotter.draw_faces(facecolor={fkey: '#eeeeee' for fkey in network.faces()},
                        text={fkey: fkey for fkey in network.faces()})
 
-    plotter.draw_xlines(lines)
+    plotter.draw_lines(lines)
 
     plotter.show()

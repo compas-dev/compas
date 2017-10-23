@@ -6,8 +6,11 @@ from __future__ import division
 from math import cos
 from math import sin
 
+from compas.geometry import homogenise_vectors
+from compas.geometry import dehomogenise_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import multiply_matrices
+from compas.geometry import transpose_matrix
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
@@ -38,19 +41,10 @@ __all__ = [
 # - Matrix.factory
 # - ...
 
-def _homogenize(points):
-    points = [[point[0], point[1], point[2], 1.0] for point in points]
-    return points
-
-
-def _dehomogenize(points):
-    return [point[0:3] for point in points]
-
-
 def transform(points, T):
-    points = _homogenize(points)
+    points = homogenise_vectors(points)
     points = transpose_matrix(multiply_matrices(T, transpose_matrix(points)))
-    return _dehomogenize(points)
+    return dehomogenise_vectors(points)
 
 
 def translation_matrix(direction):
