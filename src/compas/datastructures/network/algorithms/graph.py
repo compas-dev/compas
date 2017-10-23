@@ -301,7 +301,7 @@ def network_embed_in_plane(network, fix=None, straightline=True):
 
             plotter = NetworkPlotter(embedding)
 
-            plotter.draw_xlines([{'start': network.vertex_coordinates(u, 'xy'),
+            plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
                                   'end': network.vertex_coordinates(v, 'xy'),
                                   'color': '#cccccc'} for u, v in network.edges()])
 
@@ -405,7 +405,7 @@ if __name__ == '__main__':
 
         plotter = NetworkPlotter(embedding)
 
-        plotter.draw_xlines([{'start': network.vertex_coordinates(u, 'xy'),
+        plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
                               'end': network.vertex_coordinates(v, 'xy'),
                               'color': '#cccccc'} for u, v in network.edges()])
 

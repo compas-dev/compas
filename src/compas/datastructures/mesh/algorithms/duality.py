@@ -54,7 +54,7 @@ def mesh_dual(mesh, cls=None):
 
         plotter = MeshPlotter(dual)
 
-        plotter.draw_xlines(lines)
+        plotter.draw_lines(lines)
 
         plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text='key')
         plotter.draw_edges()
@@ -145,7 +145,7 @@ def mesh_voronoi(mesh, cls=None, update_coordinates=True):
 
         plotter = MeshPlotter(dual, figsize=(10, 7))
 
-        plotter.draw_xlines(lines)
+        plotter.draw_lines(lines)
         plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.05)
         plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text='key')
         plotter.draw_edges(keys=[(u, v) for u, v in dual.edges() if not dual.is_edge_naked(u, v)])
@@ -265,7 +265,7 @@ if __name__ == '__main__':
 
     plotter = MeshPlotter(dual, figsize=(10, 7))
 
-    plotter.draw_xlines(lines)
+    plotter.draw_lines(lines)
     plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.05)
     plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text='key')
     plotter.draw_edges(keys=[(u, v) for u, v in dual.edges() if not dual.is_edge_naked(u, v)])
