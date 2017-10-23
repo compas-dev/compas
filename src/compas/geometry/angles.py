@@ -1,5 +1,3 @@
-""""""
-
 from __future__ import print_function
 from __future__ import division
 
@@ -46,7 +44,7 @@ __all__ = [
 
 
 def angle_smallest_vectors(u, v):
-    """Compute the smallest angle (radians) between two vectors.
+    """Compute the smallest angle between two vectors.
 
     Parameters
     ----------
@@ -72,7 +70,7 @@ def angle_smallest_vectors(u, v):
 
 
 def angle_smallest_vectors_xy(u, v):
-    """Compute the smallest angle (radians) between the XY components of two vectors lying in the XY-plane.
+    """Compute the smallest angle between the XY components of two vectors.
 
     Parameters
     ----------
@@ -98,7 +96,7 @@ def angle_smallest_vectors_xy(u, v):
 
 
 def angle_smallest_vectors_degrees(u, v):
-    """Compute the smallest angle (degrees) between two vectors.
+    """Compute the smallest angle in degrees between two vectors.
 
     Parameters
     ----------
@@ -122,7 +120,7 @@ def angle_smallest_vectors_degrees(u, v):
 
 
 def angle_smallest_vectors_degrees_xy(u, v):
-    """Compute the smallest angle (degrees) between the XY components of two vectors lying in the XY-plane.
+    """Compute the smallest angle in degrees between the XY components of two vectors.
 
     Parameters
     ----------
@@ -142,7 +140,7 @@ def angle_smallest_vectors_degrees_xy(u, v):
 
 
 def angle_smallest_points(a, b, c):
-    r"""Compute the smallest angle (radians) between the vectors defined by three points.
+    r"""Compute the smallest angle between the vectors defined by three points.
 
     Parameters
     ----------
@@ -177,8 +175,7 @@ def angle_smallest_points(a, b, c):
 
 
 def angle_smallest_points_xy(a, b, c):
-    r"""Compute the smallest angle defined by the XY components of three points lying in
-       the XY-plane where the angle is computed at point A in the triangle ABC
+    r"""Compute the smallest angle between the vectors defined by the XY components of three points.
 
     Parameters
     ----------
@@ -195,8 +192,8 @@ def angle_smallest_points_xy(a, b, c):
         The smallest angle between the vectors.
         The angle is always positive.
 
-    Notes
-    -----
+    Note
+    ----
     The vectors are defined in the following way
 
     .. math::
@@ -214,7 +211,7 @@ def angle_smallest_points_xy(a, b, c):
 
 
 def angle_smallest_points_degrees(a, b, c):
-    r"""Compute the smallest angle (degrees) between the vectors defined by three points.
+    r"""Compute the smallest angle in degrees between the vectors defined by three points.
 
     Parameters
     ----------
@@ -240,15 +237,12 @@ def angle_smallest_points_degrees(a, b, c):
         \mathbf{u} = \mathbf{b} - \mathbf{a} \\
         \mathbf{v} = \mathbf{c} - \mathbf{a}
 
-    Z components may be provided, but are simply ignored.
-
     """
     return degrees(angle_smallest_points(a, b, c))
 
 
 def angle_smallest_points_degrees_xy(a, b, c):
-    """Compute the smallest angle defined by the XY components of three points lying in
-       the XY-plane where the angle is computed at point A in the triangle ABC
+    r"""Compute the smallest angle in degrees between the vectors defined by the XY components of three points.
 
     Parameters
     ----------
@@ -259,10 +253,21 @@ def angle_smallest_points_degrees_xy(a, b, c):
     c : sequence of float)
         XY(Z) coordinates of the second end point.
 
+    Note
+    ----
+    The vectors are defined in the following way
+
+    .. math::
+
+        \mathbf{u} = \mathbf{b} - \mathbf{a} \\
+        \mathbf{v} = \mathbf{c} - \mathbf{a}
+
+    Z components may be provided, but are simply ignored.
+
     Returns
     -------
     float
-        The smallest angle (degrees) between the vectors ``ab`` and ``ac`` in the XY plane.
+        The smallest angle between the vectors ``ab`` and ``ac`` in the XY plane.
         The angle is always positive.
 
     """
@@ -271,7 +276,7 @@ def angle_smallest_points_degrees_xy(a, b, c):
 
 
 def angles_vectors(u, v, degrees=False):
-    """Compute the the 2 angles (radians) formed by a pair of vectors.
+    """Compute the the 2 angles formed by a pair of vectors.
 
     Parameters
     ----------
@@ -297,9 +302,8 @@ def angles_vectors(u, v, degrees=False):
     return a, 360. - a
 
 
-
 def angles_vectors_xy(u, v):
-    """Compute the angles between the XY components of two vectors lying in the XY-plane.
+    """Compute the angles between the XY components of two vectors.
 
     Parameters
     ----------
@@ -314,6 +318,10 @@ def angles_vectors_xy(u, v):
         The two angles.
         The smallest angle is returned first.
 
+    Notes
+    -----
+    Z components may be provided, but are simply ignored.
+
     Examples
     --------
     >>>
@@ -324,7 +332,7 @@ def angles_vectors_xy(u, v):
 
 
 def angles_vectors_degrees(u, v):
-    """Compute the the 2 angles (degrees) formed by a pair of vectors.
+    """Compute the the two angles in degrees between two vectors.
 
     Parameters
     ----------
@@ -349,12 +357,36 @@ def angles_vectors_degrees(u, v):
 
 
 def angles_vectors_degrees_xy(u, v):
+    """Compute the the two angles in degrees between the XY components of two vectors.
+
+    Parameters
+    ----------
+    u : sequence of float
+        XY(Z) components of the first vector.
+    v : sequence of float
+        XY(Z) components of the second vector.
+
+    Returns
+    -------
+    tuple
+        The two angles in degrees.
+        The smallest angle is returned first.
+
+    Notes
+    -----
+    Z components may be provided, but are simply ignored.
+
+    Examples
+    --------
+    >>>
+
+    """
     a = angle_smallest_vectors_degrees_xy(u, v)
     return a, 360. - a
 
 
 def angles_points(a, b, c):
-    r"""Compute the two angles (radians) define by three points.
+    r"""Compute the two angles between two vectors defined by three points.
 
     Parameters
     ----------
@@ -371,8 +403,45 @@ def angles_points(a, b, c):
         The two angles in radians.
         The smallest angle is returned first.
 
-    Notes
-    -----
+    Note
+    ----
+    The vectors are defined in the following way
+
+    .. math::
+
+        \mathbf{u} = \mathbf{b} - \mathbf{a} \\
+        \mathbf{v} = \mathbf{c} - \mathbf{a}
+
+    Examples
+    --------
+    >>>
+
+    """
+    u = subtract_vectors(b, a)
+    v = subtract_vectors(c, a)
+    return angles_vectors(u, v)
+
+
+def angles_points_xy(a, b, c):
+    r"""Compute the two angles between the two vectors defined by the XY components of three points.
+
+    Parameters
+    ----------
+    a : sequence of float)
+        XY(Z) coordinates.
+    b : sequence of float)
+        XY(Z) coordinates.
+    c : sequence of float)
+        XY(Z) coordinates.
+
+    Returns
+    -------
+    tuple
+        The two angles in degrees.
+        The smallest angle is returned first.
+
+    Note
+    ----
     The vectors are defined in the following way
 
     .. math::
@@ -387,19 +456,13 @@ def angles_points(a, b, c):
     >>>
 
     """
-    u = subtract_vectors(b, a)
-    v = subtract_vectors(c, a)
-    return angles_vectors(u, v)
-
-
-def angles_points_xy(a, b, c):
     u = subtract_vectors_xy(b, a)
     v = subtract_vectors_xy(c, a)
     return angles_vectors_xy(u, v)
 
 
 def angles_points_degrees(a, b, c):
-    """Compute the two angles (degrees) define by three points.
+    """Compute the two angles in degrees between two vectors defined by three points.
 
     Parameters
     ----------
@@ -416,8 +479,43 @@ def angles_points_degrees(a, b, c):
         The two angles in degrees.
         The smallest angle is returned first.
 
-    Notes
-    -----
+    Note
+    ----
+    The vectors are defined in the following way
+
+    .. math::
+
+        \mathbf{u} = \mathbf{b} - \mathbf{a} \\
+        \mathbf{v} = \mathbf{c} - \mathbf{a}
+
+    Examples
+    --------
+    >>>
+
+    """
+    return degrees(angles_points(a, b, c))
+
+
+def angles_points_degrees_xy(a, b, c):
+    """Compute the two angles in degrees between two vectors defined by the XY components of three points.
+
+    Parameters
+    ----------
+    a : sequence of float)
+        XY(Z) coordinates.
+    b : sequence of float)
+        XY(Z) coordinates.
+    c : sequence of float)
+        XY(Z) coordinates.
+
+    Returns
+    -------
+    tuple
+        The two angles in degrees.
+        The smallest angle is returned first.
+
+    Note
+    ----
     The vectors are defined in the following way
 
     .. math::
@@ -432,13 +530,7 @@ def angles_points_degrees(a, b, c):
     >>>
 
     """
-    return degrees(angles_points(a, b, c))
-
-
-def angles_points_degrees_xy(a, b, c):
     return degrees(angles_points_xy(a, b, c))
-
-
 
 
 # ==============================================================================

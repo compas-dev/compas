@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 
 from compas.visualization.plotters.core.drawing import create_axes_xy
-
 from compas.visualization.plotters.core.drawing import draw_xpoints_xy
 from compas.visualization.plotters.core.drawing import draw_xlines_xy
 from compas.visualization.plotters.core.drawing import draw_xpolygons_xy
@@ -18,7 +17,7 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = []
+__all__ = ['Plotter', ]
 
 
 # https://matplotlib.org/faq/usage_faq.html#what-is-interactive-mode
@@ -114,9 +113,6 @@ class Plotter(object):
     def title(self, value):
         self.figure.canvas.set_window_title(value)
 
-    # def clear(self):
-    #     raise NotImplementedError
-
     def clear_collection(self, collection):
         collection.remove()
 
@@ -145,30 +141,21 @@ class Plotter(object):
         collection.set_paths(circles)
 
     def update_linecollection(self, collection, segments):
-        pass
+        collection.set_segments(segments)
 
     def update_polygoncollection(self, collection, polygons):
         pass
 
     def draw_points(self, points):
-        raise NotImplementedError
-
-    def draw_lines(self, lines):
-        raise NotImplementedError
-
-    def draw_polygons(self, polygons):
-        raise NotImplementedError
-
-    def draw_xpoints(self, points):
         return draw_xpoints_xy(points, self.axes)
 
-    def draw_xlines(self, lines):
+    def draw_lines(self, lines):
         return draw_xlines_xy(lines, self.axes)
 
-    def draw_xpolygons(self, polygons):
+    def draw_polygons(self, polygons):
         return draw_xpolygons_xy(polygons, self.axes)
 
-    def draw_xarrows(self, arrows):
+    def draw_arrows(self, arrows):
         return draw_xarrows_xy(arrows, self.axes)
 
 
@@ -180,14 +167,10 @@ if __name__ == "__main__":
 
     import compas
 
-    from compas.datastructures.mesh import Mesh
-    from compas.datastructures.mesh.algorithms import smooth_mesh_centroid
+    from compas.datastructures import Mesh
+    from compas.geometry import smooth_centroid
 
-    # make a mesh
-
-    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
-
-    # make lists of plotting geometry
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     points = []
     for key in mesh.vertices():
@@ -205,47 +188,36 @@ if __name__ == "__main__":
             'width': 1.0
         })
 
-    polygons = []
-    for fkey in mesh.faces():
-        polygons.append({
-            'points': mesh.face_coordinates(fkey, 'xy'),
-            'edgecolor': '#ff0000',
-            'linewidth': 3.0
-        })
-
     fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
-
-    # make a plotter
-    # provide customisation options here
 
     plotter = Plotter()
 
-    # extract collections
+    points = plotter.draw_points(points)
+    lines = plotter.draw_lines(lines)
 
-    points = plotter.draw_xpoints(points)
-    lines = plotter.draw_xlines(lines)
+    def callback(vertices, k, args):
+        plotter, points, lines, pause = args
 
-    # a callback function for live updates
-
-    def callback(mesh, k, args):
-        plotter, (points, lines), pause = args
-
-        plotter.update_pointcollection(points, [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertex], 0.1)
+        pos = [vertices[key][0:2] for key in mesh.vertex]
+        plotter.update_pointcollection(points, pos, 0.1)
 
         segments = []
         for u, v in mesh.edges():
-            segments.append([mesh.vertex_coordinates(u, 'xy'), mesh.vertex_coordinates(v, 'xy')])
-
-        lines.set_segments(segments)
+            a = vertices[u][0:2]
+            b = vertices[v][0:2]
+            segments.append([a, b])
+        plotter.update_linecollection(lines, segments)
 
         plotter.update(pause=pause)
 
-    # live visualisation of smoothing
+    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
 
-    smooth_mesh_centroid(mesh,
-                         fixed=fixed,
-                         kmax=100,
-                         callback=callback,
-                         callback_args=(plotter, (points, lines), 0.01))
+    smooth_centroid(vertices,
+                    adjacency,
+                    fixed=fixed,
+                    kmax=100,
+                    callback=callback,
+                    callback_args=(plotter, points, lines, 0.01))
 
     plotter.show()

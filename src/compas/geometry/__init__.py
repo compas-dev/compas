@@ -120,6 +120,11 @@ Distance
 Angles
 ======
 
+.. note::
+
+    All angle functions return a result in radians.
+    For a result in degrees, use the *degrees* variation.
+
 .. autosummary::
     :toctree: generated/
 

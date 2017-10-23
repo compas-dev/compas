@@ -60,13 +60,14 @@ __all__ = [
 # something_(of)vector/s
 # ==============================================================================
 
+
 def sum_vectors(vectors, axis=0):
     """
     Calculate the sum of a series of vectors along the specified axis.
 
     Parameters
     ----------
-    vectors : list of list
+    vectors : list
         A list of vectors.
     axis : int, optional
         If ``axis == 0``, the sum is taken across each of the indices of the mesh.
@@ -74,7 +75,7 @@ def sum_vectors(vectors, axis=0):
 
     Returns
     -------
-    sum : list of float
+    list
         The length of the list is ``len(vectors[0])``, if ``axis == 0``.
         The length is ``len(vectors)``, otherwise.
 
@@ -98,11 +99,12 @@ def norm_vector(vector):
 
     Parameters
     ----------
-    vector : list of float
+    vector : list
+        XYZ components of the vector.
 
     Returns
     -------
-    norm : float
+    float
         The L2 norm, or *length* of the vector.
 
     Examples
@@ -119,12 +121,13 @@ def norm_vectors(vectors):
 
     Parameters
     ----------
-    vectors : list of list
+    vectors : list
+        A list of vectors
 
     Returns
     -------
-    norm : list of float
-        A list with the length of each vector.
+    list
+        A list with the lengths of all vectors.
 
     Examples
     --------
@@ -139,8 +142,8 @@ def length_vector(vector):
 
     Parameters
     ----------
-    vector : list of float
-        The XYZ coordinates of the vector.
+    vector : list
+        XYZ components of the vector.
 
     Returns
     -------
@@ -164,8 +167,8 @@ def length_vector_xy(vector):
 
     Parameters
     ----------
-    vector : sequence of float
-        The XY(Z) coordinates of the vector.
+    vector : list
+        XY(Z) components of the vector.
 
     Returns
     -------
@@ -188,10 +191,36 @@ def length_vector_xy(vector):
 
 
 def length_vector_sqrd(vector):
+    """Compute the squared length of a vector.
+
+    Parameters
+    ----------
+    vector : list
+        XYZ components of the vector.
+
+    Returns
+    -------
+    float
+        The squared length.
+
+    """
     return vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2
 
 
 def length_vector_sqrd_xy(vector):
+    """Compute the squared length of a vector, assuming it lies in the XY plane.
+
+    Parameters
+    ----------
+    vector : list
+        XY(Z) components of the vector.
+
+    Returns
+    -------
+    float
+        The squared length.
+
+    """
     return vector[0] ** 2 + vector[1] ** 2
 
 
@@ -202,13 +231,14 @@ def length_vector_sqrd_xy(vector):
 # ... or else modify the vector in-place
 # ==============================================================================
 
+
 def scale_vector(vector, factor):
     """Scale a vector by a given factor.
 
     Parameters
     ----------
     vector : list, tuple
-        The XYZ coordinates of the vector.
+        XYZ components of the vector.
     factor : float
         The scaling factor.
 
@@ -233,8 +263,8 @@ def scale_vector_xy(vector, factor):
 
     Parameters
     ----------
-    vector : sequence of float
-        The XY(Z) coordinates of the vector.
+    vector : list
+        XY(Z) components of the vector.
     scale : float
         Scale factor.
 
@@ -256,8 +286,8 @@ def scale_vectors(vectors, factor):
 
     Parameters
     ----------
-    vectors : list of list
-        A list of vectors represented by XYZ coordinates.
+    vectors : list
+        A list of vectors.
     factor : float
         The scaling factor.
 
@@ -275,6 +305,25 @@ def scale_vectors(vectors, factor):
 
 
 def scale_vectors_xy(vectors, factor):
+    """Scale multiple vectors by a given factor, assuming they lie in the XY plane.
+
+    Parameters
+    ----------
+    vectors : list of list
+        A list of vectors.
+    factor : float
+        The scaling factor.
+
+    Returns
+    -------
+    vectors : list of list
+        The scaled vectors.
+
+    Examples
+    --------
+    >>>
+
+    """
     return [scale_vector_xy(vector, factor) for vector in vectors]
 
 
@@ -284,11 +333,11 @@ def normalize_vector(vector):
     Parameters
     ----------
     vector : list, tuple
-        A vector, represented by its XYZ coordinates.
+        XYZ components of the vector.
 
     Returns
     -------
-    vector : list
+    list
         The normalised vector.
 
     Examples
@@ -305,11 +354,11 @@ def normalize_vector_xy(vector):
     Parameters
     ----------
     vector : sequence of float
-        The 2D or 3D vector (Z will be ignored).
+        XY(Z) components of the vector.
 
     Returns
     -------
-    tuple
+    list
         The normalized vector in the XY-plane (Z = 0.0)
 
     Examples
@@ -320,7 +369,7 @@ def normalize_vector_xy(vector):
     l = length_vector_xy(vector)
     if not l:
         return vector
-    return vector[0] / l, vector[1] / l, 0.0
+    return [vector[0] / l, vector[1] / l, 0.0]
 
 
 def normalize_vectors(vectors):
@@ -333,7 +382,7 @@ def normalize_vectors(vectors):
 
     Returns
     -------
-    vectors : list
+    list
         The normalised vectors.
 
     Examples
@@ -345,6 +394,23 @@ def normalize_vectors(vectors):
 
 
 def normalize_vectors_xy(vectors):
+    """Normalise multiple vectors, assuming they lie in the XY plane.
+
+    Parameters
+    ----------
+    vectors : list of list
+        A list of vectors.
+
+    Returns
+    -------
+    list
+        The normalised vectors in the XY plane.
+
+    Examples
+    --------
+    >>>
+
+    """
     return [normalize_vector_xy(vector) for vector in vectors]
 
 
@@ -354,7 +420,7 @@ def power_vector(vector, power):
     Parameters
     ----------
     vector : list, tuple
-        A vector, represented by its XYZ coordinates.
+        XYZ components of the vector.
     power : int, float
         The power to which to raise the vector.
 
@@ -377,7 +443,7 @@ def power_vectors(vectors, power):
     Parameters
     ----------
     vectors : list of list
-        A list of vectors, represented by their XYZ coordinates.
+        A list of vectors.
     power : int, float
         The power to which to raise the vectors.
 
@@ -400,7 +466,7 @@ def square_vector(vector):
     Parameters
     ----------
     vector : list, tuple
-        A vector, represented by its XYZ coordinates.
+        XYZ components of the vector.
 
     Returns
     -------
@@ -416,6 +482,23 @@ def square_vector(vector):
 
 
 def square_vectors(vectors):
+    """Raise a multiple vectors to the power 2.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+
+    Returns
+    -------
+    vector : list
+        The squared vectors.
+
+    Examples
+    --------
+    >>>
+
+    """
     return [square_vectors(vector) for vector in vectors]
 
 
@@ -425,7 +508,23 @@ def square_vectors(vectors):
 # -> elementwise operations on two vectors
 # ==============================================================================
 
+
 def add_vectors(u, v):
+    """Add two vectors.
+
+    Parameters
+    ----------
+    u : sequence of float
+        XYZ components of the first vector.
+    v : sequence of float
+        XYZ components of the second vector.
+
+    Returns
+    -------
+    list
+        The resulting vector.
+
+    """
     return [a + b for (a, b) in zip(u, v)]
 
 
@@ -435,13 +534,13 @@ def add_vectors_xy(u, v):
     Parameters
     ----------
     u : sequence of float
-        The first 2D or 3D vector (Z will be ignored).
+        XY(Z) components of the first vector.
     v : sequence of float
-        The second 2D or 3D vector (Z will be ignored).
+        XY(Z) components of the second vector.
 
     Returns
     -------
-    tuple
+    list
         Resulting vector in the XY-plane (Z = 0.0)
 
     Examples
@@ -449,10 +548,29 @@ def add_vectors_xy(u, v):
     >>>
 
     """
-    return u[0] + v[0], u[1] + v[1], 0.0
+    return [u[0] + v[0], u[1] + v[1], 0.0]
 
 
 def subtract_vectors(u, v):
+    """Subtract one vector from another.
+
+    Parameters
+    ----------
+    u : list
+        XYZ components of the first vector.
+    v : list
+        XYZ components of the second vector.
+
+    Returns
+    -------
+    list
+        The resulting vector.
+
+    Examples
+    --------
+    >>>
+
+    """
     return [a - b for (a, b) in zip(u, v)]
 
 
@@ -461,14 +579,14 @@ def subtract_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : sequence of float
-        The XY(Z) coordinates of the first vector.
-    v : sequence of float
-        The XY(Z) coordinates of the second vector.
+    u : list
+        The XY(Z) components of the first vector.
+    v : list
+        The XY(Z) components of the second vector.
 
     Returns
     -------
-    tuple
+    list
         Resulting vector in the XY-plane (Z = 0.0)
 
     Examples
@@ -476,28 +594,105 @@ def subtract_vectors_xy(u, v):
     >>>
 
     """
-    return u[0] - v[0], u[1] - v[1], 0.0
+    return [u[0] - v[0], u[1] - v[1], 0.0]
 
 
 def multiply_vectors(u, v):
+    """Element-wise multiplication of two vectors.
+
+    Parameters
+    ----------
+    u : list
+        The XYZ components of the first vector.
+    v : list
+        The XYZ components of the second vector.
+
+    Returns
+    -------
+    list
+        Resulting vector.
+
+    Examples
+    --------
+    >>>
+
+    """
     return [a * b for (a, b) in zip(u, v)]
 
 
 def multiply_vectors_xy(u, v):
+    """Element-wise multiplication of two vectors assumed to lie in the XY plane.
+
+    Parameters
+    ----------
+    u : list
+        The XY(Z) components of the first vector.
+    v : list
+        The XY(Z) components of the second vector.
+
+    Returns
+    -------
+    list
+        Resulting vector in the XY plane.
+
+    Examples
+    --------
+    >>>
+
+    """
     return [u[0] * v[0], u[1] * v[1], 0.0]
 
 
 def divide_vectors(u, v):
+    """Element-wise division of two vectors.
+
+    Parameters
+    ----------
+    u : list
+        The XYZ components of the first vector.
+    v : list
+        The XYZ components of the second vector.
+
+    Returns
+    -------
+    list
+        Resulting vector.
+
+    Examples
+    --------
+    >>>
+
+    """
     return [a / b for (a, b) in zip(u, v)]
 
 
 def divide_vectors_xy(u, v):
+    """Element-wise division of two vectors assumed to lie in the XY plane.
+
+    Parameters
+    ----------
+    u : list
+        The XY(Z) components of the first vector.
+    v : list
+        The XY(Z) components of the second vector.
+
+    Returns
+    -------
+    list
+        Resulting vector in the XY plane.
+
+    Examples
+    --------
+    >>>
+
+    """
     return [u[0] / v[0], u[1] / v[1], 0.0]
 
 
 # ==============================================================================
 # ...
 # ==============================================================================
+
 
 def cross_vectors(u, v):
     r"""Compute the cross product of two vectors.
@@ -690,9 +885,6 @@ def transpose_matrix(M):
     return zip(*M)
 
 
-# rename to matmul_...
-# rename to dot_...
-
 def multiply_matrices(A, B):
     r"""Mutliply a matrix with a matrix.
 
@@ -789,12 +981,56 @@ def multiply_matrix_vector(A, b):
 # ==============================================================================
 
 
-def homogenise_vectors(vectors):
-    return [vector + [1.0] for vector in vectors]
+def homogenise_vectors(vectors, w=1.0):
+    """Homogenise a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+    w : float, optional
+        Homogenisation parameter.
+        Defaults to ``1.0``.
+
+    Returns
+    -------
+    list
+        Homogenised vectors.
+
+    Note
+    ----
+    Vectors described by XYZ components are homogenised by appending a homogenisation
+    parameter to the components, and by dividing each component by that parameter.
+    Homogenisatioon of vectors is often used in relation to transformations.
+
+    Examples
+    --------
+    >>> vectors = [[1.0, 0.0, 0.0]]
+    >>> homogenise_vectors(vectors)
+
+    """
+    return [[x / w, y / w, z / w, w] for x, y, z in vectors]
 
 
 def dehomogenise_vectors(vectors):
-    return [vector[:-1] for vector in vectors]
+    """Dehomogenise a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+
+    Returns
+    -------
+    list
+        Dehomogenised vectors.
+
+    Examples
+    --------
+    >>>
+
+    """
+    return [[x * w, y * w, z * w] for x, y, z, w in vectors]
 
 
 def orthonormalise_vectors(vectors):
@@ -817,7 +1053,8 @@ def orthonormalise_vectors(vectors):
 
     Examples
     --------
-    >>>
+    >>> orthonormalise_vectors([[1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+    [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
 
     """
     basis = []
@@ -836,19 +1073,6 @@ def orthonormalise_vectors(vectors):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    # import timeit
-
-    # r = timeit.timeit('length_vector([0.0, 0.0, 0.0])', setup='from __main__ import length_vector', number=100000)
-    # print(r)
-
-    # r = timeit.timeit('length_vector_xy([0.0, 0.0, 0.0])', setup='from __main__ import length_vector_xy', number=100000)
-    # print(r)
-
-    # M = [[0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2]]
-
-    # print(M)
-    # print(transpose_matrix(M))
 
     basis = orthonormalise_vectors([[1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
 

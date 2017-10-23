@@ -41,13 +41,6 @@ __all__ = [
 ]
 
 
-# is_intersection_line_line => line_line_intersect
-# if is_intersection_line_line ... => if line_line_intersect ...
-# => if lines_intersect ...
-
-# ..._xy => ..._xy
-
-
 def intersection_line_line(l1, l2):
     """Computes the intersection of two lines.
 

@@ -1,7 +1,7 @@
-""""""
-
 from __future__ import print_function
 from __future__ import division
+
+from compas.utilities import window
 
 from compas.geometry.basic import add_vectors
 from compas.geometry.basic import subtract_vectors
@@ -99,7 +99,7 @@ def midpoint_point_point(a, b):
 
     Returns
     -------
-    tuple
+    list
         XYZ coordinates of the midpoint.
 
     """
@@ -120,7 +120,7 @@ def midpoint_point_point_xy(a, b):
 
     Returns
     -------
-    tuple
+    list
         XYZ coordinates of the midpoint (Z = 0.0).
 
     """
@@ -132,25 +132,40 @@ def midpoint_line(line):
 
     Parameters
     ----------
-    a : sequence of float
-        XYZ coordinates of the first point.
-    b : sequence of float
-        XYZ coordinates of the second point.
+    line : 2-tuple
+        XYZ coordinates of the first point, and XYZ coordinates of the second point.
 
     Returns
     -------
-    tuple
+    list
         XYZ coordinates of the midpoint.
 
     Examples
     --------
-    >>> midpoint_line()
+    >>> midpoint_line(([0.0, 0.0, 0.0], [1.0, 0.0, 1.0]))
 
     """
     return midpoint_point_point(*line)
 
 
 def midpoint_line_xy(line):
+    """Compute the midpoint of a line defined by two points.
+
+    Parameters
+    ----------
+    line : 2-tuple
+        XYZ coordinates of the first point, and XYZ coordinates of the second point.
+
+    Returns
+    -------
+    list
+        XYZ coordinates of the midpoint.
+
+    Examples
+    --------
+    >>> midpoint_line_xy(([0.0, 0.0, 0.0], [1.0, 0.0, 1.0]))
+
+    """
     return midpoint_point_point_xy(*line)
 
 
@@ -167,14 +182,13 @@ def center_of_mass_polygon(polygon):
 
     Returns
     -------
-    tuple of floats
+    tuple
         The XYZ coordinates of the center of mass.
 
     Examples
     --------
-    >>> pts = [(0.,0.,0.),(1.,0.,0.),(0.,10.,0.)]
-    >>> print("Center of mass: {0}".format(center_of_mass(pts)))
-    >>> print("Centroid: {0}".format(centroid(pts)))
+    >>> points = [(0., 0., 0.), (1., 0., 0.), (0., 10., 0.)]
+    >>> center_of_mass_polygon(points)
 
     """
     L  = 0
@@ -210,7 +224,7 @@ def center_of_mass_polygon_xy(polygon):
 
     Returns
     -------
-    tuple of floats
+    tuple
         The XYZ coordinates of the center of mass (Z = 0.0).
 
     Examples
@@ -235,7 +249,27 @@ def center_of_mass_polygon_xy(polygon):
 
 
 def center_of_mass_polyhedron(polyhedron):
-    """Compute the center of mass of a polyhedron"""
+    """Compute the center of mass of a polyhedron.
+
+    Parameters
+    ----------
+    polyhedron : tuple
+        The coordinates of the vertices,
+        and the indices of the vertices forming the faces.
+
+    Returns
+    -------
+    tuple
+        XYZ coordinates of the center of mass.
+
+    Example
+    -------
+    >>> from compas.geometry import Polyhedron
+    >>> p = Polyhedron.generate(6)
+    >>> center_of_mass_polyhedron((p.vertices, p.faces))
+    (-4.206480876464043e-17, -4.206480876464043e-17, -4.206480876464043e-17)
+
+    """
     vertices, faces = polyhedron
 
     V  = 0
@@ -250,9 +284,10 @@ def center_of_mass_polyhedron(polyhedron):
         if len(face) == 3:
             triangles = [face]
         else:
-            triangles = []
-            # for i in range(1, len(face) - 1):
-            #     triangles.append(face[0:1] + vertices[i:i + 2])
+            centroid = centroid_points([vertices[index] for index in face])
+            vertices.append(centroid)
+            w = len(vertices) - 1
+            triangles = [[u, v, w] for u, v in window(face + face[0:1], 2)]
 
         for triangle in triangles:
             a  = vertices[triangle[0]]
@@ -291,4 +326,11 @@ def center_of_mass_polyhedron(polyhedron):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+    
+    from compas.geometry import Polyhedron
+
+    p = Polyhedron.generate(6)
+
+    c = center_of_mass_polyhedron((p.vertices, p.faces))
+
+    print(c)
