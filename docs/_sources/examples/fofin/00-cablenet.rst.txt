@@ -14,11 +14,11 @@ Network equilibrium
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`network-equilibrium.py </_examples/network-equilibrium.py>`
+* :download:`network-equilibrium.py </../../examples/network-equilibrium.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/network-equilibrium.py
+.. literalinclude:: /../../examples/network-equilibrium.py

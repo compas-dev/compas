@@ -50,13 +50,13 @@ class FaceNetwork(FaceHelpers,
         import compas
         from compas.datastructures import FaceNetwork
         from compas.datastructures import network_find_faces
-        from compas.visualization import NetworkPlotter
+        from compas.visualization import FaceNetworkPlotter
 
         network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
 
         network_find_faces(network, breakpoints=network.leaves())
 
-        plotter = NetworkPlotter(network)
+        plotter = FaceNetworkPlotter(network)
 
         plotter.draw_vertices(
             facecolor={key: '#ff0000' for key in network.leaves()},
@@ -694,13 +694,13 @@ if __name__ == '__main__':
     import compas
     from compas.datastructures import FaceNetwork
     from compas.datastructures import network_find_faces
-    from compas.visualization import NetworkPlotter
+    from compas.visualization import FaceNetworkPlotter
 
     network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
 
     network_find_faces(network, breakpoints=network.leaves())
 
-    plotter = NetworkPlotter(network, figsize=(10, 7))
+    plotter = FaceNetworkPlotter(network, figsize=(10, 7))
 
     plotter.defaults['vertex.fontsize'] = 8.0
 

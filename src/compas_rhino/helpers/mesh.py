@@ -227,7 +227,7 @@ def mesh_draw(mesh,
               layer=None,
               clear_layer=False,
               show_faces=True,
-              show_vertices=True,
+              show_vertices=False,
               show_edges=False,
               vertexcolor=None,
               edgecolor=None,
@@ -246,7 +246,7 @@ def mesh_draw(mesh,
         Clear the drawing layer.
     show_faces : bool (True)
         Draw the faces.
-    show_vertices : bool (True)
+    show_vertices : bool (False)
         Draw the vertices.
     show_edges : bool (False)
         Draw the edges.

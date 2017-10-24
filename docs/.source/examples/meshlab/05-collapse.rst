@@ -15,12 +15,12 @@ Collapse mesh to a single vertex
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`mesh-collapse.py </_examples/mesh-collapse.py>`
+* :download:`mesh-collapse.py </../../examples/mesh-collapse.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-collapse.py
+.. literalinclude:: /../../examples/mesh-collapse.py
 

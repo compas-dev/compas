@@ -1,9 +1,9 @@
 """Delaunay triangulation from points"""
 
-import compas_rhino as rhino
+import compas_rhino
 
-from compas.datastructures.mesh import Mesh
-from compas.datastructures.mesh.algorithms import delaunay_from_points
+from compas.datastructures import Mesh
+from compas.datastructures import delaunay_from_points
 
 
 __author__    = ['Tom Van Mele', 'Matthias Rippmann']
@@ -12,11 +12,11 @@ __license__   = 'MIT'
 __email__     = 'van.mele@arch.ethz.ch'
 
 
-guids = rhino.select_points()
-vertices = rhino.get_point_coordinates(guids)
+guids = compas_rhino.select_points()
+vertices = compas_rhino.get_point_coordinates(guids)
 
 faces = delaunay_from_points(vertices)
 
 mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-rhino.draw_mesh(mesh)
+compas_rhino.mesh_draw(mesh)

@@ -45,7 +45,7 @@
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Downloads</div><ul class="simple">
-<li><a class="reference download internal" download="" href="../../downloads/example-mesh-delaunay.3dm"><code class="xref download docutils literal">example-mesh-delaunay.3dm</code></a></li>
+<li><a class="reference download internal" download="" href="../../downloads/mesh-delaunay.3dm"><code class="xref download docutils literal">mesh-delaunay.3dm</code></a></li>
 <li><a class="reference download internal" download="" href="../../downloads/mesh-delaunay-from-points.py"><code class="xref download docutils literal">mesh-delaunay-from-points.py</code></a></li>
 </ul>
 </div>
@@ -56,10 +56,10 @@ input can be 3d points resulting in a 2.5d heightfield mesh.</p>
 </div>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="sd">"""Delaunay triangulation from points"""</span>
 
-<span class="kn">import</span> <span class="nn">compas_rhino</span> <span class="k">as</span> <span class="nn">rhino</span>
+<span class="kn">import</span> <span class="nn">compas_rhino</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.algorithms</span> <span class="k">import</span> <span class="n">delaunay_from_points</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">delaunay_from_points</span>
 
 
 <span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="s1">'Matthias Rippmann'</span><span class="p">]</span>
@@ -68,16 +68,15 @@ input can be 3d points resulting in a 2.5d heightfield mesh.</p>
 <span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'van.mele@arch.ethz.ch'</span>
 
 
-<span class="n">guids</span> <span class="o">=</span> <span class="n">rhino</span><span class="o">.</span><span class="n">select_points</span><span class="p">()</span>
-<span class="n">vertices</span> <span class="o">=</span> <span class="n">rhino</span><span class="o">.</span><span class="n">get_point_coordinates</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
+<span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_points</span><span class="p">()</span>
+<span class="n">vertices</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_point_coordinates</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
 
 <span class="n">faces</span> <span class="o">=</span> <span class="n">delaunay_from_points</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
-<span class="n">rhino</span><span class="o">.</span><span class="n">draw_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">compas_rhino</span><span class="o">.</span><span class="n">mesh_draw</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 </code></pre></div>
-
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="../meshlab.html" role="button">MeshLab</a>
@@ -124,7 +123,7 @@ input can be 3d points resulting in a 2.5d heightfield mesh.</p>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -145,7 +144,7 @@ input can be 3d points resulting in a 2.5d heightfield mesh.</p>
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

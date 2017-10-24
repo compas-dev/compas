@@ -43,7 +43,7 @@
 <dl class="class">
 <dt id="compas.datastructures.Network">
 <em class="property">class </em><code class="descclassname">compas.datastructures.</code><code class="descname">Network</code><a class="reference internal" href="../../modules/compas/datastructures/network/network.html#Network"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal">compas.datastructures.mixins.fromto.FromToJson</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.fromto.FromToData</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.geometry.EdgeGeometry</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.helpers.EdgeHelpers</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.helpers.VertexHelpers</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.mappings.VertexMappings</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.mappings.EdgeMappings</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.descriptors.VertexCoordinatesDescriptors</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.attributes.EdgeAttributesManagement</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.attributes.VertexAttributesManagement</code>, <code class="xref py py-class docutils literal">compas.datastructures.Datastructure</code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal">compas.datastructures.mixins.fromto.FromToJson</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.fromto.FromToData</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.geometry.EdgeGeometry</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.helpers.EdgeHelpers</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.helpers.VertexHelpers</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.mappings.VertexMappings</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.mappings.EdgeMappings</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.filters.VertexFilter</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.filters.EdgeFilter</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.descriptors.VertexCoordinatesDescriptors</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.attributes.EdgeAttributesManagement</code>, <code class="xref py py-class docutils literal">compas.datastructures.mixins.attributes.VertexAttributesManagement</code>, <code class="xref py py-class docutils literal">compas.datastructures.Datastructure</code></p>
 <p>Definition of a network.</p>
 <p>The <code class="docutils literal">Network</code> class is implemented as a directed edge graph.</p>
 <dl class="attribute">
@@ -100,7 +100,6 @@ and points to its corresponding vertex cycle.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-Network-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Network-1.png"/>
 </figure>
@@ -164,6 +163,9 @@ and points to its corresponding vertex cycle.</p>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Network.edges.html" title="compas.datastructures.Network.edges"><code class="xref py py-obj docutils literal">edges</code></a>([data])</td>
 <td>Return an iterator for the edges and their attributes (optional).</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Network.edges_where.html" title="compas.datastructures.Network.edges_where"><code class="xref py py-obj docutils literal">edges_where</code></a>(conditions)</td>
+<td>Get edges for which a certain condition or set of conditions is true.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Network.from_data.html" title="compas.datastructures.Network.from_data"><code class="xref py py-obj docutils literal">from_data</code></a>(data)</td>
 <td>Construct a datastructure from structured data.</td>
@@ -354,6 +356,9 @@ and points to its corresponding vertex cycle.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Network.vertices.html" title="compas.datastructures.Network.vertices"><code class="xref py py-obj docutils literal">vertices</code></a>([data])</td>
 <td>Return an iterator for the vertices and their attributes (optional).</td>
 </tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Network.vertices_where.html" title="compas.datastructures.Network.vertices_where"><code class="xref py py-obj docutils literal">vertices_where</code></a>(conditions)</td>
+<td>Get vertices for which a certain condition or set of conditions is true.</td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
@@ -433,7 +438,7 @@ and points to its corresponding vertex cycle.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -454,7 +459,7 @@ and points to its corresponding vertex cycle.</p>
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

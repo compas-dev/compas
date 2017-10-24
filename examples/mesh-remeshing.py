@@ -1,17 +1,17 @@
 """Remeshing a 2D mesh."""
 
 from __future__ import print_function
+from __future__ import division
 
 import rhinoscriptsyntax as rs
 
 import compas_rhino
 
-from compas.datastructures.mesh import Mesh
+from compas.datastructures import Mesh
+from compas.datastructures import mesh_delaunay_from_points
+from compas.datastructures import trimesh_remesh
 
-from compas.datastructures.mesh.algorithms import delaunay_from_points
-from compas.datastructures.mesh.algorithms import optimise_trimesh_topology
-
-from compas.cad.rhino.conduits.mesh import MeshConduit
+from compas_rhino.conduits import MeshConduit
 
 
 __author__    = ['Tom Van Mele', 'Matthias Rippmann']
@@ -26,20 +26,23 @@ def callback(mesh, k, args):
 
 
 boundary = rs.GetObject("Select Boundary Curve", 4)
-target_length = rs.GetReal("Select Edge Target Length", 2.5)
-points = rs.DivideCurve(boundary, rs.CurveLength(boundary) / target_length)
+length   = rs.GetReal("Select Edge Target Length", 2.0)
+points   = rs.DivideCurve(boundary, rs.CurveLength(boundary) / length)
 
-faces = delaunay_from_points(points, points)
-
-mesh = Mesh.from_vertices_and_faces(points, faces)
+faces = mesh_delaunay_from_points(points, points)
+mesh  = Mesh.from_vertices_and_faces(points, faces)
 
 conduit = MeshConduit(mesh, refreshrate=2)
 
 with conduit.enabled():
-    optimise_trimesh_topology(mesh,
-                              target_length,
-                              kmax=250,
-                              callback=callback,
-                              callback_args=(conduit, ))
+    trimesh_remesh(
+        mesh,
+        target=length,
+        kmax=500,
+        allow_boundary_split=True,
+        allow_boundary_swap=True,
+        callback=callback,
+        callback_args=(conduit, )
+    )
 
-compas_rhino.draw_mesh(mesh)
+compas_rhino.mesh_draw(mesh, vertexcolor={key: '#ff0000' for key in mesh.vertices_on_boundary()})

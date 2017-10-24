@@ -42,9 +42,14 @@
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">PIPE</span>
 
-<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="k">import</span> <span class="n">savemat</span>
-<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="k">import</span> <span class="n">loadmat</span>
-
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">scipy.io</span> <span class="k">import</span> <span class="n">savemat</span>
+    <span class="kn">from</span> <span class="nn">scipy.io</span> <span class="k">import</span> <span class="n">loadmat</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+    <span class="c1"># import platform</span>
+    <span class="c1"># if platform.python_implementation() != 'IronPython':</span>
+    <span class="c1">#     raise</span>
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele &lt;vanmelet@ethz.ch&gt;'</span><span class="p">,</span> <span class="p">]</span>
 <span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, Block Research Group - ETH Zurich'</span>
@@ -97,7 +102,7 @@
 
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matlab_exec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ws_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ws_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabProcess.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabProcess.__init__.html#compas.com.MatlabProcess.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matlab_exec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ws_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ws_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">""""""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matlab_exec</span>    <span class="o">=</span> <span class="n">matlab_exec</span> <span class="ow">or</span> <span class="s1">'matlab'</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matlab_options</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-nosplash'</span><span class="p">]</span>
@@ -105,12 +110,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span>    <span class="o">=</span> <span class="n">ws_filename</span> <span class="ow">or</span> <span class="s1">'./workspace.mat'</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>        <span class="o">=</span> <span class="n">timeout</span> <span class="ow">or</span> <span class="mi">20</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span>        <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>        <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>        <span class="o">=</span> <span class="n">verbose</span></div>
 
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="MatlabProcess.init"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabProcess.init.html#compas.com.MatlabProcess.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabProcess.start"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabProcess.start.html#compas.com.MatlabProcess.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">"""Start the subprocess.</span>
 
 <span class="sd">        Parameters:</span>
@@ -133,7 +138,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">pargs</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_wait_until</span><span class="p">(</span><span class="s1">'__READY__'</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">79</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">79</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_wait_until</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">str_to_wait_for</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"'</span><span class="si">{0}</span><span class="s2">'</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">str_to_wait_for</span><span class="p">))</span>
@@ -145,7 +150,7 @@
             <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
                 <span class="k">return</span>
 
-    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabProcess.stop"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabProcess.stop.html#compas.com.MatlabProcess.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">79</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">'stopping Matlab process...'</span><span class="p">)</span>
@@ -155,9 +160,9 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">'closing streams...'</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">ivars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ovars</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabProcess.run_command"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabProcess.run_command.html#compas.com.MatlabProcess.run_command">[docs]</a>    <span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">ivars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ovars</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">"""Run a command in Matlab.</span>
 
 <span class="sd">        Parameters:</span>
@@ -177,14 +182,14 @@
         <span class="k">if</span> <span class="n">ovars</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">ovars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">ovars</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">ovars</span>
+            <span class="k">return</span> <span class="n">ovars</span></div>
 
-    <span class="k">def</span> <span class="nf">write_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabProcess.write_value"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabProcess.write_value.html#compas.com.MatlabProcess.write_value">[docs]</a>    <span class="k">def</span> <span class="nf">write_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">'write Matlab value: </span><span class="si">{0}</span><span class="s1"> =&gt; </span><span class="si">{1}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"</span><span class="si">{0}</span><span class="s2">=</span><span class="si">{1}</span><span class="s2">;</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"</span><span class="si">{0}</span><span class="s2">=</span><span class="si">{1}</span><span class="s2">;</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">read_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabProcess.read_value"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabProcess.read_value.html#compas.com.MatlabProcess.read_value">[docs]</a>    <span class="k">def</span> <span class="nf">read_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">'read Matlab value: </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"save('</span><span class="si">{0}</span><span class="s2">', '</span><span class="si">{1}</span><span class="s2">');</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
@@ -193,23 +198,23 @@
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">default</span>
+        <span class="k">return</span> <span class="n">default</span></div>
 
-    <span class="k">def</span> <span class="nf">write_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabProcess.write_workspace"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabProcess.write_workspace.html#compas.com.MatlabProcess.write_workspace">[docs]</a>    <span class="k">def</span> <span class="nf">write_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">'write Matlab workspace.'</span><span class="p">)</span>
         <span class="n">savemat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"load(</span><span class="si">{0}</span><span class="s2">);</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_wait_until</span><span class="p">(</span><span class="s1">'__LOADED__'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wait_until</span><span class="p">(</span><span class="s1">'__LOADED__'</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">read_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabProcess.read_workspace"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabProcess.read_workspace.html#compas.com.MatlabProcess.read_workspace">[docs]</a>    <span class="k">def</span> <span class="nf">read_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">'read Matlab workspace.'</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"save('</span><span class="si">{0}</span><span class="s2">');</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_wait_until</span><span class="p">(</span><span class="s1">'__SAVED__'</span><span class="p">)</span>
-        <span class="n">loadmat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">,</span> <span class="n">mdict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span><span class="p">)</span></div>
+        <span class="n">loadmat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_filename</span><span class="p">,</span> <span class="n">mdict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_data</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -271,7 +276,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

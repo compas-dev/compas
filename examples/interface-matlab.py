@@ -22,11 +22,11 @@ from __future__ import print_function
 
 import compas
 
-from compas.com.mlab.engine import MatlabEngine
-from compas.datastructures.network import Network
-from compas.numerical.matrices import connectivity_matrix
-from compas.numerical.linalg import normrow
-from compas.visualization.plotters.networkplotter import NetworkPlotter
+from compas.com import MatlabEngine
+from compas.datastructures import Network
+from compas.numerical import connectivity_matrix
+from compas.numerical import normrow
+from compas.visualization import NetworkPlotter
 
 
 __author__    = ['Tom Van Mele', ]
@@ -43,7 +43,7 @@ matlab.connect()
 
 # make a network from sample data
 
-network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+network = Network.from_obj(compas.get('grid_irregular.obj'))
 
 # extract vertex coordinates and connectivity matrix
 # and convert to Matlab matrices

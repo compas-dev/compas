@@ -16,9 +16,35 @@ __all__ = ['NetworkPlotter', ]
 
 
 class NetworkPlotter(Plotter):
-    """"""
+    """Definition of a plotter object based on matplotlib for compas Networks.
+
+    Parameters
+    ----------
+    network: object
+        The network to plot.
+
+    Attributes
+    ----------
+    title : str
+        Title of the plot.
+    network : object
+        The network to plot.
+    vertexcollection : object
+        The matplotlib collection for the network vertices.
+    edgecollection : object
+        The matplotlib collection for the network edges.
+    defaults : dict
+        Dictionary containing default attributes for vertices and edges.
+
+    References
+    ----------
+    * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science & Engineering (9) 3, p.90-95.
+      Available at: http://ieeexplore.ieee.org/document/4160265/citations
+
+    """
 
     def __init__(self, network, **kwargs):
+        """Initialises a network plotter object"""
         super(NetworkPlotter, self).__init__(**kwargs)
         self.title = 'NetworkPlotter'
         self.network = network
@@ -39,13 +65,16 @@ class NetworkPlotter(Plotter):
         }
 
     def clear(self):
+        """Clears the network plotter edges and vertices."""
         self.clear_vertices()
         self.clear_edges()
 
     def clear_vertices(self):
+        """Clears the netwotk plotter vertices."""
         self.vertexcollection.remove()
 
     def clear_edges(self):
+        """Clears the network object edges."""
         self.edgecollection.remove()
 
     def draw_vertices(self,
@@ -57,7 +86,33 @@ class NetworkPlotter(Plotter):
                       edgewidth=None,
                       textcolor=None,
                       fontsize=None):
+        """Draws the network vertices.
 
+        Parameters
+        ----------
+        keys : list
+            The keys of the vertices to plot.
+        radius : list
+            A list of radii for the vertices.
+        text : list
+            Strings to be displayed on the vertices.
+        facecolor : list
+            Color for the vertex circle fill.
+        edgecolor : list
+            Color for the vertex circle edge.
+        edgewidth : list
+            Width for the vertex circle edge.
+        textcolor : list
+            Color for the text to be displayed on the vertices.
+        fontsize : list
+            Font size for the text to be displayed on the vertices.
+
+        Returns
+        -------
+        object
+            The matplotlib point collection object.
+
+        """
         keys = keys or list(self.network.vertices())
 
         radiusdict    = to_valuedict(keys, radius, self.defaults['vertex.radius'])
@@ -86,6 +141,7 @@ class NetworkPlotter(Plotter):
         return collection
 
     def update_vertices(self):
+        """Updates the plotter vertex collection based on the network."""
         circles = []
         for key in self.network.vertices():
             center = self.network.vertex_coordinates(key, 'xy')
@@ -100,7 +156,29 @@ class NetworkPlotter(Plotter):
                    text=None,
                    textcolor=None,
                    fontsize=None):
+        """Draws the network edges.
 
+        Parameters
+        ----------
+        keys : list
+            The keys of the edges to plot.
+        width : list
+            Width of the network edges.
+        color : list
+            Color for the edge lines.
+        text : list
+            Strings to be displayed on the edges.
+        textcolor : list
+            Color for the text to be displayed on the edges.
+        fontsize : list
+            Font size for the text to be displayed on the edges.
+
+        Returns
+        -------
+        object
+            The matplotlib line collection object.
+
+        """
         keys = keys or list(self.network.edges())
 
         widthdict     = to_valuedict(keys, width, self.defaults['edge.width'])
@@ -126,6 +204,7 @@ class NetworkPlotter(Plotter):
         return collection
 
     def update_edges(self):
+        """Updates the plotter edge collection based on the network."""
         segments = []
         for u, v in self.network.edges():
             segments.append([self.network.vertex_coordinates(u, 'xy'), self.network.vertex_coordinates(v, 'xy')])

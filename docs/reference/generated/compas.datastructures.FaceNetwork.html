@@ -13,7 +13,7 @@
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
 <link href="generated/compas.datastructures.FaceNetwork.__init__.html" rel="next" title="FaceNetwork.__init__"/>
-<link href="generated/compas.datastructures.Network.vertices.html" rel="prev" title="Network.vertices"/>
+<link href="generated/compas.datastructures.Network.vertices_where.html" rel="prev" title="Network.vertices_where"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -49,13 +49,13 @@
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">FaceNetwork</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_find_faces</span>
-<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">FaceNetworkPlotter</span>
 
 <span class="n">network</span> <span class="o">=</span> <span class="n">FaceNetwork</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
 
 <span class="n">network_find_faces</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">breakpoints</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">())</span>
 
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">FaceNetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span>
     <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">()},</span>
@@ -68,7 +68,6 @@
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
 <figure class="figure">
 <img alt="../../images/compas-datastructures-FaceNetwork-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-FaceNetwork-1.png"/>
 </figure>
@@ -144,6 +143,9 @@
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.FaceNetwork.edges_on_boundary.html" title="compas.datastructures.FaceNetwork.edges_on_boundary"><code class="xref py py-obj docutils literal">edges_on_boundary</code></a>()</td>
 <td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.FaceNetwork.edges_where.html" title="compas.datastructures.FaceNetwork.edges_where"><code class="xref py py-obj docutils literal">edges_where</code></a>(conditions)</td>
+<td>Get edges for which a certain condition or set of conditions is true.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.FaceNetwork.face_adjacency.html" title="compas.datastructures.FaceNetwork.face_adjacency"><code class="xref py py-obj docutils literal">face_adjacency</code></a>()</td>
 <td></td>
@@ -451,6 +453,9 @@
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.FaceNetwork.vertices_on_boundary.html" title="compas.datastructures.FaceNetwork.vertices_on_boundary"><code class="xref py py-obj docutils literal">vertices_on_boundary</code></a>([ordered])</td>
 <td>Return the vertices on the boundary.</td>
 </tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.FaceNetwork.vertices_where.html" title="compas.datastructures.FaceNetwork.vertices_where"><code class="xref py py-obj docutils literal">vertices_where</code></a>(conditions)</td>
+<td>Get vertices for which a certain condition or set of conditions is true.</td>
+</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.FaceNetwork.wireframe.html" title="compas.datastructures.FaceNetwork.wireframe"><code class="xref py py-obj docutils literal">wireframe</code></a>()</td>
 <td></td>
 </tr>
@@ -492,7 +497,7 @@
 </dd></dl>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="generated/compas.datastructures.Network.vertices.html" role="button">Network.vertices</a>
+<a class="btn btn-primary compas-prev" href="generated/compas.datastructures.Network.vertices_where.html" role="button">Network.vertices_where</a>
 <a class="btn btn-primary compas-next" href="generated/compas.datastructures.FaceNetwork.__init__.html" role="button">FaceNetwork.__init__</a>
 </nav>
 </main>
@@ -533,7 +538,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -554,7 +559,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

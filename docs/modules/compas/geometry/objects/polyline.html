@@ -109,12 +109,12 @@
 <span class="sd">        1.0</span>
 
 <span class="sd">    """</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyline.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Polyline.__init__.html#compas.geometry.Polyline.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -162,19 +162,19 @@
         <span class="sd">"""The length of the polyline."""</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">is_selfintersecting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyline.is_selfintersecting"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Polyline.is_selfintersecting.html#compas.geometry.Polyline.is_selfintersecting">[docs]</a>    <span class="k">def</span> <span class="nf">is_selfintersecting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Return True if the polyline is `self-intersecting`, False otherwise.</span>
 <span class="sd">        """</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyline.is_closed"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Polyline.is_closed.html#compas.geometry.Polyline.is_closed">[docs]</a>    <span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Verify if the polyline is closed. The polyline is closed if the first</span>
 <span class="sd">        and last point are identical.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True if the polyline is closed, False otherwise.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -233,7 +233,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

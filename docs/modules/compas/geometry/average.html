@@ -36,10 +36,10 @@
 <a accesskey="U" class="breadcrumb-item" href="../geometry.html">compas.geometry</a>
 </nav>
 <h1>Source code for compas.geometry.average</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="sd">""""""</span>
-
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">window</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">add_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
@@ -137,7 +137,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    tuple</span>
+<span class="sd">    list</span>
 <span class="sd">        XYZ coordinates of the midpoint.</span>
 
 <span class="sd">    """</span>
@@ -158,7 +158,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    tuple</span>
+<span class="sd">    list</span>
 <span class="sd">        XYZ coordinates of the midpoint (Z = 0.0).</span>
 
 <span class="sd">    """</span>
@@ -170,25 +170,40 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    a : sequence of float</span>
-<span class="sd">        XYZ coordinates of the first point.</span>
-<span class="sd">    b : sequence of float</span>
-<span class="sd">        XYZ coordinates of the second point.</span>
+<span class="sd">    line : 2-tuple</span>
+<span class="sd">        XYZ coordinates of the first point, and XYZ coordinates of the second point.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    tuple</span>
+<span class="sd">    list</span>
 <span class="sd">        XYZ coordinates of the midpoint.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; midpoint_line()</span>
+<span class="sd">    &gt;&gt;&gt; midpoint_line(([0.0, 0.0, 0.0], [1.0, 0.0, 1.0]))</span>
 
 <span class="sd">    """</span>
     <span class="k">return</span> <span class="n">midpoint_point_point</span><span class="p">(</span><span class="o">*</span><span class="n">line</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="midpoint_line_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.midpoint_line_xy.html#compas.geometry.midpoint_line_xy">[docs]</a><span class="k">def</span> <span class="nf">midpoint_line_xy</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+    <span class="sd">"""Compute the midpoint of a line defined by two points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    line : 2-tuple</span>
+<span class="sd">        XYZ coordinates of the first point, and XYZ coordinates of the second point.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        XYZ coordinates of the midpoint.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; midpoint_line_xy(([0.0, 0.0, 0.0], [1.0, 0.0, 1.0]))</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">midpoint_point_point_xy</span><span class="p">(</span><span class="o">*</span><span class="n">line</span><span class="p">)</span></div>
 
 
@@ -205,14 +220,13 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    tuple of floats</span>
+<span class="sd">    tuple</span>
 <span class="sd">        The XYZ coordinates of the center of mass.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; pts = [(0.,0.,0.),(1.,0.,0.),(0.,10.,0.)]</span>
-<span class="sd">    &gt;&gt;&gt; print("Center of mass: {0}".format(center_of_mass(pts)))</span>
-<span class="sd">    &gt;&gt;&gt; print("Centroid: {0}".format(centroid(pts)))</span>
+<span class="sd">    &gt;&gt;&gt; points = [(0., 0., 0.), (1., 0., 0.), (0., 10., 0.)]</span>
+<span class="sd">    &gt;&gt;&gt; center_of_mass_polygon(points)</span>
 
 <span class="sd">    """</span>
     <span class="n">L</span>  <span class="o">=</span> <span class="mi">0</span>
@@ -248,7 +262,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    tuple of floats</span>
+<span class="sd">    tuple</span>
 <span class="sd">        The XYZ coordinates of the center of mass (Z = 0.0).</span>
 
 <span class="sd">    Examples</span>
@@ -273,7 +287,27 @@
 
 
 <div class="viewcode-block" id="center_of_mass_polyhedron"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.center_of_mass_polyhedron.html#compas.geometry.center_of_mass_polyhedron">[docs]</a><span class="k">def</span> <span class="nf">center_of_mass_polyhedron</span><span class="p">(</span><span class="n">polyhedron</span><span class="p">):</span>
-    <span class="sd">"""Compute the center of mass of a polyhedron"""</span>
+    <span class="sd">"""Compute the center of mass of a polyhedron.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    polyhedron : tuple</span>
+<span class="sd">        The coordinates of the vertices,</span>
+<span class="sd">        and the indices of the vertices forming the faces.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        XYZ coordinates of the center of mass.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry import Polyhedron</span>
+<span class="sd">    &gt;&gt;&gt; p = Polyhedron.generate(6)</span>
+<span class="sd">    &gt;&gt;&gt; center_of_mass_polyhedron((p.vertices, p.faces))</span>
+<span class="sd">    (-4.206480876464043e-17, -4.206480876464043e-17, -4.206480876464043e-17)</span>
+
+<span class="sd">    """</span>
     <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">polyhedron</span>
 
     <span class="n">V</span>  <span class="o">=</span> <span class="mi">0</span>
@@ -288,9 +322,10 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">triangles</span> <span class="o">=</span> <span class="p">[</span><span class="n">face</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">triangles</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="c1"># for i in range(1, len(face) - 1):</span>
-            <span class="c1">#     triangles.append(face[0:1] + vertices[i:i + 2])</span>
+            <span class="n">centroid</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">vertices</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">face</span><span class="p">])</span>
+            <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">centroid</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">triangles</span> <span class="o">=</span> <span class="p">[[</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">window</span><span class="p">(</span><span class="n">face</span> <span class="o">+</span> <span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)]</span>
 
         <span class="k">for</span> <span class="n">triangle</span> <span class="ow">in</span> <span class="n">triangles</span><span class="p">:</span>
             <span class="n">a</span>  <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
@@ -329,7 +364,14 @@
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-    <span class="k">pass</span>
+    
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">Polyhedron</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Polyhedron</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="n">center_of_mass_polyhedron</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">faces</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>
@@ -369,7 +411,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

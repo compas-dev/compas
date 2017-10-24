@@ -64,7 +64,7 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="normal_polygon"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.normal_polygon.html#compas.geometry.normal_polygon">[docs]</a><span class="k">def</span> <span class="nf">normal_polygon</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">normalised</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="normal_polygon"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.normal_polygon.html#compas.geometry.normal_polygon">[docs]</a><span class="k">def</span> <span class="nf">normal_polygon</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">"""Compute the normal of a polygon defined by a sequence of points.</span>
 
 <span class="sd">    Note:</span>
@@ -94,13 +94,13 @@
         <span class="n">nx</span> <span class="o">+=</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">ny</span> <span class="o">+=</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">nz</span> <span class="o">+=</span> <span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">normalised</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">unitized</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span>
     <span class="n">l</span> <span class="o">=</span> <span class="n">length_vector</span><span class="p">([</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">nx</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="n">ny</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="n">nz</span> <span class="o">/</span> <span class="n">l</span></div>
 
 
-<span class="k">def</span> <span class="nf">_normal_polygon</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">normalised</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_normal_polygon</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">"""Compute the normal of a polygon defined by a sequence of points.</span>
 
 <span class="sd">    Note:</span>
@@ -131,13 +131,13 @@
         <span class="n">nx</span> <span class="o">+=</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">ny</span> <span class="o">+=</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">nz</span> <span class="o">+=</span> <span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">normalised</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">unitized</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span>
     <span class="n">l</span> <span class="o">=</span> <span class="n">length_vector</span><span class="p">([</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">nx</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="n">ny</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="n">nz</span> <span class="o">/</span> <span class="n">l</span>
 
 
-<div class="viewcode-block" id="normal_triangle"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.normal_triangle.html#compas.geometry.normal_triangle">[docs]</a><span class="k">def</span> <span class="nf">normal_triangle</span><span class="p">(</span><span class="n">triangle</span><span class="p">,</span> <span class="n">normalised</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="normal_triangle"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.normal_triangle.html#compas.geometry.normal_triangle">[docs]</a><span class="k">def</span> <span class="nf">normal_triangle</span><span class="p">(</span><span class="n">triangle</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">"""Compute the normal vector of a triangle.</span>
 <span class="sd">    """</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">triangle</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"Three points are required."</span>
@@ -145,18 +145,18 @@
     <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="n">ac</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="n">n</span>  <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">ac</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">normalised</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">unitized</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">n</span>
     <span class="n">lvec</span> <span class="o">=</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">lvec</span><span class="p">,</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">lvec</span><span class="p">,</span> <span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">lvec</span></div>
 
 
-<div class="viewcode-block" id="normal_triangle_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.normal_triangle_xy.html#compas.geometry.normal_triangle_xy">[docs]</a><span class="k">def</span> <span class="nf">normal_triangle_xy</span><span class="p">(</span><span class="n">triangle</span><span class="p">,</span> <span class="n">normalised</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="normal_triangle_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.normal_triangle_xy.html#compas.geometry.normal_triangle_xy">[docs]</a><span class="k">def</span> <span class="nf">normal_triangle_xy</span><span class="p">(</span><span class="n">triangle</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">triangle</span>
     <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="n">ac</span> <span class="o">=</span> <span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="n">n</span>  <span class="o">=</span> <span class="n">cross_vectors_xy</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">ac</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">normalised</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">unitized</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">n</span>
     <span class="n">lvec</span> <span class="o">=</span> <span class="n">length_vector_xy</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">lvec</span><span class="p">,</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">lvec</span><span class="p">,</span> <span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">lvec</span></div>
@@ -207,7 +207,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

@@ -31,6 +31,7 @@ Network
       ~Network.edge_point
       ~Network.edge_vector
       ~Network.edges
+      ~Network.edges_where
       ~Network.from_data
       ~Network.from_json
       ~Network.from_lines
@@ -94,6 +95,7 @@ Network
       ~Network.vertex_neighbours_in
       ~Network.vertex_neighbours_out
       ~Network.vertices
+      ~Network.vertices_where
    
    
 

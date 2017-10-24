@@ -350,7 +350,8 @@ Algorithms
     :toctree: generated/
 
     planarize_faces
-    flattness
+    flatness
+    flatness2
     smooth_centroid
     smooth_centerofmass
     smooth_area

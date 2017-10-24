@@ -101,18 +101,18 @@
 
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">workspace</span><span class="o">=</span><span class="s1">'base'</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.__init__.html#compas.com.MatlabClient.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">workspace</span><span class="o">=</span><span class="s1">'base'</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_app</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lease</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interactive</span> <span class="o">=</span> <span class="n">interactive</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="n">workspace</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.init"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.init.html#compas.com.MatlabClient.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_create_instance</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_lease</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_lease</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_create_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">GetTypeFromProgID</span><span class="p">(</span><span class="s1">'Matlab.Application'</span><span class="p">)</span>
@@ -149,7 +149,7 @@
     <span class="c1"># ==========================================================================</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">vector_from_list</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.vector_from_list"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.vector_from_list.html#compas.com.MatlabClient.vector_from_list">[docs]</a>    <span class="k">def</span> <span class="nf">vector_from_list</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
         <span class="sd">"""Make a Matlab-compatible vector from a list.</span>
 
 <span class="sd">        Parameters</span>
@@ -174,10 +174,10 @@
         <span class="n">vector</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Array</span><span class="o">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="n">vector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">vector</span>
+        <span class="k">return</span> <span class="n">vector</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">vector_from_array</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.vector_from_array"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.vector_from_array.html#compas.com.MatlabClient.vector_from_array">[docs]</a>    <span class="k">def</span> <span class="nf">vector_from_array</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
         <span class="sd">"""Make a Matlab-compatible vector from a (Numpy) array.</span>
 
 <span class="sd">        Parameters</span>
@@ -195,10 +195,10 @@
 <span class="sd">        &gt;&gt;&gt;</span>
 
 <span class="sd">        """</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">matrix_from_list</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.matrix_from_list"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.matrix_from_list.html#compas.com.MatlabClient.matrix_from_list">[docs]</a>    <span class="k">def</span> <span class="nf">matrix_from_list</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
         <span class="sd">"""Make a Matlab-compatible matrix from a list of lists.</span>
 
 <span class="sd">        Parameters</span>
@@ -227,10 +227,10 @@
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="n">matrix</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">matrix</span>
+        <span class="k">return</span> <span class="n">matrix</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">matrix_from_array</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.matrix_from_array"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.matrix_from_array.html#compas.com.MatlabClient.matrix_from_array">[docs]</a>    <span class="k">def</span> <span class="nf">matrix_from_array</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
         <span class="sd">"""Make a Matlab-compatible matrix from a (Numpy) array.</span>
 
 <span class="sd">        Parameters</span>
@@ -248,37 +248,37 @@
 <span class="sd">        &gt;&gt;&gt;</span>
 
 <span class="sd">        """</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">list_from_vector</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.list_from_vector"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.list_from_vector.html#compas.com.MatlabClient.list_from_vector">[docs]</a>    <span class="k">def</span> <span class="nf">list_from_vector</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
         <span class="sd">"""Convert a Matlab vector to a Python list."""</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">list_from_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.list_from_matrix"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.list_from_matrix.html#compas.com.MatlabClient.list_from_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">list_from_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="sd">"""Convert a Matlab matrix to a Python list."""</span>
         <span class="n">nlist</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
             <span class="n">nlist</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="n">nlist</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">nlist</span>
+        <span class="k">return</span> <span class="n">nlist</span></div>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.double"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.double.html#compas.com.MatlabClient.double">[docs]</a>    <span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">vector_from_list</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">matrix_from_list</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">matrix_from_list</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.eval"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.eval.html#compas.com.MatlabClient.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">):</span>
         <span class="sd">"""Evaluate a command from a string.</span>
 
 <span class="sd">        Parameters</span>
@@ -296,9 +296,9 @@
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.put"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.put.html#compas.com.MatlabClient.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">"""Put a variable in the Matlab workspace.</span>
 
 <span class="sd">        Parameters</span>
@@ -323,9 +323,9 @@
             <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">PutWorkspaceData</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="MatlabClient.get"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.com.MatlabClient.get.html#compas.com.MatlabClient.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">"""Get the value of a variable in the workspace.</span>
 
 <span class="sd">        Parameters</span>
@@ -359,7 +359,7 @@
                 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_matrix_size</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">MatlabClient</span><span class="o">.</span><span class="n">list_from_matrix</span><span class="p">(</span><span class="n">_value</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_renew_lease</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">value</span></div>
+        <span class="k">return</span> <span class="n">value</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -419,7 +419,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

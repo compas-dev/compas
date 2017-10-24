@@ -74,7 +74,7 @@
 
 <span class="sd">            import compas</span>
 <span class="sd">            from compas.datastructures import FaceNetwork</span>
-<span class="sd">            from compas.visualization import NetworkPlotter</span>
+<span class="sd">            from compas.visualization import FaceNetworkPlotter</span>
 <span class="sd">            from compas.datastructures import network_find_faces</span>
 <span class="sd">            from compas.datastructures import network_split_edge</span>
 
@@ -97,13 +97,20 @@
 <span class="sd">                    'color': '#00ff00'</span>
 <span class="sd">                })</span>
 
-<span class="sd">            plotter = NetworkPlotter(network)</span>
+<span class="sd">            plotter = FaceNetworkPlotter(network)</span>
 
-<span class="sd">            plotter.draw_xlines(lines)</span>
+<span class="sd">            plotter.draw_lines(lines)</span>
 
-<span class="sd">            plotter.draw_vertices(radius=0.2, text={key: key for key in network.vertices()}, facecolor={key: '#ff0000' for key in (a, b, c, d)})</span>
+<span class="sd">            plotter.draw_vertices(</span>
+<span class="sd">                radius=0.2,</span>
+<span class="sd">                text={key: key for key in network.vertices()},</span>
+<span class="sd">                facecolor={key: '#ff0000' for key in (a, b, c, d)}</span>
+<span class="sd">            )</span>
 <span class="sd">            plotter.draw_edges()</span>
-<span class="sd">            plotter.draw_faces(text={fkey: fkey for fkey in network.faces()}, facecolor={fkey: '#eeeeee' for fkey in network.faces()})</span>
+<span class="sd">            plotter.draw_faces(</span>
+<span class="sd">                text={fkey: fkey for fkey in network.faces()},</span>
+<span class="sd">                facecolor={fkey: '#eeeeee' for fkey in network.faces()}</span>
+<span class="sd">            )</span>
 
 <span class="sd">            plotter.show()</span>
 
@@ -215,7 +222,7 @@
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="s1">'#eeeeee'</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">faces</span><span class="p">()},</span>
                        <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">fkey</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">faces</span><span class="p">()})</span>
 
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
@@ -239,7 +246,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -257,7 +264,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

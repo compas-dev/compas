@@ -15,13 +15,13 @@ Mesh smoothing
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`example-mesh-smoothing.3dm </_examples/example-mesh-smoothing.3dm>`
-* :download:`mesh-smoothing.py </_examples/mesh-smoothing.py>`
+* :download:`mesh-smoothing.3dm </../../examples/mesh-smoothing.3dm>`
+* :download:`mesh-smoothing.py </../../examples/mesh-smoothing.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-smoothing.py
+.. literalinclude:: /../../examples/mesh-smoothing.py
 

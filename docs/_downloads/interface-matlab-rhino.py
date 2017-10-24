@@ -26,8 +26,8 @@ from __future__ import print_function
 
 import compas_rhino
 
-from compas.datastructures.network import Network
-from compas.com.mlab.client import MatlabClient
+from compas.datastructures import Network
+from compas.com import MatlabClient
 
 
 __author__    = ['Tom Van Mele', ]
@@ -78,11 +78,11 @@ matlab.eval("l = sqrt(sum(uv .^ 2, 2));")
 
 # get the result back
 
-l = matlab.get_vector('l')
+l = matlab.get('l')
 
 # visualise lenghts as edge labels
 
-compas_rhino.draw_network(
+compas_rhino.network_draw_edge_labels(
     network,
-    edgelabel={(u, v): '%.1f' % l[i] for i, (u, v) in enumerate(network.edges())}
+    text={(u, v): '{:.1f}'.format(l[i][0]) for i, (u, v) in enumerate(network.edges())}
 )

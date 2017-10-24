@@ -126,7 +126,7 @@
 
 <span class="sd">        plotter = MeshPlotter(mesh)</span>
 
-<span class="sd">        plotter.draw_xlines(lines)</span>
+<span class="sd">        plotter.draw_lines(lines)</span>
 <span class="sd">        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})</span>
 <span class="sd">        plotter.draw_edges()</span>
 
@@ -238,7 +238,7 @@
 
 <span class="sd">        plotter = MeshPlotter(mesh)</span>
 
-<span class="sd">        plotter.draw_xlines(lines)</span>
+<span class="sd">        plotter.draw_lines(lines)</span>
 <span class="sd">        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})</span>
 <span class="sd">        plotter.draw_edges()</span>
 
@@ -285,8 +285,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    verticses : dict</span>
+<span class="sd">    vertices : dict</span>
 <span class="sd">        A dictionary of vertex coordinates.</span>
+<span class="sd">    faces : dict</span>
+<span class="sd">        A dictionary of faces referencing the vertices dict.</span>
 <span class="sd">    adjacency : dict</span>
 <span class="sd">        Adjacency information for each of the vertices.</span>
 <span class="sd">    fixed : list, optional [None]</span>
@@ -323,7 +325,7 @@
 <span class="sd">        from compas.geometry import smooth_area</span>
 <span class="sd">        from compas.visualization import MeshPlotter</span>
 
-<span class="sd">        mesh = Mesh.from_obj(compas.get_data('faces.obj'))</span>
+<span class="sd">        mesh = Mesh.from_obj(compas.get('faces.obj'))</span>
 
 <span class="sd">        vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}</span>
 <span class="sd">        faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}</span>
@@ -348,7 +350,7 @@
 
 <span class="sd">        plotter = MeshPlotter(mesh)</span>
 
-<span class="sd">        plotter.draw_xlines(lines)</span>
+<span class="sd">        plotter.draw_lines(lines)</span>
 <span class="sd">        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})</span>
 <span class="sd">        plotter.draw_edges()</span>
 
@@ -427,7 +429,7 @@
 
     <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">})</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
@@ -466,7 +468,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -484,7 +486,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

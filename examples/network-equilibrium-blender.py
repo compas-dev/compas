@@ -15,7 +15,7 @@ import compas
 
 from compas_blender.helpers import NetworkArtist
 
-from compas.datastructures.network import Network
+from compas.datastructures import Network
 
 from compas.numerical import fd
 

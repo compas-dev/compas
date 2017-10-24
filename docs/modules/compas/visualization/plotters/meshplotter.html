@@ -67,7 +67,7 @@
 <div class="viewcode-block" id="MeshPlotter"><a class="viewcode-back" href="../../../../reference/generated/compas.visualization.MeshPlotter.html#compas.visualization.MeshPlotter">[docs]</a><span class="k">class</span> <span class="nc">MeshPlotter</span><span class="p">(</span><span class="n">Plotter</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshPlotter.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.__init__.html#compas.visualization.MeshPlotter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MeshPlotter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">'MeshPlotter'</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
@@ -78,28 +78,28 @@
             <span class="s1">'vertex.radius'</span>    <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
             <span class="s1">'vertex.facecolor'</span> <span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span>
             <span class="s1">'vertex.edgecolor'</span> <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'vertex.edgewidth'</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">'vertex.edgewidth'</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
             <span class="s1">'vertex.textcolor'</span> <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
             <span class="s1">'vertex.fontsize'</span>  <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
 
-            <span class="s1">'edge.width'</span>    <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">'edge.width'</span>    <span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
             <span class="s1">'edge.color'</span>    <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
             <span class="s1">'edge.textcolor'</span><span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
             <span class="s1">'edge.fontsize'</span> <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
 
-            <span class="s1">'face.facecolor'</span> <span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span>
-            <span class="s1">'face.edgecolor'</span> <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'face.edgewidth'</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">'face.facecolor'</span> <span class="p">:</span> <span class="s1">'#eeeeee'</span><span class="p">,</span>
+            <span class="s1">'face.edgecolor'</span> <span class="p">:</span> <span class="s1">'#eeeeee'</span><span class="p">,</span>
+            <span class="s1">'face.edgewidth'</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
             <span class="s1">'face.textcolor'</span> <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
             <span class="s1">'face.fontsize'</span>  <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="p">}</span></div>
 
-    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshPlotter.clear"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.clear.html#compas.visualization.MeshPlotter.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_vertices</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_edges</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_faces</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_faces</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="MeshPlotter.draw_vertices"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.draw_vertices.html#compas.visualization.MeshPlotter.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                       <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -110,6 +110,13 @@
                       <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">'key'</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+        <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">'index'</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
 
         <span class="n">radiusdict</span>    <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'vertex.radius'</span><span class="p">])</span>
         <span class="n">textdict</span>      <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
@@ -132,22 +139,22 @@
                 <span class="s1">'fontsize'</span> <span class="p">:</span> <span class="n">fontsizedict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
             <span class="p">})</span>
 
-        <span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_xpoints</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span> <span class="o">=</span> <span class="n">collection</span>
-        <span class="k">return</span> <span class="n">collection</span>
+        <span class="k">return</span> <span class="n">collection</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<div class="viewcode-block" id="MeshPlotter.clear_vertices"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.clear_vertices.html#compas.visualization.MeshPlotter.clear_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">update_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshPlotter.update_vertices"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.update_vertices.html#compas.visualization.MeshPlotter.update_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">update_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">circles</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
             <span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span>
             <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.1</span>
             <span class="n">circles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Circle</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="MeshPlotter.draw_edges"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.draw_edges.html#compas.visualization.MeshPlotter.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                    <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -156,6 +163,13 @@
                    <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">'key'</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()}</span>
+        <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">'index'</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">())}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
 
         <span class="n">widthdict</span>     <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'edge.width'</span><span class="p">])</span>
         <span class="n">colordict</span>     <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'edge.color'</span><span class="p">])</span>
@@ -175,20 +189,20 @@
                 <span class="s1">'fontsize'</span> <span class="p">:</span> <span class="n">fontsizedict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
             <span class="p">})</span>
 
-        <span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_xlines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+        <span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span> <span class="o">=</span> <span class="n">collection</span>
-        <span class="k">return</span> <span class="n">collection</span>
+        <span class="k">return</span> <span class="n">collection</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<div class="viewcode-block" id="MeshPlotter.clear_edges"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.clear_edges.html#compas.visualization.MeshPlotter.clear_edges">[docs]</a>    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">update_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshPlotter.update_edges"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.update_edges.html#compas.visualization.MeshPlotter.update_edges">[docs]</a>    <span class="k">def</span> <span class="nf">update_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
             <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span><span class="o">.</span><span class="n">set_segments</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span><span class="o">.</span><span class="n">set_segments</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="MeshPlotter.draw_faces"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.draw_faces.html#compas.visualization.MeshPlotter.draw_faces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                    <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">facecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -198,6 +212,13 @@
                    <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">'key'</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
+        <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">'index'</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
 
         <span class="n">textdict</span>      <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
         <span class="n">facecolordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">facecolor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.facecolor'</span><span class="p">])</span>
@@ -218,19 +239,19 @@
                 <span class="s1">'fontsize'</span> <span class="p">:</span> <span class="n">fontsizedict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
             <span class="p">})</span>
 
-        <span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_xpolygons</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span>
+        <span class="n">collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_polygons</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">facecollection</span> <span class="o">=</span> <span class="n">collection</span>
-        <span class="k">return</span> <span class="n">collection</span>
+        <span class="k">return</span> <span class="n">collection</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">facecollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<div class="viewcode-block" id="MeshPlotter.clear_faces"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.clear_faces.html#compas.visualization.MeshPlotter.clear_faces">[docs]</a>    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facecollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">update_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshPlotter.update_faces"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.MeshPlotter.update_faces.html#compas.visualization.MeshPlotter.update_faces">[docs]</a>    <span class="k">def</span> <span class="nf">update_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">polygons</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
             <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span>
             <span class="n">polygons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Polygon</span><span class="p">(</span><span class="n">points</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">facecollection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facecollection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -242,23 +263,13 @@
     <span class="kn">import</span> <span class="nn">compas</span>
     <span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
 
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
-
-    <span class="n">mesh</span><span class="o">.</span><span class="n">add_edges_from_faces</span><span class="p">()</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
     <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
-    <span class="n">plotter</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'vertex.facecolor'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'#000000'</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'vertex.edgecolor'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'#ffffff'</span>
-
-    <span class="n">plotter</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.facecolor'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'#eeeeee'</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.edgewidth'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">},</span>
-                          <span class="n">edgecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ffffff'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">})</span>
-
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()})</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
@@ -300,7 +311,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

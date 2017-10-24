@@ -107,7 +107,7 @@ way.</p>
 </colgroup>
 <tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.add_vectors.html" title="compas.geometry.add_vectors"><code class="xref py py-obj docutils literal">add_vectors</code></a>(u, v)</td>
-<td></td>
+<td>Add two vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.add_vectors_xy.html" title="compas.geometry.add_vectors_xy"><code class="xref py py-obj docutils literal">add_vectors_xy</code></a>(u, v)</td>
 <td>Add two vectors, assuming they lie in the XY-plane.</td>
@@ -119,13 +119,13 @@ way.</p>
 <td>Compute the cross product of two vectors, assuming they lie in the XY-plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.dehomogenise_vectors.html" title="compas.geometry.dehomogenise_vectors"><code class="xref py py-obj docutils literal">dehomogenise_vectors</code></a>(vectors)</td>
-<td></td>
+<td>Dehomogenise a list of vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.divide_vectors.html" title="compas.geometry.divide_vectors"><code class="xref py py-obj docutils literal">divide_vectors</code></a>(u, v)</td>
-<td></td>
+<td>Element-wise division of two vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.divide_vectors_xy.html" title="compas.geometry.divide_vectors_xy"><code class="xref py py-obj docutils literal">divide_vectors_xy</code></a>(u, v)</td>
-<td></td>
+<td>Element-wise division of two vectors assumed to lie in the XY plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.dot_vectors.html" title="compas.geometry.dot_vectors"><code class="xref py py-obj docutils literal">dot_vectors</code></a>(u, v)</td>
 <td>Compute the dot product of two vectors.</td>
@@ -133,8 +133,8 @@ way.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.dot_vectors_xy.html" title="compas.geometry.dot_vectors_xy"><code class="xref py py-obj docutils literal">dot_vectors_xy</code></a>(u, v)</td>
 <td>Compute the dot product of two vectors, assuming they lie in the XY-plane.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.homogenise_vectors.html" title="compas.geometry.homogenise_vectors"><code class="xref py py-obj docutils literal">homogenise_vectors</code></a>(vectors)</td>
-<td></td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.homogenise_vectors.html" title="compas.geometry.homogenise_vectors"><code class="xref py py-obj docutils literal">homogenise_vectors</code></a>(vectors[, w])</td>
+<td>Homogenise a list of vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.length_vector.html" title="compas.geometry.length_vector"><code class="xref py py-obj docutils literal">length_vector</code></a>(vector)</td>
 <td>Calculate the length of the vector.</td>
@@ -143,10 +143,10 @@ way.</p>
 <td>Compute the length of a vector, assuming it lies in the XY plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.length_vector_sqrd.html" title="compas.geometry.length_vector_sqrd"><code class="xref py py-obj docutils literal">length_vector_sqrd</code></a>(vector)</td>
-<td></td>
+<td>Compute the squared length of a vector.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.length_vector_sqrd_xy.html" title="compas.geometry.length_vector_sqrd_xy"><code class="xref py py-obj docutils literal">length_vector_sqrd_xy</code></a>(vector)</td>
-<td></td>
+<td>Compute the squared length of a vector, assuming it lies in the XY plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.multiply_matrices.html" title="compas.geometry.multiply_matrices"><code class="xref py py-obj docutils literal">multiply_matrices</code></a>(A, B)</td>
 <td>Mutliply a matrix with a matrix.</td>
@@ -155,10 +155,10 @@ way.</p>
 <td>Multiply a matrix with a vector.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.multiply_vectors.html" title="compas.geometry.multiply_vectors"><code class="xref py py-obj docutils literal">multiply_vectors</code></a>(u, v)</td>
-<td></td>
+<td>Element-wise multiplication of two vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.multiply_vectors_xy.html" title="compas.geometry.multiply_vectors_xy"><code class="xref py py-obj docutils literal">multiply_vectors_xy</code></a>(u, v)</td>
-<td></td>
+<td>Element-wise multiplication of two vectors assumed to lie in the XY plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.norm_vector.html" title="compas.geometry.norm_vector"><code class="xref py py-obj docutils literal">norm_vector</code></a>(vector)</td>
 <td>Calculate the length of a vector.</td>
@@ -176,7 +176,7 @@ way.</p>
 <td>Normalise multiple vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.normalize_vectors_xy.html" title="compas.geometry.normalize_vectors_xy"><code class="xref py py-obj docutils literal">normalize_vectors_xy</code></a>(vectors)</td>
-<td></td>
+<td>Normalise multiple vectors, assuming they lie in the XY plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.orthonormalise_vectors.html" title="compas.geometry.orthonormalise_vectors"><code class="xref py py-obj docutils literal">orthonormalise_vectors</code></a>(vectors)</td>
 <td>Orthonormalise a set of vectors.</td>
@@ -197,16 +197,16 @@ way.</p>
 <td>Scale multiple vectors by a given factor.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.scale_vectors_xy.html" title="compas.geometry.scale_vectors_xy"><code class="xref py py-obj docutils literal">scale_vectors_xy</code></a>(vectors, factor)</td>
-<td></td>
+<td>Scale multiple vectors by a given factor, assuming they lie in the XY plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.square_vector.html" title="compas.geometry.square_vector"><code class="xref py py-obj docutils literal">square_vector</code></a>(vector)</td>
 <td>Raise a vector to the power 2.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.square_vectors.html" title="compas.geometry.square_vectors"><code class="xref py py-obj docutils literal">square_vectors</code></a>(vectors)</td>
-<td></td>
+<td>Raise a multiple vectors to the power 2.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.subtract_vectors.html" title="compas.geometry.subtract_vectors"><code class="xref py py-obj docutils literal">subtract_vectors</code></a>(u, v)</td>
-<td></td>
+<td>Subtract one vector from another.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.subtract_vectors_xy.html" title="compas.geometry.subtract_vectors_xy"><code class="xref py py-obj docutils literal">subtract_vectors_xy</code></a>(u, v)</td>
 <td>Subtract one vector from another, assuming they lie in the XY plane.</td>
@@ -250,7 +250,7 @@ way.</p>
 <td>Compute closest point on a plane to a given point.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.closest_point_on_polyline.html" title="compas.geometry.closest_point_on_polyline"><code class="xref py py-obj docutils literal">closest_point_on_polyline</code></a>(point, polyline)</td>
-<td></td>
+<td>Find the closest point on a polyline to a given point.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.closest_point_on_polyline_xy.html" title="compas.geometry.closest_point_on_polyline_xy"><code class="xref py py-obj docutils literal">closest_point_on_polyline_xy</code></a>(point, polyline)</td>
 <td>Compute closest point on a polyline to a given point, assuming they both lie in the XY-plane.</td>
@@ -296,6 +296,11 @@ way.</p>
 </div>
 <div class="section">
 <h2>Angles</h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All angle functions return a result in radians.
+For a result in degrees, use the <em>degrees</em> variation.</p>
+</div>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -303,52 +308,52 @@ way.</p>
 </colgroup>
 <tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angle_smallest_points.html" title="compas.geometry.angle_smallest_points"><code class="xref py py-obj docutils literal">angle_smallest_points</code></a>(a, b, c)</td>
-<td>Compute the smallest angle (radians) between the vectors defined by three points.</td>
+<td>Compute the smallest angle between the vectors defined by three points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angle_smallest_points_xy.html" title="compas.geometry.angle_smallest_points_xy"><code class="xref py py-obj docutils literal">angle_smallest_points_xy</code></a>(a, b, c)</td>
-<td>Compute the smallest angle defined by the XY components of three points lying in</td>
+<td>Compute the smallest angle between the vectors defined by the XY components of three points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angle_smallest_points_degrees.html" title="compas.geometry.angle_smallest_points_degrees"><code class="xref py py-obj docutils literal">angle_smallest_points_degrees</code></a>(a, b, c)</td>
-<td>Compute the smallest angle (degrees) between the vectors defined by three points.</td>
+<td>Compute the smallest angle in degrees between the vectors defined by three points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angle_smallest_points_degrees_xy.html" title="compas.geometry.angle_smallest_points_degrees_xy"><code class="xref py py-obj docutils literal">angle_smallest_points_degrees_xy</code></a>(a, b, c)</td>
-<td>Compute the smallest angle defined by the XY components of three points lying in</td>
+<td>Compute the smallest angle in degrees between the vectors defined by the XY components of three points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angle_smallest_vectors.html" title="compas.geometry.angle_smallest_vectors"><code class="xref py py-obj docutils literal">angle_smallest_vectors</code></a>(u, v)</td>
-<td>Compute the smallest angle (radians) between two vectors.</td>
+<td>Compute the smallest angle between two vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angle_smallest_vectors_xy.html" title="compas.geometry.angle_smallest_vectors_xy"><code class="xref py py-obj docutils literal">angle_smallest_vectors_xy</code></a>(u, v)</td>
-<td>Compute the smallest angle (radians) between the XY components of two vectors lying in the XY-plane.</td>
+<td>Compute the smallest angle between the XY components of two vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angle_smallest_vectors_degrees.html" title="compas.geometry.angle_smallest_vectors_degrees"><code class="xref py py-obj docutils literal">angle_smallest_vectors_degrees</code></a>(u, v)</td>
-<td>Compute the smallest angle (degrees) between two vectors.</td>
+<td>Compute the smallest angle in degrees between two vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angle_smallest_vectors_degrees_xy.html" title="compas.geometry.angle_smallest_vectors_degrees_xy"><code class="xref py py-obj docutils literal">angle_smallest_vectors_degrees_xy</code></a>(u, v)</td>
-<td>Compute the smallest angle (degrees) between the XY components of two vectors lying in the XY-plane.</td>
+<td>Compute the smallest angle in degrees between the XY components of two vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angles_points.html" title="compas.geometry.angles_points"><code class="xref py py-obj docutils literal">angles_points</code></a>(a, b, c)</td>
-<td>Compute the two angles (radians) define by three points.</td>
+<td>Compute the two angles between two vectors defined by three points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angles_points_xy.html" title="compas.geometry.angles_points_xy"><code class="xref py py-obj docutils literal">angles_points_xy</code></a>(a, b, c)</td>
-<td></td>
+<td>Compute the two angles between the two vectors defined by the XY components of three points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angles_points_degrees.html" title="compas.geometry.angles_points_degrees"><code class="xref py py-obj docutils literal">angles_points_degrees</code></a>(a, b, c)</td>
-<td>Compute the two angles (degrees) define by three points.</td>
+<td>Compute the two angles in degrees between two vectors defined by three points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angles_points_degrees_xy.html" title="compas.geometry.angles_points_degrees_xy"><code class="xref py py-obj docutils literal">angles_points_degrees_xy</code></a>(a, b, c)</td>
-<td></td>
+<td>Compute the two angles in degrees between two vectors defined by the XY components of three points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angles_vectors.html" title="compas.geometry.angles_vectors"><code class="xref py py-obj docutils literal">angles_vectors</code></a>(u, v[, degrees])</td>
-<td>Compute the the 2 angles (radians) formed by a pair of vectors.</td>
+<td>Compute the the 2 angles formed by a pair of vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angles_vectors_xy.html" title="compas.geometry.angles_vectors_xy"><code class="xref py py-obj docutils literal">angles_vectors_xy</code></a>(u, v)</td>
-<td>Compute the angles between the XY components of two vectors lying in the XY-plane.</td>
+<td>Compute the angles between the XY components of two vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angles_vectors_degrees.html" title="compas.geometry.angles_vectors_degrees"><code class="xref py py-obj docutils literal">angles_vectors_degrees</code></a>(u, v)</td>
-<td>Compute the the 2 angles (degrees) formed by a pair of vectors.</td>
+<td>Compute the the two angles in degrees between two vectors.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angles_vectors_degrees_xy.html" title="compas.geometry.angles_vectors_degrees_xy"><code class="xref py py-obj docutils literal">angles_vectors_degrees_xy</code></a>(u, v)</td>
-<td></td>
+<td>Compute the the two angles in degrees between the XY components of two vectors.</td>
 </tr>
 </tbody>
 </table>
@@ -368,7 +373,7 @@ way.</p>
 <td>Compute the center of mass of a polygon defined as a sequence of points lying in the XY-plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.center_of_mass_polyhedron.html" title="compas.geometry.center_of_mass_polyhedron"><code class="xref py py-obj docutils literal">center_of_mass_polyhedron</code></a>(polyhedron)</td>
-<td>Compute the center of mass of a polyhedron</td>
+<td>Compute the center of mass of a polyhedron.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.centroid_points.html" title="compas.geometry.centroid_points"><code class="xref py py-obj docutils literal">centroid_points</code></a>(points)</td>
 <td>Compute the centroid of a set of points.</td>
@@ -380,7 +385,7 @@ way.</p>
 <td>Compute the midpoint of a line defined by two points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.midpoint_line_xy.html" title="compas.geometry.midpoint_line_xy"><code class="xref py py-obj docutils literal">midpoint_line_xy</code></a>(line)</td>
-<td></td>
+<td>Compute the midpoint of a line defined by two points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.midpoint_point_point.html" title="compas.geometry.midpoint_point_point"><code class="xref py py-obj docutils literal">midpoint_point_point</code></a>(a, b)</td>
 <td>Compute the midpoint of two points lying in the XY-plane.</td>
@@ -412,7 +417,7 @@ way.</p>
 <td>Construct a point cloud.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.pointcloud_xy.html" title="compas.geometry.pointcloud_xy"><code class="xref py py-obj docutils literal">pointcloud_xy</code></a>(n, xbounds[, ybounds])</td>
-<td></td>
+<td>Construct a point cloud in the XY plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.vector_from_points.html" title="compas.geometry.vector_from_points"><code class="xref py py-obj docutils literal">vector_from_points</code></a>(a, b)</td>
 <td>Construct a vector from two points.</td>
@@ -822,6 +827,15 @@ way.</p>
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.planarize_faces.html" title="compas.geometry.planarize_faces"><code class="xref py py-obj docutils literal">planarize_faces</code></a>(vertices, faces[, fixed, ...])</td>
+<td>Planarise the faces of a mesh.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.flatness.html" title="compas.geometry.flatness"><code class="xref py py-obj docutils literal">flatness</code></a>(vertices, faces)</td>
+<td>Compute mesh flatness per face.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.flatness2.html" title="compas.geometry.flatness2"><code class="xref py py-obj docutils literal">flatness2</code></a>(vertices, faces[, maxdev])</td>
+<td>Compute mesh flatness per face.</td>
+</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centroid.html" title="compas.geometry.smooth_centroid"><code class="xref py py-obj docutils literal">smooth_centroid</code></a>(vertices, adjacency[, ...])</td>
 <td>Smooth a connected set of vertices by moving each vertex to the centroid of its neighbours.</td>
 </tr>
@@ -877,7 +891,7 @@ way.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_dynamo.html">compas_dynamo</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -917,7 +931,7 @@ way.</p>
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

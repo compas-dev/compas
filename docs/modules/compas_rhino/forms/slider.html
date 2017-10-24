@@ -32,7 +32,8 @@
 <nav class="breadcrumb">
 <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
 <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+<a class="breadcrumb-item" href="../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../forms.html">compas_rhino.forms</a>
 </nav>
 <h1>Source code for compas_rhino.forms.slider</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
@@ -66,14 +67,14 @@
 <div class="viewcode-block" id="SliderForm"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.SliderForm.html#compas_rhino.forms.SliderForm">[docs]</a><span class="k">class</span> <span class="nc">SliderForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="SliderForm.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.SliderForm.__init__.html#compas_rhino.forms.SliderForm.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">minval</span> <span class="o">=</span> <span class="n">minval</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maxval</span> <span class="o">=</span> <span class="n">maxval</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">step</span>   <span class="o">=</span> <span class="n">step</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span>  <span class="o">=</span> <span class="n">value</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">SliderForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SliderForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SliderForm.init"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.SliderForm.init.html#compas_rhino.forms.SliderForm.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">textbox</span> <span class="o">=</span> <span class="n">TextBox</span><span class="p">()</span>
         <span class="n">textbox</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="n">textbox</span><span class="o">.</span><span class="n">Location</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -93,15 +94,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">trackbar</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">10</span> <span class="o">+</span> <span class="n">textbox</span><span class="o">.</span><span class="n">Width</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">trackbar</span><span class="o">.</span><span class="n">Width</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="n">trackbar</span><span class="o">.</span><span class="n">Height</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">textbox</span> <span class="o">=</span> <span class="n">textbox</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">trackbar</span> <span class="o">=</span> <span class="n">trackbar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trackbar</span> <span class="o">=</span> <span class="n">trackbar</span></div>
 
-    <span class="k">def</span> <span class="nf">on_textchanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<div class="viewcode-block" id="SliderForm.on_textchanged"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.SliderForm.on_textchanged.html#compas_rhino.forms.SliderForm.on_textchanged">[docs]</a>    <span class="k">def</span> <span class="nf">on_textchanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">sender</span><span class="o">.</span><span class="n">Text</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">trackbar</span><span class="o">.</span><span class="n">Value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sender</span><span class="o">.</span><span class="n">Text</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trackbar</span><span class="o">.</span><span class="n">Value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sender</span><span class="o">.</span><span class="n">Text</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">on_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<div class="viewcode-block" id="SliderForm.on_scroll"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.SliderForm.on_scroll.html#compas_rhino.forms.SliderForm.on_scroll">[docs]</a>    <span class="k">def</span> <span class="nf">on_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">textbox</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sender</span><span class="o">.</span><span class="n">Value</span><span class="p">)</span>
-        <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Views</span><span class="o">.</span><span class="n">Redraw</span><span class="p">()</span></div>
+        <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Views</span><span class="o">.</span><span class="n">Redraw</span><span class="p">()</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -190,7 +191,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             
