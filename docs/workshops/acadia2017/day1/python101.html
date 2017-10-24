@@ -59,7 +59,6 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">shapely</span>
 </code></pre></div>
-
 </div>
 <div class="section">
 <h3>IronPython</h3>
@@ -75,7 +74,6 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <span class="kn">import</span> <span class="nn">System.Drawing.Image</span>
 <span class="kn">import</span> <span class="nn">System.Environment.NewLine</span>
 </code></pre></div>
-
 </div>
 <div class="section">
 <h3>Jython</h3>
@@ -90,7 +88,6 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <span class="kn">from</span> <span class="nn">java.util</span> <span class="kn">import</span> <span class="n">Vector</span>
 <span class="kn">from</span> <span class="nn">java.io</span> <span class="kn">import</span> <span class="n">FileOuputStream</span>
 </code></pre></div>
-
 </div>
 </div>
 <div class="section">
@@ -159,7 +156,6 @@ boolean values, internal objects</li>
 <span class="k">print</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">:]</span>
 <span class="k">print</span> <span class="n">items</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
 <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
 
@@ -169,7 +165,6 @@ boolean values, internal objects</li>
 
 <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 </code></pre></div>
-
 </div>
 <div class="section">
 <h3>Tuple</h3>
@@ -200,7 +195,6 @@ Tuples are also used for cases where an immutable sequence of homogeneous data i
 
 <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">items</span>
 </code></pre></div>
-
 </div>
 <div class="section">
 <h3>Dictionary</h3>
@@ -270,7 +264,6 @@ Numeric types used for keys obey the normal rules for numeric comparison: if two
 
 <span class="c1"># sort dictionary based on values</span>
 </code></pre></div>
-
 </div>
 <div class="section">
 <h3>Set</h3>
@@ -294,7 +287,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 
 <span class="n">items</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># set operations</span>
 
 <span class="n">numbers</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
@@ -305,7 +297,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 
 <span class="n">even</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">odd</span><span class="p">))</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">random</span>
 
 <span class="n">items</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">),</span> <span class="mi">10000</span><span class="p">)</span>
@@ -313,18 +304,15 @@ Common uses include membership testing, removing duplicates from a sequence, and
 
 <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">]</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">exclude</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">]</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
 <span class="n">exclude</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">items</span> <span class="o">-</span> <span class="n">exclude</span><span class="p">)</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">timeit</span>
 
@@ -348,7 +336,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
     <span class="k">print</span> <span class="n">t0</span>
     <span class="k">print</span> <span class="n">t1</span>
 </code></pre></div>
-
 </div>
 </div>
 <div class="section">
@@ -361,7 +348,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">sys</span><span class="p">):</span>
     <span class="k">print</span> <span class="n">name</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># enumerate</span>
 
 <span class="n">abc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">]</span>
@@ -378,7 +364,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">letter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">abc</span><span class="p">):</span>
     <span class="k">print</span> <span class="n">i</span><span class="p">,</span> <span class="n">letter</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># format</span>
 
 <span class="c1"># https://docs.python.org/2/library/string.html#formatspec</span>
@@ -403,7 +388,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 
 <span class="s1">'{x},{y},{z}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># map</span>
 
 <span class="c1"># see also: list comprehensions</span>
@@ -414,7 +398,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 <span class="nb">map</span><span class="p">(</span><span class="nb">round</span><span class="p">,</span> <span class="p">[</span><span class="n">pi</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">pi</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="nb">map</span><span class="p">(</span><span class="nb">pow</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># range</span>
 
 <span class="n">numbers</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -424,7 +407,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 
 <span class="c1"># [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># sorted</span>
 
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">shuffle</span>
@@ -441,13 +423,11 @@ Common uses include membership testing, removing duplicates from a sequence, and
 <span class="k">print</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 <span class="k">print</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># zip</span>
 
 <span class="n">rows</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
 <span class="n">cols</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">rows</span><span class="p">)</span>
 </code></pre></div>
-
 </div>
 <div class="section">
 <h2>Comprehensions</h2>
@@ -462,13 +442,11 @@ Common uses include membership testing, removing duplicates from a sequence, and
 <span class="n">even</span>    <span class="o">=</span> <span class="p">[</span><span class="n">number</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">numbers</span> <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">even</span>    <span class="o">=</span> <span class="p">[</span><span class="n">number</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">numbers</span> <span class="k">if</span> <span class="n">number</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">odd</span><span class="p">]</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># centroid (average)</span>
 
 <span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
 <span class="n">centroid</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">)]</span>
 </code></pre></div>
-
 </div>
 <div class="section">
 <h3>Dict comprehensions</h3>
@@ -476,7 +454,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 
 <span class="n">items</span> <span class="o">=</span> <span class="p">{</span><span class="n">index</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))}</span>
 </code></pre></div>
-
 </div>
 </div>
 <div class="section">
@@ -495,7 +472,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 
 <span class="k">print</span> <span class="n">c</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># script vs. module</span>
 <span class="c1"># http://stackoverflow.com/questions/419163/what-does-if-name-main-do</span>
 
@@ -513,7 +489,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
     <span class="n">f1</span><span class="p">()</span>
     <span class="n">f2</span><span class="p">()</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># module a.py</span>
 
 <span class="k">def</span> <span class="nf">b</span><span class="p">():</span>
@@ -526,7 +501,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 
 <span class="n">b</span><span class="p">()</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># packages</span>
 <span class="c1">#</span>
 <span class="c1"># - a</span>
@@ -554,7 +528,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 
 <span class="n">d2</span><span class="p">()</span>
 </code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># a.__init__.py</span>
 
 <span class="kn">from</span> <span class="nn">b</span> <span class="kn">import</span> <span class="n">b1</span>
@@ -571,7 +544,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 
 <span class="n">b1</span><span class="p">()</span>
 </code></pre></div>
-
 </div>
 <div class="section">
 <h2>Core packages</h2>

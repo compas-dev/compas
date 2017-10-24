@@ -42,17 +42,52 @@
 <span id="acadia2017-day1-datastructures"></span><h1>Datastructures</h1>
 <div class="section">
 <h2>Why data structures?</h2>
-</div>
+<p>Consider set of points and faces.
+How would you answer basic questions about the connectivity of these objects?
+For example:</p>
+<ul class="simple">
+<li>Which vertices are connected to a particular vertex?</li>
+<li>Which faces are connected to a particular vertex?</li>
+<li>Which vertices make up a particular face?</li>
+<li>Which faces are connected to a particular face?</li>
+<li>...</li>
+</ul>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># geometrical solution to some of these questions</span>
+</code></pre></div>
+
+<p>By structuring the data, these questions can be answered topologically rather than
+geometrically, which is much more efficient.</p>
+<p>Applications ...</p>
 <div class="section">
-<h2>Network, Mesh, VolMesh</h2>
+<h3>Network, Mesh, VolMesh</h3>
+<p>The <em>compas</em> framework contains three types of data structures and related operations and algorithms:</p>
+<ul class="simple">
+<li><code class="docutils literal">compas.datastructures.network</code></li>
+<li><code class="docutils literal">compas.datastructures.mesh</code></li>
+<li><code class="docutils literal">compas.datastructures.volmesh</code></li>
+</ul>
+</div>
 </div>
 <div class="section">
 <h2>Visualization</h2>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 
-<span class="kn">from</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
 
+<figure class="figure">
+<img alt="../../../images/datastructures-11.png" class="figure-img img-fluid" src="../../../images/datastructures-11.png"/>
+</figure>
 </div>
 <div class="section">
 <h2>Builders and constructors</h2>
@@ -124,8 +159,10 @@
 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Datastructures</a><ul class="nav">
-<li class="nav-item"><a class="nav-link reference internal" href="#why-data-structures">Why data structures?</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#why-data-structures">Why data structures?</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#network-mesh-volmesh">Network, Mesh, VolMesh</a></li>
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#visualization">Visualization</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#builders-and-constructors">Builders and constructors</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#accessing-the-data">Accessing the data</a></li>
