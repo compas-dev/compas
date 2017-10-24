@@ -58,7 +58,7 @@ def intersection_line_line(l1, l2):
         If the lines intersect, these two points are identical.
         If the lines are skewed and thus only have an apparent intersection, the two
         points are different.
-        If the lines are parallel, ...
+        If the lines are parallel, the return value is [None, None].
 
     Examples
     --------
