@@ -1,17 +1,17 @@
-# """A dynamic relaxation example for controlling beam elements."""
+"""A dynamic relaxation example for controlling beam elements."""
 
 from compas.datastructures import Network
 
-from compas_blender.geometry import bezier_curve_interpolate
-from compas_blender.utilities import clear_layers
-from compas_blender.utilities import draw_bmesh
+from compas_blender.geometry import BlenderCurve
+from compas_blender.utilities import clear_layer
 from compas_blender.utilities import get_objects
+from compas_blender.utilities import xdraw_mesh
 
-from compas.hpc.numba_.drx import numba_drx
+from compas.hpc import numba_drx
 
-from compas.numerical import normrow
 from compas.numerical import closest_points_points
-from compas.numerical.solvers import devo
+from compas.numerical import devo
+from compas.numerical import normrow
 
 from numpy import array
 from numpy import arctan2
@@ -28,7 +28,7 @@ __license__    = 'MIT License'
 __email__      = 'liew@arch.ethz.ch'
 
 
-def update(dofs, network, tol, plot, Xt):
+def update(dofs, network, tol, plot, Xt, ds):
     x1, z1, r1, x2, z2, r2 = dofs
     dx1 = ds * cos(r1)
     dx2 = ds * cos(r2)
@@ -45,18 +45,18 @@ def update(dofs, network, tol, plot, Xt):
         vertices = vstack([X, Xt[ind, :]])
         n = X.shape[0]
         edges = [[i, i + n] for i in range(n)] + list(network.edges())
-        draw_bmesh(name='norms', vertices=vertices, edges=edges)
+        xdraw_mesh(name='norms', vertices=vertices, edges=edges)
     return X
 
 
 def fn(dofs, *args):
-    network, Xt, tol = args
-    X = update(dofs=dofs, network=network, tol=tol, plot=False, Xt=Xt)
+    network, Xt, tol, ds = args
+    X = update(dofs=dofs, network=network, tol=tol, plot=False, Xt=Xt, ds=ds)
     ind = closest_points_points(X, Xt, distances=False)
     return 1000 * mean(normrow(X - Xt[ind, :]))
 
 
-clear_layers(layers=[0])
+clear_layer(layer=0)
 
 # Beam input
 
@@ -70,28 +70,32 @@ A = 0.005**2
 
 # Solver input
 
-mi = div * m + 1
+mi = div * m
 tol = 0.01
-deg = pi / 180.
 du = 0.02
+deg = pi / 180
 dr = 15 * deg
+
+# Target
+
 curve = get_objects(layer=1)[0]
-Xt = array(bezier_curve_interpolate(curve=curve, number=mi))
+blendercurve = BlenderCurve(object=curve)
+Xt = array(blendercurve.divide(number_of_segments=mi))
 
 # Network
 
-vertices = [list(Xi) for Xi in list(Xt[0:mi:div, :])]
+vertices = [list(Xi) for Xi in list(Xt[:mi:div, :])]
 edges = [[i, i + 1] for i in range(m)]
 network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-network.update_default_vertex_attributes({'EIx': E * I, 'EIy': E * I})
+network.update_default_vertex_attributes({'EIx': E*I, 'EIy': E*I})
 network.update_default_edge_attributes({'E': E, 'A': A, 'l0': ds})
 network.set_vertices_attributes([0, 1, m - 1, m], {'B': [0, 0, 0]})
-network.beams = {'beam': {'nodes': list(range(m + 1))}}
+network.beams = {'beam': {'nodes': list(range(network.number_of_vertices()))}}
 
 # Manual
 
 #dofs = 0, 0, 45 * deg, 0.6, 0, 155 * deg
-#Xs = update(dofs=dofs, network=network, tol=tol, plot=True, Xt=Xt)
+#Xs = update(dofs=dofs, network=network, tol=tol, plot=True, Xt=Xt, ds=ds)
 
 # Optimise
 
@@ -103,9 +107,9 @@ r1 = arctan2(zb - za, xb - xa)
 r2 = arctan2(zc - zd, xc - xd)
 bounds = [(xa - du, xa + du), (za - du, za + du), (r1 - dr, r1 + dr),
           (xd - du, xd + du), (zd - du, zd + du), (r2 - dr, r2 + dr)]
-args = network, Xt, tol
+args = network, Xt, tol, ds
 fopt, uopt = devo(fn=fn, bounds=bounds, population=20, iterations=30, args=args)
 
 # Plot
 
-update(dofs=uopt, network=network, tol=tol, plot=True, Xt=Xt)
+update(dofs=uopt, network=network, tol=tol, plot=True, Xt=Xt, ds=ds)
