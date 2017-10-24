@@ -43,6 +43,57 @@
 <p>The compas framework is based on Python.
 Python 3 is fully supported and the code is backwards compatible with Python +2.6.</p>
 <div class="section">
+<h2>Implementations</h2>
+<p><a class="reference external" href="https://wiki.python.org/moin/PythonImplementations">https://wiki.python.org/moin/PythonImplementations</a></p>
+<div class="section">
+<h3>CPython</h3>
+<p><a class="reference external" href="https://docs.python.org/2/index.html">The Official Python Documentation</a></p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># many packages are wrappers around powerful C/C++ libraries</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">ctypes</span>
+<span class="kn">import</span> <span class="nn">cProfile</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">shapely</span>
+</code></pre></div>
+
+</div>
+<div class="section">
+<h3>IronPython</h3>
+<p><a class="reference external" href="http://ironpython.net/documentation/dotnet/">IronPython .NET integration</a></p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># packages that are wrappers for C/C++ code are not available</span>
+<span class="c1"># access to Windows ecosystem</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">System</span>
+<span class="kn">import</span> <span class="nn">System.Windows.Forms</span>
+<span class="kn">import</span> <span class="nn">System.Drawing.Image</span>
+<span class="kn">import</span> <span class="nn">System.Environment.NewLine</span>
+</code></pre></div>
+
+</div>
+<div class="section">
+<h3>Jython</h3>
+<p><a class="reference external" href="http://www.jython.org/jythonbook/en/1.0/index.html">The Definitive Guide to Jython</a></p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># packages that are wrappers for C/C++ code are not available</span>
+<span class="c1"># access to Java ecosystem</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">java.lang</span> <span class="kn">import</span> <span class="n">System</span>
+<span class="kn">from</span> <span class="nn">java.util</span> <span class="kn">import</span> <span class="n">Vector</span>
+<span class="kn">from</span> <span class="nn">java.io</span> <span class="kn">import</span> <span class="n">FileOuputStream</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="section">
 <h2>Built-in types</h2>
 <p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html">https://docs.python.org/3/library/stdtypes.html</a></p>
 <ul class="simple">
@@ -68,16 +119,10 @@ boolean values, internal objects</li>
 <div class="section">
 <h2>Container types</h2>
 <p><a class="reference external" href="https://wiki.python.org/moin/TimeComplexity">https://wiki.python.org/moin/TimeComplexity</a></p>
-<ul class="simple">
-<li>list</li>
-<li>set</li>
-<li>tuple</li>
-<li>dict</li>
-<li>collections module</li>
-</ul>
 <div class="section">
 <h3>List</h3>
 <p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#lists">https://docs.python.org/3/library/stdtypes.html#lists</a></p>
+<p>From the docs:</p>
 <blockquote>
 <div>Lists are mutable sequences, typically used to store collections of homogeneous items
 (where the precise degree of similarity will vary by application).</div></blockquote>
@@ -157,15 +202,289 @@ Tuples are also used for cases where an immutable sequence of homogeneous data i
 </code></pre></div>
 
 </div>
+<div class="section">
+<h3>Dictionary</h3>
+<p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#mapping-types-dict">https://docs.python.org/3/library/stdtypes.html#mapping-types-dict</a></p>
+<p>From the docs:</p>
+<blockquote>
+<div><p>A mapping object maps hashable values to arbitrary objects.
+Mappings are mutable objects.
+There is currently only one standard mapping type, the dictionary.
+(For other containers see the built-in list, set, and tuple classes, and the collections module.)</p>
+<p>A dictionary’s keys are almost arbitrary values.
+Values that are not hashable, that is, values containing lists, dictionaries or other mutable types (that are compared by value rather than by object identity) may not be used as keys.
+Numeric types used for keys obey the normal rules for numeric comparison: if two numbers compare equal (such as 1 and 1.0) then they can be used interchangeably to index the same dictionary entry.
+(Note however, that since computers store floating-point numbers as approximations it is usually unwise to use them as dictionary keys.)</p>
+</div></blockquote>
+<ul class="simple">
+<li>Unordered collection of key-value pairs</li>
+<li>Values can be of any type.</li>
+<li>Keys have to be hashable (immutable): string, integer, float, tuple, frozenset</li>
+<li>Using strings as keys is the preferred standard</li>
+</ul>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">items</span><span class="p">[</span><span class="s1">'1'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">items</span><span class="p">[</span><span class="s1">'2'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">items</span><span class="p">[</span><span class="s1">'3'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">items</span><span class="p">[</span><span class="s1">'4'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="n">items</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'1'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'2'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'3'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'4'</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+
+<span class="c1"># items = dict((str(key), value) for key, value in enumerate([1, 2, 3, 4]))</span>
+<span class="c1"># items = {str(key): value for key, value in enumerate([1, 2, 3, 4])}</span>
+
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">print</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>
+
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">print</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>
+
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">item</span>
+    <span class="k">print</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>
+
+<span class="n">keys</span> <span class="o">=</span> <span class="n">items</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">values</span> <span class="o">=</span> <span class="n">items</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+<span class="n">value</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">print</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>
+
+<span class="k">del</span> <span class="n">items</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+<span class="c1"># pop</span>
+<span class="c1"># popitem</span>
+<span class="c1"># setdefault</span>
+<span class="c1"># get</span>
+
+<span class="c1"># sort dictionary based on values</span>
+</code></pre></div>
+
+</div>
+<div class="section">
+<h3>Set</h3>
+<p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset">https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset</a></p>
+<p>From the docs:</p>
+<blockquote>
+<div>A set object is an unordered collection of distinct hashable objects.
+Common uses include membership testing, removing duplicates from a sequence, and computing mathematical operations such as intersection, union, difference, and symmetric difference.
+(For other containers see the built-in dict, list, and tuple classes, and the collections module.)</div></blockquote>
+<ul class="simple">
+<li>Unordered collection of unique items</li>
+<li>Mutable</li>
+<li>Use frozenset for immutable</li>
+<li>Support for set operations</li>
+</ul>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="n">items</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">items</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">items</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">items</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># set operations</span>
+
+<span class="n">numbers</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">odd</span>     <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">even</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">odd</span><span class="p">)</span>
+<span class="n">even</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">even</span><span class="p">)</span>
+
+<span class="n">even</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">odd</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">items</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">),</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="n">exclude</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">),</span> <span class="mi">10000</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">exclude</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+<span class="n">exclude</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">items</span> <span class="o">-</span> <span class="n">exclude</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">timeit</span>
+
+<span class="k">def</span> <span class="nf">filter_list</span><span class="p">():</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">),</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="n">exclude</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">),</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">filter_set</span><span class="p">():</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">),</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="n">exclude</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">),</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="n">exclude</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">]</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">"filter_list()"</span><span class="p">,</span> <span class="s2">"from __main__ import filter_list"</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">"filter_set()"</span><span class="p">,</span> <span class="s2">"from __main__ import filter_set"</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="k">print</span> <span class="n">t0</span>
+    <span class="k">print</span> <span class="n">t1</span>
+</code></pre></div>
+
+</div>
 </div>
 <div class="section">
 <h2>Built-in functions</h2>
+<p><a class="reference external" href="https://docs.python.org/3/library/functions.html">https://docs.python.org/3/library/functions.html</a></p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># dir</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">sys</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">name</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># enumerate</span>
+
+<span class="n">abc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">]</span>
+
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">abc</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">i</span><span class="p">,</span> <span class="n">letter</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">abc</span><span class="p">)):</span>
+    <span class="n">letter</span> <span class="o">=</span> <span class="n">abc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">print</span> <span class="n">i</span><span class="p">,</span> <span class="n">letter</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">letter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">abc</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">i</span><span class="p">,</span> <span class="n">letter</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># format</span>
+
+<span class="c1"># https://docs.python.org/2/library/string.html#formatspec</span>
+<span class="c1"># http://stackoverflow.com/questions/16683518/why-does-python-have-a-format-function-as-well-as-a-format-method</span>
+
+<span class="n">format</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">,</span> <span class="s1">'f'</span><span class="p">)</span>
+<span class="n">format</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">,</span> <span class="s1">'g'</span><span class="p">)</span>
+<span class="n">format</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">,</span> <span class="s1">'n'</span><span class="p">)</span>
+<span class="n">format</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">,</span> <span class="s1">'e'</span><span class="p">)</span>
+<span class="n">format</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+
+<span class="s1">'{0:f}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">)</span>
+<span class="s1">'{0:.3f}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">)</span>
+<span class="s1">'{0:.0f}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">)</span>
+
+<span class="n">xyz</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="s1">'{0[0]},{0[1]},{0[2]}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+<span class="s1">'{0},{1},{2}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">xyz</span><span class="p">)</span>
+
+<span class="n">xyz</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'x'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="s1">'{x},{y},{z}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># map</span>
+
+<span class="c1"># see also: list comprehensions</span>
+
+<span class="n">pi</span> <span class="o">=</span> <span class="mf">3.14159</span>
+
+<span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nb">map</span><span class="p">(</span><span class="nb">round</span><span class="p">,</span> <span class="p">[</span><span class="n">pi</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">pi</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nb">map</span><span class="p">(</span><span class="nb">pow</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># range</span>
+
+<span class="n">numbers</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># sorted</span>
+
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">shuffle</span>
+
+<span class="n">numbers</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">shuffle</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">numbers</span>
+<span class="k">print</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+
+<span class="n">numbers</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">numbers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+<span class="k">print</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">print</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># zip</span>
+
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">rows</span><span class="p">)</span>
+</code></pre></div>
+
 </div>
 <div class="section">
 <h2>Comprehensions</h2>
+<div class="section">
+<h3>List comprehensions</h3>
+<p>Generate lists with an expression in brackets.</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># odd  = range(1, 10, 2)</span>
+<span class="c1"># even = range(0, 10, 2)</span>
+
+<span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">odd</span>     <span class="o">=</span> <span class="p">[</span><span class="n">number</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">numbers</span> <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">even</span>    <span class="o">=</span> <span class="p">[</span><span class="n">number</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">numbers</span> <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">even</span>    <span class="o">=</span> <span class="p">[</span><span class="n">number</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">numbers</span> <span class="k">if</span> <span class="n">number</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">odd</span><span class="p">]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># normalize a vector</span>
+
+<span class="n">vec</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">l</span>    <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">vec</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span>
+<span class="n">uvec</span> <span class="o">=</span> <span class="p">[</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># centroid (average)</span>
+
+<span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+<span class="n">centroid</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">)]</span>
+</code></pre></div>
+
 </div>
 <div class="section">
-<h2>Flow control</h2>
+<h3>Dict comprehensions</h3>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># items = {1: 1, 2: 2, 3: 3, 4: 4}</span>
+
+<span class="n">items</span> <span class="o">=</span> <span class="p">{</span><span class="n">index</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))}</span>
+</code></pre></div>
+
+</div>
 </div>
 <div class="section">
 <h2>Functions</h2>
@@ -174,7 +493,163 @@ Tuples are also used for cases where an immutable sequence of homogeneous data i
 <h2>Classes</h2>
 </div>
 <div class="section">
-<h2>Syntactic sugar</h2>
+<h2>Script, Module, Package</h2>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># simple script</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="k">print</span> <span class="n">c</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># script vs. module</span>
+<span class="c1"># http://stackoverflow.com/questions/419163/what-does-if-name-main-do</span>
+
+<span class="k">def</span> <span class="nf">f1</span><span class="p">():</span>
+    <span class="o">...</span>
+
+<span class="k">def</span> <span class="nf">f2</span><span class="p">():</span>
+    <span class="o">...</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="c1"># this part is only executed when the module is run as a script</span>
+    <span class="c1"># this part does not get executed when the module is imported</span>
+    <span class="c1"># all other code will get executed when the module is imported!</span>
+
+    <span class="n">f1</span><span class="p">()</span>
+    <span class="n">f2</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># module a.py</span>
+
+<span class="k">def</span> <span class="nf">b</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s1">'b'</span>
+
+
+<span class="c1"># script main.py</span>
+
+<span class="kn">from</span> <span class="nn">a</span> <span class="kn">import</span> <span class="n">b</span>
+
+<span class="n">b</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># packages</span>
+<span class="c1">#</span>
+<span class="c1"># - a</span>
+<span class="c1">#     __init__.py</span>
+<span class="c1">#     - b.py</span>
+<span class="c1">#         def b1():</span>
+<span class="c1">#             ...</span>
+<span class="c1">#         def b2():</span>
+<span class="c1">#             ...</span>
+<span class="c1">#     - c</span>
+<span class="c1">#         __init__.py</span>
+<span class="c1">#         d.py</span>
+<span class="c1">#             def d1():</span>
+<span class="c1">#                 ...</span>
+<span class="c1">#             def d2():</span>
+<span class="c1">#                 ...</span>
+
+<span class="kn">from</span> <span class="nn">a.b</span> <span class="kn">import</span> <span class="n">b1</span>
+<span class="kn">import</span> <span class="nn">a.c.d</span>
+<span class="kn">from</span> <span class="nn">a.c.d</span> <span class="kn">import</span> <span class="n">d2</span>
+
+<span class="n">b1</span><span class="p">()</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">d</span><span class="o">.</span><span class="n">d1</span><span class="p">()</span>
+
+<span class="n">d2</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># a.__init__.py</span>
+
+<span class="kn">from</span> <span class="nn">b</span> <span class="kn">import</span> <span class="n">b1</span>
+<span class="kn">from</span> <span class="nn">b</span> <span class="kn">import</span> <span class="n">b2</span>
+<span class="kn">from</span> <span class="nn">c.d</span> <span class="kn">import</span> <span class="n">d1</span>
+<span class="kn">from</span> <span class="nn">c.d</span> <span class="kn">import</span> <span class="n">d2</span>
+
+<span class="c1"># main.py</span>
+
+<span class="kn">import</span> <span class="nn">a</span>
+<span class="kn">from</span> <span class="nn">a</span> <span class="kn">import</span> <span class="n">b1</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">d1</span><span class="p">()</span>
+
+<span class="n">b1</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+<div class="section">
+<h2>Core packages</h2>
+<p><a class="reference external" href="https://docs.python.org/3/library/index.html">https://docs.python.org/3/library/index.html</a></p>
+<ul class="simple">
+<li>abc</li>
+<li>array</li>
+<li>ast</li>
+<li>calendar</li>
+<li>collections</li>
+<li>collections.abc</li>
+<li>colorsys</li>
+<li>contextlib</li>
+<li>copy</li>
+<li>csv</li>
+<li>ctypes</li>
+<li>inspect</li>
+<li>io</li>
+<li>itertools</li>
+<li>json</li>
+<li>math</li>
+<li>multiprocessing</li>
+<li>operators</li>
+<li>os</li>
+<li>platform</li>
+<li>random</li>
+<li>subprocess</li>
+<li>sys</li>
+<li>time</li>
+<li>traceback</li>
+<li>urllib2</li>
+<li>xml</li>
+<li>xmlrpclib</li>
+</ul>
+</div>
+<div class="section">
+<h2>User packages</h2>
+<ul class="simple">
+<li>cairo: library for drawing vector graphics</li>
+<li>cvxopt: convex optimisation</li>
+<li>cvxpy: convex optimisation</li>
+<li>cython: optimising static compiler</li>
+<li>joblib: parallel for loops using multiprocessing</li>
+<li>matlab:</li>
+<li>matplotlib: (mainly) 2D plotting library</li>
+<li>meshpy: triangular and tetrahedral mesh generation</li>
+<li>networkx: creation, manipulation, and study of the structure, dynamics, and functions of complex networks</li>
+<li>numba: just-in-time compiler</li>
+<li>numpy: fundamental package for scientific computing</li>
+<li>pandas: data structures and data analysis tools</li>
+<li>paramiko:</li>
+<li>planarity:</li>
+<li>pycuda: binding of Nvidia’s CUDA parallel computation API</li>
+<li>PyOpenGL: cross platform binding to OpenGL</li>
+<li>pyopt: nonlinear constrained optimization problems</li>
+<li>PySide: binding of the cross-platform GUI toolkit Qt</li>
+<li>scipy: scientific computing</li>
+<li>shapely: manipulation and analysis of planar geometric objects</li>
+<li>sphinx: documentation</li>
+<li>sympy: symbolic mathematics</li>
+</ul>
+</div>
+<div class="section">
+<h2>Install Modules and Packages</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://python-packaging-user-guide.readthedocs.org/en/latest/installing/">Python Packaging User Guide</a></li>
+<li><a class="reference external" href="http://stackoverflow.com/questions/3220404/why-use-pip-over-easy-install">StackOverflow: Why use pip over easy_install?</a></li>
+<li><a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">Unofficial Windows Binaries for Python Extension Packages</a></li>
+<li><a class="reference external" href="http://docs.continuum.io/anaconda/index">Anaconda Python distribution</a></li>
+<li><a class="reference external" href="https://www.macports.org/">MacPorts</a></li>
+</ul>
 </div>
 </div>
 <nav class="compas-sideways">
@@ -216,18 +691,32 @@ Tuples are also used for cases where an immutable sequence of homogeneous data i
 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Python 101</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#implementations">Implementations</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#cpython">CPython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#ironpython">IronPython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#jython">Jython</a></li>
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#built-in-types">Built-in types</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#container-types">Container types</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#list">List</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#tuple">Tuple</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#dictionary">Dictionary</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#set">Set</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#built-in-functions">Built-in functions</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#comprehensions">Comprehensions</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#flow-control">Flow control</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#comprehensions">Comprehensions</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#list-comprehensions">List comprehensions</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#dict-comprehensions">Dict comprehensions</a></li>
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#functions">Functions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#syntactic-sugar">Syntactic sugar</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#script-module-package">Script, Module, Package</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#core-packages">Core packages</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#user-packages">User packages</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#install-modules-and-packages">Install Modules and Packages</a></li>
 </ul>
 </li>
 </ul>
