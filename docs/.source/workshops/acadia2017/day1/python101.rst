@@ -350,7 +350,7 @@ From the docs:
 Built-in functions
 ==================
 
-.. all, any, sum, min, max, str, repr, zip, enumerate, eval, format
+.. all, any, sum, min, max, str, repr, zip, enumerate, format, open, sorted, type
 
 https://docs.python.org/3/library/functions.html
 
@@ -475,15 +475,6 @@ Generate lists with an expression in brackets.
     odd     = [number for number in numbers if number % 2]
     even    = [number for number in numbers if number % 2 == 0]
     even    = [number for number in numbers if number not in odd]
-
-
-.. code-block:: python
-
-    # normalize a vector
-
-    vec  = [2, 0, 0]
-    l    = (sum(axis ** 2 for axis in vec)) ** 0.5
-    uvec = [vec[i] / l for i in range(3)]
 
 
 .. code-block:: python

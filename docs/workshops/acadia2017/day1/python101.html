@@ -463,13 +463,6 @@ Common uses include membership testing, removing duplicates from a sequence, and
 <span class="n">even</span>    <span class="o">=</span> <span class="p">[</span><span class="n">number</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">numbers</span> <span class="k">if</span> <span class="n">number</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">odd</span><span class="p">]</span>
 </code></pre></div>
 
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># normalize a vector</span>
-
-<span class="n">vec</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">l</span>    <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">vec</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span>
-<span class="n">uvec</span> <span class="o">=</span> <span class="p">[</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-</code></pre></div>
-
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># centroid (average)</span>
 
 <span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
