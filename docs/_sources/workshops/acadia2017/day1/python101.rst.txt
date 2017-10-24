@@ -45,6 +45,16 @@ delattr()     hash()      memoryview() set()
   boolean values (``True``, ``False``), internal objects
 
 
+* enumerate
+* format
+* sorted
+* open
+* iter
+* len
+* next
+* range
+
+
 Container types
 ===============
 
