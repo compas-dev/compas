@@ -54,23 +54,23 @@ class MeshPlotter(Plotter):
         self.edgecollection = None
         self.facecollection = None
         self.defaults = {
-            'vertex.radius'    : 0.1,
+            'vertex.radius'    : 0.2,
             'vertex.facecolor' : '#ffffff',
             'vertex.edgecolor' : '#000000',
             'vertex.edgewidth' : 0.1,
             'vertex.textcolor' : '#000000',
-            'vertex.fontsize'  : 10.0,
+            'vertex.fontsize'  : 14.0,
 
             'edge.width'    : 0.5,
             'edge.color'    : '#000000',
             'edge.textcolor': '#000000',
-            'edge.fontsize' : 10.0,
+            'edge.fontsize' : 14.0,
 
             'face.facecolor' : '#eeeeee',
             'face.edgecolor' : '#eeeeee',
             'face.edgewidth' : 0.1,
             'face.textcolor' : '#000000',
-            'face.fontsize'  : 10.0,
+            'face.fontsize'  : 14.0,
         }
 
     def clear(self):

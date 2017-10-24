@@ -233,6 +233,12 @@ First using a modified call to the general accessor methods.</p>
 
 </div>
 <div class="section">
+<h2>Modifying the data</h2>
+</div>
+<div class="section">
+<h2>Modifying the data attribbutes</h2>
+</div>
+<div class="section">
 <h2>Visualization</h2>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
@@ -354,12 +360,60 @@ datastructure, although they obviously have a few of them in common.</p>
 <figure class="figure">
 <img alt="../../../images/datastructures-4.png" class="figure-img img-fluid" src="../../../images/datastructures-4.png"/>
 </figure>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'</span><span class="si">%.1f</span><span class="s1">'</span> <span class="o">%</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_area</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()})</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<figure class="figure">
+<img alt="../../../images/datastructures-5.png" class="figure-img img-fluid" src="../../../images/datastructures-5.png"/>
+</figure>
 </div>
 <div class="section">
 <h2>Operations</h2>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">mesh</span><span class="o">.</span><span class="n">delete_vertex</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">insert_vertex</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">delete_face</span>
+
+<span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">mesh_collapse_edge</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">mesh_swap_edge</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">mesh_split_edge</span>
+
+<span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">trimesh_collapse_edge</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">trimesh_swap_edge</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">trimesh_split_edge</span>
+</code></pre></div>
+
 </div>
 <div class="section">
 <h2>Algorithms</h2>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">mesh_subdivide</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">mesh_dual</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">mesh_delaunay_from_points</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">mesh_voronoi_from_points</span>
+
+<span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">trimesh_remesh</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">smooth_centroid</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">smooth_centerofmass</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">smooth_area</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">shortest_path</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dijkstra_path</span>
+</code></pre></div>
+
 </div>
 <div class="section">
 <h2>Customization</h2>
@@ -418,6 +472,8 @@ datastructure, although they obviously have a few of them in common.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="#general-info">General info</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#accessing-the-data">Accessing the data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#accessing-the-data-attributes">Accessing the data attributes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#modifying-the-data">Modifying the data</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#modifying-the-data-attribbutes">Modifying the data attribbutes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#visualization">Visualization</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#topology">Topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#geometry">Geometry</a></li>

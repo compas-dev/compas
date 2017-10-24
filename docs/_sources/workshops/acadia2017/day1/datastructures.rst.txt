@@ -235,6 +235,12 @@ Second through dedicated attribute accessors.
     mesh.get_vertices_attributes('xyz')
 
 
+Modifying the data
+==================
+
+Modifying the data attribbutes
+==============================
+
 Visualization
 =============
 
@@ -360,13 +366,64 @@ Geometry
 
     plotter.show()
 
+.. plot::
+    :include-source:
+
+    import compas
+    from compas.datastructures import Mesh
+    from compas.visualization import MeshPlotter
+
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    plotter = MeshPlotter(mesh)
+
+    plotter.draw_vertices(text={key: '%.1f' % mesh.vertex_area(key) for key in mesh.vertices()})
+    plotter.draw_faces()
+    plotter.draw_edges()
+
+    plotter.show()
+
 
 Operations
 ==========
 
+.. code-block:: python
+    
+    mesh.delete_vertex
+    mesh.insert_vertex
+    mesh.delete_face
+
+    compas.datastructures.mesh_collapse_edge
+    compas.datastructures.mesh_swap_edge
+    compas.datastructures.mesh_split_edge
+
+    compas.datastructures.trimesh_collapse_edge
+    compas.datastructures.trimesh_swap_edge
+    compas.datastructures.trimesh_split_edge
+
 
 Algorithms
 ==========
+
+.. code-block:: python
+    
+    compas.datastructures.mesh_subdivide
+    compas.datastructures.mesh_dual
+    compas.datastructures.mesh_delaunay_from_points
+    compas.datastructures.mesh_voronoi_from_points
+
+    compas.datastructures.trimesh_remesh
+
+.. code-block:: python
+    
+    compas.geometry.smooth_centroid
+    compas.geometry.smooth_centerofmass
+    compas.geometry.smooth_area
+
+.. code-block:: python
+    
+    compas.geometry.shortest_path
+    compas.geometry.dijkstra_path
 
 
 Customization
