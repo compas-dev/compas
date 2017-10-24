@@ -69,29 +69,6 @@ geometrically, which is much more efficient.</p>
 </div>
 </div>
 <div class="section">
-<h2>Visualization</h2>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-
-<span class="kn">import</span> <span class="nn">compas</span>
-
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
-
-<figure class="figure">
-<img alt="../../../images/datastructures-11.png" class="figure-img img-fluid" src="../../../images/datastructures-11.png"/>
-</figure>
-</div>
-<div class="section">
 <h2>Builders and constructors</h2>
 <p>Every datastructure has a default constructor, builder methods, and
 a series of specialised constructor functions that build datastructures in a
@@ -170,6 +147,7 @@ are named using the following pattern <code class="docutils literal">.from_xxx</
 <p><code class="docutils literal">compas</code> also provides sample data that can be used together with the constructors.</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 </code></pre></div>
 
@@ -187,78 +165,195 @@ are named using the following pattern <code class="docutils literal">.from_xxx</
 <p>Every datastructure exposes several functions to access its data.
 All of those <em>accessors</em> are iterators; they are meant to be iterated over.
 Lists of data have to be constructed explicitly.</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
-<span class="go">&lt;dictionary-keyiterator object at 0x10f030e68&gt;</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
+<span class="c1"># &lt;dictionary-keyiterator object at 0x10f030e68&gt;</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
-<span class="gt">Traceback (most recent call last):</span>
-  File <span class="nb">"&lt;stdin&gt;"</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
-<span class="gr">TypeError</span>: <span class="n">object of type 'dictionary-keyiterator' has no len()</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span>
+<span class="c1"># Traceback (most recent call last):</span>
+<span class="c1">#   File "&lt;stdin&gt;", line 1, in &lt;module&gt;</span>
+<span class="c1"># TypeError: object of type 'dictionary-keyiterator' has no len()</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
-<span class="go">[0, 1, 2, ..., 29, 30, 31]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span>
-<span class="go">32</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span>
-<span class="go">32</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span>
+<span class="c1"># [0, 1, 2, ..., 29, 30, 31]</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())))</span>
+<span class="c1"># 32</span>
 
-<span class="go">0</span>
-<span class="go">1</span>
-<span class="go">2</span>
-<span class="gp">...</span>
-<span class="go">29</span>
-<span class="go">30</span>
-<span class="go">31</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">())</span>
+<span class="c1"># 32</span>
+
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 </code></pre></div>
 
 <p>The same applies to the faces.
 The accessor is an iterator; it is meant for iterating over the faces.
 To count the faces or to get a list of faces, the iterator needs to be converted
 explicitly.</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
-<span class="go">&lt;generator object edges at 0x10f03d140&gt;</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="k">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
+<span class="c1"># &lt;generator object edges at 0x10f03d140&gt;</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
-<span class="gt">Traceback (most recent call last):</span>
-  File <span class="nb">"&lt;stdin&gt;"</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
-<span class="gr">TypeError</span>: <span class="n">object of type 'generator' has no len()</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()))</span>
+<span class="c1"># Traceback (most recent call last):</span>
+<span class="c1">#   File "&lt;stdin&gt;", line 1, in &lt;module&gt;</span>
+<span class="c1"># TypeError: object of type 'generator' has no len()</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
-<span class="go">[(0, 3), (0, 19), (2, 30), ..., (30, 17), (31, 16), (31, 25)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
-<span class="go">40</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">()</span>
-<span class="go">40</span>
-</code></pre></div>
+<span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()))</span>
+<span class="c1"># [(0, 3), (0, 19), (2, 30), ..., (30, 17), (31, 16), (31, 25)]</span>
 
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()))</span>
+<span class="c1"># 40</span>
 
-<span class="go">0 3</span>
-<span class="go">0 19</span>
-<span class="go">2 30</span>
-<span class="gp">...</span>
-<span class="go">30 17</span>
-<span class="go">31 16</span>
-<span class="go">31 25</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">())</span>
+<span class="c1"># 40</span>
+
+<span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 </code></pre></div>
 
 </div>
 <div class="section">
 <h2>Accessing the data attributes</h2>
+<p>The data attributes can be accessed in several ways.
+First using a modified call to the general accessor methods.</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Second through dedicated attribute accessors.</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">mesh</span><span class="o">.</span><span class="n">get_vertex_attribute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">)</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">get_vertex_attributes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'xyz'</span><span class="p">)</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">get_vertices_attribute</span><span class="p">(</span><span class="s1">'x'</span><span class="p">)</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">(</span><span class="s1">'xyz'</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="section">
+<h2>Visualization</h2>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<figure class="figure">
+<img alt="../../../images/datastructures-11.png" class="figure-img img-fluid" src="../../../images/datastructures-11.png"/>
+</figure>
 </div>
 <div class="section">
 <h2>Topology</h2>
+<p>The available functions for accessing the topological data depend on the type of
+datastructure, although they obviously have a few of them in common.</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbourhood</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">faces_vertices</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">face_neighbours</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">face_neighbourhood</span><span class="p">()</span>
+<span class="o">...</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">key</span>  <span class="o">=</span> <span class="mi">17</span>
+<span class="n">nbrs</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">text</span>   <span class="o">=</span> <span class="p">{</span><span class="n">nbr</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)}</span>
+<span class="n">fcolor</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#cccccc'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">}</span>
+
+<span class="n">fcolor</span><span class="p">[</span><span class="mi">17</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'#ff0000'</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">fcolor</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<figure class="figure">
+<img alt="../../../images/datastructures-2.png" class="figure-img img-fluid" src="../../../images/datastructures-2.png"/>
+</figure>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()})</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<figure class="figure">
+<img alt="../../../images/datastructures-3.png" class="figure-img img-fluid" src="../../../images/datastructures-3.png"/>
+</figure>
 </div>
 <div class="section">
 <h2>Geometry</h2>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">vertex_area</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">vertex_centroid</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">face_area</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">face_center</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">face_frame</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">face_circle</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">face_normal</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">edge_direction</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">edge_length</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">edge_midpoint</span><span class="p">()</span>
+<span class="o">...</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="s1">'</span><span class="si">%.1f</span><span class="s1">'</span> <span class="o">%</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()})</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<figure class="figure">
+<img alt="../../../images/datastructures-4.png" class="figure-img img-fluid" src="../../../images/datastructures-4.png"/>
+</figure>
 </div>
 <div class="section">
 <h2>Operations</h2>
@@ -319,11 +414,11 @@ explicitly.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="#network-mesh-volmesh">Network, Mesh, VolMesh</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#visualization">Visualization</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#builders-and-constructors">Builders and constructors</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#general-info">General info</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#accessing-the-data">Accessing the data</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#accessing-the-data-attributes">Accessing the data attributes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#visualization">Visualization</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#topology">Topology</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#geometry">Geometry</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#operations">Operations</a></li>

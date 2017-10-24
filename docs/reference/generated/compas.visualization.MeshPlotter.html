@@ -44,6 +44,50 @@
 <dt id="compas.visualization.MeshPlotter">
 <em class="property">class </em><code class="descclassname">compas.visualization.</code><code class="descname">MeshPlotter</code><span class="sig-paren">(</span><em>mesh</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/visualization/plotters/meshplotter.html#MeshPlotter"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal">compas.visualization.plotters.plotter.Plotter</code></p>
+<p>Definition of a plotter object based on matplotlib for compas Networks.</p>
+<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
+<col class="field-name"/>
+<col class="field-body"/>
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mesh</strong> (<em>object</em>) – The mesh to plot.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="compas.visualization.MeshPlotter.title">
+<code class="descname">title</code></dt>
+<dd><p><em>str</em> – Title of the plot.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.MeshPlotter.mesh">
+<code class="descname">mesh</code></dt>
+<dd><p><em>object</em> – The mesh to plot.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.MeshPlotter.vertexcollection">
+<code class="descname">vertexcollection</code></dt>
+<dd><p><em>object</em> – The matplotlib collection for the mesh vertices.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.MeshPlotter.edgecollection">
+<code class="descname">edgecollection</code></dt>
+<dd><p><em>object</em> – The matplotlib collection for the mesh edges.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.MeshPlotter.facecollection">
+<code class="descname">facecollection</code></dt>
+<dd><p><em>object</em> – The matplotlib collection for the mesh faces.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.MeshPlotter.defaults">
+<code class="descname">defaults</code></dt>
+<dd><p><em>dict</em> – Dictionary containing default attributes for vertices and edges.</p>
+</dd></dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li>Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science &amp; Engineering (9) 3, p.90-95.
+Available at: <a class="reference external" href="http://ieeexplore.ieee.org/document/4160265/citations">http://ieeexplore.ieee.org/document/4160265/citations</a></li>
+</ul>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -52,31 +96,31 @@
 </colgroup>
 <tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.__init__.html" title="compas.visualization.MeshPlotter.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>(mesh, \*\*kwargs)</td>
-<td></td>
+<td>Initialises a mesh plotter object</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear.html" title="compas.visualization.MeshPlotter.clear"><code class="xref py py-obj docutils literal">clear</code></a>()</td>
-<td></td>
+<td>Clears the mesh plotter vertices, edges and faces.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_collection.html" title="compas.visualization.MeshPlotter.clear_collection"><code class="xref py py-obj docutils literal">clear_collection</code></a>(collection)</td>
 <td>Clears a matplotlib collection object.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_edges.html" title="compas.visualization.MeshPlotter.clear_edges"><code class="xref py py-obj docutils literal">clear_edges</code></a>()</td>
-<td></td>
+<td>Clears the mesh plotter edges.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_faces.html" title="compas.visualization.MeshPlotter.clear_faces"><code class="xref py py-obj docutils literal">clear_faces</code></a>()</td>
-<td></td>
+<td>Clears the mesh plotter faces.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_vertices.html" title="compas.visualization.MeshPlotter.clear_vertices"><code class="xref py py-obj docutils literal">clear_vertices</code></a>()</td>
-<td></td>
+<td>Clears the mesh plotter vertices.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_arrows.html" title="compas.visualization.MeshPlotter.draw_arrows"><code class="xref py py-obj docutils literal">draw_arrows</code></a>(arrows)</td>
 <td>Draws arrows on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_edges.html" title="compas.visualization.MeshPlotter.draw_edges"><code class="xref py py-obj docutils literal">draw_edges</code></a>([keys, width, color, text, ...])</td>
-<td></td>
+<td>Draws the mesh edges.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_faces.html" title="compas.visualization.MeshPlotter.draw_faces"><code class="xref py py-obj docutils literal">draw_faces</code></a>([keys, text, facecolor, ...])</td>
-<td></td>
+<td>Draws the mesh faces.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_lines.html" title="compas.visualization.MeshPlotter.draw_lines"><code class="xref py py-obj docutils literal">draw_lines</code></a>(lines)</td>
 <td>Draws lines on a 2D plot.</td>
@@ -88,7 +132,7 @@
 <td>Draws polygons on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_vertices.html" title="compas.visualization.MeshPlotter.draw_vertices"><code class="xref py py-obj docutils literal">draw_vertices</code></a>([keys, radius, text, ...])</td>
-<td></td>
+<td>Draws the mesh vertices.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.save.html" title="compas.visualization.MeshPlotter.save"><code class="xref py py-obj docutils literal">save</code></a>(filepath, \*\*kwargs)</td>
 <td>Saves the plot on a file.</td>
@@ -100,10 +144,10 @@
 <td>Updates and pauses the plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_edges.html" title="compas.visualization.MeshPlotter.update_edges"><code class="xref py py-obj docutils literal">update_edges</code></a>()</td>
-<td></td>
+<td>Updates the plotter edge collection based on the mesh.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_faces.html" title="compas.visualization.MeshPlotter.update_faces"><code class="xref py py-obj docutils literal">update_faces</code></a>()</td>
-<td></td>
+<td>Updates the plotter face collection based on the mesh.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_linecollection.html" title="compas.visualization.MeshPlotter.update_linecollection"><code class="xref py py-obj docutils literal">update_linecollection</code></a>(collection, segments)</td>
 <td>Updates a line collection.</td>
@@ -115,7 +159,7 @@
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_vertices.html" title="compas.visualization.MeshPlotter.update_vertices"><code class="xref py py-obj docutils literal">update_vertices</code></a>()</td>
-<td></td>
+<td>Updates the plotter vertex collection based on the mesh.</td>
 </tr>
 </tbody>
 </table>
@@ -138,7 +182,7 @@
 <tr class=""><td><code class="xref py py-obj docutils literal">interactive</code></td>
 <td>Returns a boolean describing of the plot is interactive.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">title</code></td>
+<tr class=""><td><a class="reference internal" href="" title="compas.visualization.MeshPlotter.title"><code class="xref py py-obj docutils literal">title</code></a></td>
 <td>Returns the title of the plot.</td>
 </tr>
 </tbody>

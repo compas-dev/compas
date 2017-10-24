@@ -81,7 +81,7 @@
 <span class="sd">    """</span>
 
 <div class="viewcode-block" id="NetworkPlotter.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.NetworkPlotter.__init__.html#compas.visualization.NetworkPlotter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">""""""</span>
+        <span class="sd">"""Initialises a network plotter object"""</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">NetworkPlotter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">'NetworkPlotter'</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
@@ -137,6 +137,8 @@
 <span class="sd">            Color for the vertex circle fill.</span>
 <span class="sd">        edgecolor : list</span>
 <span class="sd">            Color for the vertex circle edge.</span>
+<span class="sd">        edgewidth : list</span>
+<span class="sd">            Width for the vertex circle edge.</span>
 <span class="sd">        textcolor : list</span>
 <span class="sd">            Color for the text to be displayed on the vertices.</span>
 <span class="sd">        fontsize : list</span>
@@ -239,6 +241,7 @@
         <span class="k">return</span> <span class="n">collection</span></div>
 
 <div class="viewcode-block" id="NetworkPlotter.update_edges"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.NetworkPlotter.update_edges.html#compas.visualization.NetworkPlotter.update_edges">[docs]</a>    <span class="k">def</span> <span class="nf">update_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Updates the plotter edge collection based on the network."""</span>
         <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
             <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)])</span>
