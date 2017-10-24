@@ -45,9 +45,79 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <div class="section">
 <h2>Built-in types</h2>
 <p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html">https://docs.python.org/3/library/stdtypes.html</a></p>
+<ul class="simple">
+<li>numeric types: int, float, complex</li>
+<li>iterator types</li>
+<li>sequence types: list, tuple, range</li>
+<li>text sequence type: str
+Textual data in Python is handled with str objects, or strings.
+Strings are immutable sequences of Unicode code points.</li>
+<li>binary sequence types: bytes, bytearray, memoryview</li>
+<li>set types: set, frozenset</li>
+<li>mapping types: dict
+A mapping object maps hashable values to arbitrary objects.
+Mappings are mutable objects.
+There is currently only one standard mapping type, the dictionary.</li>
+<li>context manager types:
+Python’s with statement supports the concept of a runtime context defined by a context manager.</li>
+<li>other types: modules, classes and class instances, functions, methods,
+code objects, type objects, null object, ellipsis object, notimplemented object,
+boolean values, internal objects</li>
+</ul>
 </div>
 <div class="section">
 <h2>Container types</h2>
+<p><a class="reference external" href="https://wiki.python.org/moin/TimeComplexity">https://wiki.python.org/moin/TimeComplexity</a></p>
+<ul class="simple">
+<li>list</li>
+<li>set</li>
+<li>tuple</li>
+<li>dict</li>
+<li>collections module</li>
+</ul>
+<div class="section">
+<h3>List</h3>
+<p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#lists">https://docs.python.org/3/library/stdtypes.html#lists</a></p>
+<blockquote>
+<div>Lists are mutable sequences, typically used to store collections of homogeneous items
+(where the precise degree of similarity will vary by application).</div></blockquote>
+<ul class="simple">
+<li>Ordered collection of items.</li>
+<li>List items can be of any type.</li>
+<li>One list can contain many different types.</li>
+<li>Lists are mutable.</li>
+<li>Behaves like a stack (LIFO)</li>
+</ul>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># lists</span>
+
+<span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">item</span>
+
+<span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">items</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">items</span> <span class="o">+</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">])</span>
+
+<span class="c1"># 6, 1, 2, 3, 4, 5, 7, 8, 9, 11, 12, 13</span>
+
+<span class="c1"># http://stackoverflow.com/questions/11520492/difference-between-del-remove-and-pop-on-lists</span>
+
+<span class="n">items</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="k">del</span> <span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">items</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">items</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">items</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">items</span>
+<span class="k">print</span> <span class="n">items</span><span class="p">[:]</span>
+<span class="k">print</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">:]</span>
+<span class="k">print</span> <span class="n">items</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div>
+
+</div>
 </div>
 <div class="section">
 <h2>Built-in functions</h2>
@@ -108,7 +178,10 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Python 101</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#built-in-types">Built-in types</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#container-types">Container types</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#container-types">Container types</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#list">List</a></li>
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#built-in-functions">Built-in functions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#comprehensions">Comprehensions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#flow-control">Flow control</a></li>
