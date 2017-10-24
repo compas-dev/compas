@@ -2,7 +2,7 @@
 
 from matplotlib.patches import Circle
 from matplotlib.patches import Polygon
-
+from compas.utilities import to_valuedict
 from compas.visualization.plotters.plotter import Plotter
 
 
@@ -15,22 +15,38 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = []
 
 
-def to_valuedict(keys, value, default):
-    value = value or default
-
-    if isinstance(value, dict):
-        valuedict = {key: default for key in keys}
-        valuedict.update(value)
-    else:
-        valuedict = {key: value for key in keys}
-
-    return valuedict
-
-
 class MeshPlotter(Plotter):
-    """"""
+    """Definition of a plotter object based on matplotlib for compas Networks.
+
+    Parameters
+    ----------
+    mesh: object
+        The mesh to plot.
+
+    Attributes
+    ----------
+    title : str
+        Title of the plot.
+    mesh : object
+        The mesh to plot.
+    vertexcollection : object
+        The matplotlib collection for the mesh vertices.
+    edgecollection : object
+        The matplotlib collection for the mesh edges.
+    facecollection : object
+        The matplotlib collection for the mesh faces.
+    defaults : dict
+        Dictionary containing default attributes for vertices and edges.
+
+    References
+    ----------
+    * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science & Engineering (9) 3, p.90-95.
+      Available at: http://ieeexplore.ieee.org/document/4160265/citations
+
+    """
 
     def __init__(self, mesh, **kwargs):
+        """Initialises a mesh plotter object"""
         super(MeshPlotter, self).__init__(**kwargs)
         self.title = 'MeshPlotter'
         self.mesh = mesh
@@ -58,6 +74,7 @@ class MeshPlotter(Plotter):
         }
 
     def clear(self):
+        """Clears the mesh plotter vertices, edges and faces."""
         self.clear_vertices()
         self.clear_edges()
         self.clear_faces()
@@ -71,7 +88,32 @@ class MeshPlotter(Plotter):
                       edgewidth=None,
                       textcolor=None,
                       fontsize=None):
+        """Draws the mesh vertices.
 
+        Parameters
+        ----------
+        keys : list
+            The keys of the vertices to plot.
+        radius : list
+            A list of radii for the vertices.
+        text : list
+            Strings to be displayed on the vertices.
+        facecolor : list
+            Color for the vertex circle fill.
+        edgecolor : list
+            Color for the vertex circle edge.
+        edgewidth : list
+            Width for the vertex circle edge.
+        textcolor : list
+            Color for the text to be displayed on the vertices.
+        fontsize : list
+            Font size for the text to be displayed on the vertices.
+
+        Returns
+        -------
+        object
+            The matplotlib vertex collection object.
+        """
         keys = keys or list(self.mesh.vertices())
 
         if text == 'key':
@@ -107,9 +149,11 @@ class MeshPlotter(Plotter):
         return collection
 
     def clear_vertices(self):
+        """Clears the mesh plotter vertices."""
         self.vertexcollection.remove()
 
     def update_vertices(self):
+        """Updates the plotter vertex collection based on the mesh."""
         circles = []
         for key in self.mesh.vertices():
             center = self.mesh.vertex_coordinates(key, 'xy')
@@ -124,7 +168,29 @@ class MeshPlotter(Plotter):
                    text=None,
                    textcolor=None,
                    fontsize=None):
+        """Draws the mesh edges.
 
+        Parameters
+        ----------
+        keys : list
+            The keys of the edges to plot.
+        width : list
+            Width of the mesh edges.
+        color : list
+            Color for the edge lines.
+        text : list
+            Strings to be displayed on the edges.
+        textcolor : list
+            Color for the text to be displayed on the edges.
+        fontsize : list
+            Font size for the text to be displayed on the edges.
+
+        Returns
+        -------
+        object
+            The matplotlib edge collection object.
+
+        """
         keys = keys or list(self.mesh.edges())
 
         if text == 'key':
@@ -157,9 +223,11 @@ class MeshPlotter(Plotter):
         return collection
 
     def clear_edges(self):
+        """Clears the mesh plotter edges."""
         self.edgecollection.remove()
 
     def update_edges(self):
+        """Updates the plotter edge collection based on the mesh."""
         segments = []
         for u, v in self.mesh.edges():
             segments.append([self.mesh.vertex_coordinates(u, 'xy'), self.mesh.vertex_coordinates(v, 'xy')])
@@ -173,7 +241,30 @@ class MeshPlotter(Plotter):
                    edgewidth=None,
                    textcolor=None,
                    fontsize=None):
+        """Draws the mesh faces.
 
+        Parameters
+        ----------
+        keys : list
+            The keys of the edges to plot.
+        text : list
+            Strings to be displayed on the edges.
+        facecolor : list
+            Color for the face fill.
+        edgecolor : list
+            Color for the face edge.
+        edgewidth : list
+            Width for the face edge.
+        textcolor : list
+            Color for the text to be displayed on the edges.
+        fontsize : list
+            Font size for the text to be displayed on the edges.
+
+        Returns
+        -------
+        object
+            The matplotlib face collection object.
+        """
         keys = keys or list(self.mesh.faces())
 
         if text == 'key':
@@ -207,9 +298,11 @@ class MeshPlotter(Plotter):
         return collection
 
     def clear_faces(self):
+        """Clears the mesh plotter faces."""
         self.facecollection.remove()
 
     def update_faces(self):
+        """Updates the plotter face collection based on the mesh."""
         polygons = []
         for fkey in self.mesh.faces():
             points = self.mesh.face_coordinates(fkey, 'xy')
