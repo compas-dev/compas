@@ -104,16 +104,16 @@ List
 
 https://docs.python.org/3/library/stdtypes.html#lists
 
-From the docs:
-
-    Lists are mutable sequences, typically used to store collections of homogeneous items
-    (where the precise degree of similarity will vary by application).
-
 * Ordered collection of items.
 * List items can be of any type.
 * One list can contain many different types.
 * Lists are mutable.
 * Behaves like a stack (LIFO)
+
+From the docs:
+
+    Lists are mutable sequences, typically used to store collections of homogeneous items
+    (where the precise degree of similarity will vary by application).
 
 .. code-block:: python
 
@@ -127,13 +127,11 @@ From the docs:
     items = items + [7, 8, 9]
     items.extend([11, 12, 13])
 
-    # 6, 1, 2, 3, 4, 5, 7, 8, 9, 11, 12, 13
-
-    # http://stackoverflow.com/questions/11520492/difference-between-del-remove-and-pop-on-lists
-
     items.remove(8)
     del items[1]
     print items.pop(3)
+
+    print items
 
     print items[::2]
     print items[1::2]
@@ -160,13 +158,15 @@ Tuple
 
 https://docs.python.org/3/library/stdtypes.html#tuples
 
-    Tuples are immutable sequences, typically used to store collections of heterogeneous data (such as the 2-tuples produced by the enumerate() built-in).
-    Tuples are also used for cases where an immutable sequence of homogeneous data is needed (such as allowing storage in a set or dict instance).
-
 * Ordered collection of items.
 * Tuple items can be of any type.
 * One tuple can contain multiple types.
 * Tuples are immutable.
+
+From the docs:
+
+    Tuples are immutable sequences, typically used to store collections of heterogeneous data (such as the 2-tuples produced by the enumerate() built-in).
+    Tuples are also used for cases where an immutable sequence of homogeneous data is needed (such as allowing storage in a set or dict instance).
 
 .. code-block:: python
 
@@ -179,86 +179,13 @@ https://docs.python.org/3/library/stdtypes.html#tuples
     print items[0]
     print items[-2]
 
-    a = 1
-    b = 2
-
     a, b = 1, 2
     b, a = a, b
 
-    a, b, c, d = items
+    print a, b
 
-
-Dictionary
-----------
-
-https://docs.python.org/3/library/stdtypes.html#mapping-types-dict
-
-From the docs:
-
-    A mapping object maps hashable values to arbitrary objects.
-    Mappings are mutable objects.
-    There is currently only one standard mapping type, the dictionary.
-    (For other containers see the built-in list, set, and tuple classes, and the collections module.)
-
-    A dictionary’s keys are almost arbitrary values.
-    Values that are not hashable, that is, values containing lists, dictionaries or other mutable types (that are compared by value rather than by object identity) may not be used as keys.
-    Numeric types used for keys obey the normal rules for numeric comparison: if two numbers compare equal (such as 1 and 1.0) then they can be used interchangeably to index the same dictionary entry.
-    (Note however, that since computers store floating-point numbers as approximations it is usually unwise to use them as dictionary keys.)
-
-* Unordered collection of key-value pairs
-* Values can be of any type.
-* Keys have to be hashable (immutable): string, integer, float, tuple, frozenset
-* Using strings as keys is the preferred standard
-
-.. code-block:: python
-
-    items = {}
-
-    items['1'] = 1 
-    items['2'] = 2 
-    items['3'] = 3
-    items['4'] = 4 
-
-    items = {'1': 1, '2': 2, '3': 3, '4': 4}
-
-    # items = dict((str(key), value) for key, value in enumerate([1, 2, 3, 4]))
-    # items = {str(key): value for key, value in enumerate([1, 2, 3, 4])}
-
-    for key in items:
-        value = items[key]
-        print key, value
-
-    for item in items.items():
-        key = item[0]
-        value = item[1]
-        print key, value
-
-    for item in items.items():
-        key, value = item
-        print key, value
-
-    for key, value in items.items():
-        print key, value
-
-    for key, value in items.iteritems():
-        print key, value
-
-    keys = items.keys()
-    key = keys[0]
-
-    values = items.values()
-    value = values[0]
-
-    print key, value
-
-    del items[key]
-
-    # pop
-    # popitem
-    # setdefault
-    # get
-
-    # sort dictionary based on values
+    items[0] = 1
+    del items[0]
 
 
 Set
@@ -266,16 +193,16 @@ Set
 
 https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset
 
+* Unordered collection of unique items
+* Mutable
+* Use frozenset for immutable
+* Support for set operations
+
 From the docs:
 
     A set object is an unordered collection of distinct hashable objects.
     Common uses include membership testing, removing duplicates from a sequence, and computing mathematical operations such as intersection, union, difference, and symmetric difference.
     (For other containers see the built-in dict, list, and tuple classes, and the collections module.)
-
-* Unordered collection of unique items
-* Mutable
-* Use frozenset for immutable
-* Support for set operations
 
 .. code-block:: python
 
@@ -347,6 +274,79 @@ From the docs:
         print t1
 
 
+Dictionary
+----------
+
+https://docs.python.org/3/library/stdtypes.html#mapping-types-dict
+
+* Unordered collection of key-value pairs
+* Values can be of any type.
+* Keys have to be hashable (immutable): string, integer, float, tuple, frozenset
+* Using strings as keys is the preferred standard
+
+From the docs:
+
+    A mapping object maps hashable values to arbitrary objects.
+    Mappings are mutable objects.
+    There is currently only one standard mapping type, the dictionary.
+    (For other containers see the built-in list, set, and tuple classes, and the collections module.)
+
+    A dictionary’s keys are almost arbitrary values.
+    Values that are not hashable, that is, values containing lists, dictionaries or other mutable types (that are compared by value rather than by object identity) may not be used as keys.
+    Numeric types used for keys obey the normal rules for numeric comparison: if two numbers compare equal (such as 1 and 1.0) then they can be used interchangeably to index the same dictionary entry.
+    (Note however, that since computers store floating-point numbers as approximations it is usually unwise to use them as dictionary keys.)
+
+.. code-block:: python
+
+    items = {}
+
+    items['1'] = 1 
+    items['2'] = 2 
+    items['3'] = 3
+    items['4'] = 4 
+
+    items = {'1': 1, '2': 2, '3': 3, '4': 4}
+
+    # items = dict((str(key), value) for key, value in enumerate([1, 2, 3, 4]))
+    # items = {str(key): value for key, value in enumerate([1, 2, 3, 4])}
+
+    for key in items:
+        value = items[key]
+        print key, value
+
+    for item in items.items():
+        key = item[0]
+        value = item[1]
+        print key, value
+
+    for item in items.items():
+        key, value = item
+        print key, value
+
+    for key, value in items.items():
+        print key, value
+
+    for key, value in items.iteritems():
+        print key, value
+
+    keys = items.keys()
+    key = keys[0]
+
+    values = items.values()
+    value = values[0]
+
+    print key, value
+
+    del items[key]
+
+    # pop
+    # popitem
+    # setdefault
+    # get
+
+    # sort dictionary based on values
+
+
 Built-in functions
 ==================
 
@@ -356,12 +356,26 @@ https://docs.python.org/3/library/functions.html
 
 .. code-block:: python
 
-    # dir
+    # range
 
-    import sys
+    numbers = range(10)
+    numbers = range(1, 10)
+    numbers = range(0, 10, 2)
+    numbers = range(1, 10, 2)
 
-    for name in dir(sys):
-        print name
+    # [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+
+.. code-block:: python
+
+    # all, any
+    
+    numbers = range(10)
+
+    # numbers = range(0, 10, 2)
+    # numbers = range(2, 10, 2)
+
+    print(all(i % 2 == 0 for i in numbers))
+    print(any(i % 2 == 0 for i in numbers))
 
 .. code-block:: python
     
@@ -388,29 +402,30 @@ https://docs.python.org/3/library/functions.html
     # https://docs.python.org/2/library/string.html#formatspec
     # http://stackoverflow.com/questions/16683518/why-does-python-have-a-format-function-as-well-as-a-format-method
 
-    format(3.14159, 'f')
-    format(3.14159, 'g')
-    format(3.14159, 'n')
-    format(3.14159, 'e')
-    format(3.14159, '')
+    from math import pi
 
-    '{0:f}'.format(3.14159)
-    '{0:.3f}'.format(3.14159)
-    '{0:.0f}'.format(3.14159)
+    print format(pi, 'f')
+    print format(pi, 'g')
+    print format(pi, 'n')
+    print format(pi, 'e')
+    print format(pi, '')
+
+    print '{0:f}'.format(pi)
+    print '{0:.3f}'.format(pi)
+    print '{0:.0f}'.format(pi)
 
     xyz = (1, 2, 3)
 
-    '{0[0]},{0[1]},{0[2]}'.format(xyz)
-    '{0},{1},{2}'.format(*xyz)
+    print '{0[0]},{0[1]},{0[2]}'.format(xyz)
+    print '{0},{1},{2}'.format(*xyz)
 
     xyz = {'x': 1, 'y': 2, 'z': 3}
 
-    '{x},{y},{z}'.format(xyz)
+    print '{0[x]},{0[y]},{0[z]}'.format(xyz)
 
 .. code-block:: python
 
     # map
-
     # see also: list comprehensions
 
     pi = 3.14159
@@ -418,17 +433,6 @@ https://docs.python.org/3/library/functions.html
     map(str, [1, 2, 3])
     map(round, [pi, pi, pi], [1, 2, 3])
     map(pow, [1, 2, 3], [3, 3, 3])
-
-.. code-block:: python
-
-    # range
-
-    numbers = range(10)
-    numbers = range(1, 10)
-    numbers = range(0, 10, 2)
-    numbers = range(1, 10, 2)
-
-    # [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 
 .. code-block:: python
 
@@ -498,8 +502,332 @@ Dict comprehensions
 Functions
 =========
 
+Definitions
+-----------
+
+http://stackoverflow.com/questions/9872824/calling-a-python-function-with-args-kwargs-and-optional-default-arguments
+
+.. code-block:: python
+
+    def f():
+        pass
+
+    def f(a):
+        pass
+
+    def f(a1, a2):
+        pass
+
+    def f(a1, a2=None):
+        pass
+
+    def f(a1=None, a2):
+        pass
+
+    def f(*args):
+        pass
+
+    def f(**kwargs):
+        pass
+
+    def f(a1, a2, *args):
+        pass
+
+    def f(a1, a2, *args, **kwargs):
+        pass
+
+
+Variable Scope
+--------------
+
+.. code-block:: python
+
+    globals()
+    locals()
+
+
+Default values
+--------------
+
+.. code-block:: python
+
+    def f(a, b, c=[]):
+        pass
+
+    def f(a, b, c=None):
+        if c is None:
+            c = []
+
+    def f(a, b, c=None):
+        if not c:
+            c = []
+
+    def f(a, b, c=None):
+        c = c or []
+
+
 Classes
 =======
+
+.. code-block:: python
+
+    class Vector():
+
+        def __init__(self, x, y, z):
+            self.x = x
+            self.y = y
+            self.z = z
+
+
+    class Vector():
+
+        def __init__(self, x, y=0, z=0):
+            try:
+                len(x)
+            except:
+                x = [x, y, z]
+            if len(x) == 1:
+                x = [x[0], y, z]
+            elif len(x) == 2:
+                x = [x[0], x[1], z]
+            self.x = x[0]
+            self.y = x[1]
+            self.z = x[2]
+
+
+    class Vector():
+
+        def __init__(self, end, start=None):
+            if not start:
+                start = [0, 0, 0]
+            x = end[0] - start[0]
+            y = end[1] - start[1]
+            z = end[2] - start[2]
+            self.x = x
+            self.y = y
+            self.z = z
+
+
+.. code-block:: python
+
+    class Vector():
+        ...
+
+        def add(self, other):
+            self.x += other.x
+            self.y += other.y
+            self.z += other.z
+
+
+.. code-block:: python
+
+    v1 = Vector(1, 0, 0)
+    v2 = Vector(0, 1, 0)
+
+    v1.add(v2)
+
+
+.. code-block:: python
+
+    v3 = [0, 0, 1]
+
+    v1.add(v3)
+
+
+Magic methods
+-------------
+
+.. code-block:: python
+
+    class Vector(object):
+        ...
+
+        def __getitem__(self, key):
+            i = key % 3
+            if i == 0:
+                return self.x
+            if i == 1:
+                return self.y
+            if i == 2:
+                return self.z
+            raise KeyError
+
+        def __setitem__(self, key, value):
+            i = key % 3
+            if i == 0:
+                self.x = value
+                return
+            if i == 1:
+                self.y = value
+                return
+            if i == 2:
+                self.z = value
+                return
+            raise KeyError
+
+        def __iter__(self):
+            return iter([self.x, self.y, self.z])
+
+        def add(self, other):
+            self.x += other[0]
+            self.y += other[1]
+            self.z += other[2]
+
+
+    v1 = Vector(1, 0, 0)
+    v2 = Vector(0, 1, 0)
+    v3 = [0, 0, 1]
+
+    v1.add(v2)
+    v1.add(v3)
+
+
+.. code-block:: python
+
+    class Vector(object):
+        ...
+
+        def __add__(self, other):
+            return Vector([self.x + other[0], self.y + other[1], self.z + other[2]])
+
+        def __sub__(self, other):
+            return Vector([self.x - other[0], self.y - other[1], self.z - other[2]])
+
+        def __mul__(self, n):
+            return Vector([self.x * n, self.y * n, self.z * n])
+
+        def __pow__(self, n):
+            return Vector([self.x ** n, self.y ** n, self.z ** n])
+
+
+    v = v1 + v2
+    v = v1 + v3
+    v = v1 * 2
+    v = v1 ** 2
+
+
+Descriptors
+-----------
+
+`Descriptor HowTo Guide <https://docs.python.org/2/howto/descriptor.html>`_
+
+
+.. code-block:: python
+
+    class Vector(object):
+
+        def __init__(self, end, start=None):
+            self._x = None
+            self._y = None
+            self._z = None
+            if not start:
+                start = [0, 0, 0]
+            x = end[0] - start[0]
+            y = end[1] - start[1]
+            z = end[2] - start[2]
+            self.x = x
+            self.y = y
+            self.z = z
+
+        @property
+        def x(self):
+            return self._x
+
+        @x.setter
+        def x(self, x):
+            self._x = float(x)
+
+        @property
+        def y(self):
+            return self._y
+
+        @y.setter
+        def y(self, y):
+            self._y = float(y)
+
+        @property
+        def z(self):
+            return self._z
+
+        @z.setter
+        def z(self, z):
+            self._z = float(z)
+
+
+.. code-block:: python
+
+    class Vector(object):
+        ...
+
+        @property
+        def length(self):
+            return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** 0.5
+
+
+Classmethods
+------------
+
+.. code-block:: python
+
+    class Vector(object):
+
+        def __init__(self, x, y, z):
+            self.x = x
+            self.y = y
+            self.z = z
+
+        @classmethod
+        def from_points(cls, start, end):
+            x = end[0] - start[0]
+            y = end[1] - start[1]
+            z = end[2] - start[2]
+            return cls(x, y, z)
+
+
+    v = Vector.from_points([1, 0, 0], [2, 0, 0])
+
+
+Meta Classes
+------------
+
+
+Abstract Base Classes
+---------------------
+
+.. code-block:: python
+
+    from abc import ABCMeta
+    from abc import abstractmethod
+
+
+    class Vector(object):
+
+        __metaclass__ = ABCMeta
+
+        def __init__(self, x, y, z):
+            self.x = x
+            self.y = y
+            self.z = z
+
+        ...
+
+        @abstractmethod
+        def add(self, other):
+            # raise NotImplementedError
+            pass
+
+
+    class Vector2(Vector):
+
+        def add(self, other):
+            ...
+
+
+    class Vector3(Vector):
+
+        def add(self, other):
+            ...
+
 
 Script, Module, Package
 =======================
