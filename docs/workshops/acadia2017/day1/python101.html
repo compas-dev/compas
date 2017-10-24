@@ -88,9 +88,7 @@ boolean values, internal objects</li>
 <li>Lists are mutable.</li>
 <li>Behaves like a stack (LIFO)</li>
 </ul>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># lists</span>
-
-<span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 
 <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">item</span>
@@ -115,6 +113,47 @@ boolean values, internal objects</li>
 <span class="k">print</span> <span class="n">items</span><span class="p">[:]</span>
 <span class="k">print</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">:]</span>
 <span class="k">print</span> <span class="n">items</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
+<span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
+
+<span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">items</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">4</span>
+
+<span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div>
+
+</div>
+<div class="section">
+<h3>Tuple</h3>
+<p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuples">https://docs.python.org/3/library/stdtypes.html#tuples</a></p>
+<blockquote>
+<div>Tuples are immutable sequences, typically used to store collections of heterogeneous data (such as the 2-tuples produced by the enumerate() built-in).
+Tuples are also used for cases where an immutable sequence of homogeneous data is needed (such as allowing storage in a set or dict instance).</div></blockquote>
+<ul class="simple">
+<li>Ordered collection of items.</li>
+<li>Tuple items can be of any type.</li>
+<li>One tuple can contain multiple types.</li>
+<li>Tuples are immutable.</li>
+</ul>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">items</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span>
+
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">item</span>
+
+<span class="k">print</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+<span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">items</span>
 </code></pre></div>
 
 </div>
@@ -180,6 +219,7 @@ boolean values, internal objects</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#built-in-types">Built-in types</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#container-types">Container types</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#list">List</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#tuple">Tuple</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#built-in-functions">Built-in functions</a></li>

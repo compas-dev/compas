@@ -57,10 +57,7 @@ https://docs.python.org/3/library/stdtypes.html#lists
 * Lists are mutable.
 * Behaves like a stack (LIFO)
 
-
 .. code-block:: python
-
-    # lists
 
     items = [1, 2, 3, 4]
 
@@ -87,6 +84,50 @@ https://docs.python.org/3/library/stdtypes.html#lists
     print items[:]
     print items[0:]
     print items[:-1]
+
+.. code-block:: python
+
+    items = [0] * 4
+    items = [None] * 4
+
+    items[0] = 1
+
+    items = [[0]] * 4
+
+    items[0][0] = 1
+
+
+Tuple
+-----
+
+https://docs.python.org/3/library/stdtypes.html#tuples
+
+    Tuples are immutable sequences, typically used to store collections of heterogeneous data (such as the 2-tuples produced by the enumerate() built-in).
+    Tuples are also used for cases where an immutable sequence of homogeneous data is needed (such as allowing storage in a set or dict instance).
+
+* Ordered collection of items.
+* Tuple items can be of any type.
+* One tuple can contain multiple types.
+* Tuples are immutable.
+
+.. code-block:: python
+
+    items = (1, 2, 3, 4)
+    items = 1, 2, 3, 4
+
+    for item in items:
+        print item
+
+    print items[0]
+    print items[-2]
+
+    a = 1
+    b = 2
+
+    a, b = 1, 2
+    b, a = a, b
+
+    a, b, c, d = items
 
 
 Built-in functions
