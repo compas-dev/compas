@@ -6,15 +6,19 @@ mesh = Mesh.from_obj(compas.get('faces.obj'))
 
 plotter = MeshPlotter(mesh)
 
-key  = 17
-nbrs = mesh.vertex_neighbours(key, ordered=True)
+root = 17
+nbrs = mesh.vertex_neighbours(root, ordered=True)
 
-text   = {nbr: str(index) for index, nbr in enumerate(nbrs)}
-fcolor = {key: '#cccccc' for key in nbrs}
+text = {nbr: str(i) for i, nbr in enumerate(nbrs)}
+text[root] = root
 
-fcolor[17] = '#ff0000'
+fcolor = {nbr: '#cccccc' for nbr in nbrs}
+fcolor[root] = '#ff0000'
 
-plotter.draw_vertices(text=text, facecolor=fcolor)
+plotter.draw_vertices(
+    text=text,
+    facecolor=fcolor
+)
 plotter.draw_faces()
 plotter.draw_edges()
 

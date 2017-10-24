@@ -213,6 +213,8 @@ def color_to_rgb(color, normalize=False):
         r, g, b = color
     if not normalize:
         return r, g, b
+    if isinstance(r, float):
+        return r, g, b
     return r / 255., g / 255., b / 255.
 
 

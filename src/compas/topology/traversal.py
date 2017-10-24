@@ -25,7 +25,6 @@ __all__ = [
 ]
 
 
-# rename to dfs_ordering?
 def dfs_ordering(adjacency, root):
     """
     Return all nodes of a connected component containing 'root' of a network
