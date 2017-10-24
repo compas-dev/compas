@@ -14,58 +14,35 @@ Built-in types and functions
 * https://docs.python.org/3/library/stdtypes.html
 * https://docs.python.org/3/library/functions.html
 
-============= =========== ============ ========== ==============
-abs()         dict()      help()       min()      setattr()
-all()         dir()       hex()        next()     slice()
-any()         divmod()    id()         object()   sorted()
-ascii()       enumerate() input()      oct()      staticmethod()
-bin()         eval()      int()        open()     str()
-bool()        exec()      isinstance() ord()      sum()
-bytearray()   filter()    issubclass() pow()      super()
-bytes()       float()     iter()       print()    tuple()
-callable()    format()    len()        property() type()
-chr()         frozenset() list()       range()    vars()
-classmethod() getattr()   locals()     repr()     zip()
-compile()     globals()   map()        reversed() __import__()
-complex()     hasattr()   max()        round()      
-delattr()     hash()      memoryview() set()
-============= =========== ============ ========== ==============
+**Types**
 
 * numeric types: :obj:`int`, :obj:`float`, :obj:`complex`
-* iterator types: 
 * sequence types: :obj:`list`, :obj:`tuple`, :obj:`range`
 * text sequence type: :obj:`str`
-* binary sequence types: :obj:`bytes`, :obj:`bytearray`, :obj:`memoryview`
 * set types: :obj:`set`, :obj:`frozenset`
 * mapping types: :obj:`dict`
-* context manager types:
-* other types: modules, classes and class instances, functions, methods,
-  code objects, type objects), null object (``None``),
-  ellipsis object (``...``), notimplemented object (``NotImplemented``),
-  boolean values (``True``, ``False``), internal objects
 
+**Functions**
 
-* enumerate
+* enumerate: ``for i, item in enumerate(items): print(i, item)``
 * format
-* sorted
-* open
 * iter
-* len
+* len: ``if len(items) == 2: print('not a valid face')``
 * next
-* range
+* open
+* range ``for i in range(len(items)): print(i, items[i])``
+* sorted
 
 
-Container types
-===============
-
-https://wiki.python.org/moin/TimeComplexity
+Containers
+==========
 
 List
 ----
 
 https://docs.python.org/3/library/stdtypes.html#lists
 
-* Ordered collection of items of any type.
+* Ordered items of any type.
 * **Mutable**
 
 .. code-block:: python
@@ -97,137 +74,6 @@ https://docs.python.org/3/library/stdtypes.html#lists
     items.pop()                      # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     items.remove(-1)                 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-
-Tuple
------
-
-https://docs.python.org/3/library/stdtypes.html#tuples
-
-* Ordered collection of items of any type.
-* **Immutable**
-
-.. code-block:: python
-
-    rgb = 255, 0, 0
-
-    rgb[0]  # 255
-    rgb[1]  # 0
-    rgb[2]  # 0
-
-.. code-block:: python
-
-    rgb[0] = 0
-    rgb[1] = 255
-
-
-Set
----
-
-https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset
-
-* Unordered collection of distinct hashable objects.
-* **Mutable**
-
-.. code-block:: python
-
-    items = set([1, 2, 3, 4])
-
-.. code-block:: python
-    
-    # membership testing
-    # removing duplicates
-    # set operations
-
-    from random import sample
-    from timeit import timeit
-
-    n = 100000
-    m = 10000
-
-    items = sample(range(n), m)
-    exclude = sample(range(n), m)
-
-    result = set(items) - set(exclude)
-    result = [i for i in items if i not in exclude]
-
-    # timeit("result = set(items) - set(exclude)", "from __main__ import items, exclude", number=10)
-    # timeit("result = [i for i in items if i not in exclude]", "from __main__ import items, exclude", number=10)
-
-    # 0.02
-    # 12.58
-
-
-Dictionary
-----------
-
-https://docs.python.org/3/library/stdtypes.html#mapping-types-dict
-
-* Maps hashable values (*keys*) to arbitrary objects
-* Mutable
-* Unordered
-
-.. code-block:: python
-
-    items = {'1': 1, '2': 2, '3': 3, '4': 4}
-
-    for key in items:
-        print key, items[key]
-
-    for key in items.keys():
-        print key, items[key]
-
-    for key, value in items.items():
-        print key, value
-
-    for value in items.values():
-        print value
-
-.. code-block:: python
-
-    # pop
-    # popitem
-    # setdefault
-    # get
-
-.. code-block:: python
-
-    # sort dictionary based on values
-
-**Example**
-
-Given a set of lines, defined by start and end point coordinates,
-determine the connectivity of the lines.
-
-.. code-block:: python
-
-    import compas
-    from compas.files import OBJReader
-
-    obj = OBJReader(compas.get('lines.obj'))
-
-    index_key = {}
-    vertex = {}
-
-    for index, xyz in enumerate(iter(obj.vertices)):
-        key = '{0[0]:.3f},{0[1]:.3f},{0[2]:.3f}'.format(xyz)
-        index_key[index] = key
-        vertex[key] = xyz
-
-    # for index in index_key:
-    #     print index, index_key[index], vertex[index_key[index]]
-
-    key_index = {key: index for index, key in enumerate(vertex.keys())}
-    index_index = {index: key_index[key] for index, key in iter(index_key.items())}
-
-    vertices = [xyz for xyz in iter(vertex.values())]
-    lines    = [[index_index[index] for index in line] for line in obj.lines if len(line) == 2]
-
-    # print vertices
-    # print lines
-
-
-Comprehensions
-==============
 
 List comprehensions
 -------------------
@@ -266,12 +112,145 @@ Generate lists with an expression in brackets.
     centroid = [sum(axis) / len(vertices) for axis in zip(* vertices)]
 
 
+Tuple
+-----
+
+https://docs.python.org/3/library/stdtypes.html#tuples
+
+* Ordered items of any type.
+* **Immutable**
+
+.. code-block:: python
+
+    rgb = 255, 0, 0
+
+    r = rgb[0]  # 255
+    g = rgb[1]  # 0
+    b = rgb[2]  # 0
+
+.. code-block:: python
+
+    rgb[0] = 0
+    rgb[1] = 255
+
+
+Set
+---
+
+https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset
+
+* Unordered, distinct, hashable objects.
+* **Mutable**
+
+.. code-block:: python
+
+    items = set([1, 2, 3, 4])
+
+
+Dictionary
+----------
+
+https://docs.python.org/3/library/stdtypes.html#mapping-types-dict
+
+* Maps unordered, distinct, hashable values (*keys*) to arbitrary objects
+* Mutable
+
+.. code-block:: python
+
+    items = {'1': 1, '2': 2, '3': 3, '4': 4}
+
+    for key in items:
+        print key, items[key]
+
+    for key in items.keys():
+        print key, items[key]
+
+    for key, value in items.items():
+        print key, value
+
+    for value in items.values():
+        print value
+
+.. code-block:: python
+
+    # pop
+    # popitem
+    # setdefault
+    # get
+
+.. code-block:: python
+
+    # sort dictionary based on values
+
+
 Dict comprehensions
 -------------------
 
 .. code-block:: python
 
     items = {index: value for index, value in enumerate(range(10))}
+
+
+Examples
+--------
+
+Compare lookup speeds
+
+.. code-block:: python
+    
+    # membership testing
+    # removing duplicates
+    # set operations
+
+    from random import sample
+    from timeit import timeit
+
+    n = 100000
+    m = 10000
+
+    items = sample(range(n), m)
+    exclude = sample(range(n), m)
+
+    result = set(items) - set(exclude)
+    result = [i for i in items if i not in exclude]
+
+    # timeit("result = set(items) - set(exclude)", "from __main__ import items, exclude", number=10)
+    # timeit("result = [i for i in items if i not in exclude]", "from __main__ import items, exclude", number=10)
+
+    # 0.02
+    # 12.58
+
+Geometric maps
+
+Given a set of lines, defined by start and end point coordinates,
+determine the connectivity of the lines.
+
+.. code-block:: python
+
+    import compas
+    from compas.files import OBJReader
+
+    obj = OBJReader(compas.get('lines.obj'))
+
+    index_key = {}
+    vertex = {}
+
+    for index, xyz in enumerate(iter(obj.vertices)):
+        key = '{0[0]:.3f},{0[1]:.3f},{0[2]:.3f}'.format(xyz)
+        index_key[index] = key
+        vertex[key] = xyz
+
+    # for index in index_key:
+    #     print index, index_key[index], vertex[index_key[index]]
+
+    key_index = {key: index for index, key in enumerate(vertex.keys())}
+    index_index = {index: key_index[key] for index, key in iter(index_key.items())}
+
+    vertices = [xyz for xyz in iter(vertex.values())]
+    lines    = [[index_index[index] for index in line] for line in obj.lines if len(line) == 2]
+
+    # print vertices
+    # print lines
 
 
 Functions
