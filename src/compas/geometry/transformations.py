@@ -35,6 +35,8 @@ from compas.geometry.xforms import transform
 from compas.geometry.xforms import rotation_matrix
 from compas.geometry.xforms import scale_matrix
 
+from compas.geometry.distance import closest_point_on_plane
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
@@ -52,6 +54,7 @@ __all__ = [
     'rotate_points_xy',
     'rotate_points_degrees',
     'offset_line',
+    'offset_polyline',
     'offset_polygon',
     'orient_points',
     'mirror_point_point',
@@ -233,7 +236,7 @@ def offset_line(line, distance, normal=[0., 0., 1.]):
     vec = subtract_vectors(pt1, pt2)
     dir_vec = normalize_vector(cross_vectors(vec, normal))
 
-    if isinstance(distance, list):
+    if isinstance(distance, list) or isinstance(distance, tuple):
         distances = distance
     else:
         distances = [distance, distance]
@@ -294,7 +297,7 @@ def offset_polygon(polygon, distance):
     """
     normal = normal_polygon(polygon)
 
-    if isinstance(distance, list):
+    if isinstance(distance, list) or isinstance(distance, tuple):
         distances = distance
         if len(distances) < len(polygon):
             distances = distances + [distances[-1]] * (len(polygon) - len(distances) - 1)
@@ -320,6 +323,46 @@ def offset_polygon(polygon, distance):
     return polygon_offset
 
 
+def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
+    """Offset a polyline by a distance.
+
+    Parameters:
+        polyline (sequence of sequence of floats): The XYZ coordinates of the
+            vertices of a polyline.
+        distance (float or list of tuples of floats): The offset distance as float.
+            A single value determines a constant offset globally. Alternatively, pairs of local
+            offset values per line segment can be used to create variable offsets.
+            Distance > 0: offset to the "left", distance < 0: offset to the "right"
+        normal (tuple): The normal of the offset plane.
+
+    Returns:
+        offset polyline (sequence of sequence of floats): The XYZ coordinates of the 
+        resulting polyline.
+    """
+
+    if isinstance(distance, list) or isinstance(distance, tuple):
+        distances = distance
+        if len(distances) < len(polyline):
+            distances = distances + [distances[-1]] * (len(polyline) - len(distances) - 1)
+    else:
+        distances = [[distance, distance]] * len(polyline)
+
+    lines = [polyline[i:i + 2] for i in xrange(len(polyline[:-1]))]
+    lines_offset = []
+    for i, line in enumerate(lines):
+        lines_offset.append(offset_line(line, distances[i], normal))
+
+    polyline_offset = []
+    polyline_offset.append(lines_offset[0][0])
+    for i in xrange(len(lines_offset[:-1])):
+        intx_pt1, intx_pt2 = intersection_line_line(lines_offset[i], lines_offset[i + 1])
+
+        if intx_pt1 and intx_pt2:
+            polyline_offset.append(centroid_points([intx_pt1, intx_pt2]))
+        else:
+            polyline_offset.append(lines_offset[i][0])
+    polyline_offset.append(lines_offset[-1][1])
+    return polyline_offset
 # ==============================================================================
 # orientation
 # ==============================================================================
@@ -440,12 +483,15 @@ def mirror_points_line_xy(point, line):
 
 
 def mirror_point_plane(point, plane):
-    pass
+    """Mirror a point about a plane."""
+    p1 = closest_point_on_plane(point, plane)
+    vec = subtract_vectors(p1,point)
+    return add_vectors(p1,vec)
 
 
 def mirror_points_plane(points, plane):
-    pass
-
+    """Mirror multiple points about a plane."""
+    return [mirror_point_plane(point, plane) for point in points]
 
 def mirror_vector_vector(v1, v2):
     """Mirrors vector about vector.
