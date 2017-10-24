@@ -48,6 +48,8 @@ specific way. The default constructor creates an empty datastructure instance.
 
 .. code-block:: python
 
+    from compas.datastructures import Mesh
+
     mesh = Mesh()
 
 
