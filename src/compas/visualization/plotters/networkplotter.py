@@ -44,6 +44,7 @@ class NetworkPlotter(Plotter):
     """
 
     def __init__(self, network, **kwargs):
+        """Initialises a network plotter object"""
         super(NetworkPlotter, self).__init__(**kwargs)
         self.title = 'NetworkPlotter'
         self.network = network
@@ -99,6 +100,8 @@ class NetworkPlotter(Plotter):
             Color for the vertex circle fill.
         edgecolor : list
             Color for the vertex circle edge.
+        edgewidth : list
+            Width for the vertex circle edge.
         textcolor : list
             Color for the text to be displayed on the vertices.
         fontsize : list
@@ -201,6 +204,7 @@ class NetworkPlotter(Plotter):
         return collection
 
     def update_edges(self):
+        """Updates the plotter edge collection based on the network."""
         segments = []
         for u, v in self.network.edges():
             segments.append([self.network.vertex_coordinates(u, 'xy'), self.network.vertex_coordinates(v, 'xy')])

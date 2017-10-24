@@ -63,6 +63,7 @@ class Plotter(object):
 
     """
     def __init__(self, figsize=(16.0, 12.0), dpi=100.0):
+        """Initialises a plotter object"""
         self._interactive = False
         self._axes = None
         # use descriptors for these
@@ -212,7 +213,14 @@ class Plotter(object):
         self.figure.canvas.set_window_title(value)
 
     def clear_collection(self, collection):
-        """Clears a matplotlib collection object."""
+        """Clears a matplotlib collection object.
+
+        Parameters
+        ----------
+        collection : object
+            The matplotlib collection object.
+
+        """
         collection.remove()
 
     def show(self):
