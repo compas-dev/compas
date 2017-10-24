@@ -44,6 +44,7 @@ class NetworkPlotter(Plotter):
     """
 
     def __init__(self, network, **kwargs):
+        """"""
         super(NetworkPlotter, self).__init__(**kwargs)
         self.title = 'NetworkPlotter'
         self.network = network
