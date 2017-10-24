@@ -44,6 +44,8 @@ Visualization
 
 .. plot::
     :include-source:
+
+    from __future__ import print_function
     
     import compas
 
@@ -63,9 +65,189 @@ Visualization
 Builders and constructors
 =========================
 
+Every datastructure has a default constructor, builder methods, and
+a series of specialised constructor functions that build datastructures in a
+specific way. The default constructor creates an empty datastructure instance.
+
+.. code-block:: python
+
+    mesh = Mesh()
+
+
+With the builders data can be added to the empyty containers. Each of the
+datastructures has its own builder methods.
+The ``Mesh`` defines ``Mesh.add_vertex`` and ``Mesh.add_face``.
+
+.. code-block:: python
+    
+    a = mesh.add_vertex()
+    b = mesh.add_vertex()
+    c = mesh.add_vertex()
+    abc = mesh.add_face([a, b, c])
+
+    print(a, b, c)
+    print(abc)
+
+The builders always return the identifiers (*keys*) of the element(s) they created.
+In the above example, the vertex builder returned ``0`` and ``1``, which were assigned
+to the variables ``a`` and ``b``. The edge builder returned the tuple ``(0, 1)``,
+indicating it had added an edge from vertex ``0`` to vertex ``1``.
+
+It is also possible to specify the *keys* of the vertices. Any hashable type can
+be used as a key. This roughly means ``int``, ``float``, ``str``, ``tuple``, and
+``frozenset``, or any object that implements the magic method ``__hash__``. If no
+key is provided, the datastructure will automatically assign an integer. It keeps
+track of the highest integer that was used so far, and increments that value by one.
+
+.. code-block:: python
+    
+    print(mesh.add_vertex())
+    print(mesh.add_vertex(3))
+    print(mesh.add_vertex())
+    print(mesh.add_vertex('1'))
+    print(mesh.add_vertex((5, 3)))
+    print(mesh.add_vertex(3.14159))
+    print(mesh.add_vertex())
+
+The builders also provide the possibility to add data attributes in the form of
+attribute dictionaries or keyword arguments (*kwargs*).
+Note that all datastructures (can) define default data attributes for the different
+types of data. For examples, all three datastructures automatically assign XYZ
+coordinates to all vertices, with a default value of ``x = 0.0, y = 0.0, z = 0.0``.
+This means that all following statements are equivalent and add a vertex with
+coordinates (``1.0, 0.0, 0.0``).
+
+.. code-block:: python
+    
+    mesh.add_vertex(x=1.0)
+    mesh.add_vertex(x=1.0, y=0.0)
+    mesh.add_vertex(x=1.0, z=0.0)
+    mesh.add_vertex(x=1.0, y=0.0, z=0.0)
+    mesh.add_vertex(attr_dict={'x': 1.0})
+    mesh.add_vertex(attr_dict={'x': 5.0}, x=1.0)
+    mesh.add_vertex(attr_dict={'y': 3.0}, x=1.0, y=0.0)
+
+The allowable attributes are not limited to the default attributes.
+
+.. code-block:: python
+    
+    mesh.add_vertex(attr_dict={'x': 1.0, 'y': 1.0, 'z': 1.0, 'is_fixed': True})
+    mesh.add_vertex(x=1.0, y=1.0, z=1.0, is_fixed=True)
+
+The mechanism is the same for faces.
+
+.. code-block:: python
+
+    mesh.add_face([0, 1, 2], attr_dict={'t': 1.0, 'density': 2.5})
+    mesh.add_face([0, 1, 2], t=1.0, density=2.5)
+
+For convencience, all datastructures come with specialised alternative constructors.
+These are implemented as class methods (using the ``@classmethod`` decoreator) and
+are named using the following pattern ``.from_xxx``.
+
+.. code-block:: python
+
+    mesh = Mesh.from_data(...)
+    mesh = Mesh.from_json(...)
+    mesh = Mesh.from_obj(...)
+    mesh = Mesh.from_vertices_and_faces(...)
+    mesh = Mesh.from_polygons(...)
+    mesh = Mesh.from_polyhedron(...)
+    mesh = Mesh.from_points(...)
+
+``compas`` also provides sample data that can be used together with the constructors.
+
+.. code-block:: python
+    
+    import compas
+    from compas.datastructures import Mesh
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+
+General info
+============
+
+Use the ``print`` function to display general information about the datastructure instance.
+
+.. code-block:: python
+
+    mesh = Mesh()
+    print(mesh)
+
 
 Accessing the data
 ==================
+
+Every datastructure exposes several functions to access its data.
+All of those *accessors* are iterators; they are meant to be iterated over.
+Lists of data have to be constructed explicitly.
+
+.. code-block:: python
+
+    >>> import compas
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    >>> mesh.vertices()
+    <dictionary-keyiterator object at 0x10f030e68>
+
+    >>> len(mesh.vertices())
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    TypeError: object of type 'dictionary-keyiterator' has no len()
+
+    >>> list(mesh.vertices())
+    [0, 1, 2, ..., 29, 30, 31]
+    >>> len(list(mesh.vertices()))
+    32
+    >>> mesh.number_of_vertices()
+    32
+
+    >>> for key in mesh.vertices():
+    ...     print(key)
+ 
+    0
+    1
+    2
+    ...
+    29
+    30
+    31
+
+The same applies to the faces.
+The accessor is an iterator; it is meant for iterating over the faces.
+To count the faces or to get a list of faces, the iterator needs to be converted
+explicitly.
+
+.. code-block:: python
+    
+    >>> mesh.faces()
+    <generator object edges at 0x10f03d140>
+
+    >>> len(mesh.faces())
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    TypeError: object of type 'generator' has no len()
+
+    >>> list(mesh.faces())
+    [(0, 3), (0, 19), (2, 30), ..., (30, 17), (31, 16), (31, 25)]
+    >>> len(list(mesh.faces())
+    40
+    >>> mesh.number_of_faces()
+    40
+
+.. code-block:: python
+    
+    >>> for fkey in mesh.faces():
+    ...     print(fkey)
+
+    0 3
+    0 19
+    2 30
+    ...
+    30 17
+    31 16
+    31 25
 
 
 Accessing the data attributes
