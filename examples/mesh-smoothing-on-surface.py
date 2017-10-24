@@ -10,12 +10,13 @@
 
 from __future__ import print_function
 
-from compas.datastructures.mesh import Mesh
-from compas.datastructures.mesh.algorithms import smooth_mesh_area
-from compas.cad.rhino.conduits.mesh import MeshConduit
-from compas.cad.rhino.geometry import RhinoSurface
+from compas.datastructures import Mesh
+from compas.geometry import smooth_area
 
-import compas_rhino as rhino
+import compas_rhino
+
+from compas_rhino.conduits import LinesConduit
+from compas_rhino.geometry import RhinoSurface
 
 
 __author__    = ['Tom Van Mele', 'Matthias Rippmann']
@@ -24,31 +25,51 @@ __license__   = 'MIT'
 __email__     = 'van.mele@arch.ethz.ch'
 
 
-def callback(mesh, k, args):
-    conduit, surf, fixed = args
+def callback(vertices, k, args):
+    conduit, edges, surf, fixed = args
 
-    # pull the not fixed points back to the target surface
-    surf.pull_mesh(mesh, fixed=fixed)
+    for key in vertices:
+        if key not in fixed:
+            x, y, z = surf.closest_point(vertices[key])
+            vertices[key][0] = x
+            vertices[key][1] = y
+            vertices[key][2] = z
 
-    # update the conduit
+    conduit.lines = [[vertices[u], vertices[v]] for u, v in edges]
     conduit.redraw(k)
 
 
-guid = rhino.select_mesh()
-mesh = rhino.mesh_from_guid(Mesh, guid)
+guid = compas_rhino.select_mesh()
+mesh = compas_rhino.mesh_from_guid(Mesh, guid)
 
-guid = rhino.select_surface()
+guid = compas_rhino.select_surface()
 surf = RhinoSurface(guid)
 
-fixed = mesh.vertices_on_boundary()
+fixed = set(mesh.vertices_on_boundary())
 
-conduit = MeshConduit(mesh, color=(255, 255, 255), refreshrate=2)
+vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+faces     = {key: mesh.face_vertices(key) for key in mesh.faces()}
+adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
+
+edges = list(mesh.edges())
+lines = [[vertices[u], vertices[v]] for u, v in edges]
+
+conduit = LinesConduit(lines, refreshrate=5)
 
 with conduit.enabled():
-    smooth_mesh_area(mesh,
-                     fixed,
-                     kmax=100,
-                     callback=callback,
-                     callback_args=(conduit, surf, fixed))
+    smooth_area(
+        vertices,
+        faces,
+        adjacency,
+        fixed=fixed,
+        kmax=100,
+        callback=callback,
+        callback_args=(conduit, edges, surf, fixed)
+    )
 
-rhino.draw_mesh(mesh)
+for key, attr in mesh.vertices(True):
+    attr['x'] = vertices[key][0]
+    attr['y'] = vertices[key][1]
+    attr['z'] = vertices[key][2]
+
+compas_rhino.mesh_draw(mesh)

@@ -36,9 +36,7 @@
 <a accesskey="U" class="breadcrumb-item" href="../geometry.html">compas.geometry</a>
 </nav>
 <h1>Source code for compas.geometry.constructors</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="sd">""""""</span>
-
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span>
@@ -275,6 +273,28 @@
 
 
 <div class="viewcode-block" id="pointcloud_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.pointcloud_xy.html#compas.geometry.pointcloud_xy">[docs]</a><span class="k">def</span> <span class="nf">pointcloud_xy</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">xbounds</span><span class="p">,</span> <span class="n">ybounds</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Construct a point cloud in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        The number of points in the cloud.</span>
+<span class="sd">    xbounds : 2-tuple of int</span>
+<span class="sd">        The min/max values for the x-coordinates of the points in the cloud.</span>
+<span class="sd">    ybounds : 2-tuple of int, optional</span>
+<span class="sd">        The min/max values for the y-coordinates of the points in the cloud.</span>
+<span class="sd">        If ``None``, defaults to the value of the ``xbounds``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list:</span>
+<span class="sd">        A list of points in the XY plane (Z = 0).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">ybounds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ybounds</span> <span class="o">=</span> <span class="n">xbounds</span>
     <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">xbounds</span><span class="p">)</span>
@@ -313,7 +333,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -331,7 +351,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

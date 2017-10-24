@@ -14,8 +14,8 @@ Delaunay triangulation
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`example-mesh-delaunay.3dm </_examples/example-mesh-delaunay.3dm>`
-* :download:`mesh-delaunay-from-points.py </_examples/mesh-delaunay-from-points.py>`
+* :download:`mesh-delaunay.3dm </../../examples/mesh-delaunay.3dm>`
+* :download:`mesh-delaunay-from-points.py </../../examples/mesh-delaunay-from-points.py>`
 
 .. raw:: html
 
@@ -28,5 +28,5 @@ Delaunay triangulation
     input can be 3d points resulting in a 2.5d heightfield mesh.
 
 
-.. literalinclude:: /_examples/mesh-delaunay-from-points.py
+.. literalinclude:: /../../examples/mesh-delaunay-from-points.py
 

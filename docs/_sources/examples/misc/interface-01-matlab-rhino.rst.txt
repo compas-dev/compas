@@ -14,8 +14,8 @@ Matlab sessions from Rhino
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`example-interface-matlab-rhino.3dm </_examples/example-interface-matlab-rhino.3dm>`
-* :download:`interface-matlab-rhino.py </_examples/interface-matlab-rhino.py>`
+* :download:`interface-matlab-rhino.3dm </../../examples/interface-matlab-rhino.3dm>`
+* :download:`interface-matlab-rhino.py </../../examples/interface-matlab-rhino.py>`
 
 .. raw:: html
 
@@ -28,5 +28,5 @@ Matlab sessions from Rhino
     IronPython. It therefore also only works in Rhino
     (or in any other environment based on the .NET ecosystem).
 
-.. literalinclude:: /_examples/interface-matlab-rhino.py
+.. literalinclude:: /../../examples/interface-matlab-rhino.py
 

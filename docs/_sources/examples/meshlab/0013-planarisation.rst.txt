@@ -14,13 +14,13 @@ Mesh planarisation
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`example-mesh-planarization.3dm </_examples/example-mesh-planarization.3dm>`
-* :download:`mesh-planarization.py </_examples/mesh-planarization.py>`
+* :download:`mesh-planarization.3dm </../../examples/mesh-planarization.3dm>`
+* :download:`mesh-planarization.py </../../examples/mesh-planarization.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-planarization.py
+.. literalinclude:: /../../examples/mesh-planarization.py
 

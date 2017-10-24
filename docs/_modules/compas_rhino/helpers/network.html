@@ -350,17 +350,16 @@
 
 
 <div class="viewcode-block" id="network_draw_edge_labels"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.helpers.network_draw_edge_labels.html#compas_rhino.helpers.network_draw_edge_labels">[docs]</a><span class="k">def</span> <span class="nf">network_draw_edge_labels</span><span class="p">(</span><span class="n">network</span><span class="p">,</span>
-                             <span class="n">attr_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">formatter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                             <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""Draw labels for the edges of a network.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    network : compas.datastructures.Network</span>
 <span class="sd">        A network object.</span>
-<span class="sd">    attr_name : str (None)</span>
+<span class="sd">    text : str (None)</span>
 <span class="sd">        The name of the attribute value to display in the label.</span>
 <span class="sd">        Default is to display the edge keys.</span>
 <span class="sd">    layer : str (None)</span>
@@ -389,23 +388,17 @@
 
 <span class="sd">    """</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_name</span><span class="p">:</span>
-        <span class="n">attr_name</span> <span class="o">=</span> <span class="s1">'key'</span>
+    <span class="c1"># if formatter:</span>
+    <span class="c1">#     assert callable(formatter), 'The provided formatter is not callable.'</span>
+    <span class="c1"># else:</span>
+    <span class="c1">#     formatter = str</span>
 
-    <span class="k">if</span> <span class="n">formatter</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">formatter</span><span class="p">),</span> <span class="s1">'The provided formatter is not callable.'</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span> <span class="ow">or</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">'key'</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()}</span>
+    <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">'index'</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">())}</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">formatter</span> <span class="o">=</span> <span class="nb">str</span>
-
-    <span class="n">text</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="s1">'key'</span> <span class="o">==</span> <span class="n">attr_name</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="s1">'index'</span> <span class="o">==</span> <span class="n">attr_name</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">index</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="n">attr_name</span><span class="p">]</span>
-        <span class="n">text</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span> <span class="o">=</span> <span class="n">formatter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">pass</span>
 
     <span class="n">artist</span> <span class="o">=</span> <span class="n">NetworkArtist</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
     <span class="n">artist</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
@@ -679,7 +672,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -697,7 +690,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

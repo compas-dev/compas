@@ -36,7 +36,7 @@
 </nav>
 <h1>Source code for compas.datastructures.network.algorithms.duality</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">angle_smallest_vectors</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.queries</span> <span class="k">import</span> <span class="n">is_ccw_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">is_ccw_xy</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="s1">'Tom Van Mele'</span>
@@ -114,8 +114,8 @@
 <span class="sd">                    'radius': 0.075,</span>
 <span class="sd">                })</span>
 
-<span class="sd">            plotter.draw_xlines(lines)</span>
-<span class="sd">            plotter.draw_xpoints(points)</span>
+<span class="sd">            plotter.draw_lines(lines)</span>
+<span class="sd">            plotter.draw_points(points)</span>
 <span class="sd">            plotter.draw_vertices(radius=0.15, facecolor='#ffffff', edgecolor='#444444', text={key: key for key in network.vertices()})</span>
 <span class="sd">            plotter.draw_edges()</span>
 
@@ -126,14 +126,18 @@
         <span class="n">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
 
     <span class="n">dual</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+
     <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">face_center</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
         <span class="n">dual</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
         <span class="n">f1</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
         <span class="n">f2</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
+
         <span class="k">if</span> <span class="n">f1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">f2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dual</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">dual</span></div>
 
 
@@ -179,17 +183,25 @@
 <span class="sd">            import compas</span>
 <span class="sd">            from compas.datastructures import FaceNetwork</span>
 <span class="sd">            from compas.datastructures import network_find_faces</span>
-<span class="sd">            from compas.visualization import NetworkPlotter</span>
+<span class="sd">            from compas.visualization import FaceNetworkPlotter</span>
 
 <span class="sd">            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))</span>
 
 <span class="sd">            network_find_faces(network)</span>
 
-<span class="sd">            plotter = NetworkPlotter(network)</span>
+<span class="sd">            plotter = FaceNetworkPlotter(network)</span>
 
-<span class="sd">            plotter.draw_vertices(radius=0.075, facecolor={key: '#cccccc' for key in network.leaves()})</span>
-<span class="sd">            plotter.draw_edges(color={(u, v): '#cccccc' for u, v in network.edges()})</span>
-<span class="sd">            plotter.draw_faces(facecolor={fkey: '#eeeeee' for fkey in network.faces()}, text={fkey: fkey for fkey in network.faces()})</span>
+<span class="sd">            plotter.draw_vertices(</span>
+<span class="sd">                radius=0.075,</span>
+<span class="sd">                facecolor={key: '#cccccc' for key in network.leaves()}</span>
+<span class="sd">            )</span>
+<span class="sd">            plotter.draw_edges(</span>
+<span class="sd">                color={(u, v): '#cccccc' for u, v in network.edges()}</span>
+<span class="sd">            )</span>
+<span class="sd">            plotter.draw_faces(</span>
+<span class="sd">                facecolor={fkey: '#eeeeee' for fkey in network.faces()},</span>
+<span class="sd">                text={fkey: fkey for fkey in network.faces()}</span>
+<span class="sd">            )</span>
 
 <span class="sd">            plotter.show()</span>
 
@@ -201,17 +213,25 @@
 <span class="sd">            import compas</span>
 <span class="sd">            from compas.datastructures import FaceNetwork</span>
 <span class="sd">            from compas.datastructures import network_find_faces</span>
-<span class="sd">            from compas.visualization import NetworkPlotter</span>
+<span class="sd">            from compas.visualization import FaceNetworkPlotter</span>
 
 <span class="sd">            network = FaceNetwork.from_obj(compas.get_data('grid_irregular.obj'))</span>
 
 <span class="sd">            network_find_faces(network, breakpoints=network.leaves())</span>
 
-<span class="sd">            plotter = NetworkPlotter(network)</span>
+<span class="sd">            plotter = FaceNetworkPlotter(network)</span>
 
-<span class="sd">            plotter.draw_vertices(radius=0.075, facecolor={key: '#cccccc' for key in network.leaves()})</span>
-<span class="sd">            plotter.draw_edges(color={(u, v): '#cccccc' for u, v in network.edges()})</span>
-<span class="sd">            plotter.draw_faces(facecolor={fkey: '#eeeeee' for fkey in network.faces()}, text={fkey: fkey for fkey in network.faces()})</span>
+<span class="sd">            plotter.draw_vertices(</span>
+<span class="sd">                radius=0.075,</span>
+<span class="sd">                facecolor={key: '#cccccc' for key in network.leaves()}</span>
+<span class="sd">            )</span>
+<span class="sd">            plotter.draw_edges(</span>
+<span class="sd">                color={(u, v): '#cccccc' for u, v in network.edges()}</span>
+<span class="sd">            )</span>
+<span class="sd">            plotter.draw_faces(</span>
+<span class="sd">                facecolor={fkey: '#eeeeee' for fkey in network.faces()},</span>
+<span class="sd">                text={fkey: fkey for fkey in network.faces()}</span>
+<span class="sd">            )</span>
 
 <span class="sd">            plotter.show()</span>
 
@@ -367,7 +387,7 @@
 
     <span class="kn">import</span> <span class="nn">compas</span>
     <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">FaceNetwork</span>
-    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.networkplotter</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
 
     <span class="n">network</span> <span class="o">=</span> <span class="n">FaceNetwork</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
 
@@ -420,7 +440,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

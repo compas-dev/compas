@@ -83,23 +83,6 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <code class="descname">attributes</code></dt>
 <dd><p><em>dict</em> – General mesh attributes.</p>
 </dd></dl>
-<p class="rubric">Examples</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">'key'</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
-
-<figure class="figure">
-<img alt="../../images/compas-datastructures-Mesh-1.png" class="figure-img img-fluid" src="../../images/compas-datastructures-Mesh-1.png"/>
-</figure>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -328,6 +311,12 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.index_uv.html" title="compas.datastructures.Mesh.index_uv"><code class="xref py py-obj docutils literal">index_uv</code></a>()</td>
 <td>Returns a dictionary that maps edges in a list to the corresponding vertex key pairs.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.indexed_edges.html" title="compas.datastructures.Mesh.indexed_edges"><code class="xref py py-obj docutils literal">indexed_edges</code></a>()</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.indexed_face_vertices.html" title="compas.datastructures.Mesh.indexed_face_vertices"><code class="xref py py-obj docutils literal">indexed_face_vertices</code></a>()</td>
+<td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.insert_vertex.html" title="compas.datastructures.Mesh.insert_vertex"><code class="xref py py-obj docutils literal">insert_vertex</code></a>(fkey[, key, xyz, return_fkeys])</td>
 <td>Insert a vertex in the specified face.</td>
@@ -570,7 +559,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -591,7 +580,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

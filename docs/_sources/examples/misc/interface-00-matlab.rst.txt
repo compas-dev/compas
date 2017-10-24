@@ -4,7 +4,7 @@
 Matlab sessions
 ********************************************************************************
 
-.. plot:: _examples/interface-matlab.py
+.. plot:: ../../examples/interface-matlab.py
 
 
 .. raw:: html
@@ -13,12 +13,12 @@ Matlab sessions
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`interface-matlab.py </_examples/interface-matlab.py>`
+* :download:`interface-matlab.py </../../examples/interface-matlab.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/interface-matlab.py
+.. literalinclude:: /../../examples/interface-matlab.py
 

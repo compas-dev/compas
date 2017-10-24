@@ -35,8 +35,11 @@
 <a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
 </nav>
 <h1>Source code for compas.com.ssh.ssh</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="kn">from</span> <span class="nn">paramiko</span> <span class="k">import</span> <span class="n">AutoAddPolicy</span>
-<span class="kn">from</span> <span class="nn">paramiko</span> <span class="k">import</span> <span class="n">SSHClient</span>
+<span></span><span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">paramiko</span> <span class="k">import</span> <span class="n">AutoAddPolicy</span>
+    <span class="kn">from</span> <span class="nn">paramiko</span> <span class="k">import</span> <span class="n">SSHClient</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -223,7 +226,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

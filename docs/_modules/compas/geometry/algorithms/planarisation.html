@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../../geometry.html">compas.geometry</a>
+</nav>
+<h1>Source code for compas.geometry.algorithms.planarisation</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">bestfit_plane_from_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">project_points_plane</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">centroid_points</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">cross_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">angle_smallest_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">dot_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">scale_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">distance_point_point</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">distance_line_line</span>
+
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">window</span>
+
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="s1">'Tom Van Mele'</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016, Block Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT license'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'planarize_faces'</span><span class="p">,</span>
+    <span class="s1">'flatness'</span><span class="p">,</span>
+    <span class="s1">'flatness2'</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="flatness"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.flatness.html#compas.geometry.flatness">[docs]</a><span class="k">def</span> <span class="nf">flatness</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
+    <span class="sd">"""Compute mesh flatness per face.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        For each face, a deviation from *flatness*.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The "flatness" of a face is expressed as the average of the angles between</span>
+<span class="sd">    the normal at each face corner and the normal of the best-fit plane.</span>
+
+<span class="sd">    """</span>
+    <span class="n">dev</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span>
+        <span class="n">base</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">bestfit_plane_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">window</span><span class="p">(</span><span class="n">points</span> <span class="o">+</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">angle_smallest_vectors</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">angle_smallest_vectors</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">angles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">dev</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">angles</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">dev</span></div>
+
+
+<div class="viewcode-block" id="flatness2"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.flatness2.html#compas.geometry.flatness2">[docs]</a><span class="k">def</span> <span class="nf">flatness2</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
+    <span class="sd">"""Compute mesh flatness per face.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        For each face, a deviation from *flatness*.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The "flatness" of a face is expressed as the average of the angles between</span>
+<span class="sd">    the normal at each face corner and the normal of the best-fit plane.</span>
+
+<span class="sd">    """</span>
+    <span class="n">dev</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">window</span><span class="p">(</span><span class="n">points</span> <span class="o">+</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)]</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lengths</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">lengths</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">distance_line_line</span><span class="p">((</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="n">dev</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">d</span> <span class="o">/</span> <span class="n">l</span><span class="p">)</span> <span class="o">/</span> <span class="n">maxdev</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dev</span></div>
+
+
+<div class="viewcode-block" id="planarize_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.planarize_faces.html#compas.geometry.planarize_faces">[docs]</a><span class="k">def</span> <span class="nf">planarize_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span>
+                    <span class="n">faces</span><span class="p">,</span>
+                    <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                    <span class="n">d</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                    <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Planarise the faces of a mesh.</span>
+
+<span class="sd">    Planarisation is implemented as a two-step iterative procedure. At every</span>
+<span class="sd">    iteration, faces are first individually projected to their best-fit plane,</span>
+<span class="sd">    and then the vertices are projected to the centroid of the disconnected</span>
+<span class="sd">    corners of the faces.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vertices : dict</span>
+<span class="sd">        The vertex coordinates.</span>
+<span class="sd">    faces : list</span>
+<span class="sd">        The vertex identifiers per face.</span>
+<span class="sd">    fixed : list, optional [None]</span>
+<span class="sd">        A list of fixed vertices.</span>
+<span class="sd">    kmax : int, optional [100]</span>
+<span class="sd">        The number of iterations.</span>
+<span class="sd">    d : float, optional [1.0]</span>
+<span class="sd">        A damping factor.</span>
+<span class="sd">    callback : callable, optional [None]</span>
+<span class="sd">        A user-defined callback that is called after every iteration.</span>
+<span class="sd">    callback_args : list, optional [None]</span>
+<span class="sd">        A list of arguments to be passed to the callback function.</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'The callback is not callable.'</span><span class="p">)</span>
+
+    <span class="n">fixed</span> <span class="o">=</span> <span class="n">fixed</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kmax</span><span class="p">):</span>
+
+        <span class="n">positions</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">faces</span><span class="p">):</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span>
+            <span class="n">plane</span> <span class="o">=</span> <span class="n">bestfit_plane_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+            <span class="n">projections</span> <span class="o">=</span> <span class="n">project_points_plane</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+                <span class="n">positions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">projections</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">vertices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+            <span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+
+        <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+            <span class="n">callback</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span></div>
+
+
+<span class="c1"># def planarize_shapeop(mesh,</span>
+<span class="c1">#                       fixed=None,</span>
+<span class="c1">#                       kmax=100,</span>
+<span class="c1">#                       d=0.1,</span>
+<span class="c1">#                       callback=None,</span>
+<span class="c1">#                       callback_args=None):</span>
+<span class="c1">#     """Planarize the faces of a mesh using ShapeOp.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     mesh : Mesh</span>
+<span class="c1">#         A mesh object.</span>
+<span class="c1">#     fixed : list, optional [None]</span>
+<span class="c1">#         A list of fixed vertices.</span>
+<span class="c1">#     kmax : int, optional [100]</span>
+<span class="c1">#         The number of iterations.</span>
+<span class="c1">#     d : float, optional [0.1]</span>
+<span class="c1">#         A damping factor.</span>
+<span class="c1">#     callback : callable, optional [None]</span>
+<span class="c1">#         A user-defined callback that is called after every iteration.</span>
+<span class="c1">#     callback_args : list, optional [None]</span>
+<span class="c1">#         A list of arguments to be passed to the callback function.</span>
+
+<span class="c1">#     Note</span>
+<span class="c1">#     ----</span>
+<span class="c1">#     This planarization algorithm relies on the Python binding of the ShapeOp</span>
+<span class="c1">#     library. Installation instructions are available in ``compas.interop.shapeop``.</span>
+
+<span class="c1">#     Examples</span>
+<span class="c1">#     --------</span>
+<span class="c1">#     &gt;&gt;&gt;</span>
+
+<span class="c1">#     """</span>
+<span class="c1">#     from compas.interop import shapeop</span>
+
+<span class="c1">#     if callback:</span>
+<span class="c1">#         if not callable(callback):</span>
+<span class="c1">#             raise Exception('The callback is not callable.')</span>
+
+<span class="c1">#     fixed = fixed or []</span>
+<span class="c1">#     fixed = set(fixed)</span>
+
+<span class="c1">#     shapeop.planarize_mesh(mesh, fixed=fixed, kmax=kmax)</span>
+
+
+<span class="c1"># def mesh_circularize(mesh,</span>
+<span class="c1">#                      fixed=None,</span>
+<span class="c1">#                      kmax=100,</span>
+<span class="c1">#                      d=1.0,</span>
+<span class="c1">#                      callback=None,</span>
+<span class="c1">#                      callback_args=None):</span>
+<span class="c1">#     """Circularize the faces of a mesh using ShapeOp.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     mesh : Mesh</span>
+<span class="c1">#         A mesh object.</span>
+<span class="c1">#     fixed : list, optional [None]</span>
+<span class="c1">#         A list of fixed vertices.</span>
+<span class="c1">#     kmax : int, optional [100]</span>
+<span class="c1">#         The number of iterations.</span>
+<span class="c1">#     d : float, optional [1.0]</span>
+<span class="c1">#         A damping factor.</span>
+<span class="c1">#     callback : callable, optional [None]</span>
+<span class="c1">#         A user-defined callback that is called after every iteration.</span>
+<span class="c1">#     callback_args : list, optional [None]</span>
+<span class="c1">#         A list of arguments to be passed to the callback function.</span>
+
+<span class="c1">#     Note</span>
+<span class="c1">#     ----</span>
+<span class="c1">#     ...</span>
+
+<span class="c1">#     Examples</span>
+<span class="c1">#     --------</span>
+<span class="c1">#     &gt;&gt;&gt;</span>
+
+<span class="c1">#     """</span>
+
+<span class="c1">#     # map the corners of the faces to a circle on the nearest plane</span>
+<span class="c1">#     # use circle from points</span>
+<span class="c1">#     # map vertices to the centroids of the face corners</span>
+
+<span class="c1">#     raise NotImplementedError</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">compas</span>
+
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+
+    <span class="kn">from</span> <span class="nn">compas.visualization.viewers.viewer</span> <span class="k">import</span> <span class="n">Viewer</span>
+
+    <span class="kn">from</span> <span class="nn">compas.visualization.viewers.core.drawing</span> <span class="k">import</span> <span class="n">draw_points</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization.viewers.core.drawing</span> <span class="k">import</span> <span class="n">draw_lines</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization.viewers.core.drawing</span> <span class="k">import</span> <span class="n">draw_circle</span>
+
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'hypar.obj'</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'is_fixed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+
+    <span class="n">vertices</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+    <span class="n">faces</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">'is_fixed'</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+
+    <span class="n">planarize_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">vertices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># deviations = []</span>
+
+    <span class="c1"># for fkey, attr in mesh.faces(True):</span>
+    <span class="c1">#     points = mesh.face_coordinates(fkey)</span>
+    <span class="c1">#     base, normal = bestfit_plane_from_points(points)</span>
+
+    <span class="c1">#     angles = []</span>
+    <span class="c1">#     for a, b, c in window(points + points[0:2], n=3):</span>
+    <span class="c1">#         u = vector_from_points(b, a)</span>
+    <span class="c1">#         v = vector_from_points(b, c)</span>
+    <span class="c1">#         w = cross_vectors(v, u)</span>
+    <span class="c1">#         angles.append(angle_smallest_vectors_degrees(normal, w))</span>
+
+    <span class="c1">#     dev = sum(angles) / len(angles)</span>
+    <span class="c1">#     deviations.append(dev)</span>
+
+    <span class="c1"># print max(deviations)</span>
+    <span class="c1"># print min(deviations)</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">wireframe</span><span class="p">()]</span>
+
+    <span class="k">def</span> <span class="nf">draw_mesh</span><span class="p">():</span>
+        <span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">draw_circles</span><span class="p">():</span>
+        <span class="n">draw_circle</span><span class="p">((((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span> <span class="mf">1.0</span><span class="p">))</span>
+
+    <span class="n">viewer</span> <span class="o">=</span> <span class="n">Viewer</span><span class="p">()</span>
+
+    <span class="n">viewer</span><span class="o">.</span><span class="n">displayfuncs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">draw_mesh</span><span class="p">,</span> <span class="n">draw_circles</span><span class="p">]</span>
+
+    <span class="n">viewer</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+    <span class="n">viewer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 24, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

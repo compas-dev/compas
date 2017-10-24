@@ -18,16 +18,12 @@ NetworkPlotter
       ~NetworkPlotter.clear_collection
       ~NetworkPlotter.clear_edges
       ~NetworkPlotter.clear_vertices
+      ~NetworkPlotter.draw_arrows
       ~NetworkPlotter.draw_edges
-      ~NetworkPlotter.draw_faces
       ~NetworkPlotter.draw_lines
       ~NetworkPlotter.draw_points
       ~NetworkPlotter.draw_polygons
       ~NetworkPlotter.draw_vertices
-      ~NetworkPlotter.draw_xarrows
-      ~NetworkPlotter.draw_xlines
-      ~NetworkPlotter.draw_xpoints
-      ~NetworkPlotter.draw_xpolygons
       ~NetworkPlotter.save
       ~NetworkPlotter.show
       ~NetworkPlotter.update

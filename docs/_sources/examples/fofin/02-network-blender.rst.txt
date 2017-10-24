@@ -14,12 +14,12 @@ Network equilibrium in Blender
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`network-equilibrium-blender.py </_examples/network-equilibrium-blender.py>`
+* :download:`network-equilibrium-blender.py </../../examples/network-equilibrium-blender.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/network-equilibrium-blender.py
+.. literalinclude:: /../../examples/network-equilibrium-blender.py
 

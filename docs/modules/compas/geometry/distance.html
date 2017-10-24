@@ -282,7 +282,25 @@
 
 
 <div class="viewcode-block" id="distance_point_line_sqrd"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.distance_point_line_sqrd.html#compas.geometry.distance_point_line_sqrd">[docs]</a><span class="k">def</span> <span class="nf">distance_point_line_sqrd</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-    <span class="sd">"""Compute the squared distance between a point and a line."""</span>
+    <span class="sd">"""Compute the squared distance between a point and a line.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : sequence of float</span>
+<span class="sd">        XYZ coordinates of the point.</span>
+<span class="sd">    line : list, tuple</span>
+<span class="sd">        Line defined by two points.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The squared distance between the point and the line.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line</span>
+
+<span class="sd">    """</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">line</span>
     <span class="n">ab</span>   <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="n">pa</span>   <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
@@ -549,8 +567,7 @@
 
 
 <div class="viewcode-block" id="closest_point_on_line"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.closest_point_on_line.html#compas.geometry.closest_point_on_line">[docs]</a><span class="k">def</span> <span class="nf">closest_point_on_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Computes closest point on line to a given point.</span>
+    <span class="sd">"""Computes closest point on line to a given point.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -581,8 +598,7 @@
 
 
 <div class="viewcode-block" id="closest_point_on_line_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.closest_point_on_line_xy.html#compas.geometry.closest_point_on_line_xy">[docs]</a><span class="k">def</span> <span class="nf">closest_point_on_line_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Compute closest point on line (continuous) to a given point lying in the XY-plane.</span>
+    <span class="sd">"""Compute closest point on line (continuous) to a given point lying in the XY-plane.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -605,8 +621,7 @@
 
 
 <div class="viewcode-block" id="closest_point_on_segment"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.closest_point_on_segment.html#compas.geometry.closest_point_on_segment">[docs]</a><span class="k">def</span> <span class="nf">closest_point_on_segment</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Computes closest point on line segment (p1, p2) to testpoint.</span>
+    <span class="sd">"""Computes closest point on line segment (p1, p2) to testpoint.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -638,8 +653,7 @@
 
 
 <div class="viewcode-block" id="closest_point_on_segment_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.closest_point_on_segment_xy.html#compas.geometry.closest_point_on_segment_xy">[docs]</a><span class="k">def</span> <span class="nf">closest_point_on_segment_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Compute closest point on line segment to a given point lying in the XY-plane.</span>
+    <span class="sd">"""Compute closest point on line segment to a given point lying in the XY-plane.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -667,7 +681,23 @@
 
 
 <div class="viewcode-block" id="closest_point_on_polyline"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.closest_point_on_polyline.html#compas.geometry.closest_point_on_polyline">[docs]</a><span class="k">def</span> <span class="nf">closest_point_on_polyline</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">polyline</span><span class="p">):</span>
-    <span class="sd">""""""</span>
+    <span class="sd">"""Find the closest point on a polyline to a given point.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : list</span>
+<span class="sd">        XYZ coordinates of a 2D or 3D point (Z will be ignored).</span>
+<span class="sd">    polygon : sequence</span>
+<span class="sd">        A sequence of XYZ coordinates representing the locations of the corners of a polygon.</span>
+<span class="sd">        The vertices are assumed to be in order. The polygon is assumed to be closed:</span>
+<span class="sd">        the first and last vertex in the sequence should not be the same.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        XYZ coordinates of closest point.</span>
+
+<span class="sd">    """</span>
     <span class="n">cloud</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">polyline</span><span class="p">):</span>
@@ -764,51 +794,6 @@
             <span class="n">z1</span> <span class="o">-</span> <span class="n">k</span> <span class="o">*</span> <span class="n">c</span><span class="p">]</span></div>
 
 
-<span class="c1"># # this function seems to be rather specific.</span>
-<span class="c1"># # where is it used?</span>
-<span class="c1"># # is it needed in the geometry package?</span>
-<span class="c1"># def closest_part_of_triangle(point, triangle):</span>
-<span class="c1">#     """Computes the closest part (edge or point) of a triangle to a test point</span>
-<span class="c1">#     lying in the XY-plane.</span>
-
-<span class="c1">#     Parameters:</span>
-<span class="c1">#         point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</span>
-<span class="c1">#         triangle (sequence): A sequence of three points representing the triangle.</span>
-
-<span class="c1">#     Returns:</span>
-<span class="c1">#         The coordinates of the corner point if a corner point is closest. Two corner points defining</span>
-<span class="c1">#         the edge, if an edge is closest to the test point.</span>
-<span class="c1">#     """</span>
-<span class="c1">#     a, b, c = triangle</span>
-<span class="c1">#     ab = subtract_vectors_xy(b, a)</span>
-<span class="c1">#     bc = subtract_vectors_xy(c, b)</span>
-<span class="c1">#     ca = subtract_vectors_xy(a, c)</span>
-<span class="c1">#     # closest to edge ab?</span>
-<span class="c1">#     ab_ = cross_vectors_xy(ab, [0, 0, 1])</span>
-<span class="c1">#     ba_ = add_vectors_xy(ab, ab_)</span>
-<span class="c1">#     if not is_ccw_xy(a, b, point) and not is_ccw_xy(b, ba_, point) and is_ccw_xy(a, ab_, point):</span>
-<span class="c1">#         return a, b</span>
-<span class="c1">#     # closest to edge bc?</span>
-<span class="c1">#     bc_ = cross_vectors_xy(bc, [0, 0, 1])</span>
-<span class="c1">#     cb_ = add_vectors_xy(bc, bc_)</span>
-<span class="c1">#     if not is_ccw_xy(b, c, point) and not is_ccw_xy(c, cb_, point) and is_ccw_xy(b, bc_, point):</span>
-<span class="c1">#         return b, c</span>
-<span class="c1">#     # closest to edge ac?</span>
-<span class="c1">#     ca_ = cross_vectors_xy(ca, [0, 0, 1])</span>
-<span class="c1">#     ac_ = add_vectors_xy(ca, ca_)</span>
-<span class="c1">#     if not is_ccw_xy(c, a, point) and not is_ccw_xy(a, ac_, point) and is_ccw_xy(c, ca_, point):</span>
-<span class="c1">#         return c, a</span>
-<span class="c1">#     # closest to a?</span>
-<span class="c1">#     if not is_ccw_xy(a, ab_, point) and is_ccw_xy(a, ac_, point):</span>
-<span class="c1">#         return a</span>
-<span class="c1">#     # closest to b?</span>
-<span class="c1">#     if not is_ccw_xy(b, bc_, point) and is_ccw_xy(b, ba_, point):</span>
-<span class="c1">#         return b</span>
-<span class="c1">#     # closest to c?</span>
-<span class="c1">#     if not is_ccw_xy(c, ca_, point) and is_ccw_xy(c, cb_, point):</span>
-<span class="c1">#         return c</span>
-
-
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
@@ -854,7 +839,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

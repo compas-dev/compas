@@ -32,7 +32,8 @@
 <nav class="breadcrumb">
 <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
 <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+<a class="breadcrumb-item" href="../../index.html">module code</a>
+<a accesskey="U" class="breadcrumb-item" href="../forms.html">compas_rhino.forms</a>
 </nav>
 <h1>Source code for compas_rhino.forms.multipage</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">compas_rhino.forms</span> <span class="k">import</span> <span class="n">Form</span>
@@ -69,18 +70,18 @@
 <div class="viewcode-block" id="MultiPageForm"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.MultiPageForm.html#compas_rhino.forms.MultiPageForm">[docs]</a><span class="k">class</span> <span class="nc">MultiPageForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiPageForm.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.MultiPageForm.__init__.html#compas_rhino.forms.MultiPageForm.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">buttons</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MultiPageForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MultiPageForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiPageForm.init"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.MultiPageForm.init.html#compas_rhino.forms.MultiPageForm.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_tabs</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_add_buttons</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_buttons</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">on_form_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiPageForm.on_form_closed"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.MultiPageForm.on_form_closed.html#compas_rhino.forms.MultiPageForm.on_form_closed">[docs]</a>    <span class="k">def</span> <span class="nf">on_form_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">sender</span><span class="o">.</span><span class="n">DialogResult</span> <span class="o">==</span> <span class="n">DialogResult</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
-            <span class="k">pass</span>
+            <span class="k">pass</span></div>
 
     <span class="k">def</span> <span class="nf">_add_tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span> <span class="o">=</span> <span class="n">TabControl</span><span class="p">()</span>
@@ -105,21 +106,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buttons</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiPageForm.add_page"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.MultiPageForm.add_page.html#compas_rhino.forms.MultiPageForm.add_page">[docs]</a>    <span class="k">def</span> <span class="nf">add_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="n">page</span> <span class="o">=</span> <span class="n">TabPage</span><span class="p">()</span>
         <span class="n">page</span><span class="o">.</span><span class="n">BackColor</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">White</span>
         <span class="n">page</span><span class="o">.</span><span class="n">Dock</span> <span class="o">=</span> <span class="n">DockStyle</span><span class="o">.</span><span class="n">Fill</span>
         <span class="n">page</span><span class="o">.</span><span class="n">Padding</span> <span class="o">=</span> <span class="n">Padding</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span>
         <span class="n">page</span><span class="o">.</span><span class="n">TabIndex</span> <span class="o">=</span> <span class="n">index</span>
         <span class="n">page</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="n">title</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">page</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">add_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pages</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiPageForm.add_pages"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.MultiPageForm.add_pages.html#compas_rhino.forms.MultiPageForm.add_pages">[docs]</a>    <span class="k">def</span> <span class="nf">add_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pages</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pages</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">get_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">Controls</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
+<div class="viewcode-block" id="MultiPageForm.get_page"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.forms.MultiPageForm.get_page.html#compas_rhino.forms.MultiPageForm.get_page">[docs]</a>    <span class="k">def</span> <span class="nf">get_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">Controls</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -174,7 +175,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

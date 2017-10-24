@@ -98,13 +98,14 @@
 <span class="c1"># something_(of)vector/s</span>
 <span class="c1"># ==============================================================================</span>
 
+
 <div class="viewcode-block" id="sum_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.sum_vectors.html#compas.geometry.sum_vectors">[docs]</a><span class="k">def</span> <span class="nf">sum_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Calculate the sum of a series of vectors along the specified axis.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    vectors : list of list</span>
+<span class="sd">    vectors : list</span>
 <span class="sd">        A list of vectors.</span>
 <span class="sd">    axis : int, optional</span>
 <span class="sd">        If ``axis == 0``, the sum is taken across each of the indices of the mesh.</span>
@@ -112,7 +113,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    sum : list of float</span>
+<span class="sd">    list</span>
 <span class="sd">        The length of the list is ``len(vectors[0])``, if ``axis == 0``.</span>
 <span class="sd">        The length is ``len(vectors)``, otherwise.</span>
 
@@ -136,11 +137,12 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    vector : list of float</span>
+<span class="sd">    vector : list</span>
+<span class="sd">        XYZ components of the vector.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    norm : float</span>
+<span class="sd">    float</span>
 <span class="sd">        The L2 norm, or *length* of the vector.</span>
 
 <span class="sd">    Examples</span>
@@ -157,12 +159,13 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    vectors : list of list</span>
+<span class="sd">    vectors : list</span>
+<span class="sd">        A list of vectors</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    norm : list of float</span>
-<span class="sd">        A list with the length of each vector.</span>
+<span class="sd">    list</span>
+<span class="sd">        A list with the lengths of all vectors.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -177,8 +180,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    vector : list of float</span>
-<span class="sd">        The XYZ coordinates of the vector.</span>
+<span class="sd">    vector : list</span>
+<span class="sd">        XYZ components of the vector.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -202,8 +205,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    vector : sequence of float</span>
-<span class="sd">        The XY(Z) coordinates of the vector.</span>
+<span class="sd">    vector : list</span>
+<span class="sd">        XY(Z) components of the vector.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -226,10 +229,36 @@
 
 
 <div class="viewcode-block" id="length_vector_sqrd"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.length_vector_sqrd.html#compas.geometry.length_vector_sqrd">[docs]</a><span class="k">def</span> <span class="nf">length_vector_sqrd</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+    <span class="sd">"""Compute the squared length of a vector.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vector : list</span>
+<span class="sd">        XYZ components of the vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The squared length.</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span></div>
 
 
 <div class="viewcode-block" id="length_vector_sqrd_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.length_vector_sqrd_xy.html#compas.geometry.length_vector_sqrd_xy">[docs]</a><span class="k">def</span> <span class="nf">length_vector_sqrd_xy</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+    <span class="sd">"""Compute the squared length of a vector, assuming it lies in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vector : list</span>
+<span class="sd">        XY(Z) components of the vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The squared length.</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span></div>
 
 
@@ -240,13 +269,14 @@
 <span class="c1"># ... or else modify the vector in-place</span>
 <span class="c1"># ==============================================================================</span>
 
+
 <div class="viewcode-block" id="scale_vector"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.scale_vector.html#compas.geometry.scale_vector">[docs]</a><span class="k">def</span> <span class="nf">scale_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
     <span class="sd">"""Scale a vector by a given factor.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    vector : list, tuple</span>
-<span class="sd">        The XYZ coordinates of the vector.</span>
+<span class="sd">        XYZ components of the vector.</span>
 <span class="sd">    factor : float</span>
 <span class="sd">        The scaling factor.</span>
 
@@ -271,8 +301,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    vector : sequence of float</span>
-<span class="sd">        The XY(Z) coordinates of the vector.</span>
+<span class="sd">    vector : list</span>
+<span class="sd">        XY(Z) components of the vector.</span>
 <span class="sd">    scale : float</span>
 <span class="sd">        Scale factor.</span>
 
@@ -294,8 +324,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    vectors : list of list</span>
-<span class="sd">        A list of vectors represented by XYZ coordinates.</span>
+<span class="sd">    vectors : list</span>
+<span class="sd">        A list of vectors.</span>
 <span class="sd">    factor : float</span>
 <span class="sd">        The scaling factor.</span>
 
@@ -313,6 +343,25 @@
 
 
 <div class="viewcode-block" id="scale_vectors_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.scale_vectors_xy.html#compas.geometry.scale_vectors_xy">[docs]</a><span class="k">def</span> <span class="nf">scale_vectors_xy</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+    <span class="sd">"""Scale multiple vectors by a given factor, assuming they lie in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vectors : list of list</span>
+<span class="sd">        A list of vectors.</span>
+<span class="sd">    factor : float</span>
+<span class="sd">        The scaling factor.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vectors : list of list</span>
+<span class="sd">        The scaled vectors.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">scale_vector_xy</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span></div>
 
 
@@ -322,11 +371,11 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    vector : list, tuple</span>
-<span class="sd">        A vector, represented by its XYZ coordinates.</span>
+<span class="sd">        XYZ components of the vector.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    vector : list</span>
+<span class="sd">    list</span>
 <span class="sd">        The normalised vector.</span>
 
 <span class="sd">    Examples</span>
@@ -343,11 +392,11 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    vector : sequence of float</span>
-<span class="sd">        The 2D or 3D vector (Z will be ignored).</span>
+<span class="sd">        XY(Z) components of the vector.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    tuple</span>
+<span class="sd">    list</span>
 <span class="sd">        The normalized vector in the XY-plane (Z = 0.0)</span>
 
 <span class="sd">    Examples</span>
@@ -358,7 +407,7 @@
     <span class="n">l</span> <span class="o">=</span> <span class="n">length_vector_xy</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">l</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">vector</span>
-    <span class="k">return</span> <span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="mf">0.0</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">l</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="normalize_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.normalize_vectors.html#compas.geometry.normalize_vectors">[docs]</a><span class="k">def</span> <span class="nf">normalize_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
@@ -371,7 +420,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    vectors : list</span>
+<span class="sd">    list</span>
 <span class="sd">        The normalised vectors.</span>
 
 <span class="sd">    Examples</span>
@@ -383,6 +432,23 @@
 
 
 <div class="viewcode-block" id="normalize_vectors_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.normalize_vectors_xy.html#compas.geometry.normalize_vectors_xy">[docs]</a><span class="k">def</span> <span class="nf">normalize_vectors_xy</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
+    <span class="sd">"""Normalise multiple vectors, assuming they lie in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vectors : list of list</span>
+<span class="sd">        A list of vectors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        The normalised vectors in the XY plane.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">normalize_vector_xy</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span></div>
 
 
@@ -392,7 +458,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    vector : list, tuple</span>
-<span class="sd">        A vector, represented by its XYZ coordinates.</span>
+<span class="sd">        XYZ components of the vector.</span>
 <span class="sd">    power : int, float</span>
 <span class="sd">        The power to which to raise the vector.</span>
 
@@ -415,7 +481,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    vectors : list of list</span>
-<span class="sd">        A list of vectors, represented by their XYZ coordinates.</span>
+<span class="sd">        A list of vectors.</span>
 <span class="sd">    power : int, float</span>
 <span class="sd">        The power to which to raise the vectors.</span>
 
@@ -438,7 +504,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    vector : list, tuple</span>
-<span class="sd">        A vector, represented by its XYZ coordinates.</span>
+<span class="sd">        XYZ components of the vector.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -454,6 +520,23 @@
 
 
 <div class="viewcode-block" id="square_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.square_vectors.html#compas.geometry.square_vectors">[docs]</a><span class="k">def</span> <span class="nf">square_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
+    <span class="sd">"""Raise a multiple vectors to the power 2.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vectors : list</span>
+<span class="sd">        A list of vectors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vector : list</span>
+<span class="sd">        The squared vectors.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">square_vectors</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span></div>
 
 
@@ -463,7 +546,23 @@
 <span class="c1"># -&gt; elementwise operations on two vectors</span>
 <span class="c1"># ==============================================================================</span>
 
+
 <div class="viewcode-block" id="add_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.add_vectors.html#compas.geometry.add_vectors">[docs]</a><span class="k">def</span> <span class="nf">add_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">"""Add two vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : sequence of float</span>
+<span class="sd">        XYZ components of the first vector.</span>
+<span class="sd">    v : sequence of float</span>
+<span class="sd">        XYZ components of the second vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        The resulting vector.</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span></div>
 
 
@@ -473,13 +572,13 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    u : sequence of float</span>
-<span class="sd">        The first 2D or 3D vector (Z will be ignored).</span>
+<span class="sd">        XY(Z) components of the first vector.</span>
 <span class="sd">    v : sequence of float</span>
-<span class="sd">        The second 2D or 3D vector (Z will be ignored).</span>
+<span class="sd">        XY(Z) components of the second vector.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    tuple</span>
+<span class="sd">    list</span>
 <span class="sd">        Resulting vector in the XY-plane (Z = 0.0)</span>
 
 <span class="sd">    Examples</span>
@@ -487,10 +586,29 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 
 <span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="subtract_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.subtract_vectors.html#compas.geometry.subtract_vectors">[docs]</a><span class="k">def</span> <span class="nf">subtract_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">"""Subtract one vector from another.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : list</span>
+<span class="sd">        XYZ components of the first vector.</span>
+<span class="sd">    v : list</span>
+<span class="sd">        XYZ components of the second vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        The resulting vector.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span></div>
 
 
@@ -499,14 +617,14 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    u : sequence of float</span>
-<span class="sd">        The XY(Z) coordinates of the first vector.</span>
-<span class="sd">    v : sequence of float</span>
-<span class="sd">        The XY(Z) coordinates of the second vector.</span>
+<span class="sd">    u : list</span>
+<span class="sd">        The XY(Z) components of the first vector.</span>
+<span class="sd">    v : list</span>
+<span class="sd">        The XY(Z) components of the second vector.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    tuple</span>
+<span class="sd">    list</span>
 <span class="sd">        Resulting vector in the XY-plane (Z = 0.0)</span>
 
 <span class="sd">    Examples</span>
@@ -514,28 +632,105 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 
 <span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="multiply_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.multiply_vectors.html#compas.geometry.multiply_vectors">[docs]</a><span class="k">def</span> <span class="nf">multiply_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">"""Element-wise multiplication of two vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : list</span>
+<span class="sd">        The XYZ components of the first vector.</span>
+<span class="sd">    v : list</span>
+<span class="sd">        The XYZ components of the second vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Resulting vector.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span></div>
 
 
 <div class="viewcode-block" id="multiply_vectors_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.multiply_vectors_xy.html#compas.geometry.multiply_vectors_xy">[docs]</a><span class="k">def</span> <span class="nf">multiply_vectors_xy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">"""Element-wise multiplication of two vectors assumed to lie in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : list</span>
+<span class="sd">        The XY(Z) components of the first vector.</span>
+<span class="sd">    v : list</span>
+<span class="sd">        The XY(Z) components of the second vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Resulting vector in the XY plane.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="divide_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.divide_vectors.html#compas.geometry.divide_vectors">[docs]</a><span class="k">def</span> <span class="nf">divide_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">"""Element-wise division of two vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : list</span>
+<span class="sd">        The XYZ components of the first vector.</span>
+<span class="sd">    v : list</span>
+<span class="sd">        The XYZ components of the second vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Resulting vector.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">a</span> <span class="o">/</span> <span class="n">b</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span></div>
 
 
 <div class="viewcode-block" id="divide_vectors_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.divide_vectors_xy.html#compas.geometry.divide_vectors_xy">[docs]</a><span class="k">def</span> <span class="nf">divide_vectors_xy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">"""Element-wise division of two vectors assumed to lie in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : list</span>
+<span class="sd">        The XY(Z) components of the first vector.</span>
+<span class="sd">    v : list</span>
+<span class="sd">        The XY(Z) components of the second vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Resulting vector in the XY plane.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">]</span></div>
 
 
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># ...</span>
 <span class="c1"># ==============================================================================</span>
+
 
 <div class="viewcode-block" id="cross_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.cross_vectors.html#compas.geometry.cross_vectors">[docs]</a><span class="k">def</span> <span class="nf">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">r"""Compute the cross product of two vectors.</span>
@@ -728,9 +923,6 @@
     <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">M</span><span class="p">)</span></div>
 
 
-<span class="c1"># rename to matmul_...</span>
-<span class="c1"># rename to dot_...</span>
-
 <div class="viewcode-block" id="multiply_matrices"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.multiply_matrices.html#compas.geometry.multiply_matrices">[docs]</a><span class="k">def</span> <span class="nf">multiply_matrices</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
     <span class="sd">r"""Mutliply a matrix with a matrix.</span>
 
@@ -827,12 +1019,56 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="homogenise_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.homogenise_vectors.html#compas.geometry.homogenise_vectors">[docs]</a><span class="k">def</span> <span class="nf">homogenise_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">vector</span> <span class="o">+</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span></div>
+<div class="viewcode-block" id="homogenise_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.homogenise_vectors.html#compas.geometry.homogenise_vectors">[docs]</a><span class="k">def</span> <span class="nf">homogenise_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sd">"""Homogenise a list of vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vectors : list</span>
+<span class="sd">        A list of vectors.</span>
+<span class="sd">    w : float, optional</span>
+<span class="sd">        Homogenisation parameter.</span>
+<span class="sd">        Defaults to ``1.0``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Homogenised vectors.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    Vectors described by XYZ components are homogenised by appending a homogenisation</span>
+<span class="sd">    parameter to the components, and by dividing each component by that parameter.</span>
+<span class="sd">    Homogenisatioon of vectors is often used in relation to transformations.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; vectors = [[1.0, 0.0, 0.0]]</span>
+<span class="sd">    &gt;&gt;&gt; homogenise_vectors(vectors)</span>
+
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">x</span> <span class="o">/</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">/</span> <span class="n">w</span><span class="p">,</span> <span class="n">z</span> <span class="o">/</span> <span class="n">w</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="dehomogenise_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.dehomogenise_vectors.html#compas.geometry.dehomogenise_vectors">[docs]</a><span class="k">def</span> <span class="nf">dehomogenise_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">vector</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span></div>
+    <span class="sd">"""Dehomogenise a list of vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vectors : list</span>
+<span class="sd">        A list of vectors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Dehomogenised vectors.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">x</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">z</span> <span class="o">*</span> <span class="n">w</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="orthonormalise_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.orthonormalise_vectors.html#compas.geometry.orthonormalise_vectors">[docs]</a><span class="k">def</span> <span class="nf">orthonormalise_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
@@ -855,7 +1091,8 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; orthonormalise_vectors([[1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])</span>
+<span class="sd">    [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]</span>
 
 <span class="sd">    """</span>
     <span class="n">basis</span> <span class="o">=</span> <span class="p">[]</span>
@@ -874,19 +1111,6 @@
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-
-    <span class="c1"># import timeit</span>
-
-    <span class="c1"># r = timeit.timeit('length_vector([0.0, 0.0, 0.0])', setup='from __main__ import length_vector', number=100000)</span>
-    <span class="c1"># print(r)</span>
-
-    <span class="c1"># r = timeit.timeit('length_vector_xy([0.0, 0.0, 0.0])', setup='from __main__ import length_vector_xy', number=100000)</span>
-    <span class="c1"># print(r)</span>
-
-    <span class="c1"># M = [[0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2]]</span>
-
-    <span class="c1"># print(M)</span>
-    <span class="c1"># print(transpose_matrix(M))</span>
 
     <span class="n">basis</span> <span class="o">=</span> <span class="n">orthonormalise_vectors</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>
 
@@ -930,7 +1154,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

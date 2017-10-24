@@ -4,9 +4,9 @@
 
 import compas
 
-from compas.datastructures.network import Network
-from compas.datastructures.network.algorithms import network_dijkstra_path
-from compas.visualization.plotters.networkplotter import NetworkPlotter
+from compas.datastructures import Network
+from compas.topology import dijkstra_path
+from compas.visualization import NetworkPlotter
 
 
 __author__    = ['Tom Van Mele', ]
@@ -29,7 +29,9 @@ start, end = 21, 22
 
 # compute the shortest path
 
-path = network_dijkstra_path(network.adjacency, weight, start, end)
+adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+
+path = dijkstra_path(adjacency, weight, start, end)
 
 # plot!
 

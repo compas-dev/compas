@@ -55,7 +55,7 @@
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, BLOCK Research Group - ETH Zurich'</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2017, BLOCK Research Group - ETH Zurich'</span>
 <span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT'</span>
 <span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
@@ -66,37 +66,41 @@
 <div class="viewcode-block" id="RhinoMesh"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.geometry.RhinoMesh.html#compas_rhino.geometry.RhinoMesh">[docs]</a><span class="k">class</span> <span class="nc">RhinoMesh</span><span class="p">(</span><span class="n">MeshGeometryInterface</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoMesh.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.__init__.html#compas_rhino.geometry.RhinoMesh.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="n">guid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">find_object</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">RhinoMesh</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">Geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">Attributes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">otype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ObjectType</span></div>
 
-    <span class="k">def</span> <span class="nf">get_vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshVertices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)]</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="RhinoMesh.find"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.find.html#compas_rhino.geometry.RhinoMesh.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">get_face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshFaceVertices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">))</span>
+<div class="viewcode-block" id="RhinoMesh.get_vertex_coordinates"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.get_vertex_coordinates.html#compas_rhino.geometry.RhinoMesh.get_vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshVertices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)]</span></div>
 
-    <span class="k">def</span> <span class="nf">get_vertex_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshVertexColors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">))</span>
+<div class="viewcode-block" id="RhinoMesh.get_face_vertices"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.get_face_vertices.html#compas_rhino.geometry.RhinoMesh.get_face_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">get_face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshFaceVertices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">set_vertex_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshVertexColors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">,</span> <span class="n">colors</span><span class="p">)</span>
+<div class="viewcode-block" id="RhinoMesh.get_vertex_colors"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.get_vertex_colors.html#compas_rhino.geometry.RhinoMesh.get_vertex_colors">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshVertexColors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">unset_vertex_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshVertexColors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<div class="viewcode-block" id="RhinoMesh.set_vertex_colors"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.set_vertex_colors.html#compas_rhino.geometry.RhinoMesh.set_vertex_colors">[docs]</a>    <span class="k">def</span> <span class="nf">set_vertex_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshVertexColors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">,</span> <span class="n">colors</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">get_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoMesh.unset_vertex_colors"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.unset_vertex_colors.html#compas_rhino.geometry.RhinoMesh.unset_vertex_colors">[docs]</a>    <span class="k">def</span> <span class="nf">unset_vertex_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshVertexColors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RhinoMesh.get_vertices_and_faces"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.get_vertices_and_faces.html#compas_rhino.geometry.RhinoMesh.get_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshVertices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)]</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">rs</span><span class="o">.</span><span class="n">MeshFaceVertices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
 
-    <span class="k">def</span> <span class="nf">get_border</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">DuplicateMeshBorder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span>
+<div class="viewcode-block" id="RhinoMesh.get_border"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.get_border.html#compas_rhino.geometry.RhinoMesh.get_border">[docs]</a>    <span class="k">def</span> <span class="nf">get_border</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">DuplicateMeshBorder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">get_vertex_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoMesh.get_vertex_index"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.get_vertex_index.html#compas_rhino.geometry.RhinoMesh.get_vertex_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_vertex_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">guid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">guid</span>
 
         <span class="k">class</span> <span class="nc">CustomGetObject</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">Input</span><span class="o">.</span><span class="n">Custom</span><span class="o">.</span><span class="n">GetObject</span><span class="p">):</span>
@@ -118,9 +122,9 @@
         <span class="n">temp</span>    <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">TopologyVertices</span><span class="o">.</span><span class="n">MeshVertexIndices</span><span class="p">(</span><span class="n">tvindex</span><span class="p">)</span>
         <span class="n">vindex</span>  <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">go</span><span class="o">.</span><span class="n">Dispose</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">vindex</span>
+        <span class="k">return</span> <span class="n">vindex</span></div>
 
-    <span class="k">def</span> <span class="nf">get_face_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoMesh.get_face_index"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.get_face_index.html#compas_rhino.geometry.RhinoMesh.get_face_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_face_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">guid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">guid</span>
 
         <span class="k">class</span> <span class="nc">CustomGetObject</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">Input</span><span class="o">.</span><span class="n">Custom</span><span class="o">.</span><span class="n">GetObject</span><span class="p">):</span>
@@ -139,7 +143,7 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">findex</span> <span class="o">=</span> <span class="n">objref</span><span class="o">.</span><span class="n">GeometryComponentIndex</span><span class="o">.</span><span class="n">Index</span>
         <span class="n">go</span><span class="o">.</span><span class="n">Dispose</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">findex</span>
+        <span class="k">return</span> <span class="n">findex</span></div>
 
     <span class="c1"># def get_edge_index(guid):</span>
     <span class="c1">#     class CustomGetObject(Rhino.Input.Custom.GetObject):</span>
@@ -213,21 +217,21 @@
     <span class="c1"># geometric stuff</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="RhinoMesh.normal"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.normal.html#compas_rhino.geometry.RhinoMesh.normal">[docs]</a>    <span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">normals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">pass</span>
+<div class="viewcode-block" id="RhinoMesh.normals"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.normals.html#compas_rhino.geometry.RhinoMesh.normals">[docs]</a>    <span class="k">def</span> <span class="nf">normals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoMesh.closest_point"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.closest_point.html#compas_rhino.geometry.RhinoMesh.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">maxdist</span> <span class="o">=</span> <span class="n">maxdist</span> <span class="ow">or</span> <span class="mf">0.0</span>
         <span class="n">face</span><span class="p">,</span> <span class="n">point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">ClosestPoint</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">),</span> <span class="n">maxdist</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">point</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoMesh.closest_points"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.geometry.RhinoMesh.closest_points.html#compas_rhino.geometry.RhinoMesh.closest_points">[docs]</a>    <span class="k">def</span> <span class="nf">closest_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="c1"># points = List[Point3d](len(points))</span>
         <span class="c1"># points = self.geometry.PullPointsToMesh()</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -276,7 +280,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

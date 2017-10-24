@@ -97,15 +97,16 @@
 <span class="sd">                del conduit</span>
 
 <span class="sd">    """</span>
-<div class="viewcode-block" id="FacesConduit.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.conduits.FacesConduit.__init__.html#compas_rhino.conduits.FacesConduit.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="FacesConduit.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.conduits.FacesConduit.__init__.html#compas_rhino.conduits.FacesConduit.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FacesConduit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span>
         <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="FacesConduit.DrawForeground"><a class="viewcode-back" href="../../../reference/generated/generated/compas_rhino.conduits.FacesConduit.DrawForeground.html#compas_rhino.conduits.FacesConduit.DrawForeground">[docs]</a>    <span class="k">def</span> <span class="nf">DrawForeground</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">points</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">:</span>
-            <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span>
             <span class="n">e</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">DrawPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div></div>
 
 
@@ -158,7 +159,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -176,7 +177,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

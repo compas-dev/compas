@@ -79,13 +79,6 @@
 <span class="p">]</span>
 
 
-<span class="c1"># is_intersection_line_line =&gt; line_line_intersect</span>
-<span class="c1"># if is_intersection_line_line ... =&gt; if line_line_intersect ...</span>
-<span class="c1"># =&gt; if lines_intersect ...</span>
-
-<span class="c1"># ..._xy =&gt; ..._xy</span>
-
-
 <div class="viewcode-block" id="intersection_line_line"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.intersection_line_line.html#compas.geometry.intersection_line_line">[docs]</a><span class="k">def</span> <span class="nf">intersection_line_line</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">):</span>
     <span class="sd">"""Computes the intersection of two lines.</span>
 
@@ -158,10 +151,10 @@
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">l1</span>
     <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">l2</span>
 
-    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">a</span>
-    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">b</span>
-    <span class="n">x3</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">c</span>
-    <span class="n">x4</span><span class="p">,</span> <span class="n">y4</span> <span class="o">=</span> <span class="n">d</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x3</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x4</span><span class="p">,</span> <span class="n">y4</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y3</span> <span class="o">-</span> <span class="n">y4</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x3</span> <span class="o">-</span> <span class="n">x4</span><span class="p">)</span>
 
@@ -577,7 +570,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -595,7 +588,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

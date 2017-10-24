@@ -110,3 +110,4 @@ libs/**
 !libs/PLACEHOLDER
 
 src/.build/**
+src/compas/visualization/plotters/networkplotter.py

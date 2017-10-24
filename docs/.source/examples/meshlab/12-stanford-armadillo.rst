@@ -14,14 +14,14 @@ The Stanford Armadillo
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`mesh-stanford-armadillo.py </_examples/mesh-stanford-armadillo.py>`
+* :download:`mesh-stanford-armadillo.py </../../examples/mesh-stanford-armadillo.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-stanford-armadillo.py
+.. literalinclude:: /../../examples/mesh-stanford-armadillo.py
 
 .. code-block:: none
     

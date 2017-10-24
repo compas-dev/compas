@@ -44,6 +44,57 @@
 <dt id="compas.visualization.Plotter">
 <em class="property">class </em><code class="descclassname">compas.visualization.</code><code class="descname">Plotter</code><span class="sig-paren">(</span><em>figsize=(16.0</em>, <em>12.0)</em>, <em>dpi=100.0</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/visualization/plotters/plotter.html#Plotter"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal">object</code></a></p>
+<p>Definition of a plotter object based on matplotlib.</p>
+<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
+<col class="field-name"/>
+<col class="field-body"/>
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>figsize</strong> (<em>tuple, optional [16.0, 12.0]</em>) – The size of the plot in inches (width, length).</li>
+<li><strong>dpi</strong> (<em>float, optional [100.0]</em>) – The resolution of the plot.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.figure_size">
+<code class="descname">figure_size</code></dt>
+<dd><p><em>tuple</em> – The size of the plot in inches (width, length).</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.figure_dpi">
+<code class="descname">figure_dpi</code></dt>
+<dd><p><em>float</em> – The resolution of the plot.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.figure_bgcolor">
+<code class="descname">figure_bgcolor</code></dt>
+<dd><p><em>str, tuple, dict</em> – The color specififcation for the figure background.
+Colors should be specified in the form of a string (hex colors) or
+as a tuple of RGB components.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.axes_xlabel">
+<code class="descname">axes_xlabel</code></dt>
+<dd><p><em>str</em> – The label on the X axis of the plot.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.axes_ylabel">
+<code class="descname">axes_ylabel</code></dt>
+<dd><p><em>str</em> – The label on the Y axis of the plot.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.Plotter.defaults">
+<code class="descname">defaults</code></dt>
+<dd><p><em>dict</em> – Dictionary containing default attributes for points, edges, lines, text
+and polygons.</p>
+</dd></dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li>Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science &amp; Engineering (9) 3, p.90-95.
+Available at: <a class="reference external" href="http://ieeexplore.ieee.org/document/4160265/citations">http://ieeexplore.ieee.org/document/4160265/citations</a></li>
+</ul>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -55,43 +106,34 @@
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.clear_collection.html" title="compas.visualization.Plotter.clear_collection"><code class="xref py py-obj docutils literal">clear_collection</code></a>(collection)</td>
-<td></td>
+<td>Clears a matplotlib collection object.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_arrows.html" title="compas.visualization.Plotter.draw_arrows"><code class="xref py py-obj docutils literal">draw_arrows</code></a>(arrows)</td>
+<td>Draws arrows on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_lines.html" title="compas.visualization.Plotter.draw_lines"><code class="xref py py-obj docutils literal">draw_lines</code></a>(lines)</td>
-<td></td>
+<td>Draws lines on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_points.html" title="compas.visualization.Plotter.draw_points"><code class="xref py py-obj docutils literal">draw_points</code></a>(points)</td>
-<td></td>
+<td>Draws points on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_polygons.html" title="compas.visualization.Plotter.draw_polygons"><code class="xref py py-obj docutils literal">draw_polygons</code></a>(polygons)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_xarrows.html" title="compas.visualization.Plotter.draw_xarrows"><code class="xref py py-obj docutils literal">draw_xarrows</code></a>(arrows)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_xlines.html" title="compas.visualization.Plotter.draw_xlines"><code class="xref py py-obj docutils literal">draw_xlines</code></a>(lines)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_xpoints.html" title="compas.visualization.Plotter.draw_xpoints"><code class="xref py py-obj docutils literal">draw_xpoints</code></a>(points)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.draw_xpolygons.html" title="compas.visualization.Plotter.draw_xpolygons"><code class="xref py py-obj docutils literal">draw_xpolygons</code></a>(polygons)</td>
-<td></td>
+<td>Draws polygons on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.save.html" title="compas.visualization.Plotter.save"><code class="xref py py-obj docutils literal">save</code></a>(filepath, \*\*kwargs)</td>
-<td></td>
+<td>Saves the plot on a file.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.show.html" title="compas.visualization.Plotter.show"><code class="xref py py-obj docutils literal">show</code></a>()</td>
-<td></td>
+<td>Displays the plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update.html" title="compas.visualization.Plotter.update"><code class="xref py py-obj docutils literal">update</code></a>([pause])</td>
-<td></td>
+<td>Updates and pauses the plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update_linecollection.html" title="compas.visualization.Plotter.update_linecollection"><code class="xref py py-obj docutils literal">update_linecollection</code></a>(collection, segments)</td>
-<td></td>
+<td>Updates a line collection.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update_pointcollection.html" title="compas.visualization.Plotter.update_pointcollection"><code class="xref py py-obj docutils literal">update_pointcollection</code></a>(collection, centers)</td>
-<td></td>
+<td>Updates the location and radii of a point collection.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.Plotter.update_polygoncollection.html" title="compas.visualization.Plotter.update_polygoncollection"><code class="xref py py-obj docutils literal">update_polygoncollection</code></a>(collection, polygons)</td>
 <td></td>
@@ -106,19 +148,19 @@
 </colgroup>
 <tbody valign="top">
 <tr class=""><td><code class="xref py py-obj docutils literal">axes</code></td>
-<td></td>
+<td>Returns the axes subplot matplotlib object.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">bgcolor</code></td>
-<td></td>
+<td>Returns the background color.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">figure</code></td>
-<td></td>
+<td>Returns the matplotlib figure instance.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">interactive</code></td>
-<td></td>
+<td>Returns a boolean describing of the plot is interactive.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">title</code></td>
-<td></td>
+<td>Returns the title of the plot.</td>
 </tr>
 </tbody>
 </table>
@@ -166,7 +208,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -187,7 +229,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

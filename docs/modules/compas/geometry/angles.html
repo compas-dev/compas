@@ -36,9 +36,7 @@
 <a accesskey="U" class="breadcrumb-item" href="../geometry.html">compas.geometry</a>
 </nav>
 <h1>Source code for compas.geometry.angles</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="sd">""""""</span>
-
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span>
@@ -84,7 +82,7 @@
 
 
 <div class="viewcode-block" id="angle_smallest_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angle_smallest_vectors.html#compas.geometry.angle_smallest_vectors">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="sd">"""Compute the smallest angle (radians) between two vectors.</span>
+    <span class="sd">"""Compute the smallest angle between two vectors.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -110,7 +108,7 @@
 
 
 <div class="viewcode-block" id="angle_smallest_vectors_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angle_smallest_vectors_xy.html#compas.geometry.angle_smallest_vectors_xy">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest_vectors_xy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="sd">"""Compute the smallest angle (radians) between the XY components of two vectors lying in the XY-plane.</span>
+    <span class="sd">"""Compute the smallest angle between the XY components of two vectors.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -136,7 +134,7 @@
 
 
 <div class="viewcode-block" id="angle_smallest_vectors_degrees"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angle_smallest_vectors_degrees.html#compas.geometry.angle_smallest_vectors_degrees">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest_vectors_degrees</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="sd">"""Compute the smallest angle (degrees) between two vectors.</span>
+    <span class="sd">"""Compute the smallest angle in degrees between two vectors.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -160,7 +158,7 @@
 
 
 <div class="viewcode-block" id="angle_smallest_vectors_degrees_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angle_smallest_vectors_degrees_xy.html#compas.geometry.angle_smallest_vectors_degrees_xy">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest_vectors_degrees_xy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="sd">"""Compute the smallest angle (degrees) between the XY components of two vectors lying in the XY-plane.</span>
+    <span class="sd">"""Compute the smallest angle in degrees between the XY components of two vectors.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -180,7 +178,7 @@
 
 
 <div class="viewcode-block" id="angle_smallest_points"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angle_smallest_points.html#compas.geometry.angle_smallest_points">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest_points</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">r"""Compute the smallest angle (radians) between the vectors defined by three points.</span>
+    <span class="sd">r"""Compute the smallest angle between the vectors defined by three points.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -215,8 +213,7 @@
 
 
 <div class="viewcode-block" id="angle_smallest_points_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angle_smallest_points_xy.html#compas.geometry.angle_smallest_points_xy">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest_points_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">r"""Compute the smallest angle defined by the XY components of three points lying in</span>
-<span class="sd">       the XY-plane where the angle is computed at point A in the triangle ABC</span>
+    <span class="sd">r"""Compute the smallest angle between the vectors defined by the XY components of three points.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -233,8 +230,8 @@
 <span class="sd">        The smallest angle between the vectors.</span>
 <span class="sd">        The angle is always positive.</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    The vectors are defined in the following way</span>
 
 <span class="sd">    .. math::</span>
@@ -252,7 +249,7 @@
 
 
 <div class="viewcode-block" id="angle_smallest_points_degrees"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angle_smallest_points_degrees.html#compas.geometry.angle_smallest_points_degrees">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest_points_degrees</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">r"""Compute the smallest angle (degrees) between the vectors defined by three points.</span>
+    <span class="sd">r"""Compute the smallest angle in degrees between the vectors defined by three points.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -278,15 +275,12 @@
 <span class="sd">        \mathbf{u} = \mathbf{b} - \mathbf{a} \\</span>
 <span class="sd">        \mathbf{v} = \mathbf{c} - \mathbf{a}</span>
 
-<span class="sd">    Z components may be provided, but are simply ignored.</span>
-
 <span class="sd">    """</span>
     <span class="k">return</span> <span class="n">degrees</span><span class="p">(</span><span class="n">angle_smallest_points</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="angle_smallest_points_degrees_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angle_smallest_points_degrees_xy.html#compas.geometry.angle_smallest_points_degrees_xy">[docs]</a><span class="k">def</span> <span class="nf">angle_smallest_points_degrees_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">"""Compute the smallest angle defined by the XY components of three points lying in</span>
-<span class="sd">       the XY-plane where the angle is computed at point A in the triangle ABC</span>
+    <span class="sd">r"""Compute the smallest angle in degrees between the vectors defined by the XY components of three points.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -297,10 +291,21 @@
 <span class="sd">    c : sequence of float)</span>
 <span class="sd">        XY(Z) coordinates of the second end point.</span>
 
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The vectors are defined in the following way</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{u} = \mathbf{b} - \mathbf{a} \\</span>
+<span class="sd">        \mathbf{v} = \mathbf{c} - \mathbf{a}</span>
+
+<span class="sd">    Z components may be provided, but are simply ignored.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    float</span>
-<span class="sd">        The smallest angle (degrees) between the vectors ``ab`` and ``ac`` in the XY plane.</span>
+<span class="sd">        The smallest angle between the vectors ``ab`` and ``ac`` in the XY plane.</span>
 <span class="sd">        The angle is always positive.</span>
 
 <span class="sd">    """</span>
@@ -309,7 +314,7 @@
 
 
 <div class="viewcode-block" id="angles_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angles_vectors.html#compas.geometry.angles_vectors">[docs]</a><span class="k">def</span> <span class="nf">angles_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">"""Compute the the 2 angles (radians) formed by a pair of vectors.</span>
+    <span class="sd">"""Compute the the 2 angles formed by a pair of vectors.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -335,9 +340,8 @@
     <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="mf">360.</span> <span class="o">-</span> <span class="n">a</span></div>
 
 
-
 <div class="viewcode-block" id="angles_vectors_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angles_vectors_xy.html#compas.geometry.angles_vectors_xy">[docs]</a><span class="k">def</span> <span class="nf">angles_vectors_xy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="sd">"""Compute the angles between the XY components of two vectors lying in the XY-plane.</span>
+    <span class="sd">"""Compute the angles between the XY components of two vectors.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -352,6 +356,10 @@
 <span class="sd">        The two angles.</span>
 <span class="sd">        The smallest angle is returned first.</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Z components may be provided, but are simply ignored.</span>
+
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt;</span>
@@ -362,7 +370,7 @@
 
 
 <div class="viewcode-block" id="angles_vectors_degrees"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angles_vectors_degrees.html#compas.geometry.angles_vectors_degrees">[docs]</a><span class="k">def</span> <span class="nf">angles_vectors_degrees</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="sd">"""Compute the the 2 angles (degrees) formed by a pair of vectors.</span>
+    <span class="sd">"""Compute the the two angles in degrees between two vectors.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -387,12 +395,36 @@
 
 
 <div class="viewcode-block" id="angles_vectors_degrees_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angles_vectors_degrees_xy.html#compas.geometry.angles_vectors_degrees_xy">[docs]</a><span class="k">def</span> <span class="nf">angles_vectors_degrees_xy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">"""Compute the the two angles in degrees between the XY components of two vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : sequence of float</span>
+<span class="sd">        XY(Z) components of the first vector.</span>
+<span class="sd">    v : sequence of float</span>
+<span class="sd">        XY(Z) components of the second vector.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        The two angles in degrees.</span>
+<span class="sd">        The smallest angle is returned first.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Z components may be provided, but are simply ignored.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">angle_smallest_vectors_degrees_xy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="mf">360.</span> <span class="o">-</span> <span class="n">a</span></div>
 
 
 <div class="viewcode-block" id="angles_points"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angles_points.html#compas.geometry.angles_points">[docs]</a><span class="k">def</span> <span class="nf">angles_points</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">r"""Compute the two angles (radians) define by three points.</span>
+    <span class="sd">r"""Compute the two angles between two vectors defined by three points.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -409,8 +441,45 @@
 <span class="sd">        The two angles in radians.</span>
 <span class="sd">        The smallest angle is returned first.</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The vectors are defined in the following way</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{u} = \mathbf{b} - \mathbf{a} \\</span>
+<span class="sd">        \mathbf{v} = \mathbf{c} - \mathbf{a}</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">angles_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="angles_points_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angles_points_xy.html#compas.geometry.angles_points_xy">[docs]</a><span class="k">def</span> <span class="nf">angles_points_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="sd">r"""Compute the two angles between the two vectors defined by the XY components of three points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : sequence of float)</span>
+<span class="sd">        XY(Z) coordinates.</span>
+<span class="sd">    b : sequence of float)</span>
+<span class="sd">        XY(Z) coordinates.</span>
+<span class="sd">    c : sequence of float)</span>
+<span class="sd">        XY(Z) coordinates.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        The two angles in degrees.</span>
+<span class="sd">        The smallest angle is returned first.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    The vectors are defined in the following way</span>
 
 <span class="sd">    .. math::</span>
@@ -425,19 +494,13 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 
 <span class="sd">    """</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">angles_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="angles_points_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angles_points_xy.html#compas.geometry.angles_points_xy">[docs]</a><span class="k">def</span> <span class="nf">angles_points_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">angles_vectors_xy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="angles_points_degrees"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angles_points_degrees.html#compas.geometry.angles_points_degrees">[docs]</a><span class="k">def</span> <span class="nf">angles_points_degrees</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">"""Compute the two angles (degrees) define by three points.</span>
+    <span class="sd">"""Compute the two angles in degrees between two vectors defined by three points.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -454,8 +517,43 @@
 <span class="sd">        The two angles in degrees.</span>
 <span class="sd">        The smallest angle is returned first.</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The vectors are defined in the following way</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{u} = \mathbf{b} - \mathbf{a} \\</span>
+<span class="sd">        \mathbf{v} = \mathbf{c} - \mathbf{a}</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">degrees</span><span class="p">(</span><span class="n">angles_points</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="angles_points_degrees_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angles_points_degrees_xy.html#compas.geometry.angles_points_degrees_xy">[docs]</a><span class="k">def</span> <span class="nf">angles_points_degrees_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="sd">"""Compute the two angles in degrees between two vectors defined by the XY components of three points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : sequence of float)</span>
+<span class="sd">        XY(Z) coordinates.</span>
+<span class="sd">    b : sequence of float)</span>
+<span class="sd">        XY(Z) coordinates.</span>
+<span class="sd">    c : sequence of float)</span>
+<span class="sd">        XY(Z) coordinates.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        The two angles in degrees.</span>
+<span class="sd">        The smallest angle is returned first.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    The vectors are defined in the following way</span>
 
 <span class="sd">    .. math::</span>
@@ -470,13 +568,7 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 
 <span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">degrees</span><span class="p">(</span><span class="n">angles_points</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span></div>
-
-
-<div class="viewcode-block" id="angles_points_degrees_xy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.angles_points_degrees_xy.html#compas.geometry.angles_points_degrees_xy">[docs]</a><span class="k">def</span> <span class="nf">angles_points_degrees_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">degrees</span><span class="p">(</span><span class="n">angles_points_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span></div>
-
-
 
 
 <span class="c1"># ==============================================================================</span>
@@ -524,7 +616,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

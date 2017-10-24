@@ -78,11 +78,11 @@ matlab.eval("l = sqrt(sum(uv .^ 2, 2));")
 
 # get the result back
 
-l = matlab.get_vector('l')
+l = matlab.get('l')
 
 # visualise lenghts as edge labels
 
-compas_rhino.draw_network(
+compas_rhino.network_draw_edge_labels(
     network,
-    edgelabel={(u, v): '%.1f' % l[i] for i, (u, v) in enumerate(network.edges())}
+    text={(u, v): '{:.1f}'.format(l[i][0]) for i, (u, v) in enumerate(network.edges())}
 )

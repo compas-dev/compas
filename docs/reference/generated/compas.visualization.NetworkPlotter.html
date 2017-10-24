@@ -44,6 +44,45 @@
 <dt id="compas.visualization.NetworkPlotter">
 <em class="property">class </em><code class="descclassname">compas.visualization.</code><code class="descname">NetworkPlotter</code><span class="sig-paren">(</span><em>network</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/visualization/plotters/networkplotter.html#NetworkPlotter"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal">compas.visualization.plotters.plotter.Plotter</code></p>
+<p>Definition of a plotter object based on matplotlib for compas Networks.</p>
+<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
+<col class="field-name"/>
+<col class="field-body"/>
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>network</strong> (<em>object</em>) – The network to plot.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="compas.visualization.NetworkPlotter.title">
+<code class="descname">title</code></dt>
+<dd><p><em>str</em> – Title of the plot.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.NetworkPlotter.network">
+<code class="descname">network</code></dt>
+<dd><p><em>object</em> – The network to plot.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.NetworkPlotter.vertexcollection">
+<code class="descname">vertexcollection</code></dt>
+<dd><p><em>object</em> – The matplotlib collection for the network vertices.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.NetworkPlotter.edgecollection">
+<code class="descname">edgecollection</code></dt>
+<dd><p><em>object</em> – The matplotlib collection for the network edges.</p>
+</dd></dl>
+<dl class="attribute">
+<dt id="compas.visualization.NetworkPlotter.defaults">
+<code class="descname">defaults</code></dt>
+<dd><p><em>dict</em> – Dictionary containing default attributes for vertices and edges.</p>
+</dd></dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li>Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science &amp; Engineering (9) 3, p.90-95.
+Available at: <a class="reference external" href="http://ieeexplore.ieee.org/document/4160265/citations">http://ieeexplore.ieee.org/document/4160265/citations</a></li>
+</ul>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -55,70 +94,58 @@
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear.html" title="compas.visualization.NetworkPlotter.clear"><code class="xref py py-obj docutils literal">clear</code></a>()</td>
-<td></td>
+<td>Clears the network plotter edges and vertices.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear_collection.html" title="compas.visualization.NetworkPlotter.clear_collection"><code class="xref py py-obj docutils literal">clear_collection</code></a>(collection)</td>
-<td></td>
+<td>Clears a matplotlib collection object.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear_edges.html" title="compas.visualization.NetworkPlotter.clear_edges"><code class="xref py py-obj docutils literal">clear_edges</code></a>()</td>
-<td></td>
+<td>Clears the network object edges.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear_vertices.html" title="compas.visualization.NetworkPlotter.clear_vertices"><code class="xref py py-obj docutils literal">clear_vertices</code></a>()</td>
-<td></td>
+<td>Clears the netwotk plotter vertices.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_arrows.html" title="compas.visualization.NetworkPlotter.draw_arrows"><code class="xref py py-obj docutils literal">draw_arrows</code></a>(arrows)</td>
+<td>Draws arrows on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_edges.html" title="compas.visualization.NetworkPlotter.draw_edges"><code class="xref py py-obj docutils literal">draw_edges</code></a>([keys, width, color, text, ...])</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_faces.html" title="compas.visualization.NetworkPlotter.draw_faces"><code class="xref py py-obj docutils literal">draw_faces</code></a>([keys, text, facecolor, ...])</td>
-<td></td>
+<td>Draws the network edges.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_lines.html" title="compas.visualization.NetworkPlotter.draw_lines"><code class="xref py py-obj docutils literal">draw_lines</code></a>(lines)</td>
-<td></td>
+<td>Draws lines on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_points.html" title="compas.visualization.NetworkPlotter.draw_points"><code class="xref py py-obj docutils literal">draw_points</code></a>(points)</td>
-<td></td>
+<td>Draws points on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_polygons.html" title="compas.visualization.NetworkPlotter.draw_polygons"><code class="xref py py-obj docutils literal">draw_polygons</code></a>(polygons)</td>
-<td></td>
+<td>Draws polygons on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_vertices.html" title="compas.visualization.NetworkPlotter.draw_vertices"><code class="xref py py-obj docutils literal">draw_vertices</code></a>([keys, radius, text, ...])</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_xarrows.html" title="compas.visualization.NetworkPlotter.draw_xarrows"><code class="xref py py-obj docutils literal">draw_xarrows</code></a>(arrows)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_xlines.html" title="compas.visualization.NetworkPlotter.draw_xlines"><code class="xref py py-obj docutils literal">draw_xlines</code></a>(lines)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_xpoints.html" title="compas.visualization.NetworkPlotter.draw_xpoints"><code class="xref py py-obj docutils literal">draw_xpoints</code></a>(points)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_xpolygons.html" title="compas.visualization.NetworkPlotter.draw_xpolygons"><code class="xref py py-obj docutils literal">draw_xpolygons</code></a>(polygons)</td>
-<td></td>
+<td>Draws the network vertices.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.save.html" title="compas.visualization.NetworkPlotter.save"><code class="xref py py-obj docutils literal">save</code></a>(filepath, \*\*kwargs)</td>
-<td></td>
+<td>Saves the plot on a file.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.show.html" title="compas.visualization.NetworkPlotter.show"><code class="xref py py-obj docutils literal">show</code></a>()</td>
-<td></td>
+<td>Displays the plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update.html" title="compas.visualization.NetworkPlotter.update"><code class="xref py py-obj docutils literal">update</code></a>([pause])</td>
-<td></td>
+<td>Updates and pauses the plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_edges.html" title="compas.visualization.NetworkPlotter.update_edges"><code class="xref py py-obj docutils literal">update_edges</code></a>()</td>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_linecollection.html" title="compas.visualization.NetworkPlotter.update_linecollection"><code class="xref py py-obj docutils literal">update_linecollection</code></a>(collection, segments)</td>
-<td></td>
+<td>Updates a line collection.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_pointcollection.html" title="compas.visualization.NetworkPlotter.update_pointcollection"><code class="xref py py-obj docutils literal">update_pointcollection</code></a>(collection, centers)</td>
-<td></td>
+<td>Updates the location and radii of a point collection.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_polygoncollection.html" title="compas.visualization.NetworkPlotter.update_polygoncollection"><code class="xref py py-obj docutils literal">update_polygoncollection</code></a>(collection, polygons)</td>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_vertices.html" title="compas.visualization.NetworkPlotter.update_vertices"><code class="xref py py-obj docutils literal">update_vertices</code></a>()</td>
-<td></td>
+<td>Updates the plotter vertex collection based on the network.</td>
 </tr>
 </tbody>
 </table>
@@ -130,19 +157,19 @@
 </colgroup>
 <tbody valign="top">
 <tr class=""><td><code class="xref py py-obj docutils literal">axes</code></td>
-<td></td>
+<td>Returns the axes subplot matplotlib object.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">bgcolor</code></td>
-<td></td>
+<td>Returns the background color.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">figure</code></td>
-<td></td>
+<td>Returns the matplotlib figure instance.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">interactive</code></td>
-<td></td>
+<td>Returns a boolean describing of the plot is interactive.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">title</code></td>
-<td></td>
+<tr class=""><td><a class="reference internal" href="" title="compas.visualization.NetworkPlotter.title"><code class="xref py py-obj docutils literal">title</code></a></td>
+<td>Returns the title of the plot.</td>
 </tr>
 </tbody>
 </table>
@@ -190,7 +217,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -211,7 +238,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

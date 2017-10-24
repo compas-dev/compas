@@ -13,7 +13,7 @@
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
 <link href="generated/compas.visualization.MeshPlotter.__init__.html" rel="next" title="MeshPlotter.__init__"/>
-<link href="generated/compas.visualization.NetworkPlotter.update_vertices.html" rel="prev" title="NetworkPlotter.update_vertices"/>
+<link href="generated/compas.visualization.FaceNetworkPlotter.update_vertices.html" rel="prev" title="FaceNetworkPlotter.update_vertices"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -58,7 +58,7 @@
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_collection.html" title="compas.visualization.MeshPlotter.clear_collection"><code class="xref py py-obj docutils literal">clear_collection</code></a>(collection)</td>
-<td></td>
+<td>Clears a matplotlib collection object.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_edges.html" title="compas.visualization.MeshPlotter.clear_edges"><code class="xref py py-obj docutils literal">clear_edges</code></a>()</td>
 <td></td>
@@ -69,6 +69,9 @@
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_vertices.html" title="compas.visualization.MeshPlotter.clear_vertices"><code class="xref py py-obj docutils literal">clear_vertices</code></a>()</td>
 <td></td>
 </tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_arrows.html" title="compas.visualization.MeshPlotter.draw_arrows"><code class="xref py py-obj docutils literal">draw_arrows</code></a>(arrows)</td>
+<td>Draws arrows on a 2D plot.</td>
+</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_edges.html" title="compas.visualization.MeshPlotter.draw_edges"><code class="xref py py-obj docutils literal">draw_edges</code></a>([keys, width, color, text, ...])</td>
 <td></td>
 </tr>
@@ -76,37 +79,25 @@
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_lines.html" title="compas.visualization.MeshPlotter.draw_lines"><code class="xref py py-obj docutils literal">draw_lines</code></a>(lines)</td>
-<td></td>
+<td>Draws lines on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_points.html" title="compas.visualization.MeshPlotter.draw_points"><code class="xref py py-obj docutils literal">draw_points</code></a>(points)</td>
-<td></td>
+<td>Draws points on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_polygons.html" title="compas.visualization.MeshPlotter.draw_polygons"><code class="xref py py-obj docutils literal">draw_polygons</code></a>(polygons)</td>
-<td></td>
+<td>Draws polygons on a 2D plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_vertices.html" title="compas.visualization.MeshPlotter.draw_vertices"><code class="xref py py-obj docutils literal">draw_vertices</code></a>([keys, radius, text, ...])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_xarrows.html" title="compas.visualization.MeshPlotter.draw_xarrows"><code class="xref py py-obj docutils literal">draw_xarrows</code></a>(arrows)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_xlines.html" title="compas.visualization.MeshPlotter.draw_xlines"><code class="xref py py-obj docutils literal">draw_xlines</code></a>(lines)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_xpoints.html" title="compas.visualization.MeshPlotter.draw_xpoints"><code class="xref py py-obj docutils literal">draw_xpoints</code></a>(points)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_xpolygons.html" title="compas.visualization.MeshPlotter.draw_xpolygons"><code class="xref py py-obj docutils literal">draw_xpolygons</code></a>(polygons)</td>
-<td></td>
-</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.save.html" title="compas.visualization.MeshPlotter.save"><code class="xref py py-obj docutils literal">save</code></a>(filepath, \*\*kwargs)</td>
-<td></td>
+<td>Saves the plot on a file.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.show.html" title="compas.visualization.MeshPlotter.show"><code class="xref py py-obj docutils literal">show</code></a>()</td>
-<td></td>
+<td>Displays the plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update.html" title="compas.visualization.MeshPlotter.update"><code class="xref py py-obj docutils literal">update</code></a>([pause])</td>
-<td></td>
+<td>Updates and pauses the plot.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_edges.html" title="compas.visualization.MeshPlotter.update_edges"><code class="xref py py-obj docutils literal">update_edges</code></a>()</td>
 <td></td>
@@ -115,10 +106,10 @@
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_linecollection.html" title="compas.visualization.MeshPlotter.update_linecollection"><code class="xref py py-obj docutils literal">update_linecollection</code></a>(collection, segments)</td>
-<td></td>
+<td>Updates a line collection.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_pointcollection.html" title="compas.visualization.MeshPlotter.update_pointcollection"><code class="xref py py-obj docutils literal">update_pointcollection</code></a>(collection, centers)</td>
-<td></td>
+<td>Updates the location and radii of a point collection.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_polygoncollection.html" title="compas.visualization.MeshPlotter.update_polygoncollection"><code class="xref py py-obj docutils literal">update_polygoncollection</code></a>(collection, polygons)</td>
 <td></td>
@@ -136,26 +127,26 @@
 </colgroup>
 <tbody valign="top">
 <tr class=""><td><code class="xref py py-obj docutils literal">axes</code></td>
-<td></td>
+<td>Returns the axes subplot matplotlib object.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">bgcolor</code></td>
-<td></td>
+<td>Returns the background color.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">figure</code></td>
-<td></td>
+<td>Returns the matplotlib figure instance.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">interactive</code></td>
-<td></td>
+<td>Returns a boolean describing of the plot is interactive.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">title</code></td>
-<td></td>
+<td>Returns the title of the plot.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="generated/compas.visualization.NetworkPlotter.update_vertices.html" role="button">NetworkPlotter.update_vertices</a>
+<a class="btn btn-primary compas-prev" href="generated/compas.visualization.FaceNetworkPlotter.update_vertices.html" role="button">FaceNetworkPlotter.update_vertices</a>
 <a class="btn btn-primary compas-next" href="generated/compas.visualization.MeshPlotter.__init__.html" role="button">MeshPlotter.__init__</a>
 </nav>
 </main>
@@ -196,7 +187,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -217,7 +208,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

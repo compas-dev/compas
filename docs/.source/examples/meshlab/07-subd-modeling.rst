@@ -14,12 +14,12 @@ Subd mesh modeling
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`mesh-subd-modeling.py </_examples/mesh-subd-modeling.py>`
+* :download:`mesh-subd-modeling.py </../../examples/mesh-subd-modeling.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-subd-modeling.py
+.. literalinclude:: /../../examples/mesh-subd-modeling.py
 

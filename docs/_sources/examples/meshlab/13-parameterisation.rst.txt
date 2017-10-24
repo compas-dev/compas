@@ -14,7 +14,7 @@ Mesh parametrisation
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`mesh-parameterisation.py </_examples/mesh-parameterisation.py>`
+* :download:`mesh-parameterisation.py </../../examples/mesh-parameterisation.py>`
 
 .. raw:: html
 
@@ -28,4 +28,4 @@ Mesh parametrisation
     of the laplacian mesh editing framework described in
     https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-editing/laplacian-mesh-editing.pdf.
 
-.. literalinclude:: /_examples/mesh-parameterisation.py
+.. literalinclude:: /../../examples/mesh-parameterisation.py

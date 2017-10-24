@@ -21,4 +21,4 @@ Table of Contents
    examples
    tutorial
    reference
-   notes
+   workshops

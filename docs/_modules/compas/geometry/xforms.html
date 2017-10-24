@@ -44,8 +44,11 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">cos</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sin</span>
 
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">homogenise_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">dehomogenise_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">normalize_vector</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">multiply_matrices</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">transpose_matrix</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele &lt;vanmelet@ethz.ch&gt;'</span><span class="p">,</span>
@@ -76,19 +79,10 @@
 <span class="c1"># - Matrix.factory</span>
 <span class="c1"># - ...</span>
 
-<span class="k">def</span> <span class="nf">_homogenize</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">points</span>
-
-
-<span class="k">def</span> <span class="nf">_dehomogenize</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
-
-
 <div class="viewcode-block" id="transform"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.transform.html#compas.geometry.transform">[docs]</a><span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="n">_homogenize</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">homogenise_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
     <span class="n">points</span> <span class="o">=</span> <span class="n">transpose_matrix</span><span class="p">(</span><span class="n">multiply_matrices</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">transpose_matrix</span><span class="p">(</span><span class="n">points</span><span class="p">)))</span>
-    <span class="k">return</span> <span class="n">_dehomogenize</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">dehomogenise_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="translation_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.translation_matrix.html#compas.geometry.translation_matrix">[docs]</a><span class="k">def</span> <span class="nf">translation_matrix</span><span class="p">(</span><span class="n">direction</span><span class="p">):</span>
@@ -226,7 +220,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -244,7 +238,7 @@
             
 
             
-                Last updated on Oct 22, 2017.
+                Last updated on Oct 24, 2017.
             
 
             

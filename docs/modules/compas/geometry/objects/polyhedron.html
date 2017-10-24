@@ -65,12 +65,12 @@
 
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyhedron.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Polyhedron.__init__.html#compas.geometry.Polyhedron.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">fcount</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyhedron.generate"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Polyhedron.generate.html#compas.geometry.Polyhedron.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">fcount</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">fcount</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Tetrahedron</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">fcount</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
@@ -81,7 +81,7 @@
             <span class="k">return</span> <span class="n">Dodecahedron</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">fcount</span> <span class="o">==</span> <span class="mi">20</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Icosahedron</span><span class="p">()</span>
-        <span class="k">raise</span> <span class="ne">Exception</span></div>
+        <span class="k">raise</span> <span class="ne">Exception</span></div></div>
 
 
 <span class="c1">#     1</span>
@@ -331,7 +331,7 @@
             
 
             
-                Last updated on Oct 19, 2017.
+                Last updated on Oct 23, 2017.
             
 
             

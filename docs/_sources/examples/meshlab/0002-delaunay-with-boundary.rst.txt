@@ -18,13 +18,13 @@ Delaunay triangulation with boundary
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`example-mesh-delaunay.3dm </_examples/example-mesh-delaunay.3dm>`
-* :download:`mesh-delaunay-with-boundary.py </_examples/mesh-delaunay-with-boundary.py>`
+* :download:`mesh-delaunay.3dm </../../examples/mesh-delaunay.3dm>`
+* :download:`mesh-delaunay-with-boundary.py </../../examples/mesh-delaunay-with-boundary.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-delaunay-with-boundary.py
+.. literalinclude:: /../../examples/mesh-delaunay-with-boundary.py
 

@@ -14,13 +14,13 @@ Mesh smoothing on a surface
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`example-mesh-smoothing-on-surface.3dm </_examples/example-mesh-smoothing-on-surface.3dm>`
-* :download:`mesh-smoothing-on-surface.py </_examples/mesh-smoothing-on-surface.py>`
+* :download:`mesh-smoothing-on-surface.3dm </../../examples/mesh-smoothing-on-surface.3dm>`
+* :download:`mesh-smoothing-on-surface.py </../../examples/mesh-smoothing-on-surface.py>`
 
 .. raw:: html
 
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-smoothing-on-surface.py
+.. literalinclude:: /../../examples/mesh-smoothing-on-surface.py
 
