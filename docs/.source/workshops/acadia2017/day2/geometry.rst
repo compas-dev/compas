@@ -18,21 +18,21 @@ The full geometry reference can be found here:
 * :mod:`compas.geometry`
 
 .. note::
-	Besides many basic geometry functions such as:
-	* :mod:`compas.geometry.add_vectors`
-	* :mod:`compas.geometry.subtract_vectors`
-	* :mod:`compas.geometry.intersection_line_plane`
-	* :mod:`compas.geometry.closest_point_on_polyline`
-	* :mod:`compas.geometry.is_point_in_triangle`
-	* ...
+    Besides many basic geometry functions such as:
+    * :mod:`compas.geometry.add_vectors`
+    * :mod:`compas.geometry.subtract_vectors`
+    * :mod:`compas.geometry.intersection_line_plane`
+    * :mod:`compas.geometry.closest_point_on_polyline`
+    * :mod:`compas.geometry.is_point_in_triangle`
+    * ...
 
-	The geometry package also includes geometry 
-	algorithms such as:
-	* :mod:`compas.geometry.planarize_faces`
-	* :mod:`compas.geometry.smooth_centroid`
-	* :mod:`compas.geometry.smooth_area`
-	* :mod:`compas.geometry.discrete_coons_patch`
-	* ...	
+    The geometry package also includes geometry 
+    algorithms such as:
+    * :mod:`compas.geometry.planarize_faces`
+    * :mod:`compas.geometry.smooth_centroid`
+    * :mod:`compas.geometry.smooth_area`
+    * :mod:`compas.geometry.discrete_coons_patch`
+    * ...   
 
 
 Object-Oriented Interface vs Functions
@@ -45,13 +45,13 @@ The geometry package features an object-oriented interface:
 
     from compas.geometry import Vector
 
-	u = Vector(1.0, 0.0, 0.0)
-	v = Vector(0.0, 1.0, 0.0)
+    u = Vector(1.0, 0.0, 0.0)
+    v = Vector(0.0, 1.0, 0.0)
 
-	r = u + v
+    r = u + v
 
-	print(r)
-	print(r.length)
+    print(r)
+    print(r.length)
 
 
 The same vector calculations can be computed using functions and 
@@ -60,16 +60,16 @@ lists (or tuples) as vectors:
 .. plot::
     :include-source:
 
-	from compas.geometry import add_vectors
-	from compas.geometry import length_vector
+    from compas.geometry import add_vectors
+    from compas.geometry import length_vector
 
-	u = (1.0, 0.0, 0.0)
-	v = (0.0, 1.0, 0.0)
+    u = (1.0, 0.0, 0.0)
+    v = (0.0, 1.0, 0.0)
 
-	r = add_vectors(u, v)
+    r = add_vectors(u, v)
 
-	print(r)
-	print(length_vector(r))
+    print(r)
+    print(length_vector(r))
 
 
 Exercise: 
@@ -80,12 +80,12 @@ resultant. Compare the preformance of an object-based and function-based method.
 
 .. seealso::
 
-	* :meth:`compas.geometry.Vector.from_start_end`
-	* :meth:`compas.geometry.Vector.from_start_end`
+    * :meth:`compas.geometry.Vector.from_start_end`
+    * :meth:`compas.geometry.Vector.from_start_end`
 
-	* :func:`compas.geometry.vector_from_points`
-	* :func:`compas.geometry.add_vectors`
-	* :func:`compas.geometry.sum_vectors`
+    * :func:`compas.geometry.vector_from_points`
+    * :func:`compas.geometry.add_vectors`
+    * :func:`compas.geometry.sum_vectors`
 
 
 Solution:
@@ -94,60 +94,60 @@ Solution:
     :include-source:
 
 
-	from random import random as rnd
-	import time
+    from random import random as rnd
+    import time
 
-	from compas.geometry import Vector
+    from compas.geometry import Vector
 
-	from compas.geometry import add_vectors
-	from compas.geometry import sum_vectors
-	from compas.geometry import vector_from_points
-
-
-	# create random points
-	points = [(rnd(), rnd(), rnd()) for _ in range(10000)]
-	# define origin
-	origin = [1., 2., 3.]
+    from compas.geometry import add_vectors
+    from compas.geometry import sum_vectors
+    from compas.geometry import vector_from_points
 
 
-	# Object-based method
-	tic = time.time()
-	#-------------------------
-	vecs = [Vector.from_start_end(origin, pt) for pt in points]
-	res = Vector(0., 0., 0.)
-	for v in vecs:
-	    res += v
-	#-------------------------
-	toc = time.time()
-	print('{0} seconds to compute for object-based method'.format(toc - tic))
-	print(res)
-	print('------------------')
+    # create random points
+    points = [(rnd(), rnd(), rnd()) for _ in range(10000)]
+    # define origin
+    origin = [1., 2., 3.]
 
 
-	# Function-based method A
-	tic = time.time()
-	#-------------------------
-	vecs = [vector_from_points(origin, pt) for pt in points]
-	res = [0., 0., 0.]
-	for v in vecs:
-	    res = add_vectors(res, v)
-	#-------------------------
-	toc = time.time()
-	print('{0} seconds to compute for function-based method A'.format(toc - tic))
-	print(res)
-	print('------------------')
+    # Object-based method
+    tic = time.time()
+    #-------------------------
+    vecs = [Vector.from_start_end(origin, pt) for pt in points]
+    res = Vector(0., 0., 0.)
+    for v in vecs:
+        res += v
+    #-------------------------
+    toc = time.time()
+    print('{0} seconds to compute for object-based method'.format(toc - tic))
+    print(res)
+    print('------------------')
 
 
-	# Function-based method B
-	tic = time.time()
-	#-------------------------
-	vecs = [vector_from_points(origin, pt) for pt in points]
-	res = sum_vectors(vecs)
-	#-------------------------
-	toc = time.time()
-	print('{0} seconds to compute for function-based method B'.format(toc - tic))
-	print(res)
-	print('------------------')
+    # Function-based method A
+    tic = time.time()
+    #-------------------------
+    vecs = [vector_from_points(origin, pt) for pt in points]
+    res = [0., 0., 0.]
+    for v in vecs:
+        res = add_vectors(res, v)
+    #-------------------------
+    toc = time.time()
+    print('{0} seconds to compute for function-based method A'.format(toc - tic))
+    print(res)
+    print('------------------')
+
+
+    # Function-based method B
+    tic = time.time()
+    #-------------------------
+    vecs = [vector_from_points(origin, pt) for pt in points]
+    res = sum_vectors(vecs)
+    #-------------------------
+    toc = time.time()
+    print('{0} seconds to compute for function-based method B'.format(toc - tic))
+    print(res)
+    print('------------------')
 
 
 Translational Surfaces for Gridshells
@@ -162,7 +162,7 @@ last decades.
     :figclass: figure
     :class: figure-img img-fluid
 
-Cabot Circus Bristol and Deutsches Historisches Museum (Photo: SBP)
+    Cabot Circus Bristol and Deutsches Historisches Museum (Photo: SBP)
 
 
 .. note::
@@ -172,77 +172,79 @@ Cabot Circus Bristol and Deutsches Historisches Museum (Photo: SBP)
 
     Open the script editor in Rhino (Command: _EditPythonScript) and run:
 
-	 .. code-block:: python
+     .. code-block:: python
 
-	    import sys
-		print(sys.version_info)
+        import sys
+        print(sys.version_info)
 
-	Make sure to have version 2.7.5 installed!
+    Make sure to have version 2.7.5 installed!
 
 
 The following example shows the generation of a simple tanslation surface based on a
 given profile and rail curve. 
 
 .. note::
-	The following examples are based on the 3dm file:
-	* :download:`trans_srf.3dm </../../examples/trans_srf.3dm>`
+    The following examples are based on the 3dm file:
+    * :download:`trans_srf.3dm </../../examples/trans_srf.3dm>`
 
 .. figure:: /_images/trans_srf_01.jpg
     :figclass: figure
     :class: figure-img img-fluid
-See 3dm file for details 
+
+    See 3dm file for details 
+
 
 .. code-block:: python
 
     import rhinoscriptsyntax as rs
 
-	from compas.geometry import subtract_vectors
-	from compas.geometry import centroid_points
-	from compas.geometry import translate_points
+    from compas.geometry import subtract_vectors
+    from compas.geometry import centroid_points
+    from compas.geometry import translate_points
 
-	# Get inputs
-	crv_p = rs.GetObject("Select profile", 4)
-	crv_r = rs.GetObject("Select rail",4)
+    # Get inputs
+    crv_p = rs.GetObject("Select profile", 4)
+    crv_r = rs.GetObject("Select rail",4)
 
-	div_p = 20
-	div_r = 40
+    div_p = 20
+    div_r = 40
 
-	# divide profile and rail curve
-	pts_p = rs.DivideCurve(crv_p, div_p)
-	pts_r = rs.DivideCurve(crv_r, div_r)
+    # divide profile and rail curve
+    pts_p = rs.DivideCurve(crv_p, div_p)
+    pts_r = rs.DivideCurve(crv_r, div_r)
 
 
-	# ------------------------------
-	# compas geometry function
+    # ------------------------------
+    # compas geometry function
 
-	# reference point for profile curve
-	pt_ref = centroid_points([pts_p[0], pts_p[-1]])
+    # reference point for profile curve
+    pt_ref = centroid_points([pts_p[0], pts_p[-1]])
 
-	# create profiles along the rail curve
-	pts_sets = []
-	for i in range(div_r + 1):
-	    vec_1 = subtract_vectors(pts_r[i], pt_ref)
-	    points = translate_points(pts_p, vec_1)
-	    pts_sets.append(points)
+    # create profiles along the rail curve
+    pts_sets = []
+    for i in range(div_r + 1):
+        vec_1 = subtract_vectors(pts_r[i], pt_ref)
+        points = translate_points(pts_p, vec_1)
+        pts_sets.append(points)
 
-	# create polyline point sets for each face
-	polys = []
-	for i in xrange(len(pts_sets)-1):
-	    for j in xrange(len(pts_sets[i])-1):
-	        p1 = pts_sets[i][j] 
-	        p2 = pts_sets[i + 1][j] 
-	        p3 = pts_sets[i + 1][j + 1] 
-	        p4 = pts_sets[i][j + 1]
-	        polys.append([p1, p2, p3, p4, p1])
+    # create polyline point sets for each face
+    polys = []
+    for i in xrange(len(pts_sets)-1):
+        for j in xrange(len(pts_sets[i])-1):
+            p1 = pts_sets[i][j] 
+            p2 = pts_sets[i + 1][j] 
+            p3 = pts_sets[i + 1][j + 1] 
+            p4 = pts_sets[i][j + 1]
+            polys.append([p1, p2, p3, p4, p1])
 
-	# compas geometry function
-	# ------------------------------
+    # compas geometry function
+    # ------------------------------
 
-	# draw gridshell in Rhino
-	rs.EnableRedraw(False)
-	for poly in polys:
-	    rs.AddPolyline(poly)
-	rs.EnableRedraw(True)
+    # draw gridshell in Rhino
+    rs.EnableRedraw(False)
+    for poly in polys:
+        rs.AddPolyline(poly)
+    rs.EnableRedraw(True)
 
 
 
@@ -252,65 +254,67 @@ curves aligned with the rail curve.
 .. figure:: /_images/trans_srf_03.jpg
     :figclass: figure
     :class: figure-img img-fluid
-See 3dm file for details 
+
+    See 3dm file for details 
+
 
 .. seealso::
-	* :func:`compas.geometry import project_points_plane`
+    * :func:`compas.geometry import project_points_plane`
 
 
 .. code-block:: python
 
-	import rhinoscriptsyntax as rs
+    import rhinoscriptsyntax as rs
 
-	from compas.geometry import subtract_vectors
-	from compas.geometry import project_points_plane
+    from compas.geometry import subtract_vectors
+    from compas.geometry import project_points_plane
 
-	# Get inputs
-	crv_p = rs.GetObject("Select profile", 4)
-	crv_a = rs.GetObject("Select rail 1",4)
+    # Get inputs
+    crv_p = rs.GetObject("Select profile", 4)
+    crv_a = rs.GetObject("Select rail 1",4)
 
-	div_p = 20
-	div_r = 40
+    div_p = 20
+    div_r = 40
 
-	# divide profile and rail curve
-	pts_p = rs.DivideCurve(crv_p, div_p)
-	pts_a = rs.DivideCurve(crv_a, div_r)
+    # divide profile and rail curve
+    pts_p = rs.DivideCurve(crv_p, div_p)
+    pts_a = rs.DivideCurve(crv_a, div_r)
 
 
-	# ------------------------------
-	# compas geometry function
+    # ------------------------------
+    # compas geometry function
 
-	# create planes along the rail curve
-	planes = []
-	for i in range(div_r):
-	    vec = subtract_vectors(pts_a[i + 1], pts_a[i])
-	    planes.append([pts_a[i], vec])
+    # create planes along the rail curve
+    planes = []
+    for i in range(div_r):
+        vec = subtract_vectors(pts_a[i + 1], pts_a[i])
+        planes.append([pts_a[i], vec])
 
-	# subsequentely project profile curve to all planes
-	pts_uv = []
-	pts = pts_p
-	for i in range(div_r - 1):
-	    pts = project_points_plane(pts, planes[i])
-	    pts_uv.append(pts)
+    # subsequentely project profile curve to all planes
+    pts_uv = []
+    pts = pts_p
+    for i in range(div_r - 1):
+        pts = project_points_plane(pts, planes[i])
+        pts_uv.append(pts)
 
-	# create polyline point sets for each face
-	polys = []
-	for u in xrange(len(pts_uv)-1):
-	    for v in xrange(len(pts_uv[u])-1):
-	        p1 = pts_uv[u][v] 
-	        p2 = pts_uv[u + 1][v] 
-	        p3 = pts_uv[u + 1][v + 1] 
-	        p4 = pts_uv[u][v + 1]
-	        polys.append([p1, p2, p3, p4, p1])
+    # create polyline point sets for each face
+    polys = []
+    for u in xrange(len(pts_uv)-1):
+        for v in xrange(len(pts_uv[u])-1):
+            p1 = pts_uv[u][v] 
+            p2 = pts_uv[u + 1][v] 
+            p3 = pts_uv[u + 1][v + 1] 
+            p4 = pts_uv[u][v + 1]
+            polys.append([p1, p2, p3, p4, p1])
 
-	# compas geometry function
-	# ------------------------------
+    # compas geometry function
+    # ------------------------------
 
-	# draw gridshell in Rhino
-	rs.EnableRedraw(False)
-	for poly in polys:
-	    rs.AddPolyline(poly)
-	rs.EnableRedraw(True)
+    # draw gridshell in Rhino
+    rs.EnableRedraw(False)
+    for poly in polys:
+        rs.AddPolyline(poly)
+    rs.EnableRedraw(True)
 
 Exercise: 
 ---------
@@ -325,84 +329,85 @@ decribed above. Include you script in Grasshopper using the GhPython component.
 .. figure:: /_images/trans_srf_04.jpg
     :figclass: figure
     :class: figure-img img-fluid
-See 3dm file for details 
+
+    See 3dm file for details 
 
 .. seealso::
-	* :func:`compas.geometry.add_vectors`
-	* :func:`compas.geometry.centroid_points`
-	* :func:`compas.geometry.intersection_line_plane`
-	* :func:`compas.geometry.intersection_line_line`
+    * :func:`compas.geometry.add_vectors`
+    * :func:`compas.geometry.centroid_points`
+    * :func:`compas.geometry.intersection_line_plane`
+    * :func:`compas.geometry.intersection_line_line`
 
 
 .. code-block:: python
 
-	import rhinoscriptsyntax as rs
+    import rhinoscriptsyntax as rs
 
-	from compas.geometry import subtract_vectors
-	from compas.geometry import add_vectors
-	from compas.geometry import centroid_points
-	from compas.geometry import intersection_line_plane
-	from compas.geometry import intersection_line_line
-	    
-	# Get inputs
-	crv_p = rs.GetObject("Select profile", 4)
-	crv_a = rs.GetObject("Select rail 1",4)
-	crv_b = rs.GetObject("Select rail 2",4)
+    from compas.geometry import subtract_vectors
+    from compas.geometry import add_vectors
+    from compas.geometry import centroid_points
+    from compas.geometry import intersection_line_plane
+    from compas.geometry import intersection_line_line
+        
+    # Get inputs
+    crv_p = rs.GetObject("Select profile", 4)
+    crv_a = rs.GetObject("Select rail 1",4)
+    crv_b = rs.GetObject("Select rail 2",4)
 
-	div_p = 20
-	div_r = 40
+    div_p = 20
+    div_r = 40
 
-	# divide profile and rail curves
-	pts_p = rs.DivideCurve(crv_p, div_p)
-	pts_a = rs.DivideCurve(crv_a, div_r)
-	pts_b = rs.DivideCurve(crv_b, div_r)
+    # divide profile and rail curves
+    pts_p = rs.DivideCurve(crv_p, div_p)
+    pts_a = rs.DivideCurve(crv_a, div_r)
+    pts_b = rs.DivideCurve(crv_b, div_r)
 
-	# ------------------------------
-	# compas geometry function
+    # ------------------------------
+    # compas geometry function
 
-	# create planes along the rail curve
-	planes = []
-	for i in range(div_r):
-	    pt_mid = centroid_points([pts_a[i], pts_b[i]])
-	    vec_a = subtract_vectors(pts_a[i + 1], pts_a[i])
-	    vec_b = subtract_vectors(pts_b[i + 1], pts_b[i])
-	    vec = add_vectors(vec_a, vec_b)
-	    planes.append([pt_mid, vec])
+    # create planes along the rail curve
+    planes = []
+    for i in range(div_r):
+        pt_mid = centroid_points([pts_a[i], pts_b[i]])
+        vec_a = subtract_vectors(pts_a[i + 1], pts_a[i])
+        vec_b = subtract_vectors(pts_b[i + 1], pts_b[i])
+        vec = add_vectors(vec_a, vec_b)
+        planes.append([pt_mid, vec])
 
-	# create profiles
-	pts_uv = []
-	pts = pts_p
-	for i in range(div_r - 1):
-	    ray_a = [pts_a[i], pts_a[i + 1]]
-	    ray_b = [pts_b[i], pts_b[i + 1]]
-	    pts_x = intersection_line_line(ray_a, ray_b)
-	    if None in pts_x:
-	        print("parallel!")
-	    pt_cent = centroid_points(pts_x)
-	    # computes intersection between a plane and all lines
-	    # from the profile curve points to the intersection point
-	    pts = [intersection_line_plane([pt, pt_cent], planes[i + 1]) for pt in pts]
-	    
-	    pts_uv.append(pts)
+    # create profiles
+    pts_uv = []
+    pts = pts_p
+    for i in range(div_r - 1):
+        ray_a = [pts_a[i], pts_a[i + 1]]
+        ray_b = [pts_b[i], pts_b[i + 1]]
+        pts_x = intersection_line_line(ray_a, ray_b)
+        if None in pts_x:
+            print("parallel!")
+        pt_cent = centroid_points(pts_x)
+        # computes intersection between a plane and all lines
+        # from the profile curve points to the intersection point
+        pts = [intersection_line_plane([pt, pt_cent], planes[i + 1]) for pt in pts]
+        
+        pts_uv.append(pts)
 
-	# create polyline point sets for each face
-	polys = []
-	for u in xrange(len(pts_uv)-1):
-	    for v in xrange(len(pts_uv[u])-1):
-	        p1 = pts_uv[u][v] 
-	        p2 = pts_uv[u + 1][v] 
-	        p3 = pts_uv[u + 1][v + 1] 
-	        p4 = pts_uv[u][v + 1]
-	        polys.append([p1, p2, p3, p4, p1])
+    # create polyline point sets for each face
+    polys = []
+    for u in xrange(len(pts_uv)-1):
+        for v in xrange(len(pts_uv[u])-1):
+            p1 = pts_uv[u][v] 
+            p2 = pts_uv[u + 1][v] 
+            p3 = pts_uv[u + 1][v + 1] 
+            p4 = pts_uv[u][v + 1]
+            polys.append([p1, p2, p3, p4, p1])
 
-	# compas geometry function
-	# ------------------------------
+    # compas geometry function
+    # ------------------------------
 
-	# draw gridshell in Rhino
-	rs.EnableRedraw(False)
-	for poly in polys:
-	    rs.AddPolyline(poly)
-	rs.EnableRedraw(True)
+    # draw gridshell in Rhino
+    rs.EnableRedraw(False)
+    for poly in polys:
+        rs.AddPolyline(poly)
+    rs.EnableRedraw(True)
 
 
 
