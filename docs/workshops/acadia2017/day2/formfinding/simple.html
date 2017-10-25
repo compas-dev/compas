@@ -41,6 +41,98 @@
 </nav>
 <div class="section">
 <span id="acadia2017-day2-formfinding-simple"></span><h1>Form Finding - Simple script</h1>
+<figure class="figure">
+<img alt="../../../../images/formfinding_simple.png" class="figure-img img-fluid" src="../../../../images/formfinding_simple.png"/>
+</figure>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="sd">""""""</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">fd</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">i_to_rgb</span>
+
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">""""""</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+    <span class="c1"># plot original state</span>
+
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">'start'</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+            <span class="s1">'end'</span>  <span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+            <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#cccccc'</span><span class="p">,</span>
+            <span class="s1">'width'</span><span class="p">:</span> <span class="mf">0.5</span> 
+        <span class="p">})</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+    <span class="c1"># preprocess</span>
+
+    <span class="n">k_i</span>  <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+    <span class="n">i_k</span>  <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">index_key</span><span class="p">()</span>
+    <span class="n">uv_i</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">uv_index</span><span class="p">()</span>
+    <span class="n">i_uv</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">index_uv</span><span class="p">()</span>
+
+    <span class="n">xyz</span>   <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">k_i</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">loads</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">())]</span>
+
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">[[</span><span class="n">k_i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k_i</span><span class="p">[</span><span class="n">v</span><span class="p">]]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
+    <span class="n">q</span>     <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
+    
+    <span class="c1"># compute equilibrium</span>
+
+    <span class="n">xyz</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">fd</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'list'</span><span class="p">)</span>
+
+    <span class="c1"># update</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+
+    <span class="c1"># visualize</span>
+
+    <span class="n">fmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span>
+        <span class="n">radius</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="mf">0.05</span> <span class="k">if</span> <span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fixed</span> <span class="k">else</span> <span class="mf">0.1</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()},</span>
+        <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">i_k</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="s1">'#000000'</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">uv</span><span class="p">:</span> <span class="s1">'</span><span class="si">{0:.1f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">uv_i</span><span class="p">[</span><span class="n">uv</span><span class="p">]])</span> <span class="k">for</span> <span class="n">uv</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()},</span>
+        <span class="n">color</span><span class="o">=</span><span class="p">{</span><span class="n">uv</span><span class="p">:</span> <span class="n">i_to_rgb</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">uv_i</span><span class="p">[</span><span class="n">uv</span><span class="p">]]</span> <span class="o">/</span> <span class="n">fmax</span><span class="p">)</span> <span class="k">for</span> <span class="n">uv</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()},</span>
+        <span class="n">width</span><span class="o">=</span><span class="p">{</span><span class="n">uv</span><span class="p">:</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">uv_i</span><span class="p">[</span><span class="n">uv</span><span class="p">]]</span> <span class="o">/</span> <span class="n">fmax</span> <span class="k">for</span> <span class="n">uv</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()},</span>
+    <span class="p">)</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="../formfinding.html" role="button">Form Finding</a>

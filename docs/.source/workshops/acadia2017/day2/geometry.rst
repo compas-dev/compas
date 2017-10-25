@@ -63,8 +63,8 @@ resultant. Compare the preformance of an object-based and function-based method.
 
 .. seealso::
 
-	* :method:`compas.geometry.objects.vector.from_start_end`
-	* :method:`compas.geometry.objects.vector.from_start_end`
+	* :meth:`compas.geometry.Vector.from_start_end`
+	* :meth:`compas.geometry.Vector.from_start_end`
 
 	* :func:`compas.geometry.constructors.vector_from_points`
 	* :func:`compas.geometry.basic.add_vectors`

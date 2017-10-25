@@ -20,6 +20,7 @@ Point
       ~Point.in_polygon
       ~Point.in_polyhedron
       ~Point.in_triangle
+      ~Point.project_to_line
       ~Point.project_to_plane
       ~Point.transform
       ~Point.translate
@@ -32,6 +33,7 @@ Point
 
    .. autosummary::
    
+      ~Point.precision
       ~Point.x
       ~Point.y
       ~Point.z
