@@ -356,7 +356,7 @@ Algorithms
     smooth_centroid
     smooth_centerofmass
     smooth_area
-
+    discrete_coons_patch
 
 """
 

@@ -96,6 +96,7 @@ mesh.algorithms
     mesh_subdivide_doosabin
     mesh_unify_cycles
     mesh_voronoi_from_points
+    mesh_cull_duplicate_vertices
 
 
 .. note::
