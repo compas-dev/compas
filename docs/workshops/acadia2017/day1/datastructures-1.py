@@ -18,6 +18,8 @@ plotter.draw_faces(
     text='key',
     facecolor=(0.7, 0.7, 0.7),
 )
-plotter.draw_edges()
+plotter.draw_edges(
+    text='key'
+)
 
 plotter.show()

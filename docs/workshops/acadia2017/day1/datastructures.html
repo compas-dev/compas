@@ -13,7 +13,7 @@
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
 <link href="../day2.html" rel="next" title="Day 2"/>
-<link href="python101.html" rel="prev" title="Python 101"/>
+<link href="python.html" rel="prev" title="Python"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -44,10 +44,11 @@
 <h2>Network, Mesh, VolMesh</h2>
 <p>The <em>compas</em> framework contains three types of data structures and related operations and algorithms:</p>
 <ul class="simple">
-<li><code class="docutils literal">compas.datastructures.network</code></li>
-<li><code class="docutils literal">compas.datastructures.mesh</code></li>
-<li><code class="docutils literal">compas.datastructures.volmesh</code></li>
+<li><a class="reference internal" href="../../../reference/generated/compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal">compas.datastructures.Network</code></a></li>
+<li><a class="reference internal" href="../../../reference/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal">compas.datastructures.Mesh</code></a></li>
+<li><code class="xref py py-class docutils literal">compas.datastructures.Volmesh</code></li>
 </ul>
+<p>For this tutorial, we will focus on the mesh data structure.</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
@@ -68,10 +69,13 @@
     <span class="n">text</span><span class="o">=</span><span class="s1">'key'</span><span class="p">,</span>
     <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span>
 <span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span>
+    <span class="n">text</span><span class="o">=</span><span class="s1">'key'</span>
+<span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../../images/datastructures-11.png" class="figure-img img-fluid" src="../../../images/datastructures-11.png"/>
 </figure>
@@ -89,31 +93,51 @@ are named using the following pattern <code class="docutils literal">.from_xxx</
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_polyhedron</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_points</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </code></pre></div>
+
 <p><code class="docutils literal">compas</code> also provides basic sample data that can be used together with the constructors.</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
-<span class="c1"># integer vertex keys: range(0, mesh.number_of_vertices())</span>
-<span class="c1"># integer face keys: range(0, mesh.number_of_faces())</span>
-<span class="c1"># default vertex attr: {'x': 0.0, 'y': 0.0, 'z': 0.0}</span>
-<span class="c1"># default face attr: {}</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="c1"># ================================================================================</span>
+<span class="c1"># Mesh summary</span>
+<span class="c1"># ================================================================================</span>
 <span class="c1">#</span>
+<span class="c1"># - name: Mesh</span>
+<span class="c1"># - vertices: 36</span>
+<span class="c1"># - edges: 60</span>
+<span class="c1"># - faces: 25</span>
+<span class="c1"># - vertex degree: 2/4</span>
+<span class="c1"># - face degree: 2/4</span>
+<span class="c1">#</span>
+<span class="c1"># ================================================================================</span>
 </code></pre></div>
+
+<p>Printing the mesh produces a summary of the mesh’s properties:
+the number of vertices, edges and faces and information about vertex and face degree.</p>
 </div>
 <div class="section">
 <h2>Accessing the data</h2>
 <p>Every datastructure exposes several functions to access its data.
 All of those <em>accessors</em> are iterators; they are meant to be iterated over.
 Lists of data have to be constructed explicitly.</p>
+<ul class="simple">
+<li>mesh.vertices()</li>
+<li>mesh.faces()</li>
+<li>mesh.halfedges()</li>
+<li>mesh.edges()</li>
+</ul>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
     <span class="k">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -124,11 +148,19 @@ Lists of data have to be constructed explicitly.</p>
 <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">())</span>
 </code></pre></div>
+
 <p>The same applies to the faces.
 The accessor is an iterator; it is meant for iterating over the faces.
 To count the faces or to get a list of faces, the iterator needs to be converted
 explicitly.</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
     <span class="k">print</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
@@ -137,22 +169,31 @@ explicitly.</p>
 <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">())</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h2>Topology</h2>
 <p>The available functions for accessing the topological data depend on the type of
 datastructure, although they obviously have a few of them in common.</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbourhood</span><span class="p">()</span>
-<span class="o">...</span>
-
-<span class="n">mesh</span><span class="o">.</span><span class="n">faces_vertices</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">face_neighbours</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">face_neighbourhood</span><span class="p">()</span>
-<span class="o">...</span>
-</code></pre></div>
+<ul class="simple">
+<li>mesh.is_valid()</li>
+<li>mesh.is_regular()</li>
+<li>mesh.is_connected()</li>
+<li>mesh.is_manifold()</li>
+<li>mesh.is_orientable()</li>
+<li>mesh.is_trimesh()</li>
+<li>mesh.is_quadmesh()</li>
+<li>mesh.vertex_neighbours()</li>
+<li>mesh.vertex_degree()</li>
+<li>mesh.vertex_faces()</li>
+<li>mesh.vertex_neighbourhood()</li>
+<li>mesh.face_vertices()</li>
+<li>mesh.face_halfedges()</li>
+<li>mesh.face_neighbours()</li>
+<li>mesh.face_neighbourhood()</li>
+<li>mesh.face_vertex_ancestor()</li>
+<li>mesh.face_vertex_descendant()</li>
+</ul>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
@@ -179,6 +220,7 @@ datastructure, although they obviously have a few of them in common.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../../images/datastructures-2.png" class="figure-img img-fluid" src="../../../images/datastructures-2.png"/>
 </figure>
@@ -196,30 +238,30 @@ datastructure, although they obviously have a few of them in common.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../../images/datastructures-3.png" class="figure-img img-fluid" src="../../../images/datastructures-3.png"/>
 </figure>
 </div>
 <div class="section">
 <h2>Geometry</h2>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">vertex_area</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">vertex_centroid</span><span class="p">()</span>
-<span class="o">...</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">face_area</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">face_center</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">face_frame</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">face_circle</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">face_normal</span><span class="p">()</span>
-<span class="o">...</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">edge_direction</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">edge_length</span><span class="p">()</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">edge_midpoint</span><span class="p">()</span>
-<span class="o">...</span>
-</code></pre></div>
+<ul class="simple">
+<li>mesh.vertex_coordinates()</li>
+<li>mesh.vertex_area()</li>
+<li>mesh.vertex_centroid()</li>
+<li>mesh.face_area()</li>
+<li>mesh.face_centroid()</li>
+<li>mesh.face_center()</li>
+<li>mesh.face_frame()</li>
+<li>mesh.face_circle()</li>
+<li>mesh.face_normal()</li>
+<li>mesh.face_flatness()</li>
+<li>mesh.edge_coordinates()</li>
+<li>mesh.edge_vector()</li>
+<li>mesh.edge_direction()</li>
+<li>mesh.edge_length()</li>
+<li>mesh.edge_midpoint()</li>
+</ul>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
@@ -234,6 +276,7 @@ datastructure, although they obviously have a few of them in common.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../../images/datastructures-4.png" class="figure-img img-fluid" src="../../../images/datastructures-4.png"/>
 </figure>
@@ -251,6 +294,7 @@ datastructure, although they obviously have a few of them in common.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../../images/datastructures-5.png" class="figure-img img-fluid" src="../../../images/datastructures-5.png"/>
 </figure>
@@ -269,6 +313,7 @@ datastructure, although they obviously have a few of them in common.</p>
 <span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">trimesh_swap_edge</span>
 <span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">trimesh_split_edge</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h2>Algorithms</h2>
@@ -279,20 +324,23 @@ datastructure, although they obviously have a few of them in common.</p>
 
 <span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">trimesh_remesh</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">smooth_centroid</span>
 <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">smooth_centerofmass</span>
 <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">smooth_area</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">shortest_path</span>
 <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dijkstra_path</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h2>CAD integration</h2>
 </div>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="python101.html" role="button">Python 101</a>
+<a class="btn btn-primary compas-prev" href="python.html" role="button">Python</a>
 <a class="btn btn-primary compas-next" href="../day2.html" role="button">Day 2</a>
 </nav>
 </main>
@@ -352,7 +400,7 @@ datastructure, although they obviously have a few of them in common.</p>
             
 
             
-                Last updated on Oct 24, 2017.
+                Last updated on Oct 25, 2017.
             
 
             

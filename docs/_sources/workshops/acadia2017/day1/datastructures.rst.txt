@@ -9,9 +9,14 @@ Network, Mesh, VolMesh
 
 The *compas* framework contains three types of data structures and related operations and algorithms:
 
-* ``compas.datastructures.network``
-* ``compas.datastructures.mesh``
-* ``compas.datastructures.volmesh``
+* :class:`compas.datastructures.Network`
+* :class:`compas.datastructures.Mesh`
+* :class:`compas.datastructures.Volmesh`
+
+.. images
+.. overview
+
+For this tutorial, we will focus on the mesh data structure.
 
 .. plot::
     :include-source:
@@ -36,14 +41,15 @@ The *compas* framework contains three types of data structures and related opera
         text='key',
         facecolor=(0.7, 0.7, 0.7),
     )
-    plotter.draw_edges()
+    plotter.draw_edges(
+        text='key'
+    )
 
     plotter.show()
 
 
 Construction
 ============
-
 
 All datastructures come with factory constructors.
 These are implemented as class methods (using the ``@classmethod`` decoreator) and
@@ -62,17 +68,31 @@ are named using the following pattern ``.from_xxx``.
 ``compas`` also provides basic sample data that can be used together with the constructors.
 
 .. code-block:: python
+
+    from __future__ import print_function
     
     import compas
     from compas.datastructures import Mesh
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    # integer vertex keys: range(0, mesh.number_of_vertices())
-    # integer face keys: range(0, mesh.number_of_faces())
-    # default vertex attr: {'x': 0.0, 'y': 0.0, 'z': 0.0}
-    # default face attr: {}
-    # 
+    print(mesh)
+
+    # ================================================================================
+    # Mesh summary
+    # ================================================================================
+    #
+    # - name: Mesh
+    # - vertices: 36
+    # - edges: 60
+    # - faces: 25
+    # - vertex degree: 2/4
+    # - face degree: 2/4
+    #
+    # ================================================================================
+
+Printing the mesh produces a summary of the mesh's properties:
+the number of vertices, edges and faces and information about vertex and face degree.
 
 
 Accessing the data
@@ -82,15 +102,19 @@ Every datastructure exposes several functions to access its data.
 All of those *accessors* are iterators; they are meant to be iterated over.
 Lists of data have to be constructed explicitly.
 
+* mesh.vertices()
+* mesh.faces()
+* mesh.halfedges()
+* mesh.edges()
+
 .. code-block:: python
 
     from __future__ import print_function
 
     import compas
     from compas.datastructures import Mesh
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    print(mesh)
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     for key in mesh.vertices():
         print(key)
@@ -109,6 +133,13 @@ explicitly.
 
 .. code-block:: python
     
+    from __future__ import print_function
+
+    import compas
+    from compas.datastructures import Mesh
+
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+
     for fkey in mesh.faces():
         print(fkey)
 
@@ -125,18 +156,26 @@ Topology
 The available functions for accessing the topological data depend on the type of
 datastructure, although they obviously have a few of them in common.
 
-.. code-block:: python
+* mesh.is_valid()
+* mesh.is_regular()
+* mesh.is_connected()
+* mesh.is_manifold()
+* mesh.is_orientable()
+* mesh.is_trimesh()
+* mesh.is_quadmesh()
 
-    mesh.vertex_neighbours()
-    mesh.vertex_degree()
-    mesh.vertex_faces()
-    mesh.vertex_neighbourhood()
-    ...
+* mesh.vertex_neighbours()
+* mesh.vertex_degree()
+* mesh.vertex_faces()
+* mesh.vertex_neighbourhood()
 
-    mesh.faces_vertices()
-    mesh.face_neighbours()
-    mesh.face_neighbourhood()
-    ...
+* mesh.face_vertices()
+* mesh.face_halfedges()
+* mesh.face_neighbours()
+* mesh.face_neighbourhood()
+* mesh.face_vertex_ancestor()
+* mesh.face_vertex_descendant()
+
 
 .. plot::
     :include-source:
@@ -188,25 +227,23 @@ datastructure, although they obviously have a few of them in common.
 Geometry
 ========
 
-.. code-block:: python
+* mesh.vertex_coordinates()
+* mesh.vertex_area()
+* mesh.vertex_centroid()
 
-    mesh.vertex_coordinates()
-    mesh.vertex_area()
-    mesh.vertex_centroid()
-    ...
-    mesh.face_area()
-    mesh.face_centroid()
-    mesh.face_center()
-    mesh.face_frame()
-    mesh.face_circle()
-    mesh.face_normal()
-    ...
-    mesh.edge_coordinates()
-    mesh.edge_vector()
-    mesh.edge_direction()
-    mesh.edge_length()
-    mesh.edge_midpoint()
-    ...
+* mesh.face_area()
+* mesh.face_centroid()
+* mesh.face_center()
+* mesh.face_frame()
+* mesh.face_circle()
+* mesh.face_normal()
+* mesh.face_flatness()
+
+* mesh.edge_coordinates()
+* mesh.edge_vector()
+* mesh.edge_direction()
+* mesh.edge_length()
+* mesh.edge_midpoint()
 
 
 .. plot::

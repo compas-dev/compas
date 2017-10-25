@@ -336,70 +336,8 @@ Script, Module, Package
         f2()
 
 
-Core packages
-=============
-
-https://docs.python.org/3/library/index.html
-
-* abc
-* array
-* ast
-* calendar
-* collections
-* collections.abc
-* colorsys
-* contextlib
-* copy
-* csv
-* ctypes
-* inspect
-* io
-* itertools
-* json
-* math
-* multiprocessing
-* operators
-* os
-* platform
-* random
-* subprocess
-* sys
-* time
-* traceback
-* urllib2
-* xml
-* xmlrpclib
-
-
-User packages
-=============
-
-* cairo: library for drawing vector graphics
-* cvxopt: convex optimisation
-* cvxpy: convex optimisation
-* cython: optimising static compiler
-* joblib: parallel for loops using multiprocessing
-* matlab:
-* matplotlib: (mainly) 2D plotting library
-* meshpy: triangular and tetrahedral mesh generation
-* networkx: creation, manipulation, and study of the structure, dynamics, and functions of complex networks
-* numba: just-in-time compiler
-* numpy: fundamental package for scientific computing
-* pandas: data structures and data analysis tools
-* paramiko:
-* planarity:
-* pycuda: binding of Nvidia's CUDA parallel computation API
-* PyOpenGL: cross platform binding to OpenGL
-* pyopt: nonlinear constrained optimization problems
-* PySide: binding of the cross-platform GUI toolkit Qt
-* scipy: scientific computing
-* shapely: manipulation and analysis of planar geometric objects
-* sphinx: documentation
-* sympy: symbolic mathematics
-
-
-Install Modules and Packages
-============================
+Resources
+=========
 
 * `Python Packaging User Guide <http://python-packaging-user-guide.readthedocs.org/en/latest/installing/>`_
 * `StackOverflow: Why use pip over easy_install? <http://stackoverflow.com/questions/3220404/why-use-pip-over-easy-install>`_

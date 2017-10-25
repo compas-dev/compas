@@ -59,18 +59,18 @@ class MeshPlotter(Plotter):
             'vertex.edgecolor' : '#000000',
             'vertex.edgewidth' : 0.1,
             'vertex.textcolor' : '#000000',
-            'vertex.fontsize'  : 14.0,
+            'vertex.fontsize'  : 12.0,
 
             'edge.width'    : 0.5,
             'edge.color'    : '#000000',
             'edge.textcolor': '#000000',
-            'edge.fontsize' : 14.0,
+            'edge.fontsize' : 12.0,
 
             'face.facecolor' : '#eeeeee',
             'face.edgecolor' : '#eeeeee',
             'face.edgewidth' : 0.1,
             'face.textcolor' : '#000000',
-            'face.fontsize'  : 14.0,
+            'face.fontsize'  : 12.0,
         }
 
     def clear(self):
