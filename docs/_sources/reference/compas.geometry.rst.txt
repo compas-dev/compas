@@ -284,6 +284,7 @@ Transformations
     mirror_points_point_xy
     mirror_vector_vector
     offset_line
+    offset_polyline
     offset_polygon
     orient_points
     project_point_line
@@ -355,5 +356,5 @@ Algorithms
     smooth_centroid
     smooth_centerofmass
     smooth_area
-
+    discrete_coons_patch
 

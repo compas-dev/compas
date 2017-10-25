@@ -651,7 +651,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mirror_point_plane.html" title="compas.geometry.mirror_point_plane"><code class="xref py py-obj docutils literal">mirror_point_plane</code></a>(point, plane)</td>
-<td></td>
+<td>Mirror a point about a plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mirror_point_point.html" title="compas.geometry.mirror_point_point"><code class="xref py py-obj docutils literal">mirror_point_point</code></a>(point, mirror)</td>
 <td>Mirror a point about a point.</td>
@@ -666,7 +666,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mirror_points_plane.html" title="compas.geometry.mirror_points_plane"><code class="xref py py-obj docutils literal">mirror_points_plane</code></a>(points, plane)</td>
-<td></td>
+<td>Mirror multiple points about a plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mirror_points_point.html" title="compas.geometry.mirror_points_point"><code class="xref py py-obj docutils literal">mirror_points_point</code></a>(points, mirror)</td>
 <td>Mirror multiple points about a point.</td>
@@ -679,6 +679,9 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.offset_line.html" title="compas.geometry.offset_line"><code class="xref py py-obj docutils literal">offset_line</code></a>(line, distance[, normal])</td>
 <td>Offset a line by a distance</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.offset_polyline.html" title="compas.geometry.offset_polyline"><code class="xref py py-obj docutils literal">offset_polyline</code></a>(polyline, distance[, normal])</td>
+<td>Offset a polyline by a distance.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.offset_polygon.html" title="compas.geometry.offset_polygon"><code class="xref py py-obj docutils literal">offset_polygon</code></a>(polygon, distance)</td>
 <td>Offset a polygon (closed) by a distance.</td>
@@ -795,7 +798,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Plane.html" title="compas.geometry.Plane"><code class="xref py py-obj docutils literal">Plane</code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-obj docutils literal">Point</code></a>([x, y, z])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-obj docutils literal">Point</code></a>(x, y[, z])</td>
 <td>A three-dimensional location in space.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polygon.html" title="compas.geometry.Polygon"><code class="xref py py-obj docutils literal">Polygon</code></a>(points)</td>
@@ -844,6 +847,9 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_area.html" title="compas.geometry.smooth_area"><code class="xref py py-obj docutils literal">smooth_area</code></a>(vertices, faces, adjacency[, ...])</td>
 <td>Smooth a set of connected vertices by moving each vertex to the centroid of the surrounding faces, weighted by the area of the face.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.discrete_coons_patch.html" title="compas.geometry.discrete_coons_patch"><code class="xref py py-obj docutils literal">discrete_coons_patch</code></a>(ab, bc, dc, ad)</td>
+<td>Creates a coons patch from a set of four or three boundary polylines (ab, bc, dc, ad).</td>
 </tr>
 </tbody>
 </table>
