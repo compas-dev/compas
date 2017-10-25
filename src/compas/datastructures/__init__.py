@@ -42,7 +42,6 @@ network.algorithms
     network_is_crossed
     network_is_planar
     network_is_planar_embedding
-    network_vertex_coloring
 
 
 Mesh
