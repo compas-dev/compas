@@ -352,7 +352,6 @@ Algorithms
 
     planarize_faces
     flatness
-    flatness2
     smooth_centroid
     smooth_centerofmass
     smooth_area

@@ -165,9 +165,6 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.edges_on_boundary.html" title="compas.datastructures.Mesh.edges_on_boundary"><code class="xref py py-obj docutils literal">edges_on_boundary</code></a>()</td>
 <td>Find the edges on the boundary.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_adjacency.html" title="compas.datastructures.Mesh.face_adjacency"><code class="xref py py-obj docutils literal">face_adjacency</code></a>()</td>
-<td></td>
-</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_adjacency_halfedge.html" title="compas.datastructures.Mesh.face_adjacency_halfedge"><code class="xref py py-obj docutils literal">face_adjacency_halfedge</code></a>(f1, f2)</td>
 <td>Find the half-edge over which tow faces are adjacent.</td>
 </tr>
@@ -188,6 +185,9 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_degree.html" title="compas.datastructures.Mesh.face_degree"><code class="xref py py-obj docutils literal">face_degree</code></a>(fkey)</td>
 <td>Count the neighbours of a face.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_flatness.html" title="compas.datastructures.Mesh.face_flatness"><code class="xref py py-obj docutils literal">face_flatness</code></a>(fkey)</td>
+<td>Compute the flatness of the mesh face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_halfedges.html" title="compas.datastructures.Mesh.face_halfedges"><code class="xref py py-obj docutils literal">face_halfedges</code></a>(fkey)</td>
 <td>The halfedges of a face.</td>
@@ -375,7 +375,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.planarize_faces.html" title="compas.datastructures.Mesh.planarize_faces"><code class="xref py py-obj docutils literal">planarize_faces</code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.set_edge_attribute.html" title="compas.datastructures.Mesh.set_edge_attribute"><code class="xref py py-obj docutils literal">set_edge_attribute</code></a>(key, name, value)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.set_edge_attribute.html" title="compas.datastructures.Mesh.set_edge_attribute"><code class="xref py py-obj docutils literal">set_edge_attribute</code></a>(key, name, value[, directed])</td>
 <td>Set one attribute of one edge.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.set_edge_attributes.html" title="compas.datastructures.Mesh.set_edge_attributes"><code class="xref py py-obj docutils literal">set_edge_attributes</code></a>(key[, attr_dict])</td>

@@ -55,6 +55,8 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">normal_polygon</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">area_polygon</span>
 
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">bestfit_plane_from_points</span>
+
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">Polyhedron</span>
 
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Datastructure</span>
@@ -81,6 +83,8 @@
 <span class="kn">from</span> <span class="nn">compas.topology</span> <span class="k">import</span> <span class="n">bfs_traverse</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">smooth_centroid</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">smooth_area</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">planarize_faces</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">flatness</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="s1">'Tom Van Mele'</span>
@@ -2161,59 +2165,6 @@
         <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span></div>
 
-    <span class="c1"># move to algorithms</span>
-<div class="viewcode-block" id="Mesh.face_adjacency"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Mesh.face_adjacency.html#compas.datastructures.Mesh.face_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">face_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># this function does not actually use any of the topological information</span>
-        <span class="c1"># provided by the halfedges</span>
-        <span class="c1"># it is used for unifying face cycles</span>
-        <span class="c1"># so the premise is that halfedge data is not valid/reliable</span>
-        <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">cKDTree</span>
-
-        <span class="n">fkey_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">())}</span>
-        <span class="n">index_fkey</span> <span class="o">=</span> <span class="p">{</span><span class="n">index</span><span class="p">:</span> <span class="n">fkey</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">())}</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span>
-
-        <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-
-        <span class="n">_</span><span class="p">,</span> <span class="n">closest</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
-            <span class="n">nbrs</span>  <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="n">fkey_index</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
-            <span class="n">nnbrs</span> <span class="o">=</span> <span class="n">closest</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-            <span class="n">found</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-
-            <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">fkey</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">nnbrs</span><span class="p">:</span>
-                    <span class="n">nbr</span> <span class="o">=</span> <span class="n">index_fkey</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-
-                    <span class="k">if</span> <span class="n">nbr</span> <span class="o">==</span> <span class="n">fkey</span><span class="p">:</span>
-                        <span class="k">continue</span>
-                    <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">found</span><span class="p">:</span>
-                        <span class="k">continue</span>
-
-                    <span class="c1"># if v in self.face[nbr] and u == self.face[nbr][v]:</span>
-                    <span class="c1"># if u == self.face_vertex_descendant(nbr, v):</span>
-                    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">nbr</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">u</span> <span class="o">==</span> <span class="n">b</span><span class="p">:</span>
-                            <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
-                            <span class="n">found</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
-                            <span class="k">break</span>
-
-                    <span class="c1"># if u in self.face[nbr] and v == self.face[nbr][u]:</span>
-                    <span class="c1"># if v == self.face_vertex_descendant(nbr, u):</span>
-                    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">nbr</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="n">u</span> <span class="o">==</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">==</span> <span class="n">b</span><span class="p">:</span>
-                            <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
-                            <span class="n">found</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
-                            <span class="k">break</span>
-
-            <span class="n">adjacency</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">nbrs</span>
-
-        <span class="k">return</span> <span class="n">adjacency</span></div>
-
 <div class="viewcode-block" id="Mesh.face_adjacency_halfedge"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Mesh.face_adjacency_halfedge.html#compas.datastructures.Mesh.face_adjacency_halfedge">[docs]</a>    <span class="k">def</span> <span class="nf">face_adjacency_halfedge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">):</span>
         <span class="sd">"""Find the half-edge over which tow faces are adjacent.</span>
 
@@ -2462,6 +2413,40 @@
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="n">area_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span></div>
 
+    <span class="c1"># def face_circle(self, fkey):</span>
+    <span class="c1">#     pass</span>
+
+<div class="viewcode-block" id="Mesh.face_flatness"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Mesh.face_flatness.html#compas.datastructures.Mesh.face_flatness">[docs]</a>    <span class="k">def</span> <span class="nf">face_flatness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="sd">"""Compute the flatness of the mesh face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fkey : hashable</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The flatness.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        Flatness is computed as the ratio of the distance between the diagonals</span>
+<span class="sd">        of the face to the average edge length. A practical limit on this value</span>
+<span class="sd">        realted to manufacturing is 0.02 (2%).</span>
+
+<span class="sd">        Warning</span>
+<span class="sd">        -------</span>
+<span class="sd">        This method only makes sense for quadrilateral faces.</span>
+
+<span class="sd">        """</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="n">face</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">flatness</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="p">[</span><span class="n">face</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span></div>
+
+    <span class="c1"># def face_frame(self, fkey):</span>
+    <span class="c1">#     pass</span>
+
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># boundary</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -2585,7 +2570,7 @@
 
     <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
 
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'hypar.obj'</span><span class="p">))</span>
 
     <span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
 

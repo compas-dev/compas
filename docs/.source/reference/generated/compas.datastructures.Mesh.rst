@@ -38,7 +38,6 @@ Mesh
       ~Mesh.edge_vector
       ~Mesh.edges
       ~Mesh.edges_on_boundary
-      ~Mesh.face_adjacency
       ~Mesh.face_adjacency_halfedge
       ~Mesh.face_area
       ~Mesh.face_center
@@ -46,6 +45,7 @@ Mesh
       ~Mesh.face_coordinates
       ~Mesh.face_corners
       ~Mesh.face_degree
+      ~Mesh.face_flatness
       ~Mesh.face_halfedges
       ~Mesh.face_label_name
       ~Mesh.face_max_degree
