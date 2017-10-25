@@ -8,11 +8,11 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'network_vertex_coloring',
+    'vertex_coloring',
 ]
 
 
-def network_vertex_coloring(network):
+def vertex_coloring(network):
     """Color the vertices of a network such that no two colors are adjacent.
 
     Parameters
@@ -33,11 +33,11 @@ def network_vertex_coloring(network):
         import compas
         from compas.datastructures import Network
         from compas.visualization import NetworkPlotter
-        from compas.datastructures import network_vertex_coloring
+        from compas.topology import vertex_coloring
 
         network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
-        key_color = network_vertex_coloring(network)
+        key_color = vertex_coloring(network)
         colors = ['#ff0000', '#00ff00', '#0000ff']
 
         plotter = NetworkPlotter(network)
@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 
-    key_color = network_vertex_coloring(network)
+    key_color = vertex_coloring(network)
     colors = ['#ff0000', '#00ff00', '#0000ff']
 
     plotter = NetworkPlotter(network)

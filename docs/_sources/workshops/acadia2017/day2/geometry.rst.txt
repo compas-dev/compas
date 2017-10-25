@@ -265,7 +265,7 @@ curves aligned with the rail curve.
 
 .. seealso::
 
-    * :func:`compas.geometry import project_points_plane`
+    * :func:`compas.geometry.project_points_plane`
 
 .. code-block:: python
 

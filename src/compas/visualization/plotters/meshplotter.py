@@ -38,6 +38,26 @@ class MeshPlotter(Plotter):
     defaults : dict
         Dictionary containing default attributes for vertices and edges.
 
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+        from compas.datastructures import Mesh
+        from compas.visualization import MeshPlotter
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+        plotter = MeshPlotter(mesh)
+
+        plotter.draw_vertices(text='key')
+        plotter.draw_edges()
+        plotter.draw_faces()
+
+        plotter.show()
+
+
     References
     ----------
     * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science & Engineering (9) 3, p.90-95.
@@ -54,17 +74,17 @@ class MeshPlotter(Plotter):
         self.edgecollection = None
         self.facecollection = None
         self.defaults = {
-            'vertex.radius'    : 0.2,
+            'vertex.radius'    : 0.15,
             'vertex.facecolor' : '#ffffff',
             'vertex.edgecolor' : '#000000',
             'vertex.edgewidth' : 0.1,
             'vertex.textcolor' : '#000000',
-            'vertex.fontsize'  : 12.0,
+            'vertex.fontsize'  : 10.0,
 
             'edge.width'    : 0.5,
             'edge.color'    : '#000000',
             'edge.textcolor': '#000000',
-            'edge.fontsize' : 12.0,
+            'edge.fontsize' : 10.0,
 
             'face.facecolor' : '#eeeeee',
             'face.edgecolor' : '#eeeeee',
@@ -323,7 +343,7 @@ if __name__ == "__main__":
 
     plotter = MeshPlotter(mesh)
 
-    plotter.draw_vertices()
+    plotter.draw_vertices(text='key')
     plotter.draw_edges()
     plotter.draw_faces()
 

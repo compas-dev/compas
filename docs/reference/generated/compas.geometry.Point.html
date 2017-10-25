@@ -13,7 +13,7 @@
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
 <link href="generated/compas.geometry.Point.__init__.html" rel="next" title="Point.__init__"/>
-<link href="generated/compas.geometry.Plane.from_three_points.html" rel="prev" title="Plane.from_three_points"/>
+<link href="generated/compas.geometry.Vector.unitize.html" rel="prev" title="Vector.unitize"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -78,6 +78,7 @@ Default is <code class="docutils literal">0.0</code>.</li>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="o">.</span><span class="n">x</span>
 <span class="go">1.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -89,6 +90,7 @@ Default is <code class="docutils literal">0.0</code>.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span>
 <span class="go">1.0</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">+</span> <span class="n">p2</span>
 <span class="go">[5.0, 7.0, 9.0]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">+</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
@@ -100,12 +102,14 @@ Default is <code class="docutils literal">0.0</code>.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span>
 <span class="go">[1.0, 2.0, 3.0]</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">+=</span> <span class="n">p2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">*=</span> <span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">**=</span> <span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span>
 <span class="go">[100.0, 196.0, 324.0]</span>
 </code></pre></div>
+
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">A <code class="docutils literal">Point</code> object supports direct access to its xyz coordinates through
@@ -183,7 +187,7 @@ list.</p>
 </dd></dl>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="generated/compas.geometry.Plane.from_three_points.html" role="button">Plane.from_three_points</a>
+<a class="btn btn-primary compas-prev" href="generated/compas.geometry.Vector.unitize.html" role="button">Vector.unitize</a>
 <a class="btn btn-primary compas-next" href="generated/compas.geometry.Point.__init__.html" role="button">Point.__init__</a>
 </nav>
 </main>

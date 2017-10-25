@@ -36,6 +36,27 @@ class NetworkPlotter(Plotter):
     defaults : dict
         Dictionary containing default attributes for vertices and edges.
 
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+        from compas.datastructures import Network
+        from compas.visualization import NetworkPlotter
+
+        network = Network.from_obj(compas.get('lines.obj'))
+
+        plotter = NetworkPlotter(network)
+
+        plotter.draw_vertices(
+            text='key',
+            facecolor={key: '#ff0000' for key in network.leaves()}
+        )
+        plotter.draw_edges()
+
+        plotter.show()
+
     References
     ----------
     * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science & Engineering (9) 3, p.90-95.
@@ -51,7 +72,7 @@ class NetworkPlotter(Plotter):
         self.vertexcollection = None
         self.edgecollection = None
         self.defaults = {
-            'vertex.radius'    : 0.1,
+            'vertex.radius'    : 0.15,
             'vertex.facecolor' : '#ffffff',
             'vertex.edgecolor' : '#000000',
             'vertex.edgewidth' : 1.0,

@@ -18,4 +18,5 @@ topology
     shortest_path
     dijkstra_distances
     dijkstra_path
+    vertex_coloring
 

@@ -23,21 +23,106 @@ __all__ = [
 Node = collections.namedtuple("Node", 'point axis label left right')
 
 
-class KDTreeError(Exception):
-    """"""
-    pass
-
-
 class KDTree(object):
     """A tree for nearest neighbor search in a k-dimensional space.
+
+    Parameters
+    ----------
+    objects : list, optional
+        A list of objects to populate the tree with.
+        If objects are provided, the tree is built automatically.
+        Defaults to ``None``.
+
+    Attributes
+    ----------
+    root : Node
+        The root node of the built tree.
+        This is the median with respect to the different dimensions of the tree.
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+        
+        from compas.geometry import KDTree
+        from compas.geometry import pointcloud_xy
+        from compas.visualization import Plotter
+
+        plotter = Plotter()
+
+        cloud = pointcloud_xy(999, (-500, 500))
+        point = cloud[0]
+
+        tree = KDTree(cloud)
+
+        n       = 50
+        nnbrs   = []
+        exclude = set()
+
+        for i in range(n):
+            nnbr = tree.nearest_neighbour(point, exclude)
+            nnbrs.append(nnbr)
+            exclude.add(nnbr[1])
+
+        for nnbr in nnbrs:
+            print(nnbr)
+
+        points = []
+        for index, (x, y, z) in enumerate(cloud):
+            points.append({
+                'pos'      : [x, y],
+                'facecolor': '#000000',
+                'edgecolor': '#000000',
+                'radius'   : 1.0
+            })
+        points.append({
+            'pos'      : point[0:2],
+            'facecolor': '#ff0000',
+            'edgecolor': '#ff0000',
+            'radius'   : 5.0
+        })
+
+        lines = []
+        for xyz, label, dist in nnbrs:
+            points[label]['facecolor'] = '#00ff00'
+            points[label]['edgecolor'] = '#00ff00'
+            points[label]['radius'] = 3.0
+
+            lines.append({
+                'start' : point[0:2],
+                'end'   : xyz[0:2],
+                'color' : '#000000',
+                'width' : 0.1,
+            })
+
+        plotter.draw_lines(lines)
+        plotter.draw_points(points)
+        plotter.show()
+
     """
 
     def __init__(self, objects=None):
+        """Initialise a KDTree object."""
         self.root = None
         if objects:
             self.root = self.build(list([(objects[i], i) for i in xrange(len(objects))]))
 
     def build(self, objects, axis=0):
+        """Populate a kd-tree with given objects.
+        
+        Parameters
+        ----------
+        objects : list
+            The tree objects.
+        axis : int, optional
+            The axis along which to build.
+        
+        Returns
+        -------
+        Node
+            The root node.
+
+        """
         if not objects:
             return None
 
@@ -51,42 +136,72 @@ class KDTree(object):
             axis,
             median_label,
             self.build(objects[:median_idx], next_axis),
-            self.build(objects[median_idx + 1:], next_axis)
-        )
+            self.build(objects[median_idx + 1:], next_axis))
 
-    def nearest_neighbour(self, point, exclude):
-        best = [None, None, float('inf')]  # [xyz, label, d2]
-
-        def recursive_search(node):
+    def nearest_neighbour(self, point, exclude=None):
+        """Find the nearest neighbour to a given point,
+        excluding neighbours that have already been found.
+        
+        Parameters
+        ----------
+        point : list
+            XYZ coordinates of the base point.
+        exclude : set, optional
+            A set of points to exclude from the search.
+            Defaults to an empty set.
+    
+        Returns
+        -------
+        list:
+            XYZ coordinates of the nearest neighbour.
+            Label of the nearest neighbour.
+            Distance to the base point.
+    
+        """
+        def search(node):
             if node is None:
                 return
 
-            xyz, axis, label, left, right = node
+            d2 = distance_point_point_sqrd(point, node.point)
+            if d2 < best[2]:
+                if node.label not in exclude:
+                    best[:] = node.point, node.label, d2
 
-            d2 = distance_point_point_sqrd(point, xyz)
-
-            if d2 < best[2] and label not in exclude:
-                best[:] = xyz, label, d2
-
-            diff = point[axis] - xyz[axis]
-
-            if diff <= 0:
-                close, far = left, right
+            d = point[node.axis] - node.point[node.axis]
+            if d <= 0:
+                close, far = node.left, node.right
             else:
-                close, far = right, left
+                close, far = node.right, node.left
 
-            recursive_search(close)
+            search(close)
+            if d ** 2 < best[2]:
+                search(far)
 
-            if diff ** 2 < best[2]:
-                recursive_search(far)
-
-        recursive_search(self.root)
-
+        exclude = exclude or set()
+        best = [None, None, float('inf')]
+        search(self.root)
         best[2] **= 0.5
-
         return best
 
     def nearest_neighbours(self, point, number, distance_sort=False):
+        """Find the N nearest neighbours to a given point.
+
+        Parameters
+        ----------
+        point : list
+            XYZ coordinates of the bbase point.
+        number : int
+            The number of nearest neighbours.
+        distance_sort : bool, optional
+            Sort the nearest neighbours by distance to the base point.
+            Default is ``False``.
+        
+        Returns
+        -------
+        list
+            A list of N nearest neighbours.
+
+        """
         nnbrs = []
         exclude = set()
         for i in range(number):
@@ -104,40 +219,56 @@ class KDTree(object):
 
 if __name__ == '__main__':
 
-    import time
-    from random import random
+    from compas.geometry import pointcloud_xy
+    from compas.visualization import Plotter
 
-    # define random sample data
+    plotter = Plotter()
 
-    cloud = [(random(), random(), 0) for i in xrange(50000)]
-    point = (random(), random(), 0)
+    cloud = pointcloud_xy(999, (-500, 500))
+    point = cloud[0]
 
-    # build tree
-
-    tick = time.time()
     tree = KDTree(cloud)
-    tock = time.time()
 
-    print("{0} CPU seconds for building tree".format(tock - tick))
-
-    n       = 1000
+    n       = 50
     nnbrs   = []
     exclude = set()
 
-    tick = time.clock()
-
-    # for i in range(n):
-    #     nnbr = tree.nearest_neighbour(point, exclude)
-    #     nnbrs.append(nnbr)
-    #     exclude.add(nnbr[1])
-
-    nnbrs = tree.nearest_neighbours(point, 1, distance_sort=True)
-
-    print(point)
+    for i in range(n):
+        nnbr = tree.nearest_neighbour(point, exclude)
+        nnbrs.append(nnbr)
+        exclude.add(nnbr[1])
 
     for nnbr in nnbrs:
         print(nnbr)
 
-    tock = time.clock()
+    points = []
+    for index, (x, y, z) in enumerate(cloud):
+        points.append({
+            'pos'      : [x, y],
+            'facecolor': '#000000',
+            'edgecolor': '#000000',
+            'radius'   : 1.0
+        })
+    points.append({
+        'pos'      : point[0:2],
+        'facecolor': '#ff0000',
+        'edgecolor': '#ff0000',
+        'radius'   : 5.0
+    })
 
-    print("{0} CPU seconds for {1} nearest neighbor(s)".format(tock - tick, n))
+    lines = []
+    for xyz, label, dist in nnbrs:
+        points[label]['facecolor'] = '#00ff00'
+        points[label]['edgecolor'] = '#00ff00'
+        points[label]['radius'] = 3.0
+
+        lines.append({
+            'start' : point[0:2],
+            'end'   : xyz[0:2],
+            'color' : '#000000',
+            'width' : 0.1,
+        })
+
+    plotter.draw_lines(lines)
+    plotter.draw_points(points)
+    plotter.show()

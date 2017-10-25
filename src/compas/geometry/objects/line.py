@@ -1,4 +1,4 @@
-from compas.geometry.objects.point import Point
+from compas.geometry.objects import Point
 
 
 __author__     = ['Tom Van Mele', ]

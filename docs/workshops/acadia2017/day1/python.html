@@ -79,6 +79,7 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 </ul>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># indexing &amp; slicing</span>
 
 <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>     <span class="c1"># 0</span>
@@ -90,6 +91,7 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <span class="n">items</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]</span>
 <span class="n">items</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>   <span class="c1"># [0, 2, 4, 6, 8]</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># methods</span>
 
 <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
@@ -100,6 +102,7 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <span class="n">items</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>                      <span class="c1"># [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</span>
 <span class="n">items</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>                 <span class="c1"># [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h3>List comprehensions</h3>
@@ -112,23 +115,28 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <span class="n">squares</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
 <span class="n">even</span>    <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">None</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># flattening</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># vector length</span>
 
 <span class="n">vector</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
 <span class="n">length</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">])</span> <span class="o">**</span> <span class="mf">0.5</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># dot product</span>
 
 <span class="n">vectors</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
 <span class="n">dot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span> <span class="n">vectors</span><span class="p">)])</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># centroid</span>
 
 <span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
 <span class="n">centroid</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">)]</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h3>Tuple</h3>
@@ -143,9 +151,11 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <span class="n">g</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># 0</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># 0</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h3>Set</h3>
@@ -156,6 +166,7 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 </ul>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h3>Dictionary</h3>
@@ -178,18 +189,22 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
     <span class="k">print</span> <span class="n">value</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># pop</span>
 <span class="c1"># popitem</span>
 <span class="c1"># setdefault</span>
 <span class="c1"># get</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># sort dictionary based on values</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h3>Dict comprehensions</h3>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">items</span> <span class="o">=</span> <span class="p">{</span><span class="n">index</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))}</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h3>Examples</h3>
@@ -220,6 +235,7 @@ Python 3 is fully supported and the code is backwards compatible with Python +2.
 <span class="c1"># 0.02</span>
 <span class="c1"># 12.58</span>
 </code></pre></div>
+
 <p>Geometric maps</p>
 <p>Given a set of lines, defined by start and end point coordinates,
 determine the connectivity of the lines.</p>
@@ -248,6 +264,7 @@ determine the connectivity of the lines.</p>
 <span class="c1"># print vertices</span>
 <span class="c1"># print lines</span>
 </code></pre></div>
+
 </div>
 </div>
 <div class="section">
@@ -282,6 +299,7 @@ determine the connectivity of the lines.</p>
 <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">pass</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h2>Classes</h2>
@@ -292,6 +310,7 @@ determine the connectivity of the lines.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h2>Script, Module, Package</h2>
@@ -303,6 +322,7 @@ determine the connectivity of the lines.</p>
 
 <span class="k">print</span> <span class="n">c</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># script vs. module</span>
 <span class="c1"># http://stackoverflow.com/questions/419163/what-does-if-name-main-do</span>
 
@@ -320,6 +340,7 @@ determine the connectivity of the lines.</p>
     <span class="n">f1</span><span class="p">()</span>
     <span class="n">f2</span><span class="p">()</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h2>Resources</h2>
