@@ -40,6 +40,203 @@
 </nav>
 <div class="section">
 <span id="acadia2017-day2-geometry"></span><h1>Geometry</h1>
+<div class="section">
+<h2>Introduction</h2>
+<p>The <em>compas</em> framework contains an extensive set of python geometry functions
+and algorithms without any external dependencies. Code using the geometry
+package can run in any Python or IronPython environment. Hence, any algorithm
+or program using the geometry package can easily be integrated in different
+applications (e.g.: Rhino, Blender, Maya, ...)</p>
+<p>The full geometry reference can be found here:</p>
+<ul class="simple">
+<li><code class="xref py py-mod docutils literal">compas.geometry</code></li>
+</ul>
+</div>
+<div class="section">
+<h2>Object-Oriented Interface vs Functions</h2>
+<p>The geometry package features an object-oriented interface:</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">u</span> <span class="o">+</span> <span class="n">v</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The same vector calculations can be computed using functions and
+lists (or tuples) as vectors:</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">length_vector</span>
+
+<span class="n">u</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">length_vector</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="section">
+<h3>Exercise:</h3>
+<p>Create a set of 1.000 random vectors with the origin (1. ,2. ,3.) and compute their
+resultant. Compare the preformance of an object-based and function-based method.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a href="#id1"><span class="problematic" id="id2">:method:`compas.geometry.objects.vector.from_start_end`</span></a></li>
+<li><a href="#id3"><span class="problematic" id="id4">:method:`compas.geometry.objects.vector.from_start_end`</span></a></li>
+<li><code class="xref py py-func docutils literal">compas.geometry.constructors.vector_from_points()</code></li>
+<li><code class="xref py py-func docutils literal">compas.geometry.basic.add_vectors()</code></li>
+<li><code class="xref py py-func docutils literal">compas.geometry.basic.sum_vectors()</code></li>
+</ul>
+</div>
+<p>Solution:</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span> <span class="k">as</span> <span class="n">rnd</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">sum_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">vector_from_points</span>
+
+
+<span class="c1"># create random points</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="n">rnd</span><span class="p">(),</span> <span class="n">rnd</span><span class="p">(),</span> <span class="n">rnd</span><span class="p">())</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">)]</span>
+<span class="c1"># define origin</span>
+<span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]</span>
+
+
+<span class="c1"># Object-based method</span>
+<span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="c1">#-------------------------</span>
+<span class="n">vecs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Vector</span><span class="o">.</span><span class="n">from_start_end</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">pt</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vecs</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">+=</span> <span class="n">v</span>
+<span class="c1">#-------------------------</span>
+<span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'{0} seconds to compute for object-based method'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'------------------'</span><span class="p">)</span>
+
+
+<span class="c1"># Function-based method A</span>
+<span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="c1">#-------------------------</span>
+<span class="n">vecs</span> <span class="o">=</span> <span class="p">[</span><span class="n">vector_from_points</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">pt</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vecs</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="c1">#-------------------------</span>
+<span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'{0} seconds to compute for function-based method A'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'------------------'</span><span class="p">)</span>
+
+
+<span class="c1"># Function-based method B</span>
+<span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="c1">#-------------------------</span>
+<span class="n">vecs</span> <span class="o">=</span> <span class="p">[</span><span class="n">vector_from_points</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">pt</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">sum_vectors</span><span class="p">(</span><span class="n">vecs</span><span class="p">)</span>
+<span class="c1">#-------------------------</span>
+<span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'{0} seconds to compute for function-based method B'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'------------------'</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="section">
+<h2>Translational Surfaces for Gridshells</h2>
+<p>Using translational surfaces for the design of gridshells allows to explore freeform
+spaces that can be built from planar (glass) panels. Jörg Schlaich together with Hans
+Schober developed several geometric design methods for various gridshells built in the
+last decades.</p>
+<figure class="figure">
+<img alt="../../../images/sbp_bristol.jpg" class="figure-img img-fluid" src="../../../images/sbp_bristol.jpg"/>
+</figure>
+<p>Cabot Circus Bristol (Photo: SBP)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The following examples are made to be visualised in Rhino. Please check if you
+have the right IronPython version installed.</p>
+<p>Open the script editor in Rhino (Command: _EditPythonScript) and run:</p>
+<blockquote class="last">
+<div><blockquote>
+<div><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">sys</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
+</code></pre></div>
+
+</div></blockquote>
+<p>Make sure to have version 2.7.5 installed!</p>
+</div></blockquote>
+</div>
+<p>The following example shows the generation of a simple tanslation surface based on a
+given profile and rail curve.</p>
+<ul class="simple">
+<li><a class="reference download internal" download="" href="../../../downloads/mesh-smoothing.3dm"><code class="xref download docutils literal">mesh-smoothing.3dm</code></a></li>
+</ul>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
+
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">translate_points</span>
+
+    <span class="c1"># Get inputs</span>
+    <span class="n">crv_p</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select profile"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">crv_r</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select rail"</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="n">div_p</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">div_r</span> <span class="o">=</span> <span class="mi">40</span>
+
+    <span class="c1"># divide profile and rail curve</span>
+    <span class="n">pts_p</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DivideCurve</span><span class="p">(</span><span class="n">crv_p</span><span class="p">,</span> <span class="n">div_p</span><span class="p">)</span>
+    <span class="n">pts_r</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DivideCurve</span><span class="p">(</span><span class="n">crv_r</span><span class="p">,</span> <span class="n">div_r</span><span class="p">)</span>
+
+
+    <span class="c1"># ------------------------------</span>
+    <span class="c1"># compas geometry function</span>
+
+    <span class="c1"># reference point for profile curve</span>
+    <span class="n">pt_ref</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">pts_p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pts_p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+    <span class="c1"># create profiles along the rail curve</span>
+    <span class="n">pts_sets</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">div_r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">vec_1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pts_r</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pt_ref</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">translate_points</span><span class="p">(</span><span class="n">pts_p</span><span class="p">,</span> <span class="n">vec_1</span><span class="p">)</span>
+        <span class="n">pts_sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="c1"># create polyline point sets for each face</span>
+    <span class="n">polys</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pts_sets</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pts_sets</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">p1</span> <span class="o">=</span> <span class="n">pts_sets</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">p2</span> <span class="o">=</span> <span class="n">pts_sets</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">p3</span> <span class="o">=</span> <span class="n">pts_sets</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">p4</span> <span class="o">=</span> <span class="n">pts_sets</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">polys</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">,</span> <span class="n">p1</span><span class="p">])</span>
+
+    <span class="c1"># compas geometry function</span>
+    <span class="c1"># ------------------------------</span>
+
+    <span class="c1"># draw gridshell in Rhino</span>
+    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">polys</span><span class="p">:</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">AddPolyline</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
+    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The following example shows the generation of a simple tanslation surface based on a
+given profile and rail curve.</p>
+</div>
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="../day2.html" role="button">Day 2</a>
@@ -79,7 +276,15 @@
 </div>
 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Geometry</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Geometry</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#introduction">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#object-oriented-interface-vs-functions">Object-Oriented Interface vs Functions</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#exercise">Exercise:</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#translational-surfaces-for-gridshells">Translational Surfaces for Gridshells</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -92,7 +297,7 @@
             
 
             
-                Last updated on Oct 24, 2017.
+                Last updated on Oct 25, 2017.
             
 
             

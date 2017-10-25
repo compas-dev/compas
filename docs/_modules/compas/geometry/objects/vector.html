@@ -44,12 +44,17 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry.basic</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.angles</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="o">*</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
 <span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, Block Research Group - ETH Zurich'</span>
 <span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
 <span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Vector'</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="Vector"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Vector.html#compas.geometry.Vector">[docs]</a><span class="k">class</span> <span class="nc">Vector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -107,6 +112,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
         <span class="k">if</span> <span class="n">unitize</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># factory</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_start_end</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">v</span><span class="p">)</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># descriptors</span>
@@ -180,6 +194,10 @@
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">])</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># comparison</span>
+    <span class="c1"># ==========================================================================</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># operators</span>
@@ -265,53 +283,25 @@
 <div class="viewcode-block" id="Vector.norm_vectors"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.norm_vectors.html#compas.geometry.Vector.norm_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">norm_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">norm_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span></div>
 
-    <span class="c1"># @staticmethod</span>
-    <span class="c1"># def sum_vectors(vectors):</span>
-    <span class="c1">#     pass</span>
-
-    <span class="c1"># @staticmethod</span>
-    <span class="c1"># def add_vectors(vectors):</span>
-    <span class="c1">#     pass</span>
-
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Vector.dot"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.dot.html#compas.geometry.Vector.dot">[docs]</a>    <span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">"""The dot product of this ``Vector`` and another ``Vector``.</span>
-
-<span class="sd">        Parameters:</span>
-<span class="sd">            other (tuple, list, Vector): The vector to dot.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            float: The dot product.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">sum_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span> <span class="n">vectors</span><span class="p">)])</span>
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Vector.dot_vectors"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.dot_vectors.html#compas.geometry.Vector.dot_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">dot_vectors</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)]</span></div>
-
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Vector.cross"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.cross.html#compas.geometry.Vector.cross">[docs]</a>    <span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">"""The cross product of this ``Vector`` and another ``Vector``.</span>
-
-<span class="sd">        Parameters:</span>
-<span class="sd">            other (tuple, list, Vector): The vector to cross.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Vector: The cross product.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Vector</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)]</span></div>
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Vector.cross_vectors"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.cross_vectors.html#compas.geometry.Vector.cross_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">cross_vectors</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">Vector</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)]</span></div>
 
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Vector.angles"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.angles.html#compas.geometry.Vector.angles">[docs]</a>    <span class="k">def</span> <span class="nf">angles</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+    <span class="k">def</span> <span class="nf">angles_vectors</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">angles_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)]</span>
 
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Vector.angle"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.angle.html#compas.geometry.Vector.angle">[docs]</a>    <span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+    <span class="k">def</span> <span class="nf">angle_vectors</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">angle_smallest_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)]</span>
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Vector.homogenise_vectors"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.homogenise_vectors.html#compas.geometry.Vector.homogenise_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">homogenise_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
@@ -326,6 +316,18 @@
         <span class="k">pass</span></div>
 
     <span class="c1"># ==========================================================================</span>
+    <span class="c1"># properties</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">length_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">length_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="c1"># ==========================================================================</span>
     <span class="c1"># helpers</span>
     <span class="c1"># ==========================================================================</span>
 
@@ -333,33 +335,30 @@
         <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
-    <span class="c1"># properties</span>
-    <span class="c1"># ==========================================================================</span>
-
-<div class="viewcode-block" id="Vector.length"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.length.html#compas.geometry.Vector.length">[docs]</a>    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Vector.norm"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.norm.html#compas.geometry.Vector.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
-
-    <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods: none</span>
     <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="Vector.unitize"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.unitize.html#compas.geometry.Vector.unitize">[docs]</a>    <span class="k">def</span> <span class="nf">unitize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">/</span> <span class="n">l</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">/</span> <span class="n">l</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">/</span> <span class="n">l</span></div>
 
-<div class="viewcode-block" id="Vector.homogenise"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.homogenise.html#compas.geometry.Vector.homogenise">[docs]</a>    <span class="k">def</span> <span class="nf">homogenise</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+<div class="viewcode-block" id="Vector.homogenise"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.homogenise.html#compas.geometry.Vector.homogenise">[docs]</a>    <span class="k">def</span> <span class="nf">homogenise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">/</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">/</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">/</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span></div>
 
 <div class="viewcode-block" id="Vector.dehomogenise"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.dehomogenise.html#compas.geometry.Vector.dehomogenise">[docs]</a>    <span class="k">def</span> <span class="nf">dehomogenise</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span></div>
 
 <div class="viewcode-block" id="Vector.reverse"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.reverse.html#compas.geometry.Vector.reverse">[docs]</a>    <span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods: float</span>
@@ -377,6 +376,38 @@
         <span class="bp">self</span> <span class="o">*=</span> <span class="n">n</span></div>
 
     <span class="c1"># ==========================================================================</span>
+    <span class="c1"># methods: other</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Vector.dot"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.dot.html#compas.geometry.Vector.dot">[docs]</a>    <span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">"""The dot product of this ``Vector`` and another ``Vector``.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            other (tuple, list, Vector): The vector to dot.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: The dot product.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Vector.cross"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.cross.html#compas.geometry.Vector.cross">[docs]</a>    <span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">"""The cross product of this ``Vector`` and another ``Vector``.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            other (tuple, list, Vector): The vector to cross.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Vector: The cross product.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Vector.angle"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.angle.html#compas.geometry.Vector.angle">[docs]</a>    <span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">angle_smallest_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Vector.angles"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.angles.html#compas.geometry.Vector.angles">[docs]</a>    <span class="k">def</span> <span class="nf">angles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">angles_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+    <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods: misc</span>
     <span class="c1"># ==========================================================================</span>
 
@@ -385,11 +416,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="Vector.translate"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.translate.html#compas.geometry.Vector.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">+=</span> <span class="n">other</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Vector.rotate"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Vector.rotate.html#compas.geometry.Vector.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">"""Rotate a vector u over an angle a around an axis k.</span>
@@ -411,11 +437,14 @@
         <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
 
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">axis</span><span class="p">)</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">axis</span><span class="p">)</span>
+
         <span class="n">sina</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
         <span class="n">cosa</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">kxu</span>  <span class="o">=</span> <span class="n">Vector</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">kxu</span>  <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">v</span>    <span class="o">=</span> <span class="n">kxu</span> <span class="o">*</span> <span class="n">sina</span>
-        <span class="n">w</span>    <span class="o">=</span> <span class="n">Vector</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">kxu</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cosa</span><span class="p">)</span>
+        <span class="n">w</span>    <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">kxu</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cosa</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -434,13 +463,17 @@
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
 
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">rotation_matrix</span>
+
     <span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
+    <span class="nb">print</span><span class="p">(</span><span class="n">Vector</span><span class="o">.</span><span class="n">sum_vectors</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">]))</span>
+
     <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">Vector</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">Vector</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
 
     <span class="n">u</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
