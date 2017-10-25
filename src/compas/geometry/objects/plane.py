@@ -73,8 +73,8 @@ class Plane(object):
 if __name__ == '__main__':
 
     from compas.visualization.viewers import Viewer
-    from compas.visualization.viewers.core.drawing import xdraw_points
-    from compas.visualization.viewers.core.drawing import xdraw_lines
+    from compas.visualization.viewers import xdraw_points
+    from compas.visualization.viewers import xdraw_lines
 
     base = Point(1.0, 0.0, 0.0)
     normal = Vector(1.0, 1.0, 1.0)
@@ -102,9 +102,7 @@ if __name__ == '__main__':
         xdraw_points(points)
         xdraw_lines(lines)
 
-    viewer = Viewer()
-
-    viewer.displayfuncs.append(draw_plane)
-
-    viewer.setup()
-    viewer.show()
+    Viewer(
+        displayfuncs=[draw_plane, ],
+        delay_setup=False
+    ).show()

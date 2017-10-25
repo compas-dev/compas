@@ -72,10 +72,10 @@ class Polyline(object):
 
     """
     def __init__(self, points):
-        self.points = None
-        self.lines = None
-        self.p = 0
-        self.l = 0
+        self._points = []
+        self._lines = []
+        self._p = 0
+        self._l = 0
         self.points = points
 
     @property
@@ -88,14 +88,14 @@ class Polyline(object):
         Returns:
             list: A list of ``Point`` objects.
         """
-        return self.points
+        return self._points
 
     @points.setter
     def points(self, points):
-        self.points = [Point(xyz) for xyz in points]
-        self.p = len(points)
-        self.lines = [Line(self.points[i], self.points[i + 1]) for i in range(0, self.p - 1)]
-        self.l = len(self.lines)
+        self._points = [Point(*xyz) for xyz in points]
+        self._p = len(points)
+        self._lines = [Line(self._points[i], self._points[i + 1]) for i in range(0, self._p - 1)]
+        self._l = len(self._lines)
 
     @property
     def lines(self):
@@ -107,17 +107,17 @@ class Polyline(object):
         Returns:
             list: A list of ``Line`` objects.
         """
-        return self.lines
+        return self._lines
 
     @property
     def p(self):
         """The number of points."""
-        return self.p
+        return self._p
 
     @property
     def l(self):
         """The number of lines."""
-        return self.l
+        return self._l
 
     @property
     def length(self):
