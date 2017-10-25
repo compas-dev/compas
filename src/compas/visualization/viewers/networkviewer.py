@@ -21,6 +21,9 @@ __license__    = 'MIT License'
 __email__      = '<vanmelet@ethz.ch>'
 
 
+__all__ = ['NetworkViewer', ]
+
+
 class NetworkViewer(Viewer):
     """An OpenGL viewer for networks.
 
@@ -151,9 +154,9 @@ class NetworkViewer(Viewer):
 if __name__ == '__main__':
 
     import compas
-    from compas.datastructures.network import Network
+    from compas.datastructures import Network
 
-    network = Network.from_obj(compas.get_data('saddle.obj'))
+    network = Network.from_obj(compas.get('saddle.obj'))
 
     viewer = NetworkViewer(network, 600, 600)
 

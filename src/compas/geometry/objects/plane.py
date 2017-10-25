@@ -72,7 +72,7 @@ class Plane(object):
 
 if __name__ == '__main__':
 
-    from compas.visualization.viewers.viewer import Viewer
+    from compas.visualization.viewers import Viewer
     from compas.visualization.viewers.core.drawing import xdraw_points
     from compas.visualization.viewers.core.drawing import xdraw_lines
 
@@ -90,7 +90,6 @@ if __name__ == '__main__':
     }]
 
     lines = []
-
     for vector in basis + [plane.normal]:
         lines.append({
             'start' : base,

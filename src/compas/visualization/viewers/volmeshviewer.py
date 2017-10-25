@@ -2,16 +2,19 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
-from compas.viewers.viewer import Viewer
-from compas.viewers.drawing import xdraw_polygons
-from compas.viewers.drawing import xdraw_lines
-from compas.viewers.drawing import xdraw_points
+from compas.visualization.viewers.viewer import Viewer
+from compas.visualization.viewers.drawing import xdraw_polygons
+from compas.visualization.viewers.drawing import xdraw_lines
+from compas.visualization.viewers.drawing import xdraw_points
 
 
 __author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = '<vanmelet@ethz.ch>'
+
+
+__all__ = ['VolMeshViewer', ]
 
 
 class VolMeshViewer(Viewer):
@@ -84,9 +87,9 @@ class VolMeshViewer(Viewer):
 if __name__ == '__main__':
 
     import compas
-    from compas.datastructures.volmesh.volmesh import VolMesh
+    from compas.datastructures import VolMesh
 
-    mesh = VolMesh.from_json(compas.get_data('boxes.json'))
+    mesh = VolMesh.from_json(compas.get('boxes.json'))
 
     viewer = VolMeshViewer(mesh)
     viewer.setup()

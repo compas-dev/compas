@@ -6,6 +6,7 @@ from math import sqrt
 from math import pi
 
 from compas.geometry.basic import *
+from compas.geometry.xforms import transform
 
 
 __author__     = ['Tom Van Mele', ]
@@ -288,6 +289,18 @@ class Vector(object):
         pass
 
     # ==========================================================================
+    # properties
+    # ==========================================================================
+
+    @property
+    def length(self):
+        return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
+
+    @property
+    def norm(self):
+        return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
+
+    # ==========================================================================
     # helpers
     # ==========================================================================
 
@@ -295,21 +308,11 @@ class Vector(object):
         return Vector(self.x, self.y, self.z)
 
     # ==========================================================================
-    # properties
-    # ==========================================================================
-
-    def length(self):
-        return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
-
-    def norm(self):
-        return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
-
-    # ==========================================================================
     # methods: none
     # ==========================================================================
 
     def unitize(self):
-        l = self.length()
+        l = self.length
         self.x = self.x / l
         self.y = self.y / l
         self.z = self.z / l
@@ -395,6 +398,8 @@ class Vector(object):
 # ==============================================================================
 
 if __name__ == '__main__':
+
+    from compas.geometry import rotation_matrix
 
     u = Vector(1.0, 0.0, 0.0)
     v = Vector(0.0, 1.0, 0.0)
