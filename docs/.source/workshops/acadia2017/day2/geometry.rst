@@ -17,6 +17,23 @@ The full geometry reference can be found here:
 
 * :mod:`compas.geometry`
 
+.. note::
+	Besides many basic geometry functions such as:
+	* :mod:`compas.geometry.add_vectors`
+	* :mod:`compas.geometry.subtract_vectors`
+	* :mod:`compas.geometry.intersection_line_plane`
+	* :mod:`compas.geometry.closest_point_on_polyline`
+	* :mod:`compas.geometry.is_point_in_triangle`
+	* ...
+
+	The geometry package also includes geometry 
+	algorithms such as:
+	* :mod:`compas.geometry.planarize_faces`
+	* :mod:`compas.geometry.smooth_centroid`
+	* :mod:`compas.geometry.smooth_area`
+	* :mod:`compas.geometry.discrete_coons_patch`
+	* ...	
+
 
 Object-Oriented Interface vs Functions
 ======================================
@@ -58,7 +75,7 @@ lists (or tuples) as vectors:
 Exercise: 
 ---------
 
-Create a set of 1.000 random vectors with the origin (1. ,2. ,3.) and compute their
+Create a set of 10.000 random vectors with the origin (1. ,2. ,3.) and compute their
 resultant. Compare the preformance of an object-based and function-based method.  
 
 .. seealso::
@@ -66,9 +83,9 @@ resultant. Compare the preformance of an object-based and function-based method.
 	* :meth:`compas.geometry.Vector.from_start_end`
 	* :meth:`compas.geometry.Vector.from_start_end`
 
-	* :func:`compas.geometry.constructors.vector_from_points`
-	* :func:`compas.geometry.basic.add_vectors`
-	* :func:`compas.geometry.basic.sum_vectors`
+	* :func:`compas.geometry.vector_from_points`
+	* :func:`compas.geometry.add_vectors`
+	* :func:`compas.geometry.sum_vectors`
 
 
 Solution:
@@ -141,11 +158,11 @@ spaces that can be built from planar (glass) panels. Jörg Schlaich together wit
 Schober developed several geometric design methods for various gridshells built in the 
 last decades.
 
-.. figure:: /_images/sbp_bristol.jpg
+.. figure:: /_images/sbp.jpg
     :figclass: figure
     :class: figure-img img-fluid
 
-Cabot Circus Bristol (Photo: SBP)
+Cabot Circus Bristol and Deutsches Historisches Museum (Photo: SBP)
 
 
 .. note::
@@ -166,7 +183,14 @@ Cabot Circus Bristol (Photo: SBP)
 The following example shows the generation of a simple tanslation surface based on a
 given profile and rail curve. 
 
-* :download:`mesh-smoothing.3dm </../../examples/mesh-smoothing.3dm>`
+.. note::
+	The following examples are based on the 3dm file:
+	* :download:`trans_srf.3dm </../../examples/trans_srf.3dm>`
+
+.. figure:: /_images/trans_srf_01.jpg
+    :figclass: figure
+    :class: figure-img img-fluid
+See 3dm file for details 
 
 .. code-block:: python
 
@@ -221,11 +245,179 @@ given profile and rail curve.
 	rs.EnableRedraw(True)
 
 
-The following example shows the generation of a simple tanslation surface based on a
-given profile and rail curve. 
+
+The following example shows the generation of a tanslation surface with profile
+curves aligned with the rail curve.
+
+.. figure:: /_images/trans_srf_03.jpg
+    :figclass: figure
+    :class: figure-img img-fluid
+See 3dm file for details 
+
+.. seealso::
+	* :func:`compas.geometry import project_points_plane`
+
+
+.. code-block:: python
+
+	import rhinoscriptsyntax as rs
+
+	from compas.geometry import subtract_vectors
+	from compas.geometry import project_points_plane
+
+	# Get inputs
+	crv_p = rs.GetObject("Select profile", 4)
+	crv_a = rs.GetObject("Select rail 1",4)
+
+	div_p = 20
+	div_r = 40
+
+	# divide profile and rail curve
+	pts_p = rs.DivideCurve(crv_p, div_p)
+	pts_a = rs.DivideCurve(crv_a, div_r)
+
+
+	# ------------------------------
+	# compas geometry function
+
+	# create planes along the rail curve
+	planes = []
+	for i in range(div_r):
+	    vec = subtract_vectors(pts_a[i + 1], pts_a[i])
+	    planes.append([pts_a[i], vec])
+
+	# subsequentely project profile curve to all planes
+	pts_uv = []
+	pts = pts_p
+	for i in range(div_r - 1):
+	    pts = project_points_plane(pts, planes[i])
+	    pts_uv.append(pts)
+
+	# create polyline point sets for each face
+	polys = []
+	for u in xrange(len(pts_uv)-1):
+	    for v in xrange(len(pts_uv[u])-1):
+	        p1 = pts_uv[u][v] 
+	        p2 = pts_uv[u + 1][v] 
+	        p3 = pts_uv[u + 1][v + 1] 
+	        p4 = pts_uv[u][v + 1]
+	        polys.append([p1, p2, p3, p4, p1])
+
+	# compas geometry function
+	# ------------------------------
+
+	# draw gridshell in Rhino
+	rs.EnableRedraw(False)
+	for poly in polys:
+	    rs.AddPolyline(poly)
+	rs.EnableRedraw(True)
+
+Exercise: 
+---------
+
+The following figure shows the generation of a tanslation surface with two profile
+curves. The method geneartes planes along the two rail curves and subsequentely uses
+intersections with conical extrusions to guarantee the planarity of resulting mesh.
+
+Modify the previous script to compute planar translational surfaces based on the algorithm
+decribed above. Include you script in Grasshopper using the GhPython component.
+
+.. figure:: /_images/trans_srf_04.jpg
+    :figclass: figure
+    :class: figure-img img-fluid
+See 3dm file for details 
+
+.. seealso::
+	* :func:`compas.geometry.add_vectors`
+	* :func:`compas.geometry.centroid_points`
+	* :func:`compas.geometry.intersection_line_plane`
+	* :func:`compas.geometry.intersection_line_line`
+
+
+.. code-block:: python
+
+	import rhinoscriptsyntax as rs
+
+	from compas.geometry import subtract_vectors
+	from compas.geometry import add_vectors
+	from compas.geometry import centroid_points
+	from compas.geometry import intersection_line_plane
+	from compas.geometry import intersection_line_line
+	    
+	# Get inputs
+	crv_p = rs.GetObject("Select profile", 4)
+	crv_a = rs.GetObject("Select rail 1",4)
+	crv_b = rs.GetObject("Select rail 2",4)
+
+	div_p = 20
+	div_r = 40
+
+	# divide profile and rail curves
+	pts_p = rs.DivideCurve(crv_p, div_p)
+	pts_a = rs.DivideCurve(crv_a, div_r)
+	pts_b = rs.DivideCurve(crv_b, div_r)
+
+	# ------------------------------
+	# compas geometry function
+
+	# create planes along the rail curve
+	planes = []
+	for i in range(div_r):
+	    pt_mid = centroid_points([pts_a[i], pts_b[i]])
+	    vec_a = subtract_vectors(pts_a[i + 1], pts_a[i])
+	    vec_b = subtract_vectors(pts_b[i + 1], pts_b[i])
+	    vec = add_vectors(vec_a, vec_b)
+	    planes.append([pt_mid, vec])
+
+	# create profiles
+	pts_uv = []
+	pts = pts_p
+	for i in range(div_r - 1):
+	    ray_a = [pts_a[i], pts_a[i + 1]]
+	    ray_b = [pts_b[i], pts_b[i + 1]]
+	    pts_x = intersection_line_line(ray_a, ray_b)
+	    if None in pts_x:
+	        print("parallel!")
+	    pt_cent = centroid_points(pts_x)
+	    # computes intersection between a plane and all lines
+	    # from the profile curve points to the intersection point
+	    pts = [intersection_line_plane([pt, pt_cent], planes[i + 1]) for pt in pts]
+	    
+	    pts_uv.append(pts)
+
+	# create polyline point sets for each face
+	polys = []
+	for u in xrange(len(pts_uv)-1):
+	    for v in xrange(len(pts_uv[u])-1):
+	        p1 = pts_uv[u][v] 
+	        p2 = pts_uv[u + 1][v] 
+	        p3 = pts_uv[u + 1][v + 1] 
+	        p4 = pts_uv[u][v + 1]
+	        polys.append([p1, p2, p3, p4, p1])
+
+	# compas geometry function
+	# ------------------------------
+
+	# draw gridshell in Rhino
+	rs.EnableRedraw(False)
+	for poly in polys:
+	    rs.AddPolyline(poly)
+	rs.EnableRedraw(True)
 
 
 
 
+Torsion-free Elements for Gridshells
+====================================
 
+- Create a 3D coons patch.
+- make a mesh.
+- populate fins
+
+- planarize fins
+- constrain fins to a specific height
+
+
+Tessellation of a freeform barrel vault
+=======================================
 
