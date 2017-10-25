@@ -264,8 +264,8 @@
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">compas</span>
-    <span class="kn">from</span> <span class="nn">compas.datastructures.network</span> <span class="k">import</span> <span class="n">Network</span>
-    <span class="kn">from</span> <span class="nn">compas.visualization.plotters.networkplotter</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Network</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
 
     <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
@@ -291,9 +291,7 @@
         <span class="s1">'radius'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">lines</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">)</span>
-
-    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
     <span class="n">network</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">(</span><span class="n">dva</span><span class="p">)</span>
     <span class="n">network</span><span class="o">.</span><span class="n">update_default_edge_attributes</span><span class="p">(</span><span class="n">dea</span><span class="p">)</span>
 
@@ -379,7 +377,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -397,7 +395,7 @@
             
 
             
-                Last updated on Oct 23, 2017.
+                Last updated on Oct 25, 2017.
             
 
             

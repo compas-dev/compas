@@ -18,7 +18,9 @@ The full geometry reference can be found here:
 * :mod:`compas.geometry`
 
 .. note::
+
     Besides many basic geometry functions such as:
+
     * :mod:`compas.geometry.add_vectors`
     * :mod:`compas.geometry.subtract_vectors`
     * :mod:`compas.geometry.intersection_line_plane`
@@ -28,6 +30,7 @@ The full geometry reference can be found here:
 
     The geometry package also includes geometry 
     algorithms such as:
+
     * :mod:`compas.geometry.planarize_faces`
     * :mod:`compas.geometry.smooth_centroid`
     * :mod:`compas.geometry.smooth_area`
@@ -184,8 +187,11 @@ The following example shows the generation of a simple tanslation surface based 
 given profile and rail curve. 
 
 .. note::
+
     The following examples are based on the 3dm file:
+
     * :download:`trans_srf.3dm </../../examples/trans_srf.3dm>`
+
 
 .. figure:: /_images/trans_srf_01.jpg
     :figclass: figure
@@ -257,10 +263,9 @@ curves aligned with the rail curve.
 
     See 3dm file for details 
 
-
 .. seealso::
-    * :func:`compas.geometry import project_points_plane`
 
+    * :func:`compas.geometry import project_points_plane`
 
 .. code-block:: python
 
@@ -333,6 +338,7 @@ decribed above. Include you script in Grasshopper using the GhPython component.
     See 3dm file for details 
 
 .. seealso::
+
     * :func:`compas.geometry.add_vectors`
     * :func:`compas.geometry.centroid_points`
     * :func:`compas.geometry.intersection_line_plane`

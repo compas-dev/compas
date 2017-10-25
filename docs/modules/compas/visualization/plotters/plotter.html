@@ -65,8 +65,42 @@
 
 
 <div class="viewcode-block" id="Plotter"><a class="viewcode-back" href="../../../../reference/generated/compas.visualization.Plotter.html#compas.visualization.Plotter">[docs]</a><span class="k">class</span> <span class="nc">Plotter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">"""Definition of a plotter object based on matplotlib.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    figsize : tuple, optional [16.0, 12.0]</span>
+<span class="sd">        The size of the plot in inches (width, length).</span>
+<span class="sd">    dpi : float, optional [100.0]</span>
+<span class="sd">        The resolution of the plot.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    figure_size : tuple</span>
+<span class="sd">        The size of the plot in inches (width, length).</span>
+<span class="sd">    figure_dpi : float</span>
+<span class="sd">        The resolution of the plot.</span>
+<span class="sd">    figure_bgcolor : str, tuple, dict</span>
+<span class="sd">        The color specififcation for the figure background.</span>
+<span class="sd">        Colors should be specified in the form of a string (hex colors) or</span>
+<span class="sd">        as a tuple of RGB components.</span>
+<span class="sd">    axes_xlabel : str</span>
+<span class="sd">        The label on the X axis of the plot.</span>
+<span class="sd">    axes_ylabel : str</span>
+<span class="sd">        The label on the Y axis of the plot.</span>
+<span class="sd">    defaults : dict</span>
+<span class="sd">        Dictionary containing default attributes for points, edges, lines, text</span>
+<span class="sd">        and polygons.</span>
+
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science &amp; Engineering (9) 3, p.90-95.</span>
+<span class="sd">      Available at: http://ieeexplore.ieee.org/document/4160265/citations</span>
+
+<span class="sd">    """</span>
 <div class="viewcode-block" id="Plotter.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.__init__.html#compas.visualization.Plotter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">16.0</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mf">100.0</span><span class="p">):</span>
+        <span class="sd">"""Initialises a plotter object"""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interactive</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># use descriptors for these</span>
@@ -105,10 +139,25 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Returns a boolean describing of the plot is interactive.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if plot is interactive.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interactive</span>
 
     <span class="nd">@interactive</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">"""Sets the interactive plot on or off.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : bool</span>
+<span class="sd">            Interactive plot on or off.</span>
+
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interactive</span> <span class="o">=</span> <span class="n">value</span>
         <span class="c1"># interactive mode seems to be intended for other things</span>
         <span class="c1"># see: https://matplotlib.org/faq/usage_faq.html#what-is-interactive-mode</span>
@@ -119,6 +168,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Returns the axes subplot matplotlib object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            The matplotlib axes object.</span>
+
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># customise the use of this function</span>
             <span class="c1"># using attributes of the plotter class</span>
@@ -128,47 +185,125 @@
                 <span class="n">xlabel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_xlabel</span><span class="p">,</span>
                 <span class="n">ylabel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_ylabel</span>
             <span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Returns the matplotlib figure instance.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            The matplotlib figure instance.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bgcolor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Returns the background color.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The color as a string (hex colors).</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">get_facecolor</span><span class="p">()</span>
 
     <span class="nd">@bgcolor</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">bgcolor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">"""Sets the background color.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : str, tuple</span>
+<span class="sd">            The color specififcation for the figure background.</span>
+<span class="sd">            Colors should be specified in the form of a string (hex colors) or</span>
+<span class="sd">            as a tuple of RGB components.</span>
+
+<span class="sd">        """</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Returns the title of the plot.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The title of the plot.</span>
+
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">get_window_title</span><span class="p">()</span>
 
     <span class="nd">@title</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">"""Sets the title of the plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : str</span>
+<span class="sd">            The title of the plot.</span>
+
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">set_window_title</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Plotter.clear_collection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.clear_collection.html#compas.visualization.Plotter.clear_collection">[docs]</a>    <span class="k">def</span> <span class="nf">clear_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
+        <span class="sd">"""Clears a matplotlib collection object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        collection : object</span>
+<span class="sd">            The matplotlib collection object.</span>
+
+<span class="sd">        """</span>
         <span class="n">collection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Plotter.show"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.show.html#compas.visualization.Plotter.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Displays the plot."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tight</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Plotter.save"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.save.html#compas.visualization.Plotter.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">"""Saves the plot on a file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str</span>
+<span class="sd">            Full path of the file.</span>
+
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.update"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update.html#compas.visualization.Plotter.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pause</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">):</span>
+        <span class="sd">"""Updates and pauses the plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pause : float</span>
+<span class="sd">            Ammount of time to pause the plot in seconds.</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">pause</span><span class="p">(</span><span class="n">pause</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.update_pointcollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_pointcollection.html#compas.visualization.Plotter.update_pointcollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_pointcollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="sd">"""Updates the location and radii of a point collection.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        collection : object</span>
+<span class="sd">            The point collection to update.</span>
+<span class="sd">        centers : list</span>
+<span class="sd">            List of tuples or lists with XY location for the points in the collection.</span>
+<span class="sd">        radius : float, list</span>
+<span class="sd">            The radii of the points. If a floar is given it will be used for all points.</span>
+
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="nb">len</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -178,21 +313,80 @@
         <span class="n">collection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.update_linecollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_linecollection.html#compas.visualization.Plotter.update_linecollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_linecollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">segments</span><span class="p">):</span>
+        <span class="sd">"""Updates a line collection.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        collection : object</span>
+<span class="sd">            The line collection to update.</span>
+<span class="sd">        segments : list</span>
+<span class="sd">            List of tuples or lists with XY location for the start and end</span>
+<span class="sd">            points in each line in the collection.</span>
+<span class="sd">        """</span>
         <span class="n">collection</span><span class="o">.</span><span class="n">set_segments</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.update_polygoncollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_polygoncollection.html#compas.visualization.Plotter.update_polygoncollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_polygoncollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="Plotter.draw_points"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_points.html#compas.visualization.Plotter.draw_points">[docs]</a>    <span class="k">def</span> <span class="nf">draw_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="sd">"""Draws points on a 2D plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        points : list</span>
+<span class="sd">            List of dictionaries containing the point properties.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            The matplotlib point collection object.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">draw_xpoints_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.draw_lines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_lines.html#compas.visualization.Plotter.draw_lines">[docs]</a>    <span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+        <span class="sd">"""Draws lines on a 2D plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        lines : list</span>
+<span class="sd">            List of dictionaries containing the line properties.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            The matplotlib line collection object.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">draw_xlines_xy</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.draw_polygons"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_polygons.html#compas.visualization.Plotter.draw_polygons">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
+        <span class="sd">"""Draws polygons on a 2D plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        polygons : list</span>
+<span class="sd">            List of dictionaries containing the polygon properties.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            The matplotlib polygon collection object.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">draw_xpolygons_xy</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.draw_arrows"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_arrows.html#compas.visualization.Plotter.draw_arrows">[docs]</a>    <span class="k">def</span> <span class="nf">draw_arrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrows</span><span class="p">):</span>
+        <span class="sd">"""Draws arrows on a 2D plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        arrows : list</span>
+<span class="sd">            List of dictionaries containing the arrow properties.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            The matplotlib arrow collection object.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">draw_xarrows_xy</span><span class="p">(</span><span class="n">arrows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div></div>
 
 
@@ -279,7 +473,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -297,7 +491,7 @@
             
 
             
-                Last updated on Oct 23, 2017.
+                Last updated on Oct 25, 2017.
             
 
             

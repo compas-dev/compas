@@ -55,6 +55,8 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">normal_polygon</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">area_polygon</span>
 
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">Polyhedron</span>
+
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Datastructure</span>
 
 <span class="kn">from</span> <span class="nn">compas.datastructures.mixins</span> <span class="k">import</span> <span class="n">VertexAttributesManagement</span>
@@ -77,6 +79,8 @@
 <span class="kn">from</span> <span class="nn">compas.datastructures.mixins</span> <span class="k">import</span> <span class="n">FaceMappings</span>
 
 <span class="kn">from</span> <span class="nn">compas.topology</span> <span class="k">import</span> <span class="n">bfs_traverse</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">smooth_centroid</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">smooth_area</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="s1">'Tom Van Mele'</span>
@@ -479,6 +483,25 @@
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">faces</span><span class="p">):</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mesh</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Mesh.from_polyhedron"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Mesh.from_polyhedron.html#compas.datastructures.Mesh.from_polyhedron">[docs]</a>    <span class="k">def</span> <span class="nf">from_polyhedron</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">"""Construct a mesh from a platonic solid.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        f : int</span>
+<span class="sd">            The number of faces.</span>
+<span class="sd">            Should be one of ``4, 6, 8, 12, 20``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Mesh</span>
+<span class="sd">            A mesh object.</span>
+
+<span class="sd">        """</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Polyhedron</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># converters</span>
@@ -2520,7 +2543,36 @@
 <span class="sd">            The edges on the boundary.</span>
 
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_edge_on_boundary</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span></div></div>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_edge_on_boundary</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># convenience</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Mesh.smooth_centroid"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Mesh.smooth_centroid.html#compas.datastructures.Mesh.smooth_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">smooth_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">""""""</span>
+        <span class="n">vertices</span>  <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+        <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kmax</span><span class="p">):</span>
+            <span class="n">smooth_centroid</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">adjacency</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+                    <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+
+                <span class="n">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Mesh.planarize_faces"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Mesh.planarize_faces.html#compas.datastructures.Mesh.planarize_faces">[docs]</a>    <span class="k">def</span> <span class="nf">planarize_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
 
 
 <span class="c1"># ==============================================================================</span>
@@ -2534,6 +2586,24 @@
     <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
 
     <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+
+    <span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">})</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">update_vertices</span><span class="p">()</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">update_faces</span><span class="p">()</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">update_edges</span><span class="p">()</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pause</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="n">mesh</span><span class="o">.</span><span class="n">smooth_centroid</span><span class="p">(</span><span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="c1"># data = mesh.to_data()</span>
     <span class="c1"># mesh = Mesh.from_data(data)</span>
@@ -2611,13 +2681,13 @@
     <span class="c1"># plotter.draw_edges()</span>
     <span class="c1"># plotter.show()</span>
 
-    <span class="n">k_a</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_area</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+    <span class="c1"># k_a = {key: mesh.vertex_area(key) for key in mesh.vertices()}</span>
 
-    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'</span><span class="si">{:.1f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k_a</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()})</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="c1"># plotter = MeshPlotter(mesh)</span>
+    <span class="c1"># plotter.draw_vertices(radius=0.2, text={key: '{:.1f}'.format(k_a[key]) for key in mesh.vertices()})</span>
+    <span class="c1"># plotter.draw_faces()</span>
+    <span class="c1"># plotter.draw_edges()</span>
+    <span class="c1"># plotter.show()</span>
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>
@@ -2639,7 +2709,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -2657,7 +2727,7 @@
             
 
             
-                Last updated on Oct 23, 2017.
+                Last updated on Oct 25, 2017.
             
 
             
