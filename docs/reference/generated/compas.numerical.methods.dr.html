@@ -43,7 +43,85 @@
 <dl class="function">
 <dt id="compas.numerical.methods.dr">
 <code class="descclassname">compas.numerical.methods.</code><code class="descname">dr</code><span class="sig-paren">(</span><em>vertices</em>, <em>edges</em>, <em>fixed</em>, <em>loads</em>, <em>qpre</em>, <em>fpre</em>, <em>lpre</em>, <em>linit</em>, <em>E</em>, <em>radius</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/numerical/methods/dr.html#dr"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
+<dd><p>Implementation of the dynamic relaxation method for finding the equilibrium
+of articulated networks of axial force members.</p>
+<p class="rubric">Example</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="kn">import</span> <span class="n">dr</span>
+
+<span class="n">dva</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'is_fixed'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s1">'x'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'y'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'z'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'px'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'py'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'pz'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'rx'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'ry'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'rz'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">dea</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'qpre'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s1">'fpre'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'lpre'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'linit'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'E'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'radius'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
+<span class="n">network</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">(</span><span class="n">dva</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">update_default_edge_attributes</span><span class="p">(</span><span class="n">dea</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
+    <span class="n">attr</span><span class="p">[</span><span class="s1">'is_fixed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+<span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
+    <span class="n">attr</span><span class="p">[</span><span class="s1">'qpre'</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
+    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">k2i</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span>
+
+<span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">]</span>
+<span class="n">edges</span>    <span class="o">=</span> <span class="p">[(</span><span class="n">k2i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k2i</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
+<span class="n">fixed</span>    <span class="o">=</span> <span class="p">[</span><span class="n">k2i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="s1">'is_fixed'</span><span class="p">]]</span>
+<span class="n">loads</span>    <span class="o">=</span> <span class="p">[(</span><span class="n">attr</span><span class="p">[</span><span class="s1">'px'</span><span class="p">],</span> <span class="n">attr</span><span class="p">[</span><span class="s1">'py'</span><span class="p">],</span> <span class="n">attr</span><span class="p">[</span><span class="s1">'pz'</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">qpre</span>     <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'qpre'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">fpre</span>     <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'fpre'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">lpre</span>     <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'lpre'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">linit</span>    <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'linit'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">E</span>        <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'E'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">radius</span>   <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'radius'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+
+<span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">'start'</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+        <span class="s1">'end'</span>  <span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+        <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#cccccc'</span><span class="p">,</span>
+        <span class="s1">'width'</span><span class="p">:</span> <span class="mf">1.0</span>
+    <span class="p">})</span>
+
+<span class="n">xyz</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">dr</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">qpre</span><span class="p">,</span> <span class="n">fpre</span><span class="p">,</span> <span class="n">lpre</span><span class="p">,</span> <span class="n">linit</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">'is_fixed'</span><span class="p">:</span> <span class="bp">True</span><span class="p">})})</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<figure class="figure">
+<img alt="../../images/compas-numerical-methods-dr-1.png" class="figure-img img-fluid" src="../../images/compas-numerical-methods-dr-1.png"/>
+</figure>
+</dd></dl>
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="compas.numerical.projection_matrix.html" role="button">projection_matrix</a>
@@ -108,7 +186,7 @@
             
 
             
-                Last updated on Oct 25, 2017.
+                Last updated on Oct 26, 2017.
             
 
             
