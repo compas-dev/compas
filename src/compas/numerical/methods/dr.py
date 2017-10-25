@@ -227,8 +227,8 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 if __name__ == "__main__":
 
     import compas
-    from compas.datastructures.network import Network
-    from compas.visualization.plotters.networkplotter import NetworkPlotter
+    from compas.datastructures import Network
+    from compas.visualization import NetworkPlotter
 
     import matplotlib.pyplot as plt
 
@@ -254,9 +254,7 @@ if __name__ == "__main__":
         'radius': 0.0,
     }
 
-    lines = compas.get_data('lines.obj')
-
-    network = Network.from_obj(lines)
+    network = Network.from_obj(compas.get('lines.obj'))
     network.update_default_vertex_attributes(dva)
     network.update_default_edge_attributes(dea)
 

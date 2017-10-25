@@ -95,8 +95,8 @@ Printing the mesh produces a summary of the mesh's properties:
 the number of vertices, edges and faces and information about vertex and face degree.
 
 
-Accessing the data
-==================
+Access
+======
 
 Every datastructure exposes several functions to access its data.
 All of those *accessors* are iterators; they are meant to be iterated over.

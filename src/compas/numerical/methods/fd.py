@@ -61,15 +61,15 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas.datastructures.network import Network
-    from compas.datastructures.network.viewer import NetworkViewer
+    from compas.datastructures import Network
+    from compas.visualization.viewers import NetworkViewer
 
-    network = Network.from_obj(compas.get_data('saddle.obj'))
+    network = Network.from_obj(compas.get('saddle.obj'))
 
     network.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
     network.update_default_edge_attributes({'q': 1.0})
 
-    for key, attr in network.vertices_iter(True):
+    for key, attr in network.vertices(True):
         attr['is_anchor'] = network.is_vertex_leaf(key)
 
     key = random.choice(network.vertices_where({'is_anchor': False}))
@@ -82,12 +82,13 @@ if __name__ == '__main__':
     loads = network.get_vertices_attributes(('px', 'py', 'pz'))
     q     = network.get_edges_attribute('q')
 
-    fixed = [k_i[k] for k in network if network.vertex[k]['is_anchor']]
-    edges = [(k_i[u], k_i[v]) for u, v in network.edges_iter()]
+    fixed = network.vertices_where({'is_anchor': True})
+    fixed = [k_i[k] for k in fixed]
+    edges = [(k_i[u], k_i[v]) for u, v in network.edges()]
 
     xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads, rtype='list')
 
-    for key in network:
+    for key in network.vertices():
         index = k_i[key]
         network.vertex[key]['x'] = xyz[index][0]
         network.vertex[key]['y'] = xyz[index][1]
