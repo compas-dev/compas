@@ -9,6 +9,8 @@ from compas.geometry import distance_point_plane
 from compas.geometry import project_point_plane
 from compas.geometry import project_point_line
 
+from compas.geometry import is_point_in_triangle
+
 from compas.geometry import transform
 
 
@@ -18,69 +20,91 @@ __license__    = 'GNU - General Public License'
 __email__      = 'vanmelet@ethz.ch'
 
 
+__all__ = ['Point']
+
+
 class Point(object):
     """A three-dimensional location in space.
 
-    Parameters:
-        xyz (list): The xyz coordinates of the point.
+    Parameters
+    ----------
+    x : float
+        The X coordinate of the point.
+    y : float
+        The Y coordinate of the point.
+    z : float, optional
+        The Z coordinate of the point.
+        Default is ``0.0``.
 
-    Attributes:
-        x (float): The x-coordinate of the point.
-        y (float): The y-coordinate of the point.
-        z (float): The z-coordinate of the point, defaults to 0.
+    Attributes
+    ----------
+    x : float
+        The X coordinate of the point.
+    y : float
+        The Y coordinate of the point.
+    z : float
+        The Z coordinate of the point.
 
-    Examples:
-        >>> p1 = Point([1, 2, 3])
-        >>> p2 = Point([4, 5, 6])
+    Examples
+    --------
+    >>> p1 = Point([1, 2, 3])
+    >>> p2 = Point([4, 5, 6])
 
-        >>> p1.x
-        1.0
-        >>> p1[0]
-        1.0
-        >>> p1[5]
-        1.0
-        >>> p1[-3]
-        1.0
-        >>> p1[-6]
-        1.0
+    >>> p1.x
+    1.0
+    >>> p1[0]
+    1.0
+    >>> p1[5]
+    1.0
+    >>> p1[-3]
+    1.0
+    >>> p1[-6]
+    1.0
 
-        >>> p1 + p2
-        [5.0, 7.0, 9.0]
-        >>> p1 + [4, 5, 6]
-        [5.0, 7.0, 9.0]
-        >>> p1 * 2
-        [2.0, 4.0, 6.0]
-        >>> p1 ** 2
-        [1.0, 4.0, 9.0]
-        >>> p1
-        [1.0, 2.0, 3.0]
+    >>> p1 + p2
+    [5.0, 7.0, 9.0]
+    >>> p1 + [4, 5, 6]
+    [5.0, 7.0, 9.0]
+    >>> p1 * 2
+    [2.0, 4.0, 6.0]
+    >>> p1 ** 2
+    [1.0, 4.0, 9.0]
+    >>> p1
+    [1.0, 2.0, 3.0]
 
-        >>> p1 += p2
-        >>> p1 *= 2
-        >>> p1 **= 2
-        >>> p1
-        [100.0, 196.0, 324.0]
+    >>> p1 += p2
+    >>> p1 *= 2
+    >>> p1 **= 2
+    >>> p1
+    [100.0, 196.0, 324.0]
 
-    Note:
-        A ``Point`` object supports direct access to its xyz coordinates through
-        the dot notation, as well list-style access using indices. Indexed
-        access is implemented such that the ``Point`` behaves like a circular
-        list.
+    Note
+    ----
+    A ``Point`` object supports direct access to its xyz coordinates through
+    the dot notation, as well list-style access using indices. Indexed
+    access is implemented such that the ``Point`` behaves like a circular
+    list.
 
-    References:
-        <http://stackoverflow.com/questions/8951020/pythonic-circular-list>
+    References
+    ----------
+    * http://stackoverflow.com/questions/8951020/pythonic-circular-list
 
     """
 
-    __slots__ = ['_x', '_y', '_z']
+    __slots__ = ['_x', '_y', '_z', 'precision']
 
-    def __init__(self, x=0.0, y=0.0, z=0.0):
+    def __init__(self, x, y, z=0.0):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
         self.x = x
         self.y = y
         self.z = z
+        self.precision = '3f'
+
+    # ==========================================================================
+    # factory
+    # ==========================================================================
 
     # ==========================================================================
     # descriptors
@@ -228,22 +252,22 @@ class Point(object):
     # ==========================================================================
 
     def distance_to_point(self, point):
-        pass
+        return distance_point_point(self, point)
 
     def distance_to_line(self, line):
-        pass
+        return distance_point_line(self, line)
 
     def distance_to_plane(self, plane):
-        pass
+        return distance_point_plane(self, plane)
 
-    def in_triangle(self, polygon):
-        pass
+    def in_triangle(self, triangle):
+        return is_point_in_triangle(self, triangle)
 
     def in_polygon(self, polygon):
-        pass
+        raise NotImplementedError
 
     def in_polyhedron(self, polyhedron):
-        pass
+        raise NotImplementedError
 
     # ==========================================================================
     # tranformations
@@ -276,31 +300,34 @@ class Point(object):
 
 if __name__ == '__main__':
 
-    # import timeit
-    # t0 = timeit.timeit('points = [Point(i, i, i) for i in xrange(100000)]', 'from __main__ import Point', number=100)
-    # t1 = timeit.timeit('points = [[i, i, i] for i in xrange(100000)]', 'from __main__ import Point', number=100)
-    # print(t0 / t1)
-
-    from compas.geometry.objects import Plane
+    from compas.geometry import Point
+    from compas.geometry import Vector
+    from compas.geometry import Plane
+    from compas.geometry import Line
+    from compas.geometry import Polygon
 
     from compas.geometry import projection_matrix
 
     point  = Point(0.0, 0.0, 0.0)
     normal = Vector(0.0, 0.0, 1.0)
     plane  = Plane.from_point_and_normal(point, normal)
+    line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+    triangle = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
+    polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
 
-    p = Point(1.0, 2.0, 3.0)
+    p = Point(1.0, 1.0, 1.0)
 
-    p.distance_to_point()
-    p.distance_to_line()
-    p.distance_to_plane()
+    print(p.distance_to_point(point))
+    print(p.distance_to_line(line))
+    print(p.distance_to_plane(plane))
 
-    p.in_triangle()
-    p.in_polygon()
-    p.in_polyhedron()
+    print(p.in_triangle(triangle))
 
-    p.transform()
-    p.translate()
-    p.project_to_line()
-    p.project_to_plane()
+    # print(p.in_polygon(polygon))
+    # print(p.in_polyhedron())
+
+    # p.transform()
+    # p.translate()
+    # p.project_to_line()
+    # p.project_to_plane()
 

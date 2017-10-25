@@ -15,6 +15,9 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
+__all__ = ['Vector']
+
+
 class Vector(object):
     """A vector object represents a vector in three-dimensional space.
 
@@ -70,6 +73,15 @@ class Vector(object):
         self.w = w
         if unitize:
             self.unitize()
+
+    # ==========================================================================
+    # factory
+    # ==========================================================================
+
+    @classmethod
+    def from_start_end(cls, start, end):
+        v = subtract_vectors(end, start)
+        return cls(*v)
 
     # ==========================================================================
     # descriptors
@@ -143,6 +155,10 @@ class Vector(object):
 
     def __iter__(self):
         return iter([self.x, self.y, self.z])
+
+    # ==========================================================================
+    # comparison
+    # ==========================================================================
 
     # ==========================================================================
     # operators

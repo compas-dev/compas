@@ -62,7 +62,7 @@ class Viewer(object):
         >>> viewer.setup()
         >>> viewer.show()
     """
-    def __init__(self, title='Viewer', width=800, height=600, **kwargs):
+    def __init__(self, title='Viewer', width=800, height=600, displayfuncs=None, delay_setup=True, **kwargs):
         self._mod         = 0
         self._timeout     = 10
         self._v           = 0
@@ -80,7 +80,9 @@ class Viewer(object):
         self.camera       = Camera(self)
         self.grid         = Grid()
         self.axes         = Axes()
-        self.displayfuncs = []
+        self.displayfuncs = displayfuncs or []
+        if not delay_setup:
+            self.setup()
 
     def setup(self):
         """Setup the viewer with the provided parameters."""
