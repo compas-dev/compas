@@ -304,7 +304,7 @@ class EdgeAttributesManagement(object):
             attr.update(self.edge[u][v])
             self.edge[u][v] = attr
 
-    def set_edge_attribute(self, key, name, value):
+    def set_edge_attribute(self, key, name, value, directed=True):
         """Set one attribute of one edge.
 
         Parameters
@@ -324,7 +324,13 @@ class EdgeAttributesManagement(object):
 
         """
         u, v = key
-        self.edge[u][v][name] = value
+        if directed:
+            self.edge[u][v][name] = value
+        else:
+            if u in self.edge and v in self.edge[u]:
+                self.edge[u][v][name] = value
+            else:
+                self.edge[v][u][name] = value
 
     def set_edge_attributes(self, key, attr_dict=None, **kwattr):
         """Set multiple attributes of one edge.
