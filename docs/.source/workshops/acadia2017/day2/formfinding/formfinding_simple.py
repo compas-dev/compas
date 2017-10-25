@@ -1,11 +1,8 @@
-""""""
-
 import compas
 
 from compas.datastructures import Mesh
 from compas.visualization import MeshPlotter
 from compas.numerical import fd
-from compas.utilities import i_to_rgb
 
 
 __author__    = ['Tom Van Mele', ]
@@ -15,29 +12,15 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 def main():
-    """"""
+
+    # mesh and plotter
+
     mesh = Mesh.from_obj(compas.get('faces.obj'))
     plotter = MeshPlotter(mesh)
-
-    # plot original state
-
-    lines = []
-    for u, v in mesh.edges():
-        lines.append({
-            'start': mesh.vertex_coordinates(u, 'xy'),
-            'end'  : mesh.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
-            'width': 0.5 
-        })
-
-    plotter.draw_lines(lines)
 
     # preprocess
 
     k_i  = mesh.key_index()
-    i_k  = mesh.index_key()
-    uv_i = mesh.uv_index()
-    i_uv = mesh.index_uv()
 
     xyz   = mesh.get_vertices_attributes('xyz')
     loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), values=[0.0, 0.0, 0.0])
@@ -61,26 +44,15 @@ def main():
 
     # visualize
 
-    fmax = max(f)
-
-    plotter.draw_vertices(
-        radius={key: 0.05 if k_i[key] not in fixed else 0.1 for key in mesh.vertices()},
-        facecolor={i_k[i]: '#000000' for i in fixed}
-    )
-
+    plotter.draw_vertices()
     plotter.draw_faces()
-
-    plotter.draw_edges(
-        text={uv: '{0:.1f}'.format(f[uv_i[uv]]) for uv in mesh.edges()},
-        color={uv: i_to_rgb(f[uv_i[uv]] / fmax) for uv in mesh.edges()},
-        width={uv: 10 * f[uv_i[uv]] / fmax for uv in mesh.edges()},
-    )
+    plotter.draw_edges()
 
     plotter.show()
 
 
 # ==============================================================================
-# Debugging
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":
