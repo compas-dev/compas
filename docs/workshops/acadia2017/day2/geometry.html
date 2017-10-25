@@ -1,78 +1,46 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-            <link rel="next" title="Numerical" href="numerical.html" />
-        
-        
-        
-            <link rel="prev" title="Day 2" href="../day2.html" />
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../../workshops.html" >workshops</a>
-            
-                <a class="breadcrumb-item" href="../../acadia2017.html" >acadia 2017</a>
-            
-                <a class="breadcrumb-item" href="../day2.html" accesskey="U">day 2</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <div class="section" id="geometry">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="numerical.html" rel="next" title="Numerical"/>
+<link href="../day2.html" rel="prev" title="Day 2"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../../workshops.html">workshops</a>
+<a class="breadcrumb-item" href="../../acadia2017.html">acadia 2017</a>
+<a accesskey="U" class="breadcrumb-item" href="../day2.html">day 2</a>
+</nav>
+<div class="section">
 <span id="acadia2017-day2-geometry"></span><h1>Geometry</h1>
-<div class="section" id="introduction">
+<div class="section">
 <h2>Introduction</h2>
 <p>The <em>compas</em> framework contains an extensive set of python geometry functions
 and algorithms without any external dependencies. Code using the geometry
@@ -81,30 +49,30 @@ or program using the geometry package can easily be integrated in different
 applications (e.g.: Rhino, Blender, Maya, ...)</p>
 <p>The full geometry reference can be found here:</p>
 <ul class="simple">
-<li><code class="xref py py-mod docutils literal"><span class="pre">compas.geometry</span></code></li>
+<li><code class="xref py py-mod docutils literal">compas.geometry</code></li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Besides many basic geometry functions such as:
-* <a class="reference internal" href="../../../reference/generated/compas.geometry.add_vectors.html#compas.geometry.add_vectors" title="compas.geometry.add_vectors"><code class="xref py py-mod docutils literal"><span class="pre">compas.geometry.add_vectors</span></code></a>
-* <a class="reference internal" href="../../../reference/generated/compas.geometry.subtract_vectors.html#compas.geometry.subtract_vectors" title="compas.geometry.subtract_vectors"><code class="xref py py-mod docutils literal"><span class="pre">compas.geometry.subtract_vectors</span></code></a>
-* <a class="reference internal" href="../../../reference/generated/compas.geometry.intersection_line_plane.html#compas.geometry.intersection_line_plane" title="compas.geometry.intersection_line_plane"><code class="xref py py-mod docutils literal"><span class="pre">compas.geometry.intersection_line_plane</span></code></a>
-* <a class="reference internal" href="../../../reference/generated/compas.geometry.closest_point_on_polyline.html#compas.geometry.closest_point_on_polyline" title="compas.geometry.closest_point_on_polyline"><code class="xref py py-mod docutils literal"><span class="pre">compas.geometry.closest_point_on_polyline</span></code></a>
-* <a class="reference internal" href="../../../reference/generated/compas.geometry.is_point_in_triangle.html#compas.geometry.is_point_in_triangle" title="compas.geometry.is_point_in_triangle"><code class="xref py py-mod docutils literal"><span class="pre">compas.geometry.is_point_in_triangle</span></code></a>
+* <a class="reference internal" href="../../../reference/generated/compas.geometry.add_vectors.html#compas.geometry.add_vectors" title="compas.geometry.add_vectors"><code class="xref py py-mod docutils literal">compas.geometry.add_vectors</code></a>
+* <a class="reference internal" href="../../../reference/generated/compas.geometry.subtract_vectors.html#compas.geometry.subtract_vectors" title="compas.geometry.subtract_vectors"><code class="xref py py-mod docutils literal">compas.geometry.subtract_vectors</code></a>
+* <a class="reference internal" href="../../../reference/generated/compas.geometry.intersection_line_plane.html#compas.geometry.intersection_line_plane" title="compas.geometry.intersection_line_plane"><code class="xref py py-mod docutils literal">compas.geometry.intersection_line_plane</code></a>
+* <a class="reference internal" href="../../../reference/generated/compas.geometry.closest_point_on_polyline.html#compas.geometry.closest_point_on_polyline" title="compas.geometry.closest_point_on_polyline"><code class="xref py py-mod docutils literal">compas.geometry.closest_point_on_polyline</code></a>
+* <a class="reference internal" href="../../../reference/generated/compas.geometry.is_point_in_triangle.html#compas.geometry.is_point_in_triangle" title="compas.geometry.is_point_in_triangle"><code class="xref py py-mod docutils literal">compas.geometry.is_point_in_triangle</code></a>
 * ...</p>
 <p class="last">The geometry package also includes geometry
 algorithms such as:
-* <a class="reference internal" href="../../../reference/generated/compas.geometry.planarize_faces.html#compas.geometry.planarize_faces" title="compas.geometry.planarize_faces"><code class="xref py py-mod docutils literal"><span class="pre">compas.geometry.planarize_faces</span></code></a>
-* <a class="reference internal" href="../../../reference/generated/compas.geometry.smooth_centroid.html#compas.geometry.smooth_centroid" title="compas.geometry.smooth_centroid"><code class="xref py py-mod docutils literal"><span class="pre">compas.geometry.smooth_centroid</span></code></a>
-* <a class="reference internal" href="../../../reference/generated/compas.geometry.smooth_area.html#compas.geometry.smooth_area" title="compas.geometry.smooth_area"><code class="xref py py-mod docutils literal"><span class="pre">compas.geometry.smooth_area</span></code></a>
-* <a class="reference internal" href="../../../reference/generated/compas.geometry.discrete_coons_patch.html#compas.geometry.discrete_coons_patch" title="compas.geometry.discrete_coons_patch"><code class="xref py py-mod docutils literal"><span class="pre">compas.geometry.discrete_coons_patch</span></code></a>
+* <a class="reference internal" href="../../../reference/generated/compas.geometry.planarize_faces.html#compas.geometry.planarize_faces" title="compas.geometry.planarize_faces"><code class="xref py py-mod docutils literal">compas.geometry.planarize_faces</code></a>
+* <a class="reference internal" href="../../../reference/generated/compas.geometry.smooth_centroid.html#compas.geometry.smooth_centroid" title="compas.geometry.smooth_centroid"><code class="xref py py-mod docutils literal">compas.geometry.smooth_centroid</code></a>
+* <a class="reference internal" href="../../../reference/generated/compas.geometry.smooth_area.html#compas.geometry.smooth_area" title="compas.geometry.smooth_area"><code class="xref py py-mod docutils literal">compas.geometry.smooth_area</code></a>
+* <a class="reference internal" href="../../../reference/generated/compas.geometry.discrete_coons_patch.html#compas.geometry.discrete_coons_patch" title="compas.geometry.discrete_coons_patch"><code class="xref py py-mod docutils literal">compas.geometry.discrete_coons_patch</code></a>
 * ...</p>
 </div>
 </div>
-<div class="section" id="object-oriented-interface-vs-functions">
+<div class="section">
 <h2>Object-Oriented Interface vs Functions</h2>
 <p>The geometry package features an object-oriented interface:</p>
-<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
 
 <span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 <span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
@@ -114,10 +82,10 @@ algorithms such as:
 <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
 </code></pre></div>
-</div>
+
 <p>The same vector calculations can be computed using functions and
 lists (or tuples) as vectors:</p>
-<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">length_vector</span>
 
 <span class="n">u</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
@@ -128,23 +96,23 @@ lists (or tuples) as vectors:</p>
 <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">length_vector</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
 </code></pre></div>
-</div>
-<div class="section" id="exercise">
+
+<div class="section">
 <h3>Exercise:</h3>
 <p>Create a set of 10.000 random vectors with the origin (1. ,2. ,3.) and compute their
 resultant. Compare the preformance of an object-based and function-based method.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
-<li><a class="reference internal" href="../../../reference/generated/generated/compas.geometry.Vector.from_start_end.html#compas.geometry.Vector.from_start_end" title="compas.geometry.Vector.from_start_end"><code class="xref py py-meth docutils literal"><span class="pre">compas.geometry.Vector.from_start_end()</span></code></a></li>
-<li><a class="reference internal" href="../../../reference/generated/generated/compas.geometry.Vector.from_start_end.html#compas.geometry.Vector.from_start_end" title="compas.geometry.Vector.from_start_end"><code class="xref py py-meth docutils literal"><span class="pre">compas.geometry.Vector.from_start_end()</span></code></a></li>
-<li><a class="reference internal" href="../../../reference/generated/compas.geometry.vector_from_points.html#compas.geometry.vector_from_points" title="compas.geometry.vector_from_points"><code class="xref py py-func docutils literal"><span class="pre">compas.geometry.vector_from_points()</span></code></a></li>
-<li><a class="reference internal" href="../../../reference/generated/compas.geometry.add_vectors.html#compas.geometry.add_vectors" title="compas.geometry.add_vectors"><code class="xref py py-func docutils literal"><span class="pre">compas.geometry.add_vectors()</span></code></a></li>
-<li><a class="reference internal" href="../../../reference/generated/compas.geometry.sum_vectors.html#compas.geometry.sum_vectors" title="compas.geometry.sum_vectors"><code class="xref py py-func docutils literal"><span class="pre">compas.geometry.sum_vectors()</span></code></a></li>
+<li><a class="reference internal" href="../../../reference/generated/generated/compas.geometry.Vector.from_start_end.html#compas.geometry.Vector.from_start_end" title="compas.geometry.Vector.from_start_end"><code class="xref py py-meth docutils literal">compas.geometry.Vector.from_start_end()</code></a></li>
+<li><a class="reference internal" href="../../../reference/generated/generated/compas.geometry.Vector.from_start_end.html#compas.geometry.Vector.from_start_end" title="compas.geometry.Vector.from_start_end"><code class="xref py py-meth docutils literal">compas.geometry.Vector.from_start_end()</code></a></li>
+<li><a class="reference internal" href="../../../reference/generated/compas.geometry.vector_from_points.html#compas.geometry.vector_from_points" title="compas.geometry.vector_from_points"><code class="xref py py-func docutils literal">compas.geometry.vector_from_points()</code></a></li>
+<li><a class="reference internal" href="../../../reference/generated/compas.geometry.add_vectors.html#compas.geometry.add_vectors" title="compas.geometry.add_vectors"><code class="xref py py-func docutils literal">compas.geometry.add_vectors()</code></a></li>
+<li><a class="reference internal" href="../../../reference/generated/compas.geometry.sum_vectors.html#compas.geometry.sum_vectors" title="compas.geometry.sum_vectors"><code class="xref py py-func docutils literal">compas.geometry.sum_vectors()</code></a></li>
 </ul>
 </div>
 <p>Solution:</p>
-<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span> <span class="k">as</span> <span class="n">rnd</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span> <span class="k">as</span> <span class="n">rnd</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
@@ -169,9 +137,9 @@ resultant. Compare the preformance of an object-based and function-based method.
     <span class="n">res</span> <span class="o">+=</span> <span class="n">v</span>
 <span class="c1">#-------------------------</span>
 <span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;{0} seconds to compute for object-based method&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'{0} seconds to compute for object-based method'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;------------------&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'------------------'</span><span class="p">)</span>
 
 
 <span class="c1"># Function-based method A</span>
@@ -183,9 +151,9 @@ resultant. Compare the preformance of an object-based and function-based method.
     <span class="n">res</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 <span class="c1">#-------------------------</span>
 <span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;{0} seconds to compute for function-based method A&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'{0} seconds to compute for function-based method A'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;------------------&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'------------------'</span><span class="p">)</span>
 
 
 <span class="c1"># Function-based method B</span>
@@ -195,33 +163,33 @@ resultant. Compare the preformance of an object-based and function-based method.
 <span class="n">res</span> <span class="o">=</span> <span class="n">sum_vectors</span><span class="p">(</span><span class="n">vecs</span><span class="p">)</span>
 <span class="c1">#-------------------------</span>
 <span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;{0} seconds to compute for function-based method B&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'{0} seconds to compute for function-based method B'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;------------------&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'------------------'</span><span class="p">)</span>
 </code></pre></div>
+
 </div>
 </div>
-</div>
-<div class="section" id="translational-surfaces-for-gridshells">
+<div class="section">
 <h2>Translational Surfaces for Gridshells</h2>
 <p>Using translational surfaces for the design of gridshells allows to explore freeform
 spaces that can be built from planar (glass) panels. Jörg Schlaich together with Hans
 Schober developed several geometric design methods for various gridshells built in the
 last decades.</p>
-<div class="figure" id="id2">
-<img alt="../../../_images/sbp.jpg" class="figure-img img-fluid" src="../../../_images/sbp.jpg" />
-<p class="caption"><span class="caption-text">Cabot Circus Bristol and Deutsches Historisches Museum (Photo: SBP)</span></p>
-</div>
+<figure class="figure">
+<img alt="../../../images/sbp.jpg" class="figure-img img-fluid" src="../../../images/sbp.jpg"/>
+<figcaption class="figure-caption">Cabot Circus Bristol and Deutsches Historisches Museum (Photo: SBP)</figcaption>
+</figure>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>The following examples are made to be visualised in Rhino. Please check if you
 have the right IronPython version installed.</p>
 <p>Open the script editor in Rhino (Command: _EditPythonScript) and run:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<div><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="k">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
 </code></pre></div>
-</div>
+
 </div></blockquote>
 <p class="last">Make sure to have version 2.7.5 installed!</p>
 </div>
@@ -230,21 +198,21 @@ given profile and rail curve.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The following examples are based on the 3dm file:
-* <a class="reference download internal" href="../../../_downloads/trans_srf.3dm" download=""><code class="xref download docutils literal"><span class="pre">trans_srf.3dm</span></code></a></p>
+* <a class="reference download internal" download="" href="../../../downloads/trans_srf.3dm"><code class="xref download docutils literal">trans_srf.3dm</code></a></p>
 </div>
-<div class="figure" id="id3">
-<img alt="../../../_images/trans_srf_01.jpg" class="figure-img img-fluid" src="../../../_images/trans_srf_01.jpg" />
-<p class="caption"><span class="caption-text">See 3dm file for details</span></p>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
+<figure class="figure">
+<img alt="../../../images/trans_srf_01.jpg" class="figure-img img-fluid" src="../../../images/trans_srf_01.jpg"/>
+<figcaption class="figure-caption">See 3dm file for details</figcaption>
+</figure>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">translate_points</span>
 
 <span class="c1"># Get inputs</span>
-<span class="n">crv_p</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">&quot;Select profile&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">crv_r</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">&quot;Select rail&quot;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">crv_p</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select profile"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">crv_r</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select rail"</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
 
 <span class="n">div_p</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">div_r</span> <span class="o">=</span> <span class="mi">40</span>
@@ -286,27 +254,27 @@ given profile and rail curve.</p>
     <span class="n">rs</span><span class="o">.</span><span class="n">AddPolyline</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
 <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 </code></pre></div>
-</div>
+
 <p>The following example shows the generation of a tanslation surface with profile
 curves aligned with the rail curve.</p>
-<div class="figure" id="id4">
-<img alt="../../../_images/trans_srf_03.jpg" class="figure-img img-fluid" src="../../../_images/trans_srf_03.jpg" />
-<p class="caption"><span class="caption-text">See 3dm file for details</span></p>
-</div>
+<figure class="figure">
+<img alt="../../../images/trans_srf_03.jpg" class="figure-img img-fluid" src="../../../images/trans_srf_03.jpg"/>
+<figcaption class="figure-caption">See 3dm file for details</figcaption>
+</figure>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
-<li><code class="xref py py-func docutils literal"><span class="pre">compas.geometry</span> <span class="pre">import</span> <span class="pre">project_points_plane()</span></code></li>
+<li><code class="xref py py-func docutils literal">compas.geometry import project_points_plane()</code></li>
 </ul>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">project_points_plane</span>
 
 <span class="c1"># Get inputs</span>
-<span class="n">crv_p</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">&quot;Select profile&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">crv_a</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">&quot;Select rail 1&quot;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">crv_p</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select profile"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">crv_a</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select rail 1"</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
 
 <span class="n">div_p</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">div_r</span> <span class="o">=</span> <span class="mi">40</span>
@@ -351,28 +319,28 @@ curves aligned with the rail curve.</p>
     <span class="n">rs</span><span class="o">.</span><span class="n">AddPolyline</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
 <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 </code></pre></div>
-</div>
-<div class="section" id="id1">
+
+<div class="section">
 <h3>Exercise:</h3>
 <p>The following figure shows the generation of a tanslation surface with two profile
 curves. The method geneartes planes along the two rail curves and subsequentely uses
 intersections with conical extrusions to guarantee the planarity of resulting mesh.</p>
 <p>Modify the previous script to compute planar translational surfaces based on the algorithm
 decribed above. Include you script in Grasshopper using the GhPython component.</p>
-<div class="figure" id="id5">
-<img alt="../../../_images/trans_srf_04.jpg" class="figure-img img-fluid" src="../../../_images/trans_srf_04.jpg" />
-<p class="caption"><span class="caption-text">See 3dm file for details</span></p>
-</div>
+<figure class="figure">
+<img alt="../../../images/trans_srf_04.jpg" class="figure-img img-fluid" src="../../../images/trans_srf_04.jpg"/>
+<figcaption class="figure-caption">See 3dm file for details</figcaption>
+</figure>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
-<li><a class="reference internal" href="../../../reference/generated/compas.geometry.add_vectors.html#compas.geometry.add_vectors" title="compas.geometry.add_vectors"><code class="xref py py-func docutils literal"><span class="pre">compas.geometry.add_vectors()</span></code></a></li>
-<li><a class="reference internal" href="../../../reference/generated/compas.geometry.centroid_points.html#compas.geometry.centroid_points" title="compas.geometry.centroid_points"><code class="xref py py-func docutils literal"><span class="pre">compas.geometry.centroid_points()</span></code></a></li>
-<li><a class="reference internal" href="../../../reference/generated/compas.geometry.intersection_line_plane.html#compas.geometry.intersection_line_plane" title="compas.geometry.intersection_line_plane"><code class="xref py py-func docutils literal"><span class="pre">compas.geometry.intersection_line_plane()</span></code></a></li>
-<li><a class="reference internal" href="../../../reference/generated/compas.geometry.intersection_line_line.html#compas.geometry.intersection_line_line" title="compas.geometry.intersection_line_line"><code class="xref py py-func docutils literal"><span class="pre">compas.geometry.intersection_line_line()</span></code></a></li>
+<li><a class="reference internal" href="../../../reference/generated/compas.geometry.add_vectors.html#compas.geometry.add_vectors" title="compas.geometry.add_vectors"><code class="xref py py-func docutils literal">compas.geometry.add_vectors()</code></a></li>
+<li><a class="reference internal" href="../../../reference/generated/compas.geometry.centroid_points.html#compas.geometry.centroid_points" title="compas.geometry.centroid_points"><code class="xref py py-func docutils literal">compas.geometry.centroid_points()</code></a></li>
+<li><a class="reference internal" href="../../../reference/generated/compas.geometry.intersection_line_plane.html#compas.geometry.intersection_line_plane" title="compas.geometry.intersection_line_plane"><code class="xref py py-func docutils literal">compas.geometry.intersection_line_plane()</code></a></li>
+<li><a class="reference internal" href="../../../reference/generated/compas.geometry.intersection_line_line.html#compas.geometry.intersection_line_line" title="compas.geometry.intersection_line_line"><code class="xref py py-func docutils literal">compas.geometry.intersection_line_line()</code></a></li>
 </ul>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
@@ -381,9 +349,9 @@ decribed above. Include you script in Grasshopper using the GhPython component.<
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">intersection_line_line</span>
 
 <span class="c1"># Get inputs</span>
-<span class="n">crv_p</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">&quot;Select profile&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">crv_a</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">&quot;Select rail 1&quot;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">crv_b</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">&quot;Select rail 2&quot;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">crv_p</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select profile"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">crv_a</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select rail 1"</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">crv_b</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select rail 2"</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
 
 <span class="n">div_p</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">div_r</span> <span class="o">=</span> <span class="mi">40</span>
@@ -413,7 +381,7 @@ decribed above. Include you script in Grasshopper using the GhPython component.<
     <span class="n">ray_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">pts_b</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pts_b</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
     <span class="n">pts_x</span> <span class="o">=</span> <span class="n">intersection_line_line</span><span class="p">(</span><span class="n">ray_a</span><span class="p">,</span> <span class="n">ray_b</span><span class="p">)</span>
     <span class="k">if</span> <span class="bp">None</span> <span class="ow">in</span> <span class="n">pts_x</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;parallel!&quot;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">"parallel!"</span><span class="p">)</span>
     <span class="n">pt_cent</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">pts_x</span><span class="p">)</span>
     <span class="c1"># computes intersection between a plane and all lines</span>
     <span class="c1"># from the profile curve points to the intersection point</span>
@@ -440,10 +408,10 @@ decribed above. Include you script in Grasshopper using the GhPython component.<
     <span class="n">rs</span><span class="o">.</span><span class="n">AddPolyline</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
 <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 </code></pre></div>
+
 </div>
 </div>
-</div>
-<div class="section" id="torsion-free-elements-for-gridshells">
+<div class="section">
 <h2>Torsion-free Elements for Gridshells</h2>
 <ul class="simple">
 <li>Create a 3D coons patch.</li>
@@ -453,46 +421,28 @@ decribed above. Include you script in Grasshopper using the GhPython component.<
 <li>constrain fins to a specific height</li>
 </ul>
 </div>
-<div class="section" id="tessellation-of-a-freeform-barrel-vault">
+<div class="section">
 <h2>Tessellation of a freeform barrel vault</h2>
 </div>
 </div>
-
-                        
-                        <nav class="compas-sideways">
-                            
-                                <a href="../day2.html" class="btn btn-primary compas-prev" role="button">Day 2</a>
-                            
-
-                            
-                                <a href="numerical.html" class="btn btn-primary compas-next" role="button">Numerical</a>
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column active">
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="../day2.html" role="button">Day 2</a>
+<a class="btn btn-primary compas-next" href="numerical.html" role="button">Numerical</a>
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
@@ -507,21 +457,12 @@ decribed above. Include you script in Grasshopper using the GhPython component.<
 </ul>
 </li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    <ul class="nav flex-column" id="compas-localnav">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Geometry</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#introduction">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#object-oriented-interface-vs-functions">Object-Oriented Interface vs Functions</a><ul class="nav">
@@ -537,16 +478,13 @@ decribed above. Include you script in Grasshopper using the GhPython component.<
 </ul>
 </li>
 </ul>
-
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -558,10 +496,7 @@ decribed above. Include you script in Grasshopper using the GhPython component.<
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -571,24 +506,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>
