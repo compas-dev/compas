@@ -15,7 +15,7 @@ applications (e.g.: Rhino, Blender, Maya, ...)
 
 The full geometry reference can be found here:
 
-* :func:`compas.geometry`
+* :mod:`compas.geometry`
 
 
 Object-Oriented Interface vs Functions
@@ -61,287 +61,171 @@ Exercise:
 Create a set of 1.000 random vectors with the origin (1. ,2. ,3.) and compute their
 resultant. Compare the preformance of an object-based and function-based method.  
 
-See:
+.. seealso::
+
+	* :method:`compas.geometry.objects.vector.from_start_end`
+	* :method:`compas.geometry.objects.vector.from_start_end`
+
+	* :func:`compas.geometry.constructors.vector_from_points`
+	* :func:`compas.geometry.basic.add_vectors`
+	* :func:`compas.geometry.basic.sum_vectors`
 
 
-
-Construction
-============
-
-All datastructures come with factory constructors.
-These are implemented as class methods (using the ``@classmethod`` decoreator) and
-are named using the following pattern ``.from_xxx``.
-
-.. code-block:: python
-
-    mesh = Mesh.from_data(...)
-    mesh = Mesh.from_json(...)
-    mesh = Mesh.from_obj(...)
-    mesh = Mesh.from_vertices_and_faces(...)
-    mesh = Mesh.from_polygons(...)
-    mesh = Mesh.from_polyhedron(...)
-    mesh = Mesh.from_points(...)
-
-``compas`` also provides basic sample data that can be used together with the constructors.
-
-.. code-block:: python
-
-    from __future__ import print_function
-    
-    import compas
-    from compas.datastructures import Mesh
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    print(mesh)
-
-    # ================================================================================
-    # Mesh summary
-    # ================================================================================
-    #
-    # - name: Mesh
-    # - vertices: 36
-    # - edges: 60
-    # - faces: 25
-    # - vertex degree: 2/4
-    # - face degree: 2/4
-    #
-    # ================================================================================
-
-Printing the mesh produces a summary of the mesh's properties:
-the number of vertices, edges and faces and information about vertex and face degree.
-
-
-Accessing the data
-==================
-
-Every datastructure exposes several functions to access its data.
-All of those *accessors* are iterators; they are meant to be iterated over.
-Lists of data have to be constructed explicitly.
-
-* mesh.vertices()
-* mesh.faces()
-* mesh.halfedges()
-* mesh.edges()
-
-.. code-block:: python
-
-    from __future__ import print_function
-
-    import compas
-    from compas.datastructures import Mesh
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    for key in mesh.vertices():
-        print(key)
-
-    for key, attr in mesh.vertices(True):
-        print(key, attr)
-
-    print(list(mesh.vertices()))
-    print(mesh.number_of_vertices())
-
-
-The same applies to the faces.
-The accessor is an iterator; it is meant for iterating over the faces.
-To count the faces or to get a list of faces, the iterator needs to be converted
-explicitly.
-
-.. code-block:: python
-    
-    from __future__ import print_function
-
-    import compas
-    from compas.datastructures import Mesh
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    for fkey in mesh.faces():
-        print(fkey)
-
-    for fkey, attr in mesh.faces(True):
-        print(fkey, attr)
-
-    print(len(list(mesh.faces()))
-    print(mesh.number_of_faces())
-
-
-Topology
-========
-
-The available functions for accessing the topological data depend on the type of
-datastructure, although they obviously have a few of them in common.
-
-* mesh.is_valid()
-* mesh.is_regular()
-* mesh.is_connected()
-* mesh.is_manifold()
-* mesh.is_orientable()
-* mesh.is_trimesh()
-* mesh.is_quadmesh()
-
-* mesh.vertex_neighbours()
-* mesh.vertex_degree()
-* mesh.vertex_faces()
-* mesh.vertex_neighbourhood()
-
-* mesh.face_vertices()
-* mesh.face_halfedges()
-* mesh.face_neighbours()
-* mesh.face_neighbourhood()
-* mesh.face_vertex_ancestor()
-* mesh.face_vertex_descendant()
-
+Solution:
 
 .. plot::
     :include-source:
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+	from random import random as rnd
+	import time
 
-    plotter = MeshPlotter(mesh)
+	from compas.geometry import Vector
 
-    root = 17
-    nbrs = mesh.vertex_neighbours(root, ordered=True)
-
-    text = {nbr: str(i) for i, nbr in enumerate(nbrs)}
-    text[root] = root 
-
-    fcolor = {nbr: '#cccccc' for nbr in nbrs}
-    fcolor[root] = '#ff0000'
-
-    plotter.draw_vertices(
-        text=text,
-        facecolor=fcolor
-    )
-    plotter.draw_faces()
-    plotter.draw_edges()
-
-    plotter.show()
-
-.. plot::
-    :include-source:
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    plotter = MeshPlotter(mesh)
-
-    plotter.draw_vertices(text={key: mesh.vertex_degree(key) for key in mesh.vertices()})
-    plotter.draw_faces()
-    plotter.draw_edges()
-
-    plotter.show()
+	from compas.geometry import add_vectors
+	from compas.geometry import sum_vectors
+	from compas.geometry import vector_from_points
 
 
-Geometry
-========
-
-* mesh.vertex_coordinates()
-* mesh.vertex_area()
-* mesh.vertex_centroid()
-
-* mesh.face_area()
-* mesh.face_centroid()
-* mesh.face_center()
-* mesh.face_frame()
-* mesh.face_circle()
-* mesh.face_normal()
-* mesh.face_flatness()
-
-* mesh.edge_coordinates()
-* mesh.edge_vector()
-* mesh.edge_direction()
-* mesh.edge_length()
-* mesh.edge_midpoint()
+	# create random points
+	points = [(rnd(), rnd(), rnd()) for _ in range(10000)]
+	# define origin
+	origin = [1., 2., 3.]
 
 
-.. plot::
-    :include-source:
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    plotter = MeshPlotter(mesh)
-
-    plotter.draw_vertices()
-    plotter.draw_faces(text={fkey: '%.1f' % mesh.face_area(fkey) for fkey in mesh.faces()})
-    plotter.draw_edges()
-
-    plotter.show()
-
-.. plot::
-    :include-source:
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    plotter = MeshPlotter(mesh)
-
-    plotter.draw_vertices(text={key: '%.1f' % mesh.vertex_area(key) for key in mesh.vertices()})
-    plotter.draw_faces()
-    plotter.draw_edges()
-
-    plotter.show()
+	# Object-based method
+	tic = time.time()
+	#-------------------------
+	vecs = [Vector.from_start_end(origin, pt) for pt in points]
+	res = Vector(0., 0., 0.)
+	for v in vecs:
+	    res += v
+	#-------------------------
+	toc = time.time()
+	print('{0} seconds to compute for object-based method'.format(toc - tic))
+	print(res)
+	print('------------------')
 
 
-Operations
-==========
+	# Function-based method A
+	tic = time.time()
+	#-------------------------
+	vecs = [vector_from_points(origin, pt) for pt in points]
+	res = [0., 0., 0.]
+	for v in vecs:
+	    res = add_vectors(res, v)
+	#-------------------------
+	toc = time.time()
+	print('{0} seconds to compute for function-based method A'.format(toc - tic))
+	print(res)
+	print('------------------')
+
+
+	# Function-based method B
+	tic = time.time()
+	#-------------------------
+	vecs = [vector_from_points(origin, pt) for pt in points]
+	res = sum_vectors(vecs)
+	#-------------------------
+	toc = time.time()
+	print('{0} seconds to compute for function-based method B'.format(toc - tic))
+	print(res)
+	print('------------------')
+
+
+Translational Surfaces for Gridshells
+======================================
+
+Using translational surfaces for the design of gridshells allows to explore freeform
+spaces that can be built from planar (glass) panels. Jörg Schlaich together with Hans 
+Schober developed several geometric design methods for various gridshells built in the 
+last decades.
+
+.. figure:: /_images/sbp_bristol.jpg
+    :figclass: figure
+    :class: figure-img img-fluid
+
+Cabot Circus Bristol (Photo: SBP)
+
+
+.. note::
+
+    The following examples are made to be visualised in Rhino. Please check if you 
+    have the right IronPython version installed.
+
+    Open the script editor in Rhino (Command: _EditPythonScript) and run:
+
+	 .. code-block:: python
+
+	    import sys
+		print(sys.version_info)
+
+	Make sure to have version 2.7.5 installed!
+
+
+The following example shows the generation of a simple tanslation surface based on a
+given profile and rail curve. 
+
+* :download:`mesh-smoothing.3dm </../../examples/mesh-smoothing.3dm>`
 
 .. code-block:: python
-    
-    mesh.delete_vertex
-    mesh.insert_vertex
-    mesh.delete_face
 
-    compas.datastructures.mesh_collapse_edge
-    compas.datastructures.mesh_swap_edge
-    compas.datastructures.mesh_split_edge
+    import rhinoscriptsyntax as rs
 
-    compas.datastructures.trimesh_collapse_edge
-    compas.datastructures.trimesh_swap_edge
-    compas.datastructures.trimesh_split_edge
+	from compas.geometry import subtract_vectors
+	from compas.geometry import centroid_points
+	from compas.geometry import translate_points
 
+	# Get inputs
+	crv_p = rs.GetObject("Select profile", 4)
+	crv_r = rs.GetObject("Select rail",4)
 
-Algorithms
-==========
+	div_p = 20
+	div_r = 40
 
-.. code-block:: python
-    
-    compas.datastructures.mesh_subdivide
-    compas.datastructures.mesh_dual
-    compas.datastructures.mesh_delaunay_from_points
-    compas.datastructures.mesh_voronoi_from_points
-
-    compas.datastructures.trimesh_remesh
-
-.. code-block:: python
-    
-    compas.geometry.smooth_centroid
-    compas.geometry.smooth_centerofmass
-    compas.geometry.smooth_area
-
-.. code-block:: python
-    
-    compas.geometry.shortest_path
-    compas.geometry.dijkstra_path
+	# divide profile and rail curve
+	pts_p = rs.DivideCurve(crv_p, div_p)
+	pts_r = rs.DivideCurve(crv_r, div_r)
 
 
-CAD integration
-===============
+	# ------------------------------
+	# compas geometry function
+
+	# reference point for profile curve
+	pt_ref = centroid_points([pts_p[0], pts_p[-1]])
+
+	# create profiles along the rail curve
+	pts_sets = []
+	for i in range(div_r + 1):
+	    vec_1 = subtract_vectors(pts_r[i], pt_ref)
+	    points = translate_points(pts_p, vec_1)
+	    pts_sets.append(points)
+
+	# create polyline point sets for each face
+	polys = []
+	for i in xrange(len(pts_sets)-1):
+	    for j in xrange(len(pts_sets[i])-1):
+	        p1 = pts_sets[i][j] 
+	        p2 = pts_sets[i + 1][j] 
+	        p3 = pts_sets[i + 1][j + 1] 
+	        p4 = pts_sets[i][j + 1]
+	        polys.append([p1, p2, p3, p4, p1])
+
+	# compas geometry function
+	# ------------------------------
+
+	# draw gridshell in Rhino
+	rs.EnableRedraw(False)
+	for poly in polys:
+	    rs.AddPolyline(poly)
+	rs.EnableRedraw(True)
+
+
+The following example shows the generation of a simple tanslation surface based on a
+given profile and rail curve. 
+
+
+
 
 
 
