@@ -261,6 +261,9 @@ class Point(object):
         self.z += vector.z
         return self
 
+    def project_to_line(self, line):
+        pass
+
     def project_to_plane(self, plane):
         plane = (plane.point, plane.normal)
         return project_point_plane(self, plane)
@@ -286,10 +289,18 @@ if __name__ == '__main__':
     normal = Vector(0.0, 0.0, 1.0)
     plane  = Plane.from_point_and_normal(point, normal)
 
-    test = Point(1.0, 2.0, 3.0)
+    p = Point(1.0, 2.0, 3.0)
 
-    P = projection_matrix()
+    p.distance_to_point()
+    p.distance_to_line()
+    p.distance_to_plane()
 
-    point.transform(P)
+    p.in_triangle()
+    p.in_polygon()
+    p.in_polyhedron()
 
-    print(point)
+    p.transform()
+    p.translate()
+    p.project_to_line()
+    p.project_to_plane()
+

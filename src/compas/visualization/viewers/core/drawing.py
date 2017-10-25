@@ -19,8 +19,13 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'draw_points', 'draw_lines', 'draw_faces', 'draw_sphere',
-    'xdraw_points', 'xdraw_lines', 'xdraw_polygons'
+    'draw_points',
+    'draw_lines',
+    'draw_faces',
+    'draw_sphere',
+    'xdraw_points',
+    'xdraw_lines',
+    'xdraw_polygons'
 ]
 
 

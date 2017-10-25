@@ -54,8 +54,8 @@ class Line(object):
 
     """
     def __init__(self, p1, p2):
-        self.start = Point(p1)
-        self.end = Point(p2)
+        self.start = Point(* p1)
+        self.end = Point(* p2)
 
     def __repr__(self):
         return '({0}, {1})'.format(self.start, self.end)

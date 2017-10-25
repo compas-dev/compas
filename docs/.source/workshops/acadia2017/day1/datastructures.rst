@@ -11,7 +11,7 @@ The *compas* framework contains three types of data structures and related opera
 
 * :class:`compas.datastructures.Network`
 * :class:`compas.datastructures.Mesh`
-* :class:`compas.datastructures.Volmesh`
+* :class:`compas.datastructures.VolMesh`
 
 .. images
 .. overview
@@ -164,10 +164,12 @@ datastructure, although they obviously have a few of them in common.
 * mesh.is_trimesh()
 * mesh.is_quadmesh()
 
+
 * mesh.vertex_neighbours()
 * mesh.vertex_degree()
 * mesh.vertex_faces()
 * mesh.vertex_neighbourhood()
+
 
 * mesh.face_vertices()
 * mesh.face_halfedges()
@@ -231,6 +233,7 @@ Geometry
 * mesh.vertex_area()
 * mesh.vertex_centroid()
 
+
 * mesh.face_area()
 * mesh.face_centroid()
 * mesh.face_center()
@@ -238,6 +241,7 @@ Geometry
 * mesh.face_circle()
 * mesh.face_normal()
 * mesh.face_flatness()
+
 
 * mesh.edge_coordinates()
 * mesh.edge_vector()

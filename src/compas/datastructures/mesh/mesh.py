@@ -18,6 +18,8 @@ from compas.geometry import subtract_vectors
 from compas.geometry import normal_polygon
 from compas.geometry import area_polygon
 
+from compas.geometry import Polyhedron
+
 from compas.datastructures import Datastructure
 
 from compas.datastructures.mixins import VertexAttributesManagement
@@ -442,6 +444,25 @@ class Mesh(FromToJson,
         for face in iter(faces):
             mesh.add_face(face)
         return mesh
+
+    @classmethod
+    def from_polyhedron(cls, f):
+        """Construct a mesh from a platonic solid.
+
+        Parameters
+        ----------
+        f : int
+            The number of faces.
+            Should be one of ``4, 6, 8, 12, 20``.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+
+        """
+        p = Polyhedron.generate(f)
+        return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     # --------------------------------------------------------------------------
     # converters

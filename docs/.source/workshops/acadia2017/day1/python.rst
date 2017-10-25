@@ -92,6 +92,12 @@ Generate lists with an expression in brackets.
 
 .. code-block:: python
 
+    # flattening
+
+
+
+.. code-block:: python
+
     # vector length
 
     vector = [1.0, 0.0]
@@ -153,7 +159,7 @@ Dictionary
 https://docs.python.org/3/library/stdtypes.html#mapping-types-dict
 
 * Maps unordered, distinct, hashable values (*keys*) to arbitrary objects
-* Mutable
+* **Mutable**
 
 .. code-block:: python
 
@@ -211,10 +217,14 @@ Compare lookup speeds
     items = sample(range(n), m)
     exclude = sample(range(n), m)
 
+    exclude_dict = {e: e for e in exclude}
+
     result = set(items) - set(exclude)
     result = [i for i in items if i not in exclude]
+    result = [i for i in items if i not in exclude_dict]
 
     # timeit("result = set(items) - set(exclude)", "from __main__ import items, exclude", number=10)
+    # timeit("result = [i for i in items if i not in exclude]", "from __main__ import items, exclude", number=10)
     # timeit("result = [i for i in items if i not in exclude]", "from __main__ import items, exclude", number=10)
 
     # 0.02
