@@ -16,6 +16,9 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
+__all__ = ['Polygon']
+
+
 class Polygon(object):
     """An object representing ...
 
@@ -164,9 +167,11 @@ class Polygon(object):
         """
         return area_polygon(self.points)
 
+    @property
     def is_convex(self):
         return is_polygon_convex(self.points)
 
+    @property
     def is_coplanar(self):
         return is_coplanar(self.points)
 
@@ -229,5 +234,5 @@ if __name__ == '__main__':
     print(polygon.normal)
     print(polygon.frame)
 
-    print(polygon.is_convex())
-    print(polygon.is_coplanar())
+    print(polygon.is_convex)
+    print(polygon.is_coplanar)

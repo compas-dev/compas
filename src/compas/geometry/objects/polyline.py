@@ -8,35 +8,38 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-def align_polylines(pointsets, tol=0.001):
-    tol = tol**2
-    aligned = [pointsets[0][1:]]
-    found = [0]
-    n = len(pointsets)
-    for i in range(n):
-        ep = aligned[-1][-1]
-        for j in range(n):
-            if j in found:
-                continue
-            points = pointsets[j]
-            sp = points[0]
-            if (sp[0] - ep[0]) ** 2 < tol and (sp[1] - ep[1]) ** 2 < tol and (sp[2] - ep[2]) ** 2 < tol:
-                aligned.append(points[1:])
-                found.append(j)
-                break
-            sp = points[-1]
-            if (sp[0] - ep[0]) ** 2 < tol and (sp[1] - ep[1]) ** 2 < tol and (sp[2] - ep[2]) ** 2 < tol:
-                points[:] = points[::-1]
-                aligned.append(points[1:])
-                found.append(j)
-                break
-    if len(aligned) == len(pointsets):
-        return aligned
-    return None
+__all__ = ['Polyline']
 
 
-def join_polylines(pointsets):
-    return [point for points in pointsets for point in points]
+# def align_polylines(pointsets, tol=0.001):
+#     tol = tol**2
+#     aligned = [pointsets[0][1:]]
+#     found = [0]
+#     n = len(pointsets)
+#     for i in range(n):
+#         ep = aligned[-1][-1]
+#         for j in range(n):
+#             if j in found:
+#                 continue
+#             points = pointsets[j]
+#             sp = points[0]
+#             if (sp[0] - ep[0]) ** 2 < tol and (sp[1] - ep[1]) ** 2 < tol and (sp[2] - ep[2]) ** 2 < tol:
+#                 aligned.append(points[1:])
+#                 found.append(j)
+#                 break
+#             sp = points[-1]
+#             if (sp[0] - ep[0]) ** 2 < tol and (sp[1] - ep[1]) ** 2 < tol and (sp[2] - ep[2]) ** 2 < tol:
+#                 points[:] = points[::-1]
+#                 aligned.append(points[1:])
+#                 found.append(j)
+#                 break
+#     if len(aligned) == len(pointsets):
+#         return aligned
+#     return None
+
+
+# def join_polylines(pointsets):
+#     return [point for points in pointsets for point in points]
 
 
 class Polyline(object):

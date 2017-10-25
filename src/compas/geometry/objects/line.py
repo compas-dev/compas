@@ -7,6 +7,9 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
+__all__ = ['Line']
+
+
 class Line(object):
     r"""A line object is defined by two points in three-dimensional space.
 

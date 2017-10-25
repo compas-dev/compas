@@ -15,6 +15,9 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
+__all__ = ['Vector']
+
+
 class Vector(object):
     """A vector object represents a vector in three-dimensional space.
 

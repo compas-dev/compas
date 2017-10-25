@@ -20,6 +20,9 @@ __license__    = 'GNU - General Public License'
 __email__      = 'vanmelet@ethz.ch'
 
 
+__all__ = ['Point']
+
+
 class Point(object):
     """A three-dimensional location in space.
 
