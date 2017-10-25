@@ -17,6 +17,23 @@ The full geometry reference can be found here:
 
 * :mod:`compas.geometry`
 
+.. note::
+	Besides many basic geometry functions such as:
+	* :mod:`compas.geometry.add_vectors`
+	* :mod:`compas.geometry.subtract_vectors`
+	* :mod:`compas.geometry.intersection_line_plane`
+	* :mod:`compas.geometry.closest_point_on_polyline`
+	* :mod:`compas.geometry.is_point_in_triangle`
+	* ...
+
+	The geometry package also includes geometry 
+	algorithms such as:
+	* :mod:`compas.geometry.planarize_faces`
+	* :mod:`compas.geometry.smooth_centroid`
+	* :mod:`compas.geometry.smooth_area`
+	* :mod:`compas.geometry.discrete_coons_patch`
+	* ...	
+
 
 Object-Oriented Interface vs Functions
 ======================================
@@ -58,7 +75,7 @@ lists (or tuples) as vectors:
 Exercise: 
 ---------
 
-Create a set of 1.000 random vectors with the origin (1. ,2. ,3.) and compute their
+Create a set of 10.000 random vectors with the origin (1. ,2. ,3.) and compute their
 resultant. Compare the preformance of an object-based and function-based method.  
 
 .. seealso::
@@ -303,7 +320,7 @@ curves. The method geneartes planes along the two rail curves and subsequentely 
 intersections with conical extrusions to guarantee the planarity of resulting mesh.
 
 Modify the previous script to compute planar translational surfaces based on the algorithm
-decribed above. 
+decribed above. Include you script in Grasshopper using the GhPython component.
 
 .. figure:: /_images/trans_srf_04.jpg
     :figclass: figure
@@ -386,3 +403,21 @@ See 3dm file for details
 	for poly in polys:
 	    rs.AddPolyline(poly)
 	rs.EnableRedraw(True)
+
+
+
+
+Torsion-free Elements for Gridshells
+====================================
+
+- Create a 3D coons patch.
+- make a mesh.
+- populate fins
+
+- planarize fins
+- constrain fins to a specific height
+
+
+Tessellation of a freeform barrel vault
+=======================================
+
