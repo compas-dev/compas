@@ -1,17 +1,15 @@
 from __future__ import print_function
 
-from compas.geometry.objects.vector import Vector
+from compas.geometry.objects import Vector
 
 from compas.geometry import distance_point_point
 from compas.geometry import distance_point_line
 from compas.geometry import distance_point_plane
-
 from compas.geometry import project_point_plane
 from compas.geometry import project_point_line
-
 from compas.geometry import is_point_in_triangle
-
 from compas.geometry import transform
+
 
 
 __author__     = ['Tom Van Mele', ]
@@ -139,7 +137,7 @@ class Point(object):
     # ==========================================================================
 
     def __repr__(self):
-        return '[{0}, {1}, {2}]'.format(self.x, self.y, self.z)
+        return 'Point({0:.{3}}, {1:.{3}}, {2:.{3}})'.format(self.x, self.y, self.z, self.precision)
 
     def __len__(self):
         return 3
@@ -183,7 +181,7 @@ class Point(object):
         equal if their XYZ coordinates are identical.
 
         Note:
-            Perhaps it makes sense to add a `precision` attribute to the point
+            Perhaps it makes sense to add a *precision* attribute to the point
             class. This would allow comparisons to be made up to a certain
             tolerance.
 
@@ -297,7 +295,6 @@ class Point(object):
 # Debugging
 # ==============================================================================
 
-
 if __name__ == '__main__':
 
     from compas.geometry import Point
@@ -308,19 +305,20 @@ if __name__ == '__main__':
 
     from compas.geometry import projection_matrix
 
-    point  = Point(0.0, 0.0, 0.0)
-    normal = Vector(0.0, 0.0, 1.0)
-    plane  = Plane.from_point_and_normal(point, normal)
-    line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+    point    = Point(0.0, 0.0, 0.0)
+    normal   = Vector(0.0, 0.0, 1.0)
+    plane    = Plane.from_point_and_normal(point, normal)
+    line     = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
     triangle = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
-    polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
+    polygon  = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
 
     p = Point(1.0, 1.0, 1.0)
+
+    print(repr(p))
 
     print(p.distance_to_point(point))
     print(p.distance_to_line(line))
     print(p.distance_to_plane(plane))
-
     print(p.in_triangle(triangle))
 
     # print(p.in_polygon(polygon))

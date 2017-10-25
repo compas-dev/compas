@@ -83,7 +83,7 @@ class Plotter(object):
             'point.radius'    : 0.1,
             'point.facecolor' : '#ffffff',
             'point.edgecolor' : '#000000',
-            'point.edgewidth' : 1.0,
+            'point.edgewidth' : 0.0,
             'point.textcolor' : '#000000',
             'point.fontsize'  : 10.0,
 

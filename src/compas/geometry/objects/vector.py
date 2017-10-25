@@ -5,9 +5,7 @@ from math import cos
 from math import sqrt
 from math import pi
 
-from compas.geometry.basic import *
-from compas.geometry.angles import *
-from compas.geometry.xforms import *
+from compas.geometry import *
 
 
 __author__     = ['Tom Van Mele', ]
@@ -25,45 +23,62 @@ class Vector(object):
     The vector is defined as the difference vector between the start and end
     point. The start point is optional and defaults to the origin [0, 0, 0].
 
-    Parameters:
-        end (list): The xyz coordinates of the end point.
-        start (list): The xyz coordinates of the start point, defaults to [0, 0, 0].
+    Parameters
+    ----------
+    x : float
+        The X component of the vector.
+    y : float
+        The Y component of the vector.
+    z : float
+        The Z component of the vector.
+    w : float, optional
+        Homogenisation factor.
+        Default is ``1.0``.
+    unitize : bool, optional
+        Unitize the vector.
+        Default is ``False``.
 
-    Attributes:
-        x (float): The x-coordinate of the coordinate difference vector.
-        y (float): The y-coordinate of the coordinate difference vector.
-        z (float): The z-coordinate of the coordinate difference vector.
-        length (float): (**read-only**) The length of the vector.
+    Attributes
+    ----------
+    x : float
+        The X component of the vector.
+    y : float
+        The Y component of the vector.
+    z : float
+        The Z component of the vector.
+    length : float, **read-only**
+        The length of the vector.
 
-    Examples:
-        >>> u = Vector([1, 0, 0])
-        >>> v = Vector([0, 2, 0], [0, 1, 0])
-        >>> u
-        [1.0, 0.0, 0.0]
-        >>> v
-        [0.0, 1.0, 0.0]
-        >>> u.x
-        1.0
-        >>> u[0]
-        1.0
-        >>> u.length
-        1.0
-        >>> u + v
-        [1.0, 1.0, 0.0]
-        >>> u + [0.0, 1.0, 0.0]
-        [1.0, 1.0, 0.0]
-        >>> u * 2
-        [2.0, 0.0, 0.0]
-        >>> u.dot(v)
-        0.0
-        >>> u.cross(v)
-        [0.0, 0.0, 1.0]
+    Examples
+    --------
+    >>> u = Vector(1, 0, 0)
+    >>> v = Vector(0, 1, 0)
+    >>> u
+    [1.0, 0.0, 0.0]
+    >>> v
+    [0.0, 1.0, 0.0]
+    >>> u.x
+    1.0
+    >>> u[0]
+    1.0
+    >>> u.length
+    1.0
+    >>> u + v
+    [1.0, 1.0, 0.0]
+    >>> u + [0.0, 1.0, 0.0]
+    [1.0, 1.0, 0.0]
+    >>> u * 2
+    [2.0, 0.0, 0.0]
+    >>> u.dot(v)
+    0.0
+    >>> u.cross(v)
+    [0.0, 0.0, 1.0]
 
     """
 
     __slots__ = ['_x', '_y', '_z', '_w']
 
-    def __init__(self, x=0.0, y=0.0, z=0.0, w=1.0, unitize=False):
+    def __init__(self, x, y, z, w=1.0, unitize=False):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0

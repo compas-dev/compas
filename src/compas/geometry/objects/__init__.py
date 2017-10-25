@@ -14,4 +14,13 @@ from .circle import Circle
 from .spline import Spline
 from .surface import Surface
 
-__all__ = ['Circle', 'Frame', 'Line', 'Plane', 'Point', 'Polygon', 'Polyhedron', 'Polyline', 'Spline', 'Surface', 'Vector']
+from .kdtree import KDTree
+
+__all__ = [
+    'Vector', 'Point', 'Line', 'Plane',
+    'Frame',
+    'Polyline', 'Polygon', 'Polyhedron',
+    'Circle',
+    'Spline', 'Surface',
+    'KDTree'
+]

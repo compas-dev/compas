@@ -1,7 +1,7 @@
-from compas.geometry import orthonormalise_vectors
+from compas.geometry.objects import Point
+from compas.geometry.objects import Vector
 
-from compas.geometry.objects.point import Point
-from compas.geometry.objects.vector import Vector
+from compas.geometry import orthonormalise_vectors
 
 
 __author__     = ['Tom Van Mele', ]

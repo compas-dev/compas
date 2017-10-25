@@ -26,48 +26,47 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = [
     'planarize_faces',
     'flatness',
-    'flatness2'
 ]
 
 
-def flatness(vertices, faces):
-    """Compute mesh flatness per face.
+# def flatness(vertices, faces):
+#     """Compute mesh flatness per face.
 
-    Parameters
-    ----------
-    mesh : Mesh
-        A mesh object.
+#     Parameters
+#     ----------
+#     mesh : Mesh
+#         A mesh object.
 
-    Returns
-    -------
-    dict
-        For each face, a deviation from *flatness*.
+#     Returns
+#     -------
+#     dict
+#         For each face, a deviation from *flatness*.
 
-    Note
-    ----
-    The "flatness" of a face is expressed as the average of the angles between
-    the normal at each face corner and the normal of the best-fit plane.
+#     Note
+#     ----
+#     The "flatness" of a face is expressed as the average of the angles between
+#     the normal at each face corner and the normal of the best-fit plane.
 
-    """
-    dev = []
-    for face in faces:
-        points = [vertices[key] for key in face]
-        base, normal = bestfit_plane_from_points(points)
-        angles = []
-        for a, b, c in window(points + points[0:2], 3):
-            u = subtract_vectors(a, b)
-            v = subtract_vectors(c, b)
-            n = cross_vectors(u, v)
-            if dot_vectors(n, normal) > 0:
-                angle = angle_smallest_vectors(n, normal)
-            else:
-                angle = angle_smallest_vectors(n, scale_vector(normal, -1))
-            angles.append(angle)
-        dev.append(sum(angles) / len(angles))
-    return dev
+#     """
+#     dev = []
+#     for face in faces:
+#         points = [vertices[key] for key in face]
+#         base, normal = bestfit_plane_from_points(points)
+#         angles = []
+#         for a, b, c in window(points + points[0:2], 3):
+#             u = subtract_vectors(a, b)
+#             v = subtract_vectors(c, b)
+#             n = cross_vectors(u, v)
+#             if dot_vectors(n, normal) > 0:
+#                 angle = angle_smallest_vectors(n, normal)
+#             else:
+#                 angle = angle_smallest_vectors(n, scale_vector(normal, -1))
+#             angles.append(angle)
+#         dev.append(sum(angles) / len(angles))
+#     return dev
 
 
-def flatness2(vertices, faces, maxdev=0.02):
+def flatness(vertices, faces, maxdev=0.02):
     """Compute mesh flatness per face.
 
     Parameters

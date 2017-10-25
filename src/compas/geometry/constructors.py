@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import division
 
 from math import sqrt
-from random import randint
 from random import sample
 
 from compas.geometry.basic import subtract_vectors
@@ -229,9 +228,15 @@ def pointcloud(n, xbounds, ybounds=None, zbounds=None):
     xmin, xmax = map(int, xbounds)
     ymin, ymax = map(int, ybounds)
     zmin, zmax = map(int, zbounds)
-    return [[1.0 * randint(xmin, xmax),
-             1.0 * randint(ymin, ymax),
-             1.0 * randint(zmin, zmax)] for i in range(n)]
+    assert xmax - xmin > n, 'The bounds do not permit taking a random sample of this size.'
+    assert ymax - ymin > n, 'The bounds do not permit taking a random sample of this size.'
+    assert zmax - zmin > n, 'The bounds do not permit taking a random sample of this size.'
+    x = sample(range(xmin, xmax), n)
+    y = sample(range(ymin, ymax), n)
+    z = sample(range(zmin, zmax), n)
+    return [[1.0 * x[i],
+             1.0 * y[i],
+             1.0 * z[i]] for i in range(n)]
 
 
 def pointcloud_xy(n, xbounds, ybounds=None):
@@ -265,7 +270,8 @@ def pointcloud_xy(n, xbounds, ybounds=None):
     assert ymax - ymin > n, 'The bounds do not permit taking a random sample of this size.'
     x = sample(range(xmin, xmax), n)
     y = sample(range(ymin, ymax), n)
-    return [[1.0 * x[i], 1.0 * y[i], 0.0] for i in range(n)]
+    return [[1.0 * x[i],
+             1.0 * y[i], 0.0] for i in range(n)]
 
 
 # ==============================================================================
