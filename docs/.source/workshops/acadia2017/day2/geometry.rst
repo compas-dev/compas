@@ -15,41 +15,54 @@ applications (e.g.: Rhino, Blender, Maya, ...)
 
 The full geometry reference can be found here:
 
-* :mod:`compas.geometry`
+* :func:`compas.geometry`
 
 
 Object-Oriented Interface vs Functions
 ======================================
 
-The *compas* framework an object-oriented interface.
+The geometry package features an object-oriented interface:
 
 .. plot::
     :include-source:
 
-    from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
+    from compas.geometry import Vector
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+	u = Vector(1.0, 0.0, 0.0)
+	v = Vector(0.0, 1.0, 0.0)
 
-    plotter = MeshPlotter(mesh)
+	r = u + v
 
-    plotter.draw_vertices()
-    plotter.draw_faces()
-    plotter.draw_edges()
+	print(r)
+	print(r.length)
 
-    plotter.draw_vertices(
-        text='key',
-        facecolor=(0.9, 0.9, 0.9),
-    )
-    plotter.draw_faces(
-        text='key',
-        facecolor=(0.7, 0.7, 0.7),
-    )
-    plotter.draw_edges(
-        text='key'
-    )
 
-    plotter.show()
+The same vector calculations can be computed using functions and 
+lists (or tuples) as vectors:
+
+.. plot::
+    :include-source:
+
+	from compas.geometry import add_vectors
+	from compas.geometry import length_vector
+
+	u = (1.0, 0.0, 0.0)
+	v = (0.0, 1.0, 0.0)
+
+	r = add_vectors(u, v)
+
+	print(r)
+	print(length_vector(r))
+
+
+Exercise: 
+---------
+
+Create a set of 1.000 random vectors with the origin (1. ,2. ,3.) and compute their
+resultant. Compare the preformance of an object-based and function-based method.  
+
+See:
+
 
 
 Construction
