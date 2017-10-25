@@ -446,6 +446,58 @@ Torsion-free Elements for Gridshells
 ====================================
 
 - Create a 3D coons patch.
+
+
+.. code-block:: python
+
+    import rhinoscriptsyntax as rs
+
+    from compas.geometry import add_vectors
+
+    from compas.datastructures.mesh import Mesh
+    from compas_rhino.helpers.artists.meshartist import MeshArtist
+    from compas.geometry.algorithms.interpolation import discrete_coons_patch
+    from compas.datastructures import mesh_cull_duplicate_vertices
+
+
+
+    crv_ab = rs.GetObject("Select ab",4)
+    crv_bc = rs.GetObject("Select bc",4)
+    crv_dc = rs.GetObject("Select cd",4)
+    crv_ad = rs.GetObject("Select ad",4)
+
+    div_a = 15
+    div_b = 15
+
+    ab, bc, dc, ad = None, None, None, None
+
+    if crv_ab: ab = rs.DivideCurve(crv_ab, div_a)
+    if crv_bc: bc = rs.DivideCurve(crv_bc, div_b)
+    if crv_dc: dc = rs.DivideCurve(crv_dc, div_a)
+    if crv_ad: ad = rs.DivideCurve(crv_ad, div_b)
+
+    vertices, face_vertices = discrete_coons_patch(ab, bc, dc, ad)
+    coon = Mesh.from_vertices_and_faces(vertices, face_vertices)
+
+    artist = MeshArtist(coon, layer='MeshArtist')
+    artist.draw_edges()
+    artist.draw_vertices()
+    artist.draw_faces()
+    #artist.redraw(1.0)
+
+
+    for u, v in coon.edges():
+        pt_u = coon.vertex_coordinates(u)
+        pt_v = coon.vertex_coordinates(v)
+        vec_u = coon.vertex_normal(u)
+        vec_v = coon.vertex_normal(v)
+        pt_uu = add_vectors(pt_u, vec_u)
+        pt_vv = add_vectors(pt_v, vec_v)
+        rs.AddPolyline([pt_u,pt_v,pt_vv,pt_uu,pt_u])
+
+
+
+
 - make a mesh.
 - populate fins
 

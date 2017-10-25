@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 from compas.topology import bfs_traverse
-from compas.geometry import KDTree
+#from compas.geometry import KDTree
 
 
 __author__     = 'Tom Van Mele'
