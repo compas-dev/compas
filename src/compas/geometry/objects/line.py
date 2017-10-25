@@ -57,52 +57,13 @@ class Line(object):
         self.start = Point(* p1)
         self.end = Point(* p2)
 
-    def __repr__(self):
-        return '({0}, {1})'.format(self.start, self.end)
+    # ==========================================================================
+    # factory
+    # ==========================================================================
 
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.start
-        if key == 1:
-            return self.end
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.start = Point(value)
-            return
-        if key == 1:
-            self.end = Point(value)
-            return
-        raise KeyError
-
-    def __iter__(self):
-        return iter([self.start, self.end])
-
-    def __mul__(self, n):
-        """Create a line with the same start point and direction, but scaled
-        length.
-
-        Parameters:
-            n (int, float): The scaling factor.
-
-        Returns:
-            Line: A line with the same start point and direction, but scaled length.
-        """
-        v = self.direction * (n * self.length)
-        return Line(self.start, self.start + v)
-
-    def __imul__(self, n):
-        v = self.direction * (n * self.length)
-        self.end = self.start + v
-        return self
-
-    # --------------------------------------------------------------------------
+    # ==========================================================================
     # descriptors
-    # --------------------------------------------------------------------------
+    # ==========================================================================
 
     @property
     def vector(self):
@@ -141,9 +102,76 @@ class Line(object):
         """
         return self.vector * (1 / self.length)
 
-    # --------------------------------------------------------------------------
+    # ==========================================================================
+    # representation
+    # ==========================================================================
+
+    def __repr__(self):
+        return '({0}, {1})'.format(self.start, self.end)
+
+    def __len__(self):
+        return 2
+
+    # ==========================================================================
+    # access
+    # ==========================================================================
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.start
+        if key == 1:
+            return self.end
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.start = Point(value)
+            return
+        if key == 1:
+            self.end = Point(value)
+            return
+        raise KeyError
+
+    def __iter__(self):
+        return iter([self.start, self.end])
+
+    # ==========================================================================
+    # comparison
+    # ==========================================================================
+
+    # ==========================================================================
+    # operators
+    # ==========================================================================
+
+    def __mul__(self, n):
+        """Create a line with the same start point and direction, but scaled
+        length.
+
+        Parameters:
+            n (int, float): The scaling factor.
+
+        Returns:
+            Line: A line with the same start point and direction, but scaled length.
+        """
+        v = self.direction * (n * self.length)
+        return Line(self.start, self.start + v)
+
+    # ==========================================================================
+    # inplace operators
+    # ==========================================================================
+
+    def __imul__(self, n):
+        v = self.direction * (n * self.length)
+        self.end = self.start + v
+        return self
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
+
+    # ==========================================================================
     # transformations
-    # --------------------------------------------------------------------------
+    # ==========================================================================
 
     def translate(self, vector):
         """Translate the line by a vector."""
