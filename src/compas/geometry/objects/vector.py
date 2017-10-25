@@ -6,7 +6,8 @@ from math import sqrt
 from math import pi
 
 from compas.geometry.basic import *
-from compas.geometry.xforms import transform
+from compas.geometry.angles import *
+from compas.geometry.xforms import *
 
 
 __author__     = ['Tom Van Mele', ]
@@ -244,52 +245,24 @@ class Vector(object):
     def norm_vectors(vectors):
         return [norm_vector(vector) for vector in vectors]
 
-    # @staticmethod
-    # def sum_vectors(vectors):
-    #     pass
-
-    # @staticmethod
-    # def add_vectors(vectors):
-    #     pass
-
     @staticmethod
-    def dot(u, v):
-        """The dot product of this ``Vector`` and another ``Vector``.
-
-        Parameters:
-            other (tuple, list, Vector): The vector to dot.
-
-        Returns:
-            float: The dot product.
-        """
-        return dot_vectors(u, v)
+    def sum_vectors(vectors):
+        return Vector(* [sum(axis) for axis in zip(* vectors)])
 
     @staticmethod
     def dot_vectors(left, right):
-        return [dot_vectors(u, v) for u, v in zip(left, right)]
-
-    @staticmethod
-    def cross(u, v):
-        """The cross product of this ``Vector`` and another ``Vector``.
-
-        Parameters:
-            other (tuple, list, Vector): The vector to cross.
-
-        Returns:
-            Vector: The cross product.
-        """
-        return Vector(* cross_vectors(u, v))
+        return [Vector.dot(u, v) for u, v in zip(left, right)]
 
     @staticmethod
     def cross_vectors(left, right):
         return [Vector.cross(u, v) for u, v in zip(left, right)]
 
     @staticmethod
-    def angles(u, v):
-        pass
+    def angles_vectors(left, right):
+        return [angles_vectors(u, v) for u, v in zip(left, right)]
 
     @staticmethod
-    def angle(u, v):
+    def angle_vectors(left, right):
         pass
 
     @staticmethod
@@ -310,11 +283,11 @@ class Vector(object):
 
     @property
     def length(self):
-        return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
+        return length_vector(self)
 
     @property
     def norm(self):
-        return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
+        return length_vector(self)
 
     # ==========================================================================
     # helpers
@@ -333,14 +306,21 @@ class Vector(object):
         self.y = self.y / l
         self.z = self.z / l
 
-    def homogenise(self):
-        pass
+    def homogenise(self, w=1.0):
+        self.x = self.x / w
+        self.y = self.y / w
+        self.z = self.z / w
+        self.w = w
 
     def dehomogenise(self):
-        pass
+        self.x *= self.w
+        self.y *= self.w
+        self.z *= self.w
 
     def reverse(self):
-        pass
+        self.x = - self.x
+        self.y = - self.y
+        self.z = - self.z
 
     # ==========================================================================
     # methods: float
@@ -358,6 +338,38 @@ class Vector(object):
         self *= n
 
     # ==========================================================================
+    # methods: other
+    # ==========================================================================
+
+    def dot(self, other):
+        """The dot product of this ``Vector`` and another ``Vector``.
+
+        Parameters:
+            other (tuple, list, Vector): The vector to dot.
+
+        Returns:
+            float: The dot product.
+        """
+        return dot_vectors(self, other)
+
+    def cross(self, other):
+        """The cross product of this ``Vector`` and another ``Vector``.
+
+        Parameters:
+            other (tuple, list, Vector): The vector to cross.
+
+        Returns:
+            Vector: The cross product.
+        """
+        return Vector(* cross_vectors(self, other))
+
+    def angle(self, other):
+        return angle_smallest_vectors(self, other)
+
+    def angles(self, other):
+        return angles_vectors(self, other)
+
+    # ==========================================================================
     # methods: misc
     # ==========================================================================
 
@@ -366,11 +378,6 @@ class Vector(object):
         self.x = points[0][0]
         self.y = points[0][1]
         self.z = points[0][2]
-
-    def translate(self, other):
-        self.x += other[0]
-        self.y += other[1]
-        self.z += other[2]
 
     def rotate(self, angle, axis=None, origin=None):
         """Rotate a vector u over an angle a around an axis k.
@@ -392,11 +399,14 @@ class Vector(object):
         if origin is None:
             origin = [0.0, 0.0, 0.0]
 
+        axis = Vector(*axis)
+        origin = Vector(*axis)
+
         sina = sin(angle)
         cosa = cos(angle)
-        kxu  = Vector.cross(axis, self)
+        kxu  = axis.cross(self)
         v    = kxu * sina
-        w    = Vector.cross(axis, kxu) * (1 - cosa)
+        w    = axis.cross(kxu) * (1 - cosa)
 
         self.x += v[0] + w[0] + origin[0]
         self.y += v[1] + w[1] + origin[1]
@@ -420,10 +430,12 @@ if __name__ == '__main__':
     u = Vector(1.0, 0.0, 0.0)
     v = Vector(0.0, 1.0, 0.0)
 
+    print(Vector.sum_vectors([u, v]))
+
     print(u)
 
-    print(Vector.dot(u, v))
-    print(Vector.cross(u, v))
+    print(u.dot(v))
+    print(u.cross(v))
 
     u.rotate(pi / 2)
 
