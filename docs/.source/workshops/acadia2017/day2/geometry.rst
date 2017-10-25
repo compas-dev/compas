@@ -265,7 +265,16 @@ curves aligned with the rail curve.
 
 .. seealso::
 
-    * :func:`compas.geometry import project_points_plane`
+
+
+
+    planes: explain!!!
+
+
+
+
+
+    * :func:`compas.geometry.project_points_plane`
 
 .. code-block:: python
 
@@ -328,14 +337,24 @@ The following figure shows the generation of a tanslation surface with two profi
 curves. The method geneartes planes along the two rail curves and subsequentely uses
 intersections with conical extrusions to guarantee the planarity of resulting mesh.
 
-Modify the previous script to compute planar translational surfaces based on the algorithm
-decribed above. Include you script in Grasshopper using the GhPython component.
-
 .. figure:: /_images/trans_srf_04.jpg
     :figclass: figure
     :class: figure-img img-fluid
 
     See 3dm file for details 
+
+The steps of the algorithm are:
+* blabla bl lal lsldd bllbblb
+  blblblbl bldlbl
+  (:func:`compas.geometry.add_vectors`)
+* ....
+
+.. note::
+
+    The following examples is also available for Grasshopper:
+
+    * :download:`trans_srf.3dm </../../examples/trans_srf.gh>`
+
 
 .. seealso::
 
@@ -377,6 +396,8 @@ decribed above. Include you script in Grasshopper using the GhPython component.
         pt_mid = centroid_points([pts_a[i], pts_b[i]])
         vec_a = subtract_vectors(pts_a[i + 1], pts_a[i])
         vec_b = subtract_vectors(pts_b[i + 1], pts_b[i])
+        vec_a = normalize_vector(vec_a)
+        vec_b = normalize_vector(vec_b)
         vec = add_vectors(vec_a, vec_b)
         planes.append([pt_mid, vec])
 
