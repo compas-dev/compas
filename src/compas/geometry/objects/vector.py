@@ -263,7 +263,7 @@ class Vector(object):
 
     @staticmethod
     def angle_vectors(left, right):
-        pass
+        return [angle_smallest_vectors(u, v) for u, v in zip(left, right)]
 
     @staticmethod
     def homogenise_vectors(vectors):
