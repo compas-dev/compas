@@ -40,23 +40,15 @@
 <div class="section">
 <span id="numerical"></span><span id="compas-numerical"></span><h1>numerical</h1>
 <p>A package for numerical computation.</p>
-<div class="section">
-<h2>Dependencies</h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>This package is built around NumPy and Scipy</p>
 <ul class="simple">
 <li>NumPy: <a class="reference external" href="http://www.numpy.org/">http://www.numpy.org/</a></li>
 <li>SciPy: <a class="reference external" href="http://www.scipy.org/">http://www.scipy.org/</a></li>
 </ul>
-<p><strong>Optional</strong></p>
-<ul class="simple">
-<li>Numba</li>
-<li>Pandas</li>
-<li>PyCuda</li>
-<li>PyOpenCL</li>
-<li>Cython</li>
-<li>cvxpy</li>
-<li>SymPy</li>
-<li>Alglib</li>
-</ul>
+<p class="last">and has several other optional dependencies (SymPy, Numba, PyCuda, Cython, CVXPY, Alglib).
+Most of these are shipped with scientific Python distributions, such as Anaconda and EPD.</p>
 </div>
 <div class="section">
 <h2>Methods</h2>
@@ -207,6 +199,57 @@
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.numerical.equilibrium_matrix.html" title="compas.numerical.equilibrium_matrix"><code class="xref py py-obj docutils literal">equilibrium_matrix</code></a>(C, xyz, free[, rtype])</td>
 <td>Construct the equilibrium matrix of a structural system.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.network_adjacency_matrix.html" title="compas.numerical.network_adjacency_matrix"><code class="xref py py-obj docutils literal">network_adjacency_matrix</code></a>(network[, rtype])</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.network_degree_matrix.html" title="compas.numerical.network_degree_matrix"><code class="xref py py-obj docutils literal">network_degree_matrix</code></a>(network[, rtype])</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.network_connectivity_matrix.html" title="compas.numerical.network_connectivity_matrix"><code class="xref py py-obj docutils literal">network_connectivity_matrix</code></a>(network[, rtype])</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.network_laplacian_matrix.html" title="compas.numerical.network_laplacian_matrix"><code class="xref py py-obj docutils literal">network_laplacian_matrix</code></a>(network[, ...])</td>
+<td>Construct the Laplacian matrix of a network.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.mesh_adjacency_matrix.html" title="compas.numerical.mesh_adjacency_matrix"><code class="xref py py-obj docutils literal">mesh_adjacency_matrix</code></a>(mesh[, rtype])</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.mesh_degree_matrix.html" title="compas.numerical.mesh_degree_matrix"><code class="xref py py-obj docutils literal">mesh_degree_matrix</code></a>(mesh[, rtype])</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.mesh_connectivity_matrix.html" title="compas.numerical.mesh_connectivity_matrix"><code class="xref py py-obj docutils literal">mesh_connectivity_matrix</code></a>(mesh[, rtype])</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.mesh_laplacian_matrix.html" title="compas.numerical.mesh_laplacian_matrix"><code class="xref py py-obj docutils literal">mesh_laplacian_matrix</code></a>(mesh[, rtype])</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.trimesh_cotangent_laplacian_matrix.html" title="compas.numerical.trimesh_cotangent_laplacian_matrix"><code class="xref py py-obj docutils literal">trimesh_cotangent_laplacian_matrix</code></a>(mesh)</td>
+<td>Construct the Laplacian of a triangular mesh with cotangent weights.</td>
 </tr>
 </tbody>
 </table>
@@ -389,13 +432,14 @@
 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">numerical</a><ul class="nav">
-<li class="nav-item"><a class="nav-link reference internal" href="#dependencies">Dependencies</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#methods">Methods</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#solvers">Solvers</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#core">Core</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#geometry">geometry</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#linalg">linalg</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#matrices">matrices</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#matrices">matrices</a><ul class="nav">
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#operators">operators</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#spatial">spatial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#statistics">statistics</a></li>

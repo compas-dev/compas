@@ -39,7 +39,7 @@
 </nav>
 <div class="section">
 <span id="compas-geometry"></span><h1>geometry</h1>
-<p>A package defining common geometric functions and objects.</p>
+<p>A package defining common geometric functions, objects, and algorithms.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>The functions in this package expect input arguments to be structured in a certain
@@ -119,6 +119,26 @@ way.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.planarize_faces.html" title="compas.geometry.planarize_faces"><code class="xref py py-obj docutils literal">planarize_faces</code></a>(vertices, faces[, fixed, ...])</td>
 <td>Planarise a set of connected faces.</td>
 </tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centroid.html" title="compas.geometry.smooth_centroid"><code class="xref py py-obj docutils literal">smooth_centroid</code></a>(vertices, adjacency[, ...])</td>
+<td>Smooth a connected set of vertices by moving each vertex to the centroid of its neighbours.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centerofmass.html" title="compas.geometry.smooth_centerofmass"><code class="xref py py-obj docutils literal">smooth_centerofmass</code></a>(vertices, adjacency[, ...])</td>
+<td>Smooth a connected set of vertices by moving each vertex to the center of mass of the polygon formed by the neighbouring vertices.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_area.html" title="compas.geometry.smooth_area"><code class="xref py py-obj docutils literal">smooth_area</code></a>(vertices, faces, adjacency[, ...])</td>
+<td>Smooth a set of connected vertices by moving each vertex to the centroid of the surrounding faces, weighted by the area of the face.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.discrete_coons_patch.html" title="compas.geometry.discrete_coons_patch"><code class="xref py py-obj docutils literal">discrete_coons_patch</code></a>(ab, bc, dc, ad)</td>
+<td>Creates a coons patch from a set of four or three boundary polylines (ab, bc, dc, ad).</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mesh_flatness.html" title="compas.geometry.mesh_flatness"><code class="xref py py-obj docutils literal">mesh_flatness</code></a>(mesh[, maxdev])</td>
 <td>Compute mesh flatness per face.</td>
 </tr>
@@ -131,23 +151,19 @@ way.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mesh_circularize_faces_shapeop.html" title="compas.geometry.mesh_circularize_faces_shapeop"><code class="xref py py-obj docutils literal">mesh_circularize_faces_shapeop</code></a>(mesh[, ...])</td>
 <td>Circularize the faces of a mesh using ShapeOp.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centroid.html" title="compas.geometry.smooth_centroid"><code class="xref py py-obj docutils literal">smooth_centroid</code></a>(vertices, adjacency[, ...])</td>
-<td>Smooth a connected set of vertices by moving each vertex to the centroid of its neighbours.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centerofmass.html" title="compas.geometry.smooth_centerofmass"><code class="xref py py-obj docutils literal">smooth_centerofmass</code></a>(vertices, adjacency[, ...])</td>
-<td>Smooth a connected set of vertices by moving each vertex to the center of mass of the polygon formed by the neighbouring vertices.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_area.html" title="compas.geometry.smooth_area"><code class="xref py py-obj docutils literal">smooth_area</code></a>(vertices, faces, adjacency[, ...])</td>
-<td>Smooth a set of connected vertices by moving each vertex to the centroid of the surrounding faces, weighted by the area of the face.</td>
-</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mesh_smooth_centroid.html" title="compas.geometry.mesh_smooth_centroid"><code class="xref py py-obj docutils literal">mesh_smooth_centroid</code></a>(mesh[, fixed, kmax, ...])</td>
 <td>Smooth a mesh by moving every free vertex to the centroid of its neighbours.</td>
 </tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.network_smooth_centroid.html" title="compas.geometry.network_smooth_centroid"><code class="xref py py-obj docutils literal">network_smooth_centroid</code></a>(network[, fixed, ...])</td>
 <td>Smooth a network by moving each vertex to the centroid of its neighbours.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.discrete_coons_patch.html" title="compas.geometry.discrete_coons_patch"><code class="xref py py-obj docutils literal">discrete_coons_patch</code></a>(ab, bc, dc, ad)</td>
-<td>Creates a coons patch from a set of four or three boundary polylines (ab, bc, dc, ad).</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.network_relax.html" title="compas.geometry.network_relax"><code class="xref py py-obj docutils literal">network_relax</code></a>(network[, kmax, dt, tol1, ...])</td>
 <td>Implementation of dynamic relaxation with RK integration scheme in pure Python.</td>
@@ -928,7 +944,9 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">geometry</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#objects">Objects</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#algorithms">Algorithms</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#algorithms">Algorithms</a><ul class="nav">
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#utilities">Utilities</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#basics">Basics</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#distance">Distance</a></li>

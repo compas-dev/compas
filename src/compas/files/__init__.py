@@ -14,6 +14,10 @@ A package for working with different types of files.
 amf
 ===
 
+.. warning::
+
+    Under construction...
+
 
 dxf
 ===
@@ -30,6 +34,10 @@ dxf
 
 las
 ===
+
+.. warning::
+
+    Under construction...
 
 
 obj
@@ -56,6 +64,10 @@ ply
 
 stl
 ===
+
+.. warning::
+
+    Under construction...
 
 
 """

@@ -9,22 +9,15 @@ numerical
 A package for numerical computation.
 
 
-Dependencies
-============
+.. note::
 
-* NumPy: http://www.numpy.org/ 
-* SciPy: http://www.scipy.org/
+    This package is built around NumPy and Scipy
 
-**Optional**
+    * NumPy: http://www.numpy.org/ 
+    * SciPy: http://www.scipy.org/
 
-* Numba
-* Pandas
-* PyCuda
-* PyOpenCL
-* Cython
-* cvxpy
-* SymPy
-* Alglib
+    and has several other optional dependencies (SymPy, Numba, PyCuda, Cython, CVXPY, Alglib).
+    Most of these are shipped with scientific Python distributions, such as Anaconda and EPD.
 
 
 Methods
@@ -100,6 +93,27 @@ matrices
     mass_matrix
     stiffness_matrix
     equilibrium_matrix
+
+.. autosummary::
+    :toctree: generated/
+
+    network_adjacency_matrix
+    network_degree_matrix
+    network_connectivity_matrix
+    network_laplacian_matrix
+
+.. autosummary::
+    :toctree: generated/
+
+    mesh_adjacency_matrix
+    mesh_degree_matrix
+    mesh_connectivity_matrix
+    mesh_laplacian_matrix
+
+.. autosummary::
+    :toctree: generated/
+
+    trimesh_cotangent_laplacian_matrix
 
 
 operators

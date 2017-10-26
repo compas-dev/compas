@@ -7,7 +7,7 @@ geometry
 
 .. currentmodule:: compas.geometry
 
-A package defining common geometric functions and objects.
+A package defining common geometric functions, objects, and algorithms.
 
 
 .. note::
@@ -57,16 +57,24 @@ Algorithms
 
     flatness
     planarize_faces
+    smooth_centroid
+    smooth_centerofmass
+    smooth_area
+    discrete_coons_patch
+
+.. autosummary::
+    :toctree: generated/
+
     mesh_flatness
     mesh_planarize_faces
     mesh_planarize_faces_shapeop
     mesh_circularize_faces_shapeop
-    smooth_centroid
-    smooth_centerofmass
-    smooth_area
     mesh_smooth_centroid
+
+.. autosummary::
+    :toctree: generated/
+
     network_smooth_centroid
-    discrete_coons_patch
     network_relax
 
 
