@@ -86,6 +86,7 @@ algorithms such as:</p>
 <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
 </code></pre></div>
+
 <p>The same vector calculations can be computed using functions and
 lists (or tuples) as vectors:</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
@@ -99,6 +100,7 @@ lists (or tuples) as vectors:</p>
 <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">length_vector</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
 </code></pre></div>
+
 <div class="section">
 <h3>Exercise:</h3>
 <p>Create a set of 10.000 random vectors with the origin (1. ,2. ,3.) and compute their
@@ -169,6 +171,7 @@ resultant. Compare the preformance of an object-based and function-based method.
 <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s1">'------------------'</span><span class="p">)</span>
 </code></pre></div>
+
 </div>
 </div>
 <div class="section">
@@ -190,6 +193,7 @@ have the right IronPython version installed.</p>
 <div><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="k">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
 </code></pre></div>
+
 </div></blockquote>
 <p class="last">Make sure to have version 2.7.5 installed!</p>
 </div>
@@ -256,6 +260,7 @@ given profile and rail curve.</p>
     <span class="n">rs</span><span class="o">.</span><span class="n">AddPolyline</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
 <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 </code></pre></div>
+
 <p>The following example shows the generation of a tanslation surface with profile
 curves aligned with the rail curve.</p>
 <figure class="figure">
@@ -320,17 +325,30 @@ curves aligned with the rail curve.</p>
     <span class="n">rs</span><span class="o">.</span><span class="n">AddPolyline</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
 <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 </code></pre></div>
+
 <div class="section">
 <h3>Exercise:</h3>
 <p>The following figure shows the generation of a tanslation surface with two profile
 curves. The method geneartes planes along the two rail curves and subsequentely uses
 intersections with conical extrusions to guarantee the planarity of resulting mesh.</p>
-<p>Modify the previous script to compute planar translational surfaces based on the algorithm
-decribed above. Include you script in Grasshopper using the GhPython component.</p>
 <figure class="figure">
 <img alt="../../../images/trans_srf_04.jpg" class="figure-img img-fluid" src="../../../images/trans_srf_04.jpg"/>
 <figcaption class="figure-caption">See 3dm file for details</figcaption>
 </figure>
+<p>The steps of the algorithm are:</p>
+<ul class="simple">
+<li>blabla bl lal lsldd bllbblb
+blblblbl bldlbl
+(<a class="reference internal" href="../../../reference/generated/compas.geometry.add_vectors.html#compas.geometry.add_vectors" title="compas.geometry.add_vectors"><code class="xref py py-func docutils literal">compas.geometry.add_vectors()</code></a>)</li>
+<li>...</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The following examples is also available for Grasshopper:</p>
+<ul class="last simple">
+<li><a class="reference download internal" download="" href="../../../downloads/trans_srf.gh"><code class="xref download docutils literal">trans_srf.3dm</code></a></li>
+</ul>
+</div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
@@ -370,6 +388,8 @@ decribed above. Include you script in Grasshopper using the GhPython component.<
     <span class="n">pt_mid</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">pts_a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pts_b</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
     <span class="n">vec_a</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pts_a</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">pts_a</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
     <span class="n">vec_b</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pts_b</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">pts_b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">vec_a</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">vec_a</span><span class="p">)</span>
+    <span class="n">vec_b</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">vec_b</span><span class="p">)</span>
     <span class="n">vec</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">vec_a</span><span class="p">,</span> <span class="n">vec_b</span><span class="p">)</span>
     <span class="n">planes</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">pt_mid</span><span class="p">,</span> <span class="n">vec</span><span class="p">])</span>
 
@@ -408,12 +428,61 @@ decribed above. Include you script in Grasshopper using the GhPython component.<
     <span class="n">rs</span><span class="o">.</span><span class="n">AddPolyline</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
 <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 </code></pre></div>
+
 </div>
 </div>
 <div class="section">
 <h2>Torsion-free Elements for Gridshells</h2>
 <ul class="simple">
 <li>Create a 3D coons patch.</li>
+</ul>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.helpers.artists.meshartist</span> <span class="kn">import</span> <span class="n">MeshArtist</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.algorithms.interpolation</span> <span class="kn">import</span> <span class="n">discrete_coons_patch</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">mesh_cull_duplicate_vertices</span>
+
+
+
+<span class="n">crv_ab</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select ab"</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">crv_bc</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select bc"</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">crv_dc</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select cd"</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">crv_ad</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">"Select ad"</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">div_a</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">div_b</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="n">ab</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">dc</span><span class="p">,</span> <span class="n">ad</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+
+<span class="k">if</span> <span class="n">crv_ab</span><span class="p">:</span> <span class="n">ab</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DivideCurve</span><span class="p">(</span><span class="n">crv_ab</span><span class="p">,</span> <span class="n">div_a</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">crv_bc</span><span class="p">:</span> <span class="n">bc</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DivideCurve</span><span class="p">(</span><span class="n">crv_bc</span><span class="p">,</span> <span class="n">div_b</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">crv_dc</span><span class="p">:</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DivideCurve</span><span class="p">(</span><span class="n">crv_dc</span><span class="p">,</span> <span class="n">div_a</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">crv_ad</span><span class="p">:</span> <span class="n">ad</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">DivideCurve</span><span class="p">(</span><span class="n">crv_ad</span><span class="p">,</span> <span class="n">div_b</span><span class="p">)</span>
+
+<span class="n">vertices</span><span class="p">,</span> <span class="n">face_vertices</span> <span class="o">=</span> <span class="n">discrete_coons_patch</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">dc</span><span class="p">,</span> <span class="n">ad</span><span class="p">)</span>
+<span class="n">coon</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">face_vertices</span><span class="p">)</span>
+
+<span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">coon</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'MeshArtist'</span><span class="p">)</span>
+<span class="n">artist</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+<span class="n">artist</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
+<span class="n">artist</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="c1">#artist.redraw(1.0)</span>
+
+
+<span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">coon</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+    <span class="n">pt_u</span> <span class="o">=</span> <span class="n">coon</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">pt_v</span> <span class="o">=</span> <span class="n">coon</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">vec_u</span> <span class="o">=</span> <span class="n">coon</span><span class="o">.</span><span class="n">vertex_normal</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">vec_v</span> <span class="o">=</span> <span class="n">coon</span><span class="o">.</span><span class="n">vertex_normal</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">pt_uu</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">pt_u</span><span class="p">,</span> <span class="n">vec_u</span><span class="p">)</span>
+    <span class="n">pt_vv</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">pt_v</span><span class="p">,</span> <span class="n">vec_v</span><span class="p">)</span>
+    <span class="n">rs</span><span class="o">.</span><span class="n">AddPolyline</span><span class="p">([</span><span class="n">pt_u</span><span class="p">,</span><span class="n">pt_v</span><span class="p">,</span><span class="n">pt_vv</span><span class="p">,</span><span class="n">pt_uu</span><span class="p">,</span><span class="n">pt_u</span><span class="p">])</span>
+</code></pre></div>
+
+<ul class="simple">
 <li>make a mesh.</li>
 <li>populate fins</li>
 <li>planarize fins</li>
@@ -488,7 +557,7 @@ decribed above. Include you script in Grasshopper using the GhPython component.<
             
 
             
-                Last updated on Oct 25, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

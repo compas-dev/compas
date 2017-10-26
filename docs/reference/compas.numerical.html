@@ -12,7 +12,7 @@
 <link href="/css/github.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="generated/compas.numerical.scalarfield_contours.html" rel="next" title="scalarfield_contours"/>
+<link href="generated/compas.numerical.methods.dr.html" rel="next" title="dr"/>
 <link href="generated/compas.interop.shapeop.circularize_mesh.html" rel="prev" title="circularize_mesh"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
@@ -40,6 +40,72 @@
 <div class="section">
 <span id="numerical"></span><span id="compas-numerical"></span><h1>numerical</h1>
 <p>A package for numerical computation.</p>
+<div class="section">
+<h2>Dependencies</h2>
+<ul class="simple">
+<li>NumPy: <a class="reference external" href="http://www.numpy.org/">http://www.numpy.org/</a></li>
+<li>SciPy: <a class="reference external" href="http://www.scipy.org/">http://www.scipy.org/</a></li>
+</ul>
+<p><strong>Optional</strong></p>
+<ul class="simple">
+<li>Numba</li>
+<li>Pandas</li>
+<li>PyCuda</li>
+<li>PyOpenCL</li>
+<li>Cython</li>
+<li>cvxpy</li>
+<li>SymPy</li>
+</ul>
+</div>
+<div class="section">
+<h2>Methods</h2>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.methods.dr.html" title="compas.numerical.methods.dr"><code class="xref py py-obj docutils literal">methods.dr</code></a>(vertices, edges, fixed, loads, ...)</td>
+<td>Implementation of the dynamic relaxation method for finding the equilibrium of articulated networks of axial force members.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.methods.drx.html" title="compas.numerical.methods.drx"><code class="xref py py-obj docutils literal">methods.drx</code></a>(network[, factor, tol, steps, ...])</td>
+<td>Run dynamic relaxation analysis.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.methods.fd.html" title="compas.numerical.methods.fd"><code class="xref py py-obj docutils literal">methods.fd</code></a>(vertices, edges, fixed, q, loads)</td>
+<td>Implementation of the force density method to compute equilibrium of axial force networks.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<h2>Solvers</h2>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.descent.html" title="compas.numerical.solvers.descent"><code class="xref py py-obj docutils literal">solvers.descent</code></a>(x0, fn[, iterations, gtol, ...])</td>
+<td>A gradient descent optimisation solver.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.devo.html" title="compas.numerical.solvers.devo"><code class="xref py py-obj docutils literal">solvers.devo</code></a>(fn, bounds, population, iterations)</td>
+<td>Call the differential evolution solver.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.GA.html" title="compas.numerical.solvers.GA"><code class="xref py py-obj docutils literal">solvers.GA</code></a>()</td>
+<td>This class contains a binary coded, single objective genetic algorithm.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.lma.html" title="compas.numerical.solvers.lma"><code class="xref py py-obj docutils literal">solvers.lma</code></a>()</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.mma.html" title="compas.numerical.solvers.mma"><code class="xref py py-obj docutils literal">solvers.mma</code></a>()</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.MOGA.html" title="compas.numerical.solvers.MOGA"><code class="xref py py-obj docutils literal">solvers.MOGA</code></a>()</td>
+<td>This class contains a binary coded, multiple objective genetic algorithm called NSGA-II (ref to K.</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section">
 <h2>Core</h2>
 <div class="section">
@@ -270,59 +336,10 @@
 </table>
 </div>
 </div>
-<div class="section">
-<h2>Methods</h2>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
-<colgroup>
-<col width="10%"/>
-<col width="90%"/>
-</colgroup>
-<tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.numerical.methods.dr.html" title="compas.numerical.methods.dr"><code class="xref py py-obj docutils literal">methods.dr</code></a>(vertices, edges, fixed, loads, ...)</td>
-<td>Implementation of the dynamic relaxation method for finding the equilibrium of articulated networks of axial force members.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.numerical.methods.drx.html" title="compas.numerical.methods.drx"><code class="xref py py-obj docutils literal">methods.drx</code></a>(network[, factor, tol, steps, ...])</td>
-<td>Run dynamic relaxation analysis.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.numerical.methods.fd.html" title="compas.numerical.methods.fd"><code class="xref py py-obj docutils literal">methods.fd</code></a>(vertices, edges, fixed, q, loads)</td>
-<td>Implementation of the force density method to compute equilibrium of axial force networks.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section">
-<h2>Solvers</h2>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
-<colgroup>
-<col width="10%"/>
-<col width="90%"/>
-</colgroup>
-<tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.descent.html" title="compas.numerical.solvers.descent"><code class="xref py py-obj docutils literal">solvers.descent</code></a>(x0, fn[, iterations, gtol, ...])</td>
-<td>A gradient descent optimisation solver.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.devo.html" title="compas.numerical.solvers.devo"><code class="xref py py-obj docutils literal">solvers.devo</code></a>(fn, bounds, population, iterations)</td>
-<td>Call the differential evolution solver.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.GA.html" title="compas.numerical.solvers.GA"><code class="xref py py-obj docutils literal">solvers.GA</code></a>()</td>
-<td>This class contains a binary coded, single objective genetic algorithm.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.lma.html" title="compas.numerical.solvers.lma"><code class="xref py py-obj docutils literal">solvers.lma</code></a>()</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.mma.html" title="compas.numerical.solvers.mma"><code class="xref py py-obj docutils literal">solvers.mma</code></a>()</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.numerical.solvers.MOGA.html" title="compas.numerical.solvers.MOGA"><code class="xref py py-obj docutils literal">solvers.MOGA</code></a>()</td>
-<td>This class contains a binary coded, multiple objective genetic algorithm called NSGA-II (ref to K.</td>
-</tr>
-</tbody>
-</table>
-</div>
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="generated/compas.interop.shapeop.circularize_mesh.html" role="button">circularize_mesh</a>
-<a class="btn btn-primary compas-next" href="generated/compas.numerical.scalarfield_contours.html" role="button">scalarfield_contours</a>
+<a class="btn btn-primary compas-next" href="generated/compas.numerical.methods.dr.html" role="button">dr</a>
 </nav>
 </main>
 <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
@@ -371,6 +388,9 @@
 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">numerical</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#dependencies">Dependencies</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#methods">Methods</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#solvers">Solvers</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#core">Core</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#geometry">geometry</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#linalg">linalg</a></li>
@@ -384,8 +404,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="#xforms">xforms</a></li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#methods">Methods</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#solvers">Solvers</a></li>
 </ul>
 </li>
 </ul>

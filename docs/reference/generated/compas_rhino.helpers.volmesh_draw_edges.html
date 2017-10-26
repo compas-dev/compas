@@ -74,7 +74,6 @@ Default is to draw in the current layer.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">color</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">((</span><span class="s1">'#ff0000'</span><span class="p">)</span> <span class="k">if</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_is_on_boundary</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="s1">'#00ff00'</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh_draw_edges</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
 </code></pre></div>
-
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">

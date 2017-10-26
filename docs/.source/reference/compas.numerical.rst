@@ -9,6 +9,47 @@ numerical
 
 A package for numerical computation.
 
+Dependencies
+============
+
+* NumPy: http://www.numpy.org/ 
+* SciPy: http://www.scipy.org/
+
+**Optional**
+
+* Numba
+* Pandas
+* PyCuda
+* PyOpenCL
+* Cython
+* cvxpy
+* SymPy
+
+
+Methods
+=======
+
+.. autosummary::
+    :toctree: generated/
+
+    methods.dr
+    methods.drx
+    methods.fd
+
+
+Solvers
+=======
+
+.. autosummary::
+    :toctree: generated/
+
+    solvers.descent
+    solvers.devo
+    solvers.GA
+    solvers.lma
+    solvers.mma
+    solvers.MOGA
+
 
 Core
 ====
@@ -128,29 +169,4 @@ xforms
     random_rotation_matrix
     scale_matrix
     projection_matrix
-
-
-Methods
-=======
-
-.. autosummary::
-    :toctree: generated/
-
-    methods.dr
-    methods.drx
-    methods.fd
-
-
-Solvers
-=======
-
-.. autosummary::
-    :toctree: generated/
-
-    solvers.descent
-    solvers.devo
-    solvers.GA
-    solvers.lma
-    solvers.mma
-    solvers.MOGA
 
