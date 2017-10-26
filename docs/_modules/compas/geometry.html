@@ -1,69 +1,41 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas.geometry</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../index.html">module code</a>
+</nav>
+<h1>Source code for compas.geometry</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="sd">"""</span>
 <span class="sd">.. _compas.geometry:</span>
 
 <span class="sd">********************************************************************************</span>
@@ -71,9 +43,6 @@
 <span class="sd">********************************************************************************</span>
 
 <span class="sd">.. currentmodule:: compas.geometry</span>
-
-<span class="sd">A package defining common geometric functions, objects, and algorithms.</span>
-
 
 <span class="sd">.. note::</span>
 
@@ -458,75 +427,75 @@
 <span class="sd">    shear_matrix</span>
 <span class="sd">    translation_matrix</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 
 <div class="viewcode-block" id="is_point"><a class="viewcode-back" href="../../reference/generated/compas.geometry.is_point.html#compas.geometry.is_point">[docs]</a><span class="k">def</span> <span class="nf">is_point</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify that a given input represents a point.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;A point is defined by at least two coordinates.&quot;</span></div>
+    <span class="sd">"""Verify that a given input represents a point.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"A point is defined by at least two coordinates."</span></div>
 
 
 <div class="viewcode-block" id="is_vector"><a class="viewcode-back" href="../../reference/generated/compas.geometry.is_vector.html#compas.geometry.is_vector">[docs]</a><span class="k">def</span> <span class="nf">is_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify that a given input represents a vector.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;A vector has at least two components.&quot;</span></div>
+    <span class="sd">"""Verify that a given input represents a vector.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"A vector has at least two components."</span></div>
 
 
 <div class="viewcode-block" id="is_line"><a class="viewcode-back" href="../../reference/generated/compas.geometry.is_line.html#compas.geometry.is_line">[docs]</a><span class="k">def</span> <span class="nf">is_line</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify that a given input represents a line.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;A line is specified by two points.&quot;</span>
+    <span class="sd">"""Verify that a given input represents a line.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"A line is specified by two points."</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">line</span>
     <span class="n">is_point</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">is_point</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_segment"><a class="viewcode-back" href="../../reference/generated/compas.geometry.is_segment.html#compas.geometry.is_segment">[docs]</a><span class="k">def</span> <span class="nf">is_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify that a given input represents a segment.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;A segment is defined by two points.&quot;</span>
+    <span class="sd">"""Verify that a given input represents a segment.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"A segment is defined by two points."</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">segment</span>
     <span class="n">is_point</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">is_point</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_plane"><a class="viewcode-back" href="../../reference/generated/compas.geometry.is_plane.html#compas.geometry.is_plane">[docs]</a><span class="k">def</span> <span class="nf">is_plane</span><span class="p">(</span><span class="n">plane</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify that a given input represents a plane.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;A plane is defined by a base point and a normal vector.&quot;</span>
+    <span class="sd">"""Verify that a given input represents a plane.</span>
+<span class="sd">    """</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"A plane is defined by a base point and a normal vector."</span>
     <span class="n">base</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">plane</span>
     <span class="n">is_point</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
     <span class="n">is_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_circle"><a class="viewcode-back" href="../../reference/generated/compas.geometry.is_circle.html#compas.geometry.is_circle">[docs]</a><span class="k">def</span> <span class="nf">is_circle</span><span class="p">(</span><span class="n">circle</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify that a given input represents a circle.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">"""Verify that a given input represents a circle.</span>
+<span class="sd">    """</span>
     <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="is_polygon"><a class="viewcode-back" href="../../reference/generated/compas.geometry.is_polygon.html#compas.geometry.is_polygon">[docs]</a><span class="k">def</span> <span class="nf">is_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify that a given input represents a polygon.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">"""Verify that a given input represents a polygon.</span>
+<span class="sd">    """</span>
     <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="is_polyline"><a class="viewcode-back" href="../../reference/generated/compas.geometry.is_polyline.html#compas.geometry.is_polyline">[docs]</a><span class="k">def</span> <span class="nf">is_polyline</span><span class="p">(</span><span class="n">polyline</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify that a given input represents a polyline.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">"""Verify that a given input represents a polyline.</span>
+<span class="sd">    """</span>
     <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="is_polyhedron"><a class="viewcode-back" href="../../reference/generated/compas.geometry.is_polyhedron.html#compas.geometry.is_polyhedron">[docs]</a><span class="k">def</span> <span class="nf">is_polyhedron</span><span class="p">(</span><span class="n">polyhedron</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify that a given input represents a polyhedron.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">"""Verify that a given input represents a polyhedron.</span>
+<span class="sd">    """</span>
     <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="is_frame"><a class="viewcode-back" href="../../reference/generated/compas.geometry.is_frame.html#compas.geometry.is_frame">[docs]</a><span class="k">def</span> <span class="nf">is_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Verify that a given input represents a frame.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">"""Verify that a given input represents a frame.</span>
+<span class="sd">    """</span>
     <span class="k">pass</span></div>
 
 
@@ -557,6 +526,7 @@
 <span class="c1"># level 4</span>
 
 <span class="kn">from</span> <span class="nn">.objects</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.methods</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">.algorithms</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="c1"># recompile the __all__ variable</span>
@@ -574,73 +544,47 @@
 <span class="kn">from</span> <span class="nn">.transformations</span> <span class="k">import</span> <span class="n">__all__</span> <span class="k">as</span> <span class="n">k</span>
 <span class="kn">from</span> <span class="nn">.xforms</span> <span class="k">import</span> <span class="n">__all__</span> <span class="k">as</span> <span class="n">l</span>
 <span class="kn">from</span> <span class="nn">.objects</span> <span class="k">import</span> <span class="n">__all__</span> <span class="k">as</span> <span class="n">m</span>
+<span class="kn">from</span> <span class="nn">.methods</span> <span class="k">import</span> <span class="n">__all__</span> <span class="k">as</span> <span class="n">o</span>
 <span class="kn">from</span> <span class="nn">.algorithms</span> <span class="k">import</span> <span class="n">__all__</span> <span class="k">as</span> <span class="n">n</span>
 
 
-<span class="n">__all__</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;is_point&#39;</span><span class="p">,</span> <span class="s1">&#39;is_vector&#39;</span><span class="p">,</span> <span class="s1">&#39;is_line&#39;</span><span class="p">,</span> <span class="s1">&#39;is_segment&#39;</span><span class="p">,</span> <span class="s1">&#39;is_plane&#39;</span><span class="p">,</span> <span class="s1">&#39;is_circle&#39;</span><span class="p">,</span> <span class="s1">&#39;is_polygon&#39;</span><span class="p">,</span> <span class="s1">&#39;is_polyline&#39;</span><span class="p">,</span> <span class="s1">&#39;is_polyhedron&#39;</span><span class="p">,</span> <span class="s1">&#39;is_frame&#39;</span><span class="p">]</span>
-<span class="n">__all__</span> <span class="o">+=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">e</span> <span class="o">+</span> <span class="n">f</span> <span class="o">+</span> <span class="n">g</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span> <span class="n">l</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="n">n</span>
+<span class="n">__all__</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">'is_point'</span><span class="p">,</span> <span class="s1">'is_vector'</span><span class="p">,</span> <span class="s1">'is_line'</span><span class="p">,</span> <span class="s1">'is_segment'</span><span class="p">,</span> <span class="s1">'is_plane'</span><span class="p">,</span> <span class="s1">'is_circle'</span><span class="p">,</span> <span class="s1">'is_polygon'</span><span class="p">,</span> <span class="s1">'is_polyline'</span><span class="p">,</span> <span class="s1">'is_polyhedron'</span><span class="p">,</span> <span class="s1">'is_frame'</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">+=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">e</span> <span class="o">+</span> <span class="n">f</span> <span class="o">+</span> <span class="n">g</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span> <span class="n">l</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="n">n</span> <span class="o">+</span> <span class="n">o</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -652,10 +596,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -665,24 +606,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

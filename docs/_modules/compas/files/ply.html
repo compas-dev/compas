@@ -1,87 +1,59 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas.files.ply</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.files.ply</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="sd">""""""</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 <span class="kn">import</span> <span class="nn">struct</span>
 
 
-<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;Copyright 2016 - Block Research Group, ETH Zurich&#39;</span>
-<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;PLY&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;PLYreader&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;PLYparser&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;PLYcomposer&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;PLYwriter&#39;</span>
+    <span class="s1">'PLY'</span><span class="p">,</span>
+    <span class="s1">'PLYreader'</span><span class="p">,</span>
+    <span class="s1">'PLYparser'</span><span class="p">,</span>
+    <span class="s1">'PLYcomposer'</span><span class="p">,</span>
+    <span class="s1">'PLYwriter'</span>
 <span class="p">]</span>
 
 
@@ -90,75 +62,75 @@
 
 
 <span class="k">class</span> <span class="nc">PLY</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">"""</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    * http://paulbourke.net/dataformats/ply/</span>
 
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">pass</span>
 
 
 <div class="viewcode-block" id="PLYreader"><a class="viewcode-back" href="../../../reference/generated/compas.files.PLYreader.html#compas.files.PLYreader">[docs]</a><span class="k">class</span> <span class="nc">PLYreader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="sd">""""""</span>
 
-    <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ply&#39;</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">,</span> <span class="s1">&#39;comment&#39;</span><span class="p">,</span> <span class="s1">&#39;element&#39;</span><span class="p">,</span> <span class="s1">&#39;property&#39;</span><span class="p">,</span> <span class="s1">&#39;end_header&#39;</span><span class="p">]</span>
+    <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'ply'</span><span class="p">,</span> <span class="s1">'format'</span><span class="p">,</span> <span class="s1">'comment'</span><span class="p">,</span> <span class="s1">'element'</span><span class="p">,</span> <span class="s1">'property'</span><span class="p">,</span> <span class="s1">'end_header'</span><span class="p">]</span>
 
     <span class="n">property_types</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;char&#39;</span>   <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="s1">&#39;uchar&#39;</span>  <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="s1">&#39;short&#39;</span>  <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="s1">&#39;ushort&#39;</span> <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="s1">&#39;int&#39;</span>    <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="s1">&#39;uint&#39;</span>   <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="s1">&#39;float&#39;</span>  <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="s1">&#39;double&#39;</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="s1">'char'</span>   <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="s1">'uchar'</span>  <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="s1">'short'</span>  <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="s1">'ushort'</span> <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="s1">'int'</span>    <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="s1">'uint'</span>   <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="s1">'float'</span>  <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="s1">'double'</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="n">binary_property_types</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="c1"># &#39;int8&#39;   : &#39;i1&#39;,</span>
-        <span class="s1">&#39;char&#39;</span>   <span class="p">:</span> <span class="s1">&#39;i1&#39;</span><span class="p">,</span>
-        <span class="c1"># &#39;uint8&#39;  : &#39;u1&#39;,</span>
-        <span class="s1">&#39;uchar&#39;</span>  <span class="p">:</span> <span class="s1">&#39;u1&#39;</span><span class="p">,</span>
-        <span class="c1"># &#39;int16&#39;  : &#39;i2&#39;,</span>
-        <span class="s1">&#39;short&#39;</span>  <span class="p">:</span> <span class="s1">&#39;i2&#39;</span><span class="p">,</span>
-        <span class="c1"># &#39;uint16&#39; : &#39;u2&#39;,</span>
-        <span class="s1">&#39;ushort&#39;</span> <span class="p">:</span> <span class="s1">&#39;u2&#39;</span><span class="p">,</span>
-        <span class="c1"># &#39;int32&#39;  : &#39;i4&#39;,</span>
-        <span class="s1">&#39;int&#39;</span>    <span class="p">:</span> <span class="s1">&#39;i4&#39;</span><span class="p">,</span>
-        <span class="c1"># &#39;uint32&#39; : &#39;u4&#39;,</span>
-        <span class="s1">&#39;uint&#39;</span>   <span class="p">:</span> <span class="s1">&#39;u4&#39;</span><span class="p">,</span>
-        <span class="c1"># &#39;float32&#39;: &#39;f4&#39;,</span>
-        <span class="s1">&#39;float&#39;</span>  <span class="p">:</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span>
-        <span class="c1"># &#39;float64&#39;: &#39;f8&#39;,</span>
-        <span class="s1">&#39;double&#39;</span> <span class="p">:</span> <span class="s1">&#39;f8&#39;</span>
+        <span class="c1"># 'int8'   : 'i1',</span>
+        <span class="s1">'char'</span>   <span class="p">:</span> <span class="s1">'i1'</span><span class="p">,</span>
+        <span class="c1"># 'uint8'  : 'u1',</span>
+        <span class="s1">'uchar'</span>  <span class="p">:</span> <span class="s1">'u1'</span><span class="p">,</span>
+        <span class="c1"># 'int16'  : 'i2',</span>
+        <span class="s1">'short'</span>  <span class="p">:</span> <span class="s1">'i2'</span><span class="p">,</span>
+        <span class="c1"># 'uint16' : 'u2',</span>
+        <span class="s1">'ushort'</span> <span class="p">:</span> <span class="s1">'u2'</span><span class="p">,</span>
+        <span class="c1"># 'int32'  : 'i4',</span>
+        <span class="s1">'int'</span>    <span class="p">:</span> <span class="s1">'i4'</span><span class="p">,</span>
+        <span class="c1"># 'uint32' : 'u4',</span>
+        <span class="s1">'uint'</span>   <span class="p">:</span> <span class="s1">'u4'</span><span class="p">,</span>
+        <span class="c1"># 'float32': 'f4',</span>
+        <span class="s1">'float'</span>  <span class="p">:</span> <span class="s1">'f4'</span><span class="p">,</span>
+        <span class="c1"># 'float64': 'f8',</span>
+        <span class="s1">'double'</span> <span class="p">:</span> <span class="s1">'f8'</span>
     <span class="p">}</span>
 
     <span class="n">number_of_bytes_per_type</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;char&#39;</span>  <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s1">&#39;uchar&#39;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s1">&#39;short&#39;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="s1">&#39;ushort&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="s1">&#39;int&#39;</span>   <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-        <span class="s1">&#39;uint&#39;</span>  <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-        <span class="s1">&#39;float&#39;</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-        <span class="s1">&#39;double&#39;</span><span class="p">:</span> <span class="mi">8</span>
+        <span class="s1">'char'</span>  <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">'uchar'</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">'short'</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s1">'ushort'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s1">'int'</span>   <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">'uint'</span>  <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">'float'</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">'double'</span><span class="p">:</span> <span class="mi">8</span>
     <span class="p">}</span>
 
     <span class="n">struct_format_per_type</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;char&#39;</span>  <span class="p">:</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;uchar&#39;</span> <span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;short&#39;</span> <span class="p">:</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;ushort&#39;</span><span class="p">:</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;int&#39;</span>   <span class="p">:</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;uint&#39;</span>  <span class="p">:</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;float&#39;</span> <span class="p">:</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;double&#39;</span><span class="p">:</span> <span class="s1">&#39;d&#39;</span>
+        <span class="s1">'char'</span>  <span class="p">:</span> <span class="s1">'c'</span><span class="p">,</span>
+        <span class="s1">'uchar'</span> <span class="p">:</span> <span class="s1">'B'</span><span class="p">,</span>
+        <span class="s1">'short'</span> <span class="p">:</span> <span class="s1">'h'</span><span class="p">,</span>
+        <span class="s1">'ushort'</span><span class="p">:</span> <span class="s1">'H'</span><span class="p">,</span>
+        <span class="s1">'int'</span>   <span class="p">:</span> <span class="s1">'i'</span><span class="p">,</span>
+        <span class="s1">'uint'</span>  <span class="p">:</span> <span class="s1">'I'</span><span class="p">,</span>
+        <span class="s1">'float'</span> <span class="p">:</span> <span class="s1">'f'</span><span class="p">,</span>
+        <span class="s1">'double'</span><span class="p">:</span> <span class="s1">'d'</span>
     <span class="p">}</span>
 
-    <span class="n">binary_byte_order</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;binary_big_endian&#39;</span><span class="p">:</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;binary_little_endian&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">}</span>
+    <span class="n">binary_byte_order</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'binary_big_endian'</span><span class="p">:</span> <span class="s1">'&gt;'</span><span class="p">,</span> <span class="s1">'binary_little_endian'</span><span class="p">:</span> <span class="s1">'&lt;'</span><span class="p">}</span>
 
 <div class="viewcode-block" id="PLYreader.__init__"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.__init__.html#compas.files.PLYreader.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
@@ -186,20 +158,20 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="PLYreader.is_binary"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.is_binary.html#compas.files.PLYreader.is_binary">[docs]</a>    <span class="k">def</span> <span class="nf">is_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;binary_big_endian&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">'binary_big_endian'</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;binary_little_endian&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">'binary_little_endian'</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="PLYreader.is_ascii"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.is_ascii.html#compas.files.PLYreader.is_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">is_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;ascii&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">'ascii'</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="PLYreader.read"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read.html#compas.files.PLYreader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">read_header</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;ascii&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">'ascii'</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">read_data</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">read_data_binary</span><span class="p">()</span></div>
@@ -211,15 +183,15 @@
 <div class="viewcode-block" id="PLYreader.read_header"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_header.html#compas.files.PLYreader.read_header">[docs]</a>    <span class="k">def</span> <span class="nf">read_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># the header is always in ascii format</span>
         <span class="c1"># read it as text</span>
-        <span class="c1"># otherwise file.tell() can&#39;t be used reliably</span>
+        <span class="c1"># otherwise file.tell() can't be used reliably</span>
         <span class="c1"># to figure out where the header ends</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
             <span class="n">line</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
 
-            <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="s1">&#39;ply&#39;</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;not a valid ply file&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="s1">'ply'</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'not a valid ply file'</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">start_header</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
 
@@ -231,46 +203,46 @@
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;format&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'format'</span><span class="p">):</span>
                     <span class="n">element_type</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;format&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">'format'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="k">continue</span>
 
-                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;comment&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'comment'</span><span class="p">):</span>
                     <span class="n">element_type</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;comment&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">'comment'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
                     <span class="k">continue</span>
 
-                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;element&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'element'</span><span class="p">):</span>
                     <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
                     <span class="n">element_type</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">&#39;vertex&#39;</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;vertex&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">'vertex'</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'vertex'</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">number_of_vertices</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-                    <span class="k">elif</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">&#39;edge&#39;</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;edge&#39;</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">'edge'</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'edge'</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">number_of_edges</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-                    <span class="k">elif</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">&#39;face&#39;</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;face&#39;</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">'face'</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'face'</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">number_of_faces</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">element_type</span> <span class="o">=</span> <span class="kc">None</span>
                         <span class="k">raise</span> <span class="ne">Exception</span>
                     <span class="k">continue</span>
 
-                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;property&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'property'</span><span class="p">):</span>
                     <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">&#39;vertex&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">'vertex'</span><span class="p">:</span>
                         <span class="n">property_type</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                         <span class="n">property_name</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">vertex_properties</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">property_name</span><span class="p">,</span> <span class="n">property_type</span><span class="p">))</span>
-                    <span class="k">elif</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">&#39;edge&#39;</span><span class="p">:</span>
+                    <span class="k">elif</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">'edge'</span><span class="p">:</span>
                         <span class="n">property_type</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                         <span class="n">property_name</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">edge_properties</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">property_name</span><span class="p">,</span> <span class="n">property_type</span><span class="p">))</span>
-                    <span class="k">elif</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">&#39;face&#39;</span><span class="p">:</span>
+                    <span class="k">elif</span> <span class="n">element_type</span> <span class="o">==</span> <span class="s1">'face'</span><span class="p">:</span>
                         <span class="n">property_type</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-                        <span class="k">if</span> <span class="n">property_type</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">property_type</span> <span class="o">==</span> <span class="s1">'list'</span><span class="p">:</span>
                             <span class="n">property_length</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
                             <span class="n">property_type</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
                             <span class="n">property_name</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
@@ -284,7 +256,7 @@
                         <span class="k">raise</span> <span class="ne">Exception</span>
                     <span class="k">continue</span>
 
-                <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s1">&#39;end_header&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s1">'end_header'</span><span class="p">:</span>
                     <span class="n">element_type</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">end_header</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
                     <span class="k">break</span></div>
@@ -295,34 +267,34 @@
 
 <div class="viewcode-block" id="PLYreader.read_data"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_data.html#compas.files.PLYreader.read_data">[docs]</a>    <span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_header</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;header has not been read, or the file is not valid&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'header has not been read, or the file is not valid'</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_header</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">&#39;vertex&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">'vertex'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">read_vertices</span><span class="p">()</span>
-                <span class="k">elif</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">&#39;edge&#39;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">'edge'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">read_edges</span><span class="p">()</span>
-                <span class="k">elif</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">&#39;face&#39;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">'face'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">read_faces</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;user-defined elements are not supported: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">section</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">'user-defined elements are not supported: </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">section</span><span class="p">))</span>
                     <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="PLYreader.read_data_binary"><a class="viewcode-back" href="../../../reference/generated/generated/compas.files.PLYreader.read_data_binary.html#compas.files.PLYreader.read_data_binary">[docs]</a>    <span class="k">def</span> <span class="nf">read_data_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_header</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;header has not been read, or the file is not valid&#39;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'header has not been read, or the file is not valid'</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_header</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">&#39;vertex&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">'vertex'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">read_vertices_binary_wo_numpy</span><span class="p">()</span>
-                <span class="k">elif</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">&#39;edge&#39;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">'edge'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">read_edges_binary_wo_numpy</span><span class="p">()</span>
-                <span class="k">elif</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">&#39;face&#39;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">section</span> <span class="o">==</span> <span class="s1">'face'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">read_faces_binary_wo_numpy</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;user-defined elements are not supported: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">section</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">'user-defined elements are not supported: </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">section</span><span class="p">))</span>
                     <span class="k">pass</span></div>
 
     <span class="c1"># ==========================================================================</span>
@@ -386,11 +358,11 @@
                 <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pname</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">ptype</span><span class="p">]))</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                 <span class="n">pname</span><span class="p">,</span> <span class="n">ptype</span><span class="p">,</span> <span class="n">plen</span> <span class="o">=</span> <span class="n">prop</span>
-                <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">plen</span><span class="p">]))</span>
+                <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'size'</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">plen</span><span class="p">]))</span>
                 <span class="c1"># this seems a nit of a hack</span>
-                <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;v1&#39;</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">ptype</span><span class="p">]))</span>
-                <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;v2&#39;</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">ptype</span><span class="p">]))</span>
-                <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;v3&#39;</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">ptype</span><span class="p">]))</span>
+                <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'v1'</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">ptype</span><span class="p">]))</span>
+                <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'v2'</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">ptype</span><span class="p">]))</span>
+                <span class="n">dt</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'v3'</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_property_types</span><span class="p">[</span><span class="n">ptype</span><span class="p">]))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">pass</span>
         <span class="k">return</span> <span class="n">dt</span></div>
@@ -495,16 +467,16 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">os</span>
     <span class="kn">import</span> <span class="nn">compas</span>
 
     <span class="kn">from</span> <span class="nn">compas.datastructures.mesh</span> <span class="k">import</span> <span class="n">Mesh</span>
 
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;stanford/bunny/reconstruction/bun_zipper.ply&#39;</span><span class="p">))</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;stanford/dragon_recon/dragon_vrip.ply&#39;</span><span class="p">))</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;stanford/Armadillo.ply&#39;</span><span class="p">))</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'stanford/bunny/reconstruction/bun_zipper.ply'</span><span class="p">))</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'stanford/dragon_recon/dragon_vrip.ply'</span><span class="p">))</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'stanford/Armadillo.ply'</span><span class="p">))</span>
 
     <span class="n">reader</span> <span class="o">=</span> <span class="n">PLYreader</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
@@ -513,74 +485,47 @@
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">header</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-    <span class="n">vertices</span> <span class="o">=</span> <span class="p">[(</span><span class="n">vertex</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">vertex</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">vertex</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">vertices</span><span class="p">]</span>
-    <span class="n">faces</span> <span class="o">=</span> <span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;vertex_indices&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">faces</span><span class="p">]</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="p">[(</span><span class="n">vertex</span><span class="p">[</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">vertex</span><span class="p">[</span><span class="s1">'y'</span><span class="p">],</span> <span class="n">vertex</span><span class="p">[</span><span class="s1">'z'</span><span class="p">])</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">vertices</span><span class="p">]</span>
+    <span class="n">faces</span> <span class="o">=</span> <span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="s1">'vertex_indices'</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">faces</span><span class="p">]</span>
 
     <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../workshops.html">Workshops</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -592,10 +537,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -605,24 +547,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

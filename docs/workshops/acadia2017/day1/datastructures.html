@@ -46,7 +46,7 @@
 <ul class="simple">
 <li><a class="reference internal" href="../../../reference/generated/compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal">compas.datastructures.Network</code></a></li>
 <li><a class="reference internal" href="../../../reference/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal">compas.datastructures.Mesh</code></a></li>
-<li><code class="xref py py-class docutils literal">compas.datastructures.VolMesh</code></li>
+<li><a class="reference internal" href="../../../reference/generated/compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal">compas.datastructures.VolMesh</code></a></li>
 </ul>
 <p>For this tutorial, we will focus on the mesh data structure.</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
@@ -75,6 +75,7 @@
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../../images/datastructures-11.png" class="figure-img img-fluid" src="../../../images/datastructures-11.png"/>
 </figure>
@@ -92,6 +93,7 @@ are named using the following pattern <code class="docutils literal">.from_xxx</
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_polyhedron</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_points</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </code></pre></div>
+
 <p><code class="docutils literal">compas</code> also provides basic sample data that can be used together with the constructors.</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
@@ -115,6 +117,7 @@ are named using the following pattern <code class="docutils literal">.from_xxx</
 <span class="c1">#</span>
 <span class="c1"># ================================================================================</span>
 </code></pre></div>
+
 <p>Printing the mesh produces a summary of the mesh’s properties:
 the number of vertices, edges and faces and information about vertex and face degree.</p>
 </div>
@@ -145,6 +148,7 @@ Lists of data have to be constructed explicitly.</p>
 <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">())</span>
 </code></pre></div>
+
 <p>The same applies to the faces.
 The accessor is an iterator; it is meant for iterating over the faces.
 To count the faces or to get a list of faces, the iterator needs to be converted
@@ -165,6 +169,7 @@ explicitly.</p>
 <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">())</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h2>Topology</h2>
@@ -215,6 +220,7 @@ datastructure, although they obviously have a few of them in common.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../../images/datastructures-2.png" class="figure-img img-fluid" src="../../../images/datastructures-2.png"/>
 </figure>
@@ -232,6 +238,7 @@ datastructure, although they obviously have a few of them in common.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../../images/datastructures-3.png" class="figure-img img-fluid" src="../../../images/datastructures-3.png"/>
 </figure>
@@ -269,6 +276,7 @@ datastructure, although they obviously have a few of them in common.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../../images/datastructures-4.png" class="figure-img img-fluid" src="../../../images/datastructures-4.png"/>
 </figure>
@@ -286,6 +294,7 @@ datastructure, although they obviously have a few of them in common.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../../images/datastructures-5.png" class="figure-img img-fluid" src="../../../images/datastructures-5.png"/>
 </figure>
@@ -304,6 +313,7 @@ datastructure, although they obviously have a few of them in common.</p>
 <span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">trimesh_swap_edge</span>
 <span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">trimesh_split_edge</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h2>Algorithms</h2>
@@ -314,13 +324,16 @@ datastructure, although they obviously have a few of them in common.</p>
 
 <span class="n">compas</span><span class="o">.</span><span class="n">datastructures</span><span class="o">.</span><span class="n">trimesh_remesh</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">smooth_centroid</span>
 <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">smooth_centerofmass</span>
 <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">smooth_area</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">shortest_path</span>
 <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dijkstra_path</span>
 </code></pre></div>
+
 </div>
 <div class="section">
 <h2>CAD integration</h2>
@@ -387,7 +400,7 @@ datastructure, although they obviously have a few of them in common.</p>
             
 
             
-                Last updated on Oct 25, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

@@ -1,68 +1,40 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas.datastructures.volmesh.volmesh</h1><div class="highlight"><pre><code class="language-python border rounded">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.datastructures.volmesh.volmesh</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">ast</span> <span class="k">import</span> <span class="n">literal_eval</span> <span class="k">as</span> <span class="n">_eval</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
@@ -90,10 +62,10 @@
 <span class="c1"># from compas.datastructures.mixins import MagicMethods</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, Block Research Group - ETH Zurich&#39;</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, Block Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
 <span class="k">def</span> <span class="nf">center_of_mass</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">sqrt</span><span class="o">=</span><span class="n">sqrt</span><span class="p">):</span>
@@ -124,7 +96,7 @@
               <span class="n">EdgeAttributesManagement</span><span class="p">,</span>
               <span class="n">VertexAttributesManagement</span><span class="p">,</span>
               <span class="n">Datastructure</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class for working with volumetric meshes.</span>
+    <span class="sd">"""Class for working with volumetric meshes.</span>
 
 <span class="sd">    Volumetric meshes are 3-mainfold, cellular structures.</span>
 
@@ -150,7 +122,7 @@
 <span class="sd">        the value id itself a dictionary. The keys of this dictionary correspond</span>
 <span class="sd">        to the vertices that make up the cell. The values are again dictionaries.</span>
 <span class="sd">        Each key in the latter dictionary is a neighbour of the previous vertex.</span>
-<span class="sd">        Together they form a halfedge of the cell, pointing at one of the cell&#39;s</span>
+<span class="sd">        Together they form a halfedge of the cell, pointing at one of the cell's</span>
 <span class="sd">        halffaces.</span>
 <span class="sd">        ``self.cell[ckey][u][v] -&gt; fkey``</span>
 <span class="sd">    halfface : dict</span>
@@ -171,7 +143,7 @@
 <span class="sd">    .. [xmaps] xxx</span>
 <span class="sd">    .. [ovm] `Open Volum Mesh &lt;http://www.openvolumemesh.org&gt;`_</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="VolMesh.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.VolMesh.__init__.html#compas.datastructures.VolMesh.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span>  <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -184,17 +156,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cell</span>     <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edge</span>     <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;name&#39;</span>                <span class="p">:</span> <span class="s1">&#39;VolMesh&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;color.vertex&#39;</span>        <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-            <span class="s1">&#39;color.edge&#39;</span>          <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.face&#39;</span>          <span class="p">:</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span>
-            <span class="s1">&#39;color.normal:vertex&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.normal:face&#39;</span>   <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">'name'</span>                <span class="p">:</span> <span class="s1">'VolMesh'</span><span class="p">,</span>
+            <span class="s1">'color.vertex'</span>        <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">'color.edge'</span>          <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">'color.face'</span>          <span class="p">:</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span>
+            <span class="s1">'color.normal:vertex'</span> <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">'color.normal:face'</span>   <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+            <span class="s1">'x'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">'y'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">'z'</span><span class="p">:</span> <span class="mf">0.0</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span> <span class="o">=</span> <span class="p">{}</span></div>
 
@@ -203,15 +175,15 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
+        <span class="sd">""""""</span>
+        <span class="k">return</span> <span class="s2">"""</span>
 <span class="s2">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
 <span class="s2">volmesh summary</span>
 <span class="s2">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
 
 <span class="s2">under construction</span>
 
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">"""</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># special properties</span>
@@ -219,18 +191,18 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The name of the mesh.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="sd">"""The name of the mesh."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">6</span><span class="p">:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;color.&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'color.'</span><span class="p">)</span>
         <span class="p">)</span>
 
     <span class="nd">@color</span><span class="o">.</span><span class="n">setter</span>
@@ -241,86 +213,86 @@
             <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;color.</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'color.</span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The data representing the mesh.&quot;&quot;&quot;</span>
+        <span class="sd">"""The data representing the mesh."""</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;attributes&#39;</span>               <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
-            <span class="s1">&#39;default_vertex_attributes&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">,</span>
-            <span class="s1">&#39;default_edge_attributes&#39;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">,</span>
-            <span class="s1">&#39;vertex&#39;</span>                   <span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;cell&#39;</span>                     <span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;halfface&#39;</span>                 <span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;plane&#39;</span>                    <span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;edge&#39;</span>                     <span class="p">:</span> <span class="p">{},</span>
-            <span class="s1">&#39;max_int_key&#39;</span>              <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span><span class="p">,</span>
-            <span class="s1">&#39;max_int_fkey&#39;</span>             <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_fkey</span><span class="p">,</span>
-            <span class="s1">&#39;max_int_ckey&#39;</span>             <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_ckey</span><span class="p">,</span> <span class="p">}</span>
+            <span class="s1">'attributes'</span>               <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
+            <span class="s1">'default_vertex_attributes'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">,</span>
+            <span class="s1">'default_edge_attributes'</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">,</span>
+            <span class="s1">'vertex'</span>                   <span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">'cell'</span>                     <span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">'halfface'</span>                 <span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">'plane'</span>                    <span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">'edge'</span>                     <span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">'max_int_key'</span>              <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span><span class="p">,</span>
+            <span class="s1">'max_int_fkey'</span>             <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_fkey</span><span class="p">,</span>
+            <span class="s1">'max_int_ckey'</span>             <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_ckey</span><span class="p">,</span> <span class="p">}</span>
 
         <span class="n">key_rkey</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
             <span class="n">rkey</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
             <span class="n">key_rkey</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">rkey</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;vertex&#39;</span><span class="p">][</span><span class="n">rkey</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;plane&#39;</span><span class="p">][</span><span class="n">rkey</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;edge&#39;</span><span class="p">][</span><span class="n">rkey</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'vertex'</span><span class="p">][</span><span class="n">rkey</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'plane'</span><span class="p">][</span><span class="n">rkey</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'edge'</span><span class="p">][</span><span class="n">rkey</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">:</span>
             <span class="n">ru</span> <span class="o">=</span> <span class="n">key_rkey</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
                 <span class="n">rv</span> <span class="o">=</span> <span class="n">key_rkey</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
-                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;edge&#39;</span><span class="p">][</span><span class="n">ru</span><span class="p">][</span><span class="n">rv</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">'edge'</span><span class="p">][</span><span class="n">ru</span><span class="p">][</span><span class="n">rv</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface</span><span class="p">:</span>
             <span class="n">_f</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;halfface&#39;</span><span class="p">][</span><span class="n">_f</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'halfface'</span><span class="p">][</span><span class="n">_f</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
                 <span class="n">_u</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>  <span class="c1"># use the map?</span>
                 <span class="n">_v</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1"># use the map?</span>
-                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;halfface&#39;</span><span class="p">][</span><span class="n">_f</span><span class="p">][</span><span class="n">_u</span><span class="p">]</span> <span class="o">=</span> <span class="n">_v</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">'halfface'</span><span class="p">][</span><span class="n">_f</span><span class="p">][</span><span class="n">_u</span><span class="p">]</span> <span class="o">=</span> <span class="n">_v</span>
 
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plane</span><span class="p">:</span>
             <span class="n">_u</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plane</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
                 <span class="n">_v</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">_v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;plane&#39;</span><span class="p">][</span><span class="n">_u</span><span class="p">]:</span>
-                    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;plane&#39;</span><span class="p">][</span><span class="n">_u</span><span class="p">][</span><span class="n">_v</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">_v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">'plane'</span><span class="p">][</span><span class="n">_u</span><span class="p">]:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s1">'plane'</span><span class="p">][</span><span class="n">_u</span><span class="p">][</span><span class="n">_v</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
                     <span class="n">_w</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
                     <span class="n">_c</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-                    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;plane&#39;</span><span class="p">][</span><span class="n">_u</span><span class="p">][</span><span class="n">_v</span><span class="p">][</span><span class="n">_w</span><span class="p">]</span> <span class="o">=</span> <span class="n">_c</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s1">'plane'</span><span class="p">][</span><span class="n">_u</span><span class="p">][</span><span class="n">_v</span><span class="p">][</span><span class="n">_w</span><span class="p">]</span> <span class="o">=</span> <span class="n">_c</span>
 
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">:</span>
             <span class="n">_c</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">][</span><span class="n">_c</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">'cell'</span><span class="p">][</span><span class="n">_c</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="n">c</span><span class="p">]:</span>
                 <span class="n">_u</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">_u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">][</span><span class="n">_c</span><span class="p">]:</span>
-                    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">][</span><span class="n">_c</span><span class="p">][</span><span class="n">_u</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">_u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">'cell'</span><span class="p">][</span><span class="n">_c</span><span class="p">]:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s1">'cell'</span><span class="p">][</span><span class="n">_c</span><span class="p">][</span><span class="n">_u</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
                     <span class="n">_v</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
                     <span class="n">_f</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-                    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">][</span><span class="n">_c</span><span class="p">][</span><span class="n">_u</span><span class="p">][</span><span class="n">_v</span><span class="p">]</span> <span class="o">=</span> <span class="n">_f</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s1">'cell'</span><span class="p">][</span><span class="n">_c</span><span class="p">][</span><span class="n">_u</span><span class="p">][</span><span class="n">_v</span><span class="p">]</span> <span class="o">=</span> <span class="n">_f</span>
 
         <span class="k">return</span> <span class="n">data</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
-        <span class="n">attributes</span>                <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">default_vertex_attributes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;default_vertex_attributes&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">default_edge_attributes</span>   <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;default_edge_attributes&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">vertex</span>                    <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vertex&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">cell</span>                      <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cell&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">halfface</span>                  <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;halfface&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">plane</span>                     <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;plane&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">edge</span>                      <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;edge&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">max_int_key</span>               <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_int_key&#39;</span><span class="p">,</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">max_int_fkey</span>              <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_int_fkey&#39;</span><span class="p">,</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">max_int_ckey</span>              <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_int_ckey&#39;</span><span class="p">,</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="sd">""""""</span>
+        <span class="n">attributes</span>                <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'attributes'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">default_vertex_attributes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'default_vertex_attributes'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">default_edge_attributes</span>   <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'default_edge_attributes'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">vertex</span>                    <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'vertex'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">cell</span>                      <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'cell'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">halfface</span>                  <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'halfface'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">plane</span>                     <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'plane'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">edge</span>                      <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'edge'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">max_int_key</span>               <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'max_int_key'</span><span class="p">,</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">max_int_fkey</span>              <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'max_int_fkey'</span><span class="p">,</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">max_int_ckey</span>              <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'max_int_ckey'</span><span class="p">,</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">vertex</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">edge</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">plane</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">halfface</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">cell</span><span class="p">:</span>
             <span class="k">return</span>
@@ -398,7 +370,7 @@
             <span class="n">group</span> <span class="o">=</span> <span class="n">groups</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
             <span class="n">cell</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">'f'</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="n">face</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
                 <span class="n">cell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
@@ -524,7 +496,7 @@
             <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Corrupt halfface.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Corrupt halfface.'</span><span class="p">)</span>
 
         <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_face_key</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
@@ -619,7 +591,7 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span></div>
 
-    <span class="c1"># this should return &quot;uique&quot; halfface keys</span>
+    <span class="c1"># this should return "uique" halfface keys</span>
     <span class="c1"># uniqueness is determined based on string comparison of sorted vertex lists</span>
 <div class="viewcode-block" id="VolMesh.faces"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.VolMesh.faces.html#compas.datastructures.VolMesh.faces">[docs]</a>    <span class="k">def</span> <span class="nf">faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># faces = []</span>
@@ -636,7 +608,7 @@
         <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface</span><span class="p">:</span>
             <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">int</span><span class="p">)))</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s2">"-"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">int</span><span class="p">)))</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
                 <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
                 <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
@@ -739,7 +711,7 @@
     <span class="c1"># vertex geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="VolMesh.vertex_coordinates"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.VolMesh.vertex_coordinates.html#compas.datastructures.VolMesh.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vkey</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="VolMesh.vertex_coordinates"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.VolMesh.vertex_coordinates.html#compas.datastructures.VolMesh.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vkey</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">'xyz'</span><span class="p">):</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span></div>
 
@@ -747,14 +719,14 @@
     <span class="c1"># edge geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="VolMesh.edge_coordinates"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.VolMesh.edge_coordinates.html#compas.datastructures.VolMesh.edge_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="VolMesh.edge_coordinates"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.VolMesh.edge_coordinates.html#compas.datastructures.VolMesh.edge_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">'xyz'</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># face geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="VolMesh.face_coordinates"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.VolMesh.face_coordinates.html#compas.datastructures.VolMesh.face_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="VolMesh.face_coordinates"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.VolMesh.face_coordinates.html#compas.datastructures.VolMesh.face_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">'xyz'</span><span class="p">):</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span></div>
 
@@ -777,9 +749,9 @@
 <div class="viewcode-block" id="VolMesh.scale"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.VolMesh.scale.html#compas.datastructures.VolMesh.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
             <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">factor</span>
-            <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">factor</span>
-            <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">factor</span></div></div>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">*=</span> <span class="n">factor</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">*=</span> <span class="n">factor</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">*=</span> <span class="n">factor</span></div></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># vertex attributes</span>
@@ -912,12 +884,12 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">compas</span>
     <span class="kn">from</span> <span class="nn">viewer</span> <span class="k">import</span> <span class="n">VolMeshViewer</span>
 
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;boxes.obj&#39;</span><span class="p">))</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'boxes.obj'</span><span class="p">))</span>
 
     <span class="n">mesh</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 
@@ -942,67 +914,40 @@
     <span class="c1"># viewer.setup()</span>
     <span class="c1"># viewer.show()</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -1014,10 +959,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -1027,24 +969,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

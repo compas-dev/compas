@@ -82,6 +82,10 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
         plotter.draw_edges()
         plotter.show()
 
+    References
+    ----------
+    * H. Schek [1974], The Force Density Method for Form Finding and Computation of General Networks, Computer Methofd in Applied Mechanics and Engineering, 3: 115-134.
+
     """
     v    = len(vertices)
     free = list(set(range(v)) - set(fixed))

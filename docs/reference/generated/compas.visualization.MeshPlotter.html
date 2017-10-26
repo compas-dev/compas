@@ -1,288 +1,231 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-            <link rel="next" title="MeshPlotter.__init__" href="generated/compas.visualization.MeshPlotter.__init__.html" />
-        
-        
-        
-            <link rel="prev" title="FaceNetworkPlotter.update_vertices" href="generated/compas.visualization.FaceNetworkPlotter.update_vertices.html" />
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../reference.html" >reference</a>
-            
-                <a class="breadcrumb-item" href="../compas.html" >compas</a>
-            
-                <a class="breadcrumb-item" href="../compas.visualization.html" accesskey="U">visualization</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <div class="section" id="meshplotter">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="generated/compas.visualization.MeshPlotter.__init__.html" rel="next" title="MeshPlotter.__init__"/>
+<link href="generated/compas.visualization.FaceNetworkPlotter.update_vertices.html" rel="prev" title="FaceNetworkPlotter.update_vertices"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../reference.html">reference</a>
+<a class="breadcrumb-item" href="../compas.html">compas</a>
+<a accesskey="U" class="breadcrumb-item" href="../compas.visualization.html">visualization</a>
+</nav>
+<div class="section">
 <h1>MeshPlotter</h1>
 <dl class="class">
 <dt id="compas.visualization.MeshPlotter">
-<em class="property">class </em><code class="descclassname">compas.visualization.</code><code class="descname">MeshPlotter</code><span class="sig-paren">(</span><em>mesh</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/visualization/plotters/meshplotter.html#MeshPlotter"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">compas.visualization.plotters.plotter.Plotter</span></code></p>
+<em class="property">class </em><code class="descclassname">compas.visualization.</code><code class="descname">MeshPlotter</code><span class="sig-paren">(</span><em>mesh</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/visualization/plotters/meshplotter.html#MeshPlotter"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal">compas.visualization.plotters.plotter.Plotter</code></p>
 <p>Definition of a plotter object based on matplotlib for compas Networks.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
+<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
+<col class="field-name"/>
+<col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mesh</strong> (<em>object</em>) &#8211; The mesh to plot.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mesh</strong> (<em>object</em>) – The mesh to plot.</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="compas.visualization.MeshPlotter.title">
 <code class="descname">title</code></dt>
-<dd><p><em>str</em> &#8211; Title of the plot.</p>
+<dd><p><em>str</em> – Title of the plot.</p>
 </dd></dl>
-
 <dl class="attribute">
 <dt id="compas.visualization.MeshPlotter.mesh">
 <code class="descname">mesh</code></dt>
-<dd><p><em>object</em> &#8211; The mesh to plot.</p>
+<dd><p><em>object</em> – The mesh to plot.</p>
 </dd></dl>
-
 <dl class="attribute">
 <dt id="compas.visualization.MeshPlotter.vertexcollection">
 <code class="descname">vertexcollection</code></dt>
-<dd><p><em>object</em> &#8211; The matplotlib collection for the mesh vertices.</p>
+<dd><p><em>object</em> – The matplotlib collection for the mesh vertices.</p>
 </dd></dl>
-
 <dl class="attribute">
 <dt id="compas.visualization.MeshPlotter.edgecollection">
 <code class="descname">edgecollection</code></dt>
-<dd><p><em>object</em> &#8211; The matplotlib collection for the mesh edges.</p>
+<dd><p><em>object</em> – The matplotlib collection for the mesh edges.</p>
 </dd></dl>
-
 <dl class="attribute">
 <dt id="compas.visualization.MeshPlotter.facecollection">
 <code class="descname">facecollection</code></dt>
-<dd><p><em>object</em> &#8211; The matplotlib collection for the mesh faces.</p>
+<dd><p><em>object</em> – The matplotlib collection for the mesh faces.</p>
 </dd></dl>
-
 <dl class="attribute">
 <dt id="compas.visualization.MeshPlotter.defaults">
 <code class="descname">defaults</code></dt>
-<dd><p><em>dict</em> &#8211; Dictionary containing default attributes for vertices and edges.</p>
+<dd><p><em>dict</em> – Dictionary containing default attributes for vertices and edges.</p>
 </dd></dl>
-
 <p class="rubric">Example</p>
-<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">'key'</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-</div>
-<div class="figure">
-<img alt="../../_images/compas-visualization-MeshPlotter-1.png" src="../../_images/compas-visualization-MeshPlotter-1.png" />
-</div>
+
+<figure class="figure">
+<img alt="../../images/compas-visualization-MeshPlotter-1.png" class="figure-img img-fluid" src="../../images/compas-visualization-MeshPlotter-1.png"/>
+</figure>
 <p class="rubric">References</p>
 <ul class="simple">
 <li>Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science &amp; Engineering (9) 3, p.90-95.
 Available at: <a class="reference external" href="http://ieeexplore.ieee.org/document/4160265/citations">http://ieeexplore.ieee.org/document/4160265/citations</a></li>
 </ul>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col width="10%"/>
+<col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.__init__.html#compas.visualization.MeshPlotter.__init__" title="compas.visualization.MeshPlotter.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a>(mesh,&nbsp;\*\*kwargs)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.__init__.html" title="compas.visualization.MeshPlotter.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>(mesh, \*\*kwargs)</td>
 <td>Initialises a mesh plotter object</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear.html#compas.visualization.MeshPlotter.clear" title="compas.visualization.MeshPlotter.clear"><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code></a>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear.html" title="compas.visualization.MeshPlotter.clear"><code class="xref py py-obj docutils literal">clear</code></a>()</td>
 <td>Clears the mesh plotter vertices, edges and faces.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_collection.html#compas.visualization.MeshPlotter.clear_collection" title="compas.visualization.MeshPlotter.clear_collection"><code class="xref py py-obj docutils literal"><span class="pre">clear_collection</span></code></a>(collection)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_collection.html" title="compas.visualization.MeshPlotter.clear_collection"><code class="xref py py-obj docutils literal">clear_collection</code></a>(collection)</td>
 <td>Clears a matplotlib collection object.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_edges.html#compas.visualization.MeshPlotter.clear_edges" title="compas.visualization.MeshPlotter.clear_edges"><code class="xref py py-obj docutils literal"><span class="pre">clear_edges</span></code></a>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_edges.html" title="compas.visualization.MeshPlotter.clear_edges"><code class="xref py py-obj docutils literal">clear_edges</code></a>()</td>
 <td>Clears the mesh plotter edges.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_faces.html#compas.visualization.MeshPlotter.clear_faces" title="compas.visualization.MeshPlotter.clear_faces"><code class="xref py py-obj docutils literal"><span class="pre">clear_faces</span></code></a>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_faces.html" title="compas.visualization.MeshPlotter.clear_faces"><code class="xref py py-obj docutils literal">clear_faces</code></a>()</td>
 <td>Clears the mesh plotter faces.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_vertices.html#compas.visualization.MeshPlotter.clear_vertices" title="compas.visualization.MeshPlotter.clear_vertices"><code class="xref py py-obj docutils literal"><span class="pre">clear_vertices</span></code></a>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.clear_vertices.html" title="compas.visualization.MeshPlotter.clear_vertices"><code class="xref py py-obj docutils literal">clear_vertices</code></a>()</td>
 <td>Clears the mesh plotter vertices.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_arrows.html#compas.visualization.MeshPlotter.draw_arrows" title="compas.visualization.MeshPlotter.draw_arrows"><code class="xref py py-obj docutils literal"><span class="pre">draw_arrows</span></code></a>(arrows)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_arrows.html" title="compas.visualization.MeshPlotter.draw_arrows"><code class="xref py py-obj docutils literal">draw_arrows</code></a>(arrows)</td>
 <td>Draws arrows on a 2D plot.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_edges.html#compas.visualization.MeshPlotter.draw_edges" title="compas.visualization.MeshPlotter.draw_edges"><code class="xref py py-obj docutils literal"><span class="pre">draw_edges</span></code></a>([keys,&nbsp;width,&nbsp;color,&nbsp;text,&nbsp;...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_edges.html" title="compas.visualization.MeshPlotter.draw_edges"><code class="xref py py-obj docutils literal">draw_edges</code></a>([keys, width, color, text, ...])</td>
 <td>Draws the mesh edges.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_faces.html#compas.visualization.MeshPlotter.draw_faces" title="compas.visualization.MeshPlotter.draw_faces"><code class="xref py py-obj docutils literal"><span class="pre">draw_faces</span></code></a>([keys,&nbsp;text,&nbsp;facecolor,&nbsp;...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_faces.html" title="compas.visualization.MeshPlotter.draw_faces"><code class="xref py py-obj docutils literal">draw_faces</code></a>([keys, text, facecolor, ...])</td>
 <td>Draws the mesh faces.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_lines.html#compas.visualization.MeshPlotter.draw_lines" title="compas.visualization.MeshPlotter.draw_lines"><code class="xref py py-obj docutils literal"><span class="pre">draw_lines</span></code></a>(lines)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_lines.html" title="compas.visualization.MeshPlotter.draw_lines"><code class="xref py py-obj docutils literal">draw_lines</code></a>(lines)</td>
 <td>Draws lines on a 2D plot.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_points.html#compas.visualization.MeshPlotter.draw_points" title="compas.visualization.MeshPlotter.draw_points"><code class="xref py py-obj docutils literal"><span class="pre">draw_points</span></code></a>(points)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_points.html" title="compas.visualization.MeshPlotter.draw_points"><code class="xref py py-obj docutils literal">draw_points</code></a>(points)</td>
 <td>Draws points on a 2D plot.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_polygons.html#compas.visualization.MeshPlotter.draw_polygons" title="compas.visualization.MeshPlotter.draw_polygons"><code class="xref py py-obj docutils literal"><span class="pre">draw_polygons</span></code></a>(polygons)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_polygons.html" title="compas.visualization.MeshPlotter.draw_polygons"><code class="xref py py-obj docutils literal">draw_polygons</code></a>(polygons)</td>
 <td>Draws polygons on a 2D plot.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_vertices.html#compas.visualization.MeshPlotter.draw_vertices" title="compas.visualization.MeshPlotter.draw_vertices"><code class="xref py py-obj docutils literal"><span class="pre">draw_vertices</span></code></a>([keys,&nbsp;radius,&nbsp;text,&nbsp;...])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.draw_vertices.html" title="compas.visualization.MeshPlotter.draw_vertices"><code class="xref py py-obj docutils literal">draw_vertices</code></a>([keys, radius, text, ...])</td>
 <td>Draws the mesh vertices.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.save.html#compas.visualization.MeshPlotter.save" title="compas.visualization.MeshPlotter.save"><code class="xref py py-obj docutils literal"><span class="pre">save</span></code></a>(filepath,&nbsp;\*\*kwargs)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.save.html" title="compas.visualization.MeshPlotter.save"><code class="xref py py-obj docutils literal">save</code></a>(filepath, \*\*kwargs)</td>
 <td>Saves the plot on a file.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.show.html#compas.visualization.MeshPlotter.show" title="compas.visualization.MeshPlotter.show"><code class="xref py py-obj docutils literal"><span class="pre">show</span></code></a>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.show.html" title="compas.visualization.MeshPlotter.show"><code class="xref py py-obj docutils literal">show</code></a>()</td>
 <td>Displays the plot.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update.html#compas.visualization.MeshPlotter.update" title="compas.visualization.MeshPlotter.update"><code class="xref py py-obj docutils literal"><span class="pre">update</span></code></a>([pause])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update.html" title="compas.visualization.MeshPlotter.update"><code class="xref py py-obj docutils literal">update</code></a>([pause])</td>
 <td>Updates and pauses the plot.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_edges.html#compas.visualization.MeshPlotter.update_edges" title="compas.visualization.MeshPlotter.update_edges"><code class="xref py py-obj docutils literal"><span class="pre">update_edges</span></code></a>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_edges.html" title="compas.visualization.MeshPlotter.update_edges"><code class="xref py py-obj docutils literal">update_edges</code></a>()</td>
 <td>Updates the plotter edge collection based on the mesh.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_faces.html#compas.visualization.MeshPlotter.update_faces" title="compas.visualization.MeshPlotter.update_faces"><code class="xref py py-obj docutils literal"><span class="pre">update_faces</span></code></a>([facecolor])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_faces.html" title="compas.visualization.MeshPlotter.update_faces"><code class="xref py py-obj docutils literal">update_faces</code></a>([facecolor])</td>
 <td>Updates the plotter face collection based on the mesh.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_linecollection.html#compas.visualization.MeshPlotter.update_linecollection" title="compas.visualization.MeshPlotter.update_linecollection"><code class="xref py py-obj docutils literal"><span class="pre">update_linecollection</span></code></a>(collection,&nbsp;segments)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_linecollection.html" title="compas.visualization.MeshPlotter.update_linecollection"><code class="xref py py-obj docutils literal">update_linecollection</code></a>(collection, segments)</td>
 <td>Updates a line collection.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_pointcollection.html#compas.visualization.MeshPlotter.update_pointcollection" title="compas.visualization.MeshPlotter.update_pointcollection"><code class="xref py py-obj docutils literal"><span class="pre">update_pointcollection</span></code></a>(collection,&nbsp;centers)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_pointcollection.html" title="compas.visualization.MeshPlotter.update_pointcollection"><code class="xref py py-obj docutils literal">update_pointcollection</code></a>(collection, centers)</td>
 <td>Updates the location and radii of a point collection.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_polygoncollection.html#compas.visualization.MeshPlotter.update_polygoncollection" title="compas.visualization.MeshPlotter.update_polygoncollection"><code class="xref py py-obj docutils literal"><span class="pre">update_polygoncollection</span></code></a>(collection,&nbsp;polygons)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_polygoncollection.html" title="compas.visualization.MeshPlotter.update_polygoncollection"><code class="xref py py-obj docutils literal">update_polygoncollection</code></a>(collection, polygons)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_vertices.html#compas.visualization.MeshPlotter.update_vertices" title="compas.visualization.MeshPlotter.update_vertices"><code class="xref py py-obj docutils literal"><span class="pre">update_vertices</span></code></a>([radius])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.visualization.MeshPlotter.update_vertices.html" title="compas.visualization.MeshPlotter.update_vertices"><code class="xref py py-obj docutils literal">update_vertices</code></a>([radius])</td>
 <td>Updates the plotter vertex collection based on the mesh.</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
+<table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col width="10%"/>
+<col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">axes</span></code></td>
+<tr class=""><td><code class="xref py py-obj docutils literal">axes</code></td>
 <td>Returns the axes subplot matplotlib object.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">bgcolor</span></code></td>
+<tr class=""><td><code class="xref py py-obj docutils literal">bgcolor</code></td>
 <td>Returns the background color.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">figure</span></code></td>
+<tr class=""><td><code class="xref py py-obj docutils literal">figure</code></td>
 <td>Returns the matplotlib figure instance.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">interactive</span></code></td>
+<tr class=""><td><code class="xref py py-obj docutils literal">interactive</code></td>
 <td>Returns a boolean describing of the plot is interactive.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#compas.visualization.MeshPlotter.title" title="compas.visualization.MeshPlotter.title"><code class="xref py py-obj docutils literal"><span class="pre">title</span></code></a></td>
+<tr class=""><td><a class="reference internal" href="" title="compas.visualization.MeshPlotter.title"><code class="xref py py-obj docutils literal">title</code></a></td>
 <td>Returns the title of the plot.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
-
 </div>
-
-                        
-                        <nav class="compas-sideways">
-                            
-                                <a href="generated/compas.visualization.FaceNetworkPlotter.update_vertices.html" class="btn btn-primary compas-prev" role="button">FaceNetworkPlotter.update_vertices</a>
-                            
-
-                            
-                                <a href="generated/compas.visualization.MeshPlotter.__init__.html" class="btn btn-primary compas-next" role="button">MeshPlotter.__init__</a>
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column active">
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="generated/compas.visualization.FaceNetworkPlotter.update_vertices.html" role="button">FaceNetworkPlotter.update_vertices</a>
+<a class="btn btn-primary compas-next" href="generated/compas.visualization.MeshPlotter.__init__.html" role="button">MeshPlotter.__init__</a>
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
@@ -309,33 +252,21 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    <ul class="nav flex-column" id="compas-localnav">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">MeshPlotter</a></li>
 </ul>
-
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -347,10 +278,7 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -360,24 +288,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

@@ -1,68 +1,40 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas.numerical.matrices</h1><div class="highlight"><pre><code class="language-python border rounded">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.numerical.matrices</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">dot_vectors</span>
@@ -83,47 +55,47 @@
 <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="k">import</span> <span class="n">vstack</span> <span class="k">as</span> <span class="n">svstack</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele &lt;vanmelet@ethz.ch&gt;&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;Andrew Liew &lt;liew@arch.ethz.ch&gt;&#39;</span><span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2016, Block Research Group - ETH Zurich&#39;</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele &lt;vanmelet@ethz.ch&gt;'</span><span class="p">,</span>
+                  <span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2016, Block Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;adjacency_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;degree_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;connectivity_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;laplacian_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;face_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mass_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;stiffness_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;equilibrium_matrix&#39;</span><span class="p">,</span>
+    <span class="s1">'adjacency_matrix'</span><span class="p">,</span>
+    <span class="s1">'degree_matrix'</span><span class="p">,</span>
+    <span class="s1">'connectivity_matrix'</span><span class="p">,</span>
+    <span class="s1">'laplacian_matrix'</span><span class="p">,</span>
+    <span class="s1">'face_matrix'</span><span class="p">,</span>
+    <span class="s1">'mass_matrix'</span><span class="p">,</span>
+    <span class="s1">'stiffness_matrix'</span><span class="p">,</span>
+    <span class="s1">'equilibrium_matrix'</span><span class="p">,</span>
 
-    <span class="s1">&#39;network_adjacency_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;network_degree_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;network_connectivity_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;network_laplacian_matrix&#39;</span><span class="p">,</span>
+    <span class="s1">'network_adjacency_matrix'</span><span class="p">,</span>
+    <span class="s1">'network_degree_matrix'</span><span class="p">,</span>
+    <span class="s1">'network_connectivity_matrix'</span><span class="p">,</span>
+    <span class="s1">'network_laplacian_matrix'</span><span class="p">,</span>
 
-    <span class="s1">&#39;mesh_adjacency_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mesh_degree_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mesh_connectivity_matrix&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mesh_laplacian_matrix&#39;</span><span class="p">,</span>
+    <span class="s1">'mesh_adjacency_matrix'</span><span class="p">,</span>
+    <span class="s1">'mesh_degree_matrix'</span><span class="p">,</span>
+    <span class="s1">'mesh_connectivity_matrix'</span><span class="p">,</span>
+    <span class="s1">'mesh_laplacian_matrix'</span><span class="p">,</span>
 
-    <span class="s1">&#39;trimesh_cotangent_laplacian_matrix&#39;</span><span class="p">,</span>
+    <span class="s1">'trimesh_cotangent_laplacian_matrix'</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_return_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">rtype</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">'list'</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">&#39;array&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">'array'</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">&#39;csr&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">'csr'</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">&#39;csc&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">'csc'</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">tocsc</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">&#39;coo&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">'coo'</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">tocoo</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">M</span>
 
@@ -133,21 +105,21 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="adjacency_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.adjacency_matrix.html#compas.numerical.adjacency_matrix">[docs]</a><span class="k">def</span> <span class="nf">adjacency_matrix</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="adjacency_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.adjacency_matrix.html#compas.numerical.adjacency_matrix">[docs]</a><span class="k">def</span> <span class="nf">adjacency_matrix</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">adjacency</span><span class="p">))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">adjacency</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
     <span class="n">data</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">)))</span><span class="o">.</span><span class="n">asfptype</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">_return_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="face_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.face_matrix.html#compas.numerical.face_matrix">[docs]</a><span class="k">def</span> <span class="nf">face_matrix</span><span class="p">(</span><span class="n">face_vertices</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Creates a face-vertex adjacency matrix.</span>
+<div class="viewcode-block" id="face_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.face_matrix.html#compas.numerical.face_matrix">[docs]</a><span class="k">def</span> <span class="nf">face_matrix</span><span class="p">(</span><span class="n">face_vertices</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
+    <span class="sd">"""Creates a face-vertex adjacency matrix.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        face_vertices (list of list) : List of vertices per face.</span>
 <span class="sd">        rtype (str) : The return type.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">array</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">face_vertices</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
     <span class="n">F</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">((</span><span class="n">f</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">(</span><span class="n">f</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">f</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])))</span><span class="o">.</span><span class="n">asfptype</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">_return_matrix</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span></div>
@@ -158,7 +130,7 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="degree_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.degree_matrix.html#compas.numerical.degree_matrix">[docs]</a><span class="k">def</span> <span class="nf">degree_matrix</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="degree_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.degree_matrix.html#compas.numerical.degree_matrix">[docs]</a><span class="k">def</span> <span class="nf">degree_matrix</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
     <span class="n">d</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">len</span><span class="p">(</span><span class="n">adjacency</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">adjacency</span><span class="p">))]</span>
     <span class="n">data</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">d</span><span class="p">)</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">)))</span><span class="o">.</span><span class="n">asfptype</span><span class="p">()</span>
@@ -170,8 +142,8 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="connectivity_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.connectivity_matrix.html#compas.numerical.connectivity_matrix">[docs]</a><span class="k">def</span> <span class="nf">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
-    <span class="sd">r&quot;&quot;&quot;Creates a connectivity matrix from a list of vertex index pairs.</span>
+<div class="viewcode-block" id="connectivity_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.connectivity_matrix.html#compas.numerical.connectivity_matrix">[docs]</a><span class="k">def</span> <span class="nf">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
+    <span class="sd">r"""Creates a connectivity matrix from a list of vertex index pairs.</span>
 
 <span class="sd">    The connectivity matrix encodes how edges in a network are connected</span>
 <span class="sd">    together. Each row represents an edge and has 1 and -1 inserted into the</span>
@@ -192,20 +164,20 @@
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        edges (list of list): List of lists [[node_i, node_j], [node_k, node_l]].</span>
-<span class="sd">        rtype (str): Format of the result, &#39;array&#39;, &#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;.</span>
+<span class="sd">        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        sparse: If ``rtype`` is ``None``, ``&#39;csc&#39;``, ``&#39;csr&#39;``, ``&#39;coo&#39;``.</span>
+<span class="sd">        sparse: If ``rtype`` is ``None``, ``'csc'``, ``'csr'``, ``'coo'``.</span>
 
-<span class="sd">        array: If ``rtype`` is ``&#39;array&#39;``.</span>
+<span class="sd">        array: If ``rtype`` is ``'array'``.</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype=&#39;array&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')</span>
 <span class="sd">        [[-1  1  0  0]</span>
 <span class="sd">         [-1  0  1  0]</span>
 <span class="sd">         [-1  0  0  1]]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">m</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span><span class="p">)</span>
     <span class="n">rows</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)))</span>
@@ -221,8 +193,8 @@
 
 <span class="c1"># change this to a procedural approach</span>
 <span class="c1"># constructing (fundamental) matrices should not involve matrix operations</span>
-<div class="viewcode-block" id="laplacian_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.laplacian_matrix.html#compas.numerical.laplacian_matrix">[docs]</a><span class="k">def</span> <span class="nf">laplacian_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
-    <span class="sd">r&quot;&quot;&quot;Creates a laplacian matrix from a list of edge topologies.</span>
+<div class="viewcode-block" id="laplacian_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.laplacian_matrix.html#compas.numerical.laplacian_matrix">[docs]</a><span class="k">def</span> <span class="nf">laplacian_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
+    <span class="sd">r"""Creates a laplacian matrix from a list of edge topologies.</span>
 
 <span class="sd">    The laplacian matrix is defined as</span>
 
@@ -236,21 +208,21 @@
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        edges (list of list): List of lists [[node_i, node_j], [node_k, node_l]].</span>
-<span class="sd">        rtype (str): Format of the result, &#39;array&#39;, &#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;.</span>
+<span class="sd">        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        sparse: If &#39;&#39;rtype&#39;&#39; is ``None, &#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;``.</span>
-<span class="sd">        array: If &#39;&#39;rtype&#39;&#39; is ``&#39;array&#39;``.</span>
+<span class="sd">        sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.</span>
+<span class="sd">        array: If ''rtype'' is ``'array'``.</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; laplacian_matrix([[0, 1], [0, 2], [0, 3]], rtype=&#39;array&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; laplacian_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')</span>
 <span class="sd">        [[ 3 -1 -1 -1]</span>
 <span class="sd">         [-1  1  0  0]</span>
 <span class="sd">         [-1  0  1  0]</span>
 <span class="sd">         [-1  0  0  1]]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;csr&#39;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'csr'</span><span class="p">)</span>
     <span class="n">L</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
         <span class="n">L</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="n">L</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
@@ -263,8 +235,8 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="equilibrium_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.equilibrium_matrix.html#compas.numerical.equilibrium_matrix">[docs]</a><span class="k">def</span> <span class="nf">equilibrium_matrix</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">free</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
-    <span class="sd">r&quot;&quot;&quot;Construct the equilibrium matrix of a structural system.</span>
+<div class="viewcode-block" id="equilibrium_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.equilibrium_matrix.html#compas.numerical.equilibrium_matrix">[docs]</a><span class="k">def</span> <span class="nf">equilibrium_matrix</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">free</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
+    <span class="sd">r"""Construct the equilibrium matrix of a structural system.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        The matrix of vertex coordinates is vectorised to speed up the</span>
@@ -274,11 +246,11 @@
 <span class="sd">        C (array, sparse): Connectivity matrix (m x n).</span>
 <span class="sd">        xyz (array, list): Array of vertex coordinates (n x 3).</span>
 <span class="sd">        free (list): The index values of the free vertices.</span>
-<span class="sd">        rtype (str): Format of the result, &#39;array&#39;, &#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;.</span>
+<span class="sd">        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        sparse : If ``rtype`` is ``&#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;``.</span>
-<span class="sd">        array : If ``rtype`` is ``&#39;array&#39;``.</span>
+<span class="sd">        sparse : If ``rtype`` is ``'csc', 'csr', 'coo'``.</span>
+<span class="sd">        array : If ``rtype`` is ``'array'``.</span>
 
 <span class="sd">    Analysis of the equilibrium matrix reveals some of the properties of the</span>
 <span class="sd">    structural system, its size is (2ni x m) where ni is the number of free or</span>
@@ -300,11 +272,11 @@
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; C = connectivity_matrix([[0, 1], [0, 2], [0, 3]])</span>
 <span class="sd">        &gt;&gt;&gt; xyz = [[0, 0, 1], [0, 1, 0], [-1, -1, 0], [1, -1, 0]]</span>
-<span class="sd">        &gt;&gt;&gt; equilibrium_matrix(C, xyz, [0], rtype=&#39;array&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; equilibrium_matrix(C, xyz, [0], rtype='array')</span>
 <span class="sd">            [[ 0.  1. -1.]</span>
 <span class="sd">             [-1.  1.  1.]]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">xyz</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">C</span>   <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
     <span class="n">xy</span>  <span class="o">=</span> <span class="n">xyz</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
@@ -318,7 +290,7 @@
 
 
 <div class="viewcode-block" id="mass_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.mass_matrix.html#compas.numerical.mass_matrix">[docs]</a><span class="k">def</span> <span class="nf">mass_matrix</span><span class="p">(</span><span class="n">Ct</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tiled</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">r&quot;&quot;&quot;Creates a network&#39;s nodal mass matrix.</span>
+    <span class="sd">r"""Creates a network's nodal mass matrix.</span>
 
 <span class="sd">    The mass matrix is defined as the sum of the member axial stiffnesses</span>
 <span class="sd">    (inline) of the elements connected to each node, plus the force density.</span>
@@ -341,7 +313,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        array : mass matrix, either (m x 1) or (m x 3).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Ct</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ks</span> <span class="o">+</span> <span class="n">q</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">tiled</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tile</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -357,26 +329,26 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="network_adjacency_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.network_adjacency_matrix.html#compas.numerical.network_adjacency_matrix">[docs]</a><span class="k">def</span> <span class="nf">network_adjacency_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="network_adjacency_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.network_adjacency_matrix.html#compas.numerical.network_adjacency_matrix">[docs]</a><span class="k">def</span> <span class="nf">network_adjacency_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
     <span class="n">key_index</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
     <span class="n">adjacency</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key_index</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
     <span class="k">return</span> <span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="n">rtype</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="network_degree_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.network_degree_matrix.html#compas.numerical.network_degree_matrix">[docs]</a><span class="k">def</span> <span class="nf">network_degree_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="network_degree_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.network_degree_matrix.html#compas.numerical.network_degree_matrix">[docs]</a><span class="k">def</span> <span class="nf">network_degree_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
     <span class="n">key_index</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
     <span class="n">adjacency</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key_index</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
     <span class="k">return</span> <span class="n">degree_matrix</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="n">rtype</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="network_connectivity_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.network_connectivity_matrix.html#compas.numerical.network_connectivity_matrix">[docs]</a><span class="k">def</span> <span class="nf">network_connectivity_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="network_connectivity_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.network_connectivity_matrix.html#compas.numerical.network_connectivity_matrix">[docs]</a><span class="k">def</span> <span class="nf">network_connectivity_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
     <span class="n">key_index</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
     <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
     <span class="k">return</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="n">rtype</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="network_laplacian_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.network_laplacian_matrix.html#compas.numerical.network_laplacian_matrix">[docs]</a><span class="k">def</span> <span class="nf">network_laplacian_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
-    <span class="sd">r&quot;&quot;&quot;Construct the Laplacian matrix of a network.</span>
+<div class="viewcode-block" id="network_laplacian_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.network_laplacian_matrix.html#compas.numerical.network_laplacian_matrix">[docs]</a><span class="k">def</span> <span class="nf">network_laplacian_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
+    <span class="sd">r"""Construct the Laplacian matrix of a network.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        network (compas.datastructures.network.network.Network) :</span>
@@ -385,7 +357,7 @@
 <span class="sd">        rtype (str) :</span>
 <span class="sd">            Optional.</span>
 <span class="sd">            The format in which the Laplacian should be returned.</span>
-<span class="sd">            Default is `&#39;array&#39;`.</span>
+<span class="sd">            Default is `'array'`.</span>
 
 <span class="sd">        normalize (bool):</span>
 <span class="sd">            Optional.</span>
@@ -395,7 +367,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        array-like: The Laplacian matrix in the format specified by ``rtype``.</span>
 
-<span class="sd">        Possible values of ``rtype`` are ``&#39;list&#39;``, ``&#39;array&#39;``, ``&#39;csr&#39;``, ``&#39;csc&#39;``, ``&#39;coo&#39;``.</span>
+<span class="sd">        Possible values of ``rtype`` are ``'list'``, ``'array'``, ``'csr'``, ``'csc'``, ``'coo'``.</span>
 
 
 <span class="sd">    Note:</span>
@@ -416,39 +388,39 @@
 <span class="sd">            from compas.datastructures import Network</span>
 <span class="sd">            from compas.numerical import network_laplacian_matrix</span>
 
-<span class="sd">            network = Network.from_obj(compas.get(&#39;grid_irregular.obj&#39;))</span>
+<span class="sd">            network = Network.from_obj(compas.get('grid_irregular.obj'))</span>
 
-<span class="sd">            xy = array([network.vertex_coordinates(key, &#39;xy&#39;) for key in network.vertices()])</span>
-<span class="sd">            L  = network_laplacian_matrix(network, normalize=True, rtype=&#39;csr&#39;)</span>
+<span class="sd">            xy = array([network.vertex_coordinates(key, 'xy') for key in network.vertices()])</span>
+<span class="sd">            L  = network_laplacian_matrix(network, normalize=True, rtype='csr')</span>
 <span class="sd">            d  = L.dot(xy)</span>
 
-<span class="sd">            lines = [{&#39;start&#39;: xy[i], &#39;end&#39;: xy[i] - d[i]} for i, k in enumerate(network.vertices())]</span>
+<span class="sd">            lines = [{'start': xy[i], 'end': xy[i] - d[i]} for i, k in enumerate(network.vertices())]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">key_index</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
     <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
     <span class="k">return</span> <span class="n">laplacian_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="n">rtype</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="mesh_adjacency_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.mesh_adjacency_matrix.html#compas.numerical.mesh_adjacency_matrix">[docs]</a><span class="k">def</span> <span class="nf">mesh_adjacency_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="mesh_adjacency_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.mesh_adjacency_matrix.html#compas.numerical.mesh_adjacency_matrix">[docs]</a><span class="k">def</span> <span class="nf">mesh_adjacency_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
     <span class="n">key_index</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
     <span class="n">adjacency</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key_index</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
     <span class="k">return</span> <span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="n">rtype</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="mesh_connectivity_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.mesh_connectivity_matrix.html#compas.numerical.mesh_connectivity_matrix">[docs]</a><span class="k">def</span> <span class="nf">mesh_connectivity_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="mesh_connectivity_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.mesh_connectivity_matrix.html#compas.numerical.mesh_connectivity_matrix">[docs]</a><span class="k">def</span> <span class="nf">mesh_connectivity_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
     <span class="n">key_index</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
     <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
     <span class="k">return</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="n">rtype</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="mesh_degree_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.mesh_degree_matrix.html#compas.numerical.mesh_degree_matrix">[docs]</a><span class="k">def</span> <span class="nf">mesh_degree_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="mesh_degree_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.mesh_degree_matrix.html#compas.numerical.mesh_degree_matrix">[docs]</a><span class="k">def</span> <span class="nf">mesh_degree_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'array'</span><span class="p">):</span>
     <span class="n">key_index</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
     <span class="n">adjacency</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key_index</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
     <span class="k">return</span> <span class="n">degree_matrix</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="n">rtype</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="mesh_laplacian_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.mesh_laplacian_matrix.html#compas.numerical.mesh_laplacian_matrix">[docs]</a><span class="k">def</span> <span class="nf">mesh_laplacian_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;csr&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="mesh_laplacian_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.mesh_laplacian_matrix.html#compas.numerical.mesh_laplacian_matrix">[docs]</a><span class="k">def</span> <span class="nf">mesh_laplacian_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'csr'</span><span class="p">):</span>
     <span class="n">data</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
     <span class="n">key_index</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
@@ -469,19 +441,19 @@
     <span class="k">return</span> <span class="n">_return_matrix</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">mesh_face_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;csr&#39;</span><span class="p">):</span>
-    <span class="sd">r&quot;&quot;&quot;Construct the face matrix of a mesh.</span>
+<span class="k">def</span> <span class="nf">mesh_face_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'csr'</span><span class="p">):</span>
+    <span class="sd">r"""Construct the face matrix of a mesh.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        mesh (compas.datastructures.mesh.mesh.Network) :</span>
 <span class="sd">            A ``compas`` mesh datastructure object.</span>
 <span class="sd">        rtype (str) : Optional.</span>
-<span class="sd">            The type of matrix to be returned. The default is ``&#39;csr&#39;``.</span>
+<span class="sd">            The type of matrix to be returned. The default is ``'csr'``.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        array-like: The face matrix in the format specified by ``rtype``.</span>
 
-<span class="sd">        Possible values of ``rtype`` are ``&#39;list&#39;``, ``&#39;array&#39;``, ``&#39;csr&#39;``, ``&#39;csc&#39;``, ``&#39;coo&#39;``.</span>
+<span class="sd">        Possible values of ``rtype`` are ``'list'``, ``'array'``, ``'csr'``, ``'csc'``, ``'coo'``.</span>
 
 
 <span class="sd">    The face matrix represents the relationship between faces and vertices.</span>
@@ -508,13 +480,13 @@
 <span class="sd">            from compas.datastructures import Mesh</span>
 <span class="sd">            from compas.numerical import mesh_face_matrix</span>
 
-<span class="sd">            mesh = Mesh.from_obj(compas.get(&#39;faces.obj&#39;))</span>
+<span class="sd">            mesh = Mesh.from_obj(compas.get('faces.obj'))</span>
 
-<span class="sd">            F   = mesh_face_matrix(mesh, &#39;csr&#39;)</span>
+<span class="sd">            F   = mesh_face_matrix(mesh, 'csr')</span>
 <span class="sd">            xyz = array([mesh.vertex_coordinates(key) for key in mesh.vertices()])</span>
 <span class="sd">            c   = F.dot(xyz)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">key_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())}</span>
     <span class="n">face_vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span>
     <span class="k">return</span> <span class="n">face_matrix</span><span class="p">(</span><span class="n">face_vertices</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="n">rtype</span><span class="p">)</span>
@@ -538,7 +510,7 @@
 
 
 <div class="viewcode-block" id="trimesh_cotangent_laplacian_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.trimesh_cotangent_laplacian_matrix.html#compas.numerical.trimesh_cotangent_laplacian_matrix">[docs]</a><span class="k">def</span> <span class="nf">trimesh_cotangent_laplacian_matrix</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Construct the Laplacian of a triangular mesh with cotangent weights.</span>
+    <span class="sd">"""Construct the Laplacian of a triangular mesh with cotangent weights.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        mesh (compas.datastructures.mesh.tri.TriMesh) :</span>
@@ -565,7 +537,7 @@
 
 <span class="sd">    &gt;&gt;&gt; ...</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># minus sum of the adjacent weights on the diagonal</span>
     <span class="c1"># cotangent weights on the neighbours</span>
     <span class="n">key_index</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
@@ -602,7 +574,7 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">compas</span>
 
@@ -610,16 +582,16 @@
 
     <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">allclose</span>
 
-    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;grid_irregular.obj&#39;</span><span class="p">))</span>
+    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'grid_irregular.obj'</span><span class="p">))</span>
 
     <span class="c1"># key_index = {key: index for index, key in enumerate(network.vertices())}</span>
 
     <span class="n">A</span> <span class="o">=</span> <span class="n">network_adjacency_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
     <span class="n">C</span> <span class="o">=</span> <span class="n">network_connectivity_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
-    <span class="n">L</span> <span class="o">=</span> <span class="n">network_laplacian_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">&#39;csr&#39;</span><span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">network_laplacian_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'csr'</span><span class="p">)</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">network_degree_matrix</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
 
-    <span class="c1"># xy = [network.vertex_coordinates(key, &#39;xy&#39;) for key in network.vertices()]</span>
+    <span class="c1"># xy = [network.vertex_coordinates(key, 'xy') for key in network.vertices()]</span>
     <span class="c1"># xy = array(xy, dtype=float).reshape((-1, 2))</span>
 
     <span class="c1"># centroids1 = [network.vertex_neighbourhood_centroid(key) for key in network.vertices()]</span>
@@ -634,67 +606,40 @@
     <span class="c1"># print(allclose(centroids2, centroids3))</span>
     <span class="c1"># print(allclose(centroids1, centroids3))</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../workshops.html">Workshops</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -706,10 +651,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -719,24 +661,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

@@ -1,163 +1,112 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-            <link rel="next" title="MatlabSession.__init__" href="generated/compas.com.MatlabSession.__init__.html" />
-        
-        
-        
-            <link rel="prev" title="MatlabProcess.write_workspace" href="generated/compas.com.MatlabProcess.write_workspace.html" />
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../reference.html" >reference</a>
-            
-                <a class="breadcrumb-item" href="../compas.html" >compas</a>
-            
-                <a class="breadcrumb-item" href="../compas.com.html" accesskey="U">com</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <div class="section" id="matlabsession">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="generated/compas.com.MatlabSession.__init__.html" rel="next" title="MatlabSession.__init__"/>
+<link href="generated/compas.com.MatlabProcess.write_workspace.html" rel="prev" title="MatlabProcess.write_workspace"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../reference.html">reference</a>
+<a class="breadcrumb-item" href="../compas.html">compas</a>
+<a accesskey="U" class="breadcrumb-item" href="../compas.com.html">com</a>
+</nav>
+<div class="section">
 <h1>MatlabSession</h1>
 <dl class="class">
 <dt id="compas.com.MatlabSession">
-<em class="property">class </em><code class="descclassname">compas.com.</code><code class="descname">MatlabSession</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/com/mlab/session.html#MatlabSession"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="descclassname">compas.com.</code><code class="descname">MatlabSession</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/com/mlab/session.html#MatlabSession"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal">object</code></a></p>
 <p>Communicate with Matlab through a shared session.</p>
 <p>Note that the Matlab engine for Python is only available since R2014b.
-For earlier versions of Matlab, use <code class="docutils literal"><span class="pre">MatlabProcess</span></code> instead.</p>
+For earlier versions of Matlab, use <code class="docutils literal">MatlabProcess</code> instead.</p>
 <p>For more information,
 see <a class="reference external" href="https://ch.mathworks.com/help/matlab/matlab_external/connect-python-to-running-matlab-session.html">Connect Python to Running MATLAB Session</a></p>
 <p class="rubric">Examples</p>
-<div class="highlight-default"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabSession</span><span class="p">()</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabSession</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">session_name</span>
-<span class="go">&#39;MATLAB_13404&#39;</span>
+<span class="go">'MATLAB_13404'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">isprime</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
 <span class="go">True</span>
 </code></pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># execute `matlab -nosplash -r &quot;matlab.engine.shareEngine(&#39;MATLAB_xxx&#39;)&quot;`</span>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="c1"># execute `matlab -nosplash -r "matlab.engine.shareEngine('MATLAB_xxx')"`</span>
 <span class="c1"># to connect to an existing named session</span>
 </code></pre></div>
-</div>
-<div class="highlight-default"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabSession</span><span class="p">(</span><span class="s1">&#39;MATLAB_xxx&#39;</span><span class="p">)</span>
+
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MatlabSession</span><span class="p">(</span><span class="s1">'MATLAB_xxx'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">isprime</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
 <span class="go">True</span>
 </code></pre></div>
-</div>
+
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col width="10%"/>
+<col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.com.MatlabSession.__init__.html#compas.com.MatlabSession.__init__" title="compas.com.MatlabSession.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a>([name])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabSession.__init__.html" title="compas.com.MatlabSession.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>([name])</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.com.MatlabSession.connect.html#compas.com.MatlabSession.connect" title="compas.com.MatlabSession.connect"><code class="xref py py-obj docutils literal"><span class="pre">connect</span></code></a>([name])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabSession.connect.html" title="compas.com.MatlabSession.connect"><code class="xref py py-obj docutils literal">connect</code></a>([name])</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/compas.com.MatlabSession.find_sessions.html#compas.com.MatlabSession.find_sessions" title="compas.com.MatlabSession.find_sessions"><code class="xref py py-obj docutils literal"><span class="pre">find_sessions</span></code></a>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabSession.find_sessions.html" title="compas.com.MatlabSession.find_sessions"><code class="xref py py-obj docutils literal">find_sessions</code></a>()</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/compas.com.MatlabSession.init.html#compas.com.MatlabSession.init" title="compas.com.MatlabSession.init"><code class="xref py py-obj docutils literal"><span class="pre">init</span></code></a>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.com.MatlabSession.init.html" title="compas.com.MatlabSession.init"><code class="xref py py-obj docutils literal">init</code></a>()</td>
 <td></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
-
 </div>
-
-                        
-                        <nav class="compas-sideways">
-                            
-                                <a href="generated/compas.com.MatlabProcess.write_workspace.html" class="btn btn-primary compas-prev" role="button">MatlabProcess.write_workspace</a>
-                            
-
-                            
-                                <a href="generated/compas.com.MatlabSession.__init__.html" class="btn btn-primary compas-next" role="button">MatlabSession.__init__</a>
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column active">
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="generated/compas.com.MatlabProcess.write_workspace.html" role="button">MatlabProcess.write_workspace</a>
+<a class="btn btn-primary compas-next" href="generated/compas.com.MatlabSession.__init__.html" role="button">MatlabSession.__init__</a>
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
@@ -184,33 +133,21 @@ see <a class="reference external" href="https://ch.mathworks.com/help/matlab/mat
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    <ul class="nav flex-column" id="compas-localnav">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">MatlabSession</a></li>
 </ul>
-
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -222,10 +159,7 @@ see <a class="reference external" href="https://ch.mathworks.com/help/matlab/mat
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -235,24 +169,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

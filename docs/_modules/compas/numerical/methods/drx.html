@@ -1,68 +1,40 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-        
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../../index.html" accesskey="U">module code</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <h1>Source code for compas.numerical.methods.drx</h1><div class="highlight"><pre><code class="language-python border rounded">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
+</nav>
+<h1>Source code for compas.numerical.methods.drx</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">arccos</span>
@@ -85,19 +57,19 @@
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Andrew Liew &lt;liew@arch.ethz.ch&gt;&#39;</span><span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2017, Block Research Group - ETH Zurich&#39;</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;liew@arch.ethz.ch&#39;</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2017, Block Research Group - ETH Zurich'</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'liew@arch.ethz.ch'</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;drx&#39;</span><span class="p">,</span>
+    <span class="s1">'drx'</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="drx"><a class="viewcode-back" href="../../../../reference/generated/compas.numerical.drx.html#compas.numerical.drx">[docs]</a><span class="k">def</span> <span class="nf">drx</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Run dynamic relaxation analysis.</span>
+    <span class="sd">"""Run dynamic relaxation analysis.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        network (obj): Network to analyse.</span>
@@ -112,7 +84,7 @@
 <span class="sd">        array: Vertex co-ordinates.</span>
 <span class="sd">        array: Edge forces.</span>
 <span class="sd">        array: Edge lengths.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Setup</span>
 
@@ -135,10 +107,10 @@
     <span class="c1"># Summary</span>
 
     <span class="k">if</span> <span class="n">refresh</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">NumPy-SciPy DR -------------------&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Setup time: </span><span class="si">{0:.3g}</span><span class="s1">s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc1</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Solver time: </span><span class="si">{0:.3g}</span><span class="s1">s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc2</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;----------------------------------&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">NumPy-SciPy DR -------------------'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'Setup time: </span><span class="si">{0:.3g}</span><span class="s1">s'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc1</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'Solver time: </span><span class="si">{0:.3g}</span><span class="s1">s'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">toc2</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'----------------------------------'</span><span class="p">)</span>
 
     <span class="c1"># Update</span>
 
@@ -147,14 +119,14 @@
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
             <span class="n">i</span> <span class="o">=</span> <span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
             <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
-            <span class="n">network</span><span class="o">.</span><span class="n">set_vertex_attributes</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="n">z</span><span class="p">})</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">set_vertex_attributes</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">{</span><span class="s1">'x'</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">:</span> <span class="n">z</span><span class="p">})</span>
 
     <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">l</span></div>
 
 
 <span class="k">def</span> <span class="nf">drx_solver</span><span class="p">(</span><span class="n">tol</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">factor</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">Ct</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">l0</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">ind_c</span><span class="p">,</span> <span class="n">ind_t</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">refresh</span><span class="p">,</span> <span class="n">beams</span><span class="p">,</span> <span class="n">inds</span><span class="p">,</span> <span class="n">indi</span><span class="p">,</span>
                <span class="n">indf</span><span class="p">,</span> <span class="n">EIx</span><span class="p">,</span> <span class="n">EIy</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; NumPy and SciPy dynamic relaxation solver.</span>
+    <span class="sd">""" NumPy and SciPy dynamic relaxation solver.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        tol (float): Tolerance limit.</span>
@@ -186,7 +158,7 @@
 <span class="sd">        array: Updated nodal co-ordinates.</span>
 <span class="sd">        array: Updated forces.</span>
 <span class="sd">        array: Updated lengths.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">res</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">tol</span>
     <span class="n">ts</span><span class="p">,</span> <span class="n">Uo</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
     <span class="n">M</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">tile</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -211,7 +183,7 @@
         <span class="n">X</span> <span class="o">+=</span> <span class="n">V</span>
         <span class="k">if</span> <span class="n">refresh</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">ts</span> <span class="o">%</span> <span class="n">refresh</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">res</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Step:</span><span class="si">{0}</span><span class="s1"> Residual:</span><span class="si">{1:.3g}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">'Step:</span><span class="si">{0}</span><span class="s1"> Residual:</span><span class="si">{1:.3g}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
                     <span class="n">callback</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">ts</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -219,7 +191,7 @@
 
 
 <span class="k">def</span> <span class="nf">_beam_data</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Create data for beam element calculations.</span>
+    <span class="sd">""" Create data for beam element calculations.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        network (obj): Network to be analysed.</span>
@@ -230,23 +202,23 @@
 <span class="sd">        list: Indices of beam element finish nodes beams.</span>
 <span class="sd">        array: Nodal EIx flexural stiffnesses of all beams.</span>
 <span class="sd">        array: Nodal EIy flexural stiffnesses of all beams.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">beams</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">beams</span>
     <span class="n">inds</span><span class="p">,</span> <span class="n">indi</span><span class="p">,</span> <span class="n">indf</span><span class="p">,</span> <span class="n">EIx</span><span class="p">,</span> <span class="n">EIy</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">beam</span> <span class="ow">in</span> <span class="n">beams</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">nodes</span> <span class="o">=</span> <span class="n">beam</span><span class="p">[</span><span class="s1">&#39;nodes&#39;</span><span class="p">]</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">beam</span><span class="p">[</span><span class="s1">'nodes'</span><span class="p">]</span>
         <span class="n">inds</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nodes</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">indi</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">indf</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
-        <span class="n">EIx</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;EIx&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
-        <span class="n">EIy</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;EIy&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">EIx</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">'EIx'</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">EIy</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">'EIy'</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
     <span class="n">EIx</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">EIx</span><span class="p">)[:,</span> <span class="n">newaxis</span><span class="p">]</span>
     <span class="n">EIy</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">EIy</span><span class="p">)[:,</span> <span class="n">newaxis</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">inds</span><span class="p">,</span> <span class="n">indi</span><span class="p">,</span> <span class="n">indf</span><span class="p">,</span> <span class="n">EIx</span><span class="p">,</span> <span class="n">EIy</span>
 
 
 <span class="k">def</span> <span class="nf">_beam_shear</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">inds</span><span class="p">,</span> <span class="n">indi</span><span class="p">,</span> <span class="n">indf</span><span class="p">,</span> <span class="n">EIx</span><span class="p">,</span> <span class="n">EIy</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Generate the beam nodal shear forces Sx, Sy and Sz.</span>
+    <span class="sd">""" Generate the beam nodal shear forces Sx, Sy and Sz.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        S (array): Nodal shear force array.</span>
@@ -259,7 +231,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        array: Updated beam nodal shears.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">S</span> <span class="o">*=</span> <span class="mi">0</span>
     <span class="n">Xs</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">inds</span><span class="p">,</span> <span class="p">:]</span>
     <span class="n">Xi</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">indi</span><span class="p">,</span> <span class="p">:]</span>
@@ -306,7 +278,7 @@
 
 
 <span class="k">def</span> <span class="nf">_create_arrays</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Create arrays for dynamic relaxation solver.</span>
+    <span class="sd">""" Create arrays for dynamic relaxation solver.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        network (obj): Network to analyse.</span>
@@ -318,7 +290,7 @@
 <span class="sd">        array: Resultant nodal loads.</span>
 <span class="sd">        array: Shear force components Sx, Sy, Sz.</span>
 <span class="sd">        array: Nodal velocities Vx, Vy, Vz.</span>
-<span class="sd">        array: Edge Young&#39;s moduli.</span>
+<span class="sd">        array: Edge Young's moduli.</span>
 <span class="sd">        array: Edge areas.</span>
 <span class="sd">        array: Connectivity matrix.</span>
 <span class="sd">        array: Transposed connectivity matrix.</span>
@@ -326,11 +298,11 @@
 <span class="sd">        array: Edge initial lengths.</span>
 <span class="sd">        list: Compression only edges indices.</span>
 <span class="sd">        list: Tension only edges indices.</span>
-<span class="sd">        array: Network edges&#39; start points.</span>
-<span class="sd">        array: Network edges&#39; end points.</span>
+<span class="sd">        array: Network edges' start points.</span>
+<span class="sd">        array: Network edges' end points.</span>
 <span class="sd">        array: Mass matrix.</span>
 <span class="sd">        array: Edge axial stiffnesses.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Vertices</span>
 
@@ -344,9 +316,9 @@
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
         <span class="n">i</span> <span class="o">=</span> <span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="n">vertex</span>  <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-        <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-        <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertex</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="s1">&#39;xyz&#39;</span><span class="p">]</span>
+        <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'B'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'P'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertex</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="s1">'xyz'</span><span class="p">]</span>
     <span class="n">Pn</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
 
     <span class="c1"># Edges</span>
@@ -367,16 +339,16 @@
         <span class="n">ui</span><span class="p">,</span> <span class="n">vi</span> <span class="o">=</span> <span class="n">uv</span>
         <span class="n">i</span> <span class="o">=</span> <span class="n">uv_i</span><span class="p">[(</span><span class="n">ui</span><span class="p">,</span> <span class="n">vi</span><span class="p">)]</span>
         <span class="n">edge</span>  <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">ui</span><span class="p">][</span><span class="n">vi</span><span class="p">]</span>
-        <span class="n">E</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">l0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;l0&#39;</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">ui</span><span class="p">,</span> <span class="n">vi</span><span class="p">))</span>
-        <span class="n">s0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;s0&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">E</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'E'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">l0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'l0'</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">ui</span><span class="p">,</span> <span class="n">vi</span><span class="p">))</span>
+        <span class="n">s0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'s0'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">u</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>  <span class="o">=</span> <span class="n">k_i</span><span class="p">[</span><span class="n">ui</span><span class="p">]</span>
         <span class="n">v</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>  <span class="o">=</span> <span class="n">k_i</span><span class="p">[</span><span class="n">vi</span><span class="p">]</span>
-        <span class="n">ct</span> <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ct&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">ct</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+        <span class="n">ct</span> <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'ct'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ct</span> <span class="o">==</span> <span class="s1">'c'</span><span class="p">:</span>
             <span class="n">ind_c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">ct</span> <span class="o">==</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">ct</span> <span class="o">==</span> <span class="s1">'t'</span><span class="p">:</span>
             <span class="n">ind_t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
     <span class="n">f0</span> <span class="o">=</span> <span class="n">s0</span> <span class="o">*</span> <span class="n">A</span>
     <span class="n">ks</span> <span class="o">=</span> <span class="n">E</span> <span class="o">*</span> <span class="n">A</span> <span class="o">/</span> <span class="n">l0</span>
@@ -387,8 +359,8 @@
     <span class="c1"># if network.face:</span>
     <span class="c1">#     for face in faces:</span>
     <span class="c1">#         fdata = network.facedata[face]</span>
-    <span class="c1">#         Eh = fdata.get(&#39;E&#39;, 0)</span>
-    <span class="c1">#         th = fdata.get(&#39;t&#39;, 0)</span>
+    <span class="c1">#         Eh = fdata.get('E', 0)</span>
+    <span class="c1">#         th = fdata.get('t', 0)</span>
     <span class="c1">#         Ah = network.face_area(face)</span>
     <span class="c1">#         for ui, vi in network.face_edges(face):</span>
     <span class="c1">#             i = uv_i[(ui, vi)]</span>
@@ -396,7 +368,7 @@
 
     <span class="c1"># Arrays</span>
 
-    <span class="n">C</span> <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">([[</span><span class="n">k_i</span><span class="p">[</span><span class="n">ui</span><span class="p">],</span> <span class="n">k_i</span><span class="p">[</span><span class="n">vi</span><span class="p">]]</span> <span class="k">for</span> <span class="n">ui</span><span class="p">,</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">],</span> <span class="s1">&#39;csr&#39;</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">([[</span><span class="n">k_i</span><span class="p">[</span><span class="n">ui</span><span class="p">],</span> <span class="n">k_i</span><span class="p">[</span><span class="n">vi</span><span class="p">]]</span> <span class="k">for</span> <span class="n">ui</span><span class="p">,</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">],</span> <span class="s1">'csr'</span><span class="p">)</span>
     <span class="n">Ct</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
     <span class="n">M</span> <span class="o">=</span> <span class="n">mass_matrix</span><span class="p">(</span><span class="n">Ct</span><span class="o">=</span><span class="n">Ct</span><span class="p">,</span> <span class="n">ks</span><span class="o">=</span><span class="n">ks</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">q0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tiled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -407,71 +379,44 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 
     <span class="k">pass</span>
 </code></pre></div>
-                        
-                        <nav class="compas-sideways">
-                            
-
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column">
+<nav class="compas-sideways">
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -483,10 +428,7 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -496,24 +438,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>

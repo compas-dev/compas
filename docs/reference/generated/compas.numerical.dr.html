@@ -1,197 +1,150 @@
 
-
-
 <!DOCTYPE html>
+
 <html lang="en">
-    <head>
-        <title>compas -- a computational framework for research in architecture and structures</title>
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="Tom Van Mele" />
-        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link rel="stylesheet" type="text/css" href="/css/github.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
-
-        
-            <link rel="next" title="drx" href="compas.numerical.drx.html" />
-        
-        
-        
-            <link rel="prev" title="numerical" href="../compas.numerical.html" />
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-            <a class="navbar-brand" href="/">compas</a>
-
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/compas">Main library</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/packages">Additional Packages</a>
-                    </li>
-                </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-    <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-        
-            
-                <a class="breadcrumb-item" href="../../reference.html" >reference</a>
-            
-                <a class="breadcrumb-item" href="../compas.html" >compas</a>
-            
-                <a class="breadcrumb-item" href="../compas.numerical.html" accesskey="U">numerical</a>
-            
-        
-    </nav>
-
-
-                        
-
-                        
-
-                        <div class="section" id="dr">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="compas.numerical.drx.html" rel="next" title="drx"/>
+<link href="../compas.numerical.html" rel="prev" title="numerical"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../reference.html">reference</a>
+<a class="breadcrumb-item" href="../compas.html">compas</a>
+<a accesskey="U" class="breadcrumb-item" href="../compas.numerical.html">numerical</a>
+</nav>
+<div class="section">
 <h1>dr</h1>
 <dl class="function">
 <dt id="compas.numerical.dr">
-<code class="descclassname">compas.numerical.</code><code class="descname">dr</code><span class="sig-paren">(</span><em>vertices</em>, <em>edges</em>, <em>fixed</em>, <em>loads</em>, <em>qpre</em>, <em>fpre</em>, <em>lpre</em>, <em>linit</em>, <em>E</em>, <em>radius</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/numerical/methods/dr.html#dr"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas.numerical.</code><code class="descname">dr</code><span class="sig-paren">(</span><em>vertices</em>, <em>edges</em>, <em>fixed</em>, <em>loads</em>, <em>qpre</em>, <em>fpre</em>, <em>lpre</em>, <em>linit</em>, <em>E</em>, <em>radius</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/numerical/methods/dr.html#dr"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Implementation of the dynamic relaxation method for finding the equilibrium
 of articulated networks of axial force members.</p>
 <p class="rubric">Example</p>
-<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
 <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 <span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="kn">import</span> <span class="n">dr</span>
 
 <span class="n">dva</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-    <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;px&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;py&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;pz&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;rx&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;ry&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;rz&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'is_fixed'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s1">'x'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'y'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'z'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'px'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'py'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'pz'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'rx'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'ry'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'rz'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">dea</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;qpre&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-    <span class="s1">&#39;fpre&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;lpre&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;linit&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'qpre'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s1">'fpre'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'lpre'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'linit'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'E'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">'radius'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lines.obj&#39;</span><span class="p">))</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
 <span class="n">network</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">(</span><span class="n">dva</span><span class="p">)</span>
 <span class="n">network</span><span class="o">.</span><span class="n">update_default_edge_attributes</span><span class="p">(</span><span class="n">dea</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
-    <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">attr</span><span class="p">[</span><span class="s1">'is_fixed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
 
-<span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
-    <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;qpre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
-    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)):</span>
+    <span class="n">attr</span><span class="p">[</span><span class="s1">'qpre'</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
 
-<span class="n">k2i</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span>
+<span class="n">k2i</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
 
 <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">]</span>
 <span class="n">edges</span>    <span class="o">=</span> <span class="p">[(</span><span class="n">k2i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k2i</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
-<span class="n">fixed</span>    <span class="o">=</span> <span class="p">[</span><span class="n">k2i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">]]</span>
-<span class="n">loads</span>    <span class="o">=</span> <span class="p">[(</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;px&#39;</span><span class="p">],</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;py&#39;</span><span class="p">],</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;pz&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
-<span class="n">qpre</span>     <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;qpre&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
-<span class="n">fpre</span>     <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;fpre&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
-<span class="n">lpre</span>     <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;lpre&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
-<span class="n">linit</span>    <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;linit&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
-<span class="n">E</span>        <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
-<span class="n">radius</span>   <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+<span class="n">fixed</span>    <span class="o">=</span> <span class="p">[</span><span class="n">k2i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="s1">'is_fixed'</span><span class="p">]]</span>
+<span class="n">loads</span>    <span class="o">=</span> <span class="p">[(</span><span class="n">attr</span><span class="p">[</span><span class="s1">'px'</span><span class="p">],</span> <span class="n">attr</span><span class="p">[</span><span class="s1">'py'</span><span class="p">],</span> <span class="n">attr</span><span class="p">[</span><span class="s1">'pz'</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">qpre</span>     <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'qpre'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">fpre</span>     <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'fpre'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">lpre</span>     <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'lpre'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">linit</span>    <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'linit'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">E</span>        <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'E'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
+<span class="n">radius</span>   <span class="o">=</span> <span class="p">[</span><span class="n">attr</span><span class="p">[</span><span class="s1">'radius'</span><span class="p">]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)]</span>
 
 <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
     <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-        <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;end&#39;</span>  <span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#cccccc&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="mf">1.0</span>
+        <span class="s1">'start'</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+        <span class="s1">'end'</span>  <span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
+        <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#cccccc'</span><span class="p">,</span>
+        <span class="s1">'width'</span><span class="p">:</span> <span class="mf">1.0</span>
     <span class="p">})</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
 <span class="n">xyz</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">dr</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">qpre</span><span class="p">,</span> <span class="n">fpre</span><span class="p">,</span> <span class="n">lpre</span><span class="p">,</span> <span class="n">linit</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
 
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">k2i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span>
-    <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})})</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">'is_fixed'</span><span class="p">:</span> <span class="bp">True</span><span class="p">})})</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-</div>
-<div class="figure">
-<img alt="../../_images/compas-numerical-dr-1.png" src="../../_images/compas-numerical-dr-1.png" />
-</div>
+
+<figure class="figure">
+<img alt="../../images/compas-numerical-dr-1.png" class="figure-img img-fluid" src="../../images/compas-numerical-dr-1.png"/>
+</figure>
 </dd></dl>
-
 </div>
-
-                        
-                        <nav class="compas-sideways">
-                            
-                                <a href="../compas.numerical.html" class="btn btn-primary compas-prev" role="button">numerical</a>
-                            
-
-                            
-                                <a href="compas.numerical.drx.html" class="btn btn-primary compas-next" role="button">drx</a>
-                            
-                        </nav>
-
-                    
-
-                </main>
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column active">
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="../compas.numerical.html" role="button">numerical</a>
+<a class="btn btn-primary compas-next" href="compas.numerical.drx.html" role="button">drx</a>
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
@@ -218,33 +171,21 @@ of articulated networks of axial force members.</p>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
-
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    <ul class="nav flex-column" id="compas-localnav">
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">dr</a></li>
 </ul>
-
-
-                </div>
-            </div>
-        </div>
-
-        <footer class="compas-footer">
+</div>
+</div>
+</div>
+<footer class="compas-footer">
             
                 
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                    © Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -256,10 +197,7 @@ of articulated networks of axial force members.</p>
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-
-        
-
-            <script type="text/javascript">
+<script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -269,24 +207,17 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-
-            <script src="/static/underscore.js"></script>
-            <script src="/static/doctools.js"></script>
-            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-
-            <script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-
-        
-    </body>
+</body>
 </html>
