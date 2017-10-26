@@ -88,7 +88,6 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
         plotter.draw_edges()
         plotter.show()
 
-
     """
     if callback:
         if not callable(callback):

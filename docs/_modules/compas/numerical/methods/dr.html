@@ -85,8 +85,17 @@
     <span class="k">return</span> <span class="n">dv</span>
 
 
-<span class="k">def</span> <span class="nf">rk3</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<span class="c1"># def rk2_(K1):</span>
+<span class="c1">#     K = [</span>
+<span class="c1">#         [0.0, 0.0, 0.0, ],</span>
+<span class="c1">#         [1.0, 0.5, 0.5, ],</span>
+<span class="c1">#     ]</span>
+<span class="c1">#     B2 = [0.5, 0.5, ]</span>
+<span class="c1">#     B1 = [1.0, 0.0, ]</span>
+<span class="c1">#     K0 = dt * a(K[0][0] * dt, v0)</span>
+<span class="c1">#     K1 = dt * a(K[1][0] * dt, v0 + K[1][1] * K0 + K[1][2] * K1)</span>
+<span class="c1">#     dv = B2[0] * K0 + B2[1] * K1</span>
+<span class="c1">#     return dv, K1</span>
 
 
 <span class="k">def</span> <span class="nf">rk4</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
@@ -105,9 +114,6 @@
     <span class="k">return</span> <span class="n">dv</span>
 
 
-<span class="c1"># --------------------------------------------------------------------------</span>
-<span class="c1"># adaptive, explicit RK schemes</span>
-<span class="c1"># --------------------------------------------------------------------------</span>
 <span class="c1"># def rk5():</span>
 <span class="c1">#     K  = [</span>
 <span class="c1">#         [0.0, ],</span>
@@ -129,20 +135,6 @@
 <span class="c1">#     e  = (B5[0] - B4[0]) * K0 + (B5[1] - B4[1]) * K1 + (B5[2] - B4[2]) * K2 + (B5[3] - B4[3]) * K3 + (B5[4] - B4[4]) * K4 + (B5[5] - B4[5]) * K5</span>
 <span class="c1">#     e  = sqrt(sum(e ** 2) / num_v)</span>
 <span class="c1">#     return dv, e</span>
-<span class="c1"># --------------------------------------------------------------------------</span>
-<span class="c1"># implicit RK schemes</span>
-<span class="c1"># --------------------------------------------------------------------------</span>
-<span class="c1"># def rk2_(K1):</span>
-<span class="c1">#     K = [</span>
-<span class="c1">#         [0.0, 0.0, 0.0, ],</span>
-<span class="c1">#         [1.0, 0.5, 0.5, ],</span>
-<span class="c1">#     ]</span>
-<span class="c1">#     B2 = [0.5, 0.5, ]</span>
-<span class="c1">#     B1 = [1.0, 0.0, ]</span>
-<span class="c1">#     K0 = dt * a(K[0][0] * dt, v0)</span>
-<span class="c1">#     K1 = dt * a(K[1][0] * dt, v0 + K[1][1] * K0 + K[1][2] * K1)</span>
-<span class="c1">#     dv = B2[0] * K0 + B2[1] * K1</span>
-<span class="c1">#     return dv, K1</span>
 
 
 <div class="viewcode-block" id="dr"><a class="viewcode-back" href="../../../../reference/generated/compas.numerical.dr.html#compas.numerical.dr">[docs]</a><span class="k">def</span> <span class="nf">dr</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">qpre</span><span class="p">,</span> <span class="n">fpre</span><span class="p">,</span> <span class="n">lpre</span><span class="p">,</span> <span class="n">linit</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span>
@@ -152,6 +144,30 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    vertices : list</span>
+<span class="sd">        XYZ coordinates of the vertices.</span>
+<span class="sd">    edges : list</span>
+<span class="sd">        Connectivity of the vertices.</span>
+<span class="sd">    fixed : list</span>
+<span class="sd">        Indices of the fixed vertices.</span>
+<span class="sd">    loads : list</span>
+<span class="sd">        XYZ components of the loads on the vertices.</span>
+<span class="sd">    qpre : list</span>
+<span class="sd">        Prescribed force densities in the edges.</span>
+<span class="sd">    fpre : list</span>
+<span class="sd">        Prescribed forces in the edges.</span>
+<span class="sd">    lpre : list</span>
+<span class="sd">        Prescribed lengths of the edges.</span>
+<span class="sd">    linit : list</span>
+<span class="sd">        Initial length of the edges.</span>
+<span class="sd">    E : list</span>
+<span class="sd">        Stiffness of the edges.</span>
+<span class="sd">    radius : list</span>
+<span class="sd">        Radius of the edges.</span>
+<span class="sd">    callback : callable, optional</span>
+<span class="sd">        User-defined function that is called at every iteration.</span>
+<span class="sd">    callback_args : tuple, optional</span>
+<span class="sd">        Additional arguments passed to the callback.</span>
 
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
@@ -232,6 +248,12 @@
 <span class="sd">            facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})</span>
 <span class="sd">        plotter.draw_edges()</span>
 <span class="sd">        plotter.show()</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    De Laet L., Veenendaal D., Van Mele T., Mollaert M. and Block P.</span>
+<span class="sd">    Bending incorporated: designing tension structures by integrating bending-active elements,</span>
+<span class="sd">    Proceedings of Tensinet Symposium 2013,Istanbul, Turkey, 2013.</span>
 
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>

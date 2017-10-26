@@ -29,6 +29,22 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
         XYZ coordinates of the vertices of the network
     edges : list
         Edges between vertices represented by
+    fixed : list
+        Indices of fixed vertices.
+    q : list
+        Force density of edges.
+    loads : list
+        XYZ components of the loads on the vertices.
+    rtype : str, optional
+        Type of returned results.
+
+    Returns
+    -------
+    tuple
+        ``xyz, q, f, l, r`` as lists, if ``rtype == 'list'``.
+
+        ``xyz, q, f, l, r`` as arrays.
+
 
     Example
     -------
@@ -75,8 +91,7 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
         zmax = max(mesh.get_vertices_attribute('z'))
 
         plotter.draw_vertices(
-            facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)},
-            text="z"
+            facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)}
         )
         plotter.draw_faces()
         plotter.draw_edges()
@@ -84,7 +99,7 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
 
     References
     ----------
-    * H. Schek [1974], The Force Density Method for Form Finding and Computation of General Networks, Computer Methofd in Applied Mechanics and Engineering, 3: 115-134.
+    H. Schek [1974], The Force Density Method for Form Finding and Computation of General Networks, Computer Methofd in Applied Mechanics and Engineering, 3: 115-134.
 
     """
     v    = len(vertices)
@@ -111,18 +126,7 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
     r = p - Ct.dot(Q).dot(C).dot(xyz)
 
     if rtype == 'list':
-        return [xyz.tolist(),
-                q.ravel().tolist(),
-                f.ravel().tolist(),
-                l.ravel().tolist(),
-                r.tolist()]
-
-    # if rtype == 'dict':
-    #     return {'xyz': xyz.tolist(),
-    #             'q'  : q.ravel().tolist(),
-    #             'f'  : f.ravel().tolist(),
-    #             'l'  : l.ravel().tolist(),
-    #             'r'  : r.tolist()}
+        return xyz.tolist(), q.ravel().tolist(), f.ravel().tolist(), l.ravel().tolist(), r.tolist()
 
     return xyz, q, f, l, r
 

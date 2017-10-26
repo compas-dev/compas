@@ -48,8 +48,17 @@ def rk2(a, v0, dt):
     return dv
 
 
-def rk3(a, v0, dt):
-    raise NotImplementedError
+# def rk2_(K1):
+#     K = [
+#         [0.0, 0.0, 0.0, ],
+#         [1.0, 0.5, 0.5, ],
+#     ]
+#     B2 = [0.5, 0.5, ]
+#     B1 = [1.0, 0.0, ]
+#     K0 = dt * a(K[0][0] * dt, v0)
+#     K1 = dt * a(K[1][0] * dt, v0 + K[1][1] * K0 + K[1][2] * K1)
+#     dv = B2[0] * K0 + B2[1] * K1
+#     return dv, K1
 
 
 def rk4(a, v0, dt):
@@ -68,9 +77,6 @@ def rk4(a, v0, dt):
     return dv
 
 
-# --------------------------------------------------------------------------
-# adaptive, explicit RK schemes
-# --------------------------------------------------------------------------
 # def rk5():
 #     K  = [
 #         [0.0, ],
@@ -92,20 +98,6 @@ def rk4(a, v0, dt):
 #     e  = (B5[0] - B4[0]) * K0 + (B5[1] - B4[1]) * K1 + (B5[2] - B4[2]) * K2 + (B5[3] - B4[3]) * K3 + (B5[4] - B4[4]) * K4 + (B5[5] - B4[5]) * K5
 #     e  = sqrt(sum(e ** 2) / num_v)
 #     return dv, e
-# --------------------------------------------------------------------------
-# implicit RK schemes
-# --------------------------------------------------------------------------
-# def rk2_(K1):
-#     K = [
-#         [0.0, 0.0, 0.0, ],
-#         [1.0, 0.5, 0.5, ],
-#     ]
-#     B2 = [0.5, 0.5, ]
-#     B1 = [1.0, 0.0, ]
-#     K0 = dt * a(K[0][0] * dt, v0)
-#     K1 = dt * a(K[1][0] * dt, v0 + K[1][1] * K0 + K[1][2] * K1)
-#     dv = B2[0] * K0 + B2[1] * K1
-#     return dv, K1
 
 
 def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
@@ -115,6 +107,30 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
     Parameters
     ----------
+    vertices : list
+        XYZ coordinates of the vertices.
+    edges : list
+        Connectivity of the vertices.
+    fixed : list
+        Indices of the fixed vertices.
+    loads : list
+        XYZ components of the loads on the vertices.
+    qpre : list
+        Prescribed force densities in the edges.
+    fpre : list
+        Prescribed forces in the edges.
+    lpre : list
+        Prescribed lengths of the edges.
+    linit : list
+        Initial length of the edges.
+    E : list
+        Stiffness of the edges.
+    radius : list
+        Radius of the edges.
+    callback : callable, optional
+        User-defined function that is called at every iteration.
+    callback_args : tuple, optional
+        Additional arguments passed to the callback.
 
     Example
     -------
@@ -195,6 +211,12 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
             facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
         plotter.draw_edges()
         plotter.show()
+
+    References
+    ----------
+    De Laet L., Veenendaal D., Van Mele T., Mollaert M. and Block P.
+    Bending incorporated: designing tension structures by integrating bending-active elements,
+    Proceedings of Tensinet Symposium 2013,Istanbul, Turkey, 2013.
 
     """
     if callback:

@@ -7,9 +7,6 @@ geometry
 
 .. currentmodule:: compas.geometry
 
-A package defining common geometric functions, objects, and algorithms.
-
-
 .. note::
 
     The functions in this package expect input arguments to be structured in a certain

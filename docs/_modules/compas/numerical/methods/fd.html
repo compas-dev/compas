@@ -66,6 +66,22 @@
 <span class="sd">        XYZ coordinates of the vertices of the network</span>
 <span class="sd">    edges : list</span>
 <span class="sd">        Edges between vertices represented by</span>
+<span class="sd">    fixed : list</span>
+<span class="sd">        Indices of fixed vertices.</span>
+<span class="sd">    q : list</span>
+<span class="sd">        Force density of edges.</span>
+<span class="sd">    loads : list</span>
+<span class="sd">        XYZ components of the loads on the vertices.</span>
+<span class="sd">    rtype : str, optional</span>
+<span class="sd">        Type of returned results.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        ``xyz, q, f, l, r`` as lists, if ``rtype == 'list'``.</span>
+
+<span class="sd">        ``xyz, q, f, l, r`` as arrays.</span>
+
 
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
@@ -112,8 +128,7 @@
 <span class="sd">        zmax = max(mesh.get_vertices_attribute('z'))</span>
 
 <span class="sd">        plotter.draw_vertices(</span>
-<span class="sd">            facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)},</span>
-<span class="sd">            text="z"</span>
+<span class="sd">            facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)}</span>
 <span class="sd">        )</span>
 <span class="sd">        plotter.draw_faces()</span>
 <span class="sd">        plotter.draw_edges()</span>
@@ -121,7 +136,7 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    * H. Schek [1974], The Force Density Method for Form Finding and Computation of General Networks, Computer Methofd in Applied Mechanics and Engineering, 3: 115-134.</span>
+<span class="sd">    H. Schek [1974], The Force Density Method for Form Finding and Computation of General Networks, Computer Methofd in Applied Mechanics and Engineering, 3: 115-134.</span>
 
 <span class="sd">    """</span>
     <span class="n">v</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
@@ -148,18 +163,7 @@
     <span class="n">r</span> <span class="o">=</span> <span class="n">p</span> <span class="o">-</span> <span class="n">Ct</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s1">'list'</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">xyz</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="n">q</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="n">l</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="n">r</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
-
-    <span class="c1"># if rtype == 'dict':</span>
-    <span class="c1">#     return {'xyz': xyz.tolist(),</span>
-    <span class="c1">#             'q'  : q.ravel().tolist(),</span>
-    <span class="c1">#             'f'  : f.ravel().tolist(),</span>
-    <span class="c1">#             'l'  : l.ravel().tolist(),</span>
-    <span class="c1">#             'r'  : r.tolist()}</span>
+        <span class="k">return</span> <span class="n">xyz</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">q</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">f</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">l</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">r</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span></div>
 

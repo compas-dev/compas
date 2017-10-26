@@ -38,8 +38,7 @@ plotter = MeshPlotter(mesh)
 zmax = max(mesh.get_vertices_attribute('z'))
 
 plotter.draw_vertices(
-    facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)},
-    text="z"
+    facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)}
 )
 plotter.draw_faces()
 plotter.draw_edges()
