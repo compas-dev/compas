@@ -1,15 +1,3 @@
-"""
-next steps:
------------
-- default attributes
-- vertices_where
-- custom class
-- random distributions of force densities
-- start from basic plot => refine
-- tighten cables (find cables)
-
-"""
-
 from __future__ import print_function
 
 import compas

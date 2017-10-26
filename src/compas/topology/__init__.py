@@ -18,10 +18,15 @@ topology
     shortest_path
     dijkstra_distances
     dijkstra_path
+    vertex_coloring
 
 """
 
 from .traversal import *
 from .traversal import __all__ as a
 
-__all__ = a
+from .combinatorial import *
+from .combinatorial import __all__ as b
+
+
+__all__ = a + b

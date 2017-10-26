@@ -331,17 +331,18 @@ This package provides an object-oriented interface to the above functionality.
 .. autosummary::
     :toctree: generated/
 
-    Circle
-    Frame
-    Line
-    Plane
+    Vector
     Point
+    Circle
+    Line
+    Frame
+    Plane
+    Polyline
     Polygon
     Polyhedron
-    Polyline
     Spline
     Surface
-    Vector
+    KDTree
 
 
 Algorithms
@@ -352,7 +353,6 @@ Algorithms
 
     planarize_faces
     flatness
-    flatness2
     smooth_centroid
     smooth_centerofmass
     smooth_area

@@ -43,17 +43,26 @@
 <h1>FaceNetwork.vertices_where</h1>
 <dl class="method">
 <dt id="compas.datastructures.FaceNetwork.vertices_where">
-<code class="descclassname">FaceNetwork.</code><code class="descname">vertices_where</code><span class="sig-paren">(</span><em>conditions</em><span class="sig-paren">)</span></dt>
+<code class="descclassname">FaceNetwork.</code><code class="descname">vertices_where</code><span class="sig-paren">(</span><em>conditions</em>, <em>data=False</em><span class="sig-paren">)</span></dt>
 <dd><p>Get vertices for which a certain condition or set of conditions is true.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>conditions</strong> (<em>dict</em>) – A set of conditions in the form of key-value pairs.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>conditions</strong> (<em>dict</em>) – A set of conditions in the form of key-value pairs.
 The keys should be attribute names. The values can be attribute
-values or ranges of attribute values in the form of min/max pairs.</td>
+values or ranges of attribute values in the form of min/max pairs.</li>
+<li><strong>data</strong> (<em>bool, optional</em>) – Yield the vertices and their data attributes.
+Default is <code class="docutils literal">False</code>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>list</em> – A list of vertex keys that satisfy the condition(s).</td>
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> (<em>hashable</em>) – The next vertex that matches the condition.</li>
+<li><em>2-tuple</em> – The next vertex and its attributes, if <code class="docutils literal">data=True</code>.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -122,7 +131,7 @@ values or ranges of attribute values in the form of min/max pairs.</td>
             
 
             
-                Last updated on Oct 25, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

@@ -295,28 +295,20 @@ def plot_mesh_contours(mesh, N=50):
     """Plot the contours of a mesh.
 
     Parameters:
-        mesh (:class:`compas.datastructures.mesh.Mesh`): The mesh object.
+        mesh (:class:`compas.datastructures.Mesh`): The mesh object.
         N (int): The density of the plot.
 
     Examples:
 
-        .. code-block:: python
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas.numerical import plot_mesh_contours
-
-            mesh = Mesh.from_obj(compas.get_data('hypar.obj'))
-
-            plot_mesh_contours(mesh, N=50)
-
-
         .. plot::
+            :include-source:
 
             import compas
             from compas.datastructures import Mesh
             from compas.numerical import plot_mesh_contours
+
             mesh = Mesh.from_obj(compas.get_data('hypar.obj'))
+
             plot_mesh_contours(mesh, N=50)
 
 
@@ -333,7 +325,7 @@ def plot_mesh_isolines(mesh, attr_name, N=50):
     """Plot the isolines of a vertex attribute of the mesh.
 
     Parameters:
-        mesh (:class:`compas.datastructures.mesh.Mesh`): A mesh object.
+        mesh (:class:`compas.datastructures.Mesh`): A mesh object.
         attr_name (str): The name of the vertex attribute.
         N (int): Optional. The density of the isolines. Default is ``50``.
 

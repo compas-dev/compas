@@ -26,12 +26,14 @@ def discrete_coons_patch(ab, bc, dc, ad):
     
     Direction and order of polylines:
 
-    b -----> c
-    ^        ^
-    |        |
-    |        |
-    |        |
-    a -----> d
+    .. code-block:: python
+
+        b -----> c
+        ^        ^
+        |        |
+        |        |
+        |        |
+        a -----> d
 
     One polyline can be None to create a triangular patch
     (Warning! This will result in duplicate vertices)

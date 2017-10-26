@@ -1,6 +1,6 @@
-from compas.geometry.objects.point import Point
-from compas.geometry.objects.vector import Vector
-from compas.geometry.objects.line import Line
+from compas.geometry.objects import Point
+from compas.geometry.objects import Vector
+from compas.geometry.objects import Line
 
 from compas.geometry import area_polygon
 from compas.geometry import cross_vectors

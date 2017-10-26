@@ -11,8 +11,8 @@ __email__      = 'liew@arch.ethz.ch'
 # Domain
 # ==============================================================================
 
-n = 10  # number of points along x and y
-ds = 0.1  # spacing of each x and y step
+n = 500  # number of points along x and y
+ds = 0.2  # spacing of each x and y step
 delta = 10**(-5)  # small finite difference
 offset = 0.2  # offset between two surfaces
 x = [ds * i for i in range(n)]  # domain for x
