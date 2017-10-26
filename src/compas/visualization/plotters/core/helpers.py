@@ -20,13 +20,35 @@ __all__ = [
 
 
 class Axes2D(object):
-    """"""
+    """Definition of a 2D Axes object.
+    Parameters
+    ----------
+    origin : tuple, list
+        X and Y coordinates for the origin.
+    vectors : list
+        The X and Y axes.
+
+    Attributes
+    ----------
+    origin : tuple, list
+        X and Y coordinates for the origin.
+    vectors : list
+        The X and Y axes.
+    """
 
     def __init__(self, origin, vectors):
+        """Initialises the Axes2D object"""
         self.origin = asarray(origin)
         self.vectors = asarray(vectors)
 
     def plot(self, axes):
+        """Plots the axes object
+
+        Parameters
+        ----------
+        axes : object
+            The matplotlib axes object.
+        """
         assert_axes_dimension(axes, 2)
         o = self.origin
         xy = self.vectors
@@ -43,9 +65,24 @@ class Axes2D(object):
 
 
 class Axes3D(object):
-    """"""
+    """Definition of a 3D Axes object.
+    Parameters
+    ----------
+    origin : tuple, list
+        X, Y and Z coordinates for the origin.
+    vectors : list
+        The X, Y and Z axes.
+
+    Attributes
+    ----------
+    origin : tuple, list
+        X, Y and Z coordinates for the origin.
+    vectors : list
+        The X, Y and Z axes.
+    """
 
     def __init__(self, origin, vectors, colors=None):
+        """Initialises the Axes3D object"""
         self.origin = asarray(origin)
         self.vectors = asarray(vectors)
         if not colors:
@@ -53,6 +90,13 @@ class Axes3D(object):
         self.colors = colors
 
     def plot(self, axes):
+        """Plots the axes object
+
+        Parameters
+        ----------
+        axes : object
+            The matplotlib axes object.
+        """
         assert_axes_dimension(axes, 3)
         o = self.origin
         xyz = self.vectors
