@@ -155,12 +155,10 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         for key, attr in network.vertices(True):
             attr['is_fixed'] = network.vertex_degree(key) == 1
 
-        count = 1
-        for u, v, attr in network.edges(True):
-            attr['qpre'] = count
-            count += 1
+        for index, (u, v, attr) in enumerate(network.edges(True)):
+            attr['qpre'] = index + 1
 
-        k2i = dict((key, index) for index, key in enumerate(network.vertices()))
+        k2i = network.key_index()
 
         vertices = [network.vertex_coordinates(key) for key in network.vertex]
         edges    = [(k2i[u], k2i[v]) for u, v in network.edges()]
@@ -173,8 +171,6 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         E        = [attr['E'] for u, v, attr in network.edges(True)]
         radius   = [attr['radius'] for u, v, attr in network.edges(True)]
 
-        plotter = NetworkPlotter(network)
-
         lines = []
         for u, v in network.edges():
             lines.append({
@@ -184,9 +180,17 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
                 'width': 1.0
             })
 
+        plotter = NetworkPlotter(network)
+        plotter.draw_lines(lines)
+
         xyz, q, f, l, r = dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius)
 
-        plotter.draw_lines(lines)
+        for key, attr in network.vertices(True):
+            index = k2i[key]
+            attr['x'] = xyz[index, 0]
+            attr['y'] = xyz[index, 1]
+            attr['z'] = xyz[index, 2]
+
         plotter.draw_vertices(
             facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
         plotter.draw_edges()
@@ -344,12 +348,10 @@ if __name__ == "__main__":
     for key, attr in network.vertices(True):
         attr['is_fixed'] = network.vertex_degree(key) == 1
 
-    count = 1
-    for u, v, attr in network.edges(True):
-        attr['qpre'] = count
-        count += 1
+    for index, (u, v, attr) in enumerate(network.edges(True)):
+        attr['qpre'] = index + 1
 
-    k2i = dict((key, index) for index, key in enumerate(network.vertices()))
+    k2i = network.key_index()
 
     vertices = [network.vertex_coordinates(key) for key in network.vertex]
     edges    = [(k2i[u], k2i[v]) for u, v in network.edges()]
@@ -362,20 +364,6 @@ if __name__ == "__main__":
     E        = [attr['E'] for u, v, attr in network.edges(True)]
     radius   = [attr['radius'] for u, v, attr in network.edges(True)]
 
-    plotter = NetworkPlotter(network)
-
-    # xdata  = []
-    # ydata1 = []
-    # ydata2 = []
-
-    # plt.show()
-
-    # axes   = plt.gca()
-    # line1, = axes.plot(xdata, ydata1, 'r-')
-    # line2, = axes.plot(xdata, ydata2, 'b-')
-    # axes.set_ylim(-10, 60)
-    # axes.set_xlim(0, 100)
-
     lines = []
     for u, v in network.edges():
         lines.append({
@@ -385,25 +373,15 @@ if __name__ == "__main__":
             'width': 1.0
         })
 
-    plotter.draw_lines(lines)
+    plotter = NetworkPlotter(network)
 
+    plotter.draw_lines(lines)
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
     plotter.update(pause=1.0)
 
-    def plot_iterations(k, xyz, crits, args):
-        # print(i, crits[0], crits[1])
-        # xdata.append(i)
-        # ydata1.append(crits[0])
-        # ydata2.append(crits[1])
-        # line1.set_xdata(xdata)
-        # line1.set_ydata(ydata1)
-        # line2.set_xdata(xdata)
-        # line2.set_ydata(ydata2)
-        # plt.draw()
-        # plt.pause(1e-17)
-
+    def callback(k, xyz, crits, args):
         plotter.update_vertices()
         plotter.update_edges()
         plotter.update(pause=0.1)
@@ -418,9 +396,7 @@ if __name__ == "__main__":
     xyz, q, f, l, r = dr(vertices, edges, fixed, loads,
                          qpre, fpre, lpre,
                          linit, E, radius,
-                         kmax=20, callback=plot_iterations)
-
-    # plt.show()
+                         kmax=20, callback=callback)
 
     plotter.update_vertices()
     plotter.update_edges()

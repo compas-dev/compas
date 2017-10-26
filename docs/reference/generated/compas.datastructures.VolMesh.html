@@ -1,0 +1,568 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+            <link rel="next" title="VolMesh.__init__" href="generated/compas.datastructures.VolMesh.__init__.html" />
+        
+        
+        
+            <link rel="prev" title="trimesh_subdivide_loop" href="compas.datastructures.trimesh_subdivide_loop.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../reference.html" >reference</a>
+            
+                <a class="breadcrumb-item" href="../compas.html" >compas</a>
+            
+                <a class="breadcrumb-item" href="../compas.datastructures.html" accesskey="U">datastructures</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <div class="section" id="volmesh">
+<h1>VolMesh</h1>
+<dl class="class">
+<dt id="compas.datastructures.VolMesh">
+<em class="property">class </em><code class="descclassname">compas.datastructures.</code><code class="descname">VolMesh</code><a class="reference internal" href="../../_modules/compas/datastructures/volmesh/volmesh.html#VolMesh"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.fromto.FromToData</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.fromto.FromToJson</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.helpers.FaceHelpers</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.helpers.EdgeHelpers</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.helpers.VertexHelpers</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.geometry.EdgeGeometry</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.descriptors.VertexCoordinatesDescriptors</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.attributes.FaceAttributesManagement</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.attributes.EdgeAttributesManagement</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mixins.attributes.VertexAttributesManagement</span></code>, <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.Datastructure</span></code></p>
+<p>Class for working with volumetric meshes.</p>
+<p>Volumetric meshes are 3-mainfold, cellular structures.</p>
+<p>The implementation of <code class="docutils literal"><span class="pre">VolMesh</span></code> is based on the notion of <em>x-maps</em> [xmaps]
+and the concepts behind the <em>OpenVolumeMesh</em> library [ovm].
+In short, we add an additional entity compared to polygonal meshes,
+the <em>cell</em>, and relate cells not through <em>half-edges</em>, but through a combination
+of <em>half-faces</em> and <em>planes</em>. Each cell consists of a series of vertex pairs,
+forming half-edges. Every half-edge points at a half-face of the cell. The half-
+faces are stored as vertex cycles. Every three adjacent vertices in the cycle,
+through the planes, point at the cell of which they form the boundary.</p>
+<dl class="attribute">
+<dt id="compas.datastructures.VolMesh.vertex">
+<code class="descname">vertex</code></dt>
+<dd><p><em>dict</em> &#8211; The vertices of the volmesh. Each vertex is represented by a key-value pair
+in the vertex dictionary. The key is the unique identifier of the vertex,
+and the value is itself a dictionary of named vertex attributes.
+<code class="docutils literal"><span class="pre">self.vertex[key]</span> <span class="pre">-&gt;</span> <span class="pre">attribute</span> <span class="pre">dict</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="compas.datastructures.VolMesh.cell">
+<code class="descname">cell</code></dt>
+<dd><p><em>dict</em> &#8211; The cells of the volmesh. Each cell is represted by a key-value pair in
+the cell dictionary. The key is the unique identifier of the cell, and
+the value id itself a dictionary. The keys of this dictionary correspond
+to the vertices that make up the cell. The values are again dictionaries.
+Each key in the latter dictionary is a neighbour of the previous vertex.
+Together they form a halfedge of the cell, pointing at one of the cell&#8217;s
+halffaces.
+<code class="docutils literal"><span class="pre">self.cell[ckey][u][v]</span> <span class="pre">-&gt;</span> <span class="pre">fkey</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="compas.datastructures.VolMesh.halfface">
+<code class="descname">halfface</code></dt>
+<dd><p><em>dict</em> &#8211; The halffaces of the volmesh. Each halfface is represented by
+<code class="docutils literal"><span class="pre">self.halfface[fkey]</span> <span class="pre">-&gt;</span> <span class="pre">vertex</span> <span class="pre">cycle</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="compas.datastructures.VolMesh.plane">
+<code class="descname">plane</code></dt>
+<dd><p><em>dict</em> &#8211; The planes of the volmesh. Every plane is uniquely defined by three
+neighbouring vertices of the volmesh in a specific order. At the first level,
+each vertex in the plane dict points at a new dictionary. This keys of this
+dictionary are the (undirected) neighbours of the previous vertex. The values
+are again dictionaries. In combination with the first two keys, the keys
+of the latter identify oriented faces (planes) of the volmesh, finally
+pointing at the cells of the volmesh.
+<code class="docutils literal"><span class="pre">self.plane[u][v][w]</span> <span class="pre">-&gt;</span> <span class="pre">ckey</span></code>.</p>
+</dd></dl>
+
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="xmaps" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[xmaps]</td><td>xxx</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="ovm" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[ovm]</td><td><a class="reference external" href="http://www.openvolumemesh.org">Open Volum Mesh</a></td></tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.__init__.html#compas.datastructures.VolMesh.__init__" title="compas.datastructures.VolMesh.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.add_cell.html#compas.datastructures.VolMesh.add_cell" title="compas.datastructures.VolMesh.add_cell"><code class="xref py py-obj docutils literal"><span class="pre">add_cell</span></code></a>(halffaces[,&nbsp;ckey])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.add_halfface.html#compas.datastructures.VolMesh.add_halfface" title="compas.datastructures.VolMesh.add_halfface"><code class="xref py py-obj docutils literal"><span class="pre">add_halfface</span></code></a>(vertices[,&nbsp;fkey])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.add_vertex.html#compas.datastructures.VolMesh.add_vertex" title="compas.datastructures.VolMesh.add_vertex"><code class="xref py py-obj docutils literal"><span class="pre">add_vertex</span></code></a>([vkey,&nbsp;attr_dict])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_adjacency.html#compas.datastructures.VolMesh.cell_adjacency" title="compas.datastructures.VolMesh.cell_adjacency"><code class="xref py py-obj docutils literal"><span class="pre">cell_adjacency</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_center.html#compas.datastructures.VolMesh.cell_center" title="compas.datastructures.VolMesh.cell_center"><code class="xref py py-obj docutils literal"><span class="pre">cell_center</span></code></a>(ckey)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_centroid.html#compas.datastructures.VolMesh.cell_centroid" title="compas.datastructures.VolMesh.cell_centroid"><code class="xref py py-obj docutils literal"><span class="pre">cell_centroid</span></code></a>(ckey)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_edges.html#compas.datastructures.VolMesh.cell_edges" title="compas.datastructures.VolMesh.cell_edges"><code class="xref py py-obj docutils literal"><span class="pre">cell_edges</span></code></a>(ckey)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_halffaces.html#compas.datastructures.VolMesh.cell_halffaces" title="compas.datastructures.VolMesh.cell_halffaces"><code class="xref py py-obj docutils literal"><span class="pre">cell_halffaces</span></code></a>(ckey)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_mesh.html#compas.datastructures.VolMesh.cell_mesh" title="compas.datastructures.VolMesh.cell_mesh"><code class="xref py py-obj docutils literal"><span class="pre">cell_mesh</span></code></a>(ckey)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_neighbours.html#compas.datastructures.VolMesh.cell_neighbours" title="compas.datastructures.VolMesh.cell_neighbours"><code class="xref py py-obj docutils literal"><span class="pre">cell_neighbours</span></code></a>(ckey)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_tree.html#compas.datastructures.VolMesh.cell_tree" title="compas.datastructures.VolMesh.cell_tree"><code class="xref py py-obj docutils literal"><span class="pre">cell_tree</span></code></a>(root)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_vertex_neighbours.html#compas.datastructures.VolMesh.cell_vertex_neighbours" title="compas.datastructures.VolMesh.cell_vertex_neighbours"><code class="xref py py-obj docutils literal"><span class="pre">cell_vertex_neighbours</span></code></a>(ckey)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_vertices.html#compas.datastructures.VolMesh.cell_vertices" title="compas.datastructures.VolMesh.cell_vertices"><code class="xref py py-obj docutils literal"><span class="pre">cell_vertices</span></code></a>(ckey)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cell_vertices_and_halffaces.html#compas.datastructures.VolMesh.cell_vertices_and_halffaces" title="compas.datastructures.VolMesh.cell_vertices_and_halffaces"><code class="xref py py-obj docutils literal"><span class="pre">cell_vertices_and_halffaces</span></code></a>(ckey)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.cells.html#compas.datastructures.VolMesh.cells" title="compas.datastructures.VolMesh.cells"><code class="xref py py-obj docutils literal"><span class="pre">cells</span></code></a>([data])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.clear.html#compas.datastructures.VolMesh.clear" title="compas.datastructures.VolMesh.clear"><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.copy.html#compas.datastructures.VolMesh.copy" title="compas.datastructures.VolMesh.copy"><code class="xref py py-obj docutils literal"><span class="pre">copy</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.edge_coordinates.html#compas.datastructures.VolMesh.edge_coordinates" title="compas.datastructures.VolMesh.edge_coordinates"><code class="xref py py-obj docutils literal"><span class="pre">edge_coordinates</span></code></a>(u,&nbsp;v[,&nbsp;axes])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.edge_direction.html#compas.datastructures.VolMesh.edge_direction" title="compas.datastructures.VolMesh.edge_direction"><code class="xref py py-obj docutils literal"><span class="pre">edge_direction</span></code></a>(u,&nbsp;v)</td>
+<td>Return the direction vector of an edge.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.edge_label_name.html#compas.datastructures.VolMesh.edge_label_name" title="compas.datastructures.VolMesh.edge_label_name"><code class="xref py py-obj docutils literal"><span class="pre">edge_label_name</span></code></a>(u,&nbsp;v)</td>
+<td>Get the name of an edge label.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.edge_length.html#compas.datastructures.VolMesh.edge_length" title="compas.datastructures.VolMesh.edge_length"><code class="xref py py-obj docutils literal"><span class="pre">edge_length</span></code></a>(u,&nbsp;v)</td>
+<td>Return the length of an edge.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.edge_midpoint.html#compas.datastructures.VolMesh.edge_midpoint" title="compas.datastructures.VolMesh.edge_midpoint"><code class="xref py py-obj docutils literal"><span class="pre">edge_midpoint</span></code></a>(u,&nbsp;v)</td>
+<td>Return the location of the midpoint of an edge.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.edge_name.html#compas.datastructures.VolMesh.edge_name" title="compas.datastructures.VolMesh.edge_name"><code class="xref py py-obj docutils literal"><span class="pre">edge_name</span></code></a>(u,&nbsp;v)</td>
+<td>Get the name of an edge.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.edge_point.html#compas.datastructures.VolMesh.edge_point" title="compas.datastructures.VolMesh.edge_point"><code class="xref py py-obj docutils literal"><span class="pre">edge_point</span></code></a>(u,&nbsp;v[,&nbsp;t])</td>
+<td>Return the location of a point along an edge.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.edge_vector.html#compas.datastructures.VolMesh.edge_vector" title="compas.datastructures.VolMesh.edge_vector"><code class="xref py py-obj docutils literal"><span class="pre">edge_vector</span></code></a>(u,&nbsp;v)</td>
+<td>Return the vector of an edge.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.edges.html#compas.datastructures.VolMesh.edges" title="compas.datastructures.VolMesh.edges"><code class="xref py py-obj docutils literal"><span class="pre">edges</span></code></a>([data])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.face_coordinates.html#compas.datastructures.VolMesh.face_coordinates" title="compas.datastructures.VolMesh.face_coordinates"><code class="xref py py-obj docutils literal"><span class="pre">face_coordinates</span></code></a>(fkey[,&nbsp;axes])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.face_label_name.html#compas.datastructures.VolMesh.face_label_name" title="compas.datastructures.VolMesh.face_label_name"><code class="xref py py-obj docutils literal"><span class="pre">face_label_name</span></code></a>(fkey)</td>
+<td>Get the name of a face label.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.face_name.html#compas.datastructures.VolMesh.face_name" title="compas.datastructures.VolMesh.face_name"><code class="xref py py-obj docutils literal"><span class="pre">face_name</span></code></a>(fkey)</td>
+<td>Get the name of a face.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.faces.html#compas.datastructures.VolMesh.faces" title="compas.datastructures.VolMesh.faces"><code class="xref py py-obj docutils literal"><span class="pre">faces</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.from_data.html#compas.datastructures.VolMesh.from_data" title="compas.datastructures.VolMesh.from_data"><code class="xref py py-obj docutils literal"><span class="pre">from_data</span></code></a>(data)</td>
+<td>Construct a datastructure from structured data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.from_json.html#compas.datastructures.VolMesh.from_json" title="compas.datastructures.VolMesh.from_json"><code class="xref py py-obj docutils literal"><span class="pre">from_json</span></code></a>(filepath)</td>
+<td>Construct a datastructure from structured data contained in a json file.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.from_obj.html#compas.datastructures.VolMesh.from_obj" title="compas.datastructures.VolMesh.from_obj"><code class="xref py py-obj docutils literal"><span class="pre">from_obj</span></code></a>(filepath)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.from_vertices_and_cells.html#compas.datastructures.VolMesh.from_vertices_and_cells" title="compas.datastructures.VolMesh.from_vertices_and_cells"><code class="xref py py-obj docutils literal"><span class="pre">from_vertices_and_cells</span></code></a>(vertices,&nbsp;cells)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.from_vertices_and_edges.html#compas.datastructures.VolMesh.from_vertices_and_edges" title="compas.datastructures.VolMesh.from_vertices_and_edges"><code class="xref py py-obj docutils literal"><span class="pre">from_vertices_and_edges</span></code></a>(vertices,&nbsp;edges)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_any_edge.html#compas.datastructures.VolMesh.get_any_edge" title="compas.datastructures.VolMesh.get_any_edge"><code class="xref py py-obj docutils literal"><span class="pre">get_any_edge</span></code></a>()</td>
+<td>Get the identifier of a random edge.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_any_face.html#compas.datastructures.VolMesh.get_any_face" title="compas.datastructures.VolMesh.get_any_face"><code class="xref py py-obj docutils literal"><span class="pre">get_any_face</span></code></a>()</td>
+<td>Get the identifier of a random face.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_any_face_vertex.html#compas.datastructures.VolMesh.get_any_face_vertex" title="compas.datastructures.VolMesh.get_any_face_vertex"><code class="xref py py-obj docutils literal"><span class="pre">get_any_face_vertex</span></code></a>(fkey)</td>
+<td>Get the identifier of a random vertex of a specific face.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_any_vertex.html#compas.datastructures.VolMesh.get_any_vertex" title="compas.datastructures.VolMesh.get_any_vertex"><code class="xref py py-obj docutils literal"><span class="pre">get_any_vertex</span></code></a>()</td>
+<td>Get the identifier of a random vertex.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_any_vertices.html#compas.datastructures.VolMesh.get_any_vertices" title="compas.datastructures.VolMesh.get_any_vertices"><code class="xref py py-obj docutils literal"><span class="pre">get_any_vertices</span></code></a>(n[,&nbsp;exclude_leaves])</td>
+<td>Get a list of identifiers of a random set of n vertices.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_edge_attribute.html#compas.datastructures.VolMesh.get_edge_attribute" title="compas.datastructures.VolMesh.get_edge_attribute"><code class="xref py py-obj docutils literal"><span class="pre">get_edge_attribute</span></code></a>(key,&nbsp;name[,&nbsp;value])</td>
+<td>Get the value of a named attribute of one edge.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_edge_attributes.html#compas.datastructures.VolMesh.get_edge_attributes" title="compas.datastructures.VolMesh.get_edge_attributes"><code class="xref py py-obj docutils literal"><span class="pre">get_edge_attributes</span></code></a>(key,&nbsp;names[,&nbsp;values])</td>
+<td>Get the value of a named attribute of one edge.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_edges_attribute.html#compas.datastructures.VolMesh.get_edges_attribute" title="compas.datastructures.VolMesh.get_edges_attribute"><code class="xref py py-obj docutils literal"><span class="pre">get_edges_attribute</span></code></a>(name[,&nbsp;value,&nbsp;keys])</td>
+<td>Get the value of a named attribute of multiple edges.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_edges_attributes.html#compas.datastructures.VolMesh.get_edges_attributes" title="compas.datastructures.VolMesh.get_edges_attributes"><code class="xref py py-obj docutils literal"><span class="pre">get_edges_attributes</span></code></a>(names[,&nbsp;values,&nbsp;keys])</td>
+<td>Get the values of multiple named attribute of multiple edges.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_face_attribute.html#compas.datastructures.VolMesh.get_face_attribute" title="compas.datastructures.VolMesh.get_face_attribute"><code class="xref py py-obj docutils literal"><span class="pre">get_face_attribute</span></code></a>(fkey,&nbsp;name[,&nbsp;value])</td>
+<td>Get the value of a named attribute of one face.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_face_attributes.html#compas.datastructures.VolMesh.get_face_attributes" title="compas.datastructures.VolMesh.get_face_attributes"><code class="xref py py-obj docutils literal"><span class="pre">get_face_attributes</span></code></a>(fkey,&nbsp;names[,&nbsp;values])</td>
+<td>Get the value of a named attribute of one face.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_faces_attribute.html#compas.datastructures.VolMesh.get_faces_attribute" title="compas.datastructures.VolMesh.get_faces_attribute"><code class="xref py py-obj docutils literal"><span class="pre">get_faces_attribute</span></code></a>(name[,&nbsp;value,&nbsp;fkeys])</td>
+<td>Get the value of a named attribute of multiple faces.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_faces_attributes.html#compas.datastructures.VolMesh.get_faces_attributes" title="compas.datastructures.VolMesh.get_faces_attributes"><code class="xref py py-obj docutils literal"><span class="pre">get_faces_attributes</span></code></a>(names[,&nbsp;values,&nbsp;fkeys])</td>
+<td>Get the values of multiple named attribute of multiple faces.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_vertex_attribute.html#compas.datastructures.VolMesh.get_vertex_attribute" title="compas.datastructures.VolMesh.get_vertex_attribute"><code class="xref py py-obj docutils literal"><span class="pre">get_vertex_attribute</span></code></a>(key,&nbsp;name[,&nbsp;value])</td>
+<td>Get the value of a named attribute of one vertex.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_vertex_attributes.html#compas.datastructures.VolMesh.get_vertex_attributes" title="compas.datastructures.VolMesh.get_vertex_attributes"><code class="xref py py-obj docutils literal"><span class="pre">get_vertex_attributes</span></code></a>(key,&nbsp;names[,&nbsp;values])</td>
+<td>Get the value of a named attribute of one vertex.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_vertices_attribute.html#compas.datastructures.VolMesh.get_vertices_attribute" title="compas.datastructures.VolMesh.get_vertices_attribute"><code class="xref py py-obj docutils literal"><span class="pre">get_vertices_attribute</span></code></a>(name[,&nbsp;value,&nbsp;keys])</td>
+<td>Get the value of a named attribute of multiple vertices.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.get_vertices_attributes.html#compas.datastructures.VolMesh.get_vertices_attributes" title="compas.datastructures.VolMesh.get_vertices_attributes"><code class="xref py py-obj docutils literal"><span class="pre">get_vertices_attributes</span></code></a>(names[,&nbsp;values,&nbsp;keys])</td>
+<td>Get the values of multiple named attribute of multiple vertices.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.halfface_adjacency.html#compas.datastructures.VolMesh.halfface_adjacency" title="compas.datastructures.VolMesh.halfface_adjacency"><code class="xref py py-obj docutils literal"><span class="pre">halfface_adjacency</span></code></a>(ckey)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.halfface_cell.html#compas.datastructures.VolMesh.halfface_cell" title="compas.datastructures.VolMesh.halfface_cell"><code class="xref py py-obj docutils literal"><span class="pre">halfface_cell</span></code></a>(fkey)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.halfface_edges.html#compas.datastructures.VolMesh.halfface_edges" title="compas.datastructures.VolMesh.halfface_edges"><code class="xref py py-obj docutils literal"><span class="pre">halfface_edges</span></code></a>(fkey)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.halfface_vertices.html#compas.datastructures.VolMesh.halfface_vertices" title="compas.datastructures.VolMesh.halfface_vertices"><code class="xref py py-obj docutils literal"><span class="pre">halfface_vertices</span></code></a>(fkey[,&nbsp;ordered])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.planes.html#compas.datastructures.VolMesh.planes" title="compas.datastructures.VolMesh.planes"><code class="xref py py-obj docutils literal"><span class="pre">planes</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.scale.html#compas.datastructures.VolMesh.scale" title="compas.datastructures.VolMesh.scale"><code class="xref py py-obj docutils literal"><span class="pre">scale</span></code></a>([factor])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_edge_attribute.html#compas.datastructures.VolMesh.set_edge_attribute" title="compas.datastructures.VolMesh.set_edge_attribute"><code class="xref py py-obj docutils literal"><span class="pre">set_edge_attribute</span></code></a>(key,&nbsp;name,&nbsp;value[,&nbsp;directed])</td>
+<td>Set one attribute of one edge.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_edge_attributes.html#compas.datastructures.VolMesh.set_edge_attributes" title="compas.datastructures.VolMesh.set_edge_attributes"><code class="xref py py-obj docutils literal"><span class="pre">set_edge_attributes</span></code></a>(key[,&nbsp;attr_dict])</td>
+<td>Set multiple attributes of one edge.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_edges_attribute.html#compas.datastructures.VolMesh.set_edges_attribute" title="compas.datastructures.VolMesh.set_edges_attribute"><code class="xref py py-obj docutils literal"><span class="pre">set_edges_attribute</span></code></a>(name,&nbsp;value[,&nbsp;keys])</td>
+<td>Set one attribute of multiple edges.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_edges_attributes.html#compas.datastructures.VolMesh.set_edges_attributes" title="compas.datastructures.VolMesh.set_edges_attributes"><code class="xref py py-obj docutils literal"><span class="pre">set_edges_attributes</span></code></a>([keys,&nbsp;attr_dict])</td>
+<td>Set multiple attributes of multiple edges.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_face_attribute.html#compas.datastructures.VolMesh.set_face_attribute" title="compas.datastructures.VolMesh.set_face_attribute"><code class="xref py py-obj docutils literal"><span class="pre">set_face_attribute</span></code></a>(fkey,&nbsp;name,&nbsp;value)</td>
+<td>Set one attribute of one face.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_face_attributes.html#compas.datastructures.VolMesh.set_face_attributes" title="compas.datastructures.VolMesh.set_face_attributes"><code class="xref py py-obj docutils literal"><span class="pre">set_face_attributes</span></code></a>(fkey[,&nbsp;attr_dict])</td>
+<td>Set multiple attributes of one face.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_faces_attribute.html#compas.datastructures.VolMesh.set_faces_attribute" title="compas.datastructures.VolMesh.set_faces_attribute"><code class="xref py py-obj docutils literal"><span class="pre">set_faces_attribute</span></code></a>(name,&nbsp;value[,&nbsp;fkeys])</td>
+<td>Set one attribute of multiple faces.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_faces_attributes.html#compas.datastructures.VolMesh.set_faces_attributes" title="compas.datastructures.VolMesh.set_faces_attributes"><code class="xref py py-obj docutils literal"><span class="pre">set_faces_attributes</span></code></a>([fkeys,&nbsp;attr_dict])</td>
+<td>Set multiple attributes of multiple faces.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_vertex_attribute.html#compas.datastructures.VolMesh.set_vertex_attribute" title="compas.datastructures.VolMesh.set_vertex_attribute"><code class="xref py py-obj docutils literal"><span class="pre">set_vertex_attribute</span></code></a>(key,&nbsp;name,&nbsp;value)</td>
+<td>Set one attribute of one vertex.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_vertex_attributes.html#compas.datastructures.VolMesh.set_vertex_attributes" title="compas.datastructures.VolMesh.set_vertex_attributes"><code class="xref py py-obj docutils literal"><span class="pre">set_vertex_attributes</span></code></a>(key[,&nbsp;attr_dict])</td>
+<td>Set multiple attributes of one vertex.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_vertices_attribute.html#compas.datastructures.VolMesh.set_vertices_attribute" title="compas.datastructures.VolMesh.set_vertices_attribute"><code class="xref py py-obj docutils literal"><span class="pre">set_vertices_attribute</span></code></a>(name,&nbsp;value[,&nbsp;keys])</td>
+<td>Set one attribute of multiple vertices.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.set_vertices_attributes.html#compas.datastructures.VolMesh.set_vertices_attributes" title="compas.datastructures.VolMesh.set_vertices_attributes"><code class="xref py py-obj docutils literal"><span class="pre">set_vertices_attributes</span></code></a>([keys,&nbsp;attr_dict])</td>
+<td>Set multiple attributes of multiple vertices.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.to_data.html#compas.datastructures.VolMesh.to_data" title="compas.datastructures.VolMesh.to_data"><code class="xref py py-obj docutils literal"><span class="pre">to_data</span></code></a>()</td>
+<td>Returns a dictionary of structured data representing the data structure.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.to_json.html#compas.datastructures.VolMesh.to_json" title="compas.datastructures.VolMesh.to_json"><code class="xref py py-obj docutils literal"><span class="pre">to_json</span></code></a>([filepath])</td>
+<td>Serialise the structured data representing the data structure to json.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.to_obj.html#compas.datastructures.VolMesh.to_obj" title="compas.datastructures.VolMesh.to_obj"><code class="xref py py-obj docutils literal"><span class="pre">to_obj</span></code></a>(filepath)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.update_default_edge_attributes.html#compas.datastructures.VolMesh.update_default_edge_attributes" title="compas.datastructures.VolMesh.update_default_edge_attributes"><code class="xref py py-obj docutils literal"><span class="pre">update_default_edge_attributes</span></code></a>([attr_dict])</td>
+<td>Update the default edge attributes (this also affects already existing edges).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.update_default_face_attributes.html#compas.datastructures.VolMesh.update_default_face_attributes" title="compas.datastructures.VolMesh.update_default_face_attributes"><code class="xref py py-obj docutils literal"><span class="pre">update_default_face_attributes</span></code></a>([attr_dict])</td>
+<td>Update the default face attributes (this also affects already existing faces).</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.update_default_vertex_attributes.html#compas.datastructures.VolMesh.update_default_vertex_attributes" title="compas.datastructures.VolMesh.update_default_vertex_attributes"><code class="xref py py-obj docutils literal"><span class="pre">update_default_vertex_attributes</span></code></a>([attr_dict])</td>
+<td>Update the default vertex attributes (this also affects already existing vertices).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.vertex_coordinates.html#compas.datastructures.VolMesh.vertex_coordinates" title="compas.datastructures.VolMesh.vertex_coordinates"><code class="xref py py-obj docutils literal"><span class="pre">vertex_coordinates</span></code></a>(vkey[,&nbsp;axes])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.vertex_label_name.html#compas.datastructures.VolMesh.vertex_label_name" title="compas.datastructures.VolMesh.vertex_label_name"><code class="xref py py-obj docutils literal"><span class="pre">vertex_label_name</span></code></a>(key)</td>
+<td>Get the name of a vertex label.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.vertex_name.html#compas.datastructures.VolMesh.vertex_name" title="compas.datastructures.VolMesh.vertex_name"><code class="xref py py-obj docutils literal"><span class="pre">vertex_name</span></code></a>(key)</td>
+<td>Get the name of a vertex.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.vertex_neighbours.html#compas.datastructures.VolMesh.vertex_neighbours" title="compas.datastructures.VolMesh.vertex_neighbours"><code class="xref py py-obj docutils literal"><span class="pre">vertex_neighbours</span></code></a>(vkey)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.datastructures.VolMesh.vertices.html#compas.datastructures.VolMesh.vertices" title="compas.datastructures.VolMesh.vertices"><code class="xref py py-obj docutils literal"><span class="pre">vertices</span></code></a>([data])</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">color</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">data</span></code></td>
+<td>The data representing the mesh.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">name</span></code></td>
+<td>The name of the mesh.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">x</span></code></td>
+<td><em>list</em> &#8211; The X coordinates of the vertices.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">xy</span></code></td>
+<td><em>list</em> &#8211; The XY coordinates of the vertices.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">xyz</span></code></td>
+<td><em>list</em> &#8211; The XYZ coordinates of the vertices.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">y</span></code></td>
+<td><em>list</em> &#8211; The Y coordinates of the vertices.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">z</span></code></td>
+<td><em>list</em> &#8211; The Z coordinates of the vertices.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+                        
+                        <nav class="compas-sideways">
+                            
+                                <a href="compas.datastructures.trimesh_subdivide_loop.html" class="btn btn-primary compas-prev" role="button">trimesh_subdivide_loop</a>
+                            
+
+                            
+                                <a href="generated/compas.datastructures.VolMesh.__init__.html" class="btn btn-primary compas-next" role="button">VolMesh.__init__</a>
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.com.html">com</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.hpc.html">hpc</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.interop.html">interop</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas.visualization.html">visualization</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_maya.html">compas_maya</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_grasshopper.html">compas_grasshopper</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_dynamo.html">compas_dynamo</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
+</ul>
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">VolMesh</a></li>
+</ul>
+
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
+            
+                
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 26, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+
+        
+
+            <script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+
+        
+    </body>
+</html>

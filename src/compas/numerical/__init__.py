@@ -6,9 +6,6 @@ numerical
 
 .. module:: compas.numerical
 
-A package for numerical computation.
-
-
 .. note::
 
     This package is built around NumPy and Scipy
@@ -155,12 +152,16 @@ transformations
 .. autosummary::
     :toctree: generated/
 
+*Under construction...*
+
 
 triangulation
 -------------
 
 .. autosummary::
     :toctree: generated/
+
+*Under construction...*
 
 
 utilities

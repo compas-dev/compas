@@ -1,52 +1,81 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a class="breadcrumb-item" href="../../../index.html">module code</a>
-<a accesskey="U" class="breadcrumb-item" href="../../geometry.html">compas.geometry</a>
-</nav>
-<h1>Source code for compas.geometry.objects.polyhedron</h1><div class="highlight"><pre><code class="language-python border rounded">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../../index.html" >module code</a>
+            
+                <a class="breadcrumb-item" href="../../geometry.html" accesskey="U">compas.geometry</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <h1>Source code for compas.geometry.objects.polyhedron</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, Block Research Group - ETH Zurich'</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="p">[</span><span class="s1">'&lt;vanmelet@ethz.ch&gt;'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, Block Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&lt;vanmelet@ethz.ch&gt;&#39;</span><span class="p">,</span> <span class="p">]</span>
 
 
 <div class="viewcode-block" id="Polyhedron"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyhedron.html#compas.geometry.Polyhedron">[docs]</a><span class="k">class</span> <span class="nc">Polyhedron</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">"""Compute the vertices and faces of one of the Platonic solids.</span>
+    <span class="sd">&quot;&quot;&quot;Compute the vertices and faces of one of the Platonic solids.</span>
 
 <span class="sd">    A Platonic solid is a regular, convex polyhedron. It is constructed by</span>
 <span class="sd">    congruent regular polygonal faces with the same number of faces meeting</span>
@@ -63,7 +92,7 @@
 <span class="sd">    References:</span>
 <span class="sd">        .. [wiki:platonic-solid] `Platonic solid &lt;https://en.wikipedia.org/wiki/Platonic_solid&gt;`_</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Polyhedron.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Polyhedron.__init__.html#compas.geometry.Polyhedron.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="kc">None</span>
@@ -135,17 +164,17 @@
 <span class="c1"># 13 = 2 * sqrt(2)</span>
 <span class="c1"># r = sqrt((0.5 * 13)**2 + (1/sqrt(2))**2)</span>
 <span class="k">class</span> <span class="nc">Tetrahedron</span><span class="p">(</span><span class="n">Polyhedron</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    V = 4</span>
 <span class="sd">    F = 4</span>
 <span class="sd">    E = 6</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Tetrahedron</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">""""""</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
                       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
                       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
@@ -161,11 +190,11 @@
 
 
 <span class="k">class</span> <span class="nc">Hexahedron</span><span class="p">(</span><span class="n">Polyhedron</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    V = 8</span>
 <span class="sd">    F = 6</span>
 <span class="sd">    E = 12</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Hexahedron</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
@@ -180,7 +209,7 @@
     <span class="c1">#</span>
     <span class="c1"># 04 = 2 * sqrt(3)</span>
     <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">""""""</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
                       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
                       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
@@ -200,11 +229,11 @@
 
 
 <span class="k">class</span> <span class="nc">Octahedron</span><span class="p">(</span><span class="n">Polyhedron</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    V = 6</span>
 <span class="sd">    F = 8</span>
 <span class="sd">    E = 12</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Octahedron</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
@@ -224,7 +253,7 @@
     <span class="c1">#    \   /</span>
     <span class="c1">#      1</span>
     <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">""""""</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
                       <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
                       <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
@@ -245,11 +274,11 @@
 
 
 <span class="k">class</span> <span class="nc">Dodecahedron</span><span class="p">(</span><span class="n">Polyhedron</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    V = 20</span>
 <span class="sd">    F = 12</span>
 <span class="sd">    E = 30</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Dodecahedron</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
@@ -259,7 +288,7 @@
     <span class="c1"># (  +-phi,       0, +-1/phi)</span>
     <span class="c1"># (    +-1,     +-1,     +-1)</span>
     <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">""""""</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">13</span><span class="p">,</span>  <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">3</span><span class="p">],</span>
@@ -292,11 +321,11 @@
 
 
 <span class="k">class</span> <span class="nc">Icosahedron</span><span class="p">(</span><span class="n">Polyhedron</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    V = 12</span>
 <span class="sd">    F = 20</span>
 <span class="sd">    E = 30</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Icosahedron</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
@@ -305,7 +334,7 @@
     <span class="c1"># (  +-1, +-phi,     0)</span>
     <span class="c1"># (+-phi,     0,   +-1)</span>
     <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">""""""</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
@@ -327,43 +356,70 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="k">pass</span>
 </code></pre></div>
-<nav class="compas-sideways">
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column">
+                        
+                        <nav class="compas-sideways">
+                            
+
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -375,7 +431,10 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -385,17 +444,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

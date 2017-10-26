@@ -1,349 +1,398 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="generated/compas_rhino.utilities.get_document_name.html" rel="next" title="get_document_name"/>
-<link href="compas_rhino.ui.html" rel="prev" title="ui"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a class="breadcrumb-item" href="../reference.html">reference</a>
-<a accesskey="U" class="breadcrumb-item" href="compas_rhino.html">compas_rhino</a>
-</nav>
-<div class="section">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+            <link rel="next" title="get_document_name" href="generated/compas_rhino.utilities.get_document_name.html" />
+        
+        
+        
+            <link rel="prev" title="ui" href="compas_rhino.ui.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../reference.html" >reference</a>
+            
+                <a class="breadcrumb-item" href="compas_rhino.html" accesskey="U">compas_rhino</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <div class="section" id="module-compas_rhino.utilities">
 <span id="utilities"></span><span id="compas-rhino-utilities"></span><h1>utilities</h1>
 <p>This package contains many convenience functions for working and interacting
 with Rhino.</p>
-<div class="section">
+<div class="section" id="document">
 <h2>document</h2>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="10%"/>
-<col width="90%"/>
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_document_name.html" title="compas_rhino.utilities.get_document_name"><code class="xref py py-obj docutils literal">get_document_name</code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_document_name.html#compas_rhino.utilities.get_document_name" title="compas_rhino.utilities.get_document_name"><code class="xref py py-obj docutils literal"><span class="pre">get_document_name</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_document_filename.html" title="compas_rhino.utilities.get_document_filename"><code class="xref py py-obj docutils literal">get_document_filename</code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_document_filename.html#compas_rhino.utilities.get_document_filename" title="compas_rhino.utilities.get_document_filename"><code class="xref py py-obj docutils literal"><span class="pre">get_document_filename</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_document_path.html" title="compas_rhino.utilities.get_document_path"><code class="xref py py-obj docutils literal">get_document_path</code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_document_path.html#compas_rhino.utilities.get_document_path" title="compas_rhino.utilities.get_document_path"><code class="xref py py-obj docutils literal"><span class="pre">get_document_path</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_document_dirname.html" title="compas_rhino.utilities.get_document_dirname"><code class="xref py py-obj docutils literal">get_document_dirname</code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_document_dirname.html#compas_rhino.utilities.get_document_dirname" title="compas_rhino.utilities.get_document_dirname"><code class="xref py py-obj docutils literal"><span class="pre">get_document_dirname</span></code></a>()</td>
 <td></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section">
+<div class="section" id="layers">
 <h2>layers</h2>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="10%"/>
-<col width="90%"/>
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.create_layers.html" title="compas_rhino.utilities.create_layers"><code class="xref py py-obj docutils literal">create_layers</code></a>(layers)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.create_layers.html#compas_rhino.utilities.create_layers" title="compas_rhino.utilities.create_layers"><code class="xref py py-obj docutils literal"><span class="pre">create_layers</span></code></a>(layers)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.clear_layers.html" title="compas_rhino.utilities.clear_layers"><code class="xref py py-obj docutils literal">clear_layers</code></a>(layers[, include_children, ...])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.clear_layers.html#compas_rhino.utilities.clear_layers" title="compas_rhino.utilities.clear_layers"><code class="xref py py-obj docutils literal"><span class="pre">clear_layers</span></code></a>(layers[,&nbsp;include_children,&nbsp;...])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.delete_layers.html" title="compas_rhino.utilities.delete_layers"><code class="xref py py-obj docutils literal">delete_layers</code></a>(layers)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.delete_layers.html#compas_rhino.utilities.delete_layers" title="compas_rhino.utilities.delete_layers"><code class="xref py py-obj docutils literal"><span class="pre">delete_layers</span></code></a>(layers)</td>
 <td></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section">
+<div class="section" id="objects">
 <h2>objects</h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Note that the meaning of the naming conventions used here is somewhat different
 than those used in Rhino and rhinoscriptsyntax modules.</p>
-<p>Functions prefixed with <code class="docutils literal">get_</code> imply that guids are obtained by applying some
+<p>Functions prefixed with <code class="docutils literal"><span class="pre">get_</span></code> imply that guids are obtained by applying some
 kind of filter. For example, get all lines with a specified naming pattern, on a
 specific layer, or with a specific color.</p>
-<p class="last">Functions prefixed with <code class="docutils literal">select_</code> imply that guids are obtained by manual
+<p class="last">Functions prefixed with <code class="docutils literal"><span class="pre">select_</span></code> imply that guids are obtained by manual
 selection.</p>
 </div>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="10%"/>
-<col width="90%"/>
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_objects.html" title="compas_rhino.utilities.get_objects"><code class="xref py py-obj docutils literal">get_objects</code></a>([name, color, layer])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_objects.html#compas_rhino.utilities.get_objects" title="compas_rhino.utilities.get_objects"><code class="xref py py-obj docutils literal"><span class="pre">get_objects</span></code></a>([name,&nbsp;color,&nbsp;layer])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_object_names.html" title="compas_rhino.utilities.get_object_names"><code class="xref py py-obj docutils literal">get_object_names</code></a>(guids)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_object_names.html#compas_rhino.utilities.get_object_names" title="compas_rhino.utilities.get_object_names"><code class="xref py py-obj docutils literal"><span class="pre">get_object_names</span></code></a>(guids)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_object_attributes.html" title="compas_rhino.utilities.get_object_attributes"><code class="xref py py-obj docutils literal">get_object_attributes</code></a>(guids)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_object_attributes.html#compas_rhino.utilities.get_object_attributes" title="compas_rhino.utilities.get_object_attributes"><code class="xref py py-obj docutils literal"><span class="pre">get_object_attributes</span></code></a>(guids)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_object_attributes_from_name.html" title="compas_rhino.utilities.get_object_attributes_from_name"><code class="xref py py-obj docutils literal">get_object_attributes_from_name</code></a>(name[, ...])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_object_attributes_from_name.html#compas_rhino.utilities.get_object_attributes_from_name" title="compas_rhino.utilities.get_object_attributes_from_name"><code class="xref py py-obj docutils literal"><span class="pre">get_object_attributes_from_name</span></code></a>(name[,&nbsp;...])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.delete_object.html" title="compas_rhino.utilities.delete_object"><code class="xref py py-obj docutils literal">delete_object</code></a>(guid[, purge])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.delete_object.html#compas_rhino.utilities.delete_object" title="compas_rhino.utilities.delete_object"><code class="xref py py-obj docutils literal"><span class="pre">delete_object</span></code></a>(guid[,&nbsp;purge])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.delete_objects.html" title="compas_rhino.utilities.delete_objects"><code class="xref py py-obj docutils literal">delete_objects</code></a>(guids[, purge])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.delete_objects.html#compas_rhino.utilities.delete_objects" title="compas_rhino.utilities.delete_objects"><code class="xref py py-obj docutils literal"><span class="pre">delete_objects</span></code></a>(guids[,&nbsp;purge])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.purge_objects.html" title="compas_rhino.utilities.purge_objects"><code class="xref py py-obj docutils literal">purge_objects</code></a>(guids)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.purge_objects.html#compas_rhino.utilities.purge_objects" title="compas_rhino.utilities.purge_objects"><code class="xref py py-obj docutils literal"><span class="pre">purge_objects</span></code></a>(guids)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_points.html" title="compas_rhino.utilities.get_points"><code class="xref py py-obj docutils literal">get_points</code></a>([layer])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_points.html#compas_rhino.utilities.get_points" title="compas_rhino.utilities.get_points"><code class="xref py py-obj docutils literal"><span class="pre">get_points</span></code></a>([layer])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_curves.html" title="compas_rhino.utilities.get_curves"><code class="xref py py-obj docutils literal">get_curves</code></a>([layer])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_curves.html#compas_rhino.utilities.get_curves" title="compas_rhino.utilities.get_curves"><code class="xref py py-obj docutils literal"><span class="pre">get_curves</span></code></a>([layer])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_lines.html" title="compas_rhino.utilities.get_lines"><code class="xref py py-obj docutils literal">get_lines</code></a>([layer])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_lines.html#compas_rhino.utilities.get_lines" title="compas_rhino.utilities.get_lines"><code class="xref py py-obj docutils literal"><span class="pre">get_lines</span></code></a>([layer])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_polylines.html" title="compas_rhino.utilities.get_polylines"><code class="xref py py-obj docutils literal">get_polylines</code></a>([layer])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_polylines.html#compas_rhino.utilities.get_polylines" title="compas_rhino.utilities.get_polylines"><code class="xref py py-obj docutils literal"><span class="pre">get_polylines</span></code></a>([layer])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_polygons.html" title="compas_rhino.utilities.get_polygons"><code class="xref py py-obj docutils literal">get_polygons</code></a>([layer])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_polygons.html#compas_rhino.utilities.get_polygons" title="compas_rhino.utilities.get_polygons"><code class="xref py py-obj docutils literal"><span class="pre">get_polygons</span></code></a>([layer])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_point_coordinates.html" title="compas_rhino.utilities.get_point_coordinates"><code class="xref py py-obj docutils literal">get_point_coordinates</code></a>(guids)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_point_coordinates.html#compas_rhino.utilities.get_point_coordinates" title="compas_rhino.utilities.get_point_coordinates"><code class="xref py py-obj docutils literal"><span class="pre">get_point_coordinates</span></code></a>(guids)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_line_coordinates.html" title="compas_rhino.utilities.get_line_coordinates"><code class="xref py py-obj docutils literal">get_line_coordinates</code></a>(guids)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_line_coordinates.html#compas_rhino.utilities.get_line_coordinates" title="compas_rhino.utilities.get_line_coordinates"><code class="xref py py-obj docutils literal"><span class="pre">get_line_coordinates</span></code></a>(guids)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_polyline_coordinates.html" title="compas_rhino.utilities.get_polyline_coordinates"><code class="xref py py-obj docutils literal">get_polyline_coordinates</code></a>(guids)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_polyline_coordinates.html#compas_rhino.utilities.get_polyline_coordinates" title="compas_rhino.utilities.get_polyline_coordinates"><code class="xref py py-obj docutils literal"><span class="pre">get_polyline_coordinates</span></code></a>(guids)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_polygon_coordinates.html" title="compas_rhino.utilities.get_polygon_coordinates"><code class="xref py py-obj docutils literal">get_polygon_coordinates</code></a>(guids)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_polygon_coordinates.html#compas_rhino.utilities.get_polygon_coordinates" title="compas_rhino.utilities.get_polygon_coordinates"><code class="xref py py-obj docutils literal"><span class="pre">get_polygon_coordinates</span></code></a>(guids)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_meshes.html" title="compas_rhino.utilities.get_meshes"><code class="xref py py-obj docutils literal">get_meshes</code></a>([layer])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_meshes.html#compas_rhino.utilities.get_meshes" title="compas_rhino.utilities.get_meshes"><code class="xref py py-obj docutils literal"><span class="pre">get_meshes</span></code></a>([layer])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_face_vertices.html" title="compas_rhino.utilities.get_mesh_face_vertices"><code class="xref py py-obj docutils literal">get_mesh_face_vertices</code></a>(guid)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_face_vertices.html#compas_rhino.utilities.get_mesh_face_vertices" title="compas_rhino.utilities.get_mesh_face_vertices"><code class="xref py py-obj docutils literal"><span class="pre">get_mesh_face_vertices</span></code></a>(guid)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_vertex_coordinates.html" title="compas_rhino.utilities.get_mesh_vertex_coordinates"><code class="xref py py-obj docutils literal">get_mesh_vertex_coordinates</code></a>(guid)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_vertex_coordinates.html#compas_rhino.utilities.get_mesh_vertex_coordinates" title="compas_rhino.utilities.get_mesh_vertex_coordinates"><code class="xref py py-obj docutils literal"><span class="pre">get_mesh_vertex_coordinates</span></code></a>(guid)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_vertex_colors.html" title="compas_rhino.utilities.get_mesh_vertex_colors"><code class="xref py py-obj docutils literal">get_mesh_vertex_colors</code></a>(guid)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_vertex_colors.html#compas_rhino.utilities.get_mesh_vertex_colors" title="compas_rhino.utilities.get_mesh_vertex_colors"><code class="xref py py-obj docutils literal"><span class="pre">get_mesh_vertex_colors</span></code></a>(guid)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.set_mesh_vertex_colors.html" title="compas_rhino.utilities.set_mesh_vertex_colors"><code class="xref py py-obj docutils literal">set_mesh_vertex_colors</code></a>(guid, colors)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.set_mesh_vertex_colors.html#compas_rhino.utilities.set_mesh_vertex_colors" title="compas_rhino.utilities.set_mesh_vertex_colors"><code class="xref py py-obj docutils literal"><span class="pre">set_mesh_vertex_colors</span></code></a>(guid,&nbsp;colors)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_vertices_and_faces.html" title="compas_rhino.utilities.get_mesh_vertices_and_faces"><code class="xref py py-obj docutils literal">get_mesh_vertices_and_faces</code></a>(guid)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_vertices_and_faces.html#compas_rhino.utilities.get_mesh_vertices_and_faces" title="compas_rhino.utilities.get_mesh_vertices_and_faces"><code class="xref py py-obj docutils literal"><span class="pre">get_mesh_vertices_and_faces</span></code></a>(guid)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_vertex_index.html" title="compas_rhino.utilities.get_mesh_vertex_index"><code class="xref py py-obj docutils literal">get_mesh_vertex_index</code></a>(guid)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_vertex_index.html#compas_rhino.utilities.get_mesh_vertex_index" title="compas_rhino.utilities.get_mesh_vertex_index"><code class="xref py py-obj docutils literal"><span class="pre">get_mesh_vertex_index</span></code></a>(guid)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_face_index.html" title="compas_rhino.utilities.get_mesh_face_index"><code class="xref py py-obj docutils literal">get_mesh_face_index</code></a>(guid)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_face_index.html#compas_rhino.utilities.get_mesh_face_index" title="compas_rhino.utilities.get_mesh_face_index"><code class="xref py py-obj docutils literal"><span class="pre">get_mesh_face_index</span></code></a>(guid)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_edge_index.html" title="compas_rhino.utilities.get_mesh_edge_index"><code class="xref py py-obj docutils literal">get_mesh_edge_index</code></a>(guid)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_mesh_edge_index.html#compas_rhino.utilities.get_mesh_edge_index" title="compas_rhino.utilities.get_mesh_edge_index"><code class="xref py py-obj docutils literal"><span class="pre">get_mesh_edge_index</span></code></a>(guid)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_point.html" title="compas_rhino.utilities.select_point"><code class="xref py py-obj docutils literal">select_point</code></a>([message])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_point.html#compas_rhino.utilities.select_point" title="compas_rhino.utilities.select_point"><code class="xref py py-obj docutils literal"><span class="pre">select_point</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_points.html" title="compas_rhino.utilities.select_points"><code class="xref py py-obj docutils literal">select_points</code></a>([message])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_points.html#compas_rhino.utilities.select_points" title="compas_rhino.utilities.select_points"><code class="xref py py-obj docutils literal"><span class="pre">select_points</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_curve.html" title="compas_rhino.utilities.select_curve"><code class="xref py py-obj docutils literal">select_curve</code></a>([message])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_curve.html#compas_rhino.utilities.select_curve" title="compas_rhino.utilities.select_curve"><code class="xref py py-obj docutils literal"><span class="pre">select_curve</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_curves.html" title="compas_rhino.utilities.select_curves"><code class="xref py py-obj docutils literal">select_curves</code></a>([message])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_curves.html#compas_rhino.utilities.select_curves" title="compas_rhino.utilities.select_curves"><code class="xref py py-obj docutils literal"><span class="pre">select_curves</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_line.html" title="compas_rhino.utilities.select_line"><code class="xref py py-obj docutils literal">select_line</code></a>([message])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_line.html#compas_rhino.utilities.select_line" title="compas_rhino.utilities.select_line"><code class="xref py py-obj docutils literal"><span class="pre">select_line</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_lines.html" title="compas_rhino.utilities.select_lines"><code class="xref py py-obj docutils literal">select_lines</code></a>([message])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_lines.html#compas_rhino.utilities.select_lines" title="compas_rhino.utilities.select_lines"><code class="xref py py-obj docutils literal"><span class="pre">select_lines</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_polyline.html" title="compas_rhino.utilities.select_polyline"><code class="xref py py-obj docutils literal">select_polyline</code></a>([message])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_polyline.html#compas_rhino.utilities.select_polyline" title="compas_rhino.utilities.select_polyline"><code class="xref py py-obj docutils literal"><span class="pre">select_polyline</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_polylines.html" title="compas_rhino.utilities.select_polylines"><code class="xref py py-obj docutils literal">select_polylines</code></a>([message])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_polylines.html#compas_rhino.utilities.select_polylines" title="compas_rhino.utilities.select_polylines"><code class="xref py py-obj docutils literal"><span class="pre">select_polylines</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_polygon.html" title="compas_rhino.utilities.select_polygon"><code class="xref py py-obj docutils literal">select_polygon</code></a>([message])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_polygon.html#compas_rhino.utilities.select_polygon" title="compas_rhino.utilities.select_polygon"><code class="xref py py-obj docutils literal"><span class="pre">select_polygon</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_polygons.html" title="compas_rhino.utilities.select_polygons"><code class="xref py py-obj docutils literal">select_polygons</code></a>([message])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_polygons.html#compas_rhino.utilities.select_polygons" title="compas_rhino.utilities.select_polygons"><code class="xref py py-obj docutils literal"><span class="pre">select_polygons</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_surface.html" title="compas_rhino.utilities.select_surface"><code class="xref py py-obj docutils literal">select_surface</code></a>([message])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_surface.html#compas_rhino.utilities.select_surface" title="compas_rhino.utilities.select_surface"><code class="xref py py-obj docutils literal"><span class="pre">select_surface</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_surfaces.html" title="compas_rhino.utilities.select_surfaces"><code class="xref py py-obj docutils literal">select_surfaces</code></a>([message])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_surfaces.html#compas_rhino.utilities.select_surfaces" title="compas_rhino.utilities.select_surfaces"><code class="xref py py-obj docutils literal"><span class="pre">select_surfaces</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_mesh.html" title="compas_rhino.utilities.select_mesh"><code class="xref py py-obj docutils literal">select_mesh</code></a>([message])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_mesh.html#compas_rhino.utilities.select_mesh" title="compas_rhino.utilities.select_mesh"><code class="xref py py-obj docutils literal"><span class="pre">select_mesh</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.select_meshes.html" title="compas_rhino.utilities.select_meshes"><code class="xref py py-obj docutils literal">select_meshes</code></a>([message])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.select_meshes.html#compas_rhino.utilities.select_meshes" title="compas_rhino.utilities.select_meshes"><code class="xref py py-obj docutils literal"><span class="pre">select_meshes</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.is_curve_line.html" title="compas_rhino.utilities.is_curve_line"><code class="xref py py-obj docutils literal">is_curve_line</code></a>(guid)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.is_curve_line.html#compas_rhino.utilities.is_curve_line" title="compas_rhino.utilities.is_curve_line"><code class="xref py py-obj docutils literal"><span class="pre">is_curve_line</span></code></a>(guid)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.is_curve_polyline.html" title="compas_rhino.utilities.is_curve_polyline"><code class="xref py py-obj docutils literal">is_curve_polyline</code></a>(guid)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.is_curve_polyline.html#compas_rhino.utilities.is_curve_polyline" title="compas_rhino.utilities.is_curve_polyline"><code class="xref py py-obj docutils literal"><span class="pre">is_curve_polyline</span></code></a>(guid)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.is_curve_polygon.html" title="compas_rhino.utilities.is_curve_polygon"><code class="xref py py-obj docutils literal">is_curve_polygon</code></a>(guid)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.is_curve_polygon.html#compas_rhino.utilities.is_curve_polygon" title="compas_rhino.utilities.is_curve_polygon"><code class="xref py py-obj docutils literal"><span class="pre">is_curve_polygon</span></code></a>(guid)</td>
 <td></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section">
+<div class="section" id="misc">
 <h2>misc</h2>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="10%"/>
-<col width="90%"/>
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.wait.html" title="compas_rhino.utilities.wait"><code class="xref py py-obj docutils literal">wait</code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.wait.html#compas_rhino.utilities.wait" title="compas_rhino.utilities.wait"><code class="xref py py-obj docutils literal"><span class="pre">wait</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.get_tolerance.html" title="compas_rhino.utilities.get_tolerance"><code class="xref py py-obj docutils literal">get_tolerance</code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.get_tolerance.html#compas_rhino.utilities.get_tolerance" title="compas_rhino.utilities.get_tolerance"><code class="xref py py-obj docutils literal"><span class="pre">get_tolerance</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.toggle_toolbargroup.html" title="compas_rhino.utilities.toggle_toolbargroup"><code class="xref py py-obj docutils literal">toggle_toolbargroup</code></a>(rui, group)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.toggle_toolbargroup.html#compas_rhino.utilities.toggle_toolbargroup" title="compas_rhino.utilities.toggle_toolbargroup"><code class="xref py py-obj docutils literal"><span class="pre">toggle_toolbargroup</span></code></a>(rui,&nbsp;group)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.pick_point.html" title="compas_rhino.utilities.pick_point"><code class="xref py py-obj docutils literal">pick_point</code></a>([message])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.pick_point.html#compas_rhino.utilities.pick_point" title="compas_rhino.utilities.pick_point"><code class="xref py py-obj docutils literal"><span class="pre">pick_point</span></code></a>([message])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.browse_for_folder.html" title="compas_rhino.utilities.browse_for_folder"><code class="xref py py-obj docutils literal">browse_for_folder</code></a>([message, default])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.browse_for_folder.html#compas_rhino.utilities.browse_for_folder" title="compas_rhino.utilities.browse_for_folder"><code class="xref py py-obj docutils literal"><span class="pre">browse_for_folder</span></code></a>([message,&nbsp;default])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.browse_for_file.html" title="compas_rhino.utilities.browse_for_file"><code class="xref py py-obj docutils literal">browse_for_file</code></a>([title, folder, filter])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.browse_for_file.html#compas_rhino.utilities.browse_for_file" title="compas_rhino.utilities.browse_for_file"><code class="xref py py-obj docutils literal"><span class="pre">browse_for_file</span></code></a>([title,&nbsp;folder,&nbsp;filter])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.print_display_on.html" title="compas_rhino.utilities.print_display_on"><code class="xref py py-obj docutils literal">print_display_on</code></a>([on])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.print_display_on.html#compas_rhino.utilities.print_display_on" title="compas_rhino.utilities.print_display_on"><code class="xref py py-obj docutils literal"><span class="pre">print_display_on</span></code></a>([on])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.display_message.html" title="compas_rhino.utilities.display_message"><code class="xref py py-obj docutils literal">display_message</code></a>(message)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.display_message.html#compas_rhino.utilities.display_message" title="compas_rhino.utilities.display_message"><code class="xref py py-obj docutils literal"><span class="pre">display_message</span></code></a>(message)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.display_text.html" title="compas_rhino.utilities.display_text"><code class="xref py py-obj docutils literal">display_text</code></a>(text[, title, width, height])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.display_text.html#compas_rhino.utilities.display_text" title="compas_rhino.utilities.display_text"><code class="xref py py-obj docutils literal"><span class="pre">display_text</span></code></a>(text[,&nbsp;title,&nbsp;width,&nbsp;height])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.display_image.html" title="compas_rhino.utilities.display_image"><code class="xref py py-obj docutils literal">display_image</code></a>(image[, title, width, height])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.display_image.html#compas_rhino.utilities.display_image" title="compas_rhino.utilities.display_image"><code class="xref py py-obj docutils literal"><span class="pre">display_image</span></code></a>(image[,&nbsp;title,&nbsp;width,&nbsp;height])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.display_html.html" title="compas_rhino.utilities.display_html"><code class="xref py py-obj docutils literal">display_html</code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.display_html.html#compas_rhino.utilities.display_html" title="compas_rhino.utilities.display_html"><code class="xref py py-obj docutils literal"><span class="pre">display_html</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.update_settings.html" title="compas_rhino.utilities.update_settings"><code class="xref py py-obj docutils literal">update_settings</code></a>(settings[, message, title])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.update_settings.html#compas_rhino.utilities.update_settings" title="compas_rhino.utilities.update_settings"><code class="xref py py-obj docutils literal"><span class="pre">update_settings</span></code></a>(settings[,&nbsp;message,&nbsp;title])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.update_attributes.html" title="compas_rhino.utilities.update_attributes"><code class="xref py py-obj docutils literal">update_attributes</code></a>(names, values[, message, ...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.update_attributes.html#compas_rhino.utilities.update_attributes" title="compas_rhino.utilities.update_attributes"><code class="xref py py-obj docutils literal"><span class="pre">update_attributes</span></code></a>(names,&nbsp;values[,&nbsp;message,&nbsp;...])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.update_named_values.html" title="compas_rhino.utilities.update_named_values"><code class="xref py py-obj docutils literal">update_named_values</code></a>(names, values[, ...])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.update_named_values.html#compas_rhino.utilities.update_named_values" title="compas_rhino.utilities.update_named_values"><code class="xref py py-obj docutils literal"><span class="pre">update_named_values</span></code></a>(names,&nbsp;values[,&nbsp;...])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.screenshot_current_view.html" title="compas_rhino.utilities.screenshot_current_view"><code class="xref py py-obj docutils literal">screenshot_current_view</code></a>(path[, width, ...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.screenshot_current_view.html#compas_rhino.utilities.screenshot_current_view" title="compas_rhino.utilities.screenshot_current_view"><code class="xref py py-obj docutils literal"><span class="pre">screenshot_current_view</span></code></a>(path[,&nbsp;width,&nbsp;...])</td>
 <td></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section">
+<div class="section" id="drawing">
 <h2>drawing</h2>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="10%"/>
-<col width="90%"/>
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_labels.html" title="compas_rhino.utilities.xdraw_labels"><code class="xref py py-obj docutils literal">xdraw_labels</code></a>(\*args, \*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_labels.html#compas_rhino.utilities.xdraw_labels" title="compas_rhino.utilities.xdraw_labels"><code class="xref py py-obj docutils literal"><span class="pre">xdraw_labels</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
 <td>Draw labels as text dots and optionally set individual name and color.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_points.html" title="compas_rhino.utilities.xdraw_points"><code class="xref py py-obj docutils literal">xdraw_points</code></a>(\*args, \*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_points.html#compas_rhino.utilities.xdraw_points" title="compas_rhino.utilities.xdraw_points"><code class="xref py py-obj docutils literal"><span class="pre">xdraw_points</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
 <td>Draw points and optionally set individual name, layer, and color properties.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_lines.html" title="compas_rhino.utilities.xdraw_lines"><code class="xref py py-obj docutils literal">xdraw_lines</code></a>(\*args, \*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_lines.html#compas_rhino.utilities.xdraw_lines" title="compas_rhino.utilities.xdraw_lines"><code class="xref py py-obj docutils literal"><span class="pre">xdraw_lines</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
 <td>Draw lines and optionally set individual name, color, arrow, layer, and width properties.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_polylines.html" title="compas_rhino.utilities.xdraw_polylines"><code class="xref py py-obj docutils literal">xdraw_polylines</code></a>(\*args, \*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_polylines.html#compas_rhino.utilities.xdraw_polylines" title="compas_rhino.utilities.xdraw_polylines"><code class="xref py py-obj docutils literal"><span class="pre">xdraw_polylines</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
 <td>Draw polylines, and optionally set individual name, color, arrow, and layer properties.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_faces.html" title="compas_rhino.utilities.xdraw_faces"><code class="xref py py-obj docutils literal">xdraw_faces</code></a>(\*args, \*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_faces.html#compas_rhino.utilities.xdraw_faces" title="compas_rhino.utilities.xdraw_faces"><code class="xref py py-obj docutils literal"><span class="pre">xdraw_faces</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_cylinders.html" title="compas_rhino.utilities.xdraw_cylinders"><code class="xref py py-obj docutils literal">xdraw_cylinders</code></a>(\*args, \*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_cylinders.html#compas_rhino.utilities.xdraw_cylinders" title="compas_rhino.utilities.xdraw_cylinders"><code class="xref py py-obj docutils literal"><span class="pre">xdraw_cylinders</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_pipes.html" title="compas_rhino.utilities.xdraw_pipes"><code class="xref py py-obj docutils literal">xdraw_pipes</code></a>(\*args, \*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_pipes.html#compas_rhino.utilities.xdraw_pipes" title="compas_rhino.utilities.xdraw_pipes"><code class="xref py py-obj docutils literal"><span class="pre">xdraw_pipes</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_spheres.html" title="compas_rhino.utilities.xdraw_spheres"><code class="xref py py-obj docutils literal">xdraw_spheres</code></a>(\*args, \*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_spheres.html#compas_rhino.utilities.xdraw_spheres" title="compas_rhino.utilities.xdraw_spheres"><code class="xref py py-obj docutils literal"><span class="pre">xdraw_spheres</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_mesh.html" title="compas_rhino.utilities.xdraw_mesh"><code class="xref py py-obj docutils literal">xdraw_mesh</code></a>(\*args, \*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas_rhino.utilities.xdraw_mesh.html#compas_rhino.utilities.xdraw_mesh" title="compas_rhino.utilities.xdraw_mesh"><code class="xref py py-obj docutils literal"><span class="pre">xdraw_mesh</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
 <td></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="compas_rhino.ui.html" role="button">ui</a>
-<a class="btn btn-primary compas-next" href="generated/compas_rhino.utilities.get_document_name.html" role="button">get_document_name</a>
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column active">
+
+                        
+                        <nav class="compas-sideways">
+                            
+                                <a href="compas_rhino.ui.html" class="btn btn-primary compas-prev" role="button">ui</a>
+                            
+
+                            
+                                <a href="generated/compas_rhino.utilities.get_document_name.html" class="btn btn-primary compas-next" role="button">get_document_name</a>
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
@@ -366,12 +415,21 @@ selection.</p>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../workshops.html">Workshops</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-<ul class="nav flex-column" id="compas-localnav">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">utilities</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#document">document</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#layers">layers</a></li>
@@ -381,13 +439,16 @@ selection.</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -399,7 +460,10 @@ selection.</p>
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -409,17 +473,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

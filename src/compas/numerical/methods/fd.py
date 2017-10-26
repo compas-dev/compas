@@ -83,35 +83,43 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
         plotter.show()
 
     """
-    num_v     = len(vertices)
-    free      = list(set(range(num_v)) - set(fixed))
-    xyz       = asarray(vertices, dtype=float).reshape((-1, 3))
-    q         = asarray(q, dtype=float).reshape((-1, 1))
-    p         = asarray(loads, dtype=float).reshape((-1, 3))
-    C         = connectivity_matrix(edges, 'csr')
-    Ci        = C[:, free]
-    Cf        = C[:, fixed]
-    Ct        = C.transpose()
-    Cit       = Ci.transpose()
-    Q         = diags([q.flatten()], [0])
-    A         = Cit.dot(Q).dot(Ci)
-    b         = p[free] - Cit.dot(Q).dot(Cf).dot(xyz[fixed])
+    v    = len(vertices)
+    free = list(set(range(v)) - set(fixed))
+    xyz  = asarray(vertices, dtype=float).reshape((-1, 3))
+    q    = asarray(q, dtype=float).reshape((-1, 1))
+    p    = asarray(loads, dtype=float).reshape((-1, 3))
+    C    = connectivity_matrix(edges, 'csr')
+
+    Ci   = C[:, free]
+    Cf   = C[:, fixed]
+    Ct   = C.transpose()
+    Cit  = Ci.transpose()
+
+    Q    = diags([q.flatten()], [0])
+
+    A    = Cit.dot(Q).dot(Ci)
+    b    = p[free] - Cit.dot(Q).dot(Cf).dot(xyz[fixed])
+
     xyz[free] = spsolve(A, b)
-    l         = normrow(C.dot(xyz))
-    f         = q * l
-    r         = p - Ct.dot(Q).dot(C).dot(xyz)
+
+    l = normrow(C.dot(xyz))
+    f = q * l
+    r = p - Ct.dot(Q).dot(C).dot(xyz)
+
     if rtype == 'list':
         return [xyz.tolist(),
                 q.ravel().tolist(),
                 f.ravel().tolist(),
                 l.ravel().tolist(),
                 r.tolist()]
-    if rtype == 'dict':
-        return {'xyz': xyz.tolist(),
-                'q'  : q.ravel().tolist(),
-                'f'  : f.ravel().tolist(),
-                'l'  : l.ravel().tolist(),
-                'r'  : r.tolist()}
+
+    # if rtype == 'dict':
+    #     return {'xyz': xyz.tolist(),
+    #             'q'  : q.ravel().tolist(),
+    #             'f'  : f.ravel().tolist(),
+    #             'l'  : l.ravel().tolist(),
+    #             'r'  : r.tolist()}
+
     return xyz, q, f, l, r
 
 

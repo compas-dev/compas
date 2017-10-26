@@ -9,7 +9,7 @@ hpc
 
 .. warning::
 
-    The functionality provided by this package is experimental and subject to frequent change.
+    The functionality of this package is experimental and subject to frequent change.
     For now, don't use it for anything important :)
 
 

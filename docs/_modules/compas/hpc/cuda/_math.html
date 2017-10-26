@@ -1,40 +1,68 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
-</nav>
-<h1>Source code for compas.hpc.cuda._math</h1><div class="highlight"><pre><code class="language-python border rounded">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../../index.html" accesskey="U">module code</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <h1>Source code for compas.hpc.cuda._math</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">pycuda</span>
     <span class="kn">import</span> <span class="nn">pycuda.autoinit</span>
@@ -49,39 +77,39 @@
     <span class="k">pass</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2016, Block Research Group - ETH Zurich'</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'liew@arch.ethz.ch'</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Andrew Liew &lt;liew@arch.ethz.ch&gt;&#39;</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2016, Block Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;liew@arch.ethz.ch&#39;</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'cuda_abs'</span><span class="p">,</span>
-    <span class="s1">'cuda_argmax'</span><span class="p">,</span>
-    <span class="s1">'cuda_argmin'</span><span class="p">,</span>
-    <span class="s1">'cuda_acos'</span><span class="p">,</span>
-    <span class="s1">'cuda_asin'</span><span class="p">,</span>
-    <span class="s1">'cuda_atan'</span><span class="p">,</span>
-    <span class="s1">'cuda_ceil'</span><span class="p">,</span>
-    <span class="s1">'cuda_cos'</span><span class="p">,</span>
-    <span class="s1">'cuda_cosh'</span><span class="p">,</span>
-    <span class="s1">'cuda_exp'</span><span class="p">,</span>
-    <span class="s1">'cuda_floor'</span><span class="p">,</span>
-    <span class="s1">'cuda_log'</span><span class="p">,</span>
-    <span class="s1">'cuda_max'</span><span class="p">,</span>
-    <span class="s1">'cuda_min'</span><span class="p">,</span>
-    <span class="s1">'cuda_mean'</span><span class="p">,</span>
-    <span class="s1">'cuda_sin'</span><span class="p">,</span>
-    <span class="s1">'cuda_sinh'</span><span class="p">,</span>
-    <span class="s1">'cuda_sqrt'</span><span class="p">,</span>
-    <span class="s1">'cuda_sum'</span><span class="p">,</span>
-    <span class="s1">'cuda_tan'</span><span class="p">,</span>
-    <span class="s1">'cuda_tanh'</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_abs&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_argmax&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_argmin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_acos&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_asin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_atan&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_ceil&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_cos&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_cosh&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_exp&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_floor&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_log&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_max&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_min&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_mean&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_sin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_sinh&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_sqrt&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_sum&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_tan&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cuda_tanh&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="cuda_abs"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_abs.html#compas.hpc.cuda_abs">[docs]</a><span class="k">def</span> <span class="nf">cuda_abs</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Absolute values of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Absolute values of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with the elements to take absolute values of.</span>
@@ -93,13 +121,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_abs(cuda_give([-0.1, -1.7]))</span>
 <span class="sd">        array([0.1, 1.7])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_argmax"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_argmax.html#compas.hpc.cuda_argmax">[docs]</a><span class="k">def</span> <span class="nf">cuda_argmax</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-    <span class="sd">""" Location of maximum GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Location of maximum GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with the elements to find maximum values.</span>
@@ -113,13 +141,13 @@
 <span class="sd">        array([[2],</span>
 <span class="sd">               [0]], dtype=uint32)</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_argmin"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_argmin.html#compas.hpc.cuda_argmin">[docs]</a><span class="k">def</span> <span class="nf">cuda_argmin</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-    <span class="sd">""" Location of minimum GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Location of minimum GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with the elements to find minimum values.</span>
@@ -133,13 +161,13 @@
 <span class="sd">        array([[0],</span>
 <span class="sd">               [2]], dtype=uint32)</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_acos"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_acos.html#compas.hpc.cuda_acos">[docs]</a><span class="k">def</span> <span class="nf">cuda_acos</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Trigonometric arccosine of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Trigonometric arccosine of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -151,13 +179,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_acos(cuda_give([0.5, 1]))</span>
 <span class="sd">        array([ 1.04719755,  0.])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_asin"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_asin.html#compas.hpc.cuda_asin">[docs]</a><span class="k">def</span> <span class="nf">cuda_asin</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Trigonometric arcsine of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Trigonometric arcsine of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -169,13 +197,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_asin(cuda_give([0.5, 1]))</span>
 <span class="sd">        array([ 0.52359878,  1.57079633])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_atan"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_atan.html#compas.hpc.cuda_atan">[docs]</a><span class="k">def</span> <span class="nf">cuda_atan</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Trigonometric arctangent of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Trigonometric arctangent of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -187,13 +215,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_atan(cuda_give([0.5, 1]))</span>
 <span class="sd">        array([ 0.46364761,  0.78539816])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">atan</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_ceil"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_ceil.html#compas.hpc.cuda_ceil">[docs]</a><span class="k">def</span> <span class="nf">cuda_ceil</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Ceiling of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Ceiling of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -205,13 +233,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_ceil(cuda_give([0.5, 0.1, 1.9]))</span>
 <span class="sd">        array([ 1.,  1.,  2.])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_cos"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_cos.html#compas.hpc.cuda_cos">[docs]</a><span class="k">def</span> <span class="nf">cuda_cos</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Trigonometric cosine of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Trigonometric cosine of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -223,13 +251,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_cos(cuda_give([0, pi / 4]))</span>
 <span class="sd">        array([ 1.,  0.70710678])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_cosh"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_cosh.html#compas.hpc.cuda_cosh">[docs]</a><span class="k">def</span> <span class="nf">cuda_cosh</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Hyperbolic cosine of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Hyperbolic cosine of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -241,13 +269,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_cosh(cuda_give([0, pi / 4]))</span>
 <span class="sd">        array([ 1.,  1.32460909])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">cosh</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_exp"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_exp.html#compas.hpc.cuda_exp">[docs]</a><span class="k">def</span> <span class="nf">cuda_exp</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Exponential of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Exponential of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -259,13 +287,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_exp(cuda_give([0, 1]))</span>
 <span class="sd">        array([ 1.,  2.71828183])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_floor"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_floor.html#compas.hpc.cuda_floor">[docs]</a><span class="k">def</span> <span class="nf">cuda_floor</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Floor of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Floor of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -277,13 +305,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_floor(cuda_give([0.5, 0.1, 1.9]))</span>
 <span class="sd">        array([ 0.,  0.,  1.])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_log"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_log.html#compas.hpc.cuda_log">[docs]</a><span class="k">def</span> <span class="nf">cuda_log</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Natural logarithm of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Natural logarithm of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -295,13 +323,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_log(cuda_give([1, 10]))</span>
 <span class="sd">        array([ 0.,  2.30258509])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">cuda_log10</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Base10 logarithm of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Base10 logarithm of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -313,13 +341,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_log10(cuda_give([1, 10]))</span>
 <span class="sd">        array([ 0.,  1.])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="cuda_max"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_max.html#compas.hpc.cuda_max">[docs]</a><span class="k">def</span> <span class="nf">cuda_max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-    <span class="sd">""" Maximum values of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Maximum values of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with the elements to find maximum values.</span>
@@ -333,13 +361,13 @@
 <span class="sd">        array([[3],</span>
 <span class="sd">               [6]])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_min"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_min.html#compas.hpc.cuda_min">[docs]</a><span class="k">def</span> <span class="nf">cuda_min</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-    <span class="sd">""" Minimum values of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Minimum values of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with the elements to find minimum values.</span>
@@ -353,13 +381,13 @@
 <span class="sd">        array([[1],</span>
 <span class="sd">               [4]])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_mean"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_mean.html#compas.hpc.cuda_mean">[docs]</a><span class="k">def</span> <span class="nf">cuda_mean</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-    <span class="sd">""" Mean of GPUArray elements in a given axis direction.</span>
+    <span class="sd">&quot;&quot;&quot; Mean of GPUArray elements in a given axis direction.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -372,13 +400,13 @@
 <span class="sd">        &gt;&gt;&gt; cuda_mean(cuda_give([[1, 2], [3, 4]]), axis=0)</span>
 <span class="sd">        array([ 2.,  3.])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_sin"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_sin.html#compas.hpc.cuda_sin">[docs]</a><span class="k">def</span> <span class="nf">cuda_sin</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Trigonometric sine of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Trigonometric sine of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -390,13 +418,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_sin(cuda_give([0, pi / 4]))</span>
 <span class="sd">        array([ 0.,  0.70710678])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_sinh"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_sinh.html#compas.hpc.cuda_sinh">[docs]</a><span class="k">def</span> <span class="nf">cuda_sinh</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Hyperbolic sine of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Hyperbolic sine of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -408,13 +436,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_sinh(cuda_give([0, pi / 4]))</span>
 <span class="sd">        array([ 0.,  0.86867096])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_sqrt"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_sqrt.html#compas.hpc.cuda_sqrt">[docs]</a><span class="k">def</span> <span class="nf">cuda_sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Square-root of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Square-root of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -426,13 +454,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_sqrt(cuda_give([4, 9]))</span>
 <span class="sd">        array([ 2.,  3.])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_sum"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_sum.html#compas.hpc.cuda_sum">[docs]</a><span class="k">def</span> <span class="nf">cuda_sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-    <span class="sd">""" Sum of GPUArray elements in a given axis direction.</span>
+    <span class="sd">&quot;&quot;&quot; Sum of GPUArray elements in a given axis direction.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -445,13 +473,13 @@
 <span class="sd">        &gt;&gt;&gt; cuda_sum(cuda_give([[1, 2], [3, 4]]), axis=0)</span>
 <span class="sd">        array([ 4.,  6.])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">skcuda</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_tan"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_tan.html#compas.hpc.cuda_tan">[docs]</a><span class="k">def</span> <span class="nf">cuda_tan</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Trigonometric tangent of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Trigonometric tangent of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -463,13 +491,13 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_tan(cuda_give([0, pi / 4]))</span>
 <span class="sd">        array([ 0.,  1])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cuda_tanh"><a class="viewcode-back" href="../../../../reference/generated/compas.hpc.cuda_tanh.html#compas.hpc.cuda_tanh">[docs]</a><span class="k">def</span> <span class="nf">cuda_tanh</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">""" Hyperbolic tangent of GPUArray elements.</span>
+    <span class="sd">&quot;&quot;&quot; Hyperbolic tangent of GPUArray elements.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        a (gpu): GPUArray with elements to be operated on.</span>
@@ -481,8 +509,8 @@
 <span class="sd">        &gt;&gt;&gt; a = cuda_tanh(cuda_give([0, pi / 4]))</span>
 <span class="sd">        array([ 0.,  0.6557942])</span>
 <span class="sd">        &gt;&gt;&gt; type(a)</span>
-<span class="sd">        &lt;class 'pycuda.gpuarray.GPUArray'&gt;</span>
-<span class="sd">    """</span>
+<span class="sd">        &lt;class &#39;pycuda.gpuarray.GPUArray&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pycuda</span><span class="o">.</span><span class="n">cumath</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 
@@ -490,44 +518,71 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
     <span class="k">pass</span>
 </code></pre></div>
-<nav class="compas-sideways">
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column">
+                        
+                        <nav class="compas-sideways">
+                            
+
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -539,7 +594,10 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -549,17 +607,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

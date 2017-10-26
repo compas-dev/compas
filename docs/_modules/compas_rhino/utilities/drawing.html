@@ -1,40 +1,68 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
-</nav>
-<h1>Source code for compas_rhino.utilities.drawing</h1><div class="highlight"><pre><code class="language-python border rounded">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <h1>Source code for compas_rhino.utilities.drawing</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
@@ -84,27 +112,27 @@
 
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">platform</span>
-    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'IronPython'</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;IronPython&#39;</span><span class="p">:</span>
         <span class="k">raise</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, BLOCK Research Group - ETH Zurich'</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'xdraw_labels'</span><span class="p">,</span>
-    <span class="s1">'xdraw_points'</span><span class="p">,</span>
-    <span class="s1">'xdraw_lines'</span><span class="p">,</span>
-    <span class="s1">'xdraw_geodesics'</span><span class="p">,</span>
-    <span class="s1">'xdraw_polylines'</span><span class="p">,</span>
-    <span class="s1">'xdraw_faces'</span><span class="p">,</span>
-    <span class="s1">'xdraw_cylinders'</span><span class="p">,</span>
-    <span class="s1">'xdraw_pipes'</span><span class="p">,</span>
-    <span class="s1">'xdraw_spheres'</span><span class="p">,</span>
-    <span class="s1">'xdraw_mesh'</span><span class="p">,</span>
+    <span class="s1">&#39;xdraw_labels&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xdraw_points&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xdraw_lines&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xdraw_geodesics&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xdraw_polylines&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xdraw_faces&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xdraw_cylinders&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xdraw_pipes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xdraw_spheres&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xdraw_mesh&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -118,12 +146,12 @@
 
 
 <span class="k">def</span> <span class="nf">wrap_xdrawfunc</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="sd">"""Wraps all ``xdraw_`` functions with support for recurring keyword arguments."""</span>
+    <span class="sd">&quot;&quot;&quot;Wraps all ``xdraw_`` functions with support for recurring keyword arguments.&quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">layer</span>  <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">clear</span>  <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'clear'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-        <span class="n">redraw</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'redraw'</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">layer</span>  <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">clear</span>  <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">redraw</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;redraw&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">layer</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">rs</span><span class="o">.</span><span class="n">IsLayer</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
@@ -151,13 +179,13 @@
 
 <span class="nd">@wrap_xdrawfunc</span>
 <div class="viewcode-block" id="xdraw_labels"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.xdraw_labels.html#compas_rhino.utilities.xdraw_labels">[docs]</a><span class="k">def</span> <span class="nf">xdraw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
-    <span class="sd">"""Draw labels as text dots and optionally set individual name and color."""</span>
+    <span class="sd">&quot;&quot;&quot;Draw labels as text dots and optionally set individual name and color.&quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
-        <span class="n">pos</span>   <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="s1">'pos'</span><span class="p">]</span>
-        <span class="n">text</span>  <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span>
-        <span class="n">name</span>  <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">pos</span>   <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+        <span class="n">text</span>  <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+        <span class="n">name</span>  <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">guid</span>  <span class="o">=</span> <span class="n">add_dot</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">guid</span><span class="p">:</span>
             <span class="k">continue</span>
@@ -178,14 +206,14 @@
 
 <span class="nd">@wrap_xdrawfunc</span>
 <div class="viewcode-block" id="xdraw_points"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.xdraw_points.html#compas_rhino.utilities.xdraw_points">[docs]</a><span class="k">def</span> <span class="nf">xdraw_points</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
-    <span class="sd">"""Draw points and optionally set individual name, layer, and color properties.</span>
-<span class="sd">    """</span>
+    <span class="sd">&quot;&quot;&quot;Draw points and optionally set individual name, layer, and color properties.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
-        <span class="n">pos</span>   <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="s1">'pos'</span><span class="p">]</span>
-        <span class="n">name</span>  <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span>
-        <span class="n">layer</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">)</span>
+        <span class="n">pos</span>   <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+        <span class="n">name</span>  <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span><span class="p">)</span>
         <span class="n">guid</span>  <span class="o">=</span> <span class="n">add_point</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">guid</span><span class="p">:</span>
             <span class="k">continue</span>
@@ -210,18 +238,18 @@
 
 <span class="nd">@wrap_xdrawfunc</span>
 <div class="viewcode-block" id="xdraw_lines"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.xdraw_lines.html#compas_rhino.utilities.xdraw_lines">[docs]</a><span class="k">def</span> <span class="nf">xdraw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-    <span class="sd">"""Draw lines and optionally set individual name, color, arrow, layer, and</span>
+    <span class="sd">&quot;&quot;&quot;Draw lines and optionally set individual name, color, arrow, layer, and</span>
 <span class="sd">    width properties.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-        <span class="n">sp</span>    <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="s1">'start'</span><span class="p">]</span>
-        <span class="n">ep</span>    <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="s1">'end'</span><span class="p">]</span>
-        <span class="n">name</span>  <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span>
-        <span class="n">arrow</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'arrow'</span><span class="p">)</span>
-        <span class="n">layer</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">)</span>
-        <span class="n">width</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'width'</span><span class="p">)</span>
+        <span class="n">sp</span>    <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span>
+        <span class="n">ep</span>    <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span>
+        <span class="n">name</span>  <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+        <span class="n">arrow</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;arrow&#39;</span><span class="p">)</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">)</span>
         <span class="n">guid</span>  <span class="o">=</span> <span class="n">add_line</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">sp</span><span class="p">),</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">ep</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">guid</span><span class="p">:</span>
             <span class="k">continue</span>
@@ -234,9 +262,9 @@
             <span class="n">attr</span><span class="o">.</span><span class="n">ColorSource</span> <span class="o">=</span> <span class="n">ColorFromObject</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">ColorSource</span> <span class="o">=</span> <span class="n">ColorFromLayer</span>
-        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">'end'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">ObjectDecoration</span> <span class="o">=</span> <span class="n">EndArrowhead</span>
-        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">'start'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">ObjectDecoration</span> <span class="o">=</span> <span class="n">StartArrowhead</span>
         <span class="k">if</span> <span class="n">layer</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="n">find_layer_by_fullpath</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -253,18 +281,18 @@
 
 <span class="nd">@wrap_xdrawfunc</span>
 <span class="k">def</span> <span class="nf">xdraw_geodesics</span><span class="p">(</span><span class="n">geodesics</span><span class="p">):</span>
-    <span class="sd">"""Draw geodesic lines on specified surfaces, and optionally set individual</span>
+    <span class="sd">&quot;&quot;&quot;Draw geodesic lines on specified surfaces, and optionally set individual</span>
 <span class="sd">    name, color, arrow, and layer properties.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">geodesics</span><span class="p">):</span>
-        <span class="n">sp</span>    <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="s1">'start'</span><span class="p">]</span>
-        <span class="n">ep</span>    <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="s1">'end'</span><span class="p">]</span>
-        <span class="n">srf</span>   <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="s1">'srf'</span><span class="p">]</span>
-        <span class="n">name</span>  <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span>
-        <span class="n">arrow</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'arrow'</span><span class="p">)</span>
-        <span class="n">layer</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">)</span>
+        <span class="n">sp</span>    <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span>
+        <span class="n">ep</span>    <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span>
+        <span class="n">srf</span>   <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;srf&#39;</span><span class="p">]</span>
+        <span class="n">name</span>  <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+        <span class="n">arrow</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;arrow&#39;</span><span class="p">)</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span><span class="p">)</span>
         <span class="c1"># replace this by a proper rhinocommon call</span>
         <span class="n">guid</span>  <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">ShortPath</span><span class="p">(</span><span class="n">srf</span><span class="p">,</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">sp</span><span class="p">),</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">ep</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">guid</span><span class="p">:</span>
@@ -278,9 +306,9 @@
             <span class="n">attr</span><span class="o">.</span><span class="n">ColorSource</span> <span class="o">=</span> <span class="n">ColorFromObject</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">ColorSource</span> <span class="o">=</span> <span class="n">ColorFromLayer</span>
-        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">'end'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">ObjectDecoration</span> <span class="o">=</span> <span class="n">EndArrowhead</span>
-        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">'start'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">ObjectDecoration</span> <span class="o">=</span> <span class="n">StartArrowhead</span>
         <span class="k">if</span> <span class="n">layer</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="n">find_layer_by_fullpath</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -294,16 +322,16 @@
 
 <span class="nd">@wrap_xdrawfunc</span>
 <div class="viewcode-block" id="xdraw_polylines"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.xdraw_polylines.html#compas_rhino.utilities.xdraw_polylines">[docs]</a><span class="k">def</span> <span class="nf">xdraw_polylines</span><span class="p">(</span><span class="n">polylines</span><span class="p">):</span>
-    <span class="sd">"""Draw polylines, and optionally set individual name, color, arrow, and</span>
+    <span class="sd">&quot;&quot;&quot;Draw polylines, and optionally set individual name, color, arrow, and</span>
 <span class="sd">    layer properties.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">polylines</span><span class="p">):</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="s1">'points'</span><span class="p">]</span>
-        <span class="n">name</span>   <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-        <span class="n">color</span>  <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span>
-        <span class="n">arrow</span>  <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'arrow'</span><span class="p">)</span>
-        <span class="n">layer</span>  <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;points&#39;</span><span class="p">]</span>
+        <span class="n">name</span>   <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">color</span>  <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+        <span class="n">arrow</span>  <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;arrow&#39;</span><span class="p">)</span>
+        <span class="n">layer</span>  <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span><span class="p">)</span>
         <span class="n">poly</span>   <span class="o">=</span> <span class="n">Polyline</span><span class="p">([</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
         <span class="n">poly</span><span class="o">.</span><span class="n">DeleteShortSegments</span><span class="p">(</span><span class="n">TOL</span><span class="p">)</span>
         <span class="n">guid</span>   <span class="o">=</span> <span class="n">add_polyline</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
@@ -318,9 +346,9 @@
             <span class="n">attr</span><span class="o">.</span><span class="n">ColorSource</span> <span class="o">=</span> <span class="n">ColorFromObject</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">ColorSource</span> <span class="o">=</span> <span class="n">ColorFromLayer</span>
-        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">'end'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">ObjectDecoration</span> <span class="o">=</span> <span class="n">EndArrowhead</span>
-        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">'start'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arrow</span> <span class="o">==</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span>
             <span class="n">attr</span><span class="o">.</span><span class="n">ObjectDecoration</span> <span class="o">=</span> <span class="n">StartArrowhead</span>
         <span class="k">if</span> <span class="n">layer</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="n">find_layer_by_fullpath</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -334,15 +362,15 @@
 
 <span class="nd">@wrap_xdrawfunc</span>
 <span class="k">def</span> <span class="nf">xdraw_breps</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">srf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tangency</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">flex</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">pull</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-    <span class="sd">"""Draw polygonal faces as Breps, and optionally set individual name, color,</span>
+    <span class="sd">&quot;&quot;&quot;Draw polygonal faces as Breps, and optionally set individual name, color,</span>
 <span class="sd">    and layer properties.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">faces</span><span class="p">):</span>
-        <span class="n">points</span>  <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s1">'points'</span><span class="p">]</span>
-        <span class="n">name</span>    <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-        <span class="n">color</span>   <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span>
-        <span class="n">layer</span>   <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">)</span>
+        <span class="n">points</span>  <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;points&#39;</span><span class="p">]</span>
+        <span class="n">name</span>    <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">color</span>   <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+        <span class="n">layer</span>   <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span><span class="p">)</span>
         <span class="n">corners</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
         <span class="n">pcurve</span>  <span class="o">=</span> <span class="n">PolylineCurve</span><span class="p">(</span><span class="n">corners</span><span class="p">)</span>
         <span class="n">geo</span>     <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="n">GeometryBase</span><span class="p">](</span><span class="mi">1</span><span class="p">)</span>
@@ -390,12 +418,12 @@
 <div class="viewcode-block" id="xdraw_cylinders"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.xdraw_cylinders.html#compas_rhino.utilities.xdraw_cylinders">[docs]</a><span class="k">def</span> <span class="nf">xdraw_cylinders</span><span class="p">(</span><span class="n">cylinders</span><span class="p">,</span> <span class="n">cap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">cylinders</span><span class="p">):</span>
-        <span class="n">start</span>  <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="s1">'start'</span><span class="p">]</span>
-        <span class="n">end</span>    <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="s1">'end'</span><span class="p">]</span>
-        <span class="n">radius</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="s1">'radius'</span><span class="p">]</span>
-        <span class="n">name</span>   <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-        <span class="n">color</span>  <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span>
-        <span class="n">layer</span>  <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">)</span>
+        <span class="n">start</span>  <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span>
+        <span class="n">end</span>    <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
+        <span class="n">name</span>   <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">color</span>  <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+        <span class="n">layer</span>  <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="n">TOL</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="n">base</span>     <span class="o">=</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">start</span><span class="p">)</span>
@@ -438,11 +466,11 @@
     <span class="n">abs_tol</span> <span class="o">=</span> <span class="n">TOL</span>
     <span class="n">ang_tol</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">ModelAngleToleranceRadians</span>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pipes</span><span class="p">:</span>
-        <span class="n">points</span>  <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="s1">'points'</span><span class="p">]</span>
-        <span class="n">radius</span>  <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="s1">'radius'</span><span class="p">]</span>
-        <span class="n">name</span>    <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-        <span class="n">color</span>   <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span>
-        <span class="n">layer</span>   <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">)</span>
+        <span class="n">points</span>  <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;points&#39;</span><span class="p">]</span>
+        <span class="n">radius</span>  <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
+        <span class="n">name</span>    <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">color</span>   <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+        <span class="n">layer</span>   <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span><span class="p">)</span>
         <span class="n">params</span>  <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
         <span class="n">cap</span>     <span class="o">=</span> <span class="n">ToObject</span><span class="p">(</span><span class="n">PipeCapMode</span><span class="p">,</span> <span class="n">cap</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
@@ -478,12 +506,12 @@
 <span class="c1"># def xdraw_forces(forces, color):</span>
 <span class="c1">#     guids = []</span>
 <span class="c1">#     for c in iter(cylinders):</span>
-<span class="c1">#         start  = c['start']</span>
-<span class="c1">#         end    = c['end']</span>
-<span class="c1">#         radius = c['radius']</span>
-<span class="c1">#         name   = c.get('name', '')</span>
-<span class="c1">#         color  = c.get('color')</span>
-<span class="c1">#         layer  = c.get('layer')</span>
+<span class="c1">#         start  = c[&#39;start&#39;]</span>
+<span class="c1">#         end    = c[&#39;end&#39;]</span>
+<span class="c1">#         radius = c[&#39;radius&#39;]</span>
+<span class="c1">#         name   = c.get(&#39;name&#39;, &#39;&#39;)</span>
+<span class="c1">#         color  = c.get(&#39;color&#39;)</span>
+<span class="c1">#         layer  = c.get(&#39;layer&#39;)</span>
 <span class="c1">#         if radius &lt; TOL:</span>
 <span class="c1">#             continue</span>
 <span class="c1">#         base     = Point3d(*start)</span>
@@ -524,11 +552,11 @@
 <div class="viewcode-block" id="xdraw_spheres"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.xdraw_spheres.html#compas_rhino.utilities.xdraw_spheres">[docs]</a><span class="k">def</span> <span class="nf">xdraw_spheres</span><span class="p">(</span><span class="n">spheres</span><span class="p">):</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">spheres</span><span class="p">):</span>
-        <span class="n">pos</span>    <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">'pos'</span><span class="p">]</span>
-        <span class="n">radius</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">'radius'</span><span class="p">]</span>
-        <span class="n">name</span>   <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-        <span class="n">color</span>  <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span>
-        <span class="n">layer</span>  <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'layer'</span><span class="p">)</span>
+        <span class="n">pos</span>    <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
+        <span class="n">name</span>   <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">color</span>  <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+        <span class="n">layer</span>  <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span><span class="p">)</span>
         <span class="n">sphere</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">),</span> <span class="n">radius</span><span class="p">)</span>
         <span class="n">guid</span>   <span class="o">=</span> <span class="n">add_sphere</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">guid</span><span class="p">:</span>
@@ -567,9 +595,9 @@
 <div class="viewcode-block" id="xdraw_faces"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.utilities.xdraw_faces.html#compas_rhino.utilities.xdraw_faces">[docs]</a><span class="k">def</span> <span class="nf">xdraw_faces</span><span class="p">(</span><span class="n">faces</span><span class="p">):</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">faces</span><span class="p">):</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="n">face</span><span class="p">[</span><span class="s1">'points'</span><span class="p">]</span>
-        <span class="n">name</span>   <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span>
-        <span class="n">color</span>  <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">face</span><span class="p">[</span><span class="s1">&#39;points&#39;</span><span class="p">]</span>
+        <span class="n">name</span>   <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">color</span>  <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
 
         <span class="n">v</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
 
@@ -603,7 +631,7 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 
     <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
     <span class="kn">import</span> <span class="nn">time</span>
@@ -612,120 +640,147 @@
 
     <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-        <span class="s1">'points'</span> <span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
-        <span class="s1">'color'</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="s1">&#39;points&#39;</span> <span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
+        <span class="s1">&#39;color&#39;</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
     <span class="p">})</span>
 
     <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'start'</span> <span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-            <span class="s1">'end'</span>   <span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-            <span class="s1">'name'</span>  <span class="p">:</span> <span class="s1">'test'</span><span class="p">,</span>
-            <span class="s1">'color'</span> <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">'arrow'</span> <span class="p">:</span> <span class="s1">'end'</span><span class="p">,</span>
+            <span class="s1">&#39;start&#39;</span> <span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="s1">&#39;end&#39;</span>   <span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="s1">&#39;name&#39;</span>  <span class="p">:</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;arrow&#39;</span> <span class="p">:</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span>
         <span class="p">})</span>
 
     <span class="n">polylines</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">polylines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-        <span class="s1">'points'</span> <span class="p">:</span> <span class="n">points</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span>
-        <span class="s1">'color'</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-        <span class="s1">'arrow'</span>  <span class="p">:</span> <span class="s1">'start'</span><span class="p">,</span>
+        <span class="s1">&#39;points&#39;</span> <span class="p">:</span> <span class="n">points</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span>
+        <span class="s1">&#39;color&#39;</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+        <span class="s1">&#39;arrow&#39;</span>  <span class="p">:</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span>
     <span class="p">})</span>
 
     <span class="n">cylinders</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">cylinders</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'start'</span>  <span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-            <span class="s1">'end'</span>    <span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-            <span class="s1">'radius'</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s1">'name'</span>   <span class="p">:</span> <span class="s1">'test'</span><span class="p">,</span>
-            <span class="s1">'color'</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;start&#39;</span>  <span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="s1">&#39;end&#39;</span>    <span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="s1">&#39;radius&#39;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span>   <span class="p">:</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;color&#39;</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
         <span class="p">})</span>
 
     <span class="n">pipes</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">pipes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-        <span class="s1">'points'</span> <span class="p">:</span> <span class="n">points</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span>
-        <span class="s1">'color'</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-        <span class="s1">'radius'</span> <span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+        <span class="s1">&#39;points&#39;</span> <span class="p">:</span> <span class="n">points</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span>
+        <span class="s1">&#39;color&#39;</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+        <span class="s1">&#39;radius&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
     <span class="p">})</span>
 
     <span class="n">spheres</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
         <span class="n">spheres</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'pos'</span>    <span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-            <span class="s1">'radius'</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s1">'color'</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;pos&#39;</span>    <span class="p">:</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="s1">&#39;radius&#39;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s1">&#39;color&#39;</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
         <span class="p">})</span>
 
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">xdraw_faces</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'Default'</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">xdraw_faces</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;Default&#39;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">xdraw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'Layer 01'</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">xdraw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;Layer 01&#39;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">xdraw_polylines</span><span class="p">(</span><span class="n">polylines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'Layer 02'</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">xdraw_polylines</span><span class="p">(</span><span class="n">polylines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;Layer 02&#39;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">t3</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">xdraw_cylinders</span><span class="p">(</span><span class="n">cylinders</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'Layer 03'</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">xdraw_cylinders</span><span class="p">(</span><span class="n">cylinders</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;Layer 03&#39;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">t4</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">xdraw_pipes</span><span class="p">(</span><span class="n">pipes</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'Layer 04'</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">xdraw_pipes</span><span class="p">(</span><span class="n">pipes</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;Layer 04&#39;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">t5</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">xdraw_spheres</span><span class="p">(</span><span class="n">spheres</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'Layer 05'</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">xdraw_spheres</span><span class="p">(</span><span class="n">spheres</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;Layer 05&#39;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">t6</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
     <span class="nb">print</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'faces'</span><span class="p">,</span> <span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'lines'</span><span class="p">,</span> <span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'polylines'</span><span class="p">,</span> <span class="n">t3</span> <span class="o">-</span> <span class="n">t2</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'cylinders'</span><span class="p">,</span> <span class="n">t4</span> <span class="o">-</span> <span class="n">t3</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'pipes'</span><span class="p">,</span> <span class="n">t5</span> <span class="o">-</span> <span class="n">t4</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'spheres'</span><span class="p">,</span> <span class="n">t6</span> <span class="o">-</span> <span class="n">t5</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;faces&#39;</span><span class="p">,</span> <span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">,</span> <span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;polylines&#39;</span><span class="p">,</span> <span class="n">t3</span> <span class="o">-</span> <span class="n">t2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;cylinders&#39;</span><span class="p">,</span> <span class="n">t4</span> <span class="o">-</span> <span class="n">t3</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pipes&#39;</span><span class="p">,</span> <span class="n">t5</span> <span class="o">-</span> <span class="n">t4</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;spheres&#39;</span><span class="p">,</span> <span class="n">t6</span> <span class="o">-</span> <span class="n">t5</span><span class="p">)</span>
 </code></pre></div>
-<nav class="compas-sideways">
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column">
+                        
+                        <nav class="compas-sideways">
+                            
+
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../workshops.html">Workshops</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -737,7 +792,10 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -747,17 +805,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

@@ -1,40 +1,68 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../index.html">module code</a>
-</nav>
-<h1>Source code for compas_blender.utilities.objects</h1><div class="highlight"><pre><code class="language-python border rounded">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../index.html" accesskey="U">module code</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <h1>Source code for compas_blender.utilities.objects</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">bpy</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -43,53 +71,53 @@
 <span class="kn">import</span> <span class="nn">json</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Andrew Liew &lt;liew@arch.ethz.ch&gt;'</span><span class="p">]</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2017, Block Research Group - ETH Zurich'</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'liew@arch.ethz.ch'</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Andrew Liew &lt;liew@arch.ethz.ch&gt;&#39;</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2017, Block Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;liew@arch.ethz.ch&#39;</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'delete_object'</span><span class="p">,</span>
-    <span class="s1">'delete_objects'</span><span class="p">,</span>
-    <span class="s1">'delete_all_objects'</span><span class="p">,</span>
-    <span class="s1">'get_objects'</span><span class="p">,</span>
-    <span class="s1">'get_object_name'</span><span class="p">,</span>
-    <span class="s1">'get_objects_name'</span><span class="p">,</span>
-    <span class="s1">'get_object_attributes'</span><span class="p">,</span>
-    <span class="s1">'get_objects_attributes'</span><span class="p">,</span>
-    <span class="s1">'get_object_location'</span><span class="p">,</span>
-    <span class="s1">'get_objects_location'</span><span class="p">,</span>
-    <span class="s1">'get_points'</span><span class="p">,</span>
-    <span class="s1">'get_curves'</span><span class="p">,</span>
-    <span class="s1">'get_meshes'</span><span class="p">,</span>
-    <span class="s1">'set_object_layer'</span><span class="p">,</span>
-    <span class="s1">'set_objects_layer'</span><span class="p">,</span>
-    <span class="s1">'set_object_show_name'</span><span class="p">,</span>
-    <span class="s1">'set_objects_show_name'</span><span class="p">,</span>
-    <span class="s1">'set_object_location'</span><span class="p">,</span>
-    <span class="s1">'set_objects_location'</span><span class="p">,</span>
-    <span class="s1">'set_object_rotation'</span><span class="p">,</span>
-    <span class="s1">'set_objects_rotation'</span><span class="p">,</span>
-    <span class="s1">'set_object_scale'</span><span class="p">,</span>
-    <span class="s1">'set_objects_scale'</span><span class="p">,</span>
-    <span class="s1">'join_objects'</span><span class="p">,</span>
-    <span class="s1">'select_point'</span><span class="p">,</span>
-    <span class="s1">'select_points'</span><span class="p">,</span>
-    <span class="s1">'select_curve'</span><span class="p">,</span>
-    <span class="s1">'select_curves'</span><span class="p">,</span>
-    <span class="s1">'select_mesh'</span><span class="p">,</span>
-    <span class="s1">'select_meshes'</span><span class="p">,</span>
-    <span class="s1">'select_object'</span><span class="p">,</span>
-    <span class="s1">'select_objects'</span><span class="p">,</span>
-    <span class="s1">'select_all_objects'</span><span class="p">,</span>
-    <span class="s1">'deselect_object'</span><span class="p">,</span>
-    <span class="s1">'deselect_objects'</span><span class="p">,</span>
-    <span class="s1">'deselect_all_objects'</span><span class="p">,</span>
-    <span class="s1">'hide_object'</span><span class="p">,</span>
-    <span class="s1">'hide_objects'</span><span class="p">,</span>
-    <span class="s1">'show_object'</span><span class="p">,</span>
-    <span class="s1">'show_objects'</span>
+    <span class="s1">&#39;delete_object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;delete_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;delete_all_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_object_name&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_objects_name&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_object_attributes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_objects_attributes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_object_location&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_objects_location&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_points&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_curves&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;get_meshes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_object_layer&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_objects_layer&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_object_show_name&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_objects_show_name&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_object_location&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_objects_location&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_object_rotation&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_objects_rotation&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_object_scale&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;set_objects_scale&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;join_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_point&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_points&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_curve&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_curves&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_mesh&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_meshes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;select_all_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;deselect_object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;deselect_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;deselect_all_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hide_object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hide_objects&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;show_object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;show_objects&#39;</span>
 <span class="p">]</span>
 
 
@@ -98,41 +126,41 @@
 <span class="c1"># ==============================================================================</span>
 
 <div class="viewcode-block" id="delete_object"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.delete_object.html#compas_blender.utilities.delete_object">[docs]</a><span class="k">def</span> <span class="nf">delete_object</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">""" Delete an object.</span>
+    <span class="sd">&quot;&quot;&quot; Delete an object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (object): Object to delete.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">objs</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span>
     <span class="n">objs</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="delete_objects"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.delete_objects.html#compas_blender.utilities.delete_objects">[docs]</a><span class="k">def</span> <span class="nf">delete_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="sd">""" Delete a list of objects.</span>
+    <span class="sd">&quot;&quot;&quot; Delete a list of objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to delete.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">objs</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span>
     <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
         <span class="n">objs</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="delete_all_objects"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.delete_all_objects.html#compas_blender.utilities.delete_all_objects">[docs]</a><span class="k">def</span> <span class="nf">delete_all_objects</span><span class="p">():</span>
-    <span class="sd">""" Delete all scene objects.</span>
+    <span class="sd">&quot;&quot;&quot; Delete all scene objects.</span>
 
 <span class="sd">     Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
         <span class="n">delete_objects</span><span class="p">(</span><span class="n">get_objects</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">))</span></div>
 
@@ -142,7 +170,7 @@
 <span class="c1"># ==============================================================================</span>
 
 <div class="viewcode-block" id="get_objects"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.get_objects.html#compas_blender.utilities.get_objects">[docs]</a><span class="k">def</span> <span class="nf">get_objects</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">""" Retrieves the objects on a given layer or by its name.</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves the objects on a given layer or by its name.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        layer (int): Layer number.</span>
@@ -150,7 +178,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Objects in the layer or of given name.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">layer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer</span><span class="p">]]</span>
     <span class="k">elif</span> <span class="n">name</span><span class="p">:</span>
@@ -162,55 +190,55 @@
 
 
 <div class="viewcode-block" id="get_object_location"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.get_object_location.html#compas_blender.utilities.get_object_location">[docs]</a><span class="k">def</span> <span class="nf">get_object_location</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">""" Retrieves the location of an object.</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves the location of an object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to get location.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Object location.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">location</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_objects_location"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.get_objects_location.html#compas_blender.utilities.get_objects_location">[docs]</a><span class="k">def</span> <span class="nf">get_objects_location</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="sd">""" Retrieves the location of objects.</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves the location of objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to get locations.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Object locations.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">location</span><span class="p">)</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="get_object_name"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.get_object_name.html#compas_blender.utilities.get_object_name">[docs]</a><span class="k">def</span> <span class="nf">get_object_name</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">""" Retrieves the name of object.</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves the name of object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to get name.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str: Object name.</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'}.'</span><span class="p">:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;}.&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
     <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span></div>
 
 
 <div class="viewcode-block" id="get_objects_name"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.get_objects_name.html#compas_blender.utilities.get_objects_name">[docs]</a><span class="k">def</span> <span class="nf">get_objects_name</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="sd">""" Retrieves the names of objects.</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves the names of objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to get names.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Object names.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'}.'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;}.&#39;</span><span class="p">:</span>
             <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -218,77 +246,77 @@
 
 
 <div class="viewcode-block" id="get_object_attributes"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.get_object_attributes.html#compas_blender.utilities.get_object_attributes">[docs]</a><span class="k">def</span> <span class="nf">get_object_attributes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">""" Retrieves the attributes from the names of object.</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves the attributes from the names of object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to get attributes.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dic: Object attributes.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">name_</span> <span class="o">=</span> <span class="n">get_object_name</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">name_</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s1">'"'</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">name_</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'Error reading object names with JSON'</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error reading object names with JSON&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_objects_attributes"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.get_objects_attributes.html#compas_blender.utilities.get_objects_attributes">[docs]</a><span class="k">def</span> <span class="nf">get_objects_attributes</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="sd">""" Retrieves the attributes from the names of objects.</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves the attributes from the names of objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to get attributes.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Object attributes.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">get_objects_name</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-        <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s1">'"'</span><span class="p">))</span>
+        <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">))</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'Error reading object names with JSON'</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error reading object names with JSON&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_points"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.get_points.html#compas_blender.utilities.get_points">[docs]</a><span class="k">def</span> <span class="nf">get_points</span><span class="p">():</span>
-    <span class="sd">""" Retrieves all Empty objects in scene.</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves all Empty objects in scene.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Empty objects.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span>
-    <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">'EMPTY'</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;EMPTY&#39;</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="get_curves"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.get_curves.html#compas_blender.utilities.get_curves">[docs]</a><span class="k">def</span> <span class="nf">get_curves</span><span class="p">():</span>
-    <span class="sd">""" Retrieves all Curve objects in scene.</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves all Curve objects in scene.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Curve objects.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span>
-    <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">'CURVE'</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;CURVE&#39;</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="get_meshes"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.get_meshes.html#compas_blender.utilities.get_meshes">[docs]</a><span class="k">def</span> <span class="nf">get_meshes</span><span class="p">():</span>
-    <span class="sd">""" Retrieves all Mesh objects in scene.</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves all Mesh objects in scene.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Mesh objects.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span>
-    <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">'MESH'</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;MESH&#39;</span><span class="p">]</span></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -296,167 +324,167 @@
 <span class="c1"># ==============================================================================</span>
 
 <div class="viewcode-block" id="select_point"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.select_point.html#compas_blender.utilities.select_point">[docs]</a><span class="k">def</span> <span class="nf">select_point</span><span class="p">():</span>
-    <span class="sd">""" Select point (empty) object.</span>
+    <span class="sd">&quot;&quot;&quot; Select point (empty) object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        obj: Empty object or None.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">selected</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">selected_objects</span>
     <span class="k">if</span> <span class="n">selected</span><span class="p">:</span>
         <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">'EMPTY'</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;EMPTY&#39;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">object</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'***** Point (empty) object was not selected *****'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;***** Point (empty) object was not selected *****&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="select_points"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.select_points.html#compas_blender.utilities.select_points">[docs]</a><span class="k">def</span> <span class="nf">select_points</span><span class="p">():</span>
-    <span class="sd">""" Select points (empty) objects.</span>
+    <span class="sd">&quot;&quot;&quot; Select points (empty) objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Empty objects or None.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">selected</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">selected_objects</span>
     <span class="k">if</span> <span class="n">selected</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">selected</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">'EMPTY'</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'***** Point (empty) objects were not selected *****'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">selected</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;EMPTY&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;***** Point (empty) objects were not selected *****&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="select_curve"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.select_curve.html#compas_blender.utilities.select_curve">[docs]</a><span class="k">def</span> <span class="nf">select_curve</span><span class="p">():</span>
-    <span class="sd">""" Select curve object.</span>
+    <span class="sd">&quot;&quot;&quot; Select curve object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        obj: Curve object or None.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">selected</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">selected_objects</span>
     <span class="k">if</span> <span class="n">selected</span><span class="p">:</span>
         <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">'CURVE'</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;CURVE&#39;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">object</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'***** Curve object was not selected *****'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;***** Curve object was not selected *****&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="select_curves"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.select_curves.html#compas_blender.utilities.select_curves">[docs]</a><span class="k">def</span> <span class="nf">select_curves</span><span class="p">():</span>
-    <span class="sd">""" Select curve objects.</span>
+    <span class="sd">&quot;&quot;&quot; Select curve objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Curve objects or None.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">selected</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">selected_objects</span>
     <span class="k">if</span> <span class="n">selected</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">selected</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">'CURVE'</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'***** Curve objects were not selected *****'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">selected</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;CURVE&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;***** Curve objects were not selected *****&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="select_mesh"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.select_mesh.html#compas_blender.utilities.select_mesh">[docs]</a><span class="k">def</span> <span class="nf">select_mesh</span><span class="p">():</span>
-    <span class="sd">""" Select Blender mesh object.</span>
+    <span class="sd">&quot;&quot;&quot; Select Blender mesh object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        obj: Blender mesh object or None.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">selected</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">selected_objects</span>
     <span class="k">if</span> <span class="n">selected</span><span class="p">:</span>
         <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">'MESH'</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;MESH&#39;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">object</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'***** Mesh object was not selected *****'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;***** Mesh object was not selected *****&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="select_meshes"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.select_meshes.html#compas_blender.utilities.select_meshes">[docs]</a><span class="k">def</span> <span class="nf">select_meshes</span><span class="p">():</span>
-    <span class="sd">""" Select Blender mesh objects.</span>
+    <span class="sd">&quot;&quot;&quot; Select Blender mesh objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Blender mesh objects or None.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">selected</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">selected_objects</span>
     <span class="k">if</span> <span class="n">selected</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">selected</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">'MESH'</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'***** Mesh objects were not selected *****'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">selected</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;MESH&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;***** Mesh objects were not selected *****&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="select_object"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.select_object.html#compas_blender.utilities.select_object">[docs]</a><span class="k">def</span> <span class="nf">select_object</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">""" Select specific object.</span>
+    <span class="sd">&quot;&quot;&quot; Select specific object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to select.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">object</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="select_objects"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.select_objects.html#compas_blender.utilities.select_objects">[docs]</a><span class="k">def</span> <span class="nf">select_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="sd">""" Select specific objects.</span>
+    <span class="sd">&quot;&quot;&quot; Select specific objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to select.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
         <span class="nb">object</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="select_all_objects"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.select_all_objects.html#compas_blender.utilities.select_all_objects">[docs]</a><span class="k">def</span> <span class="nf">select_all_objects</span><span class="p">():</span>
-    <span class="sd">""" Select all objects.</span>
+    <span class="sd">&quot;&quot;&quot; Select all objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span>
     <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
         <span class="nb">object</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="deselect_object"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.deselect_object.html#compas_blender.utilities.deselect_object">[docs]</a><span class="k">def</span> <span class="nf">deselect_object</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">""" De-select a specific object.</span>
+    <span class="sd">&quot;&quot;&quot; De-select a specific object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to de-select.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">object</span><span class="o">.</span><span class="n">select</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="deselect_objects"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.deselect_objects.html#compas_blender.utilities.deselect_objects">[docs]</a><span class="k">def</span> <span class="nf">deselect_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="sd">""" De-select specific objects.</span>
+    <span class="sd">&quot;&quot;&quot; De-select specific objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to de-select.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="n">objects</span><span class="p">]</span>
     <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
@@ -464,14 +492,14 @@
 
 
 <div class="viewcode-block" id="deselect_all_objects"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.deselect_all_objects.html#compas_blender.utilities.deselect_all_objects">[docs]</a><span class="k">def</span> <span class="nf">deselect_all_objects</span><span class="p">():</span>
-    <span class="sd">""" De-select all objects.</span>
+    <span class="sd">&quot;&quot;&quot; De-select all objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        None</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">deselect_objects</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">))</span></div>
 
 
@@ -480,51 +508,51 @@
 <span class="c1"># ==============================================================================</span>
 
 <div class="viewcode-block" id="hide_object"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.hide_object.html#compas_blender.utilities.hide_object">[docs]</a><span class="k">def</span> <span class="nf">hide_object</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">""" Hide specific object.</span>
+    <span class="sd">&quot;&quot;&quot; Hide specific object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to hide.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">object</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="hide_objects"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.hide_objects.html#compas_blender.utilities.hide_objects">[docs]</a><span class="k">def</span> <span class="nf">hide_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="sd">""" Hide specific objects.</span>
+    <span class="sd">&quot;&quot;&quot; Hide specific objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to hide.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
         <span class="nb">object</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="show_object"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.show_object.html#compas_blender.utilities.show_object">[docs]</a><span class="k">def</span> <span class="nf">show_object</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">""" Show specific object.</span>
+    <span class="sd">&quot;&quot;&quot; Show specific object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to show.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">object</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="show_objects"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.show_objects.html#compas_blender.utilities.show_objects">[docs]</a><span class="k">def</span> <span class="nf">show_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="sd">""" Show specific objects.</span>
+    <span class="sd">&quot;&quot;&quot; Show specific objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to show.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
         <span class="nb">object</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="kc">False</span></div>
 
@@ -534,7 +562,7 @@
 <span class="c1"># ==============================================================================</span>
 
 <div class="viewcode-block" id="set_object_layer"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.set_object_layer.html#compas_blender.utilities.set_object_layer">[docs]</a><span class="k">def</span> <span class="nf">set_object_layer</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
-    <span class="sd">""" Changes the layer of the object.</span>
+    <span class="sd">&quot;&quot;&quot; Changes the layer of the object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object for layer change.</span>
@@ -542,13 +570,13 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">layer</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
     <span class="nb">object</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">mask</span></div>
 
 
 <div class="viewcode-block" id="set_objects_layer"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.set_objects_layer.html#compas_blender.utilities.set_objects_layer">[docs]</a><span class="k">def</span> <span class="nf">set_objects_layer</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
-    <span class="sd">""" Changes the layer of the objects.</span>
+    <span class="sd">&quot;&quot;&quot; Changes the layer of the objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects for layer change.</span>
@@ -556,14 +584,14 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">layer</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
     <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
         <span class="nb">object</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">mask</span></div>
 
 
 <div class="viewcode-block" id="set_object_show_name"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.set_object_show_name.html#compas_blender.utilities.set_object_show_name">[docs]</a><span class="k">def</span> <span class="nf">set_object_show_name</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">""" Display the name of an object.</span>
+    <span class="sd">&quot;&quot;&quot; Display the name of an object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to display name.</span>
@@ -571,12 +599,12 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">object</span><span class="o">.</span><span class="n">show_name</span> <span class="o">=</span> <span class="n">show</span></div>
 
 
 <div class="viewcode-block" id="set_objects_show_name"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.set_objects_show_name.html#compas_blender.utilities.set_objects_show_name">[docs]</a><span class="k">def</span> <span class="nf">set_objects_show_name</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">""" Display the name of objects.</span>
+    <span class="sd">&quot;&quot;&quot; Display the name of objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to display name.</span>
@@ -584,13 +612,13 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
         <span class="nb">object</span><span class="o">.</span><span class="n">show_name</span> <span class="o">=</span> <span class="n">show</span></div>
 
 
 <div class="viewcode-block" id="set_object_location"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.set_object_location.html#compas_blender.utilities.set_object_location">[docs]</a><span class="k">def</span> <span class="nf">set_object_location</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-    <span class="sd">""" Set the location of an object.</span>
+    <span class="sd">&quot;&quot;&quot; Set the location of an object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to set location.</span>
@@ -598,12 +626,12 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">object</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span></div>
 
 
 <div class="viewcode-block" id="set_objects_location"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.set_objects_location.html#compas_blender.utilities.set_objects_location">[docs]</a><span class="k">def</span> <span class="nf">set_objects_location</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">locations</span><span class="p">):</span>
-    <span class="sd">""" Set the location of objects.</span>
+    <span class="sd">&quot;&quot;&quot; Set the location of objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to set location.</span>
@@ -611,13 +639,13 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">location</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">locations</span><span class="p">):</span>
         <span class="n">objects</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span></div>
 
 
 <div class="viewcode-block" id="set_object_rotation"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.set_object_rotation.html#compas_blender.utilities.set_object_rotation">[docs]</a><span class="k">def</span> <span class="nf">set_object_rotation</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">rotation</span><span class="p">):</span>
-    <span class="sd">""" Set the rotation of an object.</span>
+    <span class="sd">&quot;&quot;&quot; Set the rotation of an object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to set rotation.</span>
@@ -625,12 +653,12 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">object</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">rotation</span></div>
 
 
 <div class="viewcode-block" id="set_objects_rotation"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.set_objects_rotation.html#compas_blender.utilities.set_objects_rotation">[docs]</a><span class="k">def</span> <span class="nf">set_objects_rotation</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">rotations</span><span class="p">):</span>
-    <span class="sd">""" Set the rotation of objects.</span>
+    <span class="sd">&quot;&quot;&quot; Set the rotation of objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to set rotation.</span>
@@ -638,13 +666,13 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">rotation</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rotations</span><span class="p">):</span>
         <span class="n">objects</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">rotation</span></div>
 
 
 <div class="viewcode-block" id="set_object_scale"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.set_object_scale.html#compas_blender.utilities.set_object_scale">[docs]</a><span class="k">def</span> <span class="nf">set_object_scale</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
-    <span class="sd">""" Set the scale of an object.</span>
+    <span class="sd">&quot;&quot;&quot; Set the scale of an object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        object (obj): Object to set scale.</span>
@@ -652,12 +680,12 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">object</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span></div>
 
 
 <div class="viewcode-block" id="set_objects_scale"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.set_objects_scale.html#compas_blender.utilities.set_objects_scale">[docs]</a><span class="k">def</span> <span class="nf">set_objects_scale</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">scales</span><span class="p">):</span>
-    <span class="sd">""" Set the scale of objects.</span>
+    <span class="sd">&quot;&quot;&quot; Set the scale of objects.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        objects (list): Objects to set scale.</span>
@@ -665,7 +693,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        None</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">scale</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scales</span><span class="p">):</span>
         <span class="n">objects</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span></div>
 
@@ -675,7 +703,7 @@
 <span class="c1"># ==============================================================================</span>
 
 <div class="viewcode-block" id="join_objects"><a class="viewcode-back" href="../../../reference/generated/compas_blender.utilities.join_objects.html#compas_blender.utilities.join_objects">[docs]</a><span class="k">def</span> <span class="nf">join_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="sd">""" Join a list of objects.</span>
+    <span class="sd">&quot;&quot;&quot; Join a list of objects.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        - The first object in the list becomes the master object.</span>
@@ -685,7 +713,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        obj: Joined object.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">select_objects</span><span class="p">(</span><span class="n">objects</span><span class="o">=</span><span class="n">objects</span><span class="p">)</span>
     <span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="n">objects</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
@@ -696,45 +724,72 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
     <span class="n">objects</span> <span class="o">=</span> <span class="n">get_objects</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="nb">object</span> <span class="o">=</span> <span class="n">objects</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
-<nav class="compas-sideways">
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column">
+                        
+                        <nav class="compas-sideways">
+                            
+
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../workshops.html">Workshops</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -746,7 +801,10 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -756,17 +814,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

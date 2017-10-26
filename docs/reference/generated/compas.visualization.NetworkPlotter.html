@@ -1,219 +1,275 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="generated/compas.visualization.NetworkPlotter.__init__.html" rel="next" title="NetworkPlotter.__init__"/>
-<link href="generated/compas.visualization.Plotter.update_polygoncollection.html" rel="prev" title="Plotter.update_polygoncollection"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a class="breadcrumb-item" href="../../reference.html">reference</a>
-<a class="breadcrumb-item" href="../compas.html">compas</a>
-<a accesskey="U" class="breadcrumb-item" href="../compas.visualization.html">visualization</a>
-</nav>
-<div class="section">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+            <link rel="next" title="NetworkPlotter.__init__" href="generated/compas.visualization.NetworkPlotter.__init__.html" />
+        
+        
+        
+            <link rel="prev" title="Plotter.update_polygoncollection" href="generated/compas.visualization.Plotter.update_polygoncollection.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../reference.html" >reference</a>
+            
+                <a class="breadcrumb-item" href="../compas.html" >compas</a>
+            
+                <a class="breadcrumb-item" href="../compas.visualization.html" accesskey="U">visualization</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <div class="section" id="networkplotter">
 <h1>NetworkPlotter</h1>
 <dl class="class">
 <dt id="compas.visualization.NetworkPlotter">
-<em class="property">class </em><code class="descclassname">compas.visualization.</code><code class="descname">NetworkPlotter</code><span class="sig-paren">(</span><em>network</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/visualization/plotters/networkplotter.html#NetworkPlotter"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal">compas.visualization.plotters.plotter.Plotter</code></p>
+<em class="property">class </em><code class="descclassname">compas.visualization.</code><code class="descname">NetworkPlotter</code><span class="sig-paren">(</span><em>network</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/visualization/plotters/networkplotter.html#NetworkPlotter"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">compas.visualization.plotters.plotter.Plotter</span></code></p>
 <p>Definition of a plotter object based on matplotlib for compas Networks.</p>
-<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
-<col class="field-name"/>
-<col class="field-body"/>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>network</strong> (<em>object</em>) – The network to plot.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>network</strong> (<em>object</em>) &#8211; The network to plot.</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="compas.visualization.NetworkPlotter.title">
 <code class="descname">title</code></dt>
-<dd><p><em>str</em> – Title of the plot.</p>
+<dd><p><em>str</em> &#8211; Title of the plot.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.visualization.NetworkPlotter.network">
 <code class="descname">network</code></dt>
-<dd><p><em>object</em> – The network to plot.</p>
+<dd><p><em>object</em> &#8211; The network to plot.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.visualization.NetworkPlotter.vertexcollection">
 <code class="descname">vertexcollection</code></dt>
-<dd><p><em>object</em> – The matplotlib collection for the network vertices.</p>
+<dd><p><em>object</em> &#8211; The matplotlib collection for the network vertices.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.visualization.NetworkPlotter.edgecollection">
 <code class="descname">edgecollection</code></dt>
-<dd><p><em>object</em> – The matplotlib collection for the network edges.</p>
+<dd><p><em>object</em> &#8211; The matplotlib collection for the network edges.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.visualization.NetworkPlotter.defaults">
 <code class="descname">defaults</code></dt>
-<dd><p><em>dict</em> – Dictionary containing default attributes for vertices and edges.</p>
+<dd><p><em>dict</em> &#8211; Dictionary containing default attributes for vertices and edges.</p>
 </dd></dl>
+
 <p class="rubric">Example</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<div class="highlight-python"><div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
 <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 
-<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lines.obj&#39;</span><span class="p">))</span>
 
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span>
-    <span class="n">text</span><span class="o">=</span><span class="s1">'key'</span><span class="p">,</span>
-    <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">()}</span>
+    <span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">()}</span>
 <span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-
-<figure class="figure">
-<img alt="../../images/compas-visualization-NetworkPlotter-1.png" class="figure-img img-fluid" src="../../images/compas-visualization-NetworkPlotter-1.png"/>
-</figure>
+</div>
+<div class="figure">
+<img alt="../../_images/compas-visualization-NetworkPlotter-1.png" src="../../_images/compas-visualization-NetworkPlotter-1.png" />
+</div>
 <p class="rubric">References</p>
 <ul class="simple">
 <li>Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science &amp; Engineering (9) 3, p.90-95.
 Available at: <a class="reference external" href="http://ieeexplore.ieee.org/document/4160265/citations">http://ieeexplore.ieee.org/document/4160265/citations</a></li>
 </ul>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="10%"/>
-<col width="90%"/>
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.__init__.html" title="compas.visualization.NetworkPlotter.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>(network, \*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.__init__.html#compas.visualization.NetworkPlotter.__init__" title="compas.visualization.NetworkPlotter.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a>(network,&nbsp;\*\*kwargs)</td>
 <td>Initialises a network plotter object</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear.html" title="compas.visualization.NetworkPlotter.clear"><code class="xref py py-obj docutils literal">clear</code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear.html#compas.visualization.NetworkPlotter.clear" title="compas.visualization.NetworkPlotter.clear"><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code></a>()</td>
 <td>Clears the network plotter edges and vertices.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear_collection.html" title="compas.visualization.NetworkPlotter.clear_collection"><code class="xref py py-obj docutils literal">clear_collection</code></a>(collection)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear_collection.html#compas.visualization.NetworkPlotter.clear_collection" title="compas.visualization.NetworkPlotter.clear_collection"><code class="xref py py-obj docutils literal"><span class="pre">clear_collection</span></code></a>(collection)</td>
 <td>Clears a matplotlib collection object.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear_edges.html" title="compas.visualization.NetworkPlotter.clear_edges"><code class="xref py py-obj docutils literal">clear_edges</code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear_edges.html#compas.visualization.NetworkPlotter.clear_edges" title="compas.visualization.NetworkPlotter.clear_edges"><code class="xref py py-obj docutils literal"><span class="pre">clear_edges</span></code></a>()</td>
 <td>Clears the network object edges.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear_vertices.html" title="compas.visualization.NetworkPlotter.clear_vertices"><code class="xref py py-obj docutils literal">clear_vertices</code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.clear_vertices.html#compas.visualization.NetworkPlotter.clear_vertices" title="compas.visualization.NetworkPlotter.clear_vertices"><code class="xref py py-obj docutils literal"><span class="pre">clear_vertices</span></code></a>()</td>
 <td>Clears the netwotk plotter vertices.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_arrows.html" title="compas.visualization.NetworkPlotter.draw_arrows"><code class="xref py py-obj docutils literal">draw_arrows</code></a>(arrows)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_arrows.html#compas.visualization.NetworkPlotter.draw_arrows" title="compas.visualization.NetworkPlotter.draw_arrows"><code class="xref py py-obj docutils literal"><span class="pre">draw_arrows</span></code></a>(arrows)</td>
 <td>Draws arrows on a 2D plot.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_edges.html" title="compas.visualization.NetworkPlotter.draw_edges"><code class="xref py py-obj docutils literal">draw_edges</code></a>([keys, width, color, text, ...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_edges.html#compas.visualization.NetworkPlotter.draw_edges" title="compas.visualization.NetworkPlotter.draw_edges"><code class="xref py py-obj docutils literal"><span class="pre">draw_edges</span></code></a>([keys,&nbsp;width,&nbsp;color,&nbsp;text,&nbsp;...])</td>
 <td>Draws the network edges.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_lines.html" title="compas.visualization.NetworkPlotter.draw_lines"><code class="xref py py-obj docutils literal">draw_lines</code></a>(lines)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_lines.html#compas.visualization.NetworkPlotter.draw_lines" title="compas.visualization.NetworkPlotter.draw_lines"><code class="xref py py-obj docutils literal"><span class="pre">draw_lines</span></code></a>(lines)</td>
 <td>Draws lines on a 2D plot.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_points.html" title="compas.visualization.NetworkPlotter.draw_points"><code class="xref py py-obj docutils literal">draw_points</code></a>(points)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_points.html#compas.visualization.NetworkPlotter.draw_points" title="compas.visualization.NetworkPlotter.draw_points"><code class="xref py py-obj docutils literal"><span class="pre">draw_points</span></code></a>(points)</td>
 <td>Draws points on a 2D plot.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_polygons.html" title="compas.visualization.NetworkPlotter.draw_polygons"><code class="xref py py-obj docutils literal">draw_polygons</code></a>(polygons)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_polygons.html#compas.visualization.NetworkPlotter.draw_polygons" title="compas.visualization.NetworkPlotter.draw_polygons"><code class="xref py py-obj docutils literal"><span class="pre">draw_polygons</span></code></a>(polygons)</td>
 <td>Draws polygons on a 2D plot.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_vertices.html" title="compas.visualization.NetworkPlotter.draw_vertices"><code class="xref py py-obj docutils literal">draw_vertices</code></a>([keys, radius, text, ...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.draw_vertices.html#compas.visualization.NetworkPlotter.draw_vertices" title="compas.visualization.NetworkPlotter.draw_vertices"><code class="xref py py-obj docutils literal"><span class="pre">draw_vertices</span></code></a>([keys,&nbsp;radius,&nbsp;text,&nbsp;...])</td>
 <td>Draws the network vertices.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.save.html" title="compas.visualization.NetworkPlotter.save"><code class="xref py py-obj docutils literal">save</code></a>(filepath, \*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.save.html#compas.visualization.NetworkPlotter.save" title="compas.visualization.NetworkPlotter.save"><code class="xref py py-obj docutils literal"><span class="pre">save</span></code></a>(filepath,&nbsp;\*\*kwargs)</td>
 <td>Saves the plot on a file.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.show.html" title="compas.visualization.NetworkPlotter.show"><code class="xref py py-obj docutils literal">show</code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.show.html#compas.visualization.NetworkPlotter.show" title="compas.visualization.NetworkPlotter.show"><code class="xref py py-obj docutils literal"><span class="pre">show</span></code></a>()</td>
 <td>Displays the plot.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update.html" title="compas.visualization.NetworkPlotter.update"><code class="xref py py-obj docutils literal">update</code></a>([pause])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update.html#compas.visualization.NetworkPlotter.update" title="compas.visualization.NetworkPlotter.update"><code class="xref py py-obj docutils literal"><span class="pre">update</span></code></a>([pause])</td>
 <td>Updates and pauses the plot.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_edges.html" title="compas.visualization.NetworkPlotter.update_edges"><code class="xref py py-obj docutils literal">update_edges</code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_edges.html#compas.visualization.NetworkPlotter.update_edges" title="compas.visualization.NetworkPlotter.update_edges"><code class="xref py py-obj docutils literal"><span class="pre">update_edges</span></code></a>()</td>
 <td>Updates the plotter edge collection based on the network.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_linecollection.html" title="compas.visualization.NetworkPlotter.update_linecollection"><code class="xref py py-obj docutils literal">update_linecollection</code></a>(collection, segments)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_linecollection.html#compas.visualization.NetworkPlotter.update_linecollection" title="compas.visualization.NetworkPlotter.update_linecollection"><code class="xref py py-obj docutils literal"><span class="pre">update_linecollection</span></code></a>(collection,&nbsp;segments)</td>
 <td>Updates a line collection.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_pointcollection.html" title="compas.visualization.NetworkPlotter.update_pointcollection"><code class="xref py py-obj docutils literal">update_pointcollection</code></a>(collection, centers)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_pointcollection.html#compas.visualization.NetworkPlotter.update_pointcollection" title="compas.visualization.NetworkPlotter.update_pointcollection"><code class="xref py py-obj docutils literal"><span class="pre">update_pointcollection</span></code></a>(collection,&nbsp;centers)</td>
 <td>Updates the location and radii of a point collection.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_polygoncollection.html" title="compas.visualization.NetworkPlotter.update_polygoncollection"><code class="xref py py-obj docutils literal">update_polygoncollection</code></a>(collection, polygons)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_polygoncollection.html#compas.visualization.NetworkPlotter.update_polygoncollection" title="compas.visualization.NetworkPlotter.update_polygoncollection"><code class="xref py py-obj docutils literal"><span class="pre">update_polygoncollection</span></code></a>(collection,&nbsp;polygons)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_vertices.html" title="compas.visualization.NetworkPlotter.update_vertices"><code class="xref py py-obj docutils literal">update_vertices</code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.visualization.NetworkPlotter.update_vertices.html#compas.visualization.NetworkPlotter.update_vertices" title="compas.visualization.NetworkPlotter.update_vertices"><code class="xref py py-obj docutils literal"><span class="pre">update_vertices</span></code></a>()</td>
 <td>Updates the plotter vertex collection based on the network.</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="10%"/>
-<col width="90%"/>
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><code class="xref py py-obj docutils literal">axes</code></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">axes</span></code></td>
 <td>Returns the axes subplot matplotlib object.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">bgcolor</code></td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">bgcolor</span></code></td>
 <td>Returns the background color.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">figure</code></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">figure</span></code></td>
 <td>Returns the matplotlib figure instance.</td>
 </tr>
-<tr class=""><td><code class="xref py py-obj docutils literal">interactive</code></td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">interactive</span></code></td>
 <td>Returns a boolean describing of the plot is interactive.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="" title="compas.visualization.NetworkPlotter.title"><code class="xref py py-obj docutils literal">title</code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#compas.visualization.NetworkPlotter.title" title="compas.visualization.NetworkPlotter.title"><code class="xref py py-obj docutils literal"><span class="pre">title</span></code></a></td>
 <td>Returns the title of the plot.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
+
 </div>
-<nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="generated/compas.visualization.Plotter.update_polygoncollection.html" role="button">Plotter.update_polygoncollection</a>
-<a class="btn btn-primary compas-next" href="generated/compas.visualization.NetworkPlotter.__init__.html" role="button">NetworkPlotter.__init__</a>
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column active">
+
+                        
+                        <nav class="compas-sideways">
+                            
+                                <a href="generated/compas.visualization.Plotter.update_polygoncollection.html" class="btn btn-primary compas-prev" role="button">Plotter.update_polygoncollection</a>
+                            
+
+                            
+                                <a href="generated/compas.visualization.NetworkPlotter.__init__.html" class="btn btn-primary compas-next" role="button">NetworkPlotter.__init__</a>
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
@@ -240,21 +296,33 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-<ul class="nav flex-column" id="compas-localnav">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">NetworkPlotter</a></li>
 </ul>
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -266,7 +334,10 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -276,17 +347,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

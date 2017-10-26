@@ -1,41 +1,69 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
-</nav>
-<h1>Source code for compas.visualization.plotters.plotter</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="sd">""""""</span>
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../../index.html" accesskey="U">module code</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <h1>Source code for compas.visualization.plotters.plotter</h1><div class="highlight"><pre><code class="language-python border rounded">
+<span></span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
@@ -48,13 +76,13 @@
 <span class="kn">from</span> <span class="nn">compas.visualization.plotters.core.drawing</span> <span class="k">import</span> <span class="n">draw_xarrows_xy</span>
 
 
-<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
-<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;Copyright 2016 - Block Research Group, ETH Zurich&#39;</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Plotter'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Plotter&#39;</span><span class="p">,</span> <span class="p">]</span>
 
 
 <span class="c1"># https://matplotlib.org/faq/usage_faq.html#what-is-interactive-mode</span>
@@ -65,7 +93,7 @@
 
 
 <div class="viewcode-block" id="Plotter"><a class="viewcode-back" href="../../../../reference/generated/compas.visualization.Plotter.html#compas.visualization.Plotter">[docs]</a><span class="k">class</span> <span class="nc">Plotter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">"""Definition of a plotter object based on matplotlib.</span>
+    <span class="sd">&quot;&quot;&quot;Definition of a plotter object based on matplotlib.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -98,9 +126,9 @@
 <span class="sd">    * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science &amp; Engineering (9) 3, p.90-95.</span>
 <span class="sd">      Available at: http://ieeexplore.ieee.org/document/4160265/citations</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Plotter.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.__init__.html#compas.visualization.Plotter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">16.0</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mf">100.0</span><span class="p">):</span>
-        <span class="sd">"""Initialises a plotter object"""</span>
+        <span class="sd">&quot;&quot;&quot;Initialises a plotter object&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interactive</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># use descriptors for these</span>
@@ -108,7 +136,7 @@
         <span class="c1"># figure attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure_size</span> <span class="o">=</span> <span class="n">figsize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure_dpi</span> <span class="o">=</span> <span class="n">dpi</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">figure_bgcolor</span> <span class="o">=</span> <span class="s1">'#ffffff'</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">figure_bgcolor</span> <span class="o">=</span> <span class="s1">&#39;#ffffff&#39;</span>
         <span class="c1"># axes attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes_xlabel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes_ylabel</span> <span class="o">=</span> <span class="kc">None</span>
@@ -117,47 +145,47 @@
         <span class="c1"># color</span>
         <span class="c1"># size/thickness</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">'point.radius'</span>    <span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
-            <span class="s1">'point.facecolor'</span> <span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span>
-            <span class="s1">'point.edgecolor'</span> <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'point.edgewidth'</span> <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="s1">'point.textcolor'</span> <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'point.fontsize'</span>  <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
+            <span class="s1">&#39;point.radius&#39;</span>    <span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+            <span class="s1">&#39;point.facecolor&#39;</span> <span class="p">:</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;point.edgecolor&#39;</span> <span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;point.edgewidth&#39;</span> <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;point.textcolor&#39;</span> <span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;point.fontsize&#39;</span>  <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
 
-            <span class="s1">'line.width'</span>    <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="s1">'line.color'</span>    <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'line.textcolor'</span><span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'line.fontsize'</span> <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
+            <span class="s1">&#39;line.width&#39;</span>    <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">&#39;line.color&#39;</span>    <span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;line.textcolor&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;line.fontsize&#39;</span> <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
 
-            <span class="s1">'polygon.facecolor'</span> <span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span>
-            <span class="s1">'polygon.edgecolor'</span> <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'polygon.edgewidth'</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="s1">'polygon.textcolor'</span> <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
-            <span class="s1">'polygon.fontsize'</span>  <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
+            <span class="s1">&#39;polygon.facecolor&#39;</span> <span class="p">:</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;polygon.edgecolor&#39;</span> <span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;polygon.edgewidth&#39;</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">&#39;polygon.textcolor&#39;</span> <span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;polygon.fontsize&#39;</span>  <span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tight</span> <span class="o">=</span> <span class="kc">False</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Returns a boolean describing of the plot is interactive.</span>
+        <span class="sd">&quot;&quot;&quot;Returns a boolean describing of the plot is interactive.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">            True if plot is interactive.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interactive</span>
 
     <span class="nd">@interactive</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">"""Sets the interactive plot on or off.</span>
+        <span class="sd">&quot;&quot;&quot;Sets the interactive plot on or off.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        value : bool</span>
 <span class="sd">            Interactive plot on or off.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interactive</span> <span class="o">=</span> <span class="n">value</span>
         <span class="c1"># interactive mode seems to be intended for other things</span>
         <span class="c1"># see: https://matplotlib.org/faq/usage_faq.html#what-is-interactive-mode</span>
@@ -168,14 +196,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Returns the axes subplot matplotlib object.</span>
+        <span class="sd">&quot;&quot;&quot;Returns the axes subplot matplotlib object.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        object</span>
 <span class="sd">            The matplotlib axes object.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># customise the use of this function</span>
             <span class="c1"># using attributes of the plotter class</span>
@@ -190,29 +218,29 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Returns the matplotlib figure instance.</span>
+        <span class="sd">&quot;&quot;&quot;Returns the matplotlib figure instance.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        object</span>
 <span class="sd">            The matplotlib figure instance.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bgcolor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Returns the background color.</span>
+        <span class="sd">&quot;&quot;&quot;Returns the background color.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            The color as a string (hex colors).</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">get_facecolor</span><span class="p">()</span>
 
     <span class="nd">@bgcolor</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">bgcolor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">"""Sets the background color.</span>
+        <span class="sd">&quot;&quot;&quot;Sets the background color.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -221,78 +249,78 @@
 <span class="sd">            Colors should be specified in the form of a string (hex colors) or</span>
 <span class="sd">            as a tuple of RGB components.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Returns the title of the plot.</span>
+        <span class="sd">&quot;&quot;&quot;Returns the title of the plot.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            The title of the plot.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">get_window_title</span><span class="p">()</span>
 
     <span class="nd">@title</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">"""Sets the title of the plot.</span>
+        <span class="sd">&quot;&quot;&quot;Sets the title of the plot.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        value : str</span>
 <span class="sd">            The title of the plot.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">set_window_title</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Plotter.clear_collection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.clear_collection.html#compas.visualization.Plotter.clear_collection">[docs]</a>    <span class="k">def</span> <span class="nf">clear_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">):</span>
-        <span class="sd">"""Clears a matplotlib collection object.</span>
+        <span class="sd">&quot;&quot;&quot;Clears a matplotlib collection object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        collection : object</span>
 <span class="sd">            The matplotlib collection object.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">collection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Plotter.show"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.show.html#compas.visualization.Plotter.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Displays the plot."""</span>
+        <span class="sd">&quot;&quot;&quot;Displays the plot.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tight</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Plotter.save"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.save.html#compas.visualization.Plotter.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">"""Saves the plot on a file.</span>
+        <span class="sd">&quot;&quot;&quot;Saves the plot on a file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        filepath : str</span>
 <span class="sd">            Full path of the file.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.update"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update.html#compas.visualization.Plotter.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pause</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">):</span>
-        <span class="sd">"""Updates and pauses the plot.</span>
+        <span class="sd">&quot;&quot;&quot;Updates and pauses the plot.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        pause : float</span>
 <span class="sd">            Ammount of time to pause the plot in seconds.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw_idle</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">pause</span><span class="p">(</span><span class="n">pause</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.update_pointcollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_pointcollection.html#compas.visualization.Plotter.update_pointcollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_pointcollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-        <span class="sd">"""Updates the location and radii of a point collection.</span>
+        <span class="sd">&quot;&quot;&quot;Updates the location and radii of a point collection.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -303,7 +331,7 @@
 <span class="sd">        radius : float, list</span>
 <span class="sd">            The radii of the points. If a floar is given it will be used for all points.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="nb">len</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -313,7 +341,7 @@
         <span class="n">collection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.update_linecollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_linecollection.html#compas.visualization.Plotter.update_linecollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_linecollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">segments</span><span class="p">):</span>
-        <span class="sd">"""Updates a line collection.</span>
+        <span class="sd">&quot;&quot;&quot;Updates a line collection.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -322,14 +350,14 @@
 <span class="sd">        segments : list</span>
 <span class="sd">            List of tuples or lists with XY location for the start and end</span>
 <span class="sd">            points in each line in the collection.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">collection</span><span class="o">.</span><span class="n">set_segments</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.update_polygoncollection"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.update_polygoncollection.html#compas.visualization.Plotter.update_polygoncollection">[docs]</a>    <span class="k">def</span> <span class="nf">update_polygoncollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="Plotter.draw_points"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_points.html#compas.visualization.Plotter.draw_points">[docs]</a>    <span class="k">def</span> <span class="nf">draw_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="sd">"""Draws points on a 2D plot.</span>
+        <span class="sd">&quot;&quot;&quot;Draws points on a 2D plot.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -341,11 +369,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        object</span>
 <span class="sd">            The matplotlib point collection object.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">draw_xpoints_xy</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.draw_lines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_lines.html#compas.visualization.Plotter.draw_lines">[docs]</a>    <span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-        <span class="sd">"""Draws lines on a 2D plot.</span>
+        <span class="sd">&quot;&quot;&quot;Draws lines on a 2D plot.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -356,11 +384,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        object</span>
 <span class="sd">            The matplotlib line collection object.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">draw_xlines_xy</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.draw_polygons"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_polygons.html#compas.visualization.Plotter.draw_polygons">[docs]</a>    <span class="k">def</span> <span class="nf">draw_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
-        <span class="sd">"""Draws polygons on a 2D plot.</span>
+        <span class="sd">&quot;&quot;&quot;Draws polygons on a 2D plot.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -371,11 +399,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        object</span>
 <span class="sd">            The matplotlib polygon collection object.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">draw_xpolygons_xy</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plotter.draw_arrows"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.Plotter.draw_arrows.html#compas.visualization.Plotter.draw_arrows">[docs]</a>    <span class="k">def</span> <span class="nf">draw_arrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrows</span><span class="p">):</span>
-        <span class="sd">"""Draws arrows on a 2D plot.</span>
+        <span class="sd">&quot;&quot;&quot;Draws arrows on a 2D plot.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -386,7 +414,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        object</span>
 <span class="sd">            The matplotlib arrow collection object.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">draw_xarrows_xy</span><span class="p">(</span><span class="n">arrows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span></div></div>
 
 
@@ -394,29 +422,29 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">compas</span>
 
     <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
     <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">smooth_centroid</span>
 
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
 
     <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
         <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'pos'</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
-            <span class="s1">'radius'</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-            <span class="s1">'facecolor'</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s1">'#ffffff'</span>
+            <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s1">&#39;facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s1">&#39;#ffffff&#39;</span>
         <span class="p">})</span>
 
     <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'start'</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
-            <span class="s1">'end'</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span>
-            <span class="s1">'width'</span><span class="p">:</span> <span class="mf">1.0</span>
+            <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="mf">1.0</span>
         <span class="p">})</span>
 
     <span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
@@ -453,40 +481,67 @@
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-<nav class="compas-sideways">
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column">
+                        
+                        <nav class="compas-sideways">
+                            
+
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -498,7 +553,10 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -508,17 +566,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

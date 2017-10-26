@@ -1,57 +1,89 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="generated/compas.files.OBJReader.__init__.html" rel="next" title="OBJReader.__init__"/>
-<link href="generated/compas.files.OBJ.__init__.html" rel="prev" title="OBJ.__init__"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a class="breadcrumb-item" href="../../reference.html">reference</a>
-<a class="breadcrumb-item" href="../compas.html">compas</a>
-<a accesskey="U" class="breadcrumb-item" href="../compas.files.html">files</a>
-</nav>
-<div class="section">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+            <link rel="next" title="OBJReader.__init__" href="generated/compas.files.OBJReader.__init__.html" />
+        
+        
+        
+            <link rel="prev" title="OBJ.__init__" href="generated/compas.files.OBJ.__init__.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../reference.html" >reference</a>
+            
+                <a class="breadcrumb-item" href="../compas.html" >compas</a>
+            
+                <a class="breadcrumb-item" href="../compas.files.html" accesskey="U">files</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <div class="section" id="objreader">
 <h1>OBJReader</h1>
 <dl class="class">
 <dt id="compas.files.OBJReader">
-<em class="property">class </em><code class="descclassname">compas.files.</code><code class="descname">OBJReader</code><span class="sig-paren">(</span><em>filepath</em>, <em>remote=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/files/obj.html#OBJReader"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal">object</code></a></p>
+<em class="property">class </em><code class="descclassname">compas.files.</code><code class="descname">OBJReader</code><span class="sig-paren">(</span><em>filepath</em>, <em>remote=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/files/obj.html#OBJReader"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Read the contents of an <em>obj</em> file.</p>
-<table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
-<col class="field-name"/>
-<col class="field-body"/>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>filepath</strong> (<em>str</em>) – Path to the file.</li>
-<li><strong>remote</strong> (<em>bool</em>) – Optional. Is the file on a remote location? Default is <code class="docutils literal">False</code>.</li>
+<li><strong>filepath</strong> (<em>str</em>) &#8211; Path to the file.</li>
+<li><strong>remote</strong> (<em>bool</em>) &#8211; Optional. Is the file on a remote location? Default is <code class="docutils literal"><span class="pre">False</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -60,114 +92,146 @@
 <dl class="attribute">
 <dt id="compas.files.OBJReader.filepath">
 <code class="descname">filepath</code></dt>
-<dd><p><em>str</em> – Path to the file.</p>
+<dd><p><em>str</em> &#8211; Path to the file.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.remote">
 <code class="descname">remote</code></dt>
-<dd><p><em>bool</em> – Is the file on a remote location.</p>
+<dd><p><em>bool</em> &#8211; Is the file on a remote location.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.content">
 <code class="descname">content</code></dt>
-<dd><p><em>iter</em> – The contents of the file, line by line.</p>
+<dd><p><em>iter</em> &#8211; The contents of the file, line by line.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.vertices">
 <code class="descname">vertices</code></dt>
-<dd><p><em>list</em> – Vertex coordinates.</p>
+<dd><p><em>list</em> &#8211; Vertex coordinates.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.weights">
 <code class="descname">weights</code></dt>
-<dd><p><em>list</em> – Vertex weights.</p>
+<dd><p><em>list</em> &#8211; Vertex weights.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.textures">
 <code class="descname">textures</code></dt>
-<dd><p><em>list</em> – Vertex textures.</p>
+<dd><p><em>list</em> &#8211; Vertex textures.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.normals">
 <code class="descname">normals</code></dt>
-<dd><p><em>list</em> – Vertex normals.</p>
+<dd><p><em>list</em> &#8211; Vertex normals.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.points">
 <code class="descname">points</code></dt>
-<dd><p><em>list</em> – Point objects, referencing the list of vertices.</p>
+<dd><p><em>list</em> &#8211; Point objects, referencing the list of vertices.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.lines">
 <code class="descname">lines</code></dt>
-<dd><p><em>list</em> – Line objects, referencing the list of vertices.</p>
+<dd><p><em>list</em> &#8211; Line objects, referencing the list of vertices.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.faces">
 <code class="descname">faces</code></dt>
-<dd><p><em>list</em> – Face objects, referencing the list of vertices.</p>
+<dd><p><em>list</em> &#8211; Face objects, referencing the list of vertices.</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.curves">
 <code class="descname">curves</code></dt>
-<dd><p><em>list</em> – Curves</p>
+<dd><p><em>list</em> &#8211; Curves</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.curves2">
 <code class="descname">curves2</code></dt>
-<dd><p><em>list</em> – Curves</p>
+<dd><p><em>list</em> &#8211; Curves</p>
 </dd></dl>
+
 <dl class="attribute">
 <dt id="compas.files.OBJReader.surfaces">
 <code class="descname">surfaces</code></dt>
-<dd><p><em>list</em> – Surfaces</p>
+<dd><p><em>list</em> &#8211; Surfaces</p>
 </dd></dl>
+
 <p class="rubric">References</p>
 <p><a class="reference external" href="http://paulbourke.net/dataformats/obj/">http://paulbourke.net/dataformats/obj/</a></p>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="10%"/>
-<col width="90%"/>
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.files.OBJReader.__init__.html" title="compas.files.OBJReader.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>(filepath[, remote])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.files.OBJReader.__init__.html#compas.files.OBJReader.__init__" title="compas.files.OBJReader.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a>(filepath[,&nbsp;remote])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.files.OBJReader.open.html" title="compas.files.OBJReader.open"><code class="xref py py-obj docutils literal">open</code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.files.OBJReader.open.html#compas.files.OBJReader.open" title="compas.files.OBJReader.open"><code class="xref py py-obj docutils literal"><span class="pre">open</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.files.OBJReader.post.html" title="compas.files.OBJReader.post"><code class="xref py py-obj docutils literal">post</code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.files.OBJReader.post.html#compas.files.OBJReader.post" title="compas.files.OBJReader.post"><code class="xref py py-obj docutils literal"><span class="pre">post</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.files.OBJReader.pre.html" title="compas.files.OBJReader.pre"><code class="xref py py-obj docutils literal">pre</code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/compas.files.OBJReader.pre.html#compas.files.OBJReader.pre" title="compas.files.OBJReader.pre"><code class="xref py py-obj docutils literal"><span class="pre">pre</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.files.OBJReader.read.html" title="compas.files.OBJReader.read"><code class="xref py py-obj docutils literal">read</code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/compas.files.OBJReader.read.html#compas.files.OBJReader.read" title="compas.files.OBJReader.read"><code class="xref py py-obj docutils literal"><span class="pre">read</span></code></a>()</td>
 <td>Read the contents of the file, line by line.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
+
 </div>
-<nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="generated/compas.files.OBJ.__init__.html" role="button">OBJ.__init__</a>
-<a class="btn btn-primary compas-next" href="generated/compas.files.OBJReader.__init__.html" role="button">OBJReader.__init__</a>
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column active">
+
+                        
+                        <nav class="compas-sideways">
+                            
+                                <a href="generated/compas.files.OBJ.__init__.html" class="btn btn-primary compas-prev" role="button">OBJ.__init__</a>
+                            
+
+                            
+                                <a href="generated/compas.files.OBJReader.__init__.html" class="btn btn-primary compas-next" role="button">OBJReader.__init__</a>
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
@@ -194,21 +258,33 @@
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-<ul class="nav flex-column" id="compas-localnav">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">OBJReader</a></li>
 </ul>
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -220,7 +296,10 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -230,17 +309,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

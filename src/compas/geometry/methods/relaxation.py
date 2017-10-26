@@ -66,8 +66,7 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
             attr['is_fixed'] = network.is_vertex_leaf(key)
 
         for index, (u, v, attr) in enumerate(network.edges(True)):
-            if index % 2 == 0:
-                attr['q'] = 5.0
+            attr['q'] = index + 1
 
         lines = []
         for u, v in network.edges():
@@ -78,16 +77,15 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
                 'width' : 1.0
             })
 
+        plotter = NetworkPlotter(network)
+        plotter.draw_lines(lines)
+
         network_relax(network, kmax=100)
 
-        plotter = NetworkPlotter(network)
-
-        plotter.draw_lines(lines)
         plotter.draw_vertices(
             facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})}
         )
         plotter.draw_edges()
-
         plotter.show()
 
 
@@ -255,8 +253,7 @@ if __name__ == "__main__":
         attr['is_fixed'] = network.is_vertex_leaf(key)
 
     for index, (u, v, attr) in enumerate(network.edges(True)):
-        if index % 2 == 0:
-            attr['q'] = 5.0
+        attr['q'] = index + 1
 
     lines = []
     for u, v in network.edges():
@@ -273,20 +270,23 @@ if __name__ == "__main__":
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
+    plotter.update(pause=1.0)
+
     def callback(k, args):
         plotter.update_vertices()
         plotter.update_edges()
-        plotter.update(pause=0.001)
+        plotter.update(pause=0.01)
 
-    network_relax(network, kmax=10, callback=callback)
+    network_relax(network, kmax=50, callback=callback)
 
     fmax = max(network.get_edges_attribute('f'))
 
-    plotter.clear_vertices()
-    plotter.clear_edges()
+    # plotter.clear_vertices()
+    # plotter.clear_edges()
 
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
-    plotter.draw_edges(width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
+    # plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+    # plotter.draw_edges(width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
 
-    plotter.update()
+    plotter.update(pause=1.0)
+
     plotter.show()

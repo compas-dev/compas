@@ -1,60 +1,88 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
-</nav>
-<h1>Source code for compas.datastructures.mixins.attributes</h1><div class="highlight"><pre><code class="language-python border rounded">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../../index.html" accesskey="U">module code</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <h1>Source code for compas.datastructures.mixins.attributes</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
 
 
-<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
-<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;Copyright 2016 - Block Research Group, ETH Zurich&#39;</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'VertexAttributesManagement'</span><span class="p">,</span>
-    <span class="s1">'EdgeAttributesManagement'</span><span class="p">,</span>
-    <span class="s1">'FaceAttributesManagement'</span><span class="p">,</span>
+    <span class="s1">&#39;VertexAttributesManagement&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;EdgeAttributesManagement&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FaceAttributesManagement&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="k">class</span> <span class="nc">VertexAttributesManagement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">update_default_vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Update the default vertex attributes (this also affects already existing vertices).</span>
+        <span class="sd">&quot;&quot;&quot;Update the default vertex attributes (this also affects already existing vertices).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -69,7 +97,7 @@
 <span class="sd">        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,</span>
 <span class="sd">        if they exist.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
@@ -80,7 +108,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span>
 
     <span class="k">def</span> <span class="nf">set_vertex_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">"""Set one attribute of one vertex.</span>
+        <span class="sd">&quot;&quot;&quot;Set one attribute of one vertex.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -97,11 +125,11 @@
 <span class="sd">        * :meth:`set_vertices_attribute`</span>
 <span class="sd">        * :meth:`set_vertices_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">set_vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Set multiple attributes of one vertex.</span>
+        <span class="sd">&quot;&quot;&quot;Set multiple attributes of one vertex.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -124,14 +152,14 @@
 <span class="sd">        * :meth:`set_vertices_attribute`</span>
 <span class="sd">        * :meth:`set_vertices_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_vertices_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Set one attribute of multiple vertices.</span>
+        <span class="sd">&quot;&quot;&quot;Set one attribute of multiple vertices.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -149,13 +177,13 @@
 <span class="sd">        * :meth:`set_vertex_attributes`</span>
 <span class="sd">        * :meth:`set_vertices_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">set_vertices_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Set multiple attributes of multiple vertices.</span>
+        <span class="sd">&quot;&quot;&quot;Set multiple attributes of multiple vertices.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -179,7 +207,7 @@
 <span class="sd">        * :meth:`set_vertex_attributes`</span>
 <span class="sd">        * :meth:`set_vertices_attribute`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
@@ -191,7 +219,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_vertex_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the value of a named attribute of one vertex.</span>
+        <span class="sd">&quot;&quot;&quot;Get the value of a named attribute of one vertex.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -214,11 +242,11 @@
 <span class="sd">        * :meth:`get_vertices_attribute`</span>
 <span class="sd">        * :meth:`get_vertices_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the value of a named attribute of one vertex.</span>
+        <span class="sd">&quot;&quot;&quot;Get the value of a named attribute of one vertex.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -243,13 +271,13 @@
 <span class="sd">        * :meth:`get_vertices_attribute`</span>
 <span class="sd">        * :meth:`get_vertices_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)]</span>
 
     <span class="k">def</span> <span class="nf">get_vertices_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the value of a named attribute of multiple vertices.</span>
+        <span class="sd">&quot;&quot;&quot;Get the value of a named attribute of multiple vertices.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -272,13 +300,13 @@
 <span class="sd">        * :meth:`get_vertex_attributes`</span>
 <span class="sd">        * :meth:`get_vertices_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)]</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">get_vertices_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the values of multiple named attribute of multiple vertices.</span>
+        <span class="sd">&quot;&quot;&quot;Get the values of multiple named attribute of multiple vertices.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -304,7 +332,7 @@
 <span class="sd">        * :meth:`get_vertex_attributes`</span>
 <span class="sd">        * :meth:`get_vertices_attribute`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
@@ -316,7 +344,7 @@
 <span class="k">class</span> <span class="nc">EdgeAttributesManagement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">update_default_edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Update the default edge attributes (this also affects already existing edges).</span>
+        <span class="sd">&quot;&quot;&quot;Update the default edge attributes (this also affects already existing edges).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -331,7 +359,7 @@
 <span class="sd">        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,</span>
 <span class="sd">        if they exist.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
@@ -342,7 +370,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span>
 
     <span class="k">def</span> <span class="nf">set_edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">"""Set one attribute of one edge.</span>
+        <span class="sd">&quot;&quot;&quot;Set one attribute of one edge.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -359,7 +387,7 @@
 <span class="sd">        * :meth:`set_edges_attribute`</span>
 <span class="sd">        * :meth:`set_edges_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">key</span>
         <span class="k">if</span> <span class="n">directed</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
@@ -376,7 +404,7 @@
 
 
     <span class="k">def</span> <span class="nf">set_edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Set multiple attributes of one edge.</span>
+        <span class="sd">&quot;&quot;&quot;Set multiple attributes of one edge.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -399,7 +427,7 @@
 <span class="sd">        * :meth:`set_edges_attribute`</span>
 <span class="sd">        * :meth:`set_edges_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">key</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -407,7 +435,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_edges_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Set one attribute of multiple edges.</span>
+        <span class="sd">&quot;&quot;&quot;Set one attribute of multiple edges.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -426,7 +454,7 @@
 <span class="sd">        * :meth:`set_edge_attributes`</span>
 <span class="sd">        * :meth:`set_edges_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
                 <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
@@ -435,7 +463,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">set_edges_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Set multiple attributes of multiple edges.</span>
+        <span class="sd">&quot;&quot;&quot;Set multiple attributes of multiple edges.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -460,7 +488,7 @@
 <span class="sd">        * :meth:`set_edge_attributes`</span>
 <span class="sd">        * :meth:`set_edges_attribute`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
@@ -472,7 +500,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the value of a named attribute of one edge.</span>
+        <span class="sd">&quot;&quot;&quot;Get the value of a named attribute of one edge.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -495,14 +523,14 @@
 <span class="sd">        * :meth:`get_edges_attribute`</span>
 <span class="sd">        * :meth:`get_edges_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">key</span>
         <span class="k">if</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the value of a named attribute of one edge.</span>
+        <span class="sd">&quot;&quot;&quot;Get the value of a named attribute of one edge.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -527,7 +555,7 @@
 <span class="sd">        * :meth:`get_edges_attribute`</span>
 <span class="sd">        * :meth:`get_edges_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">key</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">names</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
@@ -536,7 +564,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)]</span>
 
     <span class="k">def</span> <span class="nf">get_edges_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the value of a named attribute of multiple edges.</span>
+        <span class="sd">&quot;&quot;&quot;Get the value of a named attribute of multiple edges.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -560,13 +588,13 @@
 <span class="sd">        * :meth:`get_edge_attributes`</span>
 <span class="sd">        * :meth:`get_edges_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="kc">True</span><span class="p">)]</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">get_edges_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the values of multiple named attribute of multiple edges.</span>
+        <span class="sd">&quot;&quot;&quot;Get the values of multiple named attribute of multiple edges.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -593,7 +621,7 @@
 <span class="sd">        * :meth:`get_edge_attributes`</span>
 <span class="sd">        * :meth:`get_edges_attribute`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
@@ -605,7 +633,7 @@
 <span class="k">class</span> <span class="nc">FaceAttributesManagement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">update_default_face_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Update the default face attributes (this also affects already existing faces).</span>
+        <span class="sd">&quot;&quot;&quot;Update the default face attributes (this also affects already existing faces).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -620,7 +648,7 @@
 <span class="sd">        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,</span>
 <span class="sd">        if they exist.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
@@ -631,7 +659,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span>
 
     <span class="k">def</span> <span class="nf">set_face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">"""Set one attribute of one face.</span>
+        <span class="sd">&quot;&quot;&quot;Set one attribute of one face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -648,13 +676,13 @@
 <span class="sd">        * :meth:`set_faces_attribute`</span>
 <span class="sd">        * :meth:`set_faces_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">fkey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">set_face_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Set multiple attributes of one face.</span>
+        <span class="sd">&quot;&quot;&quot;Set multiple attributes of one face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -677,7 +705,7 @@
 <span class="sd">        * :meth:`set_faces_attribute`</span>
 <span class="sd">        * :meth:`set_faces_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">attr_dict</span> <span class="o">=</span> <span class="n">attr_dict</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fkey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">:</span>
@@ -685,7 +713,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_faces_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">fkeys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Set one attribute of multiple faces.</span>
+        <span class="sd">&quot;&quot;&quot;Set one attribute of multiple faces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -703,7 +731,7 @@
 <span class="sd">        * :meth:`set_face_attributes`</span>
 <span class="sd">        * :meth:`set_faces_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">fkeys</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces_iter</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
                 <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
@@ -714,7 +742,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">set_faces_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkeys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Set multiple attributes of multiple faces.</span>
+        <span class="sd">&quot;&quot;&quot;Set multiple attributes of multiple faces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -738,7 +766,7 @@
 <span class="sd">        * :meth:`set_face_attributes`</span>
 <span class="sd">        * :meth:`set_faces_attribute`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
@@ -752,7 +780,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the value of a named attribute of one face.</span>
+        <span class="sd">&quot;&quot;&quot;Get the value of a named attribute of one face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -775,7 +803,7 @@
 <span class="sd">        * :meth:`get_faces_attribute`</span>
 <span class="sd">        * :meth:`get_faces_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">value</span>
         <span class="k">if</span> <span class="n">fkey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">:</span>
@@ -783,7 +811,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_face_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the value of a named attribute of one face.</span>
+        <span class="sd">&quot;&quot;&quot;Get the value of a named attribute of one face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -808,7 +836,7 @@
 <span class="sd">        * :meth:`get_faces_attribute`</span>
 <span class="sd">        * :meth:`get_faces_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">:</span>
@@ -818,7 +846,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)]</span>
 
     <span class="k">def</span> <span class="nf">get_faces_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fkeys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the value of a named attribute of multiple faces.</span>
+        <span class="sd">&quot;&quot;&quot;Get the value of a named attribute of multiple faces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -841,7 +869,7 @@
 <span class="sd">        * :meth:`get_face_attributes`</span>
 <span class="sd">        * :meth:`get_faces_attributes`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">fkeys</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">:</span>
                 <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">]</span>
@@ -851,7 +879,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_face_attribute</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">fkeys</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">get_faces_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fkeys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get the values of multiple named attribute of multiple faces.</span>
+        <span class="sd">&quot;&quot;&quot;Get the values of multiple named attribute of multiple faces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -877,7 +905,7 @@
 <span class="sd">        * :meth:`get_face_attributes`</span>
 <span class="sd">        * :meth:`get_faces_attribute`</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
@@ -894,43 +922,70 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="k">pass</span>
 </code></pre></div>
-<nav class="compas-sideways">
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column">
+                        
+                        <nav class="compas-sideways">
+                            
+
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -942,7 +997,10 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -952,17 +1010,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

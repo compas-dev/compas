@@ -78,24 +78,6 @@ Algorithms
     network_relax
 
 
-Utilities
-=========
-
-.. autosummary::
-    :toctree: generated/
-
-    is_circle
-    is_frame
-    is_line
-    is_plane
-    is_polygon
-    is_polyhedron
-    is_polyline
-    is_point
-    is_segment
-    is_vector
-
-
 Basics
 ======
 
@@ -157,6 +139,10 @@ Distance
     closest_point_on_polyline_xy
     closest_point_on_segment
     closest_point_on_segment_xy
+
+.. autosummary::
+    :toctree: generated/
+
     distance_line_line
     distance_point_line
     distance_point_line_xy
@@ -187,6 +173,10 @@ Angles
     angle_smallest_vectors_xy
     angle_smallest_vectors_degrees
     angle_smallest_vectors_degrees_xy
+
+.. autosummary::
+    :toctree: generated/
+
     angles_points
     angles_points_xy
     angles_points_degrees
@@ -248,6 +238,20 @@ Bestfit
 
 Queries
 =======
+
+.. autosummary::
+    :toctree: generated/
+
+    is_circle
+    is_frame
+    is_line
+    is_plane
+    is_polygon
+    is_polyhedron
+    is_polyline
+    is_point
+    is_segment
+    is_vector
 
 .. autosummary::
     :toctree: generated/
@@ -334,18 +338,34 @@ Transformations
     mirror_points_point
     mirror_points_point_xy
     mirror_vector_vector
+
+.. autosummary::
+    :toctree: generated/
+
     offset_line
     offset_polyline
     offset_polygon
     orient_points
+
+.. autosummary::
+    :toctree: generated/
+
     project_point_line
     project_point_line_xy
     project_point_plane
     project_points_line
     project_points_line_xy
     project_points_plane
+
+.. autosummary::
+    :toctree: generated/
+
     reflect_line_plane
     reflect_line_triangle
+
+.. autosummary::
+    :toctree: generated/
+
     rotate_points
     rotate_points_xy
     rotate_points_degrees

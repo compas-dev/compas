@@ -1,40 +1,68 @@
 
-<!DOCTYPE html>
 
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<title>compas -- a computational framework for research in architecture and structures</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-<meta content="Tom Van Mele" name="author"/>
-<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
-<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
-<link href="/css/github.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
-<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-</head>
-<body data-spy="scroll" data-target="#compas-localnav">
-<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
-<a class="navbar-brand" href="/">compas</a>
-<ul class="navbar-nav">
-<li class="nav-item">
-<a class="nav-link active" href="/compas">Main library</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/packages">Additional Packages</a>
-</li>
-</ul>
-</header>
-<div class="container-fluid compas-container">
-<div class="row flex-xl-nowrap">
-<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-<nav class="breadcrumb">
-<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
-<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
-</nav>
-<h1>Source code for compas.datastructures.network.network</h1><div class="highlight"><pre><code class="language-python border rounded">
+    <head>
+        <title>compas -- a computational framework for research in architecture and structures</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="Tom Van Mele" />
+        <meta name="description" content="compas is a computational framework for research in architecture and structures." />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="/css/github.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+            <a class="navbar-brand" href="/">compas</a>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/compas">Main library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/packages">Additional Packages</a>
+                    </li>
+                </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+        <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+        
+            
+                <a class="breadcrumb-item" href="../../../index.html" accesskey="U">module code</a>
+            
+        
+    </nav>
+
+
+                        
+
+                        
+
+                        <h1>Source code for compas.datastructures.network.network</h1><div class="highlight"><pre><code class="language-python border rounded">
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 <span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
@@ -69,13 +97,13 @@
 <span class="kn">from</span> <span class="nn">compas.topology</span> <span class="k">import</span> <span class="n">bfs_traverse</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">'Tom Van Mele'</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">'Copyright 2014, Block Research Group - ETH Zurich'</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">'MIT License'</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'&lt;vanmelet@ethz.ch&gt;'</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">&#39;Tom Van Mele&#39;</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2014, Block Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;&lt;vanmelet@ethz.ch&gt;&#39;</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Network'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Network&#39;</span><span class="p">,</span> <span class="p">]</span>
 
 
 <div class="viewcode-block" id="Network"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Network.html#compas.datastructures.Network">[docs]</a><span class="k">class</span> <span class="nc">Network</span><span class="p">(</span><span class="n">FromToJson</span><span class="p">,</span>
@@ -91,7 +119,7 @@
               <span class="n">EdgeAttributesManagement</span><span class="p">,</span>
               <span class="n">VertexAttributesManagement</span><span class="p">,</span>
               <span class="n">Datastructure</span><span class="p">):</span>
-    <span class="sd">"""Definition of a network.</span>
+    <span class="sd">&quot;&quot;&quot;Definition of a network.</span>
 
 <span class="sd">    The ``Network`` class is implemented as a directed edge graph.</span>
 
@@ -130,7 +158,7 @@
 <span class="sd">        from compas.datastructures import Network</span>
 <span class="sd">        from compas.visualization import NetworkPlotter</span>
 
-<span class="sd">        network = Network.from_obj(compas.get_data('lines.obj'))</span>
+<span class="sd">        network = Network.from_obj(compas.get_data(&#39;lines.obj&#39;))</span>
 
 <span class="sd">        plotter = NetworkPlotter(network)</span>
 
@@ -139,7 +167,7 @@
 
 <span class="sd">        plotter.show()</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Network.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.__init__.html#compas.datastructures.Network.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Network</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
@@ -147,15 +175,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_key_to_str</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">'name'</span>         <span class="p">:</span> <span class="s1">'Network'</span><span class="p">,</span>
-            <span class="s1">'color.vertex'</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">'color.edge'</span>   <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">'color.face'</span>   <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span>         <span class="p">:</span> <span class="s1">&#39;Network&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;color.vertex&#39;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;color.edge&#39;</span>   <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;color.face&#39;</span>   <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'x'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span> <span class="o">=</span> <span class="p">{}</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -165,7 +193,7 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">""""""</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
         <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span>
         <span class="n">e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
 
@@ -175,14 +203,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">:</span>
             <span class="n">dva</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">dva</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">'</span><span class="si">{0}</span><span class="s1"> =&gt; </span><span class="si">{1}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+            <span class="n">dva</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> =&gt; </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">:</span>
             <span class="n">dea</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">dea</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">'</span><span class="si">{0}</span><span class="s1"> =&gt; </span><span class="si">{1}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+            <span class="n">dea</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> =&gt; </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
 
-        <span class="k">return</span> <span class="s2">"""</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
 <span class="s2">network: </span><span class="si">{0}</span><span class="s2"></span>
 <span class="s2">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span>
@@ -201,7 +229,7 @@
 <span class="s2">- vertex degree min: </span><span class="si">{3}</span><span class="s2"></span>
 <span class="s2">- vertex degree max: </span><span class="si">{4}</span><span class="s2"></span>
 
-<span class="s2">"""</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">],</span> <span class="n">v</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">dmin</span><span class="p">,</span> <span class="n">dmax</span><span class="p">,</span> <span class="n">dva</span><span class="p">,</span> <span class="n">dea</span><span class="p">)</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">v</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">dmin</span><span class="p">,</span> <span class="n">dmax</span><span class="p">,</span> <span class="n">dva</span><span class="p">,</span> <span class="n">dea</span><span class="p">)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># special properties</span>
@@ -209,65 +237,65 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">""":obj:`str` : The name of the data structure.</span>
+        <span class="sd">&quot;&quot;&quot;:obj:`str` : The name of the data structure.</span>
 
 <span class="sd">        Any value assigned to this property will be stored in the attribute dict</span>
 <span class="sd">        of the data structure instance.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Alias for the halfedge attribute."""</span>
+        <span class="sd">&quot;&quot;&quot;Alias for the halfedge attribute.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Return a data dict of this data structure for serialisation.</span>
-<span class="sd">        """</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'attributes'</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
-                <span class="s1">'dva'</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">,</span>
-                <span class="s1">'dea'</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">,</span>
-                <span class="s1">'vertex'</span>      <span class="p">:</span> <span class="p">{},</span>
-                <span class="s1">'edge'</span>        <span class="p">:</span> <span class="p">{},</span>
-                <span class="s1">'halfedge'</span>    <span class="p">:</span> <span class="p">{},</span>
-                <span class="s1">'max_int_key'</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span><span class="p">,</span> <span class="p">}</span>
+        <span class="sd">&quot;&quot;&quot;Return a data dict of this data structure for serialisation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;attributes&#39;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
+                <span class="s1">&#39;dva&#39;</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">,</span>
+                <span class="s1">&#39;dea&#39;</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">,</span>
+                <span class="s1">&#39;vertex&#39;</span>      <span class="p">:</span> <span class="p">{},</span>
+                <span class="s1">&#39;edge&#39;</span>        <span class="p">:</span> <span class="p">{},</span>
+                <span class="s1">&#39;halfedge&#39;</span>    <span class="p">:</span> <span class="p">{},</span>
+                <span class="s1">&#39;max_int_key&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span><span class="p">,</span> <span class="p">}</span>
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
             <span class="n">rkey</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">'vertex'</span><span class="p">][</span><span class="n">rkey</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;vertex&#39;</span><span class="p">][</span><span class="n">rkey</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">:</span>
             <span class="n">ru</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">'edge'</span><span class="p">][</span><span class="n">ru</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;edge&#39;</span><span class="p">][</span><span class="n">ru</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
                 <span class="n">rv</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                <span class="n">data</span><span class="p">[</span><span class="s1">'edge'</span><span class="p">][</span><span class="n">ru</span><span class="p">][</span><span class="n">rv</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;edge&#39;</span><span class="p">][</span><span class="n">ru</span><span class="p">][</span><span class="n">rv</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">:</span>
             <span class="n">ru</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">'halfedge'</span><span class="p">][</span><span class="n">ru</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;halfedge&#39;</span><span class="p">][</span><span class="n">ru</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
                 <span class="n">rv</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                <span class="n">data</span><span class="p">[</span><span class="s1">'halfedge'</span><span class="p">][</span><span class="n">ru</span><span class="p">][</span><span class="n">rv</span><span class="p">]</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">])</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;halfedge&#39;</span><span class="p">][</span><span class="n">ru</span><span class="p">][</span><span class="n">rv</span><span class="p">]</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">data</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="n">attributes</span>   <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'attributes'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">dva</span>          <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'dva'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">dea</span>          <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'dea'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">vertex</span>       <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'vertex'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">halfedge</span>     <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'halfedge'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">edge</span>         <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'edge'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">max_int_key</span>  <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'max_int_key'</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">attributes</span>   <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">dva</span>          <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dva&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">dea</span>          <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dea&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">vertex</span>       <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vertex&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">halfedge</span>     <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;halfedge&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">edge</span>         <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;edge&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">max_int_key</span>  <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_int_key&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dva</span><span class="p">)</span>
@@ -321,7 +349,7 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Network.from_obj"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.from_obj.html#compas.datastructures.Network.from_obj">[docs]</a>    <span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="s1">'3f'</span><span class="p">):</span>
+<div class="viewcode-block" id="Network.from_obj"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.from_obj.html#compas.datastructures.Network.from_obj">[docs]</a>    <span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="s1">&#39;3f&#39;</span><span class="p">):</span>
         <span class="n">network</span>  <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
         <span class="n">obj</span>      <span class="o">=</span> <span class="n">OBJ</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">)</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">vertices</span>
@@ -333,7 +361,7 @@
         <span class="k">return</span> <span class="n">network</span></div>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Network.from_lines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.from_lines.html#compas.datastructures.Network.from_lines">[docs]</a>    <span class="k">def</span> <span class="nf">from_lines</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="s1">'3f'</span><span class="p">):</span>
+<div class="viewcode-block" id="Network.from_lines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.from_lines.html#compas.datastructures.Network.from_lines">[docs]</a>    <span class="k">def</span> <span class="nf">from_lines</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="s1">&#39;3f&#39;</span><span class="p">):</span>
         <span class="n">network</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
         <span class="n">edges</span>   <span class="o">=</span> <span class="p">[]</span>
         <span class="n">vertex</span>  <span class="o">=</span> <span class="p">{}</span>
@@ -371,10 +399,10 @@
 <div class="viewcode-block" id="Network.to_obj"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.to_obj.html#compas.datastructures.Network.to_obj">[docs]</a>    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="Network.to_points"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.to_points.html#compas.datastructures.Network.to_points">[docs]</a>    <span class="k">def</span> <span class="nf">to_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">'xyz'</span><span class="p">):</span>
+<div class="viewcode-block" id="Network.to_points"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.to_points.html#compas.datastructures.Network.to_points">[docs]</a>    <span class="k">def</span> <span class="nf">to_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span></div>
 
-<div class="viewcode-block" id="Network.to_lines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.to_lines.html#compas.datastructures.Network.to_lines">[docs]</a>    <span class="k">def</span> <span class="nf">to_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">'xyz'</span><span class="p">):</span>
+<div class="viewcode-block" id="Network.to_lines"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.to_lines.html#compas.datastructures.Network.to_lines">[docs]</a>    <span class="k">def</span> <span class="nf">to_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span></div>
 
 <div class="viewcode-block" id="Network.to_vertices_and_edges"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.to_vertices_and_edges.html#compas.datastructures.Network.to_vertices_and_edges">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -437,7 +465,7 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="Network.add_vertex"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.add_vertex.html#compas.datastructures.Network.add_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Add a vertex and specify its attributes (optional).</span>
+        <span class="sd">&quot;&quot;&quot;Add a vertex and specify its attributes (optional).</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            If no key is provided for the vertex, one is generated</span>
@@ -458,14 +486,14 @@
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; network = Network()</span>
 <span class="sd">            &gt;&gt;&gt; network.add_vertex()</span>
-<span class="sd">            '0'</span>
+<span class="sd">            &#39;0&#39;</span>
 <span class="sd">            &gt;&gt;&gt; network.add_vertex(x=0, y=0, z=0)</span>
-<span class="sd">            '1'</span>
+<span class="sd">            &#39;1&#39;</span>
 <span class="sd">            &gt;&gt;&gt; network.add_vertex(key=2)</span>
-<span class="sd">            '2'</span>
+<span class="sd">            &#39;2&#39;</span>
 <span class="sd">            &gt;&gt;&gt; network.add_vertex(key=0, x=1)</span>
-<span class="sd">            '0'</span>
-<span class="sd">        """</span>
+<span class="sd">            &#39;0&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -484,7 +512,7 @@
         <span class="k">return</span> <span class="n">key</span></div>
 
 <div class="viewcode-block" id="Network.add_edge"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.add_edge.html#compas.datastructures.Network.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
-        <span class="sd">"""Add an edge and specify its attributes (optional)."""</span>
+        <span class="sd">&quot;&quot;&quot;Add an edge and specify its attributes (optional).&quot;&quot;&quot;</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -543,7 +571,7 @@
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfedges</span><span class="p">()))</span></div>
 
 <div class="viewcode-block" id="Network.is_connected"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.is_connected.html#compas.datastructures.Network.is_connected">[docs]</a>    <span class="k">def</span> <span class="nf">is_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Return True if for every two vertices a path exists connecting them."""</span>
+        <span class="sd">&quot;&quot;&quot;Return True if for every two vertices a path exists connecting them.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
@@ -557,7 +585,7 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="Network.vertices"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertices.html#compas.datastructures.Network.vertices">[docs]</a>    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">"""Return an iterator for the vertices and their attributes (optional).</span>
+        <span class="sd">&quot;&quot;&quot;Return an iterator for the vertices and their attributes (optional).</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            data (bool): Return key, data pairs, defaults to False.</span>
@@ -565,13 +593,13 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            iter: An iterator of vertex keys, if data is False.</span>
 <span class="sd">            iter: An iterator of key, data pairs, if data is True.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Network.edges"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.edges.html#compas.datastructures.Network.edges">[docs]</a>    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">"""Return an iterator for the edges and their attributes (optional)."""</span>
+        <span class="sd">&quot;&quot;&quot;Return an iterator for the edges and their attributes (optional).&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
@@ -627,11 +655,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="Network.vertex_neighbours"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_neighbours.html#compas.datastructures.Network.vertex_neighbours">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_neighbours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">"""Return the neighbours of a vertex."""</span>
+        <span class="sd">&quot;&quot;&quot;Return the neighbours of a vertex.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Network.vertex_neighbourhood"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_neighbourhood.html#compas.datastructures.Network.vertex_neighbourhood">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_neighbourhood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">"""Return the vertices in the neighbourhood of a vertex."""</span>
+        <span class="sd">&quot;&quot;&quot;Return the vertices in the neighbourhood of a vertex.&quot;&quot;&quot;</span>
         <span class="n">nbrs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
 
         <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
@@ -650,27 +678,27 @@
         <span class="k">return</span> <span class="n">nbrs</span></div>
 
 <div class="viewcode-block" id="Network.vertex_neighbours_out"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_neighbours_out.html#compas.datastructures.Network.vertex_neighbours_out">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_neighbours_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">"""Return the outgoing neighbours of a vertex."""</span>
+        <span class="sd">&quot;&quot;&quot;Return the outgoing neighbours of a vertex.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Network.vertex_neighbours_in"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_neighbours_in.html#compas.datastructures.Network.vertex_neighbours_in">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_neighbours_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">"""Return the incoming neighbours of a vertex."""</span>
+        <span class="sd">&quot;&quot;&quot;Return the incoming neighbours of a vertex.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span></div>
 
 <div class="viewcode-block" id="Network.vertex_degree"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_degree.html#compas.datastructures.Network.vertex_degree">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">"""Return the number of neighbours of a vertex."""</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of neighbours of a vertex.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Network.vertex_degree_out"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_degree_out.html#compas.datastructures.Network.vertex_degree_out">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_degree_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">"""Return the number of outgoing neighbours of a vertex."""</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of outgoing neighbours of a vertex.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbours_out</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Network.vertex_degree_in"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_degree_in.html#compas.datastructures.Network.vertex_degree_in">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_degree_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">"""Return the numer of incoming neighbours of a vertex."""</span>
+        <span class="sd">&quot;&quot;&quot;Return the numer of incoming neighbours of a vertex.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbours_in</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Network.vertex_connected_edges"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_connected_edges.html#compas.datastructures.Network.vertex_connected_edges">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_connected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">"""Return the edges connected to a vertex."""</span>
+        <span class="sd">&quot;&quot;&quot;Return the edges connected to a vertex.&quot;&quot;&quot;</span>
         <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
@@ -707,12 +735,12 @@
     <span class="c1"># vertex geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Network.vertex_coordinates"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_coordinates.html#compas.datastructures.Network.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">'xyz'</span><span class="p">):</span>
-        <span class="sd">"""Return the coordinates of a vertex."""</span>
+<div class="viewcode-block" id="Network.vertex_coordinates"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_coordinates.html#compas.datastructures.Network.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the coordinates of a vertex.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Network.vertex_laplacian"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.datastructures.Network.vertex_laplacian.html#compas.datastructures.Network.vertex_laplacian">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_laplacian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">"""Return the vector from the vertex to the centroid of its 1-ring neighbourhood."""</span>
+        <span class="sd">&quot;&quot;&quot;Return the vector from the vertex to the centroid of its 1-ring neighbourhood.&quot;&quot;&quot;</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span></div>
@@ -743,20 +771,20 @@
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 
     <span class="kn">from</span> <span class="nn">compas.visualization.plotters.networkplotter</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
 
-    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'open_edges.obj'</span><span class="p">))</span>
+    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;open_edges.obj&#39;</span><span class="p">))</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
 
     <span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 
-    <span class="n">plotter</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'vertex.fontsize'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">8.0</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;vertex.fontsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">8.0</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span>
-        <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">()},</span>
+        <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">()},</span>
         <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
         <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
     <span class="p">)</span>
@@ -765,40 +793,67 @@
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-<nav class="compas-sideways">
-</nav>
-</main>
-<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
-<div class="navbar-light">
-<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
-<input class="form-control" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-</form>
-<div class="navbar-expand-md">
-<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
-<ul class="nav flex-column">
+                        
+                        <nav class="compas-sideways">
+                            
+
+                            
+                        </nav>
+
+                    
+
+                </main>
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-</div>
-</div>
-</div>
-<footer class="compas-footer">
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="compas-footer">
             
                 
-                    © Copyright 2017, Block Research Group - ETH Zurich.
+                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
                 
             
 
@@ -810,7 +865,10 @@
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
             
         </footer>
-<script type="text/javascript">
+
+        
+
+            <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT:    '',
     VERSION:     '',
@@ -820,17 +878,24 @@ var DOCUMENTATION_OPTIONS = {
     SOURCELINK_SUFFIX: '.txt'
 };
             </script>
-<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-<script src="/static/underscore.js"></script>
-<script src="/static/doctools.js"></script>
-<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
-<script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+
+            <script src="/static/underscore.js"></script>
+            <script src="/static/doctools.js"></script>
+            <script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+
+            <script>
                 hljs.initHighlightingOnLoad();
                 anchors.add();
             </script>
-</body>
+
+        
+    </body>
 </html>

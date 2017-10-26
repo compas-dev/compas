@@ -72,7 +72,7 @@ class NetworkPlotter(Plotter):
         self.vertexcollection = None
         self.edgecollection = None
         self.defaults = {
-            'vertex.radius'    : 0.15,
+            'vertex.radius'    : 0.1,
             'vertex.facecolor' : '#ffffff',
             'vertex.edgecolor' : '#000000',
             'vertex.edgewidth' : 1.0,
