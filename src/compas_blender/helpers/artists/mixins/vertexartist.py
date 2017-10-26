@@ -1,4 +1,4 @@
-from compas.utilities import to_valuedict
+from compas.utilities import valuedict
 
 from compas_blender.utilities import delete_objects
 from compas_blender.utilities import get_objects
@@ -45,7 +45,7 @@ class VertexArtist(object):
 
     def draw_vertices(self, radius=0.010, keys=None, color=None):
         keys = keys or list(self.datastructure.vertices())
-        colordict = to_valuedict(keys, color, self.defaults['color.vertex'])
+        colordict = valuedict(keys, color, self.defaults['color.vertex'])
         points = []
         for key in keys:
             points.append({

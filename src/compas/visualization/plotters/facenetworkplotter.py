@@ -1,4 +1,4 @@
-from compas.utilities import to_valuedict
+from compas.utilities import valuedict
 from compas.visualization.plotters.networkplotter import NetworkPlotter
 
 
@@ -82,12 +82,12 @@ class FaceNetworkPlotter(NetworkPlotter):
         """
         keys = keys or list(self.network.faces())
 
-        textdict      = to_valuedict(keys, text, '')
-        facecolordict = to_valuedict(keys, facecolor, self.defaults['face.facecolor'])
-        edgecolordict = to_valuedict(keys, edgecolor, self.defaults['face.edgecolor'])
-        edgewidthdict = to_valuedict(keys, edgewidth, self.defaults['face.edgewidth'])
-        textcolordict = to_valuedict(keys, textcolor, self.defaults['face.textcolor'])
-        fontsizedict  = to_valuedict(keys, fontsize, self.defaults['face.fontsize'])
+        textdict      = valuedict(keys, text, '')
+        facecolordict = valuedict(keys, facecolor, self.defaults['face.facecolor'])
+        edgecolordict = valuedict(keys, edgecolor, self.defaults['face.edgecolor'])
+        edgewidthdict = valuedict(keys, edgewidth, self.defaults['face.edgewidth'])
+        textcolordict = valuedict(keys, textcolor, self.defaults['face.textcolor'])
+        fontsizedict  = valuedict(keys, fontsize, self.defaults['face.fontsize'])
 
         polygons = []
         for key in keys:

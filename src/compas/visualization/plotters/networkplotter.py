@@ -2,7 +2,7 @@
 
 from matplotlib.patches import Circle
 
-from compas.utilities import to_valuedict
+from compas.utilities import valuedict
 from compas.visualization.plotters.plotter import Plotter
 
 
@@ -136,13 +136,13 @@ class NetworkPlotter(Plotter):
         """
         keys = keys or list(self.network.vertices())
 
-        radiusdict    = to_valuedict(keys, radius, self.defaults['vertex.radius'])
-        textdict      = to_valuedict(keys, text, '')
-        facecolordict = to_valuedict(keys, facecolor, self.defaults['vertex.facecolor'])
-        edgecolordict = to_valuedict(keys, edgecolor, self.defaults['vertex.edgecolor'])
-        edgewidthdict = to_valuedict(keys, edgewidth, self.defaults['vertex.edgewidth'])
-        textcolordict = to_valuedict(keys, textcolor, self.defaults['vertex.textcolor'])
-        fontsizedict  = to_valuedict(keys, fontsize, self.defaults['vertex.fontsize'])
+        radiusdict    = valuedict(keys, radius, self.defaults['vertex.radius'])
+        textdict      = valuedict(keys, text, '')
+        facecolordict = valuedict(keys, facecolor, self.defaults['vertex.facecolor'])
+        edgecolordict = valuedict(keys, edgecolor, self.defaults['vertex.edgecolor'])
+        edgewidthdict = valuedict(keys, edgewidth, self.defaults['vertex.edgewidth'])
+        textcolordict = valuedict(keys, textcolor, self.defaults['vertex.textcolor'])
+        fontsizedict  = valuedict(keys, fontsize, self.defaults['vertex.fontsize'])
 
         points = []
         for key in keys:
@@ -202,11 +202,11 @@ class NetworkPlotter(Plotter):
         """
         keys = keys or list(self.network.edges())
 
-        widthdict     = to_valuedict(keys, width, self.defaults['edge.width'])
-        colordict     = to_valuedict(keys, color, self.defaults['edge.color'])
-        textdict      = to_valuedict(keys, text, '')
-        textcolordict = to_valuedict(keys, textcolor, self.defaults['edge.textcolor'])
-        fontsizedict  = to_valuedict(keys, fontsize, self.defaults['edge.fontsize'])
+        widthdict     = valuedict(keys, width, self.defaults['edge.width'])
+        colordict     = valuedict(keys, color, self.defaults['edge.color'])
+        textdict      = valuedict(keys, text, '')
+        textcolordict = valuedict(keys, textcolor, self.defaults['edge.textcolor'])
+        fontsizedict  = valuedict(keys, fontsize, self.defaults['edge.fontsize'])
 
         lines = []
         for u, v in keys:
