@@ -107,7 +107,6 @@ Mesh
       ~Mesh.number_of_faces
       ~Mesh.number_of_halfedges
       ~Mesh.number_of_vertices
-      ~Mesh.planarize_faces
       ~Mesh.set_edge_attribute
       ~Mesh.set_edge_attributes
       ~Mesh.set_edges_attribute
@@ -120,7 +119,6 @@ Mesh
       ~Mesh.set_vertex_attributes
       ~Mesh.set_vertices_attribute
       ~Mesh.set_vertices_attributes
-      ~Mesh.smooth_centroid
       ~Mesh.summary
       ~Mesh.to_data
       ~Mesh.to_json

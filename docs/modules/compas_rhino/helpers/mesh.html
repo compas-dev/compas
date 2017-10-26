@@ -1048,14 +1048,14 @@
     <span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="k">import</span> <span class="n">mesh_select_vertex</span>
     <span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="k">import</span> <span class="n">mesh_move_vertex</span>
 
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces_big.obj'</span><span class="p">))</span>
 
     <span class="n">mesh_draw</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'test'</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">key</span> <span class="o">=</span> <span class="n">mesh_select_vertex</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">mesh_move_vertex</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="n">mesh_draw</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">'test'</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#    key = mesh_select_vertex(mesh)</span>
+<span class="c1">#</span>
+<span class="c1">#    if mesh_move_vertex(mesh, key):</span>
+<span class="c1">#        mesh_draw(mesh, layer='test', clear_layer=True)</span>
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>

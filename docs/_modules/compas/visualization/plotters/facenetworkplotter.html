@@ -35,7 +35,7 @@
 <a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
 </nav>
 <h1>Source code for compas.visualization.plotters.facenetworkplotter</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">to_valuedict</span>
+<span></span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">valuedict</span>
 <span class="kn">from</span> <span class="nn">compas.visualization.plotters.networkplotter</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
 
 
@@ -49,9 +49,31 @@
 
 
 <div class="viewcode-block" id="FaceNetworkPlotter"><a class="viewcode-back" href="../../../../reference/generated/compas.visualization.FaceNetworkPlotter.html#compas.visualization.FaceNetworkPlotter">[docs]</a><span class="k">class</span> <span class="nc">FaceNetworkPlotter</span><span class="p">(</span><span class="n">NetworkPlotter</span><span class="p">):</span>
-    <span class="sd">""""""</span>
+    <span class="sd">"""Definition of a plotter object based on matplotlib for compas FaceNetworks.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network: object</span>
+<span class="sd">        The FaceNetwork to plot.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title of the plot.</span>
+<span class="sd">    facecollection : object</span>
+<span class="sd">        The matplotlib collection for the mesh faces.</span>
+<span class="sd">    defaults : dict</span>
+<span class="sd">        Dictionary containing default attributes for vertices and edges.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science &amp; Engineering (9) 3, p.90-95.</span>
+<span class="sd">      Available at: http://ieeexplore.ieee.org/document/4160265/citations</span>
+
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="FaceNetworkPlotter.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.FaceNetworkPlotter.__init__.html#compas.visualization.FaceNetworkPlotter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">"""Initialises a facenetwork plotter object"""</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FaceNetworkPlotter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">'FaceNetworkPlotter'</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">facecollection</span> <span class="o">=</span> <span class="kc">None</span>
@@ -71,15 +93,38 @@
                    <span class="n">edgewidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">textcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">"""Draws the network faces.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        keys : list</span>
+<span class="sd">            The keys of the edges to plot.</span>
+<span class="sd">        text : list</span>
+<span class="sd">            Strings to be displayed on the edges.</span>
+<span class="sd">        facecolor : list</span>
+<span class="sd">            Color for the face fill.</span>
+<span class="sd">        edgecolor : list</span>
+<span class="sd">            Color for the face edge.</span>
+<span class="sd">        edgewidth : list</span>
+<span class="sd">            Width for the face edge.</span>
+<span class="sd">        textcolor : list</span>
+<span class="sd">            Color for the text to be displayed on the edges.</span>
+<span class="sd">        fontsize : list</span>
+<span class="sd">            Font size for the text to be displayed on the edges.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            The matplotlib face collection object.</span>
+<span class="sd">        """</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
 
-        <span class="n">textdict</span>      <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-        <span class="n">facecolordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">facecolor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.facecolor'</span><span class="p">])</span>
-        <span class="n">edgecolordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">edgecolor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.edgecolor'</span><span class="p">])</span>
-        <span class="n">edgewidthdict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">edgewidth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.edgewidth'</span><span class="p">])</span>
-        <span class="n">textcolordict</span> <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">textcolor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.textcolor'</span><span class="p">])</span>
-        <span class="n">fontsizedict</span>  <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.fontsize'</span><span class="p">])</span>
+        <span class="n">textdict</span>      <span class="o">=</span> <span class="n">valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+        <span class="n">facecolordict</span> <span class="o">=</span> <span class="n">valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">facecolor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.facecolor'</span><span class="p">])</span>
+        <span class="n">edgecolordict</span> <span class="o">=</span> <span class="n">valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">edgecolor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.edgecolor'</span><span class="p">])</span>
+        <span class="n">edgewidthdict</span> <span class="o">=</span> <span class="n">valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">edgewidth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.edgewidth'</span><span class="p">])</span>
+        <span class="n">textcolordict</span> <span class="o">=</span> <span class="n">valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">textcolor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.textcolor'</span><span class="p">])</span>
+        <span class="n">fontsizedict</span>  <span class="o">=</span> <span class="n">valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'face.fontsize'</span><span class="p">])</span>
 
         <span class="n">polygons</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>

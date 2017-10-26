@@ -26,6 +26,8 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = [
     'flatness',
     'planarize_faces',
+
+    'mesh_flatness',
     'mesh_planarize_faces',
     'mesh_planarize_faces_shapeop',
     'mesh_circularize_faces_shapeop',

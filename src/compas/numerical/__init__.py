@@ -6,8 +6,8 @@ numerical
 
 .. module:: compas.numerical
 
-
 A package for numerical computation.
+
 
 Dependencies
 ============
@@ -24,6 +24,7 @@ Dependencies
 * Cython
 * cvxpy
 * SymPy
+* Alglib
 
 
 Methods

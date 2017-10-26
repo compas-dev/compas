@@ -64,11 +64,11 @@ def smooth_centroid(vertices,
         :include-source:
 
         import compas
-        from compas.datastructures import Network
+        from compas.datastructures import Mesh
         from compas.geometry import smooth_centroid
-        from compas.visualization import NetworkPlotter
+        from compas.visualization import MeshPlotter
 
-        mesh = Network.from_obj(compas.get_data('faces.obj'))
+        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
         vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
         adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
@@ -90,7 +90,7 @@ def smooth_centroid(vertices,
             attr['y'] = vertices[key][1]
             attr['z'] = vertices[key][2]
 
-        plotter = NetworkPlotter(mesh)
+        plotter = MeshPlotter(mesh)
 
         plotter.draw_lines(lines)
         plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
@@ -176,11 +176,11 @@ def smooth_centerofmass(vertices,
         :include-source:
 
         import compas
-        from compas.datastructures import Network
+        from compas.datastructures import Mesh
         from compas.geometry import smooth_centerofmass
-        from compas.visualization import NetworkPlotter
+        from compas.visualization import MeshPlotter
 
-        mesh = Network.from_obj(compas.get_data('faces.obj'))
+        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
         vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
         adjacency = {key: mesh.vertex_neighbours(key, ordered=True) for key in mesh.vertices()}
@@ -202,7 +202,7 @@ def smooth_centerofmass(vertices,
             attr['y'] = vertices[key][1]
             attr['z'] = vertices[key][2]
 
-        plotter = NetworkPlotter(mesh)
+        plotter = MeshPlotter(mesh)
 
         plotter.draw_lines(lines)
         plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
@@ -287,11 +287,11 @@ def smooth_area(vertices,
 
         import compas
 
-        from compas.datastructures import Network
+        from compas.datastructures import Mesh
+        from compas.visualization import MeshPlotter
         from compas.geometry import smooth_area
-        from compas.visualization import NetworkPlotter
 
-        mesh = Network.from_obj(compas.get('faces.obj'))
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
         faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
@@ -314,7 +314,7 @@ def smooth_area(vertices,
             attr['y'] = vertices[key][1]
             attr['z'] = vertices[key][2]
 
-        plotter = NetworkPlotter(mesh)
+        plotter = MeshPlotter(mesh)
 
         plotter.draw_lines(lines)
         plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
@@ -375,7 +375,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=1.0, callback=None,
 
     Parameters
     ----------
-    mesh : Network
+    mesh : Mesh
         A mesh object.
     fixed : list, optional
         The fixed vertices of the mesh.
@@ -400,16 +400,16 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=1.0, callback=None,
 
         import compas
     
-        from compas.datastructures import Network
-        from compas.visualization import NetworkPlotter
+        from compas.datastructures import Mesh
+        from compas.visualization import MeshPlotter
         from compas.geometry import mesh_smooth_centroid
 
-        mesh = Network.from_obj(compas.get('hypar.obj'))
+        mesh = Mesh.from_obj(compas.get('hypar.obj'))
         fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
         mesh_smooth_centroid(mesh, fixed=fixed)
 
-        plotter = NetworkPlotter(mesh)
+        plotter = MeshPlotter(mesh)
 
         plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
         plotter.draw_faces()
@@ -455,7 +455,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
 
     Parameters
     ----------
-    network : Network
+    network : Mesh
         A network object.
     fixed : list, optional
         The fixed vertices of the mesh.
@@ -525,10 +525,10 @@ if __name__ == "__main__":
 
     import compas
 
-    from compas.datastructures import Network
-    from compas.visualization import NetworkPlotter
+    from compas.datastructures import Mesh
+    from compas.visualization import MeshPlotter
 
-    mesh = Network.from_obj(compas.get('faces.obj'))
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
     faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
@@ -544,7 +544,7 @@ if __name__ == "__main__":
             'width': 1.0,
         })
 
-    plotter = NetworkPlotter(mesh)
+    plotter = MeshPlotter(mesh)
 
     plotter.draw_lines(lines)
 

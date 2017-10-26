@@ -73,17 +73,22 @@ Default is <code class="docutils literal">'base'</code>.</li>
 <p class="rubric">Examples</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matlab</span> <span class="o">=</span> <span class="n">MatlabClient</span><span class="p">(</span><span class="n">interactive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">matrix_from_list</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">]])</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matlab</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">matlab</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s1">'[R, jb] = rref(A);'</span><span class="p">)</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'R'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">jb</span> <span class="o">=</span> <span class="n">matlab</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'jb'</span><span class="p">)</span>
 </code></pre></div>
+
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">jb</span><span class="p">)</span>
 </code></pre></div>
+
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">

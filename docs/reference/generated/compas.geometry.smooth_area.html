@@ -12,7 +12,7 @@
 <link href="/css/github.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="compas.geometry.discrete_coons_patch.html" rel="next" title="discrete_coons_patch"/>
+<link href="compas.geometry.mesh_smooth_centroid.html" rel="next" title="mesh_smooth_centroid"/>
 <link href="compas.geometry.smooth_centerofmass.html" rel="prev" title="smooth_centerofmass"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
@@ -53,11 +53,11 @@ of the surrounding faces, weighted by the area of the face.</p>
 <li><strong>vertices</strong> (<em>dict</em>) – A dictionary of vertex coordinates.</li>
 <li><strong>faces</strong> (<em>dict</em>) – A dictionary of faces referencing the vertices dict.</li>
 <li><strong>adjacency</strong> (<em>dict</em>) – Adjacency information for each of the vertices.</li>
-<li><strong>fixed</strong> (<em>list, optional [None]</em>) – The fixed vertices of the mesh.</li>
-<li><strong>kmax</strong> (<em>int, optional [1]</em>) – The maximum number of iterations.</li>
-<li><strong>d</strong> (<em>float, optional [0.5]</em>) – The damping factor.</li>
-<li><strong>callback</strong> (<em>callable, optional [None]</em>) – A user-defined callback function to be executed after every iteration.</li>
-<li><strong>callback_args</strong> (<em>list, optional [None]</em>) – A list of arguments to be passed to the callback.</li>
+<li><strong>fixed</strong> (<em>list, optional</em>) – The fixed vertices of the mesh.</li>
+<li><strong>kmax</strong> (<em>int, optional</em>) – The maximum number of iterations.</li>
+<li><strong>d</strong> (<em>float, optional</em>) – The damping factor.</li>
+<li><strong>callback</strong> (<em>callable, optional</em>) – A user-defined callback function to be executed after every iteration.</li>
+<li><strong>callback_args</strong> (<em>list, optional</em>) – A list of arguments to be passed to the callback.</li>
 </ul>
 </td>
 </tr>
@@ -79,8 +79,8 @@ of the surrounding faces, weighted by the area of the face.</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
 
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">smooth_area</span>
 <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">smooth_area</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
@@ -113,6 +113,7 @@ of the surrounding faces, weighted by the area of the face.</p>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
+
 <figure class="figure">
 <img alt="../../images/compas-geometry-smooth_area-1.png" class="figure-img img-fluid" src="../../images/compas-geometry-smooth_area-1.png"/>
 </figure>
@@ -120,7 +121,7 @@ of the surrounding faces, weighted by the area of the face.</p>
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="compas.geometry.smooth_centerofmass.html" role="button">smooth_centerofmass</a>
-<a class="btn btn-primary compas-next" href="compas.geometry.discrete_coons_patch.html" role="button">discrete_coons_patch</a>
+<a class="btn btn-primary compas-next" href="compas.geometry.mesh_smooth_centroid.html" role="button">mesh_smooth_centroid</a>
 </nav>
 </main>
 <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">

@@ -51,6 +51,10 @@
     <span class="s1">'smooth_centroid'</span><span class="p">,</span>
     <span class="s1">'smooth_centerofmass'</span><span class="p">,</span>
     <span class="s1">'smooth_area'</span><span class="p">,</span>
+
+    <span class="s1">'mesh_smooth_centroid'</span><span class="p">,</span>
+
+    <span class="s1">'network_smooth_centroid'</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -66,19 +70,19 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    verticses : dict</span>
+<span class="sd">    vertices : dict</span>
 <span class="sd">        A dictionary of vertex coordinates.</span>
 <span class="sd">    adjacency : dict</span>
 <span class="sd">        Adjacency information for each of the vertices.</span>
-<span class="sd">    fixed : list, optional [None]</span>
+<span class="sd">    fixed : list, optional</span>
 <span class="sd">        The fixed vertices of the mesh.</span>
-<span class="sd">    kmax : int, optional [1]</span>
+<span class="sd">    kmax : int, optional</span>
 <span class="sd">        The maximum number of iterations.</span>
-<span class="sd">    d : float, optional [0.5]</span>
+<span class="sd">    damping : float, optional</span>
 <span class="sd">        The damping factor.</span>
-<span class="sd">    callback : callable, optional [None]</span>
+<span class="sd">    callback : callable, optional</span>
 <span class="sd">        A user-defined callback function to be executed after every iteration.</span>
-<span class="sd">    callback_args : list, optional [None]</span>
+<span class="sd">    callback_args : list, optional</span>
 <span class="sd">        A list of arguments to be passed to the callback.</span>
 
 <span class="sd">    Raises</span>
@@ -176,15 +180,15 @@
 <span class="sd">        A dictionary of vertex coordinates.</span>
 <span class="sd">    adjacency : dict</span>
 <span class="sd">        Adjacency information for each of the vertices.</span>
-<span class="sd">    fixed : list, optional [None]</span>
+<span class="sd">    fixed : list, optional</span>
 <span class="sd">        The fixed vertices of the mesh.</span>
-<span class="sd">    kmax : int, optional [1]</span>
+<span class="sd">    kmax : int, optional</span>
 <span class="sd">        The maximum number of iterations.</span>
-<span class="sd">    d : float, optional [0.5]</span>
+<span class="sd">    d : float, optional</span>
 <span class="sd">        The damping factor.</span>
-<span class="sd">    callback : callable, optional [None]</span>
+<span class="sd">    callback : callable, optional</span>
 <span class="sd">        A user-defined callback function to be executed after every iteration.</span>
-<span class="sd">    callback_args : list, optional [None]</span>
+<span class="sd">    callback_args : list, optional</span>
 <span class="sd">        A list of arguments to be passed to the callback.</span>
 
 <span class="sd">    Raises</span>
@@ -291,15 +295,15 @@
 <span class="sd">        A dictionary of faces referencing the vertices dict.</span>
 <span class="sd">    adjacency : dict</span>
 <span class="sd">        Adjacency information for each of the vertices.</span>
-<span class="sd">    fixed : list, optional [None]</span>
+<span class="sd">    fixed : list, optional</span>
 <span class="sd">        The fixed vertices of the mesh.</span>
-<span class="sd">    kmax : int, optional [1]</span>
+<span class="sd">    kmax : int, optional</span>
 <span class="sd">        The maximum number of iterations.</span>
-<span class="sd">    d : float, optional [0.5]</span>
+<span class="sd">    d : float, optional</span>
 <span class="sd">        The damping factor.</span>
-<span class="sd">    callback : callable, optional [None]</span>
+<span class="sd">    callback : callable, optional</span>
 <span class="sd">        A user-defined callback function to be executed after every iteration.</span>
-<span class="sd">    callback_args : list, optional [None]</span>
+<span class="sd">    callback_args : list, optional</span>
 <span class="sd">        A list of arguments to be passed to the callback.</span>
 
 <span class="sd">    Raises</span>
@@ -322,8 +326,8 @@
 <span class="sd">        import compas</span>
 
 <span class="sd">        from compas.datastructures import Mesh</span>
-<span class="sd">        from compas.geometry import smooth_area</span>
 <span class="sd">        from compas.visualization import MeshPlotter</span>
+<span class="sd">        from compas.geometry import smooth_area</span>
 
 <span class="sd">        mesh = Mesh.from_obj(compas.get('faces.obj'))</span>
 
@@ -400,6 +404,158 @@
 
 
 <span class="c1"># ==============================================================================</span>
+<span class="c1"># mesh variations</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="mesh_smooth_centroid"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.mesh_smooth_centroid.html#compas.geometry.mesh_smooth_centroid">[docs]</a><span class="k">def</span> <span class="nf">mesh_smooth_centroid</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Smooth a mesh by moving every free vertex to the centroid of its neighbours.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+<span class="sd">    fixed : list, optional</span>
+<span class="sd">        The fixed vertices of the mesh.</span>
+<span class="sd">    kmax : int, optional</span>
+<span class="sd">        The maximum number of iterations.</span>
+<span class="sd">    damping : float, optional</span>
+<span class="sd">        The damping factor.</span>
+<span class="sd">    callback : callable, optional</span>
+<span class="sd">        A user-defined callback function to be executed after every iteration.</span>
+<span class="sd">    callback_args : list, optional</span>
+<span class="sd">        A list of arguments to be passed to the callback.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    Exception</span>
+<span class="sd">        If a callback is provided, but it is not callable.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        import compas</span>
+<span class="sd">    </span>
+<span class="sd">        from compas.datastructures import Mesh</span>
+<span class="sd">        from compas.visualization import MeshPlotter</span>
+<span class="sd">        from compas.geometry import mesh_smooth_centroid</span>
+
+<span class="sd">        mesh = Mesh.from_obj(compas.get('hypar.obj'))</span>
+<span class="sd">        fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]</span>
+
+<span class="sd">        mesh_smooth_centroid(mesh, fixed=fixed)</span>
+
+<span class="sd">        plotter = MeshPlotter(mesh)</span>
+
+<span class="sd">        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})</span>
+<span class="sd">        plotter.draw_faces()</span>
+<span class="sd">        plotter.draw_edges()</span>
+
+<span class="sd">        plotter.show()</span>
+
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Callback is not callable.'</span><span class="p">)</span>
+
+    <span class="n">fixed</span> <span class="o">=</span> <span class="n">fixed</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
+
+    <span class="n">vertices</span>  <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+    <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kmax</span><span class="p">):</span>
+        <span class="n">smooth_centroid</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">adjacency</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+                <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+
+            <span class="n">callback</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># network variations</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="network_smooth_centroid"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.network_smooth_centroid.html#compas.geometry.network_smooth_centroid">[docs]</a><span class="k">def</span> <span class="nf">network_smooth_centroid</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Smooth a network by moving each vertex to the centroid of its neighbours.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network : Mesh</span>
+<span class="sd">        A network object.</span>
+<span class="sd">    fixed : list, optional</span>
+<span class="sd">        The fixed vertices of the mesh.</span>
+<span class="sd">    kmax : int, optional</span>
+<span class="sd">        The maximum number of iterations.</span>
+<span class="sd">    damping : float, optional</span>
+<span class="sd">        The damping factor.</span>
+<span class="sd">    callback : callable, optional</span>
+<span class="sd">        A user-defined callback function to be executed after every iteration.</span>
+<span class="sd">    callback_args : list, optional</span>
+<span class="sd">        A list of arguments to be passed to the callback.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    Exception</span>
+<span class="sd">        If a callback is provided, but it is not callable.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        import compas</span>
+<span class="sd">    </span>
+<span class="sd">        from compas.datastructures import Network</span>
+<span class="sd">        from compas.visualization import NetworkPlotter</span>
+<span class="sd">        from compas.geometry import network_smooth_centroid</span>
+
+<span class="sd">        network = Network.from_obj(compas.get('lines.obj'))</span>
+<span class="sd">        fixed = [key for key in network.vertices() if network.vertex_degree(key) == 2]</span>
+
+<span class="sd">        network_smooth_centroid(network, fixed=fixed)</span>
+
+<span class="sd">        plotter = NetworkPlotter(network)</span>
+
+<span class="sd">        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})</span>
+<span class="sd">        plotter.draw_edges()</span>
+
+<span class="sd">        plotter.show()</span>
+
+<span class="sd">    """</span>
+    <span class="n">vertices</span>  <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+    <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kmax</span><span class="p">):</span>
+        <span class="n">smooth_centroid</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">adjacency</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+                <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+
+            <span class="n">callback</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
 <span class="c1"># Debugging</span>
 <span class="c1"># ==============================================================================</span>
 
@@ -408,10 +564,9 @@
     <span class="kn">import</span> <span class="nn">compas</span>
 
     <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
-    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">smooth_area</span>
     <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
 
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
     <span class="n">vertices</span>  <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
     <span class="n">faces</span>     <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
@@ -432,19 +587,16 @@
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">'#ff0000'</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">})</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
-            <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
-
+    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="n">plotter</span><span class="o">.</span><span class="n">update_vertices</span><span class="p">()</span>
         <span class="n">plotter</span><span class="o">.</span><span class="n">update_edges</span><span class="p">()</span>
-        <span class="n">plotter</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pause</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">update_faces</span><span class="p">()</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pause</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
 
-    <span class="n">smooth_area</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">adjacency</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+    <span class="n">mesh_smooth_centroid</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
