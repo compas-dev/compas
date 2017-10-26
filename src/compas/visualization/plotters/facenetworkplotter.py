@@ -12,9 +12,31 @@ __all__ = ['FaceNetworkPlotter', ]
 
 
 class FaceNetworkPlotter(NetworkPlotter):
-    """"""
+    """Definition of a plotter object based on matplotlib for compas FaceNetworks.
+
+    Parameters
+    ----------
+    network: object
+        The FaceNetwork to plot.
+
+    Attributes
+    ----------
+    title : str
+        Title of the plot.
+    facecollection : object
+        The matplotlib collection for the mesh faces.
+    defaults : dict
+        Dictionary containing default attributes for vertices and edges.
+
+    References
+    ----------
+    * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science & Engineering (9) 3, p.90-95.
+      Available at: http://ieeexplore.ieee.org/document/4160265/citations
+
+    """
 
     def __init__(self, network, **kwargs):
+        """Initialises a facenetwork plotter object"""
         super(FaceNetworkPlotter, self).__init__(network, **kwargs)
         self.title = 'FaceNetworkPlotter'
         self.facecollection = None
@@ -34,7 +56,30 @@ class FaceNetworkPlotter(NetworkPlotter):
                    edgewidth=None,
                    textcolor=None,
                    fontsize=None):
+        """Draws the network faces.
 
+        Parameters
+        ----------
+        keys : list
+            The keys of the edges to plot.
+        text : list
+            Strings to be displayed on the edges.
+        facecolor : list
+            Color for the face fill.
+        edgecolor : list
+            Color for the face edge.
+        edgewidth : list
+            Width for the face edge.
+        textcolor : list
+            Color for the text to be displayed on the edges.
+        fontsize : list
+            Font size for the text to be displayed on the edges.
+
+        Returns
+        -------
+        object
+            The matplotlib face collection object.
+        """
         keys = keys or list(self.network.faces())
 
         textdict      = to_valuedict(keys, text, '')
