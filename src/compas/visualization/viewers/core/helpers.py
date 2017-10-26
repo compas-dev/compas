@@ -11,7 +11,12 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['Axes', 'Camera', 'Grid', 'Mouse']
+__all__ = [
+    'Axes',
+    'Camera',
+    'Grid',
+    'Mouse'
+]
 
 
 class Axes(object):

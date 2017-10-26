@@ -53,16 +53,63 @@
 
 
 <div class="viewcode-block" id="NetworkPlotter"><a class="viewcode-back" href="../../../../reference/generated/compas.visualization.NetworkPlotter.html#compas.visualization.NetworkPlotter">[docs]</a><span class="k">class</span> <span class="nc">NetworkPlotter</span><span class="p">(</span><span class="n">Plotter</span><span class="p">):</span>
-    <span class="sd">""""""</span>
+    <span class="sd">"""Definition of a plotter object based on matplotlib for compas Networks.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    network: object</span>
+<span class="sd">        The network to plot.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Title of the plot.</span>
+<span class="sd">    network : object</span>
+<span class="sd">        The network to plot.</span>
+<span class="sd">    vertexcollection : object</span>
+<span class="sd">        The matplotlib collection for the network vertices.</span>
+<span class="sd">    edgecollection : object</span>
+<span class="sd">        The matplotlib collection for the network edges.</span>
+<span class="sd">    defaults : dict</span>
+<span class="sd">        Dictionary containing default attributes for vertices and edges.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        import compas</span>
+<span class="sd">        from compas.datastructures import Network</span>
+<span class="sd">        from compas.visualization import NetworkPlotter</span>
+
+<span class="sd">        network = Network.from_obj(compas.get('lines.obj'))</span>
+
+<span class="sd">        plotter = NetworkPlotter(network)</span>
+
+<span class="sd">        plotter.draw_vertices(</span>
+<span class="sd">            text='key',</span>
+<span class="sd">            facecolor={key: '#ff0000' for key in network.leaves()}</span>
+<span class="sd">        )</span>
+<span class="sd">        plotter.draw_edges()</span>
+
+<span class="sd">        plotter.show()</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science &amp; Engineering (9) 3, p.90-95.</span>
+<span class="sd">      Available at: http://ieeexplore.ieee.org/document/4160265/citations</span>
+
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="NetworkPlotter.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.NetworkPlotter.__init__.html#compas.visualization.NetworkPlotter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">"""Initialises a network plotter object"""</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">NetworkPlotter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">'NetworkPlotter'</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">'vertex.radius'</span>    <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s1">'vertex.radius'</span>    <span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
             <span class="s1">'vertex.facecolor'</span> <span class="p">:</span> <span class="s1">'#ffffff'</span><span class="p">,</span>
             <span class="s1">'vertex.edgecolor'</span> <span class="p">:</span> <span class="s1">'#000000'</span><span class="p">,</span>
             <span class="s1">'vertex.edgewidth'</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
@@ -76,13 +123,16 @@
         <span class="p">}</span></div>
 
 <div class="viewcode-block" id="NetworkPlotter.clear"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.NetworkPlotter.clear.html#compas.visualization.NetworkPlotter.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Clears the network plotter edges and vertices."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_vertices</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_edges</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="NetworkPlotter.clear_vertices"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.NetworkPlotter.clear_vertices.html#compas.visualization.NetworkPlotter.clear_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Clears the netwotk plotter vertices."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="NetworkPlotter.clear_edges"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.NetworkPlotter.clear_edges.html#compas.visualization.NetworkPlotter.clear_edges">[docs]</a>    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Clears the network object edges."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="NetworkPlotter.draw_vertices"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.NetworkPlotter.draw_vertices.html#compas.visualization.NetworkPlotter.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -94,7 +144,33 @@
                       <span class="n">edgewidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">textcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">"""Draws the network vertices.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        keys : list</span>
+<span class="sd">            The keys of the vertices to plot.</span>
+<span class="sd">        radius : list</span>
+<span class="sd">            A list of radii for the vertices.</span>
+<span class="sd">        text : list</span>
+<span class="sd">            Strings to be displayed on the vertices.</span>
+<span class="sd">        facecolor : list</span>
+<span class="sd">            Color for the vertex circle fill.</span>
+<span class="sd">        edgecolor : list</span>
+<span class="sd">            Color for the vertex circle edge.</span>
+<span class="sd">        edgewidth : list</span>
+<span class="sd">            Width for the vertex circle edge.</span>
+<span class="sd">        textcolor : list</span>
+<span class="sd">            Color for the text to be displayed on the vertices.</span>
+<span class="sd">        fontsize : list</span>
+<span class="sd">            Font size for the text to be displayed on the vertices.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            The matplotlib point collection object.</span>
+
+<span class="sd">        """</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
 
         <span class="n">radiusdict</span>    <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'vertex.radius'</span><span class="p">])</span>
@@ -123,10 +199,11 @@
         <span class="k">return</span> <span class="n">collection</span></div>
 
 <div class="viewcode-block" id="NetworkPlotter.update_vertices"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.NetworkPlotter.update_vertices.html#compas.visualization.NetworkPlotter.update_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">update_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Updates the plotter vertex collection based on the network."""</span>
         <span class="n">circles</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
             <span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)</span>
-            <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.1</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.15</span>
             <span class="n">circles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Circle</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span></div>
 
@@ -137,7 +214,29 @@
                    <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">textcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">"""Draws the network edges.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        keys : list</span>
+<span class="sd">            The keys of the edges to plot.</span>
+<span class="sd">        width : list</span>
+<span class="sd">            Width of the network edges.</span>
+<span class="sd">        color : list</span>
+<span class="sd">            Color for the edge lines.</span>
+<span class="sd">        text : list</span>
+<span class="sd">            Strings to be displayed on the edges.</span>
+<span class="sd">        textcolor : list</span>
+<span class="sd">            Color for the text to be displayed on the edges.</span>
+<span class="sd">        fontsize : list</span>
+<span class="sd">            Font size for the text to be displayed on the edges.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            The matplotlib line collection object.</span>
+
+<span class="sd">        """</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
 
         <span class="n">widthdict</span>     <span class="o">=</span> <span class="n">to_valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'edge.width'</span><span class="p">])</span>
@@ -163,6 +262,7 @@
         <span class="k">return</span> <span class="n">collection</span></div>
 
 <div class="viewcode-block" id="NetworkPlotter.update_edges"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.visualization.NetworkPlotter.update_edges.html#compas.visualization.NetworkPlotter.update_edges">[docs]</a>    <span class="k">def</span> <span class="nf">update_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Updates the plotter edge collection based on the network."""</span>
         <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
             <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'xy'</span><span class="p">)])</span>
@@ -207,7 +307,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -225,7 +325,7 @@
             
 
             
-                Last updated on Oct 23, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

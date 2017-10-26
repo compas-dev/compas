@@ -36,10 +36,10 @@
 <a accesskey="U" class="breadcrumb-item" href="../../geometry.html">compas.geometry</a>
 </nav>
 <h1>Source code for compas.geometry.objects.plane</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">orthonormalise_vectors</span>
+<span></span><span class="kn">from</span> <span class="nn">compas.geometry.objects</span> <span class="k">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.objects</span> <span class="k">import</span> <span class="n">Vector</span>
 
-<span class="kn">from</span> <span class="nn">compas.geometry.objects.point</span> <span class="k">import</span> <span class="n">Point</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.objects.vector</span> <span class="k">import</span> <span class="n">Vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">orthonormalise_vectors</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
@@ -48,12 +48,19 @@
 <span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Plane'</span><span class="p">]</span>
+
+
 <div class="viewcode-block" id="Plane"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Plane.html#compas.geometry.Plane">[docs]</a><span class="k">class</span> <span class="nc">Plane</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">""""""</span>
 
 <div class="viewcode-block" id="Plane.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Plane.__init__.html#compas.geometry.Plane.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># factory</span>
+    <span class="c1"># ==========================================================================</span>
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Plane.from_point_and_normal"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Plane.from_point_and_normal.html#compas.geometry.Plane.from_point_and_normal">[docs]</a>    <span class="k">def</span> <span class="nf">from_point_and_normal</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">):</span>
@@ -91,17 +98,70 @@
 <div class="viewcode-block" id="Plane.from_points"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Plane.from_points.html#compas.geometry.Plane.from_points">[docs]</a>    <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># descriptors</span>
+    <span class="c1"># ==========================================================================</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span>
         <span class="k">return</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="n">y</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">z</span>
 
-<div class="viewcode-block" id="Plane.basis"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Plane.basis.html#compas.geometry.Plane.basis">[docs]</a>    <span class="k">def</span> <span class="nf">basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">basis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span>
         <span class="n">u</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span> <span class="n">a</span> <span class="o">/</span> <span class="n">c</span>
         <span class="n">v</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span> <span class="n">b</span> <span class="o">/</span> <span class="n">c</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">vector</span><span class="p">,</span> <span class="n">unitize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">orthonormalise_vectors</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">])]</span></div></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">vector</span><span class="p">,</span> <span class="n">unitize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">orthonormalise_vectors</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">])]</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># representation</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># access</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">])</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># comparison</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># operators</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># inplace operators</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># methods</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># transformations</span>
+    <span class="c1"># ==========================================================================</span>
+
 
 
 <span class="c1"># ==============================================================================</span>
@@ -110,16 +170,14 @@
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
 
-    <span class="kn">from</span> <span class="nn">compas.visualization.viewers.viewer</span> <span class="k">import</span> <span class="n">Viewer</span>
-    <span class="kn">from</span> <span class="nn">compas.visualization.viewers.core.drawing</span> <span class="k">import</span> <span class="n">xdraw_points</span>
-    <span class="kn">from</span> <span class="nn">compas.visualization.viewers.core.drawing</span> <span class="k">import</span> <span class="n">xdraw_lines</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization.viewers</span> <span class="k">import</span> <span class="n">Viewer</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization.viewers</span> <span class="k">import</span> <span class="n">xdraw_points</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization.viewers</span> <span class="k">import</span> <span class="n">xdraw_lines</span>
 
     <span class="n">base</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
     <span class="n">normal</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
     <span class="n">plane</span> <span class="o">=</span> <span class="n">Plane</span><span class="o">.</span><span class="n">from_point_and_normal</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
-
-    <span class="n">basis</span> <span class="o">=</span> <span class="n">plane</span><span class="o">.</span><span class="n">basis</span><span class="p">()</span>
 
     <span class="n">points</span> <span class="o">=</span> <span class="p">[{</span>
         <span class="s1">'pos'</span>  <span class="p">:</span> <span class="n">base</span><span class="p">,</span>
@@ -128,8 +186,7 @@
     <span class="p">}]</span>
 
     <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">basis</span> <span class="o">+</span> <span class="p">[</span><span class="n">plane</span><span class="o">.</span><span class="n">normal</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">plane</span><span class="o">.</span><span class="n">basis</span> <span class="o">+</span> <span class="p">[</span><span class="n">plane</span><span class="o">.</span><span class="n">normal</span><span class="p">]:</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
             <span class="s1">'start'</span> <span class="p">:</span> <span class="n">base</span><span class="p">,</span>
             <span class="s1">'end'</span>   <span class="p">:</span> <span class="n">base</span> <span class="o">+</span> <span class="n">vector</span><span class="p">,</span>
@@ -141,12 +198,10 @@
         <span class="n">xdraw_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="n">xdraw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
-    <span class="n">viewer</span> <span class="o">=</span> <span class="n">Viewer</span><span class="p">()</span>
-
-    <span class="n">viewer</span><span class="o">.</span><span class="n">displayfuncs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">draw_plane</span><span class="p">)</span>
-
-    <span class="n">viewer</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
-    <span class="n">viewer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">Viewer</span><span class="p">(</span>
+        <span class="n">displayfuncs</span><span class="o">=</span><span class="p">[</span><span class="n">draw_plane</span><span class="p">,</span> <span class="p">],</span>
+        <span class="n">delay_setup</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>
@@ -186,7 +241,7 @@
             
 
             
-                Last updated on Oct 24, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

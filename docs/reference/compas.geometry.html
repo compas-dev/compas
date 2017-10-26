@@ -651,7 +651,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mirror_point_plane.html" title="compas.geometry.mirror_point_plane"><code class="xref py py-obj docutils literal">mirror_point_plane</code></a>(point, plane)</td>
-<td></td>
+<td>Mirror a point about a plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mirror_point_point.html" title="compas.geometry.mirror_point_point"><code class="xref py py-obj docutils literal">mirror_point_point</code></a>(point, mirror)</td>
 <td>Mirror a point about a point.</td>
@@ -666,7 +666,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mirror_points_plane.html" title="compas.geometry.mirror_points_plane"><code class="xref py py-obj docutils literal">mirror_points_plane</code></a>(points, plane)</td>
-<td></td>
+<td>Mirror multiple points about a plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mirror_points_point.html" title="compas.geometry.mirror_points_point"><code class="xref py py-obj docutils literal">mirror_points_point</code></a>(points, mirror)</td>
 <td>Mirror multiple points about a point.</td>
@@ -679,6 +679,9 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.offset_line.html" title="compas.geometry.offset_line"><code class="xref py py-obj docutils literal">offset_line</code></a>(line, distance[, normal])</td>
 <td>Offset a line by a distance</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.offset_polyline.html" title="compas.geometry.offset_polyline"><code class="xref py py-obj docutils literal">offset_polyline</code></a>(polyline, distance[, normal])</td>
+<td>Offset a polyline by a distance.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.offset_polygon.html" title="compas.geometry.offset_polygon"><code class="xref py py-obj docutils literal">offset_polygon</code></a>(polygon, distance)</td>
 <td>Offset a polygon (closed) by a distance.</td>
@@ -783,20 +786,26 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Circle.html" title="compas.geometry.Circle"><code class="xref py py-obj docutils literal">Circle</code></a></td>
-<td></td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-obj docutils literal">Vector</code></a>(x, y, z[, w, unitize])</td>
+<td>A vector object represents a vector in three-dimensional space.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Frame.html" title="compas.geometry.Frame"><code class="xref py py-obj docutils literal">Frame</code></a></td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-obj docutils literal">Point</code></a>(x, y[, z])</td>
+<td>A three-dimensional location in space.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Circle.html" title="compas.geometry.Circle"><code class="xref py py-obj docutils literal">Circle</code></a></td>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Line.html" title="compas.geometry.Line"><code class="xref py py-obj docutils literal">Line</code></a>(p1, p2)</td>
 <td>A line object is defined by two points in three-dimensional space.</td>
 </tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Frame.html" title="compas.geometry.Frame"><code class="xref py py-obj docutils literal">Frame</code></a></td>
+<td></td>
+</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Plane.html" title="compas.geometry.Plane"><code class="xref py py-obj docutils literal">Plane</code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-obj docutils literal">Point</code></a>([x, y, z])</td>
-<td>A three-dimensional location in space.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyline.html" title="compas.geometry.Polyline"><code class="xref py py-obj docutils literal">Polyline</code></a>(points)</td>
+<td>A polyline object represents a concatenation of lines.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polygon.html" title="compas.geometry.Polygon"><code class="xref py py-obj docutils literal">Polygon</code></a>(points)</td>
 <td>An object representing ...</td>
@@ -804,17 +813,14 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyhedron.html" title="compas.geometry.Polyhedron"><code class="xref py py-obj docutils literal">Polyhedron</code></a>()</td>
 <td>Compute the vertices and faces of one of the Platonic solids.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyline.html" title="compas.geometry.Polyline"><code class="xref py py-obj docutils literal">Polyline</code></a>(points)</td>
-<td>A polyline object represents a concatenation of lines.</td>
-</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Spline.html" title="compas.geometry.Spline"><code class="xref py py-obj docutils literal">Spline</code></a>()</td>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Surface.html" title="compas.geometry.Surface"><code class="xref py py-obj docutils literal">Surface</code></a></td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-obj docutils literal">Vector</code></a>([x, y, z, w, unitize])</td>
-<td>A vector object represents a vector in three-dimensional space.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.KDTree.html" title="compas.geometry.KDTree"><code class="xref py py-obj docutils literal">KDTree</code></a>([objects])</td>
+<td>A tree for nearest neighbor search in a k-dimensional space.</td>
 </tr>
 </tbody>
 </table>
@@ -830,10 +836,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.planarize_faces.html" title="compas.geometry.planarize_faces"><code class="xref py py-obj docutils literal">planarize_faces</code></a>(vertices, faces[, fixed, ...])</td>
 <td>Planarise the faces of a mesh.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.flatness.html" title="compas.geometry.flatness"><code class="xref py py-obj docutils literal">flatness</code></a>(vertices, faces)</td>
-<td>Compute mesh flatness per face.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.flatness2.html" title="compas.geometry.flatness2"><code class="xref py py-obj docutils literal">flatness2</code></a>(vertices, faces[, maxdev])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.flatness.html" title="compas.geometry.flatness"><code class="xref py py-obj docutils literal">flatness</code></a>(vertices, faces[, maxdev])</td>
 <td>Compute mesh flatness per face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centroid.html" title="compas.geometry.smooth_centroid"><code class="xref py py-obj docutils literal">smooth_centroid</code></a>(vertices, adjacency[, ...])</td>
@@ -844,6 +847,9 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_area.html" title="compas.geometry.smooth_area"><code class="xref py py-obj docutils literal">smooth_area</code></a>(vertices, faces, adjacency[, ...])</td>
 <td>Smooth a set of connected vertices by moving each vertex to the centroid of the surrounding faces, weighted by the area of the face.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.discrete_coons_patch.html" title="compas.geometry.discrete_coons_patch"><code class="xref py py-obj docutils literal">discrete_coons_patch</code></a>(ab, bc, dc, ad)</td>
+<td>Creates a coons patch from a set of four or three boundary polylines (ab, bc, dc, ad).</td>
 </tr>
 </tbody>
 </table>
@@ -931,7 +937,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
             
 
             
-                Last updated on Oct 24, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

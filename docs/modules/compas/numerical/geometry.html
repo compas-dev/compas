@@ -332,28 +332,20 @@
     <span class="sd">"""Plot the contours of a mesh.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        mesh (:class:`compas.datastructures.mesh.Mesh`): The mesh object.</span>
+<span class="sd">        mesh (:class:`compas.datastructures.Mesh`): The mesh object.</span>
 <span class="sd">        N (int): The density of the plot.</span>
 
 <span class="sd">    Examples:</span>
 
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            import compas</span>
-<span class="sd">            from compas.datastructures import Mesh</span>
-<span class="sd">            from compas.numerical import plot_mesh_contours</span>
-
-<span class="sd">            mesh = Mesh.from_obj(compas.get_data('hypar.obj'))</span>
-
-<span class="sd">            plot_mesh_contours(mesh, N=50)</span>
-
-
 <span class="sd">        .. plot::</span>
+<span class="sd">            :include-source:</span>
 
 <span class="sd">            import compas</span>
 <span class="sd">            from compas.datastructures import Mesh</span>
 <span class="sd">            from compas.numerical import plot_mesh_contours</span>
+
 <span class="sd">            mesh = Mesh.from_obj(compas.get_data('hypar.obj'))</span>
+
 <span class="sd">            plot_mesh_contours(mesh, N=50)</span>
 
 
@@ -370,7 +362,7 @@
     <span class="sd">"""Plot the isolines of a vertex attribute of the mesh.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        mesh (:class:`compas.datastructures.mesh.Mesh`): A mesh object.</span>
+<span class="sd">        mesh (:class:`compas.datastructures.Mesh`): A mesh object.</span>
 <span class="sd">        attr_name (str): The name of the vertex attribute.</span>
 <span class="sd">        N (int): Optional. The density of the isolines. Default is ``50``.</span>
 
@@ -639,7 +631,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -657,7 +649,7 @@
             
 
             
-                Last updated on Oct 23, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

@@ -8,35 +8,38 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-def align_polylines(pointsets, tol=0.001):
-    tol = tol**2
-    aligned = [pointsets[0][1:]]
-    found = [0]
-    n = len(pointsets)
-    for i in range(n):
-        ep = aligned[-1][-1]
-        for j in range(n):
-            if j in found:
-                continue
-            points = pointsets[j]
-            sp = points[0]
-            if (sp[0] - ep[0]) ** 2 < tol and (sp[1] - ep[1]) ** 2 < tol and (sp[2] - ep[2]) ** 2 < tol:
-                aligned.append(points[1:])
-                found.append(j)
-                break
-            sp = points[-1]
-            if (sp[0] - ep[0]) ** 2 < tol and (sp[1] - ep[1]) ** 2 < tol and (sp[2] - ep[2]) ** 2 < tol:
-                points[:] = points[::-1]
-                aligned.append(points[1:])
-                found.append(j)
-                break
-    if len(aligned) == len(pointsets):
-        return aligned
-    return None
+__all__ = ['Polyline']
 
 
-def join_polylines(pointsets):
-    return [point for points in pointsets for point in points]
+# def align_polylines(pointsets, tol=0.001):
+#     tol = tol**2
+#     aligned = [pointsets[0][1:]]
+#     found = [0]
+#     n = len(pointsets)
+#     for i in range(n):
+#         ep = aligned[-1][-1]
+#         for j in range(n):
+#             if j in found:
+#                 continue
+#             points = pointsets[j]
+#             sp = points[0]
+#             if (sp[0] - ep[0]) ** 2 < tol and (sp[1] - ep[1]) ** 2 < tol and (sp[2] - ep[2]) ** 2 < tol:
+#                 aligned.append(points[1:])
+#                 found.append(j)
+#                 break
+#             sp = points[-1]
+#             if (sp[0] - ep[0]) ** 2 < tol and (sp[1] - ep[1]) ** 2 < tol and (sp[2] - ep[2]) ** 2 < tol:
+#                 points[:] = points[::-1]
+#                 aligned.append(points[1:])
+#                 found.append(j)
+#                 break
+#     if len(aligned) == len(pointsets):
+#         return aligned
+#     return None
+
+
+# def join_polylines(pointsets):
+#     return [point for points in pointsets for point in points]
 
 
 class Polyline(object):
@@ -72,11 +75,19 @@ class Polyline(object):
 
     """
     def __init__(self, points):
-        self.points = None
-        self.lines = None
-        self.p = 0
-        self.l = 0
+        self._points = []
+        self._lines = []
+        self._p = 0
+        self._l = 0
         self.points = points
+
+    # ==========================================================================
+    # factory
+    # ==========================================================================
+
+    # ==========================================================================
+    # descriptors
+    # ==========================================================================
 
     @property
     def points(self):
@@ -88,14 +99,14 @@ class Polyline(object):
         Returns:
             list: A list of ``Point`` objects.
         """
-        return self.points
+        return self._points
 
     @points.setter
     def points(self, points):
-        self.points = [Point(xyz) for xyz in points]
-        self.p = len(points)
-        self.lines = [Line(self.points[i], self.points[i + 1]) for i in range(0, self.p - 1)]
-        self.l = len(self.lines)
+        self._points = [Point(*xyz) for xyz in points]
+        self._p = len(points)
+        self._lines = [Line(self._points[i], self._points[i + 1]) for i in range(0, self._p - 1)]
+        self._l = len(self._lines)
 
     @property
     def lines(self):
@@ -107,17 +118,17 @@ class Polyline(object):
         Returns:
             list: A list of ``Line`` objects.
         """
-        return self.lines
+        return self._lines
 
     @property
     def p(self):
         """The number of points."""
-        return self.p
+        return self._p
 
     @property
     def l(self):
         """The number of lines."""
-        return self.l
+        return self._l
 
     @property
     def length(self):
@@ -137,6 +148,34 @@ class Polyline(object):
             bool: True if the polyline is closed, False otherwise.
         """
         return self.points[0] == self.points[-1]
+
+    # ==========================================================================
+    # representation
+    # ==========================================================================
+
+    # ==========================================================================
+    # access
+    # ==========================================================================
+
+    # ==========================================================================
+    # comparison
+    # ==========================================================================
+
+    # ==========================================================================
+    # operators
+    # ==========================================================================
+
+    # ==========================================================================
+    # inplace operators
+    # ==========================================================================
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
+
+    # ==========================================================================
+    # transformations
+    # ==========================================================================
 
 
 # ==============================================================================

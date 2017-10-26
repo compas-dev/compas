@@ -2,7 +2,10 @@
 
 from matplotlib.patches import Circle
 from matplotlib.patches import Polygon
-from compas.utilities import to_valuedict
+
+from compas.utilities import valuedict
+from compas.utilities import color_to_rgb
+
 from compas.visualization.plotters.plotter import Plotter
 
 
@@ -38,6 +41,26 @@ class MeshPlotter(Plotter):
     defaults : dict
         Dictionary containing default attributes for vertices and edges.
 
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+        from compas.datastructures import Mesh
+        from compas.visualization import MeshPlotter
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+        plotter = MeshPlotter(mesh)
+
+        plotter.draw_vertices(text='key')
+        plotter.draw_edges()
+        plotter.draw_faces()
+
+        plotter.show()
+
+
     References
     ----------
     * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science & Engineering (9) 3, p.90-95.
@@ -70,7 +93,7 @@ class MeshPlotter(Plotter):
             'face.edgecolor' : '#eeeeee',
             'face.edgewidth' : 0.1,
             'face.textcolor' : '#000000',
-            'face.fontsize'  : 10.0,
+            'face.fontsize'  : 12.0,
         }
 
     def clear(self):
@@ -120,16 +143,23 @@ class MeshPlotter(Plotter):
             text = {key: str(key) for key in self.mesh.vertices()}
         elif text == 'index':
             text = {key: str(index) for index, key in enumerate(self.mesh.vertices())}
+        elif isinstance(text, basestring):
+            if text in self.mesh.default_vertex_attributes:
+                default = self.mesh.default_vertex_attributes[text]
+                if isinstance(default, float):
+                    text = {key: '{:.1f}'.format(attr[text]) for key, attr in self.mesh.vertices(True)}
+                else:
+                    text = {key: str(attr[text]) for key, attr in self.mesh.vertices(True)}
         else:
             pass
 
-        radiusdict    = to_valuedict(keys, radius, self.defaults['vertex.radius'])
-        textdict      = to_valuedict(keys, text, '')
-        facecolordict = to_valuedict(keys, facecolor, self.defaults['vertex.facecolor'])
-        edgecolordict = to_valuedict(keys, edgecolor, self.defaults['vertex.edgecolor'])
-        edgewidthdict = to_valuedict(keys, edgewidth, self.defaults['vertex.edgewidth'])
-        textcolordict = to_valuedict(keys, textcolor, self.defaults['vertex.textcolor'])
-        fontsizedict  = to_valuedict(keys, fontsize, self.defaults['vertex.fontsize'])
+        radiusdict    = valuedict(keys, radius, self.defaults['vertex.radius'])
+        textdict      = valuedict(keys, text, '')
+        facecolordict = valuedict(keys, facecolor, self.defaults['vertex.facecolor'])
+        edgecolordict = valuedict(keys, edgecolor, self.defaults['vertex.edgecolor'])
+        edgewidthdict = valuedict(keys, edgewidth, self.defaults['vertex.edgewidth'])
+        textcolordict = valuedict(keys, textcolor, self.defaults['vertex.textcolor'])
+        fontsizedict  = valuedict(keys, fontsize, self.defaults['vertex.fontsize'])
 
         points = []
         for key in keys:
@@ -152,13 +182,14 @@ class MeshPlotter(Plotter):
         """Clears the mesh plotter vertices."""
         self.vertexcollection.remove()
 
-    def update_vertices(self):
+    def update_vertices(self, radius=None):
         """Updates the plotter vertex collection based on the mesh."""
+        radius = valuedict(self.mesh.vertices(), radius, self.defaults['vertex.radius'])
         circles = []
         for key in self.mesh.vertices():
-            center = self.mesh.vertex_coordinates(key, 'xy')
-            radius = 0.1
-            circles.append(Circle(center, radius))
+            c = self.mesh.vertex_coordinates(key, 'xy')
+            r = radius[key]
+            circles.append(Circle(c, r))
         self.vertexcollection.set_paths(circles)
 
     def draw_edges(self,
@@ -200,11 +231,11 @@ class MeshPlotter(Plotter):
         else:
             pass
 
-        widthdict     = to_valuedict(keys, width, self.defaults['edge.width'])
-        colordict     = to_valuedict(keys, color, self.defaults['edge.color'])
-        textdict      = to_valuedict(keys, text, '')
-        textcolordict = to_valuedict(keys, textcolor, self.defaults['edge.textcolor'])
-        fontsizedict  = to_valuedict(keys, fontsize, self.defaults['edge.fontsize'])
+        widthdict     = valuedict(keys, width, self.defaults['edge.width'])
+        colordict     = valuedict(keys, color, self.defaults['edge.color'])
+        textdict      = valuedict(keys, text, '')
+        textcolordict = valuedict(keys, textcolor, self.defaults['edge.textcolor'])
+        fontsizedict  = valuedict(keys, fontsize, self.defaults['edge.fontsize'])
 
         lines = []
         for u, v in keys:
@@ -274,12 +305,12 @@ class MeshPlotter(Plotter):
         else:
             pass
 
-        textdict      = to_valuedict(keys, text, '')
-        facecolordict = to_valuedict(keys, facecolor, self.defaults['face.facecolor'])
-        edgecolordict = to_valuedict(keys, edgecolor, self.defaults['face.edgecolor'])
-        edgewidthdict = to_valuedict(keys, edgewidth, self.defaults['face.edgewidth'])
-        textcolordict = to_valuedict(keys, textcolor, self.defaults['face.textcolor'])
-        fontsizedict  = to_valuedict(keys, fontsize, self.defaults['face.fontsize'])
+        textdict      = valuedict(keys, text, '')
+        facecolordict = valuedict(keys, facecolor, self.defaults['face.facecolor'])
+        edgecolordict = valuedict(keys, edgecolor, self.defaults['face.edgecolor'])
+        edgewidthdict = valuedict(keys, edgewidth, self.defaults['face.edgewidth'])
+        textcolordict = valuedict(keys, textcolor, self.defaults['face.textcolor'])
+        fontsizedict  = valuedict(keys, fontsize, self.defaults['face.fontsize'])
 
         polygons = []
         for key in keys:
@@ -301,13 +332,17 @@ class MeshPlotter(Plotter):
         """Clears the mesh plotter faces."""
         self.facecollection.remove()
 
-    def update_faces(self):
+    def update_faces(self, facecolor=None):
         """Updates the plotter face collection based on the mesh."""
+        facecolor = valuedict(self.mesh.faces(), facecolor, self.defaults['face.facecolor'])
         polygons = []
+        facecolors = []
         for fkey in self.mesh.faces():
             points = self.mesh.face_coordinates(fkey, 'xy')
             polygons.append(Polygon(points))
+            facecolors.append(color_to_rgb(facecolor[fkey], normalize=True))
         self.facecollection.set_paths(polygons)
+        self.facecollection.set_facecolor(facecolors)
 
 
 # ==============================================================================
@@ -323,7 +358,7 @@ if __name__ == "__main__":
 
     plotter = MeshPlotter(mesh)
 
-    plotter.draw_vertices()
+    plotter.draw_vertices(text='x')
     plotter.draw_edges()
     plotter.draw_faces()
 

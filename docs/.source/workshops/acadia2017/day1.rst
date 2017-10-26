@@ -7,5 +7,5 @@ Day 1
 .. toctree::
     :maxdepth: 2
 
-    day1/python101
+    day1/python
     day1/datastructures

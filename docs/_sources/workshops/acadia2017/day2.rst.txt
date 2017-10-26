@@ -7,3 +7,6 @@ Day 2
 .. toctree::
     :maxdepth: 2
 
+    day2/geometry
+    day2/numerical
+    day2/formfinding

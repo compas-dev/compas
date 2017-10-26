@@ -731,13 +731,13 @@
     <span class="kn">import</span> <span class="nn">compas</span>
     <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">FaceNetwork</span>
     <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">network_find_faces</span>
-    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">NetworkPlotter</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">FaceNetworkPlotter</span>
 
     <span class="n">network</span> <span class="o">=</span> <span class="n">FaceNetwork</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">'lines.obj'</span><span class="p">))</span>
 
     <span class="n">network_find_faces</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">breakpoints</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">())</span>
 
-    <span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">FaceNetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 
     <span class="n">plotter</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">'vertex.fontsize'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">8.0</span>
 
@@ -772,7 +772,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -790,7 +790,7 @@
             
 
             
-                Last updated on Oct 23, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

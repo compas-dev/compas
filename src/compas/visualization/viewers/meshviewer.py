@@ -14,6 +14,13 @@ __license__    = 'MIT'
 __email__      = 'vanmelet@ethz.ch'
 
 
+__all__ = [
+    'MeshViewer',
+    'SubdMeshViewer',
+    'MultiMeshViewer'
+]
+
+
 class MeshViewer(Viewer):
     """"""
 
@@ -95,17 +102,17 @@ class SubdMeshViewer(Viewer):
 
         .. code-block:: python
 
-            from compas.datastructures.mesh.mesh import Mesh
-            from compas.datastructures.mesh.algorithms import subdivide_mesh_doosabin
-            from compas.datastructures.mesh.viewer import SubdMeshViewer
+            from functools import partial
+        
+            from compas.datastructures import Mesh
+            from compas.datastructures import mesh_subdivide
+            from compas.visualization.viewers import SubdMeshViewer
 
-            from compas.geometry.elements.polyhedron import Polyhedron
+            subdivide = partial(mesh_subdivide, scheme='doosabin')
 
-            poly = Polyhedron.generate(6)
+            mesh = Mesh.from_polyhedron(6)
 
-            mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
-
-            viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
+            viewer = SubdMeshViewer(mesh, subdfunc=subdivide, width=600, height=600)
 
             viewer.axes_on = False
             viewer.grid_on = False
@@ -222,16 +229,16 @@ class MultiMeshViewer(Viewer):
 
 if __name__ == '__main__':
 
-    from compas.datastructures.mesh.mesh import Mesh
-    from compas.datastructures.mesh.algorithms import subdivide_mesh_doosabin
+    from functools import partial
 
-    from compas.geometry.elements.polyhedron import Polyhedron
+    from compas.datastructures import Mesh
+    from compas.datastructures import mesh_subdivide
 
-    poly = Polyhedron.generate(6)
+    subdivide = partial(mesh_subdivide, scheme='doosabin')
 
-    mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
+    mesh = Mesh.from_polyhedron(6)
 
-    viewer = SubdMeshViewer(mesh, subdfunc=subdivide_mesh_doosabin, width=600, height=600)
+    viewer = SubdMeshViewer(mesh, subdfunc=subdivide, width=600, height=600)
 
     viewer.axes_on = False
     viewer.grid_on = False

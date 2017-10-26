@@ -26,17 +26,21 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = [
     'planarize_faces',
     'flatness',
-    'flatness2'
 ]
 
 
-def flatness(vertices, faces):
+def flatness(vertices, faces, maxdev=1.0):
     """Compute mesh flatness per face.
 
     Parameters
     ----------
-    mesh : Mesh
-        A mesh object.
+    vertices : dict
+        A dictionary of vertex coordinates.
+    faces : list
+        The face vertices.
+    maxdev : float, optional
+        A maximum value for the allowed deviation from flatness.
+        Default is ``1.0``.
 
     Returns
     -------
@@ -45,45 +49,17 @@ def flatness(vertices, faces):
 
     Note
     ----
-    The "flatness" of a face is expressed as the average of the angles between
-    the normal at each face corner and the normal of the best-fit plane.
+    The "flatness" of a face is expressed as the ratio of the distance between
+    the diagonals to the average edge length. For the fabrication of glass panels,
+    for example, ``0.02`` could be a reasonable maximum value.
 
-    """
-    dev = []
-    for face in faces:
-        points = [vertices[key] for key in face]
-        base, normal = bestfit_plane_from_points(points)
-        angles = []
-        for a, b, c in window(points + points[0:2], 3):
-            u = subtract_vectors(a, b)
-            v = subtract_vectors(c, b)
-            n = cross_vectors(u, v)
-            if dot_vectors(n, normal) > 0:
-                angle = angle_smallest_vectors(n, normal)
-            else:
-                angle = angle_smallest_vectors(n, scale_vector(normal, -1))
-            angles.append(angle)
-        dev.append(sum(angles) / len(angles))
-    return dev
-
-
-def flatness2(vertices, faces, maxdev=0.02):
-    """Compute mesh flatness per face.
-
-    Parameters
-    ----------
-    mesh : Mesh
-        A mesh object.
-
-    Returns
+    Warning
     -------
-    dict
-        For each face, a deviation from *flatness*.
+    This function only works as expected for quadrilateral faces.
 
-    Note
-    ----
-    The "flatness" of a face is expressed as the average of the angles between
-    the normal at each face corner and the normal of the best-fit plane.
+    Example
+    -------
+    >>>
 
     """
     dev = []
@@ -103,7 +79,7 @@ def planarize_faces(vertices,
                     d=1.0,
                     callback=None,
                     callback_args=None):
-    """Planarise the faces of a mesh.
+    """Planarise a set of connected faces.
 
     Planarisation is implemented as a two-step iterative procedure. At every
     iteration, faces are first individually projected to their best-fit plane,
@@ -128,7 +104,6 @@ def planarize_faces(vertices,
         A list of arguments to be passed to the callback function.
 
     """
-
     if callback:
         if not callable(callback):
             raise Exception('The callback is not callable.')
@@ -161,89 +136,249 @@ def planarize_faces(vertices,
             callback(vertices, faces, k, callback_args)
 
 
-# def planarize_shapeop(mesh,
-#                       fixed=None,
-#                       kmax=100,
-#                       d=0.1,
-#                       callback=None,
-#                       callback_args=None):
-#     """Planarize the faces of a mesh using ShapeOp.
-
-#     Parameters
-#     ----------
-#     mesh : Mesh
-#         A mesh object.
-#     fixed : list, optional [None]
-#         A list of fixed vertices.
-#     kmax : int, optional [100]
-#         The number of iterations.
-#     d : float, optional [0.1]
-#         A damping factor.
-#     callback : callable, optional [None]
-#         A user-defined callback that is called after every iteration.
-#     callback_args : list, optional [None]
-#         A list of arguments to be passed to the callback function.
-
-#     Note
-#     ----
-#     This planarization algorithm relies on the Python binding of the ShapeOp
-#     library. Installation instructions are available in ``compas.interop.shapeop``.
-
-#     Examples
-#     --------
-#     >>>
-
-#     """
-#     from compas.interop import shapeop
-
-#     if callback:
-#         if not callable(callback):
-#             raise Exception('The callback is not callable.')
-
-#     fixed = fixed or []
-#     fixed = set(fixed)
-
-#     shapeop.planarize_mesh(mesh, fixed=fixed, kmax=kmax)
+# ==============================================================================
+# mesh variations
+# ==============================================================================
 
 
-# def mesh_circularize(mesh,
-#                      fixed=None,
-#                      kmax=100,
-#                      d=1.0,
-#                      callback=None,
-#                      callback_args=None):
-#     """Circularize the faces of a mesh using ShapeOp.
+def mesh_flatness(mesh, maxdev=1.0):
+    """Compute mesh flatness per face.
 
-#     Parameters
-#     ----------
-#     mesh : Mesh
-#         A mesh object.
-#     fixed : list, optional [None]
-#         A list of fixed vertices.
-#     kmax : int, optional [100]
-#         The number of iterations.
-#     d : float, optional [1.0]
-#         A damping factor.
-#     callback : callable, optional [None]
-#         A user-defined callback that is called after every iteration.
-#     callback_args : list, optional [None]
-#         A list of arguments to be passed to the callback function.
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    maxdev : float, optional
+        A maximum value for the allowed deviation from flatness.
+        Default is ``1.0``.
 
-#     Note
-#     ----
-#     ...
+    Returns
+    -------
+    dict
+        For each face, a deviation from *flatness*.
 
-#     Examples
-#     --------
-#     >>>
+    Note
+    ----
+    The "flatness" of a face is expressed as the ratio of the distance between
+    the diagonals to the average edge length. For the fabrication of glass panels,
+    for example, ``0.02`` could be a reasonable maximum value.
 
-#     """
+    Warning
+    -------
+    This function only works as expected for quadrilateral faces.
 
-#     # map the corners of the faces to a circle on the nearest plane
-#     # use circle from points
-#     # map vertices to the centroids of the face corners
+    """
+    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
+    return flatness(vertices, faces, maxdev=maxdev)
 
-#     raise NotImplementedError
+
+def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_args=None):
+    """Planarise a set of connected faces.
+
+    Planarisation is implemented as a two-step iterative procedure. At every
+    iteration, faces are first individually projected to their best-fit plane,
+    and then the vertices are projected to the centroid of the disconnected
+    corners of the faces.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    fixed : list, optional [None]
+        A list of fixed vertices.
+    kmax : int, optional [100]
+        The number of iterations.
+    d : float, optional [1.0]
+        A damping factor.
+    callback : callable, optional [None]
+        A user-defined callback that is called after every iteration.
+    callback_args : list, optional [None]
+        A list of arguments to be passed to the callback function.
+
+    """
+    if callback:
+        if not callable(callback):
+            raise Exception('The callback is not callable.')
+
+    fixed = fixed or []
+    fixed = set(fixed)
+
+    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
+
+    for k in range(kmax):
+        planarize_faces(vertices, faces, fixed=fixed, kmax=1)
+
+        for key, attr in mesh.vertices(True):
+            attr['x'] = vertices[key][0]
+            attr['y'] = vertices[key][1]
+            attr['z'] = vertices[key][2]
+
+        if callback:
+            callback(k, callback_args)
+
+
+def mesh_planarize_faces_shapeop(mesh,
+                                 fixed=None,
+                                 kmax=100,
+                                 callback=None,
+                                 callback_args=None):
+    """Planarize the faces of a mesh using ShapeOp.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    fixed : list, optional [None]
+        A list of fixed vertices.
+    kmax : int, optional [100]
+        The number of iterations.
+    callback : callable, optional [None]
+        A user-defined callback that is called after every iteration.
+    callback_args : list, optional [None]
+        A list of arguments to be passed to the callback function.
+
+    Note
+    ----
+    This planarization algorithm relies on the Python binding of the ShapeOp
+    library. Installation instructions are available in :mod:`compas.interop`.
+
+    Examples
+    --------
+    >>>
+
+    """
+    from compas.interop import shapeop
+
+    if callback:
+        if not callable(callback):
+            raise Exception('The callback is not callable.')
+
+    fixed = fixed or []
+    fixed = set(fixed)
+
+    # create a shapeop solver
+    solver = shapeop.ShapeOpSolver()
+
+    # make a key-index map
+    # and count the number of vertices in the mesh
+    key_index = mesh.key_index()
+
+    # get the vertex coordinates
+    xyz = mesh.get_vertices_attributes('xyz')
+
+    # set the coordinates in the solver
+    solver.set_points(xyz)
+
+    # add a plane constraint to all faces
+    for fkey in mesh.faces():
+        vertices = [key_index[key] for key in mesh.face_vertices(fkey)]
+        solver.add_plane_constraint(vertices, 1.0)
+
+    # add a closeness constraint to the fixed vertices
+    for key in fixed:
+        vertex = key_index[key]
+        solver.add_closeness_constraint(vertex, 1.0)
+
+    for k in range(kmax):
+        # solve
+        solver.solve(1)
+        # update the points array
+        points = solver.get_points()
+        # update
+        for index, (key, attr) in enumerate(mesh.vertices(True)):
+            index *= 3
+            attr['x'] = points[index + 0]
+            attr['y'] = points[index + 1]
+            attr['z'] = points[index + 2]
+        # callback
+        if callback:
+            callback(k, callback_args)
+
+    # clean up
+    solver.delete()
+
+
+def mesh_circularize_faces_shapeop(mesh,
+                                   fixed=None,
+                                   kmax=100,
+                                   callback=None,
+                                   callback_args=None):
+    """Circularize the faces of a mesh using ShapeOp.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    fixed : list, optional [None]
+        A list of fixed vertices.
+    kmax : int, optional [100]
+        The number of iterations.
+    callback : callable, optional [None]
+        A user-defined callback that is called after every iteration.
+    callback_args : list, optional [None]
+        A list of arguments to be passed to the callback function.
+
+    Note
+    ----
+    This cicularization algorithm relies on the Python binding of the ShapeOp
+    library. Installation instructions are available in :mod:`compas.interop`.
+
+    Examples
+    --------
+    >>>
+
+    """
+    from compas.interop import shapeop
+
+    if callback:
+        if not callable(callback):
+            raise Exception('The callback is not callable.')
+
+    fixed = fixed or []
+    fixed = set(fixed)
+
+    # create a shapeop solver
+    solver = shapeop.ShapeOpSolver()
+
+    # make a key-index map
+    # and count the number of vertices in the mesh
+    key_index = mesh.key_index()
+
+    # get the vertex coordinates
+    xyz = mesh.get_vertices_attributes('xyz')
+
+    # set the coordinates in the solver
+    solver.set_points(xyz)
+
+    # add a plane constraint to all faces
+    for fkey in mesh.faces():
+        vertices = [key_index[key] for key in mesh.face_vertices(fkey)]
+        solver.add_circle_constraint(vertices, 1.0)
+
+    # add a closeness constraint to the fixed vertices
+    for key in fixed:
+        vertex = key_index[key]
+        solver.add_closeness_constraint(vertex, 1.0)
+
+    for k in range(kmax):
+        # solve
+        solver.solve(1)
+        # update the points array
+        points = solver.get_points()
+        # update
+        for index, (key, attr) in enumerate(mesh.vertices(True)):
+            index *= 3
+            attr['x'] = points[index + 0]
+            attr['y'] = points[index + 1]
+            attr['z'] = points[index + 2]
+        # callback
+        if callback:
+            callback(k, callback_args)
+
+    # clean up
+    solver.delete()
 
 
 # ==============================================================================
@@ -255,61 +390,36 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-
-    from compas.visualization.viewers.viewer import Viewer
-
-    from compas.visualization.viewers.core.drawing import draw_points
-    from compas.visualization.viewers.core.drawing import draw_lines
-    from compas.visualization.viewers.core.drawing import draw_circle
+    from compas.visualization import MeshPlotter
+    from compas.utilities import i_to_rgb
 
     mesh = Mesh.from_obj(compas.get_data('hypar.obj'))
 
     for key, attr in mesh.vertices(True):
         attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
-    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-    faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
-    fixed = mesh.vertices_where({'is_fixed': True})
+    fixed = list(mesh.vertices_where({'is_fixed': True}))
 
-    planarize_faces(vertices, faces, fixed=fixed, kmax=100)
+    radius = {key: (0.05 if key in fixed else 0.01) for key in mesh.vertices()}
 
-    for key, xyz in vertices.items():
-        mesh.vertex[key]['x'] = xyz[0]
-        mesh.vertex[key]['y'] = xyz[1]
-        mesh.vertex[key]['z'] = xyz[2]
+    plotter = MeshPlotter(mesh)
 
-    # deviations = []
+    plotter.draw_vertices(radius=radius)
+    plotter.draw_faces()
+    plotter.draw_edges()
 
-    # for fkey, attr in mesh.faces(True):
-    #     points = mesh.face_coordinates(fkey)
-    #     base, normal = bestfit_plane_from_points(points)
 
-    #     angles = []
-    #     for a, b, c in window(points + points[0:2], n=3):
-    #         u = vector_from_points(b, a)
-    #         v = vector_from_points(b, c)
-    #         w = cross_vectors(v, u)
-    #         angles.append(angle_smallest_vectors_degrees(normal, w))
+    def callback(k, args):
+        if k % 10 == 0:
+            dev = mesh_flatness(mesh, maxdev=0.02)
 
-    #     dev = sum(angles) / len(angles)
-    #     deviations.append(dev)
+            plotter.update_vertices(radius=radius)
+            plotter.update_faces(facecolor={fkey: i_to_rgb(dev[fkey]) for fkey in mesh.faces()})
+            plotter.update_edges()
+            plotter.update()
 
-    # print max(deviations)
-    # print min(deviations)
 
-    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    lines = [(mesh.vertex_coordinates(u), mesh.vertex_coordinates(v)) for u, v in mesh.wireframe()]
+    mesh_planarize_faces(mesh, fixed=fixed, kmax=1000, callback=callback)
 
-    def draw_mesh():
-        draw_points(points)
-        draw_lines(lines)
+    plotter.show()
 
-    def draw_circles():
-        draw_circle((((0, 0, 0), (1.0, 1.0, 1.0)), 1.0))
-
-    viewer = Viewer()
-
-    viewer.displayfuncs += [draw_mesh, draw_circles]
-
-    viewer.setup()
-    viewer.show()

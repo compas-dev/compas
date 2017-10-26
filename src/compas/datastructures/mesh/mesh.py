@@ -18,6 +18,10 @@ from compas.geometry import subtract_vectors
 from compas.geometry import normal_polygon
 from compas.geometry import area_polygon
 
+from compas.geometry import bestfit_plane_from_points
+
+from compas.geometry import Polyhedron
+
 from compas.datastructures import Datastructure
 
 from compas.datastructures.mixins import VertexAttributesManagement
@@ -40,6 +44,7 @@ from compas.datastructures.mixins import EdgeMappings
 from compas.datastructures.mixins import FaceMappings
 
 from compas.topology import bfs_traverse
+from compas.geometry import flatness
 
 
 __author__     = 'Tom Van Mele'
@@ -442,6 +447,25 @@ class Mesh(FromToJson,
         for face in iter(faces):
             mesh.add_face(face)
         return mesh
+
+    @classmethod
+    def from_polyhedron(cls, f):
+        """Construct a mesh from a platonic solid.
+
+        Parameters
+        ----------
+        f : int
+            The number of faces.
+            Should be one of ``4, 6, 8, 12, 20``.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+
+        """
+        p = Polyhedron.generate(f)
+        return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     # --------------------------------------------------------------------------
     # converters
@@ -2101,59 +2125,6 @@ class Mesh(FromToJson,
         i = self.face[fkey].index(key)
         return self.face[fkey][i + 1]
 
-    # move to algorithms
-    def face_adjacency(self):
-        # this function does not actually use any of the topological information
-        # provided by the halfedges
-        # it is used for unifying face cycles
-        # so the premise is that halfedge data is not valid/reliable
-        from scipy.spatial import cKDTree
-
-        fkey_index = {fkey: index for index, fkey in enumerate(self.faces())}
-        index_fkey = {index: fkey for index, fkey in enumerate(self.faces())}
-        points = [self.face_centroid(fkey) for fkey in self.faces()]
-
-        tree = cKDTree(points)
-
-        _, closest = tree.query(points, k=10, n_jobs=-1)
-
-        adjacency = {}
-
-        for fkey in self.faces():
-            nbrs  = []
-            index = fkey_index[fkey]
-            nnbrs = closest[index]
-            found = set()
-
-            for u, v in self.face_halfedges(fkey):
-                for index in nnbrs:
-                    nbr = index_fkey[index]
-
-                    if nbr == fkey:
-                        continue
-                    if nbr in found:
-                        continue
-
-                    # if v in self.face[nbr] and u == self.face[nbr][v]:
-                    # if u == self.face_vertex_descendant(nbr, v):
-                    for a, b in self.face_halfedges(nbr):
-                        if v == a and u == b:
-                            nbrs.append(nbr)
-                            found.add(nbr)
-                            break
-
-                    # if u in self.face[nbr] and v == self.face[nbr][u]:
-                    # if v == self.face_vertex_descendant(nbr, u):
-                    for a, b in self.face_halfedges(nbr):
-                        if u == a and v == b:
-                            nbrs.append(nbr)
-                            found.add(nbr)
-                            break
-
-            adjacency[fkey] = nbrs
-
-        return adjacency
-
     def face_adjacency_halfedge(self, f1, f2):
         """Find the half-edge over which tow faces are adjacent.
 
@@ -2402,6 +2373,40 @@ class Mesh(FromToJson,
         """
         return area_polygon(self.face_coordinates(fkey))
 
+    # def face_circle(self, fkey):
+    #     pass
+
+    def face_flatness(self, fkey):
+        """Compute the flatness of the mesh face.
+
+        Parameters
+        ----------
+        fkey : hashable
+            The identifier of the face.
+
+        Returns
+        -------
+        float
+            The flatness.
+
+        Note
+        ----
+        Flatness is computed as the ratio of the distance between the diagonals
+        of the face to the average edge length. A practical limit on this value
+        realted to manufacturing is 0.02 (2%).
+
+        Warning
+        -------
+        This method only makes sense for quadrilateral faces.
+
+        """
+        vertices = self.face_coordinates(fkey)
+        face = range(len(self.face_vertices(fkey)))
+        return flatness(vertices, [face])[0]
+
+    # def face_frame(self, fkey):
+    #     pass
+
     # --------------------------------------------------------------------------
     # boundary
     # --------------------------------------------------------------------------
@@ -2495,8 +2500,29 @@ if __name__ == '__main__':
     import compas
 
     from compas.visualization import MeshPlotter
+    from compas.geometry import mesh_smooth_centroid
 
-    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get_data('hypar.obj'))
+
+    fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+
+    plotter = MeshPlotter(mesh)
+
+    plotter.defaults['vertex.radius'] = 0.1
+
+    plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
+    plotter.draw_faces()
+    plotter.draw_edges()
+
+    def callback(mesh, k, args):
+        plotter.update_vertices()
+        plotter.update_faces()
+        plotter.update_edges()
+        plotter.update(pause=0.01)
+
+    mesh_smooth_centroid(mesh, fixed=fixed, callback=callback)
+
+    plotter.show()
 
     # data = mesh.to_data()
     # mesh = Mesh.from_data(data)
@@ -2574,10 +2600,10 @@ if __name__ == '__main__':
     # plotter.draw_edges()
     # plotter.show()
 
-    k_a = {key: mesh.vertex_area(key) for key in mesh.vertices()}
+    # k_a = {key: mesh.vertex_area(key) for key in mesh.vertices()}
 
-    plotter = MeshPlotter(mesh)
-    plotter.draw_vertices(radius=0.2, text={key: '{:.1f}'.format(k_a[key]) for key in mesh.vertices()})
-    plotter.draw_faces()
-    plotter.draw_edges()
-    plotter.show()
+    # plotter = MeshPlotter(mesh)
+    # plotter.draw_vertices(radius=0.2, text={key: '{:.1f}'.format(k_a[key]) for key in mesh.vertices()})
+    # plotter.draw_faces()
+    # plotter.draw_edges()
+    # plotter.show()

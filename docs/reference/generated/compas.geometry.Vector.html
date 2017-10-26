@@ -13,7 +13,7 @@
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
 <link href="generated/compas.geometry.Vector.__init__.html" rel="next" title="Vector.__init__"/>
-<link href="compas.geometry.Surface.html" rel="prev" title="Surface"/>
+<link href="compas.geometry.translation_matrix.html" rel="prev" title="translation_matrix"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -42,7 +42,7 @@
 <h1>Vector</h1>
 <dl class="class">
 <dt id="compas.geometry.Vector">
-<em class="property">class </em><code class="descclassname">compas.geometry.</code><code class="descname">Vector</code><span class="sig-paren">(</span><em>x=0.0</em>, <em>y=0.0</em>, <em>z=0.0</em>, <em>w=1.0</em>, <em>unitize=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/geometry/objects/vector.html#Vector"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="descclassname">compas.geometry.</code><code class="descname">Vector</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>w=1.0</em>, <em>unitize=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/geometry/objects/vector.html#Vector"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal">object</code></a></p>
 <p>A vector object represents a vector in three-dimensional space.</p>
 <p>The vector is defined as the difference vector between the start and end
@@ -52,8 +52,13 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 <col class="field-body"/>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>end</strong> (<em>list</em>) – The xyz coordinates of the end point.</li>
-<li><strong>start</strong> (<em>list</em>) – The xyz coordinates of the start point, defaults to [0, 0, 0].</li>
+<li><strong>x</strong> (<em>float</em>) – The X component of the vector.</li>
+<li><strong>y</strong> (<em>float</em>) – The Y component of the vector.</li>
+<li><strong>z</strong> (<em>float</em>) – The Z component of the vector.</li>
+<li><strong>w</strong> (<em>float, optional</em>) – Homogenisation factor.
+Default is <code class="docutils literal">1.0</code>.</li>
+<li><strong>unitize</strong> (<em>bool, optional</em>) – Unitize the vector.
+Default is <code class="docutils literal">False</code>.</li>
 </ul>
 </td>
 </tr>
@@ -62,26 +67,26 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 <dl class="attribute">
 <dt id="compas.geometry.Vector.x">
 <code class="descname">x</code></dt>
-<dd><p><em>float</em> – The x-coordinate of the coordinate difference vector.</p>
+<dd><p><em>float</em> – The X component of the vector.</p>
 </dd></dl>
 <dl class="attribute">
 <dt id="compas.geometry.Vector.y">
 <code class="descname">y</code></dt>
-<dd><p><em>float</em> – The y-coordinate of the coordinate difference vector.</p>
+<dd><p><em>float</em> – The Y component of the vector.</p>
 </dd></dl>
 <dl class="attribute">
 <dt id="compas.geometry.Vector.z">
 <code class="descname">z</code></dt>
-<dd><p><em>float</em> – The z-coordinate of the coordinate difference vector.</p>
+<dd><p><em>float</em> – The Z component of the vector.</p>
 </dd></dl>
 <dl class="attribute">
 <dt id="compas.geometry.Vector.length">
-<code class="descname">length</code><a class="reference internal" href="../../modules/compas/geometry/objects/vector.html#Vector.length"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p><em>float</em> – (<strong>read-only</strong>) The length of the vector.</p>
+<code class="descname">length</code></dt>
+<dd><p><em>float, **read-only**</em> – The length of the vector.</p>
 </dd></dl>
 <p class="rubric">Examples</p>
-<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">u</span>
 <span class="go">[1.0, 0.0, 0.0]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span>
@@ -110,19 +115,25 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.__init__.html" title="compas.geometry.Vector.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>([x, y, z, w, unitize])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.__init__.html" title="compas.geometry.Vector.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>(x, y, z[, w, unitize])</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.angle.html" title="compas.geometry.Vector.angle"><code class="xref py py-obj docutils literal">angle</code></a>(u, v)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.angle.html" title="compas.geometry.Vector.angle"><code class="xref py py-obj docutils literal">angle</code></a>(other)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.angles.html" title="compas.geometry.Vector.angles"><code class="xref py py-obj docutils literal">angles</code></a>(u, v)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.angle_vectors.html" title="compas.geometry.Vector.angle_vectors"><code class="xref py py-obj docutils literal">angle_vectors</code></a>(left, right)</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.angles.html" title="compas.geometry.Vector.angles"><code class="xref py py-obj docutils literal">angles</code></a>(other)</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.angles_vectors.html" title="compas.geometry.Vector.angles_vectors"><code class="xref py py-obj docutils literal">angles_vectors</code></a>(left, right)</td>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.copy.html" title="compas.geometry.Vector.copy"><code class="xref py py-obj docutils literal">copy</code></a>()</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.cross.html" title="compas.geometry.Vector.cross"><code class="xref py py-obj docutils literal">cross</code></a>(u, v)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.cross.html" title="compas.geometry.Vector.cross"><code class="xref py py-obj docutils literal">cross</code></a>(other)</td>
 <td>The cross product of this <code class="docutils literal">Vector</code> and another <code class="docutils literal">Vector</code>.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.cross_vectors.html" title="compas.geometry.Vector.cross_vectors"><code class="xref py py-obj docutils literal">cross_vectors</code></a>(left, right)</td>
@@ -134,25 +145,22 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.dehomogenise_vectors.html" title="compas.geometry.Vector.dehomogenise_vectors"><code class="xref py py-obj docutils literal">dehomogenise_vectors</code></a>(vectors)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.dot.html" title="compas.geometry.Vector.dot"><code class="xref py py-obj docutils literal">dot</code></a>(u, v)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.dot.html" title="compas.geometry.Vector.dot"><code class="xref py py-obj docutils literal">dot</code></a>(other)</td>
 <td>The dot product of this <code class="docutils literal">Vector</code> and another <code class="docutils literal">Vector</code>.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.dot_vectors.html" title="compas.geometry.Vector.dot_vectors"><code class="xref py py-obj docutils literal">dot_vectors</code></a>(left, right)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.homogenise.html" title="compas.geometry.Vector.homogenise"><code class="xref py py-obj docutils literal">homogenise</code></a>()</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.from_start_end.html" title="compas.geometry.Vector.from_start_end"><code class="xref py py-obj docutils literal">from_start_end</code></a>(start, end)</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.homogenise.html" title="compas.geometry.Vector.homogenise"><code class="xref py py-obj docutils literal">homogenise</code></a>([w])</td>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.homogenise_vectors.html" title="compas.geometry.Vector.homogenise_vectors"><code class="xref py py-obj docutils literal">homogenise_vectors</code></a>(vectors)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.length.html" title="compas.geometry.Vector.length"><code class="xref py py-obj docutils literal">length</code></a>()</td>
-<td></td>
-</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.length_vectors.html" title="compas.geometry.Vector.length_vectors"><code class="xref py py-obj docutils literal">length_vectors</code></a>(vectors)</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.norm.html" title="compas.geometry.Vector.norm"><code class="xref py py-obj docutils literal">norm</code></a>()</td>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.norm_vectors.html" title="compas.geometry.Vector.norm_vectors"><code class="xref py py-obj docutils literal">norm_vectors</code></a>(vectors)</td>
@@ -176,10 +184,10 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.scale.html" title="compas.geometry.Vector.scale"><code class="xref py py-obj docutils literal">scale</code></a>(n)</td>
 <td>Scale this vector by a factor n.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.transform.html" title="compas.geometry.Vector.transform"><code class="xref py py-obj docutils literal">transform</code></a>(matrix)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.sum_vectors.html" title="compas.geometry.Vector.sum_vectors"><code class="xref py py-obj docutils literal">sum_vectors</code></a>(vectors)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.translate.html" title="compas.geometry.Vector.translate"><code class="xref py py-obj docutils literal">translate</code></a>(other)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.transform.html" title="compas.geometry.Vector.transform"><code class="xref py py-obj docutils literal">transform</code></a>(matrix)</td>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.unitize.html" title="compas.geometry.Vector.unitize"><code class="xref py py-obj docutils literal">unitize</code></a>()</td>
@@ -194,6 +202,12 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
+<tr class=""><td><a class="reference internal" href="" title="compas.geometry.Vector.length"><code class="xref py py-obj docutils literal">length</code></a></td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">norm</code></td>
+<td></td>
+</tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">w</code></td>
 <td></td>
 </tr>
@@ -211,7 +225,7 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
 </dd></dl>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="compas.geometry.Surface.html" role="button">Surface</a>
+<a class="btn btn-primary compas-prev" href="compas.geometry.translation_matrix.html" role="button">translation_matrix</a>
 <a class="btn btn-primary compas-next" href="generated/compas.geometry.Vector.__init__.html" role="button">Vector.__init__</a>
 </nav>
 </main>
@@ -273,7 +287,7 @@ point. The start point is optional and defaults to the origin [0, 0, 0].</p>
             
 
             
-                Last updated on Oct 24, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

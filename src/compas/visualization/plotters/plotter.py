@@ -80,10 +80,10 @@ class Plotter(object):
         # color
         # size/thickness
         self.defaults = {
-            'point.radius'    : 0.1,
+            'point.radius'    : 0.15,
             'point.facecolor' : '#ffffff',
             'point.edgecolor' : '#000000',
-            'point.edgewidth' : 1.0,
+            'point.edgewidth' : 0.0,
             'point.textcolor' : '#000000',
             'point.fontsize'  : 10.0,
 
@@ -251,7 +251,7 @@ class Plotter(object):
             Ammount of time to pause the plot in seconds.
         """
         self.axes.autoscale()
-        self.figure.canvas.draw()
+        self.figure.canvas.draw_idle()
         plt.pause(pause)
 
     def update_pointcollection(self, collection, centers, radius=1.0):

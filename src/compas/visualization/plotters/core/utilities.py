@@ -5,6 +5,18 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 def get_axes_dimension(axes):
+    """Returns the number of dimensions of a matplotlib axes object.
+
+        Parameters
+        ----------
+        axes : object
+            The matplotlib axes object.
+
+        Returns
+        -------
+        int
+            The number of dimensions of a matplotlib axes object.
+        """
     if hasattr(axes, 'get_zlim'):
         return 3
     else:
@@ -12,6 +24,20 @@ def get_axes_dimension(axes):
 
 
 def assert_axes_dimension(axes, dim):
+    """Asserts if the number of dimensions of a matplotlib axes equals a given dim.
+
+        Parameters
+        ----------
+        axes : object
+            The matplotlib axes object to assert.
+        dim :  int
+            The numbers of dimensions to assert with.
+
+        Returns
+        -------
+        bool
+            True if the axes object has dim dimensions.
+        """
     assert get_axes_dimension(axes) == dim, 'The provided axes are not {0}D.'.format(dim)
 
 

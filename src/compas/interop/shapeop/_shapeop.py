@@ -58,11 +58,11 @@ def float_array(data):
 class ShapeOpSolver(object):
     """"""
 
-    def __init__(self, kmax=100):
+    def __init__(self):
         self.solver = shapeopPython.shapeop_create()
         self.number_of_points = 0
         self.points = 0
-        self.kmax = kmax
+        self.kmax = 1
 
     def init(self):
         shapeopPython.shapeop_init(self.solver)
@@ -70,7 +70,8 @@ class ShapeOpSolver(object):
     def delete(self):
         shapeopPython.shapeop_delete(self.solver)
 
-    def solve(self):
+    def solve(self, kmax=1):
+        self.kmax = kmax
         self.init()
         shapeopPython.shapeop_solve(self.solver, self.kmax)
 

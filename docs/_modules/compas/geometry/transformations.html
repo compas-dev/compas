@@ -73,6 +73,8 @@
 <span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">rotation_matrix</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.xforms</span> <span class="k">import</span> <span class="n">scale_matrix</span>
 
+<span class="kn">from</span> <span class="nn">compas.geometry.distance</span> <span class="k">import</span> <span class="n">closest_point_on_plane</span>
+
 
 <span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
@@ -90,6 +92,7 @@
     <span class="s1">'rotate_points_xy'</span><span class="p">,</span>
     <span class="s1">'rotate_points_degrees'</span><span class="p">,</span>
     <span class="s1">'offset_line'</span><span class="p">,</span>
+    <span class="s1">'offset_polyline'</span><span class="p">,</span>
     <span class="s1">'offset_polygon'</span><span class="p">,</span>
     <span class="s1">'orient_points'</span><span class="p">,</span>
     <span class="s1">'mirror_point_point'</span><span class="p">,</span>
@@ -271,7 +274,7 @@
     <span class="n">vec</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">pt2</span><span class="p">)</span>
     <span class="n">dir_vec</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">normal</span><span class="p">))</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="n">distances</span> <span class="o">=</span> <span class="n">distance</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">distances</span> <span class="o">=</span> <span class="p">[</span><span class="n">distance</span><span class="p">,</span> <span class="n">distance</span><span class="p">]</span>
@@ -332,7 +335,7 @@
 <span class="sd">    """</span>
     <span class="n">normal</span> <span class="o">=</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="n">distances</span> <span class="o">=</span> <span class="n">distance</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
             <span class="n">distances</span> <span class="o">=</span> <span class="n">distances</span> <span class="o">+</span> <span class="p">[</span><span class="n">distances</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -358,6 +361,46 @@
     <span class="k">return</span> <span class="n">polygon_offset</span></div>
 
 
+<div class="viewcode-block" id="offset_polyline"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.offset_polyline.html#compas.geometry.offset_polyline">[docs]</a><span class="k">def</span> <span class="nf">offset_polyline</span><span class="p">(</span><span class="n">polyline</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">normal</span><span class="o">=</span><span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]):</span>
+    <span class="sd">"""Offset a polyline by a distance.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        polyline (sequence of sequence of floats): The XYZ coordinates of the</span>
+<span class="sd">            vertices of a polyline.</span>
+<span class="sd">        distance (float or list of tuples of floats): The offset distance as float.</span>
+<span class="sd">            A single value determines a constant offset globally. Alternatively, pairs of local</span>
+<span class="sd">            offset values per line segment can be used to create variable offsets.</span>
+<span class="sd">            Distance &gt; 0: offset to the "left", distance &lt; 0: offset to the "right"</span>
+<span class="sd">        normal (tuple): The normal of the offset plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        offset polyline (sequence of sequence of floats): The XYZ coordinates of the </span>
+<span class="sd">        resulting polyline.</span>
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">distance</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">polyline</span><span class="p">):</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">distances</span> <span class="o">+</span> <span class="p">[</span><span class="n">distances</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">polyline</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="p">[[</span><span class="n">distance</span><span class="p">,</span> <span class="n">distance</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">polyline</span><span class="p">)</span>
+
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">polyline</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">polyline</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))]</span>
+    <span class="n">lines_offset</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+        <span class="n">lines_offset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">offset_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">normal</span><span class="p">))</span>
+
+    <span class="n">polyline_offset</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">polyline_offset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lines_offset</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines_offset</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="n">intx_pt1</span><span class="p">,</span> <span class="n">intx_pt2</span> <span class="o">=</span> <span class="n">intersection_line_line</span><span class="p">(</span><span class="n">lines_offset</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">lines_offset</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">intx_pt1</span> <span class="ow">and</span> <span class="n">intx_pt2</span><span class="p">:</span>
+            <span class="n">polyline_offset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">([</span><span class="n">intx_pt1</span><span class="p">,</span> <span class="n">intx_pt2</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">polyline_offset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lines_offset</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">polyline_offset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lines_offset</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">polyline_offset</span></div>
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># orientation</span>
 <span class="c1"># ==============================================================================</span>
@@ -478,12 +521,15 @@
 
 
 <div class="viewcode-block" id="mirror_point_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_point_plane.html#compas.geometry.mirror_point_plane">[docs]</a><span class="k">def</span> <span class="nf">mirror_point_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
-    <span class="k">pass</span></div>
+    <span class="sd">"""Mirror a point about a plane."""</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">closest_point_on_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span>
+    <span class="n">vec</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span><span class="n">point</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span><span class="n">vec</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="mirror_points_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_points_plane.html#compas.geometry.mirror_points_plane">[docs]</a><span class="k">def</span> <span class="nf">mirror_points_plane</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
-    <span class="k">pass</span></div>
-
+    <span class="sd">"""Mirror multiple points about a plane."""</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">mirror_point_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="mirror_vector_vector"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.mirror_vector_vector.html#compas.geometry.mirror_vector_vector">[docs]</a><span class="k">def</span> <span class="nf">mirror_vector_vector</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
     <span class="sd">"""Mirrors vector about vector.</span>
@@ -835,7 +881,7 @@
             
 
             
-                Last updated on Oct 24, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

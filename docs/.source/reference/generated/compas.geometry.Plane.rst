@@ -14,7 +14,6 @@ Plane
 
    
       ~Plane.__init__
-      ~Plane.basis
       ~Plane.from_point_and_normal
       ~Plane.from_point_and_two_vectors
       ~Plane.from_points
@@ -28,6 +27,7 @@ Plane
 
    .. autosummary::
    
+      ~Plane.basis
       ~Plane.d
    
    

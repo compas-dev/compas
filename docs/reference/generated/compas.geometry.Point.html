@@ -13,7 +13,7 @@
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
 <link href="generated/compas.geometry.Point.__init__.html" rel="next" title="Point.__init__"/>
-<link href="generated/compas.geometry.Plane.from_three_points.html" rel="prev" title="Plane.from_three_points"/>
+<link href="generated/compas.geometry.Vector.unitize.html" rel="prev" title="Vector.unitize"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -42,31 +42,37 @@
 <h1>Point</h1>
 <dl class="class">
 <dt id="compas.geometry.Point">
-<em class="property">class </em><code class="descclassname">compas.geometry.</code><code class="descname">Point</code><span class="sig-paren">(</span><em>x=0.0</em>, <em>y=0.0</em>, <em>z=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/geometry/objects/point.html#Point"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="descclassname">compas.geometry.</code><code class="descname">Point</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../../modules/compas/geometry/objects/point.html#Point"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal">object</code></a></p>
 <p>A three-dimensional location in space.</p>
 <table class="docutils field-list table table-responsive table-bordered" frame="void" rules="none">
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xyz</strong> (<em>list</em>) – The xyz coordinates of the point.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>float</em>) – The X coordinate of the point.</li>
+<li><strong>y</strong> (<em>float</em>) – The Y coordinate of the point.</li>
+<li><strong>z</strong> (<em>float, optional</em>) – The Z coordinate of the point.
+Default is <code class="docutils literal">0.0</code>.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="compas.geometry.Point.x">
 <code class="descname">x</code></dt>
-<dd><p><em>float</em> – The x-coordinate of the point.</p>
+<dd><p><em>float</em> – The X coordinate of the point.</p>
 </dd></dl>
 <dl class="attribute">
 <dt id="compas.geometry.Point.y">
 <code class="descname">y</code></dt>
-<dd><p><em>float</em> – The y-coordinate of the point.</p>
+<dd><p><em>float</em> – The Y coordinate of the point.</p>
 </dd></dl>
 <dl class="attribute">
 <dt id="compas.geometry.Point.z">
 <code class="descname">z</code></dt>
-<dd><p><em>float</em> – The z-coordinate of the point, defaults to 0.</p>
+<dd><p><em>float</em> – The Z coordinate of the point.</p>
 </dd></dl>
 <p class="rubric">Examples</p>
 <div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -108,7 +114,9 @@ access is implemented such that the <code class="docutils literal">Point</code> 
 list.</p>
 </div>
 <p class="rubric">References</p>
-<p>&lt;<a class="reference external" href="http://stackoverflow.com/questions/8951020/pythonic-circular-list">http://stackoverflow.com/questions/8951020/pythonic-circular-list</a>&gt;</p>
+<ul class="simple">
+<li><a class="reference external" href="http://stackoverflow.com/questions/8951020/pythonic-circular-list">http://stackoverflow.com/questions/8951020/pythonic-circular-list</a></li>
+</ul>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
@@ -116,7 +124,7 @@ list.</p>
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.__init__.html" title="compas.geometry.Point.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>([x, y, z])</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.__init__.html" title="compas.geometry.Point.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>(x, y[, z])</td>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.distance_to_line.html" title="compas.geometry.Point.distance_to_line"><code class="xref py py-obj docutils literal">distance_to_line</code></a>(line)</td>
@@ -134,7 +142,10 @@ list.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.in_polyhedron.html" title="compas.geometry.Point.in_polyhedron"><code class="xref py py-obj docutils literal">in_polyhedron</code></a>(polyhedron)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.in_triangle.html" title="compas.geometry.Point.in_triangle"><code class="xref py py-obj docutils literal">in_triangle</code></a>(polygon)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.in_triangle.html" title="compas.geometry.Point.in_triangle"><code class="xref py py-obj docutils literal">in_triangle</code></a>(triangle)</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.project_to_line.html" title="compas.geometry.Point.project_to_line"><code class="xref py py-obj docutils literal">project_to_line</code></a>(line)</td>
 <td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.project_to_plane.html" title="compas.geometry.Point.project_to_plane"><code class="xref py py-obj docutils literal">project_to_plane</code></a>(plane)</td>
@@ -155,6 +166,9 @@ list.</p>
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
+<tr class=""><td><code class="xref py py-obj docutils literal">precision</code></td>
+<td></td>
+</tr>
 <tr class=""><td><a class="reference internal" href="" title="compas.geometry.Point.x"><code class="xref py py-obj docutils literal">x</code></a></td>
 <td></td>
 </tr>
@@ -169,7 +183,7 @@ list.</p>
 </dd></dl>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="generated/compas.geometry.Plane.from_three_points.html" role="button">Plane.from_three_points</a>
+<a class="btn btn-primary compas-prev" href="generated/compas.geometry.Vector.unitize.html" role="button">Vector.unitize</a>
 <a class="btn btn-primary compas-next" href="generated/compas.geometry.Point.__init__.html" role="button">Point.__init__</a>
 </nav>
 </main>
@@ -231,7 +245,7 @@ list.</p>
             
 
             
-                Last updated on Oct 24, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

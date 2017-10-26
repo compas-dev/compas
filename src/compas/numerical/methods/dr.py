@@ -110,6 +110,89 @@ def rk4(a, v0, dt):
 
 def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
        callback=None, callback_args=None, **kwargs):
+    """Implementation of the dynamic relaxation method for finding the equilibrium
+    of articulated networks of axial force members.
+
+    Parameters
+    ----------
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+        from compas.datastructures import Network
+        from compas.visualization import NetworkPlotter
+        from compas.numerical import dr
+
+        dva = {
+            'is_fixed': False,
+            'x': 0.0,
+            'y': 0.0,
+            'z': 0.0,
+            'px': 0.0,
+            'py': 0.0,
+            'pz': 0.0,
+            'rx': 0.0,
+            'ry': 0.0,
+            'rz': 0.0,
+        }
+
+        dea = {
+            'qpre': 1.0,
+            'fpre': 0.0,
+            'lpre': 0.0,
+            'linit': 0.0,
+            'E': 0.0,
+            'radius': 0.0,
+        }
+
+        network = Network.from_obj(compas.get('lines.obj'))
+        network.update_default_vertex_attributes(dva)
+        network.update_default_edge_attributes(dea)
+
+        for key, attr in network.vertices(True):
+            attr['is_fixed'] = network.vertex_degree(key) == 1
+
+        count = 1
+        for u, v, attr in network.edges(True):
+            attr['qpre'] = count
+            count += 1
+
+        k2i = dict((key, index) for index, key in enumerate(network.vertices()))
+
+        vertices = [network.vertex_coordinates(key) for key in network.vertex]
+        edges    = [(k2i[u], k2i[v]) for u, v in network.edges()]
+        fixed    = [k2i[key] for key, attr in network.vertices(True) if attr['is_fixed']]
+        loads    = [(attr['px'], attr['py'], attr['pz']) for key, attr in network.vertices(True)]
+        qpre     = [attr['qpre'] for u, v, attr in network.edges(True)]
+        fpre     = [attr['fpre'] for u, v, attr in network.edges(True)]
+        lpre     = [attr['lpre'] for u, v, attr in network.edges(True)]
+        linit    = [attr['linit'] for u, v, attr in network.edges(True)]
+        E        = [attr['E'] for u, v, attr in network.edges(True)]
+        radius   = [attr['radius'] for u, v, attr in network.edges(True)]
+
+        plotter = NetworkPlotter(network)
+
+        lines = []
+        for u, v in network.edges():
+            lines.append({
+                'start': network.vertex_coordinates(u, 'xy'),
+                'end'  : network.vertex_coordinates(v, 'xy'),
+                'color': '#cccccc',
+                'width': 1.0
+            })
+
+        xyz, q, f, l, r = dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius)
+
+        plotter.draw_lines(lines)
+        plotter.draw_vertices(
+            facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+        plotter.draw_edges()
+        plotter.show()
+
+    """
     if callback:
         assert callable(callback), 'The provided callback is not callable.'
     # --------------------------------------------------------------------------
@@ -210,7 +293,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         crit2 = norm(dx[free])
         # callback
         if callback:
-            callback(k, [crit1, crit2], callback_args)
+            callback(k, xyz, [crit1, crit2], callback_args)
         # convergence
         if crit1 < tol1:
             break
@@ -227,10 +310,10 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 if __name__ == "__main__":
 
     import compas
-    from compas.datastructures.network import Network
-    from compas.visualization.plotters.networkplotter import NetworkPlotter
+    from compas.datastructures import Network
+    from compas.visualization import NetworkPlotter
 
-    import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
 
     dva = {
         'is_fixed': False,
@@ -254,9 +337,7 @@ if __name__ == "__main__":
         'radius': 0.0,
     }
 
-    lines = compas.get_data('lines.obj')
-
-    network = Network.from_obj(lines)
+    network = Network.from_obj(compas.get('lines.obj'))
     network.update_default_vertex_attributes(dva)
     network.update_default_edge_attributes(dea)
 
@@ -281,43 +362,71 @@ if __name__ == "__main__":
     E        = [attr['E'] for u, v, attr in network.edges(True)]
     radius   = [attr['radius'] for u, v, attr in network.edges(True)]
 
-    xdata  = []
-    ydata1 = []
-    ydata2 = []
-
-    plt.show()
-
-    axes   = plt.gca()
-    line1, = axes.plot(xdata, ydata1, 'r-')
-    line2, = axes.plot(xdata, ydata2, 'b-')
-    axes.set_ylim(-10, 60)
-    axes.set_xlim(0, 100)
-
-    def plot_iterations(i, crits, args):
-        print(i, crits[0], crits[1])
-        xdata.append(i)
-        ydata1.append(crits[0])
-        ydata2.append(crits[1])
-        line1.set_xdata(xdata)
-        line1.set_ydata(ydata1)
-        line2.set_xdata(xdata)
-        line2.set_ydata(ydata2)
-        plt.draw()
-        plt.pause(1e-17)
-
-    xyz, q, f, l, r = dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius, callback=plot_iterations)
-
-    plt.show()
-
-    for key, attr in network.vertices(True):
-        index = k2i[key]
-        attr['x'] = xyz[index][0]
-        attr['y'] = xyz[index][1]
-        attr['z'] = xyz[index][2]
-
     plotter = NetworkPlotter(network)
 
-    plotter.draw_vertices()
+    # xdata  = []
+    # ydata1 = []
+    # ydata2 = []
+
+    # plt.show()
+
+    # axes   = plt.gca()
+    # line1, = axes.plot(xdata, ydata1, 'r-')
+    # line2, = axes.plot(xdata, ydata2, 'b-')
+    # axes.set_ylim(-10, 60)
+    # axes.set_xlim(0, 100)
+
+    lines = []
+    for u, v in network.edges():
+        lines.append({
+            'start': network.vertex_coordinates(u, 'xy'),
+            'end'  : network.vertex_coordinates(v, 'xy'),
+            'color': '#cccccc',
+            'width': 1.0
+        })
+
+    plotter.draw_lines(lines)
+
+    plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
+
+    plotter.update(pause=1.0)
+
+    def plot_iterations(k, xyz, crits, args):
+        # print(i, crits[0], crits[1])
+        # xdata.append(i)
+        # ydata1.append(crits[0])
+        # ydata2.append(crits[1])
+        # line1.set_xdata(xdata)
+        # line1.set_ydata(ydata1)
+        # line2.set_xdata(xdata)
+        # line2.set_ydata(ydata2)
+        # plt.draw()
+        # plt.pause(1e-17)
+
+        plotter.update_vertices()
+        plotter.update_edges()
+        plotter.update(pause=0.1)
+
+        for key, attr in network.vertices(True):
+            index = k2i[key]
+            attr['x'] = xyz[index, 0]
+            attr['y'] = xyz[index, 1]
+            attr['z'] = xyz[index, 2]
+
+
+    xyz, q, f, l, r = dr(vertices, edges, fixed, loads,
+                         qpre, fpre, lpre,
+                         linit, E, radius,
+                         kmax=20, callback=plot_iterations)
+
+    # plt.show()
+
+    plotter.update_vertices()
+    plotter.update_edges()
+    plotter.update(pause=0.1)
+
+    # plotter.draw_vertices()
+    # plotter.draw_edges()
 
     plotter.show()

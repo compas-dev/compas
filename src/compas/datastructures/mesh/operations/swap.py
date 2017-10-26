@@ -1,3 +1,6 @@
+from __future__ import print_function
+
+
 __author__    = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'

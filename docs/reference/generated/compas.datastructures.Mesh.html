@@ -13,7 +13,7 @@
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
 <link href="generated/compas.datastructures.Mesh.__init__.html" rel="next" title="Mesh.__init__"/>
-<link href="compas.datastructures.network_vertex_coloring.html" rel="prev" title="network_vertex_coloring"/>
+<link href="compas.datastructures.network_is_planar_embedding.html" rel="prev" title="network_is_planar_embedding"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -165,9 +165,6 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.edges_on_boundary.html" title="compas.datastructures.Mesh.edges_on_boundary"><code class="xref py py-obj docutils literal">edges_on_boundary</code></a>()</td>
 <td>Find the edges on the boundary.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_adjacency.html" title="compas.datastructures.Mesh.face_adjacency"><code class="xref py py-obj docutils literal">face_adjacency</code></a>()</td>
-<td></td>
-</tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_adjacency_halfedge.html" title="compas.datastructures.Mesh.face_adjacency_halfedge"><code class="xref py py-obj docutils literal">face_adjacency_halfedge</code></a>(f1, f2)</td>
 <td>Find the half-edge over which tow faces are adjacent.</td>
 </tr>
@@ -188,6 +185,9 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_degree.html" title="compas.datastructures.Mesh.face_degree"><code class="xref py py-obj docutils literal">face_degree</code></a>(fkey)</td>
 <td>Count the neighbours of a face.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_flatness.html" title="compas.datastructures.Mesh.face_flatness"><code class="xref py py-obj docutils literal">face_flatness</code></a>(fkey)</td>
+<td>Compute the flatness of the mesh face.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.face_halfedges.html" title="compas.datastructures.Mesh.face_halfedges"><code class="xref py py-obj docutils literal">face_halfedges</code></a>(fkey)</td>
 <td>The halfedges of a face.</td>
@@ -239,6 +239,9 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.from_ply.html" title="compas.datastructures.Mesh.from_ply"><code class="xref py py-obj docutils literal">from_ply</code></a>(filepath)</td>
 <td>Construct a mesh object from the data described in a PLY file.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.from_polyhedron.html" title="compas.datastructures.Mesh.from_polyhedron"><code class="xref py py-obj docutils literal">from_polyhedron</code></a>(f)</td>
+<td>Construct a mesh from a platonic solid.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.from_vertices_and_faces.html" title="compas.datastructures.Mesh.from_vertices_and_faces"><code class="xref py py-obj docutils literal">from_vertices_and_faces</code></a>(vertices, faces)</td>
 <td>Construct a mesh object from a list of vertices and faces.</td>
@@ -369,7 +372,10 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.number_of_vertices.html" title="compas.datastructures.Mesh.number_of_vertices"><code class="xref py py-obj docutils literal">number_of_vertices</code></a>()</td>
 <td>Count the number of vertices in the mesh.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.set_edge_attribute.html" title="compas.datastructures.Mesh.set_edge_attribute"><code class="xref py py-obj docutils literal">set_edge_attribute</code></a>(key, name, value)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.planarize_faces.html" title="compas.datastructures.Mesh.planarize_faces"><code class="xref py py-obj docutils literal">planarize_faces</code></a>()</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.set_edge_attribute.html" title="compas.datastructures.Mesh.set_edge_attribute"><code class="xref py py-obj docutils literal">set_edge_attribute</code></a>(key, name, value[, directed])</td>
 <td>Set one attribute of one edge.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.set_edge_attributes.html" title="compas.datastructures.Mesh.set_edge_attributes"><code class="xref py py-obj docutils literal">set_edge_attributes</code></a>(key[, attr_dict])</td>
@@ -404,6 +410,9 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.set_vertices_attributes.html" title="compas.datastructures.Mesh.set_vertices_attributes"><code class="xref py py-obj docutils literal">set_vertices_attributes</code></a>([keys, attr_dict])</td>
 <td>Set multiple attributes of multiple vertices.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.smooth_centroid.html" title="compas.datastructures.Mesh.smooth_centroid"><code class="xref py py-obj docutils literal">smooth_centroid</code></a>([fixed, kmax, callback, ...])</td>
+<td></td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.summary.html" title="compas.datastructures.Mesh.summary"><code class="xref py py-obj docutils literal">summary</code></a>()</td>
 <td>Print a summary of the mesh.</td>
@@ -477,7 +486,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertices_on_boundary.html" title="compas.datastructures.Mesh.vertices_on_boundary"><code class="xref py py-obj docutils literal">vertices_on_boundary</code></a>([ordered])</td>
 <td>Find the vertices on the boundary.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertices_where.html" title="compas.datastructures.Mesh.vertices_where"><code class="xref py py-obj docutils literal">vertices_where</code></a>(conditions)</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.vertices_where.html" title="compas.datastructures.Mesh.vertices_where"><code class="xref py py-obj docutils literal">vertices_where</code></a>(conditions[, data])</td>
 <td>Get vertices for which a certain condition or set of conditions is true.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.datastructures.Mesh.wireframe.html" title="compas.datastructures.Mesh.wireframe"><code class="xref py py-obj docutils literal">wireframe</code></a>()</td>
@@ -518,7 +527,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
 </dd></dl>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="compas.datastructures.network_vertex_coloring.html" role="button">network_vertex_coloring</a>
+<a class="btn btn-primary compas-prev" href="compas.datastructures.network_is_planar_embedding.html" role="button">network_is_planar_embedding</a>
 <a class="btn btn-primary compas-next" href="generated/compas.datastructures.Mesh.__init__.html" role="button">Mesh.__init__</a>
 </nav>
 </main>
@@ -580,7 +589,7 @@ With every key corresponds a dictionary of neighbours pointing to attribute dict
             
 
             
-                Last updated on Oct 24, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

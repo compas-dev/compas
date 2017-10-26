@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from numpy import asarray
 
 from scipy.sparse import diags
@@ -19,6 +21,68 @@ __all__ = [
 
 
 def fd(vertices, edges, fixed, q, loads, rtype='list'):
+    """Implementation of the force density method to compute equilibrium of axial force networks.
+    
+    Parameters
+    ----------
+    vertices : list
+        XYZ coordinates of the vertices of the network
+    edges : list
+        Edges between vertices represented by
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+
+        from compas.datastructures import Mesh
+        from compas.visualization import MeshPlotter
+        from compas.numerical import fd
+        from compas.utilities import i_to_black
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+        mesh.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
+        mesh.update_default_edge_attributes({'q': 1.0})
+
+        for key, attr in mesh.vertices(True):
+            attr['is_anchor'] = mesh.vertex_degree(key) == 2
+            if key in (18, 35):
+                attr['z'] = 5.0
+
+        k_i   = mesh.key_index()
+
+        xyz   = mesh.get_vertices_attributes(('x', 'y', 'z'))
+        loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))
+        q     = mesh.get_edges_attribute('q')
+
+        fixed = mesh.vertices_where({'is_anchor': True})
+        fixed = [k_i[k] for k in fixed]
+        edges = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
+
+        xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads, rtype='list')
+
+        for key, attr in mesh.vertices(True):
+            index = k_i[key]
+            attr['x'] = xyz[index][0]
+            attr['y'] = xyz[index][1]
+            attr['z'] = xyz[index][2]
+
+        plotter = MeshPlotter(mesh)
+
+        zmax = max(mesh.get_vertices_attribute('z'))
+
+        plotter.draw_vertices(
+            facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)},
+            text="z"
+        )
+        plotter.draw_faces()
+        plotter.draw_edges()
+        plotter.show()
+
+    """
     num_v     = len(vertices)
     free      = list(set(range(num_v)) - set(fixed))
     xyz       = asarray(vertices, dtype=float).reshape((-1, 3))
@@ -57,43 +121,48 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
 
 if __name__ == '__main__':
 
-    import random
-
     import compas
 
-    from compas.datastructures.network import Network
-    from compas.datastructures.network.viewer import NetworkViewer
+    from compas.datastructures import Mesh
+    from compas.visualization import MeshPlotter
+    from compas.utilities import i_to_black
 
-    network = Network.from_obj(compas.get_data('saddle.obj'))
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    network.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
-    network.update_default_edge_attributes({'q': 1.0})
+    mesh.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
+    mesh.update_default_edge_attributes({'q': 1.0})
 
-    for key, attr in network.vertices_iter(True):
-        attr['is_anchor'] = network.is_vertex_leaf(key)
+    for key, attr in mesh.vertices(True):
+        attr['is_anchor'] = mesh.vertex_degree(key) == 2
+        if key in (18, 35):
+            attr['z'] = 5.0
 
-    key = random.choice(network.vertices_where({'is_anchor': False}))
+    k_i   = mesh.key_index()
 
-    network.vertex[key]['pz'] = -5.0
+    xyz   = mesh.get_vertices_attributes(('x', 'y', 'z'))
+    loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))
+    q     = mesh.get_edges_attribute('q')
 
-    k_i   = network.key_index()
-
-    xyz   = network.get_vertices_attributes(('x', 'y', 'z'))
-    loads = network.get_vertices_attributes(('px', 'py', 'pz'))
-    q     = network.get_edges_attribute('q')
-
-    fixed = [k_i[k] for k in network if network.vertex[k]['is_anchor']]
-    edges = [(k_i[u], k_i[v]) for u, v in network.edges_iter()]
+    fixed = mesh.vertices_where({'is_anchor': True})
+    fixed = [k_i[k] for k in fixed]
+    edges = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
 
     xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads, rtype='list')
 
-    for key in network:
+    for key, attr in mesh.vertices(True):
         index = k_i[key]
-        network.vertex[key]['x'] = xyz[index][0]
-        network.vertex[key]['y'] = xyz[index][1]
-        network.vertex[key]['z'] = xyz[index][2]
+        attr['x'] = xyz[index][0]
+        attr['y'] = xyz[index][1]
+        attr['z'] = xyz[index][2]
 
-    viewer = NetworkViewer(network)
+    plotter = MeshPlotter(mesh)
 
-    viewer.setup()
-    viewer.show()
+    zmax = max(mesh.get_vertices_attribute('z'))
+
+    plotter.draw_vertices(
+        facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)},
+        text="z"
+    )
+    plotter.draw_faces()
+    plotter.draw_edges()
+    plotter.show()

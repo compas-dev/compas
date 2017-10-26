@@ -1,6 +1,6 @@
 import time
 
-from compas.utilities import to_valuedict
+from compas.utilities import valuedict
 from compas.cad import ArtistInterface
 
 import compas_rhinomac
@@ -108,7 +108,7 @@ class NetworkArtist(ArtistInterface):
 
         """
         keys = keys or list(self.network.vertices())
-        colordict = to_valuedict(keys, color, self.defaults['vertex.color'])
+        colordict = valuedict(keys, color, self.defaults['vertex.color'])
         points = []
         for key in keys:
             points.append({
@@ -153,7 +153,7 @@ class NetworkArtist(ArtistInterface):
 
         """
         keys = keys or list(self.network.edges())
-        colordict = to_valuedict(keys, color, self.defaults['edge.color'])
+        colordict = valuedict(keys, color, self.defaults['edge.color'])
         lines = []
         for u, v in keys:
             lines.append({
@@ -217,7 +217,7 @@ class NetworkArtist(ArtistInterface):
             textdict = text
         else:
             raise NotImplementedError
-        colordict = to_valuedict(list(textdict.keys()), color, self.defaults['vertex.color'])
+        colordict = valuedict(list(textdict.keys()), color, self.defaults['vertex.color'])
         labels = []
         for key, text in iter(textdict.items()):
             labels.append({
@@ -248,7 +248,7 @@ class NetworkArtist(ArtistInterface):
             textdict = text
         else:
             raise NotImplementedError
-        colordict = to_valuedict(list(textdict.keys()), color, self.defaults['edge.color'])
+        colordict = valuedict(list(textdict.keys()), color, self.defaults['edge.color'])
         labels = []
         for (u, v), text in iter(textdict.items()):
             labels.append({

@@ -1,4 +1,4 @@
-from compas.utilities import to_valuedict
+from compas.utilities import valuedict
 
 from compas_blender.utilities import delete_objects
 from compas_blender.utilities import get_objects
@@ -45,7 +45,7 @@ class FaceArtist(object):
 
     def draw_faces(self, fkeys=None, color=None, alpha=0.5):
         fkeys = fkeys or list(self.datastructure.faces())
-        colordict = to_valuedict(fkeys, color, self.defaults['color.face'])
+        colordict = valuedict(fkeys, color, self.defaults['color.face'])
         faces = []
         for fkey in fkeys:
             faces.append({

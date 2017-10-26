@@ -64,48 +64,47 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">'planarize_faces'</span><span class="p">,</span>
     <span class="s1">'flatness'</span><span class="p">,</span>
-    <span class="s1">'flatness2'</span>
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="flatness"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.flatness.html#compas.geometry.flatness">[docs]</a><span class="k">def</span> <span class="nf">flatness</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
-    <span class="sd">"""Compute mesh flatness per face.</span>
+<span class="c1"># def flatness(vertices, faces):</span>
+<span class="c1">#     """Compute mesh flatness per face.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    mesh : Mesh</span>
-<span class="sd">        A mesh object.</span>
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     mesh : Mesh</span>
+<span class="c1">#         A mesh object.</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dict</span>
-<span class="sd">        For each face, a deviation from *flatness*.</span>
+<span class="c1">#     Returns</span>
+<span class="c1">#     -------</span>
+<span class="c1">#     dict</span>
+<span class="c1">#         For each face, a deviation from *flatness*.</span>
 
-<span class="sd">    Note</span>
-<span class="sd">    ----</span>
-<span class="sd">    The "flatness" of a face is expressed as the average of the angles between</span>
-<span class="sd">    the normal at each face corner and the normal of the best-fit plane.</span>
+<span class="c1">#     Note</span>
+<span class="c1">#     ----</span>
+<span class="c1">#     The "flatness" of a face is expressed as the average of the angles between</span>
+<span class="c1">#     the normal at each face corner and the normal of the best-fit plane.</span>
 
-<span class="sd">    """</span>
-    <span class="n">dev</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span>
-        <span class="n">base</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">bestfit_plane_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-        <span class="n">angles</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">window</span><span class="p">(</span><span class="n">points</span> <span class="o">+</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="mi">3</span><span class="p">):</span>
-            <span class="n">u</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-            <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-            <span class="n">n</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">angle</span> <span class="o">=</span> <span class="n">angle_smallest_vectors</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">angle</span> <span class="o">=</span> <span class="n">angle_smallest_vectors</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-            <span class="n">angles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">dev</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">angles</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">dev</span></div>
+<span class="c1">#     """</span>
+<span class="c1">#     dev = []</span>
+<span class="c1">#     for face in faces:</span>
+<span class="c1">#         points = [vertices[key] for key in face]</span>
+<span class="c1">#         base, normal = bestfit_plane_from_points(points)</span>
+<span class="c1">#         angles = []</span>
+<span class="c1">#         for a, b, c in window(points + points[0:2], 3):</span>
+<span class="c1">#             u = subtract_vectors(a, b)</span>
+<span class="c1">#             v = subtract_vectors(c, b)</span>
+<span class="c1">#             n = cross_vectors(u, v)</span>
+<span class="c1">#             if dot_vectors(n, normal) &gt; 0:</span>
+<span class="c1">#                 angle = angle_smallest_vectors(n, normal)</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 angle = angle_smallest_vectors(n, scale_vector(normal, -1))</span>
+<span class="c1">#             angles.append(angle)</span>
+<span class="c1">#         dev.append(sum(angles) / len(angles))</span>
+<span class="c1">#     return dev</span>
 
 
-<div class="viewcode-block" id="flatness2"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.flatness2.html#compas.geometry.flatness2">[docs]</a><span class="k">def</span> <span class="nf">flatness2</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
+<div class="viewcode-block" id="flatness"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.flatness.html#compas.geometry.flatness">[docs]</a><span class="k">def</span> <span class="nf">flatness</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
     <span class="sd">"""Compute mesh flatness per face.</span>
 
 <span class="sd">    Parameters</span>
@@ -372,7 +371,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -390,7 +389,7 @@
             
 
             
-                Last updated on Oct 23, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

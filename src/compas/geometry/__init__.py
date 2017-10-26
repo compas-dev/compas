@@ -284,6 +284,7 @@ Transformations
     mirror_points_point_xy
     mirror_vector_vector
     offset_line
+    offset_polyline
     offset_polygon
     orient_points
     project_point_line
@@ -330,17 +331,18 @@ This package provides an object-oriented interface to the above functionality.
 .. autosummary::
     :toctree: generated/
 
-    Circle
-    Frame
-    Line
-    Plane
+    Vector
     Point
+    Circle
+    Line
+    Frame
+    Plane
+    Polyline
     Polygon
     Polyhedron
-    Polyline
     Spline
     Surface
-    Vector
+    KDTree
 
 
 Algorithms
@@ -351,11 +353,10 @@ Algorithms
 
     planarize_faces
     flatness
-    flatness2
     smooth_centroid
     smooth_centerofmass
     smooth_area
-
+    discrete_coons_patch
 
 """
 
@@ -453,6 +454,11 @@ from .size import *
 from .transformations import *
 from .xforms import *
 
+# level 4
+
+from .objects import *
+from .algorithms import *
+
 # recompile the __all__ variable
 
 from .basic import __all__ as a
@@ -467,13 +473,7 @@ from .queries import __all__ as i
 from .size import __all__ as j
 from .transformations import __all__ as k
 from .xforms import __all__ as l
-
-# more imports
-
-from .objects import *
 from .objects import __all__ as m
-
-from .algorithms import *
 from .algorithms import __all__ as n
 
 

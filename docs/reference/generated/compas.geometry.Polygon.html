@@ -13,7 +13,7 @@
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
 <link href="generated/compas.geometry.Polygon.__init__.html" rel="next" title="Polygon.__init__"/>
-<link href="generated/compas.geometry.Point.translate.html" rel="prev" title="Point.translate"/>
+<link href="generated/compas.geometry.Polyline.is_selfintersecting.html" rel="prev" title="Polyline.is_selfintersecting"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
 <body data-spy="scroll" data-target="#compas-localnav">
@@ -104,12 +104,6 @@ closing edge is implied.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polygon.__init__.html" title="compas.geometry.Polygon.__init__"><code class="xref py py-obj docutils literal">__init__</code></a>(points)</td>
 <td></td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polygon.is_convex.html" title="compas.geometry.Polygon.is_convex"><code class="xref py py-obj docutils literal">is_convex</code></a>()</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polygon.is_coplanar.html" title="compas.geometry.Polygon.is_coplanar"><code class="xref py py-obj docutils literal">is_coplanar</code></a>()</td>
-<td></td>
-</tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
@@ -131,14 +125,26 @@ closing edge is implied.</p>
 <tr class=""><td><code class="xref py py-obj docutils literal">frame</code></td>
 <td>The local coordinate frame.</td>
 </tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_convex</code></td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">is_coplanar</code></td>
+<td></td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">l</code></td>
+<td>The number of lines.</td>
+</tr>
 <tr class=""><td><a class="reference internal" href="" title="compas.geometry.Polygon.length"><code class="xref py py-obj docutils literal">length</code></a></td>
 <td>The length of the boundary.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="" title="compas.geometry.Polygon.lines"><code class="xref py py-obj docutils literal">lines</code></a></td>
-<td>The lines of the polygon.</td>
+<td>The lines of the polyline.</td>
 </tr>
 <tr class=""><td><code class="xref py py-obj docutils literal">normal</code></td>
 <td>The (average) normal of the polygon.</td>
+</tr>
+<tr class=""><td><code class="xref py py-obj docutils literal">p</code></td>
+<td>The number of points.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="" title="compas.geometry.Polygon.points"><code class="xref py py-obj docutils literal">points</code></a></td>
 <td>The points of the polygon.</td>
@@ -151,7 +157,7 @@ closing edge is implied.</p>
 </dd></dl>
 </div>
 <nav class="compas-sideways">
-<a class="btn btn-primary compas-prev" href="generated/compas.geometry.Point.translate.html" role="button">Point.translate</a>
+<a class="btn btn-primary compas-prev" href="generated/compas.geometry.Polyline.is_selfintersecting.html" role="button">Polyline.is_selfintersecting</a>
 <a class="btn btn-primary compas-next" href="generated/compas.geometry.Polygon.__init__.html" role="button">Polygon.__init__</a>
 </nav>
 </main>
@@ -213,7 +219,7 @@ closing edge is implied.</p>
             
 
             
-                Last updated on Oct 24, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

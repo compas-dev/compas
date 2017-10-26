@@ -158,7 +158,7 @@ def is_list_of_dict():
     pass
 
 
-def to_valuedict(keys, value, default):
+def valuedict(keys, value, default):
     value = value or default
 
     if isinstance(value, dict):

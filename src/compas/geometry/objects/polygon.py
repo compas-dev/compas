@@ -1,6 +1,6 @@
-from compas.geometry.objects.point import Point
-from compas.geometry.objects.vector import Vector
-from compas.geometry.objects.line import Line
+from compas.geometry.objects import Point
+from compas.geometry.objects import Vector
+from compas.geometry.objects import Line
 
 from compas.geometry import area_polygon
 from compas.geometry import cross_vectors
@@ -14,6 +14,9 @@ __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
+
+
+__all__ = ['Polygon']
 
 
 class Polygon(object):
@@ -47,8 +50,19 @@ class Polygon(object):
 
     """
     def __init__(self, points):
-        self.lines = None
+        self._points = []
+        self._lines = []
+        self._p = 0
+        self._l = 0
         self.points = points
+
+    # ==========================================================================
+    # factory
+    # ==========================================================================
+
+    # ==========================================================================
+    # descriptors
+    # ==========================================================================
 
     @property
     def points(self):
@@ -60,19 +74,36 @@ class Polygon(object):
         Returns:
             list: A list of ``Point`` objects.
         """
-        return self.points
+        return self._points
 
     @points.setter
     def points(self, points):
         if points[-1] == points[0]:
             del points[-1]
-        self.points = [Point(xyz) for xyz in points]
-        self.lines  = [Line(self.points[i], self.points[i + 1]) for i in range(-1, len(points) - 1)]
+        self._points = [Point(*xyz) for xyz in points]
+        self._lines  = [Line(self.points[i], self.points[i + 1]) for i in range(-1, len(points) - 1)]
 
     @property
     def lines(self):
-        """The lines of the polygon."""
-        return self.lines
+        """The lines of the polyline.
+
+        Parameters:
+            None
+
+        Returns:
+            list: A list of ``Line`` objects.
+        """
+        return self._lines
+
+    @property
+    def p(self):
+        """The number of points."""
+        return self._p
+
+    @property
+    def l(self):
+        """The number of lines."""
+        return self._l
 
     @property
     def length(self):
@@ -82,7 +113,7 @@ class Polygon(object):
     @property
     def centroid(self):
         """The centroid of the polygon."""
-        return Point(centroid_points(self.points))
+        return Point(* centroid_points(self.points))
 
     @property
     def normal(self):
@@ -100,7 +131,7 @@ class Polygon(object):
             a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
             normals.append(w)
         n = [sum(axis) / a2 for axis in zip(*normals)]
-        n = Vector(n)
+        n = Vector(* n)
         return n
 
     @property
@@ -114,18 +145,18 @@ class Polygon(object):
     @property
     def frame(self):
         """The local coordinate frame."""
-        o = self.center
-        w = self.normal
-        p = self.points[0]
-        u = Vector(p, o)
-        u.normalize()
-        v = w.cross(u)
+        o  = self.center
+        w  = self.normal
+        p  = self.points[0]
+        u  = Vector.from_start_end(o, p)
+        u.unitize()
+        v = Vector.cross(w, u)
         return o, u, v, w
 
     @property
     def center(self):
         """The center (of mass) of the polygon."""
-        return Point(center_of_mass_polygon(self.points))
+        return Point(* center_of_mass_polygon(self.points))
 
     @property
     def area(self):
@@ -136,11 +167,56 @@ class Polygon(object):
         """
         return area_polygon(self.points)
 
+    @property
     def is_convex(self):
         return is_polygon_convex(self.points)
 
+    @property
     def is_coplanar(self):
         return is_coplanar(self.points)
+
+    # ==========================================================================
+    # representation
+    # ==========================================================================
+
+    # ==========================================================================
+    # access
+    # ==========================================================================
+
+    def __getitem__(self, key):
+        try:
+            return self.points[key]
+        except IndexError:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        try:
+            self.points[key] = value
+        except IndexError:
+            raise KeyError
+
+    def __iter__(self):
+        return iter(self.points)
+
+    # ==========================================================================
+    # comparison
+    # ==========================================================================
+
+    # ==========================================================================
+    # operators
+    # ==========================================================================
+
+    # ==========================================================================
+    # inplace operators
+    # ==========================================================================
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
+
+    # ==========================================================================
+    # transformations
+    # ==========================================================================
 
 
 # ==============================================================================
@@ -158,5 +234,5 @@ if __name__ == '__main__':
     print(polygon.normal)
     print(polygon.frame)
 
-    print(polygon.is_convex())
-    print(polygon.is_coplanar())
+    print(polygon.is_convex)
+    print(polygon.is_coplanar)

@@ -110,3 +110,6 @@ libs/**
 !libs/PLACEHOLDER
 
 src/.build/**
+*.rhl
+
+samples/stanford_*.ply

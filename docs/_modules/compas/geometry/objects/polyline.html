@@ -46,35 +46,38 @@
 <span class="n">__email__</span>      <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
 
 
-<span class="k">def</span> <span class="nf">align_polylines</span><span class="p">(</span><span class="n">pointsets</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
-    <span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">aligned</span> <span class="o">=</span> <span class="p">[</span><span class="n">pointsets</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]]</span>
-    <span class="n">found</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pointsets</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">ep</span> <span class="o">=</span> <span class="n">aligned</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">found</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">points</span> <span class="o">=</span> <span class="n">pointsets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-            <span class="n">sp</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">ep</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ep</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">ep</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
-                <span class="n">aligned</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-                <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-                <span class="k">break</span>
-            <span class="n">sp</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">ep</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ep</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">ep</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
-                <span class="n">points</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">points</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">aligned</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-                <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
-                <span class="k">break</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">aligned</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">pointsets</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">aligned</span>
-    <span class="k">return</span> <span class="kc">None</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Polyline'</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">join_polylines</span><span class="p">(</span><span class="n">pointsets</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">point</span> <span class="k">for</span> <span class="n">points</span> <span class="ow">in</span> <span class="n">pointsets</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+<span class="c1"># def align_polylines(pointsets, tol=0.001):</span>
+<span class="c1">#     tol = tol**2</span>
+<span class="c1">#     aligned = [pointsets[0][1:]]</span>
+<span class="c1">#     found = [0]</span>
+<span class="c1">#     n = len(pointsets)</span>
+<span class="c1">#     for i in range(n):</span>
+<span class="c1">#         ep = aligned[-1][-1]</span>
+<span class="c1">#         for j in range(n):</span>
+<span class="c1">#             if j in found:</span>
+<span class="c1">#                 continue</span>
+<span class="c1">#             points = pointsets[j]</span>
+<span class="c1">#             sp = points[0]</span>
+<span class="c1">#             if (sp[0] - ep[0]) ** 2 &lt; tol and (sp[1] - ep[1]) ** 2 &lt; tol and (sp[2] - ep[2]) ** 2 &lt; tol:</span>
+<span class="c1">#                 aligned.append(points[1:])</span>
+<span class="c1">#                 found.append(j)</span>
+<span class="c1">#                 break</span>
+<span class="c1">#             sp = points[-1]</span>
+<span class="c1">#             if (sp[0] - ep[0]) ** 2 &lt; tol and (sp[1] - ep[1]) ** 2 &lt; tol and (sp[2] - ep[2]) ** 2 &lt; tol:</span>
+<span class="c1">#                 points[:] = points[::-1]</span>
+<span class="c1">#                 aligned.append(points[1:])</span>
+<span class="c1">#                 found.append(j)</span>
+<span class="c1">#                 break</span>
+<span class="c1">#     if len(aligned) == len(pointsets):</span>
+<span class="c1">#         return aligned</span>
+<span class="c1">#     return None</span>
+
+
+<span class="c1"># def join_polylines(pointsets):</span>
+<span class="c1">#     return [point for points in pointsets for point in points]</span>
 
 
 <div class="viewcode-block" id="Polyline"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.html#compas.geometry.Polyline">[docs]</a><span class="k">class</span> <span class="nc">Polyline</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -110,11 +113,19 @@
 
 <span class="sd">    """</span>
 <div class="viewcode-block" id="Polyline.__init__"><a class="viewcode-back" href="../../../../reference/generated/generated/compas.geometry.Polyline.__init__.html#compas.geometry.Polyline.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_p</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_l</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># factory</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># descriptors</span>
+    <span class="c1"># ==========================================================================</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -126,14 +137,14 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            list: A list of ``Point`` objects.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span>
 
     <span class="nd">@points</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">Line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">Line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">lines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -145,17 +156,17 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            list: A list of ``Line`` objects.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lines</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""The number of points."""</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""The number of lines."""</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_l</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -175,6 +186,34 @@
 <span class="sd">            bool: True if the polyline is closed, False otherwise.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># representation</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># access</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># comparison</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># operators</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># inplace operators</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># methods</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># transformations</span>
+    <span class="c1"># ==========================================================================</span>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -233,7 +272,7 @@
             
 
             
-                Last updated on Oct 24, 2017.
+                Last updated on Oct 26, 2017.
             
 
             

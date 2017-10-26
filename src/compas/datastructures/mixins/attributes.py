@@ -304,7 +304,7 @@ class EdgeAttributesManagement(object):
             attr.update(self.edge[u][v])
             self.edge[u][v] = attr
 
-    def set_edge_attribute(self, key, name, value):
+    def set_edge_attribute(self, key, name, value, directed=True):
         """Set one attribute of one edge.
 
         Parameters
@@ -324,7 +324,19 @@ class EdgeAttributesManagement(object):
 
         """
         u, v = key
-        self.edge[u][v][name] = value
+        if directed:
+            self.edge[u][v][name] = value
+        else:
+            if u in self.edge and v in self.edge[u]:
+                self.edge[u][v][name] = value
+            elif v in self.edge and u in self.edge[v]:
+                self.edge[v][u][name] = value
+            else:
+                if v in self.halfedge[u] or u in self.halfedge[v]:
+                    self.edge[u] = {}
+                    self.edge[u][v] = self.default_edge_attributes.copy()
+                    self.edge[u][v][name] = value
+
 
     def set_edge_attributes(self, key, attr_dict=None, **kwattr):
         """Set multiple attributes of one edge.

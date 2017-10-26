@@ -1,4 +1,4 @@
-from compas.utilities import to_valuedict
+from compas.utilities import valuedict
 
 from compas_blender.utilities import delete_objects
 from compas_blender.utilities import get_objects
@@ -45,7 +45,7 @@ class EdgeArtist(object):
 
     def draw_edges(self, width=0.010, keys=None, color=None):
         keys = keys or list(self.datastructure.edges())
-        colordict = to_valuedict(keys, color, self.defaults['color.edge'])
+        colordict = valuedict(keys, color, self.defaults['color.edge'])
         lines = []
         for u, v in keys:
             lines.append({

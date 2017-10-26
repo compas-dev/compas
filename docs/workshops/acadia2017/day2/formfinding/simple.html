@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>compas -- a computational framework for research in architecture and structures</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="Tom Van Mele" name="author"/>
+<meta content="compas is a computational framework for research in architecture and structures." name="description"/>
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" rel="stylesheet"/>
+<link href="/css/github.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas.css" rel="stylesheet" type="text/css"/>
+<link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
+<link href="../../day3.html" rel="next" title="Day 3"/>
+<link href="../formfinding.html" rel="prev" title="Form Finding"/>
+<script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+</head>
+<body data-spy="scroll" data-target="#compas-localnav">
+<header class="navbar navbar-expand navbar-dark bg-dark compas-navbar">
+<a class="navbar-brand" href="/">compas</a>
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link active" href="/compas">Main library</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="/packages">Additional Packages</a>
+</li>
+</ul>
+</header>
+<div class="container-fluid compas-container">
+<div class="row flex-xl-nowrap">
+<main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+<nav class="breadcrumb">
+<a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
+<a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
+<a class="breadcrumb-item" href="../../../../workshops.html">workshops</a>
+<a class="breadcrumb-item" href="../../../acadia2017.html">acadia 2017</a>
+<a class="breadcrumb-item" href="../../day2.html">day 2</a>
+<a accesskey="U" class="breadcrumb-item" href="../formfinding.html">form finding</a>
+</nav>
+<div class="section">
+<span id="acadia2017-day2-formfinding-simple"></span><h1>Form Finding - Simple script</h1>
+<figure class="figure">
+<img alt="../../../../images/formfinding_simple-result.png" class="figure-img img-fluid" src="../../../../images/formfinding_simple-result.png"/>
+</figure>
+<p>Before developing a form finding app in Rhino, we will prototype its functionality
+using a script and a plotter for visualization.</p>
+<p>We will do this in several steps.</p>
+<p>First, we use all functionality provided by the framework <em>out-of-the-box</em>.
+Then, we explore the visualization options, and customize the data structure.
+Finally, we find the boundaries of the mesh to change the geometry of the equilibrium result.</p>
+<p>Below is the initial version of the code we will further develop.
+The parts related to form finding are highlighted.</p>
+<div class="highlight"><pre><code class="language-python border rounded"><span></span><span class="kn">import</span> <span class="nn">compas</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
+<span class="hll"><span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">fd</span>
+</span>
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">'Copyright 2016 - Block Research Group, ETH Zurich'</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">'MIT License'</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">'vanmelet@ethz.ch'</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="c1"># mesh and plotter</span>
+
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+    <span class="c1"># preprocess</span>
+
+<span class="hll">    <span class="n">k_i</span>  <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+</span><span class="hll">
+</span><span class="hll">    <span class="n">xyz</span>   <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">(</span><span class="s1">'xyz'</span><span class="p">)</span>
+</span><span class="hll">    <span class="n">loads</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">((</span><span class="s1">'px'</span><span class="p">,</span> <span class="s1">'py'</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">),</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+</span><span class="hll">
+</span><span class="hll">    <span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">k_i</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+</span><span class="hll">    <span class="n">edges</span> <span class="o">=</span> <span class="p">[[</span><span class="n">k_i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k_i</span><span class="p">[</span><span class="n">v</span><span class="p">]]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
+</span><span class="hll">
+</span><span class="hll">    <span class="n">q</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_edges_attribute</span><span class="p">(</span><span class="s1">'q'</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</span>    
+    <span class="c1"># compute equilibrium</span>
+
+<span class="hll">    <span class="n">xyz</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">fd</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'list'</span><span class="p">)</span>
+</span>
+    <span class="c1"># update</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+
+    <span class="c1"># visualize</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<nav class="compas-sideways">
+<a class="btn btn-primary compas-prev" href="../formfinding.html" role="button">Form Finding</a>
+<a class="btn btn-primary compas-next" href="../../day3.html" role="button">Day 3</a>
+</nav>
+</main>
+<div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+<div class="navbar-light">
+<form action="../../../../search.html" class="d-flex compas-searchbox" id="" method="get">
+<input class="form-control" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<button aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler d-md-none compas-navigation-toggler" data-target="#compas-navigation" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+</form>
+<div class="navbar-expand-md">
+<div class="collapse navbar-collapse compas-navigation" id="compas-navigation">
+<ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../../../acadia2017.html">ACADIA 2017</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../day1.html">Day 1</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../day2.html">Day 2</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../day3.html">Day 3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+<ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Form Finding - Simple script</a></li>
+</ul>
+</div>
+</div>
+</div>
+<footer class="compas-footer">
+            
+                
+                    © Copyright 2017, Block Research Group - ETH Zurich.
+                
+            
+
+            
+                Last updated on Oct 25, 2017.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+            
+        </footer>
+<script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT:    '',
+    VERSION:     '',
+    COLLAPSE_INDEX: false,
+    FILE_SUFFIX: '.html',
+    HAS_SOURCE:  true,
+    SOURCELINK_SUFFIX: '.txt'
+};
+            </script>
+<script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+<script src="/static/underscore.js"></script>
+<script src="/static/doctools.js"></script>
+<script src="https://compas-dev.github.io/compas/static/searchtools_.js"></script>
+<script>
+                hljs.initHighlightingOnLoad();
+                anchors.add();
+            </script>
+</body>
+</html>

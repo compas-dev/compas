@@ -1,13 +1,26 @@
-from .circle import Circle
-from .frame import Frame
+from .vector import Vector
+from .point import Point
+
 from .line import Line
 from .plane import Plane
-from .point import Point
+from .frame import Frame
+
+from .polyline import Polyline
 from .polygon import Polygon
 from .polyhedron import Polyhedron
-from .polyline import Polyline
+
+from .circle import Circle
+
 from .spline import Spline
 from .surface import Surface
-from .vector import Vector
 
-__all__ = ['Circle', 'Frame', 'Line', 'Plane', 'Point', 'Polygon', 'Polyhedron', 'Polyline', 'Spline', 'Surface', 'Vector']
+from .kdtree import KDTree
+
+__all__ = [
+    'Vector', 'Point', 'Line', 'Plane',
+    'Frame',
+    'Polyline', 'Polygon', 'Polyhedron',
+    'Circle',
+    'Spline', 'Surface',
+    'KDTree'
+]

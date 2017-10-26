@@ -42,7 +42,6 @@ network.algorithms
     network_is_crossed
     network_is_planar
     network_is_planar_embedding
-    network_vertex_coloring
 
 
 Mesh
@@ -96,6 +95,7 @@ mesh.algorithms
     mesh_subdivide_doosabin
     mesh_unify_cycles
     mesh_voronoi_from_points
+    mesh_cull_duplicate_vertices
 
 
 .. note::

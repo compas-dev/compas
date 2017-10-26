@@ -50,7 +50,7 @@
 
 <span class="k">class</span> <span class="nc">VertexFilter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">vertices_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">"""Get vertices for which a certain condition or set of conditions is true.</span>
 
 <span class="sd">        Parameters</span>
@@ -59,14 +59,19 @@
 <span class="sd">            A set of conditions in the form of key-value pairs.</span>
 <span class="sd">            The keys should be attribute names. The values can be attribute</span>
 <span class="sd">            values or ranges of attribute values in the form of min/max pairs.</span>
+<span class="sd">        data : bool, optional</span>
+<span class="sd">            Yield the vertices and their data attributes.</span>
+<span class="sd">            Default is ``False``.</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list</span>
-<span class="sd">            A list of vertex keys that satisfy the condition(s).</span>
-
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        key: hashable</span>
+<span class="sd">            The next vertex that matches the condition.</span>
+<span class="sd">        2-tuple</span>
+<span class="sd">            The next vertex and its attributes, if ``data=True``.</span>
+<span class="sd">    </span>
 <span class="sd">        """</span>
-        <span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># keys = []</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
             <span class="n">is_match</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">conditions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -83,8 +88,12 @@
                         <span class="n">is_match</span> <span class="o">=</span> <span class="kc">False</span>
                         <span class="k">break</span>
             <span class="k">if</span> <span class="n">is_match</span><span class="p">:</span>
-                <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">keys</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">key</span>
+        <span class="c1">#         keys.append(key)</span>
+        <span class="c1"># return keys</span>
 
 
 <span class="k">class</span> <span class="nc">EdgeFilter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -159,7 +168,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../notes.html">Notes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
 </ul>
 </div>
 </div>
@@ -177,7 +186,7 @@
             
 
             
-                Last updated on Oct 23, 2017.
+                Last updated on Oct 26, 2017.
             
 
             
