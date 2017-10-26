@@ -72,38 +72,6 @@ def flatness(vertices, faces, maxdev=1.0):
     return dev
 
 
-def mesh_flatness(mesh, maxdev=1.0):
-    """Compute mesh flatness per face.
-
-    Parameters
-    ----------
-    mesh : Mesh
-        A mesh object.
-    maxdev : float, optional
-        A maximum value for the allowed deviation from flatness.
-        Default is ``1.0``.
-
-    Returns
-    -------
-    dict
-        For each face, a deviation from *flatness*.
-
-    Note
-    ----
-    The "flatness" of a face is expressed as the ratio of the distance between
-    the diagonals to the average edge length. For the fabrication of glass panels,
-    for example, ``0.02`` could be a reasonable maximum value.
-
-    Warning
-    -------
-    This function only works as expected for quadrilateral faces.
-
-    """
-    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-    faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
-    return flatness(vertices, faces, maxdev=maxdev)
-
-
 def planarize_faces(vertices,
                     faces,
                     fixed=None,
@@ -111,7 +79,7 @@ def planarize_faces(vertices,
                     d=1.0,
                     callback=None,
                     callback_args=None):
-    """Planarise the faces of a mesh.
+    """Planarise a set of connected faces.
 
     Planarisation is implemented as a two-step iterative procedure. At every
     iteration, faces are first individually projected to their best-fit plane,
@@ -136,7 +104,6 @@ def planarize_faces(vertices,
         A list of arguments to be passed to the callback function.
 
     """
-
     if callback:
         if not callable(callback):
             raise Exception('The callback is not callable.')
@@ -169,11 +136,94 @@ def planarize_faces(vertices,
             callback(vertices, faces, k, callback_args)
 
 
-def mesh_planarize_shapeop(mesh,
-                           fixed=None,
-                           kmax=100,
-                           callback=None,
-                           callback_args=None):
+# ==============================================================================
+# mesh variations
+# ==============================================================================
+
+
+def mesh_flatness(mesh, maxdev=1.0):
+    """Compute mesh flatness per face.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    maxdev : float, optional
+        A maximum value for the allowed deviation from flatness.
+        Default is ``1.0``.
+
+    Returns
+    -------
+    dict
+        For each face, a deviation from *flatness*.
+
+    Note
+    ----
+    The "flatness" of a face is expressed as the ratio of the distance between
+    the diagonals to the average edge length. For the fabrication of glass panels,
+    for example, ``0.02`` could be a reasonable maximum value.
+
+    Warning
+    -------
+    This function only works as expected for quadrilateral faces.
+
+    """
+    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
+    return flatness(vertices, faces, maxdev=maxdev)
+
+
+def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_args=None):
+    """Planarise a set of connected faces.
+
+    Planarisation is implemented as a two-step iterative procedure. At every
+    iteration, faces are first individually projected to their best-fit plane,
+    and then the vertices are projected to the centroid of the disconnected
+    corners of the faces.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    fixed : list, optional [None]
+        A list of fixed vertices.
+    kmax : int, optional [100]
+        The number of iterations.
+    d : float, optional [1.0]
+        A damping factor.
+    callback : callable, optional [None]
+        A user-defined callback that is called after every iteration.
+    callback_args : list, optional [None]
+        A list of arguments to be passed to the callback function.
+
+    """
+    if callback:
+        if not callable(callback):
+            raise Exception('The callback is not callable.')
+
+    fixed = fixed or []
+    fixed = set(fixed)
+
+    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
+
+    for k in range(kmax):
+        planarize_faces(vertices, faces, fixed=fixed, kmax=1)
+
+        for key, attr in mesh.vertices(True):
+            attr['x'] = vertices[key][0]
+            attr['y'] = vertices[key][1]
+            attr['z'] = vertices[key][2]
+
+        if callback:
+            callback(k, callback_args)
+
+
+def mesh_planarize_faces_shapeop(mesh,
+                                 fixed=None,
+                                 kmax=100,
+                                 callback=None,
+                                 callback_args=None):
     """Planarize the faces of a mesh using ShapeOp.
 
     Parameters
@@ -250,7 +300,11 @@ def mesh_planarize_shapeop(mesh,
     solver.delete()
 
 
-def circularize_mesh(mesh, fixed=None, kmax=100, callback=None, callback_args=None):
+def mesh_circularize_faces_shapeop(mesh,
+                                   fixed=None,
+                                   kmax=100,
+                                   callback=None,
+                                   callback_args=None):
     """Circularize the faces of a mesh using ShapeOp.
 
     Parameters
@@ -365,7 +419,7 @@ if __name__ == "__main__":
             plotter.update()
 
 
-    mesh_planarize_shapeop(mesh, fixed=fixed, kmax=500, callback=callback)
+    mesh_planarize_faces(mesh, fixed=fixed, kmax=1000, callback=callback)
 
     plotter.show()
 
