@@ -1011,11 +1011,11 @@ if __name__ == "__main__":
     from compas_rhino.helpers import mesh_select_vertex
     from compas_rhino.helpers import mesh_move_vertex
 
-    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get_data('faces_big.obj'))
 
     mesh_draw(mesh, layer='test', clear_layer=True)
 
-    key = mesh_select_vertex(mesh)
-
-    if mesh_move_vertex(mesh, key):
-        mesh_draw(mesh, layer='test', clear_layer=True)
+#    key = mesh_select_vertex(mesh)
+#
+#    if mesh_move_vertex(mesh, key):
+#        mesh_draw(mesh, layer='test', clear_layer=True)

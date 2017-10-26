@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 from compas.topology import bfs_traverse
-#from compas.geometry import KDTree
+from compas.geometry import KDTree
 
 
 __author__     = 'Tom Van Mele'
@@ -16,73 +16,88 @@ __all__ = [
 ]
 
 
-# def face_adjacency(mesh):
-#     from scipy.spatial import cKDTree
-#     fkey_index = {fkey: index for index, fkey in enumerate(self.faces())}
-#     index_fkey = {index: fkey for index, fkey in enumerate(self.faces())}
-#     points = [self.face_centroid(fkey) for fkey in self.faces()]
-#     tree = cKDTree(points)
-#     _, closest = tree.query(points, k=10, n_jobs=-1)
-#     adjacency = {}
-#     for fkey in self.faces():
-#         nbrs  = []
-#         index = fkey_index[fkey]
-#         nnbrs = closest[index]
-#         found = set()
-#         for u, v in self.face_halfedges(fkey):
-#             for index in nnbrs:
-#                 nbr = index_fkey[index]
-#                 if nbr == fkey:
-#                     continue
-#                 if nbr in found:
-#                     continue
-#                 for a, b in self.face_halfedges(nbr):
-#                     if v == a and u == b:
-#                         nbrs.append(nbr)
-#                         found.add(nbr)
-#                         break
-#                 for a, b in self.face_halfedges(nbr):
-#                     if u == a and v == b:
-#                         nbrs.append(nbr)
-#                         found.add(nbr)
-#                         break
-#         adjacency[fkey] = nbrs
-#     return adjacency
-
-
 def face_adjacency(mesh):
+    """Build a face adjacency dict.
+    
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
 
+    Returns
+    -------
+    dict
+        A dictionary mapping face identifiers (keys) to lists of neighbouring faces.
+
+    Note
+    ----
+    This algorithm is used primarily to unify the cycle directions of a given mesh.
+    Therefore, the premise is that the topological information of the mesh is corrupt
+    and cannot be used to construct the adjacency structure. The algorithm is thus
+    purely geometrical, but uses a spatial indexing tree to speed up the search.    
+
+    """
     fkey_index = {fkey: index for index, fkey in enumerate(mesh.faces())}
     index_fkey = {index: fkey for index, fkey in enumerate(mesh.faces())}
-    points = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
+    points     = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
 
-    tree = KDTree(points)
+    try:
+        from scipy.spatial import cKDTree
 
-    adjacency = {}
+        tree = cKDTree(points)
+        _, closest = tree.query(points, k=10, n_jobs=-1)
 
+    except Exception:
+        try:
+            import Rhino
+
+        except Exception:
+            from compas.geometry import KDTree
+
+            tree = KDTree(points)
+            closest = [tree.nearest_neighbours(point, 10) for point in points]
+            closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
+
+        else:
+            from Rhino.Geometry import RTree
+            from Rhino.Geometry import Sphere
+            from Rhino.Geometry import Point3d
+
+            tree = RTree()
+            for i, point in enumerate(points):
+                tree.Insert(Point3d(* point), i)
+
+            def callback(sender, e):
+                data = e.Tag 
+                data.append(e.Id)
+
+            closest = []
+            for i, point in enumerate(points):
+                sphere = Sphere(Point3d(* point), 2.0)
+                data = []
+                tree.Search(sphere, callback, data)
+                closest.append(data)
+    
+    adjacency  = {}
     for fkey in mesh.faces():
         nbrs  = []
         index = fkey_index[fkey]
         found = set()
-        point = points[index]
 
-        nnbrs = tree.nearest_neighbours(point, 10)
+        nnbrs = closest[index]
 
         for u, v in mesh.face_halfedges(fkey):
-            for xyz, index, d in nnbrs:
+            for index in nnbrs:
                 nbr = index_fkey[index]
-
                 if nbr == fkey:
                     continue
                 if nbr in found:
                     continue
-
                 for a, b in mesh.face_halfedges(nbr):
                     if v == a and u == b:
                         nbrs.append(nbr)
                         found.add(nbr)
                         break
-
                 for a, b in mesh.face_halfedges(nbr):
                     if u == a and v == b:
                         nbrs.append(nbr)

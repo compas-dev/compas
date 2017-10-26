@@ -44,9 +44,6 @@ from compas.datastructures.mixins import EdgeMappings
 from compas.datastructures.mixins import FaceMappings
 
 from compas.topology import bfs_traverse
-from compas.geometry import smooth_centroid
-from compas.geometry import smooth_area
-from compas.geometry import planarize_faces
 from compas.geometry import flatness
 
 
@@ -2493,35 +2490,6 @@ class Mesh(FromToJson,
         """
         return [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
-    # ==========================================================================
-    # convenience
-    # ==========================================================================
-
-    def smooth_centroid(self, fixed=None, kmax=100, callback=None, callback_args=None):
-        """"""
-        vertices  = {key: self.vertex_coordinates(key) for key in self.vertices()}
-        adjacency = {key: self.vertex_neighbours(key) for key in self.vertices()}
-
-        for k in range(kmax):
-            smooth_centroid(vertices, adjacency, fixed=fixed, kmax=1)
-
-            if callback:
-                for key, attr in self.vertices(True):
-                    attr['x'] = vertices[key][0]
-                    attr['y'] = vertices[key][1]
-                    attr['z'] = vertices[key][2]
-
-                callback(self, k, callback_args)
-
-        for key, attr in self.vertices(True):
-            attr['x'] = vertices[key][0]
-            attr['y'] = vertices[key][1]
-            attr['z'] = vertices[key][2]
-
-    def planarize_faces(self):
-        pass
-
-
 
 # ==============================================================================
 # Debugging
@@ -2532,12 +2500,15 @@ if __name__ == '__main__':
     import compas
 
     from compas.visualization import MeshPlotter
+    from compas.geometry import mesh_smooth_centroid
 
     mesh = Mesh.from_obj(compas.get_data('hypar.obj'))
 
     fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
     plotter = MeshPlotter(mesh)
+
+    plotter.defaults['vertex.radius'] = 0.1
 
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
     plotter.draw_faces()
@@ -2549,7 +2520,7 @@ if __name__ == '__main__':
         plotter.update_edges()
         plotter.update(pause=0.01)
 
-    mesh.smooth_centroid(fixed=fixed, callback=callback)
+    mesh_smooth_centroid(mesh, fixed=fixed, callback=callback)
 
     plotter.show()
 

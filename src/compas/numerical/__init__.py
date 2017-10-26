@@ -32,9 +32,9 @@ Methods
 .. autosummary::
     :toctree: generated/
 
-    methods.dr
-    methods.drx
-    methods.fd
+    dr
+    drx
+    fd
 
 
 Solvers
@@ -43,12 +43,12 @@ Solvers
 .. autosummary::
     :toctree: generated/
 
-    solvers.descent
-    solvers.devo
-    solvers.GA
-    solvers.lma
-    solvers.mma
-    solvers.MOGA
+    descent
+    devo
+    GA
+    lma
+    mma
+    MOGA
 
 
 Core
