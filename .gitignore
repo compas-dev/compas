@@ -111,3 +111,5 @@ libs/**
 
 src/.build/**
 *.rhl
+
+samples/stanford_*.ply
