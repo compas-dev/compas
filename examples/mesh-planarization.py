@@ -13,7 +13,7 @@ from compas.utilities import i_to_rgb
 from compas.datastructures import Mesh
 
 from compas.geometry import planarize_faces
-from compas.geometry import flatness2
+from compas.geometry import flatness
 
 
 __author__    = ['Tom Van Mele', ]
@@ -67,8 +67,8 @@ with conduit.enabled():
 
 # compute the *flatness*
 
-dev0 = flatness2(vertices_0, faces)
-dev1 = flatness2(vertices_1, faces)
+dev0 = flatness(vertices_0, faces)
+dev1 = flatness(vertices_1, faces)
 
 # draw the original
 

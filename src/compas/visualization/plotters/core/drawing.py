@@ -69,6 +69,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
 
     Parameters:
         figsize (tuple): (horizontal, vertical) size of the figure.
+        dpi (int): resolution of the plot.
         xlabel (str): Label for the x-axis.
         ylabel (str): Label for the y-axis.
         fontname (str): Fontname of the main labels and text.
@@ -80,6 +81,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
         tickfontsize (int): Fontsize of the ticks.
         xscale (str): normal 'linear' or logarithmic 'log' x axis.
         yscale (str): normal 'linear' or logarithmic 'log' y axis.
+        bgcolor (str, list): background color in hex or rgb.
 
     Returns:
         object: Matplotlib axes.
@@ -172,7 +174,17 @@ def draw_points_xy(points,
                    edgecolor='#000000',
                    linewidth=0.5,
                    radius=1.0):
-    """"""
+    """Creates an XY point collection and adds it to the axis.
+
+    Parameters:
+        points (list): List of (X, Y) points.
+        axes (object): Matplotlib axes.
+        facecolor (str, list): Color for the vertex circle fill in hex or rgb.
+        edgecolor (str, list): Color for the vertex circle edge in hex or rgb.
+        linewidth (float, list): Width for the vertex circle edge.
+        radius (float, list): The radii for the vertices.
+
+    """
     p = len(points)
     # preprocess patch parameters
     if isinstance(facecolor, basestring):
@@ -203,6 +215,15 @@ def draw_points_xy(points,
 
 
 def draw_xpoints_xy(points, axes):
+    """Creates an XY point collection and adds it to the axis.
+
+    Parameters:
+        points (list): List of dictionaries containing the point properties.
+        axes (object): Matplotlib axes.
+
+    Returns:
+        object: The matplotlib point collection object.
+    """
     circles = []
     facecolors = []
     edgecolors = []
@@ -247,7 +268,15 @@ def draw_points_3d(points,
                    axes,
                    facecolor='#ffffff',
                    edgecolor='#000000'):
-    """"""
+    """Creates a 3D point collection and adds it to the axis.
+
+    Parameters:
+        points (list): List of (X, Y, Z) points.
+        axes (object): Matplotlib axes.
+        facecolor (str, list): Color for the vertex circle fill in hex or rgb.
+        edgecolor (str, list): Color for the vertex circle edge in hex or rgb.
+
+    """
     p = len(points)
     points = asarray(points)
     if isinstance(facecolor, basestring):
@@ -271,7 +300,17 @@ def draw_lines_xy(lines,
                   linestyle='-',
                   color='#000000',
                   alpha=1.0):
-    """"""
+    """Creates an XY line collection and adds it to the axis.
+
+    Parameters:
+        lines (list): List of ((X1, Y1), (X2, X2)) lines.
+        axes (object): Matplotlib axes.
+        linewidth (float, list): Width for the lines.
+        linestyle (str, list): Matplotlib line style strings.
+        color (str, list): Color for the lines in hex or rgb.
+        alpha (float, list): 0.0 for transparent through 1.0  for opaque.
+
+    """
     l = len(lines)
     if isinstance(linewidth, (int, float)):
         linewidth = float(linewidth)
@@ -291,6 +330,18 @@ def draw_lines_xy(lines,
 
 
 def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
+    """Creates an XY line collection and adds it to the axis.
+
+    Parameters:
+        lines (list): List of dictionaries containing the line properties.
+        axes (object): Matplotlib axes.
+        alpha (float, list): 0.0 for transparent through 1.0  for opaque.
+        linestyle (str, list): Matplotlib line style strings.
+
+
+    Returns:
+        object: The matplotlib line collection object.
+    """
     fromto  = []
     widths  = []
     colors  = []
@@ -333,7 +384,16 @@ def draw_lines_3d(lines,
                   linewidth=1.0,
                   linestyle='solid',
                   color='#000000'):
-    """"""
+    """Creates an 3D line collection and adds it to the axis.
+
+    Parameters:
+        lines (list): List of ((X1, Y1, Z1), (X2, X2, Z2)) lines.
+        axes (object): Matplotlib axes.
+        linewidth (float, list): Width for the lines.
+        linestyle (str, list): Matplotlib line style strings.
+        color (str, list): Color for the lines in hex or rgb.
+
+    """
     l = len(lines)
     if isinstance(linewidth, (int, float)):
         linewidth = float(linewidth)
@@ -357,6 +417,13 @@ def draw_lines_3d(lines,
 
 
 def draw_xarrows_xy(lines, axes):
+    """Creates an XY arrow collection and adds it to the axis.
+
+    Parameters:
+        lines (list): List of dictionaries containing the arrow line properties.
+        axes (object): Matplotlib axes.
+
+    """
     arrowprops = {
         'arrowstyle'      : '-|>,head_length=0.4,head_width=0.2',
         'connectionstyle' : 'arc3,rad=0.0',
@@ -398,6 +465,13 @@ def draw_xarrows_xy(lines, axes):
 
 
 def draw_xlabels_xy(labels, axes):
+    """Creates a label collection and adds it to the axis.
+
+    Parameters:
+        labels (list): List of dictionaries containing the label properties.
+        axes (object): Matplotlib axes.
+
+    """
     for label in labels:
         x, y      = label['pos']
         text      = label['text']
@@ -427,6 +501,15 @@ def draw_xlabels_xy(labels, axes):
 
 
 def draw_xpolygons_xy(polygons, axes):
+    """Creates a polygon collection and adds it to the axis.
+
+    Parameters:
+        polygons (list): List of dictionaries containing the polygon properties.
+        axes (object): Matplotlib axes.
+
+    Returns:
+        object: The matplotlib polygon collection object.
+    """
     facecolors = []
     edgecolors = []
     linewidths = []
