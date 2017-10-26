@@ -11,10 +11,12 @@ __email__     = 'vanmelet@ethz.ch'
 
 __all__ = [
     'smooth_centroid',
-    'mesh_smooth_centroid',
-    'network_smooth_centroid',
     'smooth_centerofmass',
     'smooth_area',
+
+    'mesh_smooth_centroid',
+
+    'network_smooth_centroid',
 ]
 
 
@@ -30,19 +32,19 @@ def smooth_centroid(vertices,
 
     Parameters
     ----------
-    verticses : dict
+    vertices : dict
         A dictionary of vertex coordinates.
     adjacency : dict
         Adjacency information for each of the vertices.
-    fixed : list, optional [None]
+    fixed : list, optional
         The fixed vertices of the mesh.
-    kmax : int, optional [1]
+    kmax : int, optional
         The maximum number of iterations.
-    d : float, optional [0.5]
+    damping : float, optional
         The damping factor.
-    callback : callable, optional [None]
+    callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : list, optional [None]
+    callback_args : list, optional
         A list of arguments to be passed to the callback.
 
     Raises
@@ -62,11 +64,11 @@ def smooth_centroid(vertices,
         :include-source:
 
         import compas
-        from compas.datastructures import Mesh
+        from compas.datastructures import Network
         from compas.geometry import smooth_centroid
-        from compas.visualization import MeshPlotter
+        from compas.visualization import NetworkPlotter
 
-        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+        mesh = Network.from_obj(compas.get_data('faces.obj'))
 
         vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
         adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
@@ -88,7 +90,7 @@ def smooth_centroid(vertices,
             attr['y'] = vertices[key][1]
             attr['z'] = vertices[key][2]
 
-        plotter = MeshPlotter(mesh)
+        plotter = NetworkPlotter(mesh)
 
         plotter.draw_lines(lines)
         plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
@@ -124,48 +126,6 @@ def smooth_centroid(vertices,
     return vertices
 
 
-def mesh_smooth_centroid(mesh, fixed=None, kmax=100, callback=None, callback_args=None):
-    vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-    adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
-
-    for k in range(kmax):
-        smooth_centroid(vertices, adjacency, fixed=fixed, kmax=1)
-
-        if callback:
-            for key, attr in mesh.vertices(True):
-                attr['x'] = vertices[key][0]
-                attr['y'] = vertices[key][1]
-                attr['z'] = vertices[key][2]
-
-            callback(mesh, k, callback_args)
-
-    for key, attr in mesh.vertices(True):
-        attr['x'] = vertices[key][0]
-        attr['y'] = vertices[key][1]
-        attr['z'] = vertices[key][2]
-
-
-def network_smooth_centroid(network, fixed=None, kmax=100, callback=None, callback_args=None):
-    vertices  = {key: network.vertex_coordinates(key) for key in network.vertices()}
-    adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
-
-    for k in range(kmax):
-        smooth_centroid(vertices, adjacency, fixed=fixed, kmax=1)
-
-        if callback:
-            for key, attr in network.vertices(True):
-                attr['x'] = vertices[key][0]
-                attr['y'] = vertices[key][1]
-                attr['z'] = vertices[key][2]
-
-            callback(network, k, callback_args)
-
-    for key, attr in network.vertices(True):
-        attr['x'] = vertices[key][0]
-        attr['y'] = vertices[key][1]
-        attr['z'] = vertices[key][2]
-
-
 def smooth_centerofmass(vertices,
                         adjacency,
                         fixed=None,
@@ -182,15 +142,15 @@ def smooth_centerofmass(vertices,
         A dictionary of vertex coordinates.
     adjacency : dict
         Adjacency information for each of the vertices.
-    fixed : list, optional [None]
+    fixed : list, optional
         The fixed vertices of the mesh.
-    kmax : int, optional [1]
+    kmax : int, optional
         The maximum number of iterations.
-    d : float, optional [0.5]
+    d : float, optional
         The damping factor.
-    callback : callable, optional [None]
+    callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : list, optional [None]
+    callback_args : list, optional
         A list of arguments to be passed to the callback.
 
     Raises
@@ -216,11 +176,11 @@ def smooth_centerofmass(vertices,
         :include-source:
 
         import compas
-        from compas.datastructures import Mesh
+        from compas.datastructures import Network
         from compas.geometry import smooth_centerofmass
-        from compas.visualization import MeshPlotter
+        from compas.visualization import NetworkPlotter
 
-        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+        mesh = Network.from_obj(compas.get_data('faces.obj'))
 
         vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
         adjacency = {key: mesh.vertex_neighbours(key, ordered=True) for key in mesh.vertices()}
@@ -242,7 +202,7 @@ def smooth_centerofmass(vertices,
             attr['y'] = vertices[key][1]
             attr['z'] = vertices[key][2]
 
-        plotter = MeshPlotter(mesh)
+        plotter = NetworkPlotter(mesh)
 
         plotter.draw_lines(lines)
         plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
@@ -297,15 +257,15 @@ def smooth_area(vertices,
         A dictionary of faces referencing the vertices dict.
     adjacency : dict
         Adjacency information for each of the vertices.
-    fixed : list, optional [None]
+    fixed : list, optional
         The fixed vertices of the mesh.
-    kmax : int, optional [1]
+    kmax : int, optional
         The maximum number of iterations.
-    d : float, optional [0.5]
+    d : float, optional
         The damping factor.
-    callback : callable, optional [None]
+    callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : list, optional [None]
+    callback_args : list, optional
         A list of arguments to be passed to the callback.
 
     Raises
@@ -327,11 +287,11 @@ def smooth_area(vertices,
 
         import compas
 
-        from compas.datastructures import Mesh
+        from compas.datastructures import Network
         from compas.geometry import smooth_area
-        from compas.visualization import MeshPlotter
+        from compas.visualization import NetworkPlotter
 
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
+        mesh = Network.from_obj(compas.get('faces.obj'))
 
         vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
         faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
@@ -354,7 +314,7 @@ def smooth_area(vertices,
             attr['y'] = vertices[key][1]
             attr['z'] = vertices[key][2]
 
-        plotter = MeshPlotter(mesh)
+        plotter = NetworkPlotter(mesh)
 
         plotter.draw_lines(lines)
         plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
@@ -406,6 +366,158 @@ def smooth_area(vertices,
 
 
 # ==============================================================================
+# mesh variations
+# ==============================================================================
+
+
+def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=1.0, callback=None, callback_args=None):
+    """Smooth a mesh by moving every free vertex to the centroid of its neighbours.
+
+    Parameters
+    ----------
+    mesh : Network
+        A mesh object.
+    fixed : list, optional
+        The fixed vertices of the mesh.
+    kmax : int, optional
+        The maximum number of iterations.
+    damping : float, optional
+        The damping factor.
+    callback : callable, optional
+        A user-defined callback function to be executed after every iteration.
+    callback_args : list, optional
+        A list of arguments to be passed to the callback.
+
+    Raises
+    ------
+    Exception
+        If a callback is provided, but it is not callable.
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+    
+        from compas.datastructures import Network
+        from compas.visualization import NetworkPlotter
+        from compas.geometry import mesh_smooth_centroid
+
+        mesh = Network.from_obj(compas.get('hypar.obj'))
+        fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+
+        mesh_smooth_centroid(mesh, fixed=fixed)
+
+        plotter = NetworkPlotter(mesh)
+
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
+        plotter.draw_faces()
+        plotter.draw_edges()
+
+        plotter.show()
+
+    """
+    if callback:
+        if not callable(callback):
+            raise Exception('Callback is not callable.')
+
+    fixed = fixed or []
+    fixed = set(fixed)
+
+    vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
+
+    for k in range(kmax):
+        smooth_centroid(vertices, adjacency, fixed=fixed, kmax=1, damping=damping)
+
+        if callback:
+            for key, attr in mesh.vertices(True):
+                attr['x'] = vertices[key][0]
+                attr['y'] = vertices[key][1]
+                attr['z'] = vertices[key][2]
+
+            callback(k, callback_args)
+
+    for key, attr in mesh.vertices(True):
+        attr['x'] = vertices[key][0]
+        attr['y'] = vertices[key][1]
+        attr['z'] = vertices[key][2]
+
+
+# ==============================================================================
+# network variations
+# ==============================================================================
+
+
+def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback=None, callback_args=None):
+    """Smooth a network by moving each vertex to the centroid of its neighbours.
+
+    Parameters
+    ----------
+    network : Network
+        A network object.
+    fixed : list, optional
+        The fixed vertices of the mesh.
+    kmax : int, optional
+        The maximum number of iterations.
+    damping : float, optional
+        The damping factor.
+    callback : callable, optional
+        A user-defined callback function to be executed after every iteration.
+    callback_args : list, optional
+        A list of arguments to be passed to the callback.
+
+    Raises
+    ------
+    Exception
+        If a callback is provided, but it is not callable.
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+    
+        from compas.datastructures import Network
+        from compas.visualization import NetworkPlotter
+        from compas.geometry import network_smooth_centroid
+
+        network = Network.from_obj(compas.get('lines.obj'))
+        fixed = [key for key in network.vertices() if network.vertex_degree(key) == 2]
+
+        network_smooth_centroid(network, fixed=fixed)
+
+        plotter = NetworkPlotter(network)
+
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
+        plotter.draw_edges()
+
+        plotter.show()
+
+    """
+    vertices  = {key: network.vertex_coordinates(key) for key in network.vertices()}
+    adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+
+    for k in range(kmax):
+        smooth_centroid(vertices, adjacency, fixed=fixed, kmax=1, damping=damping)
+
+        if callback:
+            for key, attr in network.vertices(True):
+                attr['x'] = vertices[key][0]
+                attr['y'] = vertices[key][1]
+                attr['z'] = vertices[key][2]
+
+            callback(network, k, callback_args)
+
+    for key, attr in network.vertices(True):
+        attr['x'] = vertices[key][0]
+        attr['y'] = vertices[key][1]
+        attr['z'] = vertices[key][2]
+
+
+# ==============================================================================
 # Debugging
 # ==============================================================================
 
@@ -413,11 +525,10 @@ if __name__ == "__main__":
 
     import compas
 
-    from compas.datastructures import Mesh
-    from compas.geometry import smooth_area
-    from compas.visualization import MeshPlotter
+    from compas.datastructures import Network
+    from compas.visualization import NetworkPlotter
 
-    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+    mesh = Network.from_obj(compas.get('faces.obj'))
 
     vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
     faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
@@ -433,23 +544,20 @@ if __name__ == "__main__":
             'width': 1.0,
         })
 
-    plotter = MeshPlotter(mesh)
+    plotter = NetworkPlotter(mesh)
 
     plotter.draw_lines(lines)
 
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
+    plotter.draw_faces()
     plotter.draw_edges()
 
-    def callback(vertices, k, args):
-        for key, attr in mesh.vertices(True):
-            attr['x'] = vertices[key][0]
-            attr['y'] = vertices[key][1]
-            attr['z'] = vertices[key][2]
-
+    def callback(k, args):
         plotter.update_vertices()
         plotter.update_edges()
-        plotter.update(pause=0.01)
+        plotter.update_faces()
+        plotter.update(pause=0.001)
 
-    smooth_area(vertices, faces, adjacency, fixed=fixed, kmax=100, callback=callback)
+    mesh_smooth_centroid(mesh, fixed=fixed, kmax=100, callback=callback)
 
     plotter.show()

@@ -24,8 +24,11 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'planarize_faces',
     'flatness',
+    'planarize_faces',
+    'mesh_planarize_faces',
+    'mesh_planarize_faces_shapeop',
+    'mesh_circularize_faces_shapeop',
 ]
 
 
@@ -76,7 +79,6 @@ def planarize_faces(vertices,
                     faces,
                     fixed=None,
                     kmax=100,
-                    d=1.0,
                     callback=None,
                     callback_args=None):
     """Planarise a set of connected faces.
@@ -96,8 +98,6 @@ def planarize_faces(vertices,
         A list of fixed vertices.
     kmax : int, optional [100]
         The number of iterations.
-    d : float, optional [1.0]
-        A damping factor.
     callback : callable, optional [None]
         A user-defined callback that is called after every iteration.
     callback_args : list, optional [None]
@@ -419,7 +419,7 @@ if __name__ == "__main__":
             plotter.update()
 
 
-    mesh_planarize_faces(mesh, fixed=fixed, kmax=1000, callback=callback)
+    mesh_circularize_faces_shapeop(mesh, fixed=fixed, kmax=1000, callback=callback)
 
     plotter.show()
 
