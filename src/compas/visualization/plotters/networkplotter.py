@@ -166,7 +166,7 @@ class NetworkPlotter(Plotter):
         circles = []
         for key in self.network.vertices():
             center = self.network.vertex_coordinates(key, 'xy')
-            radius = 0.1
+            radius = 0.15
             circles.append(Circle(center, radius))
         self.vertexcollection.set_paths(circles)
 

@@ -13,7 +13,7 @@ __all__ = [
 
 class VertexFilter(object):
 
-    def vertices_where(self, conditions):
+    def vertices_where(self, conditions, data=False):
         """Get vertices for which a certain condition or set of conditions is true.
 
         Parameters
@@ -22,14 +22,19 @@ class VertexFilter(object):
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
+        data : bool, optional
+            Yield the vertices and their data attributes.
+            Default is ``False``.
 
-        Returns
-        -------
-        list
-            A list of vertex keys that satisfy the condition(s).
-
+        Yields
+        ------
+        key: hashable
+            The next vertex that matches the condition.
+        2-tuple
+            The next vertex and its attributes, if ``data=True``.
+    
         """
-        keys = []
+        # keys = []
         for key, attr in self.vertices(True):
             is_match = True
             for name, value in conditions.items():
@@ -46,8 +51,12 @@ class VertexFilter(object):
                         is_match = False
                         break
             if is_match:
-                keys.append(key)
-        return keys
+                if data:
+                    yield key, attr
+                else:
+                    yield key
+        #         keys.append(key)
+        # return keys
 
 
 class EdgeFilter(object):

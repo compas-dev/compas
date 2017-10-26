@@ -11,6 +11,8 @@ __email__     = 'vanmelet@ethz.ch'
 
 __all__ = [
     'smooth_centroid',
+    'mesh_smooth_centroid',
+    'network_smooth_centroid',
     'smooth_centerofmass',
     'smooth_area',
 ]
@@ -120,6 +122,48 @@ def smooth_centroid(vertices,
             callback(vertices, k, callback_args)
 
     return vertices
+
+
+def mesh_smooth_centroid(mesh, fixed=None, kmax=100, callback=None, callback_args=None):
+    vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
+
+    for k in range(kmax):
+        smooth_centroid(vertices, adjacency, fixed=fixed, kmax=1)
+
+        if callback:
+            for key, attr in mesh.vertices(True):
+                attr['x'] = vertices[key][0]
+                attr['y'] = vertices[key][1]
+                attr['z'] = vertices[key][2]
+
+            callback(mesh, k, callback_args)
+
+    for key, attr in mesh.vertices(True):
+        attr['x'] = vertices[key][0]
+        attr['y'] = vertices[key][1]
+        attr['z'] = vertices[key][2]
+
+
+def network_smooth_centroid(network, fixed=None, kmax=100, callback=None, callback_args=None):
+    vertices  = {key: network.vertex_coordinates(key) for key in network.vertices()}
+    adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+
+    for k in range(kmax):
+        smooth_centroid(vertices, adjacency, fixed=fixed, kmax=1)
+
+        if callback:
+            for key, attr in network.vertices(True):
+                attr['x'] = vertices[key][0]
+                attr['y'] = vertices[key][1]
+                attr['z'] = vertices[key][2]
+
+            callback(network, k, callback_args)
+
+    for key, attr in network.vertices(True):
+        attr['x'] = vertices[key][0]
+        attr['y'] = vertices[key][1]
+        attr['z'] = vertices[key][2]
 
 
 def smooth_centerofmass(vertices,

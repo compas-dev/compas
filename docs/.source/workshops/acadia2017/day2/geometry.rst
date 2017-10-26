@@ -265,18 +265,6 @@ curves aligned with the rail curve.
 
 .. seealso::
 
-<<<<<<< HEAD
-
-
-
-    planes: explain!!!
-
-
-
-
-
-=======
->>>>>>> 02764e606e7ef25e5564062260cd86eb20197fa8
     * :func:`compas.geometry.project_points_plane`
 
 .. code-block:: python
@@ -347,10 +335,11 @@ intersections with conical extrusions to guarantee the planarity of resulting me
     See 3dm file for details 
 
 The steps of the algorithm are:
+
 * blabla bl lal lsldd bllbblb
   blblblbl bldlbl
   (:func:`compas.geometry.add_vectors`)
-* ....
+* ...
 
 .. note::
 

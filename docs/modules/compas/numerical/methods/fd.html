@@ -35,7 +35,9 @@
 <a accesskey="U" class="breadcrumb-item" href="../../../index.html">module code</a>
 </nav>
 <h1>Source code for compas.numerical.methods.fd</h1><div class="highlight"><pre><code class="language-python border rounded">
-<span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">asarray</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">asarray</span>
 
 <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="k">import</span> <span class="n">diags</span>
 <span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="k">import</span> <span class="n">spsolve</span>
@@ -56,6 +58,68 @@
 
 
 <div class="viewcode-block" id="fd"><a class="viewcode-back" href="../../../../reference/generated/compas.numerical.methods.fd.html#compas.numerical.methods.fd">[docs]</a><span class="k">def</span> <span class="nf">fd</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'list'</span><span class="p">):</span>
+    <span class="sd">"""Implementation of the force density method to compute equilibrium of axial force networks.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vertices : list</span>
+<span class="sd">        XYZ coordinates of the vertices of the network</span>
+<span class="sd">    edges : list</span>
+<span class="sd">        Edges between vertices represented by</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :include-source:</span>
+
+<span class="sd">        import compas</span>
+
+<span class="sd">        from compas.datastructures import Mesh</span>
+<span class="sd">        from compas.visualization import MeshPlotter</span>
+<span class="sd">        from compas.numerical import fd</span>
+<span class="sd">        from compas.utilities import i_to_black</span>
+
+<span class="sd">        mesh = Mesh.from_obj(compas.get('faces.obj'))</span>
+
+<span class="sd">        mesh.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})</span>
+<span class="sd">        mesh.update_default_edge_attributes({'q': 1.0})</span>
+
+<span class="sd">        for key, attr in mesh.vertices(True):</span>
+<span class="sd">            attr['is_anchor'] = mesh.vertex_degree(key) == 2</span>
+<span class="sd">            if key in (18, 35):</span>
+<span class="sd">                attr['z'] = 5.0</span>
+
+<span class="sd">        k_i   = mesh.key_index()</span>
+
+<span class="sd">        xyz   = mesh.get_vertices_attributes(('x', 'y', 'z'))</span>
+<span class="sd">        loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))</span>
+<span class="sd">        q     = mesh.get_edges_attribute('q')</span>
+
+<span class="sd">        fixed = mesh.vertices_where({'is_anchor': True})</span>
+<span class="sd">        fixed = [k_i[k] for k in fixed]</span>
+<span class="sd">        edges = [(k_i[u], k_i[v]) for u, v in mesh.edges()]</span>
+
+<span class="sd">        xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads, rtype='list')</span>
+
+<span class="sd">        for key, attr in mesh.vertices(True):</span>
+<span class="sd">            index = k_i[key]</span>
+<span class="sd">            attr['x'] = xyz[index][0]</span>
+<span class="sd">            attr['y'] = xyz[index][1]</span>
+<span class="sd">            attr['z'] = xyz[index][2]</span>
+
+<span class="sd">        plotter = MeshPlotter(mesh)</span>
+
+<span class="sd">        zmax = max(mesh.get_vertices_attribute('z'))</span>
+
+<span class="sd">        plotter.draw_vertices(</span>
+<span class="sd">            facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)},</span>
+<span class="sd">            text="z"</span>
+<span class="sd">        )</span>
+<span class="sd">        plotter.draw_faces()</span>
+<span class="sd">        plotter.draw_edges()</span>
+<span class="sd">        plotter.show()</span>
+
+<span class="sd">    """</span>
     <span class="n">num_v</span>     <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
     <span class="n">free</span>      <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_v</span><span class="p">))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">))</span>
     <span class="n">xyz</span>       <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -94,47 +158,51 @@
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
 
-    <span class="kn">import</span> <span class="nn">random</span>
-
     <span class="kn">import</span> <span class="nn">compas</span>
 
-    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Network</span>
-    <span class="kn">from</span> <span class="nn">compas.visualization.viewers</span> <span class="k">import</span> <span class="n">NetworkViewer</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas.visualization</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
+    <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">i_to_black</span>
 
-    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'saddle.obj'</span><span class="p">))</span>
+    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">))</span>
 
-    <span class="n">network</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">({</span><span class="s1">'is_anchor'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">'px'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'py'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
-    <span class="n">network</span><span class="o">.</span><span class="n">update_default_edge_attributes</span><span class="p">({</span><span class="s1">'q'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">})</span>
+    <span class="n">mesh</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">({</span><span class="s1">'is_anchor'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">'px'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'py'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
+    <span class="n">mesh</span><span class="o">.</span><span class="n">update_default_edge_attributes</span><span class="p">({</span><span class="s1">'q'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">})</span>
 
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
-        <span class="n">attr</span><span class="p">[</span><span class="s1">'is_anchor'</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">is_vertex_leaf</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'is_anchor'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">35</span><span class="p">):</span>
+            <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span>
 
-    <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">'is_anchor'</span><span class="p">:</span> <span class="kc">False</span><span class="p">}))</span>
+    <span class="n">k_i</span>   <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
 
-    <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'pz'</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.0</span>
+    <span class="n">xyz</span>   <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">((</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">))</span>
+    <span class="n">loads</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">((</span><span class="s1">'px'</span><span class="p">,</span> <span class="s1">'py'</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">))</span>
+    <span class="n">q</span>     <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_edges_attribute</span><span class="p">(</span><span class="s1">'q'</span><span class="p">)</span>
 
-    <span class="n">k_i</span>   <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
-
-    <span class="n">xyz</span>   <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">((</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">))</span>
-    <span class="n">loads</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">((</span><span class="s1">'px'</span><span class="p">,</span> <span class="s1">'py'</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">))</span>
-    <span class="n">q</span>     <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_edges_attribute</span><span class="p">(</span><span class="s1">'q'</span><span class="p">)</span>
-
-    <span class="n">fixed</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">'is_anchor'</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">'is_anchor'</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
     <span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">k_i</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">]</span>
-    <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">k_i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k_i</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">k_i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k_i</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
 
     <span class="n">xyz</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">fd</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'list'</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
 
-    <span class="n">viewer</span> <span class="o">=</span> <span class="n">NetworkViewer</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
-    <span class="n">viewer</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
-    <span class="n">viewer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">zmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">get_vertices_attribute</span><span class="p">(</span><span class="s1">'z'</span><span class="p">))</span>
+
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span>
+        <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">i_to_black</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s1">'z'</span><span class="p">]</span> <span class="o">/</span> <span class="n">zmax</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)},</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">"z"</span>
+    <span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
 <nav class="compas-sideways">
 </nav>
@@ -174,7 +242,7 @@
             
 
             
-                Last updated on Oct 25, 2017.
+                Last updated on Oct 26, 2017.
             
 
             
