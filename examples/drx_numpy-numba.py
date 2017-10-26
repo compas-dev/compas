@@ -21,7 +21,7 @@ __email__      = 'liew@arch.ethz.ch'
 
 data = {'numpy': [], 'numba': [], 'nodes': []}
 
-for m in range(10, 51, 5):
+for m in range(10, 71, 5):
 
     clear_layer(layer=0)
 

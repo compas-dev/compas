@@ -176,6 +176,7 @@ def _xecute(funcname, basedir, tmpdir, delete_files, mode, callback, callback_ar
         fh.write('')
 
     process_args = ['pythonw', '-u', '-c', WRAPPER, basedir, funcname, ipath, opath]
+    print(basedir, funcname, ipath, opath)
     process = Popen(process_args, stderr=PIPE, stdout=PIPE)
 
     # while process.poll() is None:

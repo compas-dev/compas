@@ -31,7 +31,7 @@ __all__ = [
 ]
 
 
-def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False):
+def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False, callback=None, **kwargs):
     """Run dynamic relaxation analysis.
 
     Parameters:
@@ -41,6 +41,7 @@ def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False):
         steps (int): Maximum number of steps.
         refresh (int): Update progress every n steps.
         update (bool): Update the co-ordinates of the Network.
+        callback (obj): Callback function.
 
     Returns:
         array: Vertex co-ordinates.
@@ -63,7 +64,7 @@ def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False):
 
     tic2 = time()
     X, f, l = drx_solver(tol, steps, factor, C, Ct, X, ks, l0, f0, ind_c, ind_t, P, S, B, M, V, refresh, beams,
-                         inds, indi, indf, EIx, EIy)
+                         inds, indi, indf, EIx, EIy, callback, **kwargs)
     toc2 = time() - tic2
 
     # Summary
@@ -87,7 +88,7 @@ def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False):
 
 
 def drx_solver(tol, steps, factor, C, Ct, X, ks, l0, f0, ind_c, ind_t, P, S, B, M, V, refresh, beams, inds, indi,
-               indf, EIx, EIy):
+               indf, EIx, EIy, callback, **kwargs):
     """ NumPy and SciPy dynamic relaxation solver.
 
     Parameters:
@@ -114,6 +115,7 @@ def drx_solver(tol, steps, factor, C, Ct, X, ks, l0, f0, ind_c, ind_t, P, S, B, 
         indf (list): Indices of beam element finish nodes beams.
         EIx (array): Nodal EIx flexural stiffnesses.
         EIy (array): Nodal EIy flexural stiffnesses.
+        callback (obj): Callback function.
 
     Returns:
         array: Updated nodal co-ordinates.
@@ -145,6 +147,8 @@ def drx_solver(tol, steps, factor, C, Ct, X, ks, l0, f0, ind_c, ind_t, P, S, B, 
         if refresh:
             if (ts % refresh == 0) or (res < tol):
                 print('Step:{0} Residual:{1:.3g}'.format(ts, res))
+                if callback:
+                    callback(X, **kwargs)
         ts += 1
     return X, f, l
 

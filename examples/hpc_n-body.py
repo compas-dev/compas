@@ -138,13 +138,19 @@ v_planets = array([[i, 0, 0] for i in planets_speed])
 xv_planets = hstack([x_planets, v_planets])
 k = G * sun_mass * planets_mass
 
-# Example
+# Examples
 
 dt = 10 * min
 duration = 14 * year
 refresh = 10
 x_rocket = array([0 * giga, 880 * giga, 0.])
 v_rocket = array([14000, -2400., 0.])
+
+#dt = 10 * min
+#duration = 120 * year
+#refresh = 50
+#x_rocket = array([600 * giga, 400 * giga, 0.])
+#v_rocket = array([3000, -1997.2, 0.])
 
 # Rocket
 
