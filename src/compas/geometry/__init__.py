@@ -27,6 +27,49 @@ A package defining common geometric functions and objects.
     - **frame** -- A list of three orthonormal vectors.
 
 
+Objects
+=======
+
+This package provides an object-oriented interface to the above functionality.
+
+.. autosummary::
+    :toctree: generated/
+
+    Vector
+    Point
+    Circle
+    Line
+    Frame
+    Plane
+    Polyline
+    Polygon
+    Polyhedron
+    Spline
+    Surface
+    KDTree
+
+
+Algorithms
+==========
+
+.. autosummary::
+    :toctree: generated/
+
+    flatness
+    planarize_faces
+    mesh_flatness
+    mesh_planarize_faces
+    mesh_planarize_faces_shapeop
+    mesh_circularize_faces_shapeop
+    smooth_centroid
+    smooth_centerofmass
+    smooth_area
+    mesh_smooth_centroid
+    network_smooth_centroid
+    discrete_coons_patch
+    network_relax
+
+
 Utilities
 =========
 
@@ -321,42 +364,6 @@ XForms
     scale_matrix
     shear_matrix
     translation_matrix
-
-
-Objects
-=======
-
-This package provides an object-oriented interface to the above functionality.
-
-.. autosummary::
-    :toctree: generated/
-
-    Vector
-    Point
-    Circle
-    Line
-    Frame
-    Plane
-    Polyline
-    Polygon
-    Polyhedron
-    Spline
-    Surface
-    KDTree
-
-
-Algorithms
-==========
-
-.. autosummary::
-    :toctree: generated/
-
-    planarize_faces
-    flatness
-    smooth_centroid
-    smooth_centerofmass
-    smooth_area
-    discrete_coons_patch
 
 """
 
