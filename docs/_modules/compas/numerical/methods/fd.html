@@ -58,7 +58,9 @@
 
 
 <div class="viewcode-block" id="fd"><a class="viewcode-back" href="../../../../reference/generated/compas.numerical.fd.html#compas.numerical.fd">[docs]</a><span class="k">def</span> <span class="nf">fd</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s1">'list'</span><span class="p">):</span>
-    <span class="sd">"""Implementation of the force density method [schek1974]_ to compute equilibrium of axial force networks.</span>
+    <span class="sd">"""Implementation of the force density method to compute equilibrium of axial force networks.</span>
+
+<span class="sd">    The force density method ... [schek1974]_</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -95,25 +97,34 @@
 <span class="sd">        from compas.numerical import fd</span>
 <span class="sd">        from compas.utilities import i_to_black</span>
 
+<span class="sd">        # make a mesh</span>
+<span class="sd">        # add default attributes for form finding</span>
+
 <span class="sd">        mesh = Mesh.from_obj(compas.get('faces.obj'))</span>
 
 <span class="sd">        mesh.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})</span>
 <span class="sd">        mesh.update_default_edge_attributes({'q': 1.0})</span>
+
+<span class="sd">        # identify the anchors</span>
+<span class="sd">        # move two anchors up to create anticlastic boundary conditions</span>
 
 <span class="sd">        for key, attr in mesh.vertices(True):</span>
 <span class="sd">            attr['is_anchor'] = mesh.vertex_degree(key) == 2</span>
 <span class="sd">            if key in (18, 35):</span>
 <span class="sd">                attr['z'] = 5.0</span>
 
-<span class="sd">        k_i   = mesh.key_index()</span>
+<span class="sd">        # preprocess</span>
 
+<span class="sd">        k_i   = mesh.key_index()</span>
 <span class="sd">        xyz   = mesh.get_vertices_attributes(('x', 'y', 'z'))</span>
 <span class="sd">        loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))</span>
 <span class="sd">        q     = mesh.get_edges_attribute('q')</span>
-
 <span class="sd">        fixed = mesh.vertices_where({'is_anchor': True})</span>
 <span class="sd">        fixed = [k_i[k] for k in fixed]</span>
 <span class="sd">        edges = [(k_i[u], k_i[v]) for u, v in mesh.edges()]</span>
+
+<span class="sd">        # compute equilibrium</span>
+<span class="sd">        # update the mesh geometry</span>
 
 <span class="sd">        xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads, rtype='list')</span>
 
@@ -122,6 +133,9 @@
 <span class="sd">            attr['x'] = xyz[index][0]</span>
 <span class="sd">            attr['y'] = xyz[index][1]</span>
 <span class="sd">            attr['z'] = xyz[index][2]</span>
+
+<span class="sd">        # visualisae the result</span>
+<span class="sd">        # color the vertices according to their elevation</span>
 
 <span class="sd">        plotter = MeshPlotter(mesh)</span>
 

@@ -11,7 +11,6 @@ References
                Computer Methofd in Applied Mechanics and Engineering 3: 115-134, 1974.
 
 
-
 Links
 =====
 
