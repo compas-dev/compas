@@ -163,7 +163,7 @@ if __name__ == "__main__":
 
     import random
 
-    from compas.visualization.viewers.meshviewer import MeshViewer
+    from compas.visualization.viewers import MeshViewer
 
     radius = 5
     origin = (0., 0., 0.)

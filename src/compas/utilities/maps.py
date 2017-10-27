@@ -76,10 +76,10 @@ def geometric_key2(xy, precision='3f', tolerance=1e-9, sanitize=True):
 
 def normalize_values(l, new_min=0.0, new_max=1.0):
     """Normalize a list of numbers to the range between new_min and new_max."""
-    old_max = max(l) 
+    old_max = max(l)
     old_min = min(l)
-    old_range = (old_max - old_min) 
-    new_range = (new_max - new_min)  
+    old_range = (old_max - old_min)
+    new_range = (new_max - new_min)
     return [(((item - old_min) * new_range) / old_range) + new_min for item in l]
 
 # ==============================================================================

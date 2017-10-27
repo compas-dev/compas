@@ -6,15 +6,24 @@ numerical
 
 .. module:: compas.numerical
 
-.. note::
 
-    This package is built around NumPy and Scipy
+A package for numerical computation.
 
-    * NumPy: http://www.numpy.org/ 
-    * SciPy: http://www.scipy.org/
+Dependencies
+============
 
-    and has several other optional dependencies (SymPy, Numba, PyCuda, Cython, CVXPY, Alglib).
-    Most of these are shipped with scientific Python distributions, such as Anaconda and EPD.
+* NumPy: http://www.numpy.org/
+* SciPy: http://www.scipy.org/
+
+**Optional**
+
+* Numba
+* Pandas
+* PyCuda
+* PyOpenCL
+* Cython
+* cvxpy
+* SymPy
 
 
 Methods
@@ -36,10 +45,10 @@ Solvers
 
     descent
     devo
-    GA
+    ga
     lma
     mma
-    MOGA
+    moga
 
 
 Core
@@ -91,27 +100,6 @@ matrices
     stiffness_matrix
     equilibrium_matrix
 
-.. autosummary::
-    :toctree: generated/
-
-    network_adjacency_matrix
-    network_degree_matrix
-    network_connectivity_matrix
-    network_laplacian_matrix
-
-.. autosummary::
-    :toctree: generated/
-
-    mesh_adjacency_matrix
-    mesh_degree_matrix
-    mesh_connectivity_matrix
-    mesh_laplacian_matrix
-
-.. autosummary::
-    :toctree: generated/
-
-    trimesh_cotangent_laplacian_matrix
-
 
 operators
 ---------
@@ -152,16 +140,12 @@ transformations
 .. autosummary::
     :toctree: generated/
 
-*Under construction...*
-
 
 triangulation
 -------------
 
 .. autosummary::
     :toctree: generated/
-
-*Under construction...*
 
 
 utilities
