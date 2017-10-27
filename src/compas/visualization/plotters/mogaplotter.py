@@ -1,5 +1,6 @@
 # from __future__ import print_funtion
 
+import os
 import matplotlib
 import re
 import json
@@ -13,7 +14,7 @@ __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
 
-class MULTI_VIS:
+class MogaPlotter(object):
     """This class is to be used for the visualization of the optimization performed by the
     ``compas_ga.moga`` function. The function ``draw_objective_spaces`` produces a multi page PDF
     that shows the objective space resulting from each generaton of genetic optimization per page.
@@ -57,7 +58,8 @@ class MULTI_VIS:
             filename += name + '-'
         filename += '.pdf'
         print(filename)
-        with PdfPages(filename) as pdf:
+        fpath = os.path.join(self.output_path, filename)
+        with PdfPages(fpath) as pdf:
             for k in range(self.num_gen):
                 self.generation = k
                 self.pop = self.get_pop_from_pf_file()
