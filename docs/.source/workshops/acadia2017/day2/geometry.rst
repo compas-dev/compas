@@ -497,3 +497,26 @@ Torsion-free Elements for Gridshells
 Tessellation of a freeform barrel vault
 =======================================
 
+Generate uv staggered pattern:
+
+.. code-block:: python
+
+    import rhinoscriptsyntax as rs
+
+    from compas_rhino import uv_points_from_surface
+
+    srf = rs.GetObject("Select Surface",8)
+
+    u_div = 30
+    v_div = 30
+
+    #create initial mesh
+    pts_uv = uv_points_from_surface(srf,u_div,v_div)
+
+    for u in xrange(u_div - 1):
+        rs.AddPolyline(pts_uv[u])
+        for v in xrange(0, v_div - 1, 2):
+            if u % 2:
+                rs.AddLine(pts_uv[u][v],pts_uv[u + 1][v])
+            else:
+                rs.AddLine(pts_uv[u][v + 1],pts_uv[u + 1][v + 1])
