@@ -1,8 +1,8 @@
 import compas
 
 from compas.datastructures import Mesh
-from compas.geometry import smooth_area
 from compas.visualization import MeshPlotter
+from compas.geometry import smooth_area
 
 mesh = Mesh.from_obj(compas.get('faces.obj'))
 

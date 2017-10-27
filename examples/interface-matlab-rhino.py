@@ -30,10 +30,8 @@ from compas.datastructures import Network
 from compas.com import MatlabClient
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
+__author__ = 'Tom Van Mele'
+__email__  = 'van.mele@arch.ethz.ch'
 
 
 # connect to the MATLAB COM automation server

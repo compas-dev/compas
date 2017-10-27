@@ -72,7 +72,7 @@ class NetworkPlotter(Plotter):
         self.vertexcollection = None
         self.edgecollection = None
         self.defaults = {
-            'vertex.radius'    : 0.15,
+            'vertex.radius'    : 0.1,
             'vertex.facecolor' : '#ffffff',
             'vertex.edgecolor' : '#000000',
             'vertex.edgewidth' : 1.0,
@@ -166,7 +166,7 @@ class NetworkPlotter(Plotter):
         circles = []
         for key in self.network.vertices():
             center = self.network.vertex_coordinates(key, 'xy')
-            radius = 0.15
+            radius = 0.1
             circles.append(Circle(center, radius))
         self.vertexcollection.set_paths(circles)
 
@@ -230,7 +230,6 @@ class NetworkPlotter(Plotter):
         for u, v in self.network.edges():
             segments.append([self.network.vertex_coordinates(u, 'xy'), self.network.vertex_coordinates(v, 'xy')])
         self.edgecollection.set_segments(segments)
-
 
 # ==============================================================================
 # Debugging

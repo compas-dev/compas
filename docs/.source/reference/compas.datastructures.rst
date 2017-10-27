@@ -67,10 +67,7 @@ mesh.operations
     mesh_unweld_vertices
 
 
-.. note::
-
-    The following operations are specifically designed for triangle meshes.
-
+**The following operations are designed for triangle meshes.**
 
 .. autosummary::
     :toctree: generated/
@@ -98,10 +95,7 @@ mesh.algorithms
     mesh_cull_duplicate_vertices
 
 
-.. note::
-
-    The following algorithms are specifically designed for triangle meshes.
-
+**The following operations are designed for triangle meshes.**
 
 .. autosummary::
     :toctree: generated/
@@ -113,12 +107,11 @@ mesh.algorithms
 VolMesh
 =======
 
+*Under constuction...*
 
-volmesh.operations
-------------------
+.. autosummary::
+    :toctree: generated/
 
-
-volmesh.algorithms
-------------------
+    VolMesh
 
 

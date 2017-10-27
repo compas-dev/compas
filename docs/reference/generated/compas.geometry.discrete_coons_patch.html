@@ -12,7 +12,7 @@
 <link href="/css/github.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="../compas.hpc.html" rel="next" title="hpc"/>
+<link href="compas.geometry.mesh_flatness.html" rel="next" title="mesh_flatness"/>
 <link href="compas.geometry.smooth_area.html" rel="prev" title="smooth_area"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
@@ -34,7 +34,7 @@
 <nav class="breadcrumb">
 <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
 <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a class="breadcrumb-item" href="../../reference.html">reference</a>
+<a class="breadcrumb-item" href="../../reference.html">api reference</a>
 <a class="breadcrumb-item" href="../compas.html">compas</a>
 <a accesskey="U" class="breadcrumb-item" href="../compas.geometry.html">geometry</a>
 </nav>
@@ -60,30 +60,34 @@ polylines (ab, bc, dc, ad).</p>
 <col class="field-name"/>
 <col class="field-body"/>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>polylines</strong> (<em>sequence</em>) – The XYZ coordinates of the vertices of the polyline.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>polylines</strong> (<em>sequence</em>) – The XYZ coordinates of the vertices of the polyline.
 The vertices are assumed to be in order.
-The polyline is assumed to be open:</li>
-<li><strong>Returns</strong> – points (list of tuples): the points of the coons patch
-faces (list of lists) list of faces (face = list of vertex indices as integers)</li>
-<li><strong>References</strong> – <a class="reference external" href="https://en.wikipedia.org/wiki/Coons_patch">https://en.wikipedia.org/wiki/Coons_patch</a>
-<a class="reference external" href="https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml">https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml</a></li>
+The polyline is assumed to be open:</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>points</strong> (<em>list of tuples</em>) – The points of the coons patch</li>
+<li><strong>faces</strong> (<em>list of lists</em>) – List of faces (face = list of vertex indices as integers)</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Coons_patch">https://en.wikipedia.org/wiki/Coons_patch</a></li>
+<li><a class="reference external" href="https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml">https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml</a></li>
+</ul>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
-<li><code class="xref py py-func docutils literal">compas.datastructures.mesh.algorithms.cull_duplicate_vertices()</code></li>
+<li><a class="reference internal" href="compas.datastructures.mesh_cull_duplicate_vertices.html#compas.datastructures.mesh_cull_duplicate_vertices" title="compas.datastructures.mesh_cull_duplicate_vertices"><code class="xref py py-func docutils literal">compas.datastructures.mesh_cull_duplicate_vertices()</code></a></li>
 </ul>
 </div>
 </dd></dl>
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="compas.geometry.smooth_area.html" role="button">smooth_area</a>
-<a class="btn btn-primary compas-next" href="../compas.hpc.html" role="button">hpc</a>
+<a class="btn btn-primary compas-next" href="compas.geometry.mesh_flatness.html" role="button">mesh_flatness</a>
 </nav>
 </main>
 <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
@@ -102,7 +106,7 @@ faces (list of lists) list of faces (face = list of vertex indices as integers)<
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.com.html">com</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
@@ -124,6 +128,7 @@ faces (list of lists) list of faces (face = list of vertex indices as integers)<
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../bibliography.html">Bibliography</a></li>
 </ul>
 </div>
 </div>
@@ -144,7 +149,7 @@ faces (list of lists) list of faces (face = list of vertex indices as integers)<
             
 
             
-                Last updated on Oct 26, 2017.
+                Last updated on Oct 27, 2017.
             
 
             

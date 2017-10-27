@@ -64,7 +64,7 @@
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">planarize_faces</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">flatness2</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">flatness</span>
 
 
 <span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom Van Mele'</span><span class="p">,</span> <span class="p">]</span>
@@ -118,8 +118,8 @@
 
 <span class="c1"># compute the *flatness*</span>
 
-<span class="n">dev0</span> <span class="o">=</span> <span class="n">flatness2</span><span class="p">(</span><span class="n">vertices_0</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
-<span class="n">dev1</span> <span class="o">=</span> <span class="n">flatness2</span><span class="p">(</span><span class="n">vertices_1</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+<span class="n">dev0</span> <span class="o">=</span> <span class="n">flatness</span><span class="p">(</span><span class="n">vertices_0</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+<span class="n">dev1</span> <span class="o">=</span> <span class="n">flatness</span><span class="p">(</span><span class="n">vertices_1</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
 <span class="c1"># draw the original</span>
 
@@ -190,8 +190,9 @@
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../workshops.html">Workshops</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../bibliography.html">Bibliography</a></li>
 </ul>
 </div>
 </div>
@@ -212,7 +213,7 @@
             
 
             
-                Last updated on Oct 26, 2017.
+                Last updated on Oct 27, 2017.
             
 
             

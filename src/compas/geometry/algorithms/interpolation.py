@@ -18,15 +18,10 @@ __all__ = [
 
 
 def discrete_coons_patch(ab, bc, dc, ad):
-
-
     """Creates a coons patch from a set of four or three boundary
     polylines (ab, bc, dc, ad).
 
-    
-    Direction and order of polylines:
-
-    .. code-block:: python
+    Direction and order of polylines::
 
         b -----> c
         ^        ^
@@ -38,7 +33,6 @@ def discrete_coons_patch(ab, bc, dc, ad):
     One polyline can be None to create a triangular patch
     (Warning! This will result in duplicate vertices)
 
-
     Parameters
     ----------
     polylines : sequence
@@ -46,18 +40,21 @@ def discrete_coons_patch(ab, bc, dc, ad):
         The vertices are assumed to be in order.
         The polyline is assumed to be open:
  
-    Returns:
-        points (list of tuples): the points of the coons patch 
-        faces (list of lists) list of faces (face = list of vertex indices as integers)
+    Returns
+    -------
+    points : list of tuples
+        The points of the coons patch 
+    faces : list of lists
+        List of faces (face = list of vertex indices as integers)
 
-    References:
-        https://en.wikipedia.org/wiki/Coons_patch
-        https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml
-
+    References
+    ----------
+    * https://en.wikipedia.org/wiki/Coons_patch
+    * https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml
 
     See Also
     --------
-    * :func:`compas.datastructures.mesh.algorithms.cull_duplicate_vertices`
+    * :func:`compas.datastructures.mesh_cull_duplicate_vertices`
 
     """
     

@@ -44,7 +44,7 @@
 
 <span class="sd">.. currentmodule:: compas.geometry</span>
 
-<span class="sd">A package defining common geometric functions and objects.</span>
+<span class="sd">A package defining common geometric functions, objects, and algorithms.</span>
 
 
 <span class="sd">.. note::</span>
@@ -62,6 +62,57 @@
 <span class="sd">    - **polyline** -- A sequence of points. First and last are the same if the polyline is closed. Otherwise it is assumed open.</span>
 <span class="sd">    - **polyhedron** -- A list of vertices represented by their XYZ coordinates and a list of faces referencing the vertex list.</span>
 <span class="sd">    - **frame** -- A list of three orthonormal vectors.</span>
+
+
+<span class="sd">Objects</span>
+<span class="sd">=======</span>
+
+<span class="sd">This package provides an object-oriented interface to the above functionality.</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :toctree: generated/</span>
+
+<span class="sd">    Vector</span>
+<span class="sd">    Point</span>
+<span class="sd">    Circle</span>
+<span class="sd">    Line</span>
+<span class="sd">    Frame</span>
+<span class="sd">    Plane</span>
+<span class="sd">    Polyline</span>
+<span class="sd">    Polygon</span>
+<span class="sd">    Polyhedron</span>
+<span class="sd">    Spline</span>
+<span class="sd">    Surface</span>
+<span class="sd">    KDTree</span>
+
+
+<span class="sd">Algorithms</span>
+<span class="sd">==========</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :toctree: generated/</span>
+
+<span class="sd">    flatness</span>
+<span class="sd">    planarize_faces</span>
+<span class="sd">    smooth_centroid</span>
+<span class="sd">    smooth_centerofmass</span>
+<span class="sd">    smooth_area</span>
+<span class="sd">    discrete_coons_patch</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :toctree: generated/</span>
+
+<span class="sd">    mesh_flatness</span>
+<span class="sd">    mesh_planarize_faces</span>
+<span class="sd">    mesh_planarize_faces_shapeop</span>
+<span class="sd">    mesh_circularize_faces_shapeop</span>
+<span class="sd">    mesh_smooth_centroid</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :toctree: generated/</span>
+
+<span class="sd">    network_smooth_centroid</span>
+<span class="sd">    network_relax</span>
 
 
 <span class="sd">Utilities</span>
@@ -358,42 +409,6 @@
 <span class="sd">    scale_matrix</span>
 <span class="sd">    shear_matrix</span>
 <span class="sd">    translation_matrix</span>
-
-
-<span class="sd">Objects</span>
-<span class="sd">=======</span>
-
-<span class="sd">This package provides an object-oriented interface to the above functionality.</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">    :toctree: generated/</span>
-
-<span class="sd">    Vector</span>
-<span class="sd">    Point</span>
-<span class="sd">    Circle</span>
-<span class="sd">    Line</span>
-<span class="sd">    Frame</span>
-<span class="sd">    Plane</span>
-<span class="sd">    Polyline</span>
-<span class="sd">    Polygon</span>
-<span class="sd">    Polyhedron</span>
-<span class="sd">    Spline</span>
-<span class="sd">    Surface</span>
-<span class="sd">    KDTree</span>
-
-
-<span class="sd">Algorithms</span>
-<span class="sd">==========</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">    :toctree: generated/</span>
-
-<span class="sd">    planarize_faces</span>
-<span class="sd">    flatness</span>
-<span class="sd">    smooth_centroid</span>
-<span class="sd">    smooth_centerofmass</span>
-<span class="sd">    smooth_area</span>
-<span class="sd">    discrete_coons_patch</span>
 
 <span class="sd">"""</span>
 

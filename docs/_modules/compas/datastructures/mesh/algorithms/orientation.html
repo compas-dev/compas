@@ -38,7 +38,7 @@
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 <span class="kn">from</span> <span class="nn">compas.topology</span> <span class="k">import</span> <span class="n">bfs_traverse</span>
-<span class="c1">#from compas.geometry import KDTree</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">KDTree</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="s1">'Tom Van Mele'</span>
@@ -53,73 +53,88 @@
 <span class="p">]</span>
 
 
-<span class="c1"># def face_adjacency(mesh):</span>
-<span class="c1">#     from scipy.spatial import cKDTree</span>
-<span class="c1">#     fkey_index = {fkey: index for index, fkey in enumerate(self.faces())}</span>
-<span class="c1">#     index_fkey = {index: fkey for index, fkey in enumerate(self.faces())}</span>
-<span class="c1">#     points = [self.face_centroid(fkey) for fkey in self.faces()]</span>
-<span class="c1">#     tree = cKDTree(points)</span>
-<span class="c1">#     _, closest = tree.query(points, k=10, n_jobs=-1)</span>
-<span class="c1">#     adjacency = {}</span>
-<span class="c1">#     for fkey in self.faces():</span>
-<span class="c1">#         nbrs  = []</span>
-<span class="c1">#         index = fkey_index[fkey]</span>
-<span class="c1">#         nnbrs = closest[index]</span>
-<span class="c1">#         found = set()</span>
-<span class="c1">#         for u, v in self.face_halfedges(fkey):</span>
-<span class="c1">#             for index in nnbrs:</span>
-<span class="c1">#                 nbr = index_fkey[index]</span>
-<span class="c1">#                 if nbr == fkey:</span>
-<span class="c1">#                     continue</span>
-<span class="c1">#                 if nbr in found:</span>
-<span class="c1">#                     continue</span>
-<span class="c1">#                 for a, b in self.face_halfedges(nbr):</span>
-<span class="c1">#                     if v == a and u == b:</span>
-<span class="c1">#                         nbrs.append(nbr)</span>
-<span class="c1">#                         found.add(nbr)</span>
-<span class="c1">#                         break</span>
-<span class="c1">#                 for a, b in self.face_halfedges(nbr):</span>
-<span class="c1">#                     if u == a and v == b:</span>
-<span class="c1">#                         nbrs.append(nbr)</span>
-<span class="c1">#                         found.add(nbr)</span>
-<span class="c1">#                         break</span>
-<span class="c1">#         adjacency[fkey] = nbrs</span>
-<span class="c1">#     return adjacency</span>
-
-
 <span class="k">def</span> <span class="nf">face_adjacency</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
+    <span class="sd">"""Build a face adjacency dict.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
 
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        A dictionary mapping face identifiers (keys) to lists of neighbouring faces.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    This algorithm is used primarily to unify the cycle directions of a given mesh.</span>
+<span class="sd">    Therefore, the premise is that the topological information of the mesh is corrupt</span>
+<span class="sd">    and cannot be used to construct the adjacency structure. The algorithm is thus</span>
+<span class="sd">    purely geometrical, but uses a spatial indexing tree to speed up the search.    </span>
+
+<span class="sd">    """</span>
     <span class="n">fkey_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())}</span>
     <span class="n">index_fkey</span> <span class="o">=</span> <span class="p">{</span><span class="n">index</span><span class="p">:</span> <span class="n">fkey</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())}</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span>
+    <span class="n">points</span>     <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span>
 
-    <span class="n">tree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">cKDTree</span>
 
-    <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">closest</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">Rhino</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">KDTree</span>
+
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+            <span class="n">closest</span> <span class="o">=</span> <span class="p">[</span><span class="n">tree</span><span class="o">.</span><span class="n">nearest_neighbours</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span>
+            <span class="n">closest</span> <span class="o">=</span> <span class="p">[[</span><span class="n">index</span> <span class="k">for</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nnbrs</span><span class="p">]</span> <span class="k">for</span> <span class="n">nnbrs</span> <span class="ow">in</span> <span class="n">closest</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="k">import</span> <span class="n">RTree</span>
+            <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="k">import</span> <span class="n">Sphere</span>
+            <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="k">import</span> <span class="n">Point3d</span>
+
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">RTree</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+                <span class="n">tree</span><span class="o">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span> <span class="n">point</span><span class="p">),</span> <span class="n">i</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">Tag</span> 
+                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">Id</span><span class="p">)</span>
+
+            <span class="n">closest</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+                <span class="n">sphere</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span> <span class="n">point</span><span class="p">),</span> <span class="mf">2.0</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">tree</span><span class="o">.</span><span class="n">Search</span><span class="p">(</span><span class="n">sphere</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                <span class="n">closest</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    
+    <span class="n">adjacency</span>  <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
         <span class="n">nbrs</span>  <span class="o">=</span> <span class="p">[]</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">fkey_index</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
         <span class="n">found</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="n">point</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
-        <span class="n">nnbrs</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">nearest_neighbours</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">nnbrs</span> <span class="o">=</span> <span class="n">closest</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">fkey</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nnbrs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">nnbrs</span><span class="p">:</span>
                 <span class="n">nbr</span> <span class="o">=</span> <span class="n">index_fkey</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-
                 <span class="k">if</span> <span class="n">nbr</span> <span class="o">==</span> <span class="n">fkey</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">found</span><span class="p">:</span>
                     <span class="k">continue</span>
-
                 <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">nbr</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">u</span> <span class="o">==</span> <span class="n">b</span><span class="p">:</span>
                         <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
                         <span class="n">found</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
                         <span class="k">break</span>
-
                 <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">nbr</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">u</span> <span class="o">==</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">==</span> <span class="n">b</span><span class="p">:</span>
                         <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
@@ -225,8 +240,9 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../../tutorial.html">Tutorial</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../../workshops.html">Workshops</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../../bibliography.html">Bibliography</a></li>
 </ul>
 </div>
 </div>
@@ -244,7 +260,7 @@
             
 
             
-                Last updated on Oct 26, 2017.
+                Last updated on Oct 27, 2017.
             
 
             

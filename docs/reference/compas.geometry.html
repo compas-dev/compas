@@ -12,7 +12,7 @@
 <link href="/css/github.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="generated/compas.geometry.is_circle.html" rel="next" title="is_circle"/>
+<link href="generated/compas.geometry.flatness.html" rel="next" title="flatness"/>
 <link href="generated/generated/compas.files.PLYreader.read_vertices_binary_wo_numpy.html" rel="prev" title="PLYreader.read_vertices_binary_wo_numpy"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
@@ -34,12 +34,11 @@
 <nav class="breadcrumb">
 <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
 <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a class="breadcrumb-item" href="../reference.html">reference</a>
+<a class="breadcrumb-item" href="../reference.html">api reference</a>
 <a accesskey="U" class="breadcrumb-item" href="compas.html">compas</a>
 </nav>
 <div class="section">
 <span id="compas-geometry"></span><h1>geometry</h1>
-<p>A package defining common geometric functions and objects.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>The functions in this package expect input arguments to be structured in a certain
@@ -58,48 +57,123 @@ way.</p>
 </ul>
 </div>
 <div class="section">
-<h2>Utilities</h2>
+<h2>Algorithms</h2>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
 <col width="90%"/>
 </colgroup>
 <tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_circle.html" title="compas.geometry.is_circle"><code class="xref py py-obj docutils literal">is_circle</code></a>(circle)</td>
-<td>Verify that a given input represents a circle.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.flatness.html" title="compas.geometry.flatness"><code class="xref py py-obj docutils literal">flatness</code></a>(vertices, faces[, maxdev])</td>
+<td>Compute mesh flatness per face.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_frame.html" title="compas.geometry.is_frame"><code class="xref py py-obj docutils literal">is_frame</code></a>(frame)</td>
-<td>Verify that a given input represents a frame.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.planarize_faces.html" title="compas.geometry.planarize_faces"><code class="xref py py-obj docutils literal">planarize_faces</code></a>(vertices, faces[, fixed, ...])</td>
+<td>Planarise a set of connected faces.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_line.html" title="compas.geometry.is_line"><code class="xref py py-obj docutils literal">is_line</code></a>(line)</td>
-<td>Verify that a given input represents a line.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centroid.html" title="compas.geometry.smooth_centroid"><code class="xref py py-obj docutils literal">smooth_centroid</code></a>(vertices, adjacency[, ...])</td>
+<td>Smooth a connected set of vertices by moving each vertex to the centroid of its neighbours.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_plane.html" title="compas.geometry.is_plane"><code class="xref py py-obj docutils literal">is_plane</code></a>(plane)</td>
-<td>Verify that a given input represents a plane.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centerofmass.html" title="compas.geometry.smooth_centerofmass"><code class="xref py py-obj docutils literal">smooth_centerofmass</code></a>(vertices, adjacency[, ...])</td>
+<td>Smooth a connected set of vertices by moving each vertex to the center of mass of the polygon formed by the neighbouring vertices.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_polygon.html" title="compas.geometry.is_polygon"><code class="xref py py-obj docutils literal">is_polygon</code></a>(polygon)</td>
-<td>Verify that a given input represents a polygon.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_area.html" title="compas.geometry.smooth_area"><code class="xref py py-obj docutils literal">smooth_area</code></a>(vertices, faces, adjacency[, ...])</td>
+<td>Smooth a set of connected vertices by moving each vertex to the centroid of the surrounding faces, weighted by the area of the face.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_polyhedron.html" title="compas.geometry.is_polyhedron"><code class="xref py py-obj docutils literal">is_polyhedron</code></a>(polyhedron)</td>
-<td>Verify that a given input represents a polyhedron.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.discrete_coons_patch.html" title="compas.geometry.discrete_coons_patch"><code class="xref py py-obj docutils literal">discrete_coons_patch</code></a>(ab, bc, dc, ad)</td>
+<td>Creates a coons patch from a set of four or three boundary polylines (ab, bc, dc, ad).</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_polyline.html" title="compas.geometry.is_polyline"><code class="xref py py-obj docutils literal">is_polyline</code></a>(polyline)</td>
-<td>Verify that a given input represents a polyline.</td>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.mesh_flatness.html" title="compas.geometry.mesh_flatness"><code class="xref py py-obj docutils literal">mesh_flatness</code></a>(mesh[, maxdev])</td>
+<td>Compute mesh flatness per face.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_point.html" title="compas.geometry.is_point"><code class="xref py py-obj docutils literal">is_point</code></a>(point)</td>
-<td>Verify that a given input represents a point.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.mesh_planarize_faces.html" title="compas.geometry.mesh_planarize_faces"><code class="xref py py-obj docutils literal">mesh_planarize_faces</code></a>(mesh[, fixed, kmax, ...])</td>
+<td>Planarise a set of connected faces.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_segment.html" title="compas.geometry.is_segment"><code class="xref py py-obj docutils literal">is_segment</code></a>(segment)</td>
-<td>Verify that a given input represents a segment.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.mesh_planarize_faces_shapeop.html" title="compas.geometry.mesh_planarize_faces_shapeop"><code class="xref py py-obj docutils literal">mesh_planarize_faces_shapeop</code></a>(mesh[, fixed, ...])</td>
+<td>Planarize the faces of a mesh using ShapeOp.</td>
 </tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_vector.html" title="compas.geometry.is_vector"><code class="xref py py-obj docutils literal">is_vector</code></a>(vector)</td>
-<td>Verify that a given input represents a vector.</td>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.mesh_circularize_faces_shapeop.html" title="compas.geometry.mesh_circularize_faces_shapeop"><code class="xref py py-obj docutils literal">mesh_circularize_faces_shapeop</code></a>(mesh[, ...])</td>
+<td>Circularize the faces of a mesh using ShapeOp.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.mesh_smooth_centroid.html" title="compas.geometry.mesh_smooth_centroid"><code class="xref py py-obj docutils literal">mesh_smooth_centroid</code></a>(mesh[, fixed, kmax, ...])</td>
+<td>Smooth a mesh by moving every free vertex to the centroid of its neighbours.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.network_smooth_centroid.html" title="compas.geometry.network_smooth_centroid"><code class="xref py py-obj docutils literal">network_smooth_centroid</code></a>(network[, fixed, ...])</td>
+<td>Smooth a network by moving each vertex to the centroid of its neighbours.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.network_relax.html" title="compas.geometry.network_relax"><code class="xref py py-obj docutils literal">network_relax</code></a>(network[, kmax, dt, tol1, ...])</td>
+<td>Implementation of dynamic relaxation with RK integration scheme in pure Python.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section">
-<h2>Basics</h2>
+<h2>Objects</h2>
+<p>This package provides an object-oriented interface to the above functionality.</p>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-obj docutils literal">Vector</code></a>(x, y, z[, w, unitize])</td>
+<td>A vector object represents a vector in three-dimensional space.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-obj docutils literal">Point</code></a>(x, y[, z])</td>
+<td>A three-dimensional location in space.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Circle.html" title="compas.geometry.Circle"><code class="xref py py-obj docutils literal">Circle</code></a></td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Line.html" title="compas.geometry.Line"><code class="xref py py-obj docutils literal">Line</code></a>(p1, p2)</td>
+<td>A line object is defined by two points in three-dimensional space.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Frame.html" title="compas.geometry.Frame"><code class="xref py py-obj docutils literal">Frame</code></a></td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Plane.html" title="compas.geometry.Plane"><code class="xref py py-obj docutils literal">Plane</code></a>()</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyline.html" title="compas.geometry.Polyline"><code class="xref py py-obj docutils literal">Polyline</code></a>(points)</td>
+<td>A polyline object represents a concatenation of lines.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polygon.html" title="compas.geometry.Polygon"><code class="xref py py-obj docutils literal">Polygon</code></a>(points)</td>
+<td>An object representing ...</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyhedron.html" title="compas.geometry.Polyhedron"><code class="xref py py-obj docutils literal">Polyhedron</code></a>()</td>
+<td>Compute the vertices and faces of one of the Platonic solids.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Spline.html" title="compas.geometry.Spline"><code class="xref py py-obj docutils literal">Spline</code></a>()</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Surface.html" title="compas.geometry.Surface"><code class="xref py py-obj docutils literal">Surface</code></a></td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.KDTree.html" title="compas.geometry.KDTree"><code class="xref py py-obj docutils literal">KDTree</code></a>([objects])</td>
+<td>A tree for nearest neighbor search in a k-dimensional space.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<h2>Core</h2>
+<div class="section">
+<h3>Basics</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -227,7 +301,7 @@ way.</p>
 </table>
 </div>
 <div class="section">
-<h2>Distance</h2>
+<h3>Distance</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -261,6 +335,14 @@ way.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.closest_point_on_segment_xy.html" title="compas.geometry.closest_point_on_segment_xy"><code class="xref py py-obj docutils literal">closest_point_on_segment_xy</code></a>(point, segment)</td>
 <td>Compute closest point on line segment to a given point lying in the XY-plane.</td>
 </tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.distance_line_line.html" title="compas.geometry.distance_line_line"><code class="xref py py-obj docutils literal">distance_line_line</code></a>(l1, l2[, tol])</td>
 <td>Compute the shortest distance between two lines.</td>
 </tr>
@@ -295,7 +377,7 @@ way.</p>
 </table>
 </div>
 <div class="section">
-<h2>Angles</h2>
+<h3>Angles</h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">All angle functions return a result in radians.
@@ -331,6 +413,14 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angle_smallest_vectors_degrees_xy.html" title="compas.geometry.angle_smallest_vectors_degrees_xy"><code class="xref py py-obj docutils literal">angle_smallest_vectors_degrees_xy</code></a>(u, v)</td>
 <td>Compute the smallest angle in degrees between the XY components of two vectors.</td>
 </tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.angles_points.html" title="compas.geometry.angles_points"><code class="xref py py-obj docutils literal">angles_points</code></a>(a, b, c)</td>
 <td>Compute the two angles between two vectors defined by three points.</td>
 </tr>
@@ -359,7 +449,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Average</h2>
+<h3>Average</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -397,7 +487,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Constructors</h2>
+<h3>Constructors</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -429,7 +519,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Orientation</h2>
+<h3>Orientation</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -449,7 +539,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Bestfit</h2>
+<h3>Bestfit</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -463,7 +553,45 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Queries</h2>
+<h3>Queries</h3>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_circle.html" title="compas.geometry.is_circle"><code class="xref py py-obj docutils literal">is_circle</code></a>(circle)</td>
+<td>Verify that a given input represents a circle.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_frame.html" title="compas.geometry.is_frame"><code class="xref py py-obj docutils literal">is_frame</code></a>(frame)</td>
+<td>Verify that a given input represents a frame.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_line.html" title="compas.geometry.is_line"><code class="xref py py-obj docutils literal">is_line</code></a>(line)</td>
+<td>Verify that a given input represents a line.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_plane.html" title="compas.geometry.is_plane"><code class="xref py py-obj docutils literal">is_plane</code></a>(plane)</td>
+<td>Verify that a given input represents a plane.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_polygon.html" title="compas.geometry.is_polygon"><code class="xref py py-obj docutils literal">is_polygon</code></a>(polygon)</td>
+<td>Verify that a given input represents a polygon.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_polyhedron.html" title="compas.geometry.is_polyhedron"><code class="xref py py-obj docutils literal">is_polyhedron</code></a>(polyhedron)</td>
+<td>Verify that a given input represents a polyhedron.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_polyline.html" title="compas.geometry.is_polyline"><code class="xref py py-obj docutils literal">is_polyline</code></a>(polyline)</td>
+<td>Verify that a given input represents a polyline.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_point.html" title="compas.geometry.is_point"><code class="xref py py-obj docutils literal">is_point</code></a>(point)</td>
+<td>Verify that a given input represents a point.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_segment.html" title="compas.geometry.is_segment"><code class="xref py py-obj docutils literal">is_segment</code></a>(segment)</td>
+<td>Verify that a given input represents a segment.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.is_vector.html" title="compas.geometry.is_vector"><code class="xref py py-obj docutils literal">is_vector</code></a>(vector)</td>
+<td>Verify that a given input represents a vector.</td>
+</tr>
+</tbody>
+</table>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -552,7 +680,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Intersections</h2>
+<h3>Intersections</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -605,7 +733,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Size</h2>
+<h3>Size</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -637,7 +765,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Transformations</h2>
+<h3>Transformations</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -677,6 +805,14 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.mirror_vector_vector.html" title="compas.geometry.mirror_vector_vector"><code class="xref py py-obj docutils literal">mirror_vector_vector</code></a>(v1, v2)</td>
 <td>Mirrors vector about vector.</td>
 </tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.offset_line.html" title="compas.geometry.offset_line"><code class="xref py py-obj docutils literal">offset_line</code></a>(line, distance[, normal])</td>
 <td>Offset a line by a distance</td>
 </tr>
@@ -689,6 +825,14 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.orient_points.html" title="compas.geometry.orient_points"><code class="xref py py-obj docutils literal">orient_points</code></a>(points[, reference_plane, ...])</td>
 <td>Orient points from one plane to another.</td>
 </tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.project_point_line.html" title="compas.geometry.project_point_line"><code class="xref py py-obj docutils literal">project_point_line</code></a>(point, line)</td>
 <td>Project a point onto a line.</td>
 </tr>
@@ -707,12 +851,28 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.project_points_plane.html" title="compas.geometry.project_points_plane"><code class="xref py py-obj docutils literal">project_points_plane</code></a>(points, plane)</td>
 <td>Project multiple points onto a plane.</td>
 </tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.reflect_line_plane.html" title="compas.geometry.reflect_line_plane"><code class="xref py py-obj docutils literal">reflect_line_plane</code></a>(line, plane[, epsilon])</td>
 <td>Reflects a line at plane.</td>
 </tr>
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.reflect_line_triangle.html" title="compas.geometry.reflect_line_triangle"><code class="xref py py-obj docutils literal">reflect_line_triangle</code></a>(line, triangle[, epsilon])</td>
 <td>Reflects a line at a triangle.</td>
 </tr>
+</tbody>
+</table>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
 <tr class=""><td><a class="reference internal" href="generated/compas.geometry.rotate_points.html" title="compas.geometry.rotate_points"><code class="xref py py-obj docutils literal">rotate_points</code></a>(points, axis, angle[, origin])</td>
 <td>Rotates points around an arbitrary axis in 3D (radians).</td>
 </tr>
@@ -741,7 +901,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>XForms</h2>
+<h3>XForms</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -777,87 +937,11 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </tbody>
 </table>
 </div>
-<div class="section">
-<h2>Objects</h2>
-<p>This package provides an object-oriented interface to the above functionality.</p>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
-<colgroup>
-<col width="10%"/>
-<col width="90%"/>
-</colgroup>
-<tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-obj docutils literal">Vector</code></a>(x, y, z[, w, unitize])</td>
-<td>A vector object represents a vector in three-dimensional space.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-obj docutils literal">Point</code></a>(x, y[, z])</td>
-<td>A three-dimensional location in space.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Circle.html" title="compas.geometry.Circle"><code class="xref py py-obj docutils literal">Circle</code></a></td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Line.html" title="compas.geometry.Line"><code class="xref py py-obj docutils literal">Line</code></a>(p1, p2)</td>
-<td>A line object is defined by two points in three-dimensional space.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Frame.html" title="compas.geometry.Frame"><code class="xref py py-obj docutils literal">Frame</code></a></td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Plane.html" title="compas.geometry.Plane"><code class="xref py py-obj docutils literal">Plane</code></a>()</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyline.html" title="compas.geometry.Polyline"><code class="xref py py-obj docutils literal">Polyline</code></a>(points)</td>
-<td>A polyline object represents a concatenation of lines.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polygon.html" title="compas.geometry.Polygon"><code class="xref py py-obj docutils literal">Polygon</code></a>(points)</td>
-<td>An object representing ...</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyhedron.html" title="compas.geometry.Polyhedron"><code class="xref py py-obj docutils literal">Polyhedron</code></a>()</td>
-<td>Compute the vertices and faces of one of the Platonic solids.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Spline.html" title="compas.geometry.Spline"><code class="xref py py-obj docutils literal">Spline</code></a>()</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Surface.html" title="compas.geometry.Surface"><code class="xref py py-obj docutils literal">Surface</code></a></td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.KDTree.html" title="compas.geometry.KDTree"><code class="xref py py-obj docutils literal">KDTree</code></a>([objects])</td>
-<td>A tree for nearest neighbor search in a k-dimensional space.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section">
-<h2>Algorithms</h2>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
-<colgroup>
-<col width="10%"/>
-<col width="90%"/>
-</colgroup>
-<tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.planarize_faces.html" title="compas.geometry.planarize_faces"><code class="xref py py-obj docutils literal">planarize_faces</code></a>(vertices, faces[, fixed, ...])</td>
-<td>Planarise the faces of a mesh.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.flatness.html" title="compas.geometry.flatness"><code class="xref py py-obj docutils literal">flatness</code></a>(vertices, faces[, maxdev])</td>
-<td>Compute mesh flatness per face.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centroid.html" title="compas.geometry.smooth_centroid"><code class="xref py py-obj docutils literal">smooth_centroid</code></a>(vertices, adjacency[, ...])</td>
-<td>Smooth a connected set of vertices by moving each vertex to the centroid of its neighbours.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_centerofmass.html" title="compas.geometry.smooth_centerofmass"><code class="xref py py-obj docutils literal">smooth_centerofmass</code></a>(vertices, adjacency[, ...])</td>
-<td>Smooth a connected set of vertices by moving each vertex to the center of mass of the polygon formed by the neighbouring vertices.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.smooth_area.html" title="compas.geometry.smooth_area"><code class="xref py py-obj docutils literal">smooth_area</code></a>(vertices, faces, adjacency[, ...])</td>
-<td>Smooth a set of connected vertices by moving each vertex to the centroid of the surrounding faces, weighted by the area of the face.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.discrete_coons_patch.html" title="compas.geometry.discrete_coons_patch"><code class="xref py py-obj docutils literal">discrete_coons_patch</code></a>(ab, bc, dc, ad)</td>
-<td>Creates a coons patch from a set of four or three boundary polylines (ab, bc, dc, ad).</td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="generated/generated/compas.files.PLYreader.read_vertices_binary_wo_numpy.html" role="button">PLYreader.read_vertices_binary_wo_numpy</a>
-<a class="btn btn-primary compas-next" href="generated/compas.geometry.is_circle.html" role="button">is_circle</a>
+<a class="btn btn-primary compas-next" href="generated/compas.geometry.flatness.html" role="button">flatness</a>
 </nav>
 </main>
 <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
@@ -876,7 +960,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../reference.html">Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../reference.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="compas.html">compas</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="compas.com.html">com</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.datastructures.html">datastructures</a></li>
@@ -898,6 +982,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../workshops.html">Workshops</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../bibliography.html">Bibliography</a></li>
 </ul>
 </div>
 </div>
@@ -906,23 +991,35 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">geometry</a><ul class="nav">
-<li class="nav-item"><a class="nav-link reference internal" href="#utilities">Utilities</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#algorithms">Algorithms</a><ul class="nav">
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#objects">Objects</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#core">Core</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#basics">Basics</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#distance">Distance</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#angles">Angles</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#distance">Distance</a><ul class="nav">
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#angles">Angles</a><ul class="nav">
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#average">Average</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#constructors">Constructors</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#orientation">Orientation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#bestfit">Bestfit</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#queries">Queries</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#queries">Queries</a><ul class="nav">
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#intersections">Intersections</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#size">Size</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#transformations">Transformations</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#transformations">Transformations</a><ul class="nav">
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#xforms">XForms</a><ul class="nav">
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="#objects">Objects</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#algorithms">Algorithms</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -937,7 +1034,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
             
 
             
-                Last updated on Oct 26, 2017.
+                Last updated on Oct 27, 2017.
             
 
             

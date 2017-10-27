@@ -13,6 +13,21 @@ interop
     For now, don't use it for anything important :)
 
 
+ShapeOp
+=======
+
+.. autosummary::
+    :toctree: generated/
+
+    shapeop.ShapeOpSolver
+
+.. autosummary::
+    :toctree: generated/
+
+    shapeop.int_array
+    shapeop.float_array
+
+
 Core
 ====
 
@@ -26,16 +41,6 @@ Core
     core.cpp.xdarray.zeros
     core.cpp.xdarray.ones
     core.cpp.xdarray.eye
-
-
-ShapeOp
-=======
-
-.. autosummary::
-    :toctree: generated/
-
-    shapeop.planarize_mesh
-    shapeop.circularize_mesh
 
 """
 

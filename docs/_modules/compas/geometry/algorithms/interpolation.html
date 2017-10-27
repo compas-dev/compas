@@ -56,12 +56,9 @@
 
 
 <div class="viewcode-block" id="discrete_coons_patch"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.discrete_coons_patch.html#compas.geometry.discrete_coons_patch">[docs]</a><span class="k">def</span> <span class="nf">discrete_coons_patch</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">dc</span><span class="p">,</span> <span class="n">ad</span><span class="p">):</span>
-
-
     <span class="sd">"""Creates a coons patch from a set of four or three boundary</span>
 <span class="sd">    polylines (ab, bc, dc, ad).</span>
 
-<span class="sd">    </span>
 <span class="sd">    Direction and order of polylines:</span>
 
 <span class="sd">    .. code-block:: python</span>
@@ -76,7 +73,6 @@
 <span class="sd">    One polyline can be None to create a triangular patch</span>
 <span class="sd">    (Warning! This will result in duplicate vertices)</span>
 
-
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    polylines : sequence</span>
@@ -84,18 +80,22 @@
 <span class="sd">        The vertices are assumed to be in order.</span>
 <span class="sd">        The polyline is assumed to be open:</span>
 <span class="sd"> </span>
-<span class="sd">    Returns:</span>
-<span class="sd">        points (list of tuples): the points of the coons patch </span>
-<span class="sd">        faces (list of lists) list of faces (face = list of vertex indices as integers)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    points : list of tuples</span>
+<span class="sd">        The points of the coons patch </span>
+<span class="sd">    faces : list of lists</span>
+<span class="sd">        List of faces (face = list of vertex indices as integers)</span>
 
-<span class="sd">    References:</span>
-<span class="sd">        https://en.wikipedia.org/wiki/Coons_patch</span>
-<span class="sd">        https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml</span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    * https://en.wikipedia.org/wiki/Coons_patch</span>
+<span class="sd">    * https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml</span>
 
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    * :func:`compas.datastructures.mesh.algorithms.cull_duplicate_vertices`</span>
+<span class="sd">    * :func:`compas.datastructures.mesh_cull_duplicate_vertices`</span>
 
 <span class="sd">    """</span>
     
@@ -158,8 +158,9 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../bibliography.html">Bibliography</a></li>
 </ul>
 </div>
 </div>
@@ -177,7 +178,7 @@
             
 
             
-                Last updated on Oct 26, 2017.
+                Last updated on Oct 27, 2017.
             
 
             

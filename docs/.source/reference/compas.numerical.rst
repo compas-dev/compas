@@ -6,24 +6,15 @@ numerical
 
 .. module:: compas.numerical
 
+.. note::
 
-A package for numerical computation.
+    This package is built around NumPy and Scipy
 
-Dependencies
-============
+    * NumPy: http://www.numpy.org/ 
+    * SciPy: http://www.scipy.org/
 
-* NumPy: http://www.numpy.org/ 
-* SciPy: http://www.scipy.org/
-
-**Optional**
-
-* Numba
-* Pandas
-* PyCuda
-* PyOpenCL
-* Cython
-* cvxpy
-* SymPy
+    and has several other optional dependencies (SymPy, Numba, PyCuda, Cython, CVXPY, Alglib).
+    Most of these are shipped with scientific Python distributions, such as Anaconda and EPD.
 
 
 Methods
@@ -32,9 +23,9 @@ Methods
 .. autosummary::
     :toctree: generated/
 
-    methods.dr
-    methods.drx
-    methods.fd
+    dr
+    drx
+    fd
 
 
 Solvers
@@ -43,12 +34,12 @@ Solvers
 .. autosummary::
     :toctree: generated/
 
-    solvers.descent
-    solvers.devo
-    solvers.GA
-    solvers.lma
-    solvers.mma
-    solvers.MOGA
+    descent
+    devo
+    GA
+    lma
+    mma
+    MOGA
 
 
 Core
@@ -100,6 +91,27 @@ matrices
     stiffness_matrix
     equilibrium_matrix
 
+.. autosummary::
+    :toctree: generated/
+
+    network_adjacency_matrix
+    network_degree_matrix
+    network_connectivity_matrix
+    network_laplacian_matrix
+
+.. autosummary::
+    :toctree: generated/
+
+    mesh_adjacency_matrix
+    mesh_degree_matrix
+    mesh_connectivity_matrix
+    mesh_laplacian_matrix
+
+.. autosummary::
+    :toctree: generated/
+
+    trimesh_cotangent_laplacian_matrix
+
 
 operators
 ---------
@@ -140,12 +152,16 @@ transformations
 .. autosummary::
     :toctree: generated/
 
+*Under construction...*
+
 
 triangulation
 -------------
 
 .. autosummary::
     :toctree: generated/
+
+*Under construction...*
 
 
 utilities
