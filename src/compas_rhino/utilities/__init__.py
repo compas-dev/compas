@@ -139,7 +139,7 @@ drawing
 
 
 geometry
-=======
+========
 
 .. autosummary::
     :toctree: generated/
