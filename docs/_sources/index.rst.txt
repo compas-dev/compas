@@ -22,3 +22,4 @@ Table of Contents
    tutorial
    reference
    workshops
+   bibliography

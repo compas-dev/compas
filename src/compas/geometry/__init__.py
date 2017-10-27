@@ -24,28 +24,6 @@ geometry
     - **frame** -- A list of three orthonormal vectors.
 
 
-Objects
-=======
-
-This package provides an object-oriented interface to the above functionality.
-
-.. autosummary::
-    :toctree: generated/
-
-    Vector
-    Point
-    Circle
-    Line
-    Frame
-    Plane
-    Polyline
-    Polygon
-    Polyhedron
-    Spline
-    Surface
-    KDTree
-
-
 Algorithms
 ==========
 
@@ -75,8 +53,33 @@ Algorithms
     network_relax
 
 
+Objects
+=======
+
+This package provides an object-oriented interface to the above functionality.
+
+.. autosummary::
+    :toctree: generated/
+
+    Vector
+    Point
+    Circle
+    Line
+    Frame
+    Plane
+    Polyline
+    Polygon
+    Polyhedron
+    Spline
+    Surface
+    KDTree
+
+
+Core
+====
+
 Basics
-======
+------
 
 .. autosummary::
     :toctree: generated/
@@ -122,7 +125,7 @@ Basics
     vector_component_xy
 
 Distance
-========
+--------
 
 .. autosummary::
     :toctree: generated/
@@ -152,7 +155,7 @@ Distance
     distance_point_point_sqrd_xy
 
 Angles
-======
+------
 
 .. note::
 
@@ -184,7 +187,7 @@ Angles
     angles_vectors_degrees_xy
 
 Average
-=======
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -200,7 +203,7 @@ Average
     midpoint_point_point_xy
 
 Constructors
-============
+------------
 
 .. autosummary::
     :toctree: generated/
@@ -215,7 +218,7 @@ Constructors
 
 
 Orientation
-===========
+-----------
 
 .. autosummary::
     :toctree: generated/
@@ -225,7 +228,7 @@ Orientation
     normal_triangle_xy
 
 Bestfit
-=======
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -234,7 +237,7 @@ Bestfit
 
 
 Queries
-=======
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -282,7 +285,7 @@ Queries
 
 
 Intersections
-=============
+-------------
 
 .. autosummary::
     :toctree: generated/
@@ -304,7 +307,7 @@ Intersections
 
 
 Size
-====
+----
 
 .. autosummary::
     :toctree: generated/
@@ -319,7 +322,7 @@ Size
 
 
 Transformations
-===============
+---------------
 
 .. autosummary::
     :toctree: generated/
@@ -374,7 +377,7 @@ Transformations
 
 
 XForms
-======
+------
 
 .. autosummary::
     :toctree: generated/

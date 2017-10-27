@@ -12,7 +12,7 @@
 <link href="/css/github.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas.css" rel="stylesheet" type="text/css"/>
 <link href="/css/compas-reference.css" rel="stylesheet" type="text/css"/>
-<link href="generated/compas.geometry.Vector.html" rel="next" title="Vector"/>
+<link href="generated/compas.geometry.flatness.html" rel="next" title="flatness"/>
 <link href="generated/generated/compas.files.PLYreader.read_vertices_binary_wo_numpy.html" rel="prev" title="PLYreader.read_vertices_binary_wo_numpy"/>
 <script async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 </head>
@@ -34,7 +34,7 @@
 <nav class="breadcrumb">
 <a class="breadcrumb-item" href="https://compas-dev.github.io/">compas</a>
 <a class="breadcrumb-item" href="https://compas-dev.github.io/compas/index.html">main library</a>
-<a class="breadcrumb-item" href="../reference.html">reference</a>
+<a class="breadcrumb-item" href="../reference.html">api reference</a>
 <a accesskey="U" class="breadcrumb-item" href="compas.html">compas</a>
 </nav>
 <div class="section">
@@ -55,54 +55,6 @@ way.</p>
 <li><strong>polyhedron</strong> – A list of vertices represented by their XYZ coordinates and a list of faces referencing the vertex list.</li>
 <li><strong>frame</strong> – A list of three orthonormal vectors.</li>
 </ul>
-</div>
-<div class="section">
-<h2>Objects</h2>
-<p>This package provides an object-oriented interface to the above functionality.</p>
-<table border="1" class="longtable docutils table table-responsive table-bordered">
-<colgroup>
-<col width="10%"/>
-<col width="90%"/>
-</colgroup>
-<tbody valign="top">
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-obj docutils literal">Vector</code></a>(x, y, z[, w, unitize])</td>
-<td>A vector object represents a vector in three-dimensional space.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-obj docutils literal">Point</code></a>(x, y[, z])</td>
-<td>A three-dimensional location in space.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Circle.html" title="compas.geometry.Circle"><code class="xref py py-obj docutils literal">Circle</code></a></td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Line.html" title="compas.geometry.Line"><code class="xref py py-obj docutils literal">Line</code></a>(p1, p2)</td>
-<td>A line object is defined by two points in three-dimensional space.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Frame.html" title="compas.geometry.Frame"><code class="xref py py-obj docutils literal">Frame</code></a></td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Plane.html" title="compas.geometry.Plane"><code class="xref py py-obj docutils literal">Plane</code></a>()</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyline.html" title="compas.geometry.Polyline"><code class="xref py py-obj docutils literal">Polyline</code></a>(points)</td>
-<td>A polyline object represents a concatenation of lines.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polygon.html" title="compas.geometry.Polygon"><code class="xref py py-obj docutils literal">Polygon</code></a>(points)</td>
-<td>An object representing ...</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyhedron.html" title="compas.geometry.Polyhedron"><code class="xref py py-obj docutils literal">Polyhedron</code></a>()</td>
-<td>Compute the vertices and faces of one of the Platonic solids.</td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Spline.html" title="compas.geometry.Spline"><code class="xref py py-obj docutils literal">Spline</code></a>()</td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Surface.html" title="compas.geometry.Surface"><code class="xref py py-obj docutils literal">Surface</code></a></td>
-<td></td>
-</tr>
-<tr class=""><td><a class="reference internal" href="generated/compas.geometry.KDTree.html" title="compas.geometry.KDTree"><code class="xref py py-obj docutils literal">KDTree</code></a>([objects])</td>
-<td>A tree for nearest neighbor search in a k-dimensional space.</td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="section">
 <h2>Algorithms</h2>
@@ -171,7 +123,57 @@ way.</p>
 </table>
 </div>
 <div class="section">
-<h2>Basics</h2>
+<h2>Objects</h2>
+<p>This package provides an object-oriented interface to the above functionality.</p>
+<table border="1" class="longtable docutils table table-responsive table-bordered">
+<colgroup>
+<col width="10%"/>
+<col width="90%"/>
+</colgroup>
+<tbody valign="top">
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-obj docutils literal">Vector</code></a>(x, y, z[, w, unitize])</td>
+<td>A vector object represents a vector in three-dimensional space.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-obj docutils literal">Point</code></a>(x, y[, z])</td>
+<td>A three-dimensional location in space.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Circle.html" title="compas.geometry.Circle"><code class="xref py py-obj docutils literal">Circle</code></a></td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Line.html" title="compas.geometry.Line"><code class="xref py py-obj docutils literal">Line</code></a>(p1, p2)</td>
+<td>A line object is defined by two points in three-dimensional space.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Frame.html" title="compas.geometry.Frame"><code class="xref py py-obj docutils literal">Frame</code></a></td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Plane.html" title="compas.geometry.Plane"><code class="xref py py-obj docutils literal">Plane</code></a>()</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyline.html" title="compas.geometry.Polyline"><code class="xref py py-obj docutils literal">Polyline</code></a>(points)</td>
+<td>A polyline object represents a concatenation of lines.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polygon.html" title="compas.geometry.Polygon"><code class="xref py py-obj docutils literal">Polygon</code></a>(points)</td>
+<td>An object representing ...</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Polyhedron.html" title="compas.geometry.Polyhedron"><code class="xref py py-obj docutils literal">Polyhedron</code></a>()</td>
+<td>Compute the vertices and faces of one of the Platonic solids.</td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Spline.html" title="compas.geometry.Spline"><code class="xref py py-obj docutils literal">Spline</code></a>()</td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.Surface.html" title="compas.geometry.Surface"><code class="xref py py-obj docutils literal">Surface</code></a></td>
+<td></td>
+</tr>
+<tr class=""><td><a class="reference internal" href="generated/compas.geometry.KDTree.html" title="compas.geometry.KDTree"><code class="xref py py-obj docutils literal">KDTree</code></a>([objects])</td>
+<td>A tree for nearest neighbor search in a k-dimensional space.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<h2>Core</h2>
+<div class="section">
+<h3>Basics</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -299,7 +301,7 @@ way.</p>
 </table>
 </div>
 <div class="section">
-<h2>Distance</h2>
+<h3>Distance</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -375,7 +377,7 @@ way.</p>
 </table>
 </div>
 <div class="section">
-<h2>Angles</h2>
+<h3>Angles</h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">All angle functions return a result in radians.
@@ -447,7 +449,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Average</h2>
+<h3>Average</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -485,7 +487,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Constructors</h2>
+<h3>Constructors</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -517,7 +519,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Orientation</h2>
+<h3>Orientation</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -537,7 +539,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Bestfit</h2>
+<h3>Bestfit</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -551,7 +553,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Queries</h2>
+<h3>Queries</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -678,7 +680,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Intersections</h2>
+<h3>Intersections</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -731,7 +733,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Size</h2>
+<h3>Size</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -763,7 +765,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>Transformations</h2>
+<h3>Transformations</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -899,7 +901,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 <div class="section">
-<h2>XForms</h2>
+<h3>XForms</h3>
 <table border="1" class="longtable docutils table table-responsive table-bordered">
 <colgroup>
 <col width="10%"/>
@@ -936,9 +938,10 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </table>
 </div>
 </div>
+</div>
 <nav class="compas-sideways">
 <a class="btn btn-primary compas-prev" href="generated/generated/compas.files.PLYreader.read_vertices_binary_wo_numpy.html" role="button">PLYreader.read_vertices_binary_wo_numpy</a>
-<a class="btn btn-primary compas-next" href="generated/compas.geometry.Vector.html" role="button">Vector</a>
+<a class="btn btn-primary compas-next" href="generated/compas.geometry.flatness.html" role="button">flatness</a>
 </nav>
 </main>
 <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
@@ -957,7 +960,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../reference.html">Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../reference.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="compas.html">compas</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="compas.com.html">com</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas.datastructures.html">datastructures</a></li>
@@ -979,6 +982,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../workshops.html">Workshops</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../bibliography.html">Bibliography</a></li>
 </ul>
 </div>
 </div>
@@ -987,10 +991,11 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">geometry</a><ul class="nav">
-<li class="nav-item"><a class="nav-link reference internal" href="#objects">Objects</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#algorithms">Algorithms</a><ul class="nav">
 </ul>
 </li>
+<li class="nav-item"><a class="nav-link reference internal" href="#objects">Objects</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#core">Core</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#basics">Basics</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#distance">Distance</a><ul class="nav">
 </ul>
@@ -1016,6 +1021,8 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
 </ul>
 </li>
 </ul>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1027,7 +1034,7 @@ For a result in degrees, use the <em>degrees</em> variation.</p>
             
 
             
-                Last updated on Oct 26, 2017.
+                Last updated on Oct 27, 2017.
             
 
             

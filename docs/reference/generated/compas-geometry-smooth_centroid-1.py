@@ -18,7 +18,7 @@ for u, v in mesh.edges():
         'width': 1.0,
     })
 
-vertices = smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)
+smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)
 
 for key, attr in mesh.vertices(True):
     attr['x'] = vertices[key][0]
@@ -28,7 +28,7 @@ for key, attr in mesh.vertices(True):
 plotter = MeshPlotter(mesh)
 
 plotter.draw_lines(lines)
-plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
+plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed}, radius=0.05)
 plotter.draw_edges()
 
 plotter.show()

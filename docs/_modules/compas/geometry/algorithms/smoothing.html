@@ -121,7 +121,7 @@
 <span class="sd">                'width': 1.0,</span>
 <span class="sd">            })</span>
 
-<span class="sd">        vertices = smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)</span>
+<span class="sd">        smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)</span>
 
 <span class="sd">        for key, attr in mesh.vertices(True):</span>
 <span class="sd">            attr['x'] = vertices[key][0]</span>
@@ -131,7 +131,7 @@
 <span class="sd">        plotter = MeshPlotter(mesh)</span>
 
 <span class="sd">        plotter.draw_lines(lines)</span>
-<span class="sd">        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})</span>
+<span class="sd">        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed}, radius=0.05)</span>
 <span class="sd">        plotter.draw_edges()</span>
 
 <span class="sd">        plotter.show()</span>
@@ -442,7 +442,7 @@
 <span class="sd">        from compas.visualization import MeshPlotter</span>
 <span class="sd">        from compas.geometry import mesh_smooth_centroid</span>
 
-<span class="sd">        mesh = Mesh.from_obj(compas.get('hypar.obj'))</span>
+<span class="sd">        mesh = Mesh.from_obj(compas.get('faces.obj'))</span>
 <span class="sd">        fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]</span>
 
 <span class="sd">        mesh_smooth_centroid(mesh, fixed=fixed)</span>
@@ -619,8 +619,9 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../workshops.html">Workshops</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../bibliography.html">Bibliography</a></li>
 </ul>
 </div>
 </div>
@@ -638,7 +639,7 @@
             
 
             
-                Last updated on Oct 26, 2017.
+                Last updated on Oct 27, 2017.
             
 
             

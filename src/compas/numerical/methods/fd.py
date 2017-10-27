@@ -22,6 +22,8 @@ __all__ = [
 
 def fd(vertices, edges, fixed, q, loads, rtype='list'):
     """Implementation of the force density method to compute equilibrium of axial force networks.
+
+    The force density method ... [schek1974]_
     
     Parameters
     ----------
@@ -96,10 +98,6 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
         plotter.draw_faces()
         plotter.draw_edges()
         plotter.show()
-
-    References
-    ----------
-    H. Schek [1974], The Force Density Method for Form Finding and Computation of General Networks, Computer Methofd in Applied Mechanics and Engineering, 3: 115-134.
 
     """
     v    = len(vertices)

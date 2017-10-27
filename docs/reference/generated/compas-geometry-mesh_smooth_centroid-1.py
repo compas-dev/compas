@@ -4,7 +4,7 @@ from compas.datastructures import Mesh
 from compas.visualization import MeshPlotter
 from compas.geometry import mesh_smooth_centroid
 
-mesh = Mesh.from_obj(compas.get('hypar.obj'))
+mesh = Mesh.from_obj(compas.get('faces.obj'))
 fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
 mesh_smooth_centroid(mesh, fixed=fixed)

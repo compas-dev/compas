@@ -83,7 +83,7 @@ def smooth_centroid(vertices,
                 'width': 1.0,
             })
 
-        vertices = smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)
+        smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)
 
         for key, attr in mesh.vertices(True):
             attr['x'] = vertices[key][0]
@@ -93,7 +93,7 @@ def smooth_centroid(vertices,
         plotter = MeshPlotter(mesh)
 
         plotter.draw_lines(lines)
-        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed}, radius=0.05)
         plotter.draw_edges()
 
         plotter.show()
@@ -404,7 +404,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=1.0, callback=None,
         from compas.visualization import MeshPlotter
         from compas.geometry import mesh_smooth_centroid
 
-        mesh = Mesh.from_obj(compas.get('hypar.obj'))
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
         fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
         mesh_smooth_centroid(mesh, fixed=fixed)
