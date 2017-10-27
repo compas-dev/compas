@@ -10,6 +10,11 @@ __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
 
+__all__ = [
+    'moga'
+]
+
+
 TPL = """
 ================================================================================
 MOGA summary
@@ -90,55 +95,55 @@ def moga(fit_functions,
 
     Returns
     -------
-
     moga : object
         The resulting :class'MOGA' instance.
 
     References
     ----------
-    * Deb, K. (2001), Multi-Objective Optimization using Evolutionary Algorithms,
-    John Wiley & Sons, Chichester.
+    * Deb, K. (2001), Multi-Objective Optimization using Evolutionary Algorithms, John Wiley & Sons, Chichester.
 
-    Example (Zitzler-Deb-Thiele Test problem 3)
+    Example
     -------
+    Zitzler-Deb-Thiele Test problem 3
+
     .. code-block:: python
 
-    import os
-    import compas
-    import math
+        import os
+        import compas
+        import math
 
-    def zdt3_f1(X, a):
-        fit = X[0]
-        return fit
+        def zdt3_f1(X, a):
+            fit = X[0]
+            return fit
 
-    def zdt3_f2(X, a):
-        n = len(X)
-        totX = 0
-        for i in range(1, n):
-            totX  = totX + X[i]
-        G = 1 + (9 / (n - 1)) * totX
-        H = 1 - math.sqrt(X[0] / G) - ((X[0] / G) * math.sin(10 * math.pi * X[0]))
-        fit = G * H
-        return fit
+        def zdt3_f2(X, a):
+            n = len(X)
+            totX = 0
+            for i in range(1, n):
+                totX  = totX + X[i]
+            G = 1 + (9 / (n - 1)) * totX
+            H = 1 - math.sqrt(X[0] / G) - ((X[0] / G) * math.sin(10 * math.pi * X[0]))
+            fit = G * H
+            return fit
 
-    fit_functions = [zdt3_f1, zdt3_f2]
-    fit_types = ['min', 'min']
-    num_var = 30
-    boundaries = [(0, 1)] * num_var
-    num_bin_dig  = [8] * num_var
-    output_path = os.path.join(compas.TEMP, 'moga_out/')
+        fit_functions = [zdt3_f1, zdt3_f2]
+        fit_types = ['min', 'min']
+        num_var = 30
+        boundaries = [(0, 1)] * num_var
+        num_bin_dig  = [8] * num_var
+        output_path = os.path.join(compas.TEMP, 'moga_out/')
 
-    if not os.path.exists(output_path):
-        os.makedirs(output_path)
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
 
-    moga = moga(fit_functions,
-                fit_types,
-                num_var,
-                boundaries,
-                num_gen=100,
-                num_pop=50,
-                num_bin_dig=num_bin_dig,
-                output_path=output_path)
+        moga = moga(fit_functions,
+                    fit_types,
+                    num_var,
+                    boundaries,
+                    num_gen=100,
+                    num_pop=50,
+                    num_bin_dig=num_bin_dig,
+                    output_path=output_path)
 
     .. code-block:: none
 

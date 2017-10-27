@@ -6,24 +6,12 @@ numerical
 
 .. module:: compas.numerical
 
+.. note::
 
-A package for numerical computation.
+    The numerical package is built around NumPy and SciPy.
 
-Dependencies
-============
-
-* NumPy: http://www.numpy.org/
-* SciPy: http://www.scipy.org/
-
-**Optional**
-
-* Numba
-* Pandas
-* PyCuda
-* PyOpenCL
-* Cython
-* cvxpy
-* SymPy
+    * NumPy: http://www.numpy.org/
+    * SciPy: http://www.scipy.org/
 
 
 Methods

@@ -366,7 +366,7 @@ if __name__ == "__main__":
 
     plotter = MeshPlotter(mesh, figsize=(10, 6))
 
-    coll = plotter.draw_vertices(text='key')
+    coll = plotter.draw_vertices(text='key', radius=0.2)
     coll.set_picker(10)
 
     for text in plotter.axes.texts:
@@ -385,5 +385,4 @@ if __name__ == "__main__":
         plotter.update()
 
     plotter.register_listener(onpick)
-
     plotter.show()
