@@ -62,7 +62,7 @@ class Plotter(object):
       Available at: http://ieeexplore.ieee.org/document/4160265/citations
 
     """
-    def __init__(self, figsize=(16.0, 12.0), dpi=100.0):
+    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, interactive=False, tight=False):
         """Initialises a plotter object"""
         self._interactive = False
         self._axes = None
@@ -98,7 +98,8 @@ class Plotter(object):
             'polygon.textcolor' : '#000000',
             'polygon.fontsize'  : 10.0,
         }
-        self.tight = False
+        self.interactive = interactive
+        self.tight = tight
 
     @property
     def interactive(self):
@@ -163,6 +164,10 @@ class Plotter(object):
         return self.axes.get_figure()
 
     @property
+    def canvas(self):
+        return self.figure.canvas
+
+    @property
     def bgcolor(self):
         """Returns the background color.
 
@@ -212,6 +217,10 @@ class Plotter(object):
         """
         self.figure.canvas.set_window_title(value)
 
+    def register_listener(self, listener):
+        """"""
+        self.figure.canvas.mpl_connect('pick_event', listener)
+
     def clear_collection(self, collection):
         """Clears a matplotlib collection object.
 
@@ -242,6 +251,21 @@ class Plotter(object):
         self.axes.autoscale()
         plt.savefig(filepath, **kwargs)
 
+    # def init_gif(self, filepath, **kwargs):
+    #     """Saves the plot on a file.
+
+    #     Parameters
+    #     ----------
+    #     filepath : str
+    #         Full path of the file.
+
+    #     """
+    #     self.axes.autoscale()
+    #     plt.savefig(filepath, **kwargs)
+
+    # def save_gifimage(self):
+    #     pass
+
     def update(self, pause=0.0001):
         """Updates and pauses the plot.
 
@@ -251,7 +275,7 @@ class Plotter(object):
             Ammount of time to pause the plot in seconds.
         """
         self.axes.autoscale()
-        self.figure.canvas.draw_idle()
+        # self.figure.canvas.draw_idle()
         plt.pause(pause)
 
     def update_pointcollection(self, collection, centers, radius=1.0):
