@@ -362,10 +362,28 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    plotter = MeshPlotter(mesh)
+    index_key = mesh.index_key()
 
-    plotter.draw_vertices(text='x')
+    plotter = MeshPlotter(mesh, figsize=(10, 6))
+
+    coll = plotter.draw_vertices(text='key')
+    coll.set_picker(10)
+
+    for text in plotter.axes.texts:
+        text.set_visible(False)
+
     plotter.draw_edges()
     plotter.draw_faces()
+
+    def onpick(event):
+        index = event.ind[0]
+        for i, text in enumerate(plotter.axes.texts):
+            if i == index:
+                text.set_visible(True)
+            else:
+                text.set_visible(False)
+        plotter.update()
+
+    plotter.register_listener(onpick)
 
     plotter.show()
