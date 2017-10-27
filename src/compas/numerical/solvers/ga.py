@@ -1,3 +1,4 @@
+from __future__ import print_function
 import re
 import random
 import json
@@ -8,57 +9,169 @@ __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
+TPL = """
+================================================================================
+GA summary
+================================================================================
 
-def ga_optimize(fit_function,
+- fitness function name: {}
+
+- fitnes function type : {}
+
+- number of generations : {}
+
+- number of individuals : {}
+
+- number of variables : {}
+
+- optimal individual : {}
+
+- optimal fitness value : {}
+
+================================================================================
+"""
+
+
+def ga(fit_function,
+       fit_type,
+       num_var,
+       boundaries,
+       num_gen=100,
+       num_pop=100,
+       num_elite=10,
+       mutation_probability=0.001,
+       num_bin_dig=None,
+       num_pop_init=None,
+       num_gen_init_pop=None,
+       start_from_gen=False,
+       min_fit=None,
+       fit_name=None,
+       fargs=None,
+       fkwargs=None,
+       output_path=None,
+       input_path=None):
+
+    ga_ = GA()
+    """Genetic Algorithm optimisation.
+
+    Parameters
+    ----------
+
+    fit_function : callable
+        The function used by the :class'GA' to determine the fitness value. The function
+        must have as a first argument a list of variables that determine the
+        fitness value. Other arguments and keyword arguments can be used to feed
+        the function relevant data.
+    fit_type : str
+        String that indicates if the fitness function is to be minimized or maximized.
+        "min" for minimization and "max" for maximization.
+    num_var :  int
+        The number of variables used by the fitness function.
+    boundaries : list
+        The minimum and vaximum values each variable is allowed to have. Must be
+        a ``num_var`` long list of tuples in the form [(min, max),...].
+    num_gen : int, optional [100]
+        The maximum number of generations.
+    num_pop : int, optional [100]
+        The number of individuals in the population. Must be an even number.
+    num_elite : int, optional [10]
+        The number of individuals in the elite population. Must be an even number.
+    mutation_probablity : float, optional [0.001]
+        Float from 0 to 1. If 0 is used, none of the genes in each individuals
+        chromosome will be mutated. If 1 is used, all of them will mutate.
+    num_bin_dig : list, optional [None]
+        Number of genes used to codify each variable. Must be a ``num_var`` long
+        list of intergers. If None is given, each variable will be coded with a
+        8 digit binary number, corresponding to 256 steps.
+    num_pop_init : int, optional [None]
+        The number of individuals in the population for the first ``num_gen_init_pop``
+        generations.
+    num_gen_init_pop : int, optional
+        The number of generations to keep a ``num_pop_init`` size population for.
+    start_from_get : int, optional [None]
+        The generation number to restart a previous optimization process.
+    min_fit : float, optional [None]
+        A target fitness value. If the GA finds a solution with a fitness value
+        equal or better than ``min_fit``, the optimization is stopped.
+    fit_name : str, optional [None]
+        The name of the optimisation. If None is given, the name of the fitness
+        function is used.
+    fargs : list, optional [None]
+        Arguments fo be fed to the fitness function.
+    fkwargs : dict, optional [None]
+        Keyword arguments to be fed to the fitness function.
+    output_path : str, optional [None]
+        Path for the optimization result files.
+    input_path : str, optional [None]
+        Path to the fitness function file.
+
+    Returns
+    -------
+
+    ga_ : object
+        The resulting :class'GA' instance.
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import os
+
+        def foo(X):
+            fit = sum(X)
+            return fit
+
+        fit_function = foo
+        fit_type = 'min'
+        num_var = 10
+        boundaries = [(0, 1)] * num_var
+        num_bin_dig  = [8] * num_var
+        output_path = 'out/'
+
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+
+        ga = ga(fit_function,
                 fit_type,
                 num_var,
                 boundaries,
                 num_gen=100,
                 num_pop=100,
-                num_elite=10,
-                mutation_probability=0.001,
-                num_bin_dig=None,
-                num_pop_init=None,
-                num_gen_init_pop=None,
-                start_from_gen=False,
-                min_fit=None,
-                fit_name=None,
-                fargs=None,
-                fkwargs=None,
-                output_path=None,
-                input_path=None):
+                num_elite=40,
+                num_bin_dig=num_bin_dig,
+                output_path=output_path,
+                min_fit=0.001)
+        print (ga)
 
-    ga = GA()
+    """
 
-    ga.fit_name             = fit_name or fit_function.__name__
-    ga.fit_type             = fit_type
-    ga.num_gen              = num_gen
-    ga.num_pop              = num_pop
-    ga.num_pop_init         = num_pop_init
-    ga.num_gen_init_pop     = num_gen_init_pop
-    ga.num_elite            = num_elite
-    ga.num_var              = num_var
-    ga.mutation_probability = mutation_probability
-    ga.start_from_gen       = start_from_gen
-    ga.min_fit              = min_fit
-    ga.boundaries           = boundaries
-    ga.num_bin_dig          = num_bin_dig or [8] * num_var
-    ga.max_bin_dig          = max(ga.num_bin_dig)
-    ga.total_bin_dig        = sum(ga.num_bin_dig)
-    ga.fargs                = fargs or {}
-    ga.fkwargs              = fkwargs or {}
-    ga.fit_function         = fit_function
-    ga.output_path          = output_path or ''
-    ga.input_path           = input_path or ''
-    print('output_path', ga.output_path)
-    ga.ga()
-    return ga
+    ga_.fit_name             = fit_name or fit_function.__name__
+    ga_.fit_type             = fit_type
+    ga_.num_gen              = num_gen
+    ga_.num_pop              = num_pop
+    ga_.num_pop_init         = num_pop_init
+    ga_.num_gen_init_pop     = num_gen_init_pop
+    ga_.num_elite            = num_elite
+    ga_.num_var              = num_var
+    ga_.mutation_probability = mutation_probability
+    ga_.start_from_gen       = start_from_gen
+    ga_.min_fit              = min_fit
+    ga_.boundaries           = boundaries
+    ga_.num_bin_dig          = num_bin_dig or [8] * num_var
+    ga_.max_bin_dig          = max(ga_.num_bin_dig)
+    ga_.total_bin_dig        = sum(ga_.num_bin_dig)
+    ga_.fargs                = fargs or {}
+    ga_.fkwargs              = fkwargs or {}
+    ga_.fit_function         = fit_function
+    ga_.output_path          = output_path or ''
+    ga_.input_path           = input_path or ''
+    ga_.ga_optimise()
+    return ga_
 
 
-class GA:
-    """This class contains a binary coded, single objective genetic algorithm. The main function
-    is ``GA.ga``, calling this function starts the GA optimization. It also contains all of the
-    required genetic operators.
+class GA(object):
+    """This class contains a binary coded, single objective genetic algorithm.
     """
 
     def __init__(self):
@@ -164,7 +277,25 @@ class GA:
         self.total_bin_dig = 0
         self.check_diversity = False
 
-    def ga(self):
+    def __str__(self):
+        """Compile a summary of the GA."""
+        fit_name = self.fit_name
+        fit_type = self.fit_type
+        num_gen = self.num_gen
+        num_pop = self.num_pop
+        num_var = self.num_var
+        best = self.best_individual_index
+        try:
+            fit = self.current_pop['fit_value'][self.best_individual_index]
+        except(Exception):
+            fit = None
+        return TPL.format(fit_name, fit_type, num_gen, num_pop, num_var, best, fit)
+
+    def summary(self):
+        """Print a summary of the GA."""
+        print(self)
+
+    def ga_optimise(self):
         """ This is the main optimization function, this function permorms the GA optimization,
         performing all genetic operators.
         """
@@ -630,7 +761,7 @@ class GA:
         Parameters
         ----------
         gen: int
-            The generation number.
+            The generation index.
 
         Returns
         -------
@@ -677,3 +808,34 @@ class GA:
         elif self.fit_type == 'max':
             indices = self.get_sorting_indices(fit_values, reverse=True)
         self.best_individual_index = indices[0]
+
+
+if __name__ == '__main__':
+    import os
+
+    def foo(X):
+        fit = sum(X)
+        return fit
+
+    fit_function = foo
+    fit_type = 'min'
+    num_var = 10
+    boundaries = [(0, 1)] * num_var
+    num_bin_dig  = [8] * num_var
+    output_path = 'out/'
+
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+
+    ga = ga(fit_function,
+            fit_type,
+            num_var,
+            boundaries,
+            num_gen=100,
+            num_pop=100,
+            num_elite=40,
+            num_bin_dig=num_bin_dig,
+            output_path=output_path,
+            min_fit=0.001)
+
+    print (ga)

@@ -12,7 +12,7 @@ A package for numerical computation.
 Dependencies
 ============
 
-* NumPy: http://www.numpy.org/ 
+* NumPy: http://www.numpy.org/
 * SciPy: http://www.scipy.org/
 
 **Optional**
@@ -45,10 +45,10 @@ Solvers
 
     descent
     devo
-    GA
+    ga
     lma
     mma
-    MOGA
+    moga
 
 
 Core

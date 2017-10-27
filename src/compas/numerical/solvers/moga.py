@@ -10,20 +10,20 @@ __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
 
-def moga_optimize(fit_functions,
-                  fit_types,
-                  num_var,
-                  boundaries,
-                  num_gen=100,
-                  num_pop=100,
-                  mutation_probability=0.001,
-                  num_bin_dig=None,
-                  start_from_gen=False,
-                  min_fit=None,
-                  fit_names=None,
-                  fargs=None,
-                  fkwargs=None,
-                  output_path=None):
+def moga(fit_functions,
+         fit_types,
+         num_var,
+         boundaries,
+         num_gen=100,
+         num_pop=100,
+         mutation_probability=0.001,
+         num_bin_dig=None,
+         start_from_gen=False,
+         min_fit=None,
+         fit_names=None,
+         fargs=None,
+         fkwargs=None,
+         output_path=None):
 
     moga = MOGA()
 
@@ -44,12 +44,11 @@ def moga_optimize(fit_functions,
     moga.fit_functions        = fit_functions
     moga.output_path          = output_path or ''
     moga.num_fit_func         = len(fit_functions)
-    print ('output_path = ', moga.output_path)
     moga.moga()
     return moga
 
 
-class MOGA:
+class MOGA(object):
     """This class contains a binary coded, multiple objective genetic algorithm called
     NSGA-II (ref to K. Deb). NSGA-II uses the concept of non-domination, or Pareto-domination to
     classify solutions and optimize as a genetic algorith. NSGA-II also employs a crowding distance
