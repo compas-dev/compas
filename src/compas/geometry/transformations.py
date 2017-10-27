@@ -642,7 +642,9 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
         This example visualized in Rhino:
 
 
-    .. image:: /_images/reflect_line_triangle.*
+    .. figure:: /_images/reflect_line_triangle.*
+        :figclass: figure
+        :class: figure-img img-fluid
 
     """
     intx_pt = intersection_line_triangle(line, triangle, epsilon)
