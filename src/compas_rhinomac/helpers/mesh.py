@@ -5,7 +5,7 @@ import ast
 from compas.utilities import geometric_key
 from compas.utilities import color_to_colordict
 
-from compas_rhinomac.geometry.surface import RhinoSurface
+# from compas_rhinomac.geometry.surface import RhinoSurface
 
 import compas_rhinomac
 
