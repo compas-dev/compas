@@ -1,6 +1,0 @@
-GA.add_elite_to_current
-================================================
-
-.. currentmodule:: compas.numerical.solvers
-
-.. automethod:: GA.add_elite_to_current

@@ -6,8 +6,6 @@ from compas.geometry import dot_vectors
 from compas.geometry import distance_point_point
 from compas.geometry import cross_vectors_xy
 
-from compas.datastructures import Mesh
-
 
 __author__     = ['Matthias Rippmann <rippmann@ethz.ch>']
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -163,7 +161,8 @@ if __name__ == "__main__":
 
     import random
 
-    from compas.visualization.viewers.meshviewer import MeshViewer
+    from compas.datastructures import Mesh
+    from compas.visualization.viewers import MeshViewer
 
     radius = 5
     origin = (0., 0., 0.)

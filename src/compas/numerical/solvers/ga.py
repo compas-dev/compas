@@ -4,10 +4,12 @@ import random
 import json
 import copy
 
+
 __author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
+
 
 TPL = """
 ================================================================================
