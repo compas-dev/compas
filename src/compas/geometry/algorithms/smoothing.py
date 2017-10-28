@@ -244,12 +244,12 @@ def smooth_centerofmass(vertices,
 
 
 def smooth_resultant(vertices,
-                    adjacency,
-                    fixed=None,
-                    kmax=1,
-                    damping=0.05,
-                    callback=None,
-                    callback_args=None):
+                     adjacency,
+                     fixed=None,
+                     kmax=1,
+                     damping=0.05,
+                     callback=None,
+                     callback_args=None):
     """Smooth a connected set of vertices
     by moving each vertex along the scaled resultant vector 
     of the neighbouring, outgoing edge vectors.
@@ -289,7 +289,7 @@ def smooth_resultant(vertices,
 
         import compas
         from compas.datastructures import Mesh
-        from compas.geometry import smooth_centerofmass
+        from compas.geometry import smooth_resultant
         from compas.visualization import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get_data('faces.obj'))
@@ -661,7 +661,7 @@ def network_smooth_resultant(network, fixed=None, kmax=100, damping=0.05, callba
     
         from compas.datastructures import Network
         from compas.visualization import NetworkPlotter
-        from compas.geometry import network_smooth_centroid
+        from compas.geometry import network_smooth_resultant
 
         network = Network.from_obj(compas.get('lines.obj'))
         fixed = [key for key in network.vertices() if network.vertex_degree(key) == 2]
