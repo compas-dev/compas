@@ -83,7 +83,7 @@ class Plotter(object):
             'point.radius'    : 0.15,
             'point.facecolor' : '#ffffff',
             'point.edgecolor' : '#000000',
-            'point.edgewidth' : 0.0,
+            'point.edgewidth' : 0.5,
             'point.textcolor' : '#000000',
             'point.fontsize'  : kwargs.get('fontsize', 10),
 
@@ -94,7 +94,7 @@ class Plotter(object):
 
             'polygon.facecolor' : '#ffffff',
             'polygon.edgecolor' : '#000000',
-            'polygon.edgewidth' : 1.0,
+            'polygon.edgewidth' : 0.1,
             'polygon.textcolor' : '#000000',
             'polygon.fontsize'  : kwargs.get('fontsize', 10),
         }

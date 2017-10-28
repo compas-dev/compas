@@ -128,8 +128,6 @@ def smooth_centroid(vertices,
         if callback:
             callback(vertices, k, callback_args)
 
-    return vertices
-
 
 def smooth_centerofmass(vertices,
                         adjacency,
@@ -200,7 +198,7 @@ def smooth_centerofmass(vertices,
                 'width': 1.0,
             })
 
-        vertices = smooth_centerofmass(vertices, adjacency, fixed=fixed, kmax=100)
+        smooth_centerofmass(vertices, adjacency, fixed=fixed, kmax=100)
 
         for key, attr in mesh.vertices(True):
             attr['x'] = vertices[key][0]
@@ -239,8 +237,6 @@ def smooth_centerofmass(vertices,
 
         if callback:
             callback(vertices, k, callback_args)
-
-    return vertices
 
 
 def smooth_resultant(vertices,
@@ -304,10 +300,10 @@ def smooth_resultant(vertices,
                 'start': mesh.vertex_coordinates(u, 'xy'),
                 'end'  : mesh.vertex_coordinates(v, 'xy'),
                 'color': '#cccccc',
-                'width': 1.0,
+                'width': 0.5,
             })
 
-        vertices = smooth_resultant(vertices, adjacency, fixed=fixed, kmax=100)
+        smooth_resultant(vertices, adjacency, fixed=fixed, kmax=100)
 
         for key, attr in mesh.vertices(True):
             attr['x'] = vertices[key][0]
@@ -321,7 +317,6 @@ def smooth_resultant(vertices,
         plotter.draw_edges()
 
         plotter.show()
-
 
     """
     if callback:
@@ -349,8 +344,6 @@ def smooth_resultant(vertices,
 
         if callback:
             callback(vertices, k, callback_args)
-
-    return vertices
 
 
 def smooth_area(vertices,
@@ -422,7 +415,7 @@ def smooth_area(vertices,
                 'width': 1.0,
             })
 
-        vertices = smooth_area(vertices, faces, adjacency, fixed=fixed, kmax=100)
+        smooth_area(vertices, faces, adjacency, fixed=fixed, kmax=100)
 
         for key, attr in mesh.vertices(True):
             attr['x'] = vertices[key][0]
@@ -476,8 +469,6 @@ def smooth_area(vertices,
 
         if callback:
             callback(vertices, k, callback_args)
-
-    return vertices
 
 
 # ==============================================================================
@@ -598,7 +589,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
         from compas.geometry import network_smooth_centroid
 
         network = Network.from_obj(compas.get('lines.obj'))
-        fixed = [key for key in network.vertices() if network.vertex_degree(key) == 2]
+        fixed = [key for key in network.vertices() if network.vertex_degree(key) == 1]
 
         network_smooth_centroid(network, fixed=fixed)
 
@@ -658,17 +649,28 @@ def network_smooth_resultant(network, fixed=None, kmax=100, damping=0.05, callba
         :include-source:
 
         import compas
-    
+
         from compas.datastructures import Network
         from compas.visualization import NetworkPlotter
         from compas.geometry import network_smooth_resultant
 
-        network = Network.from_obj(compas.get('lines.obj'))
-        fixed = [key for key in network.vertices() if network.vertex_degree(key) == 2]
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
+        fixed = [key for key in network.vertices() if network.vertex_degree(key) == 1]
+
+        lines = []
+        for u, v in network.edges():
+            lines.append({
+                'start' : network.vertex_coordinates(u, 'xy'),
+                'end'   : network.vertex_coordinates(v, 'xy'),
+                'color' : '#cccccc',
+                'width' : 1.0
+            })
 
         network_smooth_resultant(network, fixed=fixed)
 
         plotter = NetworkPlotter(network)
+
+        plotter.draw_lines(lines)
 
         plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
         plotter.draw_edges()
@@ -724,12 +726,11 @@ if __name__ == "__main__":
     plotter = MeshPlotter(mesh)
 
     plotter.draw_lines(lines)
-
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
     plotter.draw_faces()
     plotter.draw_edges()
 
-    def callback(k, args):
+    def callback(mesh, k, args):
         plotter.update_vertices()
         plotter.update_edges()
         plotter.update_faces()

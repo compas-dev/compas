@@ -75,7 +75,7 @@ class NetworkPlotter(Plotter):
             'vertex.radius'    : 0.1,
             'vertex.facecolor' : '#ffffff',
             'vertex.edgecolor' : '#000000',
-            'vertex.edgewidth' : 1.0,
+            'vertex.edgewidth' : 0.5,
             'vertex.textcolor' : '#000000',
             'vertex.fontsize'  : kwargs.get('fontsize', 10),
 
