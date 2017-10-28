@@ -52,7 +52,7 @@ def moga(fit_functions,
          fkwargs=None,
          output_path=None):
 
-    """Genetic Algorithm optimisation (Deb 2001).
+    """Genetic Algorithm optimisation [deb2001]_.
 
     Parameters
     ----------
@@ -97,10 +97,6 @@ def moga(fit_functions,
     -------
     moga : object
         The resulting :class'MOGA' instance.
-
-    References
-    ----------
-    * Deb, K. (2001), Multi-Objective Optimization using Evolutionary Algorithms, John Wiley & Sons, Chichester.
 
     Example
     -------

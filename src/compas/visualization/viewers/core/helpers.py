@@ -63,11 +63,13 @@ class Camera(object):
         glRotatef(self.rx, 1, 0, 0)
         glRotatef(self.rz, 0, 0, 1)
 
-    def zoom_in(self):
-        self.tz -= self.tz * self.dt
+    def zoom_in(self, steps=1):
+        for i in range(steps):
+            self.tz -= self.tz * self.dt
 
-    def zoom_out(self):
-        self.tz += self.tz * self.dt
+    def zoom_out(self, steps=1):
+        for i in range(steps):
+            self.tz += self.tz * self.dt
 
 
 class Grid(object):

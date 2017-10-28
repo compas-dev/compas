@@ -8,42 +8,6 @@ datastructures
 .. module:: compas.datastructures
 
 
-Network
-=======
-
-.. autosummary::
-    :toctree: generated/
-
-    Network
-    FaceNetwork
-
-
-network.operations
-------------------
-
-.. autosummary::
-    :toctree: generated/
-
-    network_split_edge
-
-
-network.algorithms
-------------------
-
-.. autosummary::
-    :toctree: generated/
-
-    network_count_crossings
-    network_dual
-    network_embed_in_plane
-    network_find_faces
-    network_find_crossings
-    network_is_xy
-    network_is_crossed
-    network_is_planar
-    network_is_planar_embedding
-
-
 Mesh
 ====
 
@@ -102,6 +66,42 @@ mesh.algorithms
 
     trimesh_remesh
     trimesh_subdivide_loop
+
+
+Network
+=======
+
+.. autosummary::
+    :toctree: generated/
+
+    Network
+    FaceNetwork
+
+
+network.operations
+------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    network_split_edge
+
+
+network.algorithms
+------------------
+
+.. autosummary::
+    :toctree: generated/
+
+    network_count_crossings
+    network_dual
+    network_embed_in_plane
+    network_find_faces
+    network_find_crossings
+    network_is_xy
+    network_is_crossed
+    network_is_planar
+    network_is_planar_embedding
 
 
 VolMesh

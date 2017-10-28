@@ -103,7 +103,7 @@ def rk4(a, v0, dt):
 def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
        callback=None, callback_args=None, **kwargs):
     """Implementation of the dynamic relaxation method for finding the equilibrium
-    of articulated networks of axial force members.
+    of articulated networks of axial force members [delaet2013]_.
 
     Parameters
     ----------
@@ -211,12 +211,6 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
             facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
         plotter.draw_edges()
         plotter.show()
-
-    References
-    ----------
-    De Laet L., Veenendaal D., Van Mele T., Mollaert M. and Block P.
-    Bending incorporated: designing tension structures by integrating bending-active elements,
-    Proceedings of Tensinet Symposium 2013,Istanbul, Turkey, 2013.
 
     """
     if callback:

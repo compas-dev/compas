@@ -116,7 +116,8 @@ class MeshPlotter(Plotter):
                       edgecolor=None,
                       edgewidth=None,
                       textcolor=None,
-                      fontsize=None):
+                      fontsize=None,
+                      picker=None):
         """Draws the mesh vertices.
 
         Parameters
@@ -182,6 +183,9 @@ class MeshPlotter(Plotter):
 
         collection = self.draw_points(points)
         self.vertexcollection = collection
+
+        if picker:
+            collection.set_picker(picker)
         return collection
 
     def clear_vertices(self):
@@ -362,12 +366,9 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    index_key = mesh.index_key()
-
     plotter = MeshPlotter(mesh, figsize=(10, 6))
 
-    coll = plotter.draw_vertices(text='key', radius=0.2)
-    coll.set_picker(10)
+    plotter.draw_vertices(text='key', radius=0.2, picker=10)
 
     for text in plotter.axes.texts:
         text.set_visible(False)

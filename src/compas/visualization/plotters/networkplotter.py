@@ -77,12 +77,12 @@ class NetworkPlotter(Plotter):
             'vertex.edgecolor' : '#000000',
             'vertex.edgewidth' : 1.0,
             'vertex.textcolor' : '#000000',
-            'vertex.fontsize'  : 10.0,
+            'vertex.fontsize'  : kwargs.get('fontsize', 10),
 
             'edge.width'    : 1.0,
             'edge.color'    : '#000000',
             'edge.textcolor': '#000000',
-            'edge.fontsize' : 10.0,
+            'edge.fontsize' : kwargs.get('fontsize', 10),
         }
 
     def clear(self):
@@ -92,11 +92,13 @@ class NetworkPlotter(Plotter):
 
     def clear_vertices(self):
         """Clears the netwotk plotter vertices."""
-        self.vertexcollection.remove()
+        if self.vertexcollection:
+            self.vertexcollection.remove()
 
     def clear_edges(self):
         """Clears the network object edges."""
-        self.edgecollection.remove()
+        if self.edgecollection:
+            self.edgecollection.remove()
 
     def draw_vertices(self,
                       keys=None,
@@ -106,7 +108,8 @@ class NetworkPlotter(Plotter):
                       edgecolor=None,
                       edgewidth=None,
                       textcolor=None,
-                      fontsize=None):
+                      fontsize=None,
+                      picker=None):
         """Draws the network vertices.
 
         Parameters
@@ -136,6 +139,20 @@ class NetworkPlotter(Plotter):
         """
         keys = keys or list(self.network.vertices())
 
+        if text == 'key':
+            text = {key: str(key) for key in self.network.vertices()}
+        elif text == 'index':
+            text = {key: str(index) for index, key in enumerate(self.network.vertices())}
+        elif isinstance(text, basestring):
+            if text in self.network.default_vertex_attributes:
+                default = self.network.default_vertex_attributes[text]
+                if isinstance(default, float):
+                    text = {key: '{:.1f}'.format(attr[text]) for key, attr in self.network.vertices(True)}
+                else:
+                    text = {key: str(attr[text]) for key, attr in self.network.vertices(True)}
+        else:
+            pass
+
         radiusdict    = valuedict(keys, radius, self.defaults['vertex.radius'])
         textdict      = valuedict(keys, text, '')
         facecolordict = valuedict(keys, facecolor, self.defaults['vertex.facecolor'])
@@ -159,6 +176,9 @@ class NetworkPlotter(Plotter):
 
         collection = self.draw_points(points)
         self.vertexcollection = collection
+
+        if picker:
+            collection.set_picker(picker)
         return collection
 
     def update_vertices(self):
@@ -238,13 +258,32 @@ class NetworkPlotter(Plotter):
 if __name__ == "__main__":
 
     import compas
+
     from compas.datastructures import Network
+    from compas.visualization import NetworkPlotter
 
-    network = Network.from_obj(compas.get('lines.obj'))
 
-    plotter = NetworkPlotter(network)
+    network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-    plotter.draw_vertices()
+    plotter = NetworkPlotter(network, figsize=(10, 8))
+
+    plotter.draw_vertices(radius=0.1, picker=10)
     plotter.draw_edges()
 
+
+    default = [plotter.defaults['vertex.facecolor'] for key in network.vertices()]
+    highlight = '#ff0000'
+
+
+    def on_pick(event):
+        index = event.ind[0]
+
+        colors = default[:]
+        colors[index] = highlight
+
+        plotter.vertexcollection.set_facecolor(colors)
+        plotter.update()
+
+
+    plotter.register_listener(on_pick)
     plotter.show()
