@@ -35,6 +35,7 @@ Algorithms
     smooth_centroid
     smooth_centerofmass
     smooth_area
+    smooth_resultant
     discrete_coons_patch
 
 .. autosummary::
@@ -45,6 +46,7 @@ Algorithms
     mesh_planarize_faces_shapeop
     mesh_circularize_faces_shapeop
     mesh_smooth_centroid
+    network_smooth_resultant
 
 .. autosummary::
     :toctree: generated/

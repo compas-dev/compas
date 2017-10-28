@@ -423,7 +423,8 @@ def orient_points(points, reference_plane=None, target_plane=None):
 
     vec_rot = cross_vectors(reference_plane[1], target_plane[1])
     angle = angle_smallest_vectors(reference_plane[1], target_plane[1])
-    points = rotate_points(points, vec_rot, angle, reference_plane[0])
+    if angle:
+        points = rotate_points(points, vec_rot, angle, reference_plane[0])
     vec_trans = subtract_vectors(target_plane[0], reference_plane[0])
     points = translate_points(points, vec_trans)
     return points

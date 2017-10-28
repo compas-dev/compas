@@ -17,10 +17,10 @@ from compas.geometry.queries import is_point_on_segment
 from compas.geometry.queries import is_point_on_segment_xy
 
 
-__author__    = ['Tom Van Mele', ]
+__author__ = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+__license__ = 'MIT License'
+__email__ = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -71,7 +71,7 @@ def intersection_line_line(l1, l2):
     ab = subtract_vectors(b, a)
     cd = subtract_vectors(d, c)
 
-    n  = cross_vectors(ab, cd)
+    n = cross_vectors(ab, cd)
     n1 = cross_vectors(ab, n)
     n2 = cross_vectors(cd, n)
 
@@ -193,12 +193,12 @@ def intersection_circle_circle_xy(circle1, circle2):
     if (d == 0) and (r1 == r2):
         return None
 
-    a   = (r1 * r1 - r2 * r2 + d * d) / (2 * d)
-    h   = (r1 * r1 - a * a) ** 0.5
+    a = (r1 * r1 - r2 * r2 + d * d) / (2 * d)
+    h = (r1 * r1 - a * a) ** 0.5
     cx2 = p1[0] + a * (p2[0] - p1[0]) / d
     cy2 = p1[1] + a * (p2[1] - p1[1]) / d
-    i1  = ((cx2 + h * (p2[1] - p1[1]) / d), (cy2 - h * (p2[0] - p1[0]) / d), 0)
-    i2  = ((cx2 - h * (p2[1] - p1[1]) / d), (cy2 + h * (p2[0] - p1[0]) / d), 0)
+    i1 = ((cx2 + h * (p2[1] - p1[1]) / d), (cy2 - h * (p2[0] - p1[0]) / d), 0)
+    i2 = ((cx2 - h * (p2[1] - p1[1]) / d), (cy2 + h * (p2[0] - p1[0]) / d), 0)
 
     return i1, i2
 
@@ -244,7 +244,7 @@ def intersection_line_triangle(line, triangle, epsilon=1e-6):
     # Calculate V parameter and make_blocks bound
     v = dot_vectors(v1, q) * inv_det
     # The intersection lies outside of the triangle
-    if(v < 0.0 or u + v  > 1.0):
+    if(v < 0.0 or u + v > 1.0):
         return None
     t = dot_vectors(e2, q) * inv_det
     if t > epsilon:
@@ -303,7 +303,7 @@ def intersection_segment_plane(segment, plane, epsilon=1e-6):
     if fabs(dot) > epsilon:
         v2 = subtract_vectors(pt1, p_cent)
         fac = - dot_vectors(p_norm, v2) / dot
-        if fac > 0. and fac < 1.:
+        if fac >= -0. and fac <= 1.:
             vec = scale_vector(v1, fac)
             return add_vectors(pt1, vec)
         return None

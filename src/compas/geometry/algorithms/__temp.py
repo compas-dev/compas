@@ -83,24 +83,24 @@
 #         return ax, ay, az
 
 
-# def dr(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1):
-#     a = (1 - c * 0.5) / (1 + c * 0.5)
-#     b = 0.5 * (1 + a)
+def dr(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1):
+    a = (1 - c * 0.5) / (1 + c * 0.5)
+    b = 0.5 * (1 + a)
 
-#     network.dt = dt
+    network.dt = dt
 
-#     fixed = set([key for key in network.vertices() if network.vertex[key]['is_fixed']])
+    fixed = set([key for key in network.vertices() if network.vertex[key]['is_fixed']])
 
-#     for k in range(kmax):
-#         key_xyz = {key: network.vertex_coordinates(key) for key in network.vertices()}
+    for k in range(kmax):
+        key_xyz = {key: network.vertex_coordinates(key) for key in network.vertices()}
 
-#         for key, attr in network.vertices(True):
+        for key, attr in network.vertices(True):
 
-#             if key in fixed:
-#                 continue
+            if key in fixed:
+                continue
 
-#             rx, ry, rz = network.residual(key, key_xyz, b)
+            rx, ry, rz = network.residual(key, key_xyz, b)
 
-#             attr['x'] += c * rx
-#             attr['y'] += c * ry
-#             attr['z'] += c * rz
+            attr['x'] += c * rx
+            attr['y'] += c * ry
+            attr['z'] += c * rz
