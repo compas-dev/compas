@@ -43,6 +43,8 @@ from compas.datastructures.mixins import VertexMappings
 from compas.datastructures.mixins import EdgeMappings
 from compas.datastructures.mixins import FaceMappings
 
+from compas.datastructures.mesh.algorithms import delaunay_from_points
+
 from compas.topology import bfs_traverse
 from compas.geometry import flatness
 
@@ -466,6 +468,24 @@ class Mesh(FromToJson,
         """
         p = Polyhedron.generate(f)
         return cls.from_vertices_and_faces(p.vertices, p.faces)
+
+    @classmethod
+    def from_points(cls, points, boundary=None, holes=None):
+        """Construct a mesh from a delaunay triangulation of a set of points.
+
+        Parameters
+        ----------
+        points : list
+            XYZ coordinates of the points.
+            Z coordinates should be zero.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+
+        """
+        return delaunay_from_points(cls, points, boundary=boundary, holes=holes)
 
     # --------------------------------------------------------------------------
     # converters

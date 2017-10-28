@@ -48,7 +48,7 @@ class Camera(object):
     """"""
     def __init__(self, viewer):
         self.viewer = viewer
-        self.rx = -30.0  # from y to z => pos
+        self.rx = -60.0  # from y to z => pos
         self.rz = +30.0  # from x to y => pos
         self.dr = +0.5
         self.tx = +0.0

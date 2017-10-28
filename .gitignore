@@ -112,4 +112,6 @@ libs/**
 src/.build/**
 *.rhl
 
-samples/stanford_*.ply
+samples/bunny
+*.ply
+*.tar.gz

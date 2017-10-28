@@ -29,6 +29,9 @@ from __future__ import print_function
 import os
 import sys
 
+import urllib
+import tarfile
+
 
 __version__ = '0.0.1'
 
@@ -54,6 +57,28 @@ def get_data(filename):
 
 def get(filename):
     return _find_resource(filename)
+
+
+def get_bunny():
+    bunny = os.path.abspath(os.path.join(DATA, 'bunny/reconstruction/bun_zipper.ply'))
+
+    if not os.path.exists(bunny):
+        print('Getting the bunny from http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz ...')
+        print('This will take a few seconds...')
+
+        destination = os.path.abspath(os.path.join(DATA, 'bunny.tar.gz'))
+
+        urllib.urlretrieve('http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz', destination)
+
+        tar = tarfile.open(destination)
+        tar.extractall(DATA)
+        tar.close()
+
+        os.remove(destination)
+
+        print('Got it!\n')
+
+    return bunny
 
 
 def get_license():

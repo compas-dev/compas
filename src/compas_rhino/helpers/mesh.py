@@ -55,6 +55,7 @@ __all__ = [
     'mesh_update_edge_attributes',
     'mesh_update_face_attributes',
     'mesh_move_vertex',
+    'mesh_identify_vertices',
 ]
 
 
@@ -1011,6 +1012,22 @@ def mesh_update_face_attributes(mesh, fkeys, names=None):
 
     """
     return FaceModifier.update_vertex_attributes(mesh, fkeys, names=names)
+
+
+# ==============================================================================
+# identify
+# ==============================================================================
+
+
+def mesh_identify_vertices(mesh, points, precision):
+    keys = []
+    gkey_key = {geometric_key(mesh.vertex_coordinates(key), precision): key for key in mesh.vertices()}
+    for xyz in points:
+        gkey = geometric_key(xyz, '1f')
+        if gkey in gkey_key:
+            key = gkey_key[gkey]
+            keys.append(key)
+    return keys
 
 
 # ==============================================================================

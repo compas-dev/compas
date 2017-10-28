@@ -1,6 +1,8 @@
 import os
 import compas
 
+from compas.geometry import centroid_points
+
 from compas.visualization.viewers.viewer import Viewer
 
 from compas.visualization.viewers.core.drawing import xdraw_polygons
@@ -27,6 +29,18 @@ class MeshViewer(Viewer):
     def __init__(self, mesh, width=1440, height=900):
         super(MeshViewer, self).__init__(width=width, height=height)
         self.mesh = mesh
+        self.center()
+
+    # --------------------------------------------------------------------------
+    # helpers (temp)
+    # --------------------------------------------------------------------------
+
+    def center(self):
+        xyz = [self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()]
+        cx, cy, cz = centroid_points(xyz)
+        for key, attr in self.mesh.vertices(True):
+            attr['x'] -= cx
+            attr['y'] -= cy
 
     # change this to a more flexible system
     # that provides similar possibilities as the network plotter

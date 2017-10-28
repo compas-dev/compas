@@ -352,6 +352,7 @@ def smooth_resultant(vertices,
 
     return vertices
 
+
 def smooth_area(vertices,
                 faces,
                 adjacency,
@@ -552,9 +553,9 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=1.0, callback=None,
 
         if callback:
             callback(mesh, k, callback_args)
+
             vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
             adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
-
 
 
 # ==============================================================================
@@ -622,6 +623,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
 
         if callback:
             callback(network, k, callback_args)
+
             vertices  = {key: network.vertex_coordinates(key) for key in network.vertices()}
             adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 
@@ -687,8 +689,10 @@ def network_smooth_resultant(network, fixed=None, kmax=100, damping=0.05, callba
 
         if callback:
             callback(network, k, callback_args)
+
             vertices  = {key: network.vertex_coordinates(key) for key in network.vertices()}
             adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+
 
 # ==============================================================================
 # Debugging

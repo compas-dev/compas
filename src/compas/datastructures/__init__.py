@@ -47,7 +47,6 @@ mesh.algorithms
 .. autosummary::
     :toctree: generated/
 
-    mesh_delaunay_from_points
     mesh_dual
     mesh_flip_cycles
     mesh_subdivide
@@ -55,8 +54,13 @@ mesh.algorithms
     mesh_subdivide_catmullclark
     mesh_subdivide_doosabin
     mesh_unify_cycles
-    mesh_voronoi_from_points
     mesh_cull_duplicate_vertices
+
+.. autosummary::
+    :toctree: generated/
+
+    delaunay_from_points
+    voronoi_from_delaunay
 
 
 **The following operations are designed for triangle meshes.**
