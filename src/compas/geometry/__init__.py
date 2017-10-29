@@ -46,12 +46,12 @@ Algorithms
     mesh_planarize_faces_shapeop
     mesh_circularize_faces_shapeop
     mesh_smooth_centroid
-    network_smooth_resultant
 
 .. autosummary::
     :toctree: generated/
 
     network_smooth_centroid
+    network_smooth_resultant
     network_relax
 
 

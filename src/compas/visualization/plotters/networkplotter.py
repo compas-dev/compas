@@ -51,7 +51,8 @@ class NetworkPlotter(Plotter):
 
         plotter.draw_vertices(
             text='key',
-            facecolor={key: '#ff0000' for key in network.leaves()}
+            facecolor={key: '#ff0000' for key in network.leaves()},
+            radius=0.15
         )
         plotter.draw_edges()
 

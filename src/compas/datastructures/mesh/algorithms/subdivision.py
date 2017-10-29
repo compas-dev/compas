@@ -453,13 +453,10 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
         .. code-block:: python
 
             from compas.datastructures import Mesh
-            from compas.geometry import Polyhedron
             from compas.datastructures import mesh_flip_cycle_directions
             from compas.visualization import SubdMeshViewer
 
-            tet = Polyhedron.generate(4)
-
-            mesh = Mesh.from_vertices_and_faces(tet.vertices, tet.faces)
+            mesh = Mesh.from_polyhedron(4)
             mesh_flip_cycle_directions(mesh)
 
             viewer = SubdMeshViewer(mesh, subdfunc=loop_subdivision, width=600, height=600)
@@ -624,38 +621,22 @@ if __name__ == "__main__":
 
     import compas
 
-    from compas.geometry import Polyhedron
     from compas.datastructures import Mesh
     from compas.datastructures import mesh_subdivide
 
     from compas.visualization import MeshPlotter
-    from compas.visualization.viewers.meshviewer import MeshViewer
+    from compas.visualization.viewers import MeshViewer
 
-    cube = Polyhedron.generate(6)
-    mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
-    # mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+    mesh = Mesh.from_polyhedron(6)
 
     mesh = mesh_subdivide(mesh, scheme='doosabin', k=2)
 
-    print(mesh.number_of_vertices())
-    print(mesh.number_of_faces())
-    print(mesh.number_of_edges())
-    print(mesh.number_of_halfedges())
-
-    # plotter = MeshPlotter(mesh)
-
-    # plotter.draw_vertices()
-    # plotter.draw_faces()
-
-    # plotter.show()
-
-    viewer = MeshViewer(mesh, width=1440, height=900)
+    viewer = MeshViewer(mesh, width=800, height=600)
 
     viewer.axes_on = False
     viewer.grid_on = False
 
-    for _ in range(10):
-        viewer.camera.zoom_in()
+    viewer.camera.zoom_in(10)
 
     viewer.setup()
     viewer.show()
