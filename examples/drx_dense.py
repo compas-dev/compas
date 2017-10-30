@@ -47,6 +47,8 @@ X, f, l = numpy_drx(network=network, tol=0.01, refresh=10, callback=callback, bl
 blendermesh.update_vertices(X)
 print('\nNumpy: {0}s\n'.format(time() - tic))
 
+blendermesh.update_vertices(X * 0)
+
 # Numba
 
 tic = time()
