@@ -588,7 +588,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
         from compas.visualization import NetworkPlotter
         from compas.geometry import network_smooth_centroid
 
-        network = Network.from_obj(compas.get('gird_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
         fixed = [key for key in network.vertices() if network.vertex_degree(key) == 1]
 
         network_smooth_centroid(network, fixed=fixed)

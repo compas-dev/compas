@@ -625,7 +625,7 @@ if __name__ == "__main__":
     from compas.datastructures import mesh_subdivide
 
     from compas.visualization import MeshPlotter
-    from compas.visualization.viewers import MeshViewer
+    from compas.visualization.viewers import SubdMeshViewer
 
     mesh = Mesh.from_polyhedron(6)
 

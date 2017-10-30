@@ -299,27 +299,15 @@ def trimesh_remesh(mesh,
 
 if __name__ == '__main__':
 
-    from compas.geometry import smooth_area
-
     from compas.datastructures import Mesh
     from compas.visualization import MeshPlotter
 
-    vertices = [
-        (0.0, 0.0, 0.0),
-        (10.0, 0.0, 0.0),
-        (10.0, 10.0, 0.0),
-        (0.0, 10.0, 0.0),
-        (5.0, 5.0, 0.0)
-    ]
-
-    faces = [
-        (0, 1, 4),
-        (1, 2, 4),
-        (2, 3, 4),
-        (3, 0, 4)
-    ]
+    vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (10.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
+    faces = [[0, 1, 2, 3]]
 
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+    mesh.insert_vertex(0)
 
     plotter = MeshPlotter(mesh)
 
@@ -332,20 +320,17 @@ if __name__ == '__main__':
     trimesh_remesh(
         mesh,
         0.5,
-        tol=0.05,
+        tol=0.01,
         kmax=500,
         allow_boundary_split=True,
         allow_boundary_swap=True,
         allow_boundary_collapse=False,
         fixed=mesh.vertices_on_boundary(),
-        callback=callback,
-        callback_args=None,
-    )
+        callback=callback)
 
     plotter.clear_edges()
     plotter.update()
 
-    plotter.draw_vertices(radius=0.03)
     plotter.draw_faces()
     plotter.draw_edges()
     plotter.update()

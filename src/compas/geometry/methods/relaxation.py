@@ -278,7 +278,7 @@ if __name__ == "__main__":
 
     network_relax(network, kmax=50, callback=callback)
 
-    fmax = max(network.get_edges_attribute('f'))
+    # fmax = max(network.get_edges_attribute('f'))
 
     # plotter.clear_vertices()
     # plotter.clear_edges()

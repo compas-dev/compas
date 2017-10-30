@@ -151,24 +151,29 @@ if __name__ == '__main__':
 
     from compas.datastructures import Mesh
     from compas.visualization import MeshPlotter
-    from compas.utilities import i_to_black
+    from compas.utilities import i_to_rgb
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    lines = []
+    for u, v in mesh.edges():
+        lines.append({
+            'start' : mesh.vertex_coordinates(u, 'xy'),
+            'end'   : mesh.vertex_coordinates(v, 'xy'),
+            'color' : '#cccccc',
+            'width' : 1.0
+        })
 
     mesh.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
     mesh.update_default_edge_attributes({'q': 1.0})
 
     for key, attr in mesh.vertices(True):
         attr['is_anchor'] = mesh.vertex_degree(key) == 2
-        if key in (18, 35):
-            attr['z'] = 5.0
 
     k_i   = mesh.key_index()
-
     xyz   = mesh.get_vertices_attributes(('x', 'y', 'z'))
     loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))
     q     = mesh.get_edges_attribute('q')
-
     fixed = mesh.vertices_where({'is_anchor': True})
     fixed = [k_i[k] for k in fixed]
     edges = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
@@ -181,14 +186,21 @@ if __name__ == '__main__':
         attr['y'] = xyz[index][1]
         attr['z'] = xyz[index][2]
 
+    for index, (u, v, attr) in enumerate(mesh.edges(True)):
+        attr['f'] = f[index]
+
     plotter = MeshPlotter(mesh)
 
     zmax = max(mesh.get_vertices_attribute('z'))
+    fmax = max(mesh.get_edges_attribute('f'))
 
-    plotter.draw_vertices(
-        facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)},
-        text="z"
-    )
+    plotter.draw_lines(lines)
+
+    plotter.draw_vertices()
     plotter.draw_faces()
-    plotter.draw_edges()
+    plotter.draw_edges(
+        width={(u, v): 10 * attr['f'] / fmax for u, v, attr in mesh.edges(True)},
+        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in mesh.edges(True)},
+    )
+
     plotter.show()

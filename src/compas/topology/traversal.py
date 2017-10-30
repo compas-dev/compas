@@ -586,35 +586,32 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Network
-    from compas.topology import dijkstra_path
     from compas.visualization import NetworkPlotter
 
-    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+    from compas.topology import dijkstra_path
+
+    network = Network.from_obj(compas.get('grid_irregular.obj'))
 
     adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 
     weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
     weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
 
-    weight[(7, 17)] = 1000.0
-    weight[(17, 7)] = 1000.0
-    weight[(9, 19)] = 1000.0
-    weight[(19, 9)] = 1000.0
+    heavy = [(7, 17), (9, 19)]
+
+    for u, v in heavy:
+        weight[(u, v)] = 1000.0
+        weight[(v, u)] = 1000.0
 
     start = 21
     via = 0
     end = 22
 
     index_key = network.index_key()
-    key_index = network.key_index()
 
     plotter = NetworkPlotter(network, figsize=(10, 8), fontsize=6)
 
-
     def via_via(via):
-        global start
-        global end
-
         path1 = dijkstra_path(adjacency, weight, start, via)
         path2 = dijkstra_path(adjacency, weight, via, end)
         path = path1 + path2[1:]
@@ -646,13 +643,11 @@ if __name__ == '__main__':
                            text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()},
                            fontsize=4.0)
 
-
     def onpick(e):
         index = e.ind[0]
         via = index_key[index]
         via_via(via)
         plotter.update()
-
 
     via_via(via)
 

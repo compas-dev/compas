@@ -190,7 +190,8 @@ class MeshPlotter(Plotter):
 
     def clear_vertices(self):
         """Clears the mesh plotter vertices."""
-        self.vertexcollection.remove()
+        if self.vertexcollection:
+            self.vertexcollection.remove()
 
     def update_vertices(self, radius=None):
         """Updates the plotter vertex collection based on the mesh."""
@@ -265,7 +266,8 @@ class MeshPlotter(Plotter):
 
     def clear_edges(self):
         """Clears the mesh plotter edges."""
-        self.edgecollection.remove()
+        if self.edgecollection:
+            self.edgecollection.remove()
 
     def update_edges(self):
         """Updates the plotter edge collection based on the mesh."""
@@ -340,7 +342,8 @@ class MeshPlotter(Plotter):
 
     def clear_faces(self):
         """Clears the mesh plotter faces."""
-        self.facecollection.remove()
+        if self.facecollection:
+            self.facecollection.remove()
 
     def update_faces(self, facecolor=None):
         """Updates the plotter face collection based on the mesh."""

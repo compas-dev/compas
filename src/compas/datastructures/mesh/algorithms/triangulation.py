@@ -267,7 +267,7 @@ if __name__ == "__main__":
     points   = pointcloud_xy(10, (0, 10))
     delaunay = delaunay_from_points(Mesh, points)
 
-    trimesh_remesh(delaunay, 1.0, allow_boundary_split=True)
+    trimesh_remesh(delaunay, 1.0, kmax=300, allow_boundary_split=True)
 
     points   = [delaunay.vertex_coordinates(key) for key in delaunay.vertices()]
     delaunay = delaunay_from_points(Mesh, points)
