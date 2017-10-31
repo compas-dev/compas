@@ -1,4 +1,3 @@
-from math import sqrt
 from copy import deepcopy
 from array import array
 
@@ -20,6 +19,14 @@ K = [
     [0.5, 0.0, 0.5, ],
     [1.0, 0.0, 0.0, 1.0, ],
 ]
+
+
+def relax():
+    pass
+
+
+def mesh_relax():
+    pass
 
 
 def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callback=None, callback_args=None):
@@ -100,7 +107,7 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
     ij_q = dict(zip(network.edges(), network.get_edges_attribute('q', 1.0)))
     ij_q.update({(j, i): q for (i, j), q in ij_q.items()})
 
-    i_nbrs  = {k_i[key]: [k_i[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()}
+    i_nbrs = {k_i[key]: [k_i[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()}
 
     # initialise
 

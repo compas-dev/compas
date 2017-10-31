@@ -39,8 +39,8 @@ def flatness(vertices, faces, maxdev=1.0):
 
     Parameters
     ----------
-    vertices : dict
-        A dictionary of vertex coordinates.
+    vertices : list
+        The vertex coordinates.
     faces : list
         The face vertices.
     maxdev : float, optional
@@ -69,7 +69,7 @@ def flatness(vertices, faces, maxdev=1.0):
     """
     dev = []
     for face in faces:
-        points = [vertices[key] for key in face]
+        points = [vertices[index] for index in face]
         lengths = [distance_point_point(a, b) for a, b in window(points + points[0:1], 2)]
         l = sum(lengths) / len(lengths)
         d = distance_line_line((points[0], points[2]), (points[1], points[3]))
@@ -92,10 +92,10 @@ def planarize_faces(vertices,
 
     Parameters
     ----------
-    vertices : dict
+    vertices : list
         The vertex coordinates.
     faces : list
-        The vertex identifiers per face.
+        The vertex indices per face.
     fixed : list, optional [None]
         A list of fixed vertices.
     kmax : int, optional [100]
@@ -115,27 +115,27 @@ def planarize_faces(vertices,
 
     for k in range(kmax):
 
-        positions = {key: [] for key in vertices}
+        positions = [[] for _ in range(len(vertices))]
 
         for face in iter(faces):
-            points = [vertices[key] for key in face]
+            points = [vertices[index] for index in face]
             plane = bestfit_plane_from_points(points)
             projections = project_points_plane(points, plane)
 
-            for index, key in enumerate(face):
-                positions[key].append(projections[index])
+            for i, index in enumerate(face):
+                positions[index].append(projections[i])
 
-        for key, xyz in vertices.items():
-            if key in fixed:
+        for index, vertex in enumerate(vertices):
+            if index in fixed:
                 continue
 
-            x, y, z = centroid_points(positions[key])
-            xyz[0] = x
-            xyz[1] = y
-            xyz[2] = z
+            x, y, z = centroid_points(positions[index])
+            vertex[0] = x
+            vertex[1] = y
+            vertex[2] = z
 
         if callback:
-            callback(vertices, faces, k, callback_args)
+            callback(k, callback_args)
 
 
 # ==============================================================================
@@ -400,8 +400,7 @@ if __name__ == "__main__":
     for key, attr in mesh.vertices(True):
         attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
-    fixed = list(mesh.vertices_where({'is_fixed': True}))
-
+    fixed  = [key for key in mesh.vertices_where({'is_fixed': True})]
     radius = {key: (0.05 if key in fixed else 0.01) for key in mesh.vertices()}
 
     plotter = MeshPlotter(mesh)
@@ -410,18 +409,26 @@ if __name__ == "__main__":
     plotter.draw_faces()
     plotter.draw_edges()
 
+    key_index = mesh.key_index()
+    vertices = mesh.get_vertices_attributes('xyz')
+    faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    fixed = [key_index[key] for key in fixed]
 
     def callback(k, args):
         if k % 10 == 0:
-            dev = mesh_flatness(mesh, maxdev=0.02)
+            dev = flatness(vertices, faces, maxdev=0.02)
+
+            for key, attr in mesh.vertices(True):
+                index = key_index[key]
+                attr['x'] = vertices[index][0]
+                attr['y'] = vertices[index][1]
+                attr['z'] = vertices[index][2]
 
             plotter.update_vertices(radius=radius)
             plotter.update_faces(facecolor={fkey: i_to_rgb(dev[fkey]) for fkey in mesh.faces()})
             plotter.update_edges()
             plotter.update()
 
-
-    mesh_circularize_faces_shapeop(mesh, fixed=fixed, kmax=1000, callback=callback)
+    planarize_faces(vertices, faces, fixed=fixed, kmax=1000, callback=callback)
 
     plotter.show()
-

@@ -1,5 +1,4 @@
 from __future__ import print_function
-from builtins import range
 
 from numpy import array
 from numpy import isnan
@@ -409,7 +408,6 @@ if __name__ == "__main__":
             attr['y'] = xyz[index, 1]
             attr['z'] = xyz[index, 2]
 
-
     xyz, q, f, l, r = dr(vertices, edges, fixed, loads,
                          qpre, fpre, lpre,
                          linit, E, radius,
@@ -418,8 +416,5 @@ if __name__ == "__main__":
     plotter.update_vertices()
     plotter.update_edges()
     plotter.update(pause=0.1)
-
-    # plotter.draw_vertices()
-    # plotter.draw_edges()
 
     plotter.show()

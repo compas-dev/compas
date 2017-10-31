@@ -2519,14 +2519,7 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas.visualization import MeshPlotter
-
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-    plotter = MeshPlotter(mesh)
+    print(mesh)
 
-    plotter.draw_vertices()
-    plotter.draw_faces()
-    plotter.draw_edges()
-
-    plotter.show()

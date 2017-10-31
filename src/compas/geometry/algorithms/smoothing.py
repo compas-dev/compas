@@ -247,7 +247,7 @@ def smooth_resultant(vertices,
                      callback=None,
                      callback_args=None):
     """Smooth a connected set of vertices
-    by moving each vertex along the scaled resultant vector 
+    by moving each vertex along the scaled resultant vector
     of the neighbouring, outgoing edge vectors.
 
     Parameters
@@ -338,9 +338,9 @@ def smooth_resultant(vertices,
             vecs = [subtract_vectors(vertices[nbr], point) for nbr in nbrs]
             res = sum_vectors(vecs)
 
-            vertices[key][0] =  damping * res[0] + point[0]
-            vertices[key][1] =  damping * res[1] + point[1]
-            vertices[key][2] =  damping * res[2] + point[2]
+            vertices[key][0] = damping * res[0] + point[0]
+            vertices[key][1] = damping * res[1] + point[1]
+            vertices[key][2] = damping * res[2] + point[2]
 
         if callback:
             callback(vertices, k, callback_args)
@@ -505,7 +505,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=1.0, callback=None,
         :include-source:
 
         import compas
-    
+
         from compas.datastructures import Mesh
         from compas.visualization import MeshPlotter
         from compas.geometry import mesh_smooth_centroid
@@ -545,8 +545,8 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=1.0, callback=None,
         if callback:
             callback(mesh, k, callback_args)
 
-            vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-            adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
+            # vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+            # adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
 
 
 # ==============================================================================
@@ -583,7 +583,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
         :include-source:
 
         import compas
-    
+
         from compas.datastructures import Network
         from compas.visualization import NetworkPlotter
         from compas.geometry import network_smooth_centroid
@@ -620,7 +620,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
 
 
 def network_smooth_resultant(network, fixed=None, kmax=100, damping=0.05, callback=None, callback_args=None):
-    """Smooth a network by moving each vertex along the scaled resultant vector 
+    """Smooth a network by moving each vertex along the scaled resultant vector
     of the neighbouring, outgoing edge vectors.
 
     Parameters
@@ -704,27 +704,36 @@ if __name__ == "__main__":
 
     import compas
 
-    from compas.visualization import NetworkPlotter
+    from compas.datastructures import Mesh
+    from compas.visualization import MeshPlotter
 
-    from compas.datastructures import Network
-    from compas.geometry import network_smooth_centroid
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    network = Network.from_obj(compas.get('saddle.obj'))
+    fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
-    fixed = network.leaves()
+    plotter = MeshPlotter(mesh)
 
-    network_smooth_centroid(network, fixed=fixed)
-
-    plotter = NetworkPlotter(network, figsize=(10, 6))
+    lines = []
+    for u, v in mesh.edges():
+        lines.append({
+            'start' : mesh.vertex_coordinates(u, 'xy'),
+            'end'   : mesh.vertex_coordinates(v, 'xy'),
+            'color' : '#cccccc',
+            'width' : 0.5
+        })
+    plotter.draw_lines(lines)
 
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
+    plotter.draw_faces()
     plotter.draw_edges()
 
     def callback(mesh, k, args):
         plotter.update_vertices()
+        plotter.update_faces()
         plotter.update_edges()
         plotter.update(pause=0.001)
 
-    network_smooth_centroid(network, fixed=fixed, kmax=100, callback=callback)
+    mesh_smooth_centroid(mesh, fixed=fixed, callback=callback)
 
+    plotter.update()
     plotter.show()

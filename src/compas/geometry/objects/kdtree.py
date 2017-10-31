@@ -2,7 +2,6 @@
 # ActiveState KDTree <http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space>
 
 from __future__ import print_function
-from builtins import range
 
 import collections
 

@@ -1,6 +1,5 @@
 from compas.cad import SurfaceGeometryInterface
 from compas.geometry import subtract_vectors
-from builtins import range
 
 try:
     import rhinoscriptsyntax as rs

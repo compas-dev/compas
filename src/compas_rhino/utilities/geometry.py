@@ -1,5 +1,4 @@
 from __future__ import print_function
-from builtins import range
 
 try:
     import rhinoscriptsyntax as rs

@@ -24,7 +24,7 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
     """Implementation of the force density method to compute equilibrium of axial force networks.
 
     The force density method ... [schek1974]_
-    
+
     Parameters
     ----------
     vertices : list
@@ -189,7 +189,7 @@ if __name__ == '__main__':
     for index, (u, v, attr) in enumerate(mesh.edges(True)):
         attr['f'] = f[index]
 
-    plotter = MeshPlotter(mesh)
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
 
     zmax = max(mesh.get_vertices_attribute('z'))
     fmax = max(mesh.get_edges_attribute('f'))
