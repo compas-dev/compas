@@ -119,7 +119,7 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
     fixed = [k_i[key] for key in network.vertices() if network.vertex[key]['is_fixed']]
     free  = list(set(range(n)) - set(fixed))
     p     = network.get_vertices_attributes(('px', 'py', 'pz'), [0.0, 0.0, 0.0])
-    v     = network.get_vertices_attributes(('vx', 'vy', 'vz'), [0.0, 0.0, 0.0])
+    v     = [[0.0, 0.0, 0.0] for _ in range(network.number_of_vertices())]
     xyz   = network.get_vertices_attributes(('x', 'y', 'z'))
 
     mass = [
@@ -129,35 +129,34 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
     # helpers
 
+    def residual(xyz):
+        """Compute the residual forces."""
+        r = [None] * n
+        for i in range(n):
+            x = xyz[i][0]
+            y = xyz[i][1]
+            z = xyz[i][2]
+
+            f = [0.0, 0.0, 0.0]
+            for j in i_nbrs[i]:
+                q  = ij_q[(i, j)]
+                xn = xyz[j][0]
+                yn = xyz[j][1]
+                zn = xyz[j][2]
+                f[0] += q * (xn - x)
+                f[1] += q * (yn - y)
+                f[2] += q * (zn - z)
+
+            if i in fixed:
+                r[i] = [f[j] for j in range(3)]
+            else:
+                r[i] = [p[i][j] + f[j] for j in range(3)]
+
+        return r
+
     def rk(xyz0, v0, steps=2):
-        """Compute the acceleration of the vertices,
-        taking into account two intermediate updates.
+        """Compute the acceleration of the vertices, taking into account two intermediate updates.
         """
-
-        def residual(xyz):
-            """Compute the residual forces """
-            r = [None] * n
-            for i in range(n):
-                x = xyz[i][0]
-                y = xyz[i][1]
-                z = xyz[i][2]
-
-                f = [0.0, 0.0, 0.0]
-                for j in i_nbrs[i]:
-                    q  = ij_q[(i, j)]
-                    xn = xyz[j][0]
-                    yn = xyz[j][1]
-                    zn = xyz[j][2]
-                    f[0] += q * (xn - x)
-                    f[1] += q * (yn - y)
-                    f[2] += q * (zn - z)
-
-                if i in fixed:
-                    r[i] = [f[j] for j in range(3)]
-                else:
-                    r[i] = [p[i][j] + f[j] for j in range(3)]
-
-            return r
 
         def acceleration(v, t):
             dx  = [[v[i][j] * t for j in range(3)] for i in range(n)]
@@ -241,11 +240,16 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
     # update
 
+    r = residual(xyz)
+
     for key, attr in network.vertices(True):
         i = k_i[key]
         attr['x'] = xyz[i][0]
         attr['y'] = xyz[i][1]
         attr['z'] = xyz[i][2]
+        attr['rx'] = r[i][0]
+        attr['ry'] = r[i][1]
+        attr['rz'] = r[i][2]
 
     for u, v, attr in network.edges(True):
         l = network.edge_length(u, v)
@@ -267,14 +271,16 @@ if __name__ == "__main__":
     from compas.visualization import NetworkPlotter
     from compas.utilities import i_to_rgb
 
+    # create a network from sample data
+    # and set the default vertex and edge attributes
+
+    network = Network.from_obj(compas.get('lines.obj'))
+
     dva = {
         'is_fixed': False,
         'px': 0.0,
         'py': 0.0,
         'pz': 0.0,
-        'vx': 0.0,
-        'vy': 0.0,
-        'vz': 0.0,
     }
     dea = {
         'q': 1.0,
@@ -282,16 +288,24 @@ if __name__ == "__main__":
         'l': 0.0
     }
 
-    network = Network.from_obj(compas.get('lines.obj'))
-
     network.update_default_vertex_attributes(dva)
     network.update_default_edge_attributes(dea)
+
+    # fix the vertices with only one neighbour (the *leaves*)
+    # assign random force densities to the edges
 
     for key, attr in network.vertices(True):
         attr['is_fixed'] = network.is_vertex_leaf(key)
 
     for index, (u, v, attr) in enumerate(network.edges(True)):
         attr['q'] = 1.0 * random.randint(1, 7)
+
+    # make a plotter
+    # draw the original geometry of the network as lines
+    # draw the vertices and edges
+    # pause for a second before starting the relaxation
+
+    plotter = NetworkPlotter(network, figsize=(10, 7))
 
     lines = []
     for u, v in network.edges():
@@ -302,13 +316,14 @@ if __name__ == "__main__":
             'width' : 0.5
         })
 
-    plotter = NetworkPlotter(network, figsize=(10, 6))
-
     plotter.draw_lines(lines)
     plotter.draw_vertices(facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
     plotter.update(pause=1.0)
+
+    # define a callback function for updating the plot
+    # and for printing the number of the current iteration
 
     def callback(k, args):
         print(k)
@@ -316,12 +331,23 @@ if __name__ == "__main__":
         plotter.update_edges()
         plotter.update(pause=0.001)
 
+    # run the relaxation algorithm
+
     network_relax(network, kmax=50, callback=callback)
+
+    # compute the maximum force in the edges
+    # for normalising colors and widths
 
     fmax = max(network.get_edges_attribute('f'))
 
+    # clear the vertices and edges
+    # that were used for visualising the iterations
+
     plotter.clear_vertices()
     plotter.clear_edges()
+
+    # draw the final geometry
+    # with color and width of the edges corresponding to the internal forces
 
     plotter.draw_vertices(
         facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})}
@@ -332,5 +358,7 @@ if __name__ == "__main__":
         width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)}
     )
 
-    plotter.update(pause=1.0)
+    # update the plot
+
+    plotter.update()
     plotter.show()

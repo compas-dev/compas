@@ -2,11 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# import ast
-
-# from compas.utilities import geometric_key
-
-# import compas_rhino
+import compas_rhino
 
 from compas_rhino.helpers.artists import NetworkArtist
 
@@ -39,6 +35,9 @@ __all__ = [
     'network_update_edge_attributes',
     'network_move',
     'network_move_vertex',
+    'network_draw_reaction_forces',
+    'network_draw_loads',
+    'network_draw_axial_forces'
 ]
 
 
@@ -89,6 +88,8 @@ __all__ = [
 def network_draw(network,
                  layer=None,
                  clear_layer=False,
+                 clear_vertices=True,
+                 clear_edges=True,
                  vertexcolor=None,
                  edgecolor=None):
     """Draw a network data structure in Rhino.
@@ -136,7 +137,12 @@ def network_draw(network,
     if clear_layer:
         artist.clear_layer()
 
-    artist.clear()
+    if clear_vertices:
+        artist.clear_vertices()
+
+    if clear_edges:
+        artist.clear_edges()
+
     artist.draw_vertices(color=vertexcolor)
     artist.draw_edges(color=edgecolor)
     artist.redraw()
@@ -592,6 +598,65 @@ def network_update_edge_attributes(network, keys, names=None):
 
     """
     return EdgeModifier.update_edge_attributes(network, keys, names=names)
+
+
+# ==============================================================================
+# temp
+# ==============================================================================
+
+
+def network_draw_reaction_forces(network, scale=1.0, layer=None, clear_layer=False):
+    lines = []
+    for key, attr in network.vertices(True):
+        if attr['is_fixed']:
+            force = attr['rx'], attr['ry'], attr['rz']
+            start = network.vertex_coordinates(key)
+            end = [start[axis] - scale * force[axis] for axis in (0, 1, 2)]
+            lines.append({
+                'start': start,
+                'end'  : end,
+                'name' : '{}.reaction.{}'.format(network.name, key),
+                'color': (0, 255, 0),
+                'arrow': 'end',
+            })
+    guids = compas_rhino.get_objects(name='{}.reaction.*'.format(network.name))
+    compas_rhino.delete_objects(guids)
+    compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
+
+
+def network_draw_loads(network, scale=1.0, layer=None, clear_layer=False):
+    lines = []
+    for key, attr in network.vertices(True):
+        if not attr['is_fixed']:
+            force = attr['px'], attr['py'], attr['pz']
+            start = network.vertex_coordinates(key)
+            end = [start[axis] + scale * force[axis] for axis in (0, 1, 2)]
+            lines.append({
+                'start': start,
+                'end'  : end,
+                'name' : '{}.load.{}'.format(network.name, key),
+                'color': (0, 255, 255),
+                'arrow': 'end',
+            })
+    guids = compas_rhino.get_objects(name='{}.load.*'.format(network.name))
+    compas_rhino.delete_objects(guids)
+    compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
+
+
+def network_draw_axial_forces(network, scale=0.1, layer=None, clear_layer=False):
+    cylinders = []
+    for u, v, attr in network.edges(True):
+        if attr['f'] > 0.0:
+            cylinders.append({
+                'start' : network.vertex_coordinates(u),
+                'end'   : network.vertex_coordinates(v),
+                'radius': scale * 3.14159 * attr['f'] ** 2,
+                'name'  : '{}.axial.{}-{}'.format(network.name, u, v),
+                'color' : (255, 0, 0),
+            })
+    guids = compas_rhino.get_objects(name='{}.axial.*'.format(network.name))
+    compas_rhino.delete_objects(guids)
+    compas_rhino.xdraw_cylinders(cylinders, layer=layer, clear=clear_layer)
 
 
 # ==============================================================================
