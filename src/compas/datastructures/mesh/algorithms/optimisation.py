@@ -268,11 +268,11 @@ def trimesh_remesh(mesh,
         else:
             count = 0
 
-        if (k - 10) % 20 == 0:
-            num_vertices_2 = mesh.number_of_vertices()
+        # if (k - 10) % 20 == 0:
+        #     num_vertices_2 = mesh.number_of_vertices()
 
-            if abs(1 - num_vertices_1 / num_vertices_2) < divergence and k > kmax_start:
-                break
+        #     if abs(1 - num_vertices_1 / num_vertices_2) < divergence and k > kmax_start:
+        #         break
 
         # smoothen
         if smooth:
@@ -309,30 +309,24 @@ if __name__ == '__main__':
 
     mesh.insert_vertex(0)
 
-    plotter = MeshPlotter(mesh)
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-    plotter.draw_edges()
+    plotter.draw_edges(width=0.5)
 
     def callback(mesh, k, args):
+        print(k)
         plotter.update_edges()
-        plotter.update(pause=0.001)
+        plotter.update()
 
     trimesh_remesh(
         mesh,
-        0.5,
-        tol=0.01,
-        kmax=500,
+        1.0,
+        kmax=200,
         allow_boundary_split=True,
         allow_boundary_swap=True,
         allow_boundary_collapse=False,
         fixed=mesh.vertices_on_boundary(),
         callback=callback)
 
-    plotter.clear_edges()
-    plotter.update()
-
-    plotter.draw_faces()
-    plotter.draw_edges()
-    plotter.update()
-
+    plotter.update(pause=2.0)
     plotter.show()

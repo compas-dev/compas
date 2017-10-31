@@ -1,4 +1,6 @@
 """"""
+import matplotlib
+# matplotlib.use('TkAgg')
 
 import matplotlib.pyplot as plt
 
@@ -238,6 +240,9 @@ class Plotter(object):
         if self.tight:
             plt.tight_layout()
         plt.show()
+
+    # def top(self):
+    #     self.figure.canvas.manager.show()
 
     def save(self, filepath, **kwargs):
         """Saves the plot on a file.

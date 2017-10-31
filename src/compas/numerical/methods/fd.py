@@ -161,7 +161,7 @@ if __name__ == '__main__':
             'start' : mesh.vertex_coordinates(u, 'xy'),
             'end'   : mesh.vertex_coordinates(v, 'xy'),
             'color' : '#cccccc',
-            'width' : 1.0
+            'width' : 0.5
         })
 
     mesh.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})

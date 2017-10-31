@@ -1,5 +1,5 @@
 from copy import deepcopy
-from array import array
+# from array import array
 
 
 __author__    = ['Tom Van Mele', ]
@@ -104,7 +104,7 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
     k_i = network.key_index()
 
-    ij_q = dict(zip(network.edges(), network.get_edges_attribute('q', 1.0)))
+    ij_q = {(k_i[u], k_i[v]): network.get_edge_attribute((u, v), 'q', 1.0) for u, v in network.edges()}
     ij_q.update({(j, i): q for (i, j), q in ij_q.items()})
 
     i_nbrs = {k_i[key]: [k_i[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()}
@@ -126,7 +126,6 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
         sum(0.5 * dt ** 2 * network.get_edge_attribute((key, nbr), 'q') for nbr in network.vertex_neighbours(key))
         for key in network.vertices()
     ]
-    mass = array('f', mass)
 
     # helpers
 
@@ -139,24 +138,24 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
             """Compute the residual forces """
             r = [None] * n
             for i in range(n):
-                _x = xyz[i][0]
-                _y = xyz[i][1]
-                _z = xyz[i][2]
+                x = xyz[i][0]
+                y = xyz[i][1]
+                z = xyz[i][2]
 
-                _f = [0.0, 0.0, 0.0]
+                f = [0.0, 0.0, 0.0]
                 for j in i_nbrs[i]:
-                    _q  = ij_q[(i, j)]
-                    _xn = xyz[j][0]
-                    _yn = xyz[j][1]
-                    _zn = xyz[j][2]
-                    _f[0] += _q * (_xn - _x)
-                    _f[1] += _q * (_yn - _y)
-                    _f[2] += _q * (_zn - _z)
+                    q  = ij_q[(i, j)]
+                    xn = xyz[j][0]
+                    yn = xyz[j][1]
+                    zn = xyz[j][2]
+                    f[0] += q * (xn - x)
+                    f[1] += q * (yn - y)
+                    f[2] += q * (zn - z)
 
                 if i in fixed:
-                    r[i] = [_f[j] for j in range(3)]
+                    r[i] = [f[j] for j in range(3)]
                 else:
-                    r[i] = [p[i][j] + _f[j] for j in range(3)]
+                    r[i] = [p[i][j] + f[j] for j in range(3)]
 
             return r
 
@@ -185,15 +184,33 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
         elif steps == 4:
             B  = [1.0 / 6.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0]
+
             a0 = acceleration(v0, K[0][0] * dt)
             k0 = [[dt * a0[i][j] for j in range(3)] for i in range(n)]
+
             a1 = acceleration([[v0[i][j] + K[1][1] * k0[i][j] for j in range(3)] for i in range(n)], K[1][0] * dt)
+
             k1 = [[dt * a1[i][j] for j in range(3)] for i in range(n)]
-            a2 = acceleration([[v0[i][j] + K[2][1] * k0[i][j] + K[2][2] * k1[i][j] for j in range(3)] for i in range(n)], K[2][0] * dt)
+
+            a2 = acceleration(
+                [[v0[i][j] +
+                  K[2][1] * k0[i][j] +
+                  K[2][2] * k1[i][j] for j in range(3)] for i in range(n)], K[2][0] * dt)
+
             k2 = [[dt * a2[i][j] for j in range(3)] for i in range(n)]
-            a3 = acceleration([[v0[i][j] + K[3][1] * k0[i][j] + K[3][2] * k1[i][j] + K[3][3] * k2[i][j] for j in range(3)] for i in range(n)], K[3][0] * dt)
+
+            a3 = acceleration(
+                [[v0[i][j] +
+                  K[3][1] * k0[i][j] +
+                  K[3][2] * k1[i][j] +
+                  K[3][3] * k2[i][j] for j in range(3)] for i in range(n)], K[3][0] * dt)
+
             k3 = [[dt * a3[i][j] for j in range(3)] for i in range(n)]
-            dv = [[B[0] * k0[i][j] + B[1] * k1[i][j] + B[2] * k2[i][j] + B[3] * k3[i][j] for j in range(3)] for i in range(n)]
+
+            dv = [[B[0] * k0[i][j] +
+                   B[1] * k1[i][j] +
+                   B[2] * k2[i][j] +
+                   B[3] * k3[i][j] for j in range(3)] for i in range(n)]
 
         return dv
 
@@ -243,12 +260,12 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
 if __name__ == "__main__":
 
+    import random
+
     import compas
     from compas.datastructures import Network
     from compas.visualization import NetworkPlotter
     from compas.utilities import i_to_rgb
-
-    network = Network.from_obj(compas.get('lines.obj'))
 
     dva = {
         'is_fixed': False,
@@ -259,7 +276,13 @@ if __name__ == "__main__":
         'vy': 0.0,
         'vz': 0.0,
     }
-    dea = {'q': 1.0, 'f': 0.0, 'l': 0.0}
+    dea = {
+        'q': 1.0,
+        'f': 0.0,
+        'l': 0.0
+    }
+
+    network = Network.from_obj(compas.get('lines.obj'))
 
     network.update_default_vertex_attributes(dva)
     network.update_default_edge_attributes(dea)
@@ -268,7 +291,7 @@ if __name__ == "__main__":
         attr['is_fixed'] = network.is_vertex_leaf(key)
 
     for index, (u, v, attr) in enumerate(network.edges(True)):
-        attr['q'] = index + 1
+        attr['q'] = 1.0 * random.randint(1, 7)
 
     lines = []
     for u, v in network.edges():
@@ -288,9 +311,10 @@ if __name__ == "__main__":
     plotter.update(pause=1.0)
 
     def callback(k, args):
+        print(k)
         plotter.update_vertices()
         plotter.update_edges()
-        plotter.update(pause=0.01)
+        plotter.update(pause=0.001)
 
     network_relax(network, kmax=50, callback=callback)
 
@@ -309,5 +333,4 @@ if __name__ == "__main__":
     )
 
     plotter.update(pause=1.0)
-
     plotter.show()

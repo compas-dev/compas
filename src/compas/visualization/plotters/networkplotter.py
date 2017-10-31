@@ -228,6 +228,13 @@ class NetworkPlotter(Plotter):
         """
         keys = keys or list(self.network.edges())
 
+        if text == 'key':
+            text = {(u, v): '{}-{}'.format(u, v) for u, v in self.network.edges()}
+        elif text == 'index':
+            text = {(u, v): str(index) for index, (u, v) in enumerate(self.network.edges())}
+        else:
+            pass
+
         widthdict     = valuedict(keys, width, self.defaults['edge.width'])
         colordict     = valuedict(keys, color, self.defaults['edge.color'])
         textdict      = valuedict(keys, text, '')

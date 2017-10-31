@@ -6,11 +6,6 @@ from compas.geometry import bestfit_plane_from_points
 from compas.geometry import project_points_plane
 from compas.geometry import centroid_points
 
-from compas.geometry import cross_vectors
-from compas.geometry import subtract_vectors
-from compas.geometry import angle_smallest_vectors
-from compas.geometry import dot_vectors
-from compas.geometry import scale_vector
 from compas.geometry import distance_point_point
 from compas.geometry import distance_line_line
 
@@ -403,7 +398,7 @@ if __name__ == "__main__":
     fixed  = [key for key in mesh.vertices_where({'is_fixed': True})]
     radius = {key: (0.05 if key in fixed else 0.01) for key in mesh.vertices()}
 
-    plotter = MeshPlotter(mesh)
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
 
     plotter.draw_vertices(radius=radius)
     plotter.draw_faces()

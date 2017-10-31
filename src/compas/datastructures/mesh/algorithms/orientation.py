@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 from compas.topology import bfs_traverse
-from compas.geometry import KDTree
 
 
 __author__     = 'Tom Van Mele'
@@ -18,7 +17,7 @@ __all__ = [
 
 def face_adjacency(mesh):
     """Build a face adjacency dict.
-    
+
     Parameters
     ----------
     mesh : Mesh
@@ -34,7 +33,7 @@ def face_adjacency(mesh):
     This algorithm is used primarily to unify the cycle directions of a given mesh.
     Therefore, the premise is that the topological information of the mesh is corrupt
     and cannot be used to construct the adjacency structure. The algorithm is thus
-    purely geometrical, but uses a spatial indexing tree to speed up the search.    
+    purely geometrical, but uses a spatial indexing tree to speed up the search.
 
     """
     fkey_index = {fkey: index for index, fkey in enumerate(mesh.faces())}
@@ -68,7 +67,7 @@ def face_adjacency(mesh):
                 tree.Insert(Point3d(* point), i)
 
             def callback(sender, e):
-                data = e.Tag 
+                data = e.Tag
                 data.append(e.Id)
 
             closest = []
@@ -77,7 +76,7 @@ def face_adjacency(mesh):
                 data = []
                 tree.Search(sphere, callback, data)
                 closest.append(data)
-    
+
     adjacency  = {}
     for fkey in mesh.faces():
         nbrs  = []

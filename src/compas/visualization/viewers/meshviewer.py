@@ -186,6 +186,7 @@ class SubdMeshViewer(Viewer):
             xdraw_lines(lines)
 
     def keypress(self, key, x, y):
+        key = key.decode("utf-8")
         if key == '1':
             self.subd = self.subdfunc(self.mesh, k=1)
         if key == '2':

@@ -545,8 +545,8 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=1.0, callback=None,
         if callback:
             callback(mesh, k, callback_args)
 
-            # vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-            # adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
+            vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+            adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
 
 
 # ==============================================================================
@@ -711,7 +711,7 @@ if __name__ == "__main__":
 
     fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
-    plotter = MeshPlotter(mesh)
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
 
     lines = []
     for u, v in mesh.edges():
@@ -727,13 +727,16 @@ if __name__ == "__main__":
     plotter.draw_faces()
     plotter.draw_edges()
 
+    plotter.update(pause=1.0)
+
     def callback(mesh, k, args):
+        print(k)
         plotter.update_vertices()
         plotter.update_faces()
         plotter.update_edges()
         plotter.update(pause=0.001)
 
-    mesh_smooth_centroid(mesh, fixed=fixed, callback=callback)
+    mesh_smooth_centroid(mesh, kmax=50, fixed=fixed, callback=callback)
 
-    plotter.update()
+    plotter.update(pause=1.0)
     plotter.show()

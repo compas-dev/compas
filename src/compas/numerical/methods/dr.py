@@ -319,7 +319,6 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
             break
         if crit2 < tol2:
             break
-        print(k)
     return xyz, q, f, l, r
 
 
@@ -329,11 +328,12 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
 if __name__ == "__main__":
 
+    import random
+
     import compas
     from compas.datastructures import Network
     from compas.visualization import NetworkPlotter
-
-    # import matplotlib.pyplot as plt
+    from compas.utilities import i_to_rgb
 
     dva = {
         'is_fixed': False,
@@ -358,14 +358,15 @@ if __name__ == "__main__":
     }
 
     network = Network.from_obj(compas.get('lines.obj'))
+
     network.update_default_vertex_attributes(dva)
     network.update_default_edge_attributes(dea)
 
     for key, attr in network.vertices(True):
         attr['is_fixed'] = network.vertex_degree(key) == 1
 
-    for index, (u, v, attr) in enumerate(network.edges(True)):
-        attr['qpre'] = index + 1
+    for u, v, attr in network.edges(True):
+        attr['qpre'] = 1.0 * random.randint(1, 7)
 
     k2i = network.key_index()
 
@@ -386,18 +387,20 @@ if __name__ == "__main__":
             'start': network.vertex_coordinates(u, 'xy'),
             'end'  : network.vertex_coordinates(v, 'xy'),
             'color': '#cccccc',
-            'width': 1.0
+            'width': 0.5
         })
 
     plotter = NetworkPlotter(network, figsize=(10, 6))
 
     plotter.draw_lines(lines)
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+    plotter.draw_vertices(facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
     plotter.update(pause=1.0)
 
     def callback(k, xyz, crits, args):
+        print(k)
+
         plotter.update_vertices()
         plotter.update_edges()
         plotter.update(pause=0.1)
@@ -413,8 +416,23 @@ if __name__ == "__main__":
                          linit, E, radius,
                          kmax=20, callback=callback)
 
-    plotter.update_vertices()
-    plotter.update_edges()
-    plotter.update(pause=0.1)
+    for index, (u, v, attr) in enumerate(network.edges(True)):
+        attr['f'] = f[index, 0]
+        attr['l'] = l[index, 0]
 
+    fmax = max(network.get_edges_attribute('f'))
+
+    plotter.clear_vertices()
+    plotter.clear_edges()
+
+    plotter.draw_vertices(
+        facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})}
+    )
+
+    plotter.draw_edges(
+        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
+        width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)}
+    )
+
+    plotter.update(pause=1.0)
     plotter.show()
