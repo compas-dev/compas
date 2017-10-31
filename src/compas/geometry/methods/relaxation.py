@@ -97,7 +97,7 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
     k_i = network.key_index()
 
-    ij_q = dict(zip(network.edges(), network.get_edges_attribute('q')))
+    ij_q = dict(zip(network.edges(), network.get_edges_attribute('q', 1.0)))
     ij_q.update({(j, i): q for (i, j), q in ij_q.items()})
 
     i_nbrs  = {k_i[key]: [k_i[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()}
@@ -111,9 +111,9 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
     fixed = [k_i[key] for key in network.vertices() if network.vertex[key]['is_fixed']]
     free  = list(set(range(n)) - set(fixed))
-    p     = [array('f', attr['p']) for key, attr in network.vertices(True)]
-    xyz   = [array('f', [attr['x'], attr['y'], attr['z']]) for key, attr in network.vertices(True)]
-    v     = [array('f', attr['v']) for key, attr in network.vertices(True)]
+    p     = network.get_vertices_attributes(('px', 'py', 'pz'), [0.0, 0.0, 0.0])
+    v     = network.get_vertices_attributes(('vx', 'vy', 'vz'), [0.0, 0.0, 0.0])
+    xyz   = network.get_vertices_attributes(('x', 'y', 'z'))
 
     mass = [
         sum(0.5 * dt ** 2 * network.get_edge_attribute((key, nbr), 'q') for nbr in network.vertex_neighbours(key))
@@ -239,10 +239,19 @@ if __name__ == "__main__":
     import compas
     from compas.datastructures import Network
     from compas.visualization import NetworkPlotter
+    from compas.utilities import i_to_rgb
 
     network = Network.from_obj(compas.get('lines.obj'))
 
-    dva = {'is_fixed': False, 'p': [0.0, 0.0, 0.0], 'v': [0.0, 0.0, 0.0]}
+    dva = {
+        'is_fixed': False,
+        'px': 0.0,
+        'py': 0.0,
+        'pz': 0.0,
+        'vx': 0.0,
+        'vy': 0.0,
+        'vz': 0.0,
+    }
     dea = {'q': 1.0, 'f': 0.0, 'l': 0.0}
 
     network.update_default_vertex_attributes(dva)
@@ -260,13 +269,13 @@ if __name__ == "__main__":
             'start' : network.vertex_coordinates(u, 'xy'),
             'end'   : network.vertex_coordinates(v, 'xy'),
             'color' : '#cccccc',
-            'width' : 1.0
+            'width' : 0.5
         })
 
-    plotter = NetworkPlotter(network)
+    plotter = NetworkPlotter(network, figsize=(10, 6))
 
     plotter.draw_lines(lines)
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+    plotter.draw_vertices(facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
     plotter.update(pause=1.0)
@@ -278,13 +287,19 @@ if __name__ == "__main__":
 
     network_relax(network, kmax=50, callback=callback)
 
-    # fmax = max(network.get_edges_attribute('f'))
+    fmax = max(network.get_edges_attribute('f'))
 
-    # plotter.clear_vertices()
-    # plotter.clear_edges()
+    plotter.clear_vertices()
+    plotter.clear_edges()
 
-    # plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
-    # plotter.draw_edges(width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
+    plotter.draw_vertices(
+        facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})}
+    )
+
+    plotter.draw_edges(
+        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
+        width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)}
+    )
 
     plotter.update(pause=1.0)
 

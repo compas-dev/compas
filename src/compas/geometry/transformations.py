@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 from __future__ import division
+from builtins import range
 
 from math import sin
 from math import cos
@@ -304,14 +305,14 @@ def offset_polygon(polygon, distance):
     else:
         distances = [[distance, distance]] * len(polygon)
 
-    lines = [polygon[i:i + 2] for i in xrange(len(polygon[:-1]))]
+    lines = [polygon[i:i + 2] for i in range(len(polygon[:-1]))]
     lines_offset = []
     for i, line in enumerate(lines):
         lines_offset.append(offset_line(line, distances[i], normal))
 
     polygon_offset = []
 
-    for i in xrange(len(lines_offset)):
+    for i in range(len(lines_offset)):
         intx_pt1, intx_pt2 = intersection_line_line(lines_offset[i - 1], lines_offset[i])
 
         if intx_pt1 and intx_pt2:
@@ -336,8 +337,8 @@ def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
         normal (tuple): The normal of the offset plane.
 
     Returns:
-        offset polyline (sequence of sequence of floats): The XYZ coordinates of the 
-        resulting polyline.
+        offset polyline (sequence of sequence of floats): The XYZ coordinates of the resulting polyline.
+
     """
 
     if isinstance(distance, list) or isinstance(distance, tuple):
@@ -347,14 +348,14 @@ def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
     else:
         distances = [[distance, distance]] * len(polyline)
 
-    lines = [polyline[i:i + 2] for i in xrange(len(polyline[:-1]))]
+    lines = [polyline[i:i + 2] for i in range(len(polyline[:-1]))]
     lines_offset = []
     for i, line in enumerate(lines):
         lines_offset.append(offset_line(line, distances[i], normal))
 
     polyline_offset = []
     polyline_offset.append(lines_offset[0][0])
-    for i in xrange(len(lines_offset[:-1])):
+    for i in range(len(lines_offset[:-1])):
         intx_pt1, intx_pt2 = intersection_line_line(lines_offset[i], lines_offset[i + 1])
 
         if intx_pt1 and intx_pt2:
@@ -363,6 +364,8 @@ def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
             polyline_offset.append(lines_offset[i][0])
     polyline_offset.append(lines_offset[-1][1])
     return polyline_offset
+
+
 # ==============================================================================
 # orientation
 # ==============================================================================
@@ -414,7 +417,6 @@ def orient_points(points, reference_plane=None, target_plane=None):
             print(intx_point)
 
     """
-
     if not target_plane:
         target_plane = [(0., 0., 0.,), (0., 0., 1.)]
 
@@ -486,13 +488,14 @@ def mirror_points_line_xy(point, line):
 def mirror_point_plane(point, plane):
     """Mirror a point about a plane."""
     p1 = closest_point_on_plane(point, plane)
-    vec = subtract_vectors(p1,point)
-    return add_vectors(p1,vec)
+    vec = subtract_vectors(p1, point)
+    return add_vectors(p1, vec)
 
 
 def mirror_points_plane(points, plane):
     """Mirror multiple points about a plane."""
     return [mirror_point_plane(point, plane) for point in points]
+
 
 def mirror_vector_vector(v1, v2):
     """Mirrors vector about vector.

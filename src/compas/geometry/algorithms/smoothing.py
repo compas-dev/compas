@@ -704,38 +704,27 @@ if __name__ == "__main__":
 
     import compas
 
-    from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
+    from compas.visualization import NetworkPlotter
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    from compas.datastructures import Network
+    from compas.geometry import network_smooth_centroid
 
-    vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-    faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
-    adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
-    fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+    network = Network.from_obj(compas.get('saddle.obj'))
 
-    lines = []
-    for u, v in mesh.edges():
-        lines.append({
-            'start': mesh.vertex_coordinates(u, 'xy'),
-            'end'  : mesh.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
-            'width': 1.0,
-        })
+    fixed = network.leaves()
 
-    plotter = MeshPlotter(mesh)
+    network_smooth_centroid(network, fixed=fixed)
 
-    plotter.draw_lines(lines)
+    plotter = NetworkPlotter(network, figsize=(10, 6))
+
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
-    plotter.draw_faces()
     plotter.draw_edges()
 
     def callback(mesh, k, args):
         plotter.update_vertices()
         plotter.update_edges()
-        plotter.update_faces()
         plotter.update(pause=0.001)
 
-    mesh_smooth_centroid(mesh, fixed=fixed, kmax=100, callback=callback)
+    network_smooth_centroid(network, fixed=fixed, kmax=100, callback=callback)
 
     plotter.show()

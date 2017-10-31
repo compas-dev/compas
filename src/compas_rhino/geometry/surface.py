@@ -1,5 +1,6 @@
 from compas.cad import SurfaceGeometryInterface
 from compas.geometry import subtract_vectors
+from builtins import range
 
 try:
     import rhinoscriptsyntax as rs
@@ -66,8 +67,8 @@ class RhinoSurface(SurfaceGeometryInterface):
             du = (domain_u[1] - domain_u[0]) / (density_u - 1)
             dv = (domain_v[1] - domain_v[0]) / (density_v - 1)
 
-            for i in xrange(density_u):
-                for j in xrange(density_v):
+            for i in range(density_u):
+                for j in range(density_v):
                     uv.append((domain_u[0] + i * du, domain_v[0] + j * dv))
 
         if len(faces) > 1:
@@ -118,8 +119,8 @@ class RhinoSurface(SurfaceGeometryInterface):
                 xstep = 1.0 * (xmax - xmin) / (du - 1)
                 ystep = 1.0 * (ymax - ymin) / (dv - 1)
                 seeds = []
-                for i in xrange(du):
-                    for j in xrange(dv):
+                for i in range(du):
+                    for j in range(dv):
                         seed = xmin + i * xstep, ymin + j * ystep, 0
                         seeds.append(seed)
                 points = map(list, rs.ProjectPointToSurface(seeds, guid, [0, 0, 1]))

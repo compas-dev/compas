@@ -2,6 +2,7 @@
 # ActiveState KDTree <http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space>
 
 from __future__ import print_function
+from builtins import range
 
 import collections
 
@@ -105,7 +106,7 @@ class KDTree(object):
         """Initialise a KDTree object."""
         self.root = None
         if objects:
-            self.root = self.build(list([(objects[i], i) for i in xrange(len(objects))]))
+            self.root = self.build(list([(objects[i], i) for i in range(len(objects))]))
 
     def build(self, objects, axis=0):
         """Populate a kd-tree with given objects.

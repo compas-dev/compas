@@ -719,9 +719,6 @@ if __name__ == '__main__':
     plotter.defaults['vertex.fontsize'] = 8.0
 
     plotter.draw_vertices(
-        facecolor={key: '#ff0000' for key in network.leaves()},
-        radius=0.2,
-        text={key: key for key in network.vertices()}
     )
 
     plotter.draw_edges()

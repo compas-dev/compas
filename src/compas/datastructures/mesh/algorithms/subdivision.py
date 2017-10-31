@@ -619,6 +619,8 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
 if __name__ == "__main__":
 
+    from functools import partial
+
     import compas
 
     from compas.datastructures import Mesh
@@ -627,16 +629,17 @@ if __name__ == "__main__":
     from compas.visualization import MeshPlotter
     from compas.visualization.viewers import SubdMeshViewer
 
+    subdivide = partial(mesh_subdivide, scheme='doosabin')
+
     mesh = Mesh.from_polyhedron(6)
 
-    mesh = mesh_subdivide(mesh, scheme='doosabin', k=2)
-
-    viewer = MeshViewer(mesh, width=800, height=600)
+    viewer = SubdMeshViewer(mesh, subdfunc=subdivide, width=600, height=600)
 
     viewer.axes_on = False
     viewer.grid_on = False
 
-    viewer.camera.zoom_in(10)
+    for i in range(10):
+        viewer.camera.zoom_in()
 
     viewer.setup()
     viewer.show()

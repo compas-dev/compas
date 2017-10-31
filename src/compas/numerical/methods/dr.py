@@ -1,4 +1,5 @@
 from __future__ import print_function
+from builtins import range
 
 from numpy import array
 from numpy import isnan
@@ -282,7 +283,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # --------------------------------------------------------------------------
     # start iterating
     # --------------------------------------------------------------------------
-    for k in xrange(kmax):
+    for k in range(kmax):
         q_fpre = fpre / l
         q_lpre = f / lpre
         q_EA   = EA * (l - linit) / (linit * l)
@@ -389,7 +390,7 @@ if __name__ == "__main__":
             'width': 1.0
         })
 
-    plotter = NetworkPlotter(network)
+    plotter = NetworkPlotter(network, figsize=(10, 6))
 
     plotter.draw_lines(lines)
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})

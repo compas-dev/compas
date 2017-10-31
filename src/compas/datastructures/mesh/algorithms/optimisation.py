@@ -1,6 +1,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from builtins import range
 
 from compas.geometry import smooth_area
 
@@ -162,7 +163,7 @@ def trimesh_remesh(mesh,
 
     kmax_start = kmax / 2.0
 
-    for k in xrange(kmax):
+    for k in range(kmax):
 
         if k <= kmax_start:
             scale = fac * (1.0 - k / kmax_start)

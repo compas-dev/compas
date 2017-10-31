@@ -5,6 +5,11 @@ from matplotlib.patches import Circle
 from compas.utilities import valuedict
 from compas.visualization.plotters.plotter import Plotter
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
