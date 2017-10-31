@@ -13,7 +13,10 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['Rui', ]
+__all__ = [
+    'Rui',
+    'compile_rui'
+]
 
 
 TPL_RUI = '''<?xml version="1.0" encoding="utf-8"?>
@@ -405,6 +408,36 @@ class Rui(object):
         s_item = TPL_TOOLBARGROUPITEM.format(guid, tb_name, tb_guid)
         e_item = ET.fromstring(s_item)
         root.append(e_item)
+
+
+def compile_rui(oclass, opath, rui_config='rui_config.json'):
+
+    if not oclass.instancename:
+        raise Exception('MacroController instance name not set.')
+
+    with open(os.path.join(rui_config), 'r') as fp:
+        config = json.load(fp)
+
+    macros = get_macros(oclass, oclass.instancename)
+
+    init_script = [
+        '-_RunPythonScript ResetEngine (',
+        'from {} import {};'.format(opath, oclass.__name__),
+        '{} = {}();'.format(oclass.instancename, oclass.__name__),
+        '{}.init();'.format(oclass.instancename),
+        ')'
+    ]
+
+    update_macro(macros, '{}.init'.format(oclass.instancename), 'script', ''.join(init_script))
+
+    rui = Rui('./{}.rui'.format(oclass.instancename))
+
+    rui.init()
+    rui.add_macros(macros)
+    rui.add_menus(config['menus'])
+    rui.add_toolbars(config['toolbars'])
+    rui.add_toolbargroups(config['toolbargroups'])
+    rui.write()
 
 
 # ==============================================================================
