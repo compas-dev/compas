@@ -460,7 +460,7 @@ if __name__ == "__main__":
     L = 1.5
     n = 40
     EI = 0.2
-    pins = [0, 5, 20, n - 1]
+    pins = [0, 5, 20, n - 5]
 
     # Network
 
@@ -489,7 +489,7 @@ if __name__ == "__main__":
 
     # Solver
 
-    drx(network=network, tol=0.01, refresh=10, factor=20, update=True, callback=plot_iterations)
+    drx(network=network, tol=0.01, refresh=10, factor=30, update=True, callback=plot_iterations)
 
     plotter.show()
 
