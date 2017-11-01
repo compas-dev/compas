@@ -137,18 +137,33 @@ drawing
     xdraw_spheres
     xdraw_mesh
 
+
+geometry
+========
+
+.. autosummary::
+    :toctree: generated/
+
+    uv_points_from_surface
+
+
 """
+
+
+
 
 from .document import *
 from .layers import *
 from .objects import *
 from .misc import *
 from .drawing import *
+from .geometry import *
 
 from .document import __all__ as a
 from .layers import __all__ as b
 from .objects import __all__ as c
 from .misc import __all__ as d
 from .drawing import __all__ as e
+from .geometry import __all__ as f
 
-__all__ = a + b + c + d + e
+__all__ = a + b + c + d + e + f

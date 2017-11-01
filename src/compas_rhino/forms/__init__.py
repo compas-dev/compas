@@ -15,7 +15,6 @@ Windows forms for ...
     :toctree: generated/
 
     AttributesForm
-    BrowserForm
     ChartForm
     ImageForm
     MultiPageForm
@@ -75,7 +74,7 @@ class Form(WinForm):
 
 
 from .attributes import AttributesForm
-from .browser import BrowserForm
+# from .browser import BrowserForm
 from .chart import ChartForm
 from .image import ImageForm
 from .multipage import MultiPageForm
@@ -84,4 +83,4 @@ from .slider import SliderForm
 from .table import TableForm
 from .text import TextForm
 
-__all__ = ['AttributesForm', 'BrowserForm', 'ChartForm', 'ImageForm', 'MultiPageForm', 'SettingsForm', 'SliderForm', 'TableForm', 'TextForm']
+__all__ = ['AttributesForm', 'ChartForm', 'ImageForm', 'MultiPageForm', 'SettingsForm', 'SliderForm', 'TableForm', 'TextForm']

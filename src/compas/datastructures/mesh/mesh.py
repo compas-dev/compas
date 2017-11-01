@@ -43,6 +43,8 @@ from compas.datastructures.mixins import VertexMappings
 from compas.datastructures.mixins import EdgeMappings
 from compas.datastructures.mixins import FaceMappings
 
+from compas.datastructures.mesh.algorithms import delaunay_from_points
+
 from compas.topology import bfs_traverse
 from compas.geometry import flatness
 
@@ -466,6 +468,24 @@ class Mesh(FromToJson,
         """
         p = Polyhedron.generate(f)
         return cls.from_vertices_and_faces(p.vertices, p.faces)
+
+    @classmethod
+    def from_points(cls, points, boundary=None, holes=None):
+        """Construct a mesh from a delaunay triangulation of a set of points.
+
+        Parameters
+        ----------
+        points : list
+            XYZ coordinates of the points.
+            Z coordinates should be zero.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+
+        """
+        return delaunay_from_points(cls, points, boundary=boundary, holes=holes)
 
     # --------------------------------------------------------------------------
     # converters
@@ -2499,111 +2519,7 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas.visualization import MeshPlotter
-    from compas.geometry import mesh_smooth_centroid
+    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
-    mesh = Mesh.from_obj(compas.get_data('hypar.obj'))
+    print(mesh)
 
-    fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
-
-    plotter = MeshPlotter(mesh)
-
-    plotter.defaults['vertex.radius'] = 0.1
-
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
-    plotter.draw_faces()
-    plotter.draw_edges()
-
-    def callback(mesh, k, args):
-        plotter.update_vertices()
-        plotter.update_faces()
-        plotter.update_edges()
-        plotter.update(pause=0.01)
-
-    mesh_smooth_centroid(mesh, fixed=fixed, callback=callback)
-
-    plotter.show()
-
-    # data = mesh.to_data()
-    # mesh = Mesh.from_data(data)
-
-    # mesh.summary()
-
-    # print(mesh.is_valid())
-    # print(mesh.is_connected())
-
-    # mesh.delete_vertex(17)
-    # mesh.delete_vertex(18)
-    # mesh.delete_vertex(0)
-
-    # mesh.cull_vertices()
-
-    # key, fkeys = mesh.insert_vertex(12, return_fkeys=True)
-
-    # mesh.delete_face(12)
-
-    # for w, e in zip(list(mesh.wireframe()), list(mesh.edges())):
-    #     print(w, e, w == e)
-
-    # plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-    # plotter.defaults['face.facecolor'] = '#eeeeee'
-    # plotter.defaults['face.edgewidth'] = 0.0
-
-    # plotter.draw_vertices(
-    #     radius=0.2,
-    #     facecolor={key: '#ff0000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2}
-    # )
-
-    # plotter.draw_faces()
-    # plotter.draw_edges()
-
-    # plotter.show()
-
-    # key = 17
-    # nbrs = mesh.vertex_faces(key, ordered=True)
-
-    # plotter = MeshPlotter(mesh)
-
-    # plotter.draw_vertices(text={17: '17'}, facecolor={17: '#ff0000'}, radius=0.2)
-    # plotter.draw_faces(text={nbr: str(index) for index, nbr in enumerate(nbrs)}, facecolor={nbr: '#cccccc' for nbr in nbrs})
-    # plotter.draw_edges()
-    # plotter.show()
-
-    # for index, (u, v, attr) in enumerate(mesh.edges(True)):
-    #     attr['index1'] = index
-
-    # for index, (u, v, attr) in enumerate(mesh.edges(True)):
-    #     attr['index2'] = index
-
-    # plotter = MeshPlotter(mesh)
-
-    # text = {(u, v): '{}-{}'.format(a['index1'], a['index2']) for u, v, a in mesh.edges(True)}
-
-    # plotter.draw_vertices()
-    # plotter.draw_faces()
-    # plotter.draw_edges(text=text)
-    # plotter.show()
-
-    # key = 12
-    # nbrs = mesh.face_neighbours(key)
-
-    # text = {nbr: str(nbr) for nbr in nbrs}
-    # text[key] = str(key)
-
-    # color = {nbr: '#cccccc' for nbr in nbrs}
-    # color[key] = '#ff0000'
-
-    # plotter = MeshPlotter(mesh)
-    # plotter.draw_vertices()
-    # plotter.draw_faces(text=text, facecolor=color)
-    # plotter.draw_edges()
-    # plotter.show()
-
-    # k_a = {key: mesh.vertex_area(key) for key in mesh.vertices()}
-
-    # plotter = MeshPlotter(mesh)
-    # plotter.draw_vertices(radius=0.2, text={key: '{:.1f}'.format(k_a[key]) for key in mesh.vertices()})
-    # plotter.draw_faces()
-    # plotter.draw_edges()
-    # plotter.show()

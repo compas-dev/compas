@@ -10,20 +10,160 @@ __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
 
-def moga_optimize(fit_functions,
-                  fit_types,
-                  num_var,
-                  boundaries,
-                  num_gen=100,
-                  num_pop=100,
-                  mutation_probability=0.001,
-                  num_bin_dig=None,
-                  start_from_gen=False,
-                  min_fit=None,
-                  fit_names=None,
-                  fargs=None,
-                  fkwargs=None,
-                  output_path=None):
+__all__ = [
+    'moga'
+]
+
+
+TPL = """
+================================================================================
+MOGA summary
+================================================================================
+
+- fitness function names: {}
+
+- fitnes function types : {}
+
+- number of generations : {}
+
+- number of individuals : {}
+
+- number of variables : {}
+
+- optimal individuals : {}
+
+- optimal fitness values : {}
+
+================================================================================
+"""
+
+
+def moga(fit_functions,
+         fit_types,
+         num_var,
+         boundaries,
+         num_gen=100,
+         num_pop=100,
+         mutation_probability=0.001,
+         num_bin_dig=None,
+         start_from_gen=False,
+         fit_names=None,
+         fargs=None,
+         fkwargs=None,
+         output_path=None):
+
+    """Genetic Algorithm optimisation [deb2001]_.
+
+    Parameters
+    ----------
+
+    fit_functions : list
+        List of functions to be used by the :class'MOGA' to determine the fitness values.
+        The function must have as a first argument a list of variables that determine the
+        fitness value. Other arguments and keyword arguments can be used to feed
+        the function relevant data.
+    fit_types : list
+        List of strings that indicate if the fitness functions are to be minimized
+        or maximized, "min" for minimization and "max" for maximization.
+    num_var :  int
+        The number of variables used by the fitness function.
+    boundaries : list
+        The minimum and vaximum values each variable is allowed to have. Must be
+        a ``num_var`` long list of tuples in the form [(min, max),...].
+    num_gen : int, optional [100]
+        The maximum number of generations.
+    num_pop : int, optional [100]
+        The number of individuals in the population. Must be an even number.
+    mutation_probability : float, optional [0.001]
+        Float from 0 to 1. If 0 is used, none of the genes in each individuals
+        chromosome will be mutated. If 1 is used, all of them will mutate.
+    num_bin_dig : list, optional [None]
+        Number of genes used to codify each variable. Must be a ``num_var`` long
+        list of intergers. If None is given, each variable will be coded with a
+        8 digit binary number, corresponding to 256 steps.
+    start_from_gen : int, optional [None]
+        The generation number to restart a previous optimization process.
+    fit_names : list, optional [None]
+        The names of the fitness functions. If None is given, the name of the fitness
+        functions are used.
+    fargs : list, optional [None]
+        Arguments fo be fed to the fitness function.
+    fkwargs : dict, optional [None]
+        Keyword arguments to be fed to the fitness function.
+    output_path : str, optional [None]
+        Path for the optimization result files.
+
+    Returns
+    -------
+    moga : object
+        The resulting :class'MOGA' instance.
+
+    Example
+    -------
+    Zitzler-Deb-Thiele Test problem 3
+
+    .. code-block:: python
+
+        import os
+        import compas
+        import math
+
+        def zdt3_f1(X, a):
+            fit = X[0]
+            return fit
+
+        def zdt3_f2(X, a):
+            n = len(X)
+            totX = 0
+            for i in range(1, n):
+                totX  = totX + X[i]
+            G = 1 + (9 / (n - 1)) * totX
+            H = 1 - math.sqrt(X[0] / G) - ((X[0] / G) * math.sin(10 * math.pi * X[0]))
+            fit = G * H
+            return fit
+
+        fit_functions = [zdt3_f1, zdt3_f2]
+        fit_types = ['min', 'min']
+        num_var = 30
+        boundaries = [(0, 1)] * num_var
+        num_bin_dig  = [8] * num_var
+        output_path = os.path.join(compas.TEMP, 'moga_out/')
+
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+
+        moga = moga(fit_functions,
+                    fit_types,
+                    num_var,
+                    boundaries,
+                    num_gen=100,
+                    num_pop=50,
+                    num_bin_dig=num_bin_dig,
+                    output_path=output_path)
+
+    .. code-block:: none
+
+        ================================================================================
+        MOGA summary
+        ================================================================================
+
+        - fitness function name: ['zdt3_f1', 'zdt3_f2']
+
+        - fitnes function type : ['min', 'min']
+
+        - number of generations : 100
+
+        - number of individuals : 50
+
+        - number of variables : 30
+
+        - optimal individuals : [0, 1]
+
+        - optimal fitness values : [0.0, -0.7730627737349554]
+
+        ================================================================================
+
+    """
 
     moga = MOGA()
 
@@ -34,7 +174,6 @@ def moga_optimize(fit_functions,
     moga.num_var              = num_var
     moga.mutation_probability = mutation_probability
     moga.start_from_gen       = start_from_gen
-    moga.min_fit              = min_fit
     moga.boundaries           = boundaries
     moga.num_bin_dig          = num_bin_dig or [8] * num_var
     moga.max_bin_dig          = max(moga.num_bin_dig)
@@ -44,18 +183,82 @@ def moga_optimize(fit_functions,
     moga.fit_functions        = fit_functions
     moga.output_path          = output_path or ''
     moga.num_fit_func         = len(fit_functions)
-    print ('output_path = ', moga.output_path)
-    moga.moga()
+    moga.moga_optimise()
     return moga
 
 
-class MOGA:
+class MOGA(object):
     """This class contains a binary coded, multiple objective genetic algorithm called
-    NSGA-II (ref to K. Deb). NSGA-II uses the concept of non-domination, or Pareto-domination to
+    NSGA-II (K. Deb). NSGA-II uses the concept of non-domination (Pareto-domination) to
     classify solutions and optimize as a genetic algorith. NSGA-II also employs a crowding distance
-    operator especially designed to distribute individuals in the population allong the Pareto
-    front, and this avoid crowding in small areas. The main function is ``MOGA.moga``, calling
-    this starts the multi objective optimization process.
+    operator designed to distribute individuals in the population allong the Pareto
+    front, avoid crowding in small areas.
+
+    Attributes
+    ----------
+
+    fit_functions : list
+        List of functions to be used by the :class'MOGA' to determine the fitness values.
+        The function must have as a first argument a list of variables that determine the
+        fitness value. Other arguments and keyword arguments can be used to feed
+        the function relevant data.
+    fit_types : list
+        List of strings that indicate if the fitness functions are to be minimized
+        or maximized, "min" for minimization and "max" for maximization.
+    boundaries : list
+        The minimum and vaximum values each variable is allowed to have. Must be
+        a ``num_var`` long list of tuples in the form [(min, max),...].
+    num_var :  int
+        The number of variables used by the fitness function.
+    num_pop : int, optional [100]
+        The number of individuals in the population. Must be an even number.
+    num_gen : int, optional [100]
+        The maximum number of generations.
+    num_bin_dig : list, optional [None]
+        Number of genes used to codify each variable. Must be a ``num_var`` long
+        list of intergers. If None is given, each variable will be coded with a
+        8 digit binary number, corresponding to 256 steps.
+    mutation_probability : float, optional [0.001]
+        Float from 0 to 1. If 0 is used, none of the genes in each individuals
+        chromosome will be mutated. If 1 is used, all of them will mutate.
+    fit_names : list, optional [None]
+        The names of the fitness functions. If None is given, the name of the fitness
+        functions are used.
+    start_from_gen : int, optional [None]
+        The generation number to restart a previous optimization process.
+    max_bin_digit : int
+        The maximum number of binary digits that are used to code a variable values.
+        The number of binary digits assigned to code a variable determine the number
+        of discrete steps inside the variable bounds. For example, an 8 digit binary
+        number will produce 256 steps.
+    total_bin_dig : int
+        The total number of binary digits.
+    num_fit_func : int
+        The number of fitness functions.
+    output_path : str, optional [None]
+        Path for the optimization result files.
+    parent_combined_dict : dict
+        The combined parent population dictionary.
+    parent_pop : dict
+        The parent population dictionary.
+    current_pop : dict
+        The current population dictionary.
+    combined_pop : dict
+        The combined population dictionary.
+    new_pop_cd : list
+        The crowding distance list for the newly created population.
+    fixed_start_pop : dict
+        The user-selected population dictionary for MOGA restarting.
+    fargs : list, optional [None]
+        Arguments fo be fed to the fitness function.
+    fkwargs : dict, optional [None]
+        Keyword arguments to be fed to the fitness function.
+
+
+    References
+    ----------
+    * Deb, K. (2001), Multi-Objective Optimization using Evolutionary Algorithms,
+    John Wiley & Sons, Chichester.
     """
 
     def __init__(self):
@@ -70,28 +273,49 @@ class MOGA:
         # pf_dict         = {individual index: pf number}
         """
         self.fit_functions = []
+        self.fit_types = []
+        self.boundaries   = {}
         self.num_var = 0
         self.num_pop = 0
         self.num_gen = 0
-        self.boundaries   = {}
         self.num_bin_dig = 0
         self.mutation_probability = 0
         self.fit_names = []
-        self.fit_types = []
         self.start_from_gen = False
         self.max_bin_dig = 0
         self.total_bin_dig = 0
         self.num_fit_func = 0
         self.output_path = []
-        self.additional_data = {}
         self.parent_combined_dict = {}
         self.parent_pop   = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': [], 'pf': []}
         self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': []}
         self.combined_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': []}
         self.new_pop_cd = []
         self.fixed_start_pop = None  # {'binary':{},'decoded':{},'scaled':{}}
+        self.fargs = {}
+        self.fkwargs = {}
 
-    def moga(self):
+    def __str__(self):
+        """Compile a summary of the MOGA."""
+        fit_names = self.fit_names
+        fit_types = self.fit_types
+        num_gen = self.num_gen
+        num_pop = self.num_pop
+        num_var = self.num_var
+        try:
+            fitl = [list(x) for x in zip(*self.parent_pop['fit_values'])]
+            best = [self.get_sorting_indices(l, reverse=False)[0] if self.fit_types[i] == 'min' else self.get_sorting_indices(l, reverse=True)[0] for i, l in enumerate(fitl)]
+            fit = [min(x) if self.fit_types[i] == 'min' else max(x) for i, x in enumerate(fitl)]
+        except(Exception):
+            best = None
+            fit = None
+        return TPL.format(fit_names, fit_types, num_gen, num_pop, num_var, best, fit)
+
+    def summary(self):
+        """Print a summary of the MOGA."""
+        print(self)
+
+    def moga_optimise(self):
         """This is the main optimization function, this function permorms the multi objective
         GA optimization, performing all genetic operators.
         """
@@ -119,7 +343,7 @@ class MOGA:
             for i in range(self.num_pop):
                 for j in range(self.num_fit_func):
                     fit_func = self.fit_functions[j]
-                    self.parent_pop['fit_values'][i][j] = fit_func(self.parent_pop['scaled'][i], self.additional_data)
+                    self.parent_pop['fit_values'][i][j] = fit_func(self.parent_pop['scaled'][i], self.fkwargs)
 
         self.current_pop['binary'] = self.generate_random_bin_pop()
 
@@ -132,7 +356,7 @@ class MOGA:
             for i in range(self.num_pop):
                 for j in range(self.num_fit_func):
                     fit_func = self.fit_functions[j]
-                    self.current_pop['fit_values'][i][j] = fit_func(self.current_pop['scaled'][i], self.additional_data)
+                    self.current_pop['fit_values'][i][j] = fit_func(self.current_pop['scaled'][i], self.fkwargs)
 
             self.combine_populations()
             self.non_dom_sort()
@@ -151,7 +375,7 @@ class MOGA:
                 self.simple_crossover()
                 self.random_mutation()
             else:
-                print('end of MOGA')
+                print(self)
 
     def write_out_file(self, generation):
         """This function writes a file containing all of the population data for
@@ -378,7 +602,7 @@ class MOGA:
                 self.pf_values[k] = (self.combined_pop['fit_values'][self.i_pareto_front[k]][i])
 
             if self.fit_types[i] == 'max':
-                self.sorted_indices = self.get_sorting_indices(self.pf_values, reverse=False)
+                self.sorted_indices = self.get_sorting_indices(self.pf_values, reverse=True)
             else:
                 self.sorted_indices = self.get_sorting_indices(self.pf_values, reverse=False)
 
@@ -824,4 +1048,49 @@ class MOGA:
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+    import os
+    import compas
+    import math
+    from compas.visualization.plotters.mogaplotter import MogaPlotter
+
+    def zdt3_f1(X, a):
+        fit = X[0]
+        return fit
+
+    def zdt3_f2(X, a):
+        n = len(X)
+        totX = 0
+        for i in range(1, n):
+            totX  = totX + X[i]
+        G = 1 + (9 / (n - 1)) * totX
+        H = 1 - math.sqrt(X[0] / G) - ((X[0] / G) * math.sin(10 * math.pi * X[0]))
+        fit = G * H
+        return fit
+
+    fit_functions = [zdt3_f1, zdt3_f2]
+    fit_types = ['min', 'min']
+    num_var = 30
+    boundaries = [(0, 1)] * num_var
+    num_bin_dig  = [8] * num_var
+    output_path = os.path.join(compas.TEMP, 'moga_out/')
+
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+
+    moga_ = moga(fit_functions,
+                 fit_types,
+                 num_var,
+                 boundaries,
+                 num_gen=100,
+                 num_pop=50,
+                 num_bin_dig=num_bin_dig,
+                 output_path=output_path)
+
+    vis = MogaPlotter()
+    vis.input_path = moga_.output_path
+    filename = ''
+    for name in moga_.fit_names:
+        filename += name + '-'
+    filename += '.json'
+    vis.output_path = vis.input_path
+    vis.draw_objective_spaces(filename, number=True)

@@ -33,7 +33,7 @@ class NetworkArtist(PathArtist, EdgeArtist, VertexArtist, ArtistInterface):
         self.datastructure = network
         self.layer = layer
         self.defaults = {
-            'color.vertex': (255, 0, 0),
+            'color.vertex': (0, 0, 0),
             'color.edge'  : (0, 0, 0),
         }
 

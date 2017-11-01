@@ -23,6 +23,16 @@ Matlab
     MatlabSession
 
 
+============= ============
+Interface     Case
+============= ============
+MatlabClient  Operating system is Windows. Matlab version is older than 2014b.
+MatlabProcess Operating system is not Windows. Matlab version is older than 2014b.
+MatlabEngine  All operating systems. Matlab version is 2014b or above. No shared Matlab session is available.
+MatlabSession All operating systems. Matlab version is 2014b or above. A shared Matlab session is already available.
+============= ============
+
+
 ssh
 ===
 
@@ -36,16 +46,6 @@ ssh
     send_folder
     sync_folder
     server_command
-
-
-============= ============
-Interface     Case
-============= ============
-MatlabClient  Operating system is Windows. Matlab version is older than 2014b.
-MatlabProcess Operating system is not Windows. Matlab version is older than 2014b.
-MatlabEngine  All operating systems. Matlab version is 2014b or above. No shared Matlab session is available.
-MatlabSession All operating systems. Matlab version is 2014b or above. A shared Matlab session is already available.
-============= ============
 
 """
 

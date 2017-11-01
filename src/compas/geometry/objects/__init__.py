@@ -16,6 +16,10 @@ from .surface import Surface
 
 from .kdtree import KDTree
 
+from .hull import *
+from .hull import __all__ as a
+
+
 __all__ = [
     'Vector', 'Point', 'Line', 'Plane',
     'Frame',
@@ -23,4 +27,4 @@ __all__ = [
     'Circle',
     'Spline', 'Surface',
     'KDTree'
-]
+] + a

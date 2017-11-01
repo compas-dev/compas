@@ -49,12 +49,12 @@ class TableForm(Form):
         buttonlayout.Height = 30
         buttonlayout.Anchor = AnchorStyles.Bottom | AnchorStyles.Right
         buttonlayout.FlowDirection = FlowDirection.RightToLeft
-        buttonlayout.BorderStyle = BorderStyle.None
+        # buttonlayout.BorderStyle = BorderStyle.None
         buttonlayout.Controls.Add(cancel)
         buttonlayout.Controls.Add(ok)
         formlayout = TableLayoutPanel()
         formlayout.Dock = DockStyle.Fill
-        formlayout.BorderStyle = BorderStyle.None
+        # formlayout.BorderStyle = BorderStyle.None
         formlayout.ColumnCount = 1
         formlayout.RowCount = 2
         formlayout.RowStyles.Add(RowStyle(SizeType.Percent, 100))

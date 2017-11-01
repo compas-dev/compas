@@ -1,7 +1,9 @@
+from __future__ import print_function
 import re
 import random
 import json
 import copy
+
 
 __author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
@@ -9,131 +11,274 @@ __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
 
-def ga_optimize(fit_function,
+__all__ = [
+    'ga'
+]
+
+
+TPL = """
+================================================================================
+GA summary
+================================================================================
+
+- fitness function name: {}
+
+- fitnes function type : {}
+
+- number of generations : {}
+
+- number of individuals : {}
+
+- number of variables : {}
+
+- optimal individual : {}
+
+- optimal fitness value : {}
+
+================================================================================
+"""
+
+
+def ga(fit_function,
+       fit_type,
+       num_var,
+       boundaries,
+       num_gen=100,
+       num_pop=100,
+       num_elite=10,
+       mutation_probability=0.001,
+       num_bin_dig=None,
+       num_pop_init=None,
+       num_gen_init_pop=None,
+       start_from_gen=False,
+       min_fit=None,
+       fit_name=None,
+       fargs=None,
+       fkwargs=None,
+       output_path=None,
+       input_path=None):
+
+    ga_ = GA()
+    """Genetic Algorithm optimisation (Holland 1975).
+
+    Parameters
+    ----------
+
+    fit_function : callable
+        The function used by the :class'GA' to determine the fitness value. The function
+        must have as a first argument a list of variables that determine the
+        fitness value. Other arguments and keyword arguments can be used to feed
+        the function relevant data.
+    fit_type : str
+        String that indicates if the fitness function is to be minimized or maximized.
+        "min" for minimization and "max" for maximization.
+    num_var :  int
+        The number of variables used by the fitness function.
+    boundaries : list
+        The minimum and vaximum values each variable is allowed to have. Must be
+        a ``num_var`` long list of tuples in the form [(min, max),...].
+    num_gen : int, optional [100]
+        The maximum number of generations.
+    num_pop : int, optional [100]
+        The number of individuals in the population. Must be an even number.
+    num_elite : int, optional [10]
+        The number of individuals in the elite population. Must be an even number.
+    mutation_probablity : float, optional [0.001]
+        Float from 0 to 1. If 0 is used, none of the genes in each individuals
+        chromosome will be mutated. If 1 is used, all of them will mutate.
+    num_bin_dig : list, optional [None]
+        Number of genes used to codify each variable. Must be a ``num_var`` long
+        list of intergers. If None is given, each variable will be coded with a
+        8 digit binary number, corresponding to 256 steps.
+    num_pop_init : int, optional [None]
+        The number of individuals in the population for the first ``num_gen_init_pop``
+        generations.
+    num_gen_init_pop : int, optional
+        The number of generations to keep a ``num_pop_init`` size population for.
+    start_from_get : int, optional [None]
+        The generation number to restart a previous optimization process.
+    min_fit : float, optional [None]
+        A target fitness value. If the GA finds a solution with a fitness value
+        equal or better than ``min_fit``, the optimization is stopped.
+    fit_name : str, optional [None]
+        The name of the optimisation. If None is given, the name of the fitness
+        function is used.
+    fargs : list, optional [None]
+        Arguments fo be fed to the fitness function.
+    fkwargs : dict, optional [None]
+        Keyword arguments to be fed to the fitness function.
+    output_path : str, optional [None]
+        Path for the optimization result files.
+    input_path : str, optional [None]
+        Path to the fitness function file.
+
+    Returns
+    -------
+
+    ga_ : object
+        The resulting :class'GA' instance.
+
+    References
+    ----------
+    * Holland, J. H. (1975), Adaptation in Natural and Artificial Systems, 1st edn,
+    The University of Michigan, Ann Arbor.
+
+    Example
+    -------
+    .. code-block:: python
+
+        import os
+        import compas
+        from compas.numerical.solvers.ga import ga
+
+        def foo(X):
+            fit = sum(X)
+            return fit
+
+        fit_function = foo
+        fit_type = 'min'
+        num_var = 10
+        boundaries = [(0, 1)] * num_var
+        num_bin_dig  = [8] * num_var
+        output_path = os.path.join(compas.TEMP, 'ga_out/')
+
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+
+        ga = ga(fit_function,
                 fit_type,
                 num_var,
                 boundaries,
                 num_gen=100,
                 num_pop=100,
-                num_elite=10,
-                mutation_probability=0.001,
-                num_bin_dig=None,
-                num_pop_init=None,
-                num_gen_init_pop=None,
-                start_from_gen=False,
-                min_fit=None,
-                fit_name=None,
-                fargs=None,
-                fkwargs=None,
-                output_path=None,
-                input_path=None):
+                num_elite=40,
+                num_bin_dig=num_bin_dig,
+                output_path=output_path,
+                min_fit=0.01)
 
-    ga = GA()
+    .. code-block:: none
 
-    ga.fit_name             = fit_name or fit_function.__name__
-    ga.fit_type             = fit_type
-    ga.num_gen              = num_gen
-    ga.num_pop              = num_pop
-    ga.num_pop_init         = num_pop_init
-    ga.num_gen_init_pop     = num_gen_init_pop
-    ga.num_elite            = num_elite
-    ga.num_var              = num_var
-    ga.mutation_probability = mutation_probability
-    ga.start_from_gen       = start_from_gen
-    ga.min_fit              = min_fit
-    ga.boundaries           = boundaries
-    ga.num_bin_dig          = num_bin_dig or [8] * num_var
-    ga.max_bin_dig          = max(ga.num_bin_dig)
-    ga.total_bin_dig        = sum(ga.num_bin_dig)
-    ga.fargs                = fargs or {}
-    ga.fkwargs              = fkwargs or {}
-    ga.fit_function         = fit_function
-    ga.output_path          = output_path or ''
-    ga.input_path           = input_path or ''
-    print('output_path', ga.output_path)
-    ga.ga()
-    return ga
+        ================================================================================
+        GA summary
+        ================================================================================
+
+        - fitness function name: foo
+
+        - fitnes function type : min
+
+        - number of generations : 100
+
+        - number of individuals : 100
+
+        - number of variables : 10
+
+        - optimal individual : 31
+
+        - optimal fitness value : 0.0705882352941
+
+        ================================================================================
+
+    """
+
+    ga_.fit_name             = fit_name or fit_function.__name__
+    ga_.fit_type             = fit_type
+    ga_.num_gen              = num_gen
+    ga_.num_pop              = num_pop
+    ga_.num_pop_init         = num_pop_init
+    ga_.num_gen_init_pop     = num_gen_init_pop
+    ga_.num_elite            = num_elite
+    ga_.num_var              = num_var
+    ga_.mutation_probability = mutation_probability
+    ga_.start_from_gen       = start_from_gen
+    ga_.min_fit              = min_fit
+    ga_.boundaries           = boundaries
+    ga_.num_bin_dig          = num_bin_dig or [8] * num_var
+    ga_.max_bin_dig          = max(ga_.num_bin_dig)
+    ga_.total_bin_dig        = sum(ga_.num_bin_dig)
+    ga_.fargs                = fargs or {}
+    ga_.fkwargs              = fkwargs or {}
+    ga_.fit_function         = fit_function
+    ga_.output_path          = output_path or ''
+    ga_.input_path           = input_path or ''
+    ga_.ga_optimise()
+    return ga_
 
 
-class GA:
-    """This class contains a binary coded, single objective genetic algorithm. The main function
-    is ``GA.ga``, calling this function starts the GA optimization. It also contains all of the
-    required genetic operators.
+class GA(object):
+    """This class contains a binary coded, single objective genetic algorithm.
+
+    Attributes
+    ----------
+    best_fit : float
+        The fitness value of the best performing solution for the current generation.
+    best_individual_index: int
+        The index of the best performing individual for the current generation.
+    boundaries : dict
+        This dictionary contains all the max and min bounds for each optimization variable.
+        ``GA.boundaries[index] = [min,max]``.
+    current_pop : dict
+        This dictionary contains the coded, decoded and scaled population of the current
+        generation, as well as their fitness values.
+    elite_pop : dict
+        This dictionary contains the coded, decoded and scaled data for the elite
+        population of the current generation, as well as their fitness values.
+    end_gen : int
+        The maximum number of generations the GA is allowed to run.
+    fit_function: function
+        The fitness function.
+    fit_name : str
+        The name of the python file containing the fitness function (without extension).
+    fit_type : str
+        String that indicates if the fitness function is to be minimized or maximized.
+        "min" for minimization and "max" for maximization.
+    input_path: str
+        Path to the fitness function file.
+    kwargs : dict
+        This dictionary will be passed as a keyword argument to all fitness functions.
+        It can be used to pass required data, objects, that are not related to the
+        optimmization variables but are required to run the fitness function.
+    max_bin_digit : int
+        The maximum number of binary digits that are used to code a variable values.
+        The number of binary digits assigned to code a variable determine the number
+        of discrete steps inside the variable bounds. For example, an 8 digit binary
+        number will produce 256 steps.
+    min_fit : float
+        An end condition related to fitness value. If it is set, the GA will stop
+        when any individual achieves a fitness equal or better that ``GA.min_fit``. If
+        it is not set, the GA will end after ``GA.num_gen`` generations.
+    min_fit_flag : bool
+        Flag the GA uses to determine if the ``GA.min_fit`` value has been achieved.
+    mutation_probability : float
+        Determines the probability that the mutation operator will mutate each gene.
+        For each gene a random number ``x`` between 0 and 1 is generated, if ``x``
+        is higher than ``GA.mutation_probability`` it will be mutated.
+    num_bin_dig : list
+        List of the number of binary digits for each variable. The number of binary
+        digits assigned to code a variable determine the number of discrete steps
+        inside the variable bounds. For example, an 8 digit binary number will
+        produce 256 steps.
+    num_elite : int
+        The number of top performing individuals in the population that are not subject
+        to genetic operators, but are simply copied to the next generation.
+    num_gen : int
+        The number of genertions the GA will run.
+    num_pop : int
+        The number of individuals per generation.
+    num_var : int
+        The number of variables in the optimization problem.
+    output_path : str
+        The path to which the GA outputs result files.
+    start_from_gen : int
+        The generation from which the GA will restart. If this number is given, the GA
+        will look for generation output files in the ``GA.input_path`` and if found,
+        the GA will resume optimization from the ``GA.start_from_gen`` generation.
+    total_bin_dig : int
+        The total number of binary digits. It is the sum of the ``GA.num_bin_dig`` of
+        all variables.
     """
 
     def __init__(self):
-        """ Initializes the GA object.
-
-        Parameters
-        ----------
-        best_fit : float
-            The fitness value of the best performing solution for the current generation.
-        best_individual_index: int
-            The index of the best performing individual for the current generation.
-        boundaries : dict
-            This dictionary contains all the max and min bounds for each optimization variable.
-            ``GA.boundaries[index] = [min,max]``.
-        current_pop : dict
-            This dictionary contains the coded, decoded and scaled population of the current
-            generation, as well as their fitness values.
-        elite_pop : dict
-            This dictionary contains the coded, decoded and scaled data for the elite
-            population of the current generation, as well as their fitness values.
-        end_gen : int
-            The maximum number of generations the GA is allowed to run.
-        fit_function: function
-            The fitness function.
-        fit_name : str
-            The name of the python file containing the fitness function (without extension).
-        fit_type : str
-            String that indicates if the fitness function is to be minimized or maximized.
-            "min" for minimization and "max" for maximization.
-        input_path: str
-            Path to the fitness function file.
-        kwargs : dict
-            This dictionary will be passed as a keyword argument to all fitness functions.
-            It can be used to pass required data, objects, that are not related to the
-            optimmization variables but are required to run the fitness function.
-        max_bin_digit : int
-            The maximum number of binary digits that are used to code a variable values.
-            The number of binary digits assigned to code a variable determine the number
-            of discrete steps inside the variable bounds. For example, an 8 digit binary
-            number will produce 256 steps.
-        min_fit : float
-            An end condition related to fitness value. If it is set, the GA will stop
-            when any individual achieves a fitness equal or better that ``GA.min_fit``. If
-            it is not set, the GA will end after ``GA.num_gen`` generations.
-        min_fit_flag : bool
-            Flag the GA uses to determine if the ``GA.min_fit`` value has been achieved.
-        mutation_probability : float
-            Determines the probability that the mutation operator will mutate each gene.
-            For each gene a random number ``x`` between 0 and 1 is generated, if ``x``
-            is higher than ``GA.mutation_probability`` it will be mutated.
-        num_bin_dig : list
-            List of the number of binary digits for each variable. The number of binary
-            digits assigned to code a variable determine the number of discrete steps
-            inside the variable bounds. For example, an 8 digit binary number will
-            produce 256 steps.
-        num_elite : int
-            The number of top performing individuals in the population that are not subject
-            to genetic operators, but are simply copied to the next generation.
-        num_gen : int
-            The number of genertions the GA will run.
-        num_pop : int
-            The number of individuals per generation.
-        num_var : int
-            The number of variables in the optimization problem.
-        output_path : str
-            The path to which the GA outputs result files.
-        start_from_gen : int
-            The generation from which the GA will restart. If this number is given, the GA
-            will look for generation output files in the ``GA.input_path`` and if found,
-            the GA will resume optimization from the ``GA.start_from_gen`` generation.
-        total_bin_dig : int
-            The total number of binary digits. It is the sum of the ``GA.num_bin_dig`` of
-            all variables.
-
-        """
+        """ Initializes the GA object."""
 
         self.kwargs = {}
         self.fargs = {}
@@ -164,7 +309,25 @@ class GA:
         self.total_bin_dig = 0
         self.check_diversity = False
 
-    def ga(self):
+    def __str__(self):
+        """Compile a summary of the GA."""
+        fit_name = self.fit_name
+        fit_type = self.fit_type
+        num_gen = self.num_gen
+        num_pop = self.num_pop
+        num_var = self.num_var
+        best = self.best_individual_index
+        try:
+            fit = self.current_pop['fit_value'][self.best_individual_index]
+        except(Exception):
+            fit = None
+        return TPL.format(fit_name, fit_type, num_gen, num_pop, num_var, best, fit)
+
+    def summary(self):
+        """Print a summary of the GA."""
+        print(self)
+
+    def ga_optimise(self):
         """ This is the main optimization function, this function permorms the GA optimization,
         performing all genetic operators.
         """
@@ -218,7 +381,7 @@ class GA:
                 self.end_gen = generation
                 self.get_best_individual_index()
                 self.write_ga_json_file()
-                print ('GA ended at generation ', self.end_gen, ' with an optimal fitness of ', self.best_fit)
+                print (self)
                 break
 
     def check_pop_diversity(self):
@@ -630,7 +793,7 @@ class GA:
         Parameters
         ----------
         gen: int
-            The generation number.
+            The generation index.
 
         Returns
         -------
@@ -677,3 +840,39 @@ class GA:
         elif self.fit_type == 'max':
             indices = self.get_sorting_indices(fit_values, reverse=True)
         self.best_individual_index = indices[0]
+
+
+if __name__ == '__main__':
+
+    import os
+    import compas
+    from compas.visualization.plotters.gaplotter import Ga_Plotter
+
+    def foo(X):
+        fit = sum(X)
+        return fit
+
+    fit_function = foo
+    fit_type = 'min'
+    num_var = 10
+    boundaries = [(0, 1)] * num_var
+    num_bin_dig  = [8] * num_var
+    output_path = os.path.join(compas.TEMP, 'ga_out/')
+
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+
+    ga_ = ga(fit_function,
+             fit_type,
+             num_var,
+             boundaries,
+             num_gen=100,
+             num_pop=100,
+             num_elite=40,
+             num_bin_dig=num_bin_dig,
+             output_path=output_path,
+             min_fit=0.01)
+
+    plt = Ga_Plotter()
+    plt.input_path = ga_.output_path
+    plt.draw_ga_evolution(make_pdf=False, show_plot=True)

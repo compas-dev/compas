@@ -55,6 +55,7 @@ __all__ = [
     'mesh_update_edge_attributes',
     'mesh_update_face_attributes',
     'mesh_move_vertex',
+    'mesh_identify_vertices',
 ]
 
 
@@ -226,6 +227,9 @@ def mesh_from_surface_heightfield(cls, guid, density=(10, 10)):
 def mesh_draw(mesh,
               layer=None,
               clear_layer=False,
+              clear_vertices=False,
+              clear_faces=False,
+              clear_edges=False,
               show_faces=True,
               show_vertices=False,
               show_edges=False,
@@ -280,7 +284,12 @@ def mesh_draw(mesh,
     if clear_layer:
         artist.clear_layer()
 
-    artist.clear()
+    if clear_vertices:
+        artist.clear_vertices()
+    if clear_edges:
+        artist.clear_edges()
+    if clear_faces:
+        artist.clear_faces()
 
     if show_faces:
         artist.draw_faces(color=facecolor)
@@ -297,6 +306,7 @@ def mesh_draw_vertices(mesh,
                        color=None,
                        layer=None,
                        clear_layer=False,
+                       clear_vertices=False,
                        redraw=True):
     """Draw a selection of vertices of the mesh.
 
@@ -339,7 +349,9 @@ def mesh_draw_vertices(mesh,
     if clear_layer:
         artist.clear_layer()
 
-    artist.clear_vertices()
+    if clear_vertices:
+        artist.clear_vertices()
+
     guids = artist.draw_vertices(color=color)
 
     if redraw:
@@ -411,6 +423,7 @@ def mesh_draw_faces(mesh,
                     color=None,
                     layer=None,
                     clear_layer=False,
+                    clear_faces=False,
                     redraw=True,
                     join_faces=False):
     """Draw a selection of faces of the mesh.
@@ -454,7 +467,9 @@ def mesh_draw_faces(mesh,
     if clear_layer:
         artist.clear_layer()
 
-    artist.clear_faces()
+    if clear_faces:
+        artist.clear_faces()
+    
     guids = artist.draw_faces(color=color)
 
     if redraw:
@@ -997,6 +1012,22 @@ def mesh_update_face_attributes(mesh, fkeys, names=None):
 
     """
     return FaceModifier.update_vertex_attributes(mesh, fkeys, names=names)
+
+
+# ==============================================================================
+# identify
+# ==============================================================================
+
+
+def mesh_identify_vertices(mesh, points, precision):
+    keys = []
+    gkey_key = {geometric_key(mesh.vertex_coordinates(key), precision): key for key in mesh.vertices()}
+    for xyz in points:
+        gkey = geometric_key(xyz, '1f')
+        if gkey in gkey_key:
+            key = gkey_key[gkey]
+            keys.append(key)
+    return keys
 
 
 # ==============================================================================

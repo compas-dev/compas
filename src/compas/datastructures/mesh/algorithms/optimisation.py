@@ -162,7 +162,7 @@ def trimesh_remesh(mesh,
 
     kmax_start = kmax / 2.0
 
-    for k in xrange(kmax):
+    for k in range(kmax):
 
         if k <= kmax_start:
             scale = fac * (1.0 - k / kmax_start)
@@ -268,11 +268,11 @@ def trimesh_remesh(mesh,
         else:
             count = 0
 
-        if (k - 10) % 20 == 0:
-            num_vertices_2 = mesh.number_of_vertices()
+        # if (k - 10) % 20 == 0:
+        #     num_vertices_2 = mesh.number_of_vertices()
 
-            if abs(1 - num_vertices_1 / num_vertices_2) < divergence and k > kmax_start:
-                break
+        #     if abs(1 - num_vertices_1 / num_vertices_2) < divergence and k > kmax_start:
+        #         break
 
         # smoothen
         if smooth:
@@ -299,55 +299,34 @@ def trimesh_remesh(mesh,
 
 if __name__ == '__main__':
 
-    from compas.geometry import smooth_area
-
     from compas.datastructures import Mesh
     from compas.visualization import MeshPlotter
 
-    vertices = [
-        (0.0, 0.0, 0.0),
-        (10.0, 0.0, 0.0),
-        (10.0, 10.0, 0.0),
-        (0.0, 10.0, 0.0),
-        (5.0, 5.0, 0.0)
-    ]
-
-    faces = [
-        (0, 1, 4),
-        (1, 2, 4),
-        (2, 3, 4),
-        (3, 0, 4)
-    ]
+    vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (10.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
+    faces = [[0, 1, 2, 3]]
 
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-    plotter = MeshPlotter(mesh)
+    mesh.insert_vertex(0)
 
-    plotter.draw_edges()
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
+
+    plotter.draw_edges(width=0.5)
 
     def callback(mesh, k, args):
+        print(k)
         plotter.update_edges()
-        plotter.update(pause=0.001)
+        plotter.update()
 
     trimesh_remesh(
         mesh,
-        0.5,
-        tol=0.05,
-        kmax=500,
+        1.0,
+        kmax=200,
         allow_boundary_split=True,
         allow_boundary_swap=True,
         allow_boundary_collapse=False,
         fixed=mesh.vertices_on_boundary(),
-        callback=callback,
-        callback_args=None,
-    )
+        callback=callback)
 
-    plotter.clear_edges()
-    plotter.update()
-
-    plotter.draw_vertices(radius=0.03)
-    plotter.draw_faces()
-    plotter.draw_edges()
-    plotter.update()
-
+    plotter.update(pause=2.0)
     plotter.show()

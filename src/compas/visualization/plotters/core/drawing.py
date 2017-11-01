@@ -1,3 +1,11 @@
+from __future__ import print_function
+from __future__ import division
+
+try:
+    basestring
+except NameError:
+    basestring = str
+
 from numpy import asarray
 
 import matplotlib as mpl

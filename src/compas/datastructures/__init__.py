@@ -8,6 +8,70 @@ datastructures
 .. module:: compas.datastructures
 
 
+Mesh
+====
+
+Package for working with mesh objects.
+
+.. autosummary::
+    :toctree: generated/
+
+    Mesh
+
+
+mesh.operations
+---------------
+
+.. autosummary::
+    :toctree: generated/
+
+    mesh_collapse_edge
+    mesh_split_edge
+    mesh_split_face
+    mesh_unweld_vertices
+
+
+**The following operations are designed for triangle meshes.**
+
+.. autosummary::
+    :toctree: generated/
+
+    trimesh_collapse_edge
+    trimesh_split_edge
+    trimesh_swap_edge
+
+
+mesh.algorithms
+---------------
+
+.. autosummary::
+    :toctree: generated/
+
+    mesh_dual
+    mesh_flip_cycles
+    mesh_subdivide
+    mesh_subdivide_tri
+    mesh_subdivide_catmullclark
+    mesh_subdivide_doosabin
+    mesh_unify_cycles
+    mesh_cull_duplicate_vertices
+
+.. autosummary::
+    :toctree: generated/
+
+    delaunay_from_points
+    voronoi_from_delaunay
+
+
+**The following operations are designed for triangle meshes.**
+
+.. autosummary::
+    :toctree: generated/
+
+    trimesh_remesh
+    trimesh_subdivide_loop
+
+
 Network
 =======
 
@@ -44,82 +108,15 @@ network.algorithms
     network_is_planar_embedding
 
 
-Mesh
-====
-
-Package for working with mesh objects.
-
-.. autosummary::
-    :toctree: generated/
-
-    Mesh
-
-
-mesh.operations
----------------
-
-.. autosummary::
-    :toctree: generated/
-
-    mesh_collapse_edge
-    mesh_split_edge
-    mesh_split_face
-    mesh_unweld_vertices
-
-
-.. note::
-
-    The following operations are specifically designed for triangle meshes.
-
-
-.. autosummary::
-    :toctree: generated/
-
-    trimesh_collapse_edge
-    trimesh_split_edge
-    trimesh_swap_edge
-
-
-mesh.algorithms
----------------
-
-.. autosummary::
-    :toctree: generated/
-
-    mesh_delaunay_from_points
-    mesh_dual
-    mesh_flip_cycles
-    mesh_subdivide
-    mesh_subdivide_tri
-    mesh_subdivide_catmullclark
-    mesh_subdivide_doosabin
-    mesh_unify_cycles
-    mesh_voronoi_from_points
-    mesh_cull_duplicate_vertices
-
-
-.. note::
-
-    The following algorithms are specifically designed for triangle meshes.
-
-
-.. autosummary::
-    :toctree: generated/
-
-    trimesh_remesh
-    trimesh_subdivide_loop
-
-
 VolMesh
 =======
 
+*Under constuction...*
 
-volmesh.operations
-------------------
+.. autosummary::
+    :toctree: generated/
 
-
-volmesh.algorithms
-------------------
+    VolMesh
 
 
 """

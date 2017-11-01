@@ -1,4 +1,6 @@
-""""""
+from __future__ import print_function
+from __future__ import division
+
 try:
     basestring
 except NameError:
@@ -58,7 +60,7 @@ class MeshPlotter(Plotter):
 
         plotter = MeshPlotter(mesh)
 
-        plotter.draw_vertices(text='key')
+        plotter.draw_vertices(text='key', radius=0.15)
         plotter.draw_edges()
         plotter.draw_faces()
 
@@ -84,20 +86,20 @@ class MeshPlotter(Plotter):
             'vertex.radius'    : 0.1,
             'vertex.facecolor' : '#ffffff',
             'vertex.edgecolor' : '#000000',
-            'vertex.edgewidth' : 0.1,
+            'vertex.edgewidth' : 0.5,
             'vertex.textcolor' : '#000000',
-            'vertex.fontsize'  : 10.0,
+            'vertex.fontsize'  : kwargs.get('fontsize', 10),
 
-            'edge.width'    : 0.5,
+            'edge.width'    : 1.0,
             'edge.color'    : '#000000',
             'edge.textcolor': '#000000',
-            'edge.fontsize' : 10.0,
+            'edge.fontsize' : kwargs.get('fontsize', 10),
 
             'face.facecolor' : '#eeeeee',
-            'face.edgecolor' : '#eeeeee',
+            'face.edgecolor' : '#000000',
             'face.edgewidth' : 0.1,
             'face.textcolor' : '#000000',
-            'face.fontsize'  : 12.0,
+            'face.fontsize' : kwargs.get('fontsize', 10),
         }
 
     def clear(self):
@@ -114,7 +116,8 @@ class MeshPlotter(Plotter):
                       edgecolor=None,
                       edgewidth=None,
                       textcolor=None,
-                      fontsize=None):
+                      fontsize=None,
+                      picker=None):
         """Draws the mesh vertices.
 
         Parameters
@@ -180,11 +183,15 @@ class MeshPlotter(Plotter):
 
         collection = self.draw_points(points)
         self.vertexcollection = collection
+
+        if picker:
+            collection.set_picker(picker)
         return collection
 
     def clear_vertices(self):
         """Clears the mesh plotter vertices."""
-        self.vertexcollection.remove()
+        if self.vertexcollection:
+            self.vertexcollection.remove()
 
     def update_vertices(self, radius=None):
         """Updates the plotter vertex collection based on the mesh."""
@@ -259,7 +266,8 @@ class MeshPlotter(Plotter):
 
     def clear_edges(self):
         """Clears the mesh plotter edges."""
-        self.edgecollection.remove()
+        if self.edgecollection:
+            self.edgecollection.remove()
 
     def update_edges(self):
         """Updates the plotter edge collection based on the mesh."""
@@ -334,7 +342,8 @@ class MeshPlotter(Plotter):
 
     def clear_faces(self):
         """Clears the mesh plotter faces."""
-        self.facecollection.remove()
+        if self.facecollection:
+            self.facecollection.remove()
 
     def update_faces(self, facecolor=None):
         """Updates the plotter face collection based on the mesh."""
@@ -360,10 +369,24 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    plotter = MeshPlotter(mesh)
+    plotter = MeshPlotter(mesh, figsize=(10, 6))
 
-    plotter.draw_vertices(text='x')
+    plotter.draw_vertices(text='key', radius=0.2, picker=10)
+
+    for text in plotter.axes.texts:
+        text.set_visible(False)
+
     plotter.draw_edges()
     plotter.draw_faces()
 
+    def onpick(event):
+        index = event.ind[0]
+        for i, text in enumerate(plotter.axes.texts):
+            if i == index:
+                text.set_visible(True)
+            else:
+                text.set_visible(False)
+        plotter.update()
+
+    plotter.register_listener(onpick)
     plotter.show()

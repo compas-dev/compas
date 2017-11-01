@@ -117,15 +117,6 @@ profiling
     print_profile
 
 
-scripts
-=======
-
-.. autosummary::
-    :toctree: generated/
-
-    ScriptServer
-
-
 xfunc
 =====
 
@@ -133,7 +124,6 @@ xfunc
     :toctree: generated/
 
     XFunc
-
 
 """
 

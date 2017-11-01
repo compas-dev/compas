@@ -266,8 +266,8 @@ def pointcloud_xy(n, xbounds, ybounds=None):
         ybounds = xbounds
     xmin, xmax = map(int, xbounds)
     ymin, ymax = map(int, ybounds)
-    assert xmax - xmin > n, 'The bounds do not permit taking a random sample of this size.'
-    assert ymax - ymin > n, 'The bounds do not permit taking a random sample of this size.'
+    assert xmax - xmin >= n, 'The bounds do not permit taking a random sample of this size.'
+    assert ymax - ymin >= n, 'The bounds do not permit taking a random sample of this size.'
     x = sample(range(xmin, xmax), n)
     y = sample(range(ymin, ymax), n)
     return [[1.0 * x[i],

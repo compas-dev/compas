@@ -3,9 +3,9 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 
 from compas.visualization.viewers.viewer import Viewer
-from compas.visualization.viewers.drawing import xdraw_polygons
-from compas.visualization.viewers.drawing import xdraw_lines
-from compas.visualization.viewers.drawing import xdraw_points
+from compas.visualization.viewers.core.drawing import xdraw_polygons
+from compas.visualization.viewers.core.drawing import xdraw_lines
+from compas.visualization.viewers.core.drawing import xdraw_points
 
 
 __author__     = 'Tom Van Mele'

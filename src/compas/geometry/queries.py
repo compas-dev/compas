@@ -456,7 +456,7 @@ def is_point_on_polyline(point, polyline, tol=0.0):
         ``False`` otherwise.
 
     """
-    for i in xrange(len(polyline) - 1):
+    for i in range(len(polyline) - 1):
         a = polyline[i]
         b = polyline[i + 1]
         c = closest_point_on_segment(point, (a, b))

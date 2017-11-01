@@ -76,7 +76,7 @@ class SettingsForm(Form):
         cancel.DialogResult = DialogResult.Cancel
         buttons = FlowLayoutPanel()
         buttons.FlowDirection = FlowDirection.RightToLeft
-        buttons.BorderStyle = BorderStyle.None
+        # buttons.BorderStyle = BorderStyle.None
         buttons.Controls.Add(cancel)
         buttons.Controls.Add(ok)
         buttons.Size = Size(580, 30)
@@ -119,7 +119,7 @@ class SectionedSettingsForm(Form):
         cancel.DialogResult = DialogResult.Cancel
         buttons = FlowLayoutPanel()
         buttons.FlowDirection = FlowDirection.RightToLeft
-        buttons.BorderStyle = BorderStyle.None
+        # buttons.BorderStyle = BorderStyle.None
         buttons.Controls.Add(cancel)
         buttons.Controls.Add(ok)
         buttons.Size = Size(580, 30)
@@ -201,7 +201,7 @@ def make_table(name, autosize=True):
     table.BackColor = Color.White
     table.BackgroundColor = Color.White
     # border
-    table.BorderStyle = BorderStyle.None
+    # table.BorderStyle = BorderStyle.None
     table.CellBorderStyle = DataGridViewCellBorderStyle.Single
     # column header
     table.ColumnHeadersVisible = True
@@ -251,7 +251,7 @@ def make_page(name, title, index, padding=0):
 
 def make_button_layout():
     layout = FlowLayoutPanel()
-    layout.BorderStyle = BorderStyle.None
+    # layout.BorderStyle = BorderStyle.None
     layout.FlowDirection = FlowDirection.RightToLeft
     return layout
 

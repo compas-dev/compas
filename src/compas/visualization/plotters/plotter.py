@@ -1,4 +1,6 @@
 """"""
+import matplotlib
+# matplotlib.use('TkAgg')
 
 import matplotlib.pyplot as plt
 
@@ -62,7 +64,7 @@ class Plotter(object):
       Available at: http://ieeexplore.ieee.org/document/4160265/citations
 
     """
-    def __init__(self, figsize=(16.0, 12.0), dpi=100.0):
+    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, interactive=False, tight=False, **kwargs):
         """Initialises a plotter object"""
         self._interactive = False
         self._axes = None
@@ -83,22 +85,23 @@ class Plotter(object):
             'point.radius'    : 0.15,
             'point.facecolor' : '#ffffff',
             'point.edgecolor' : '#000000',
-            'point.edgewidth' : 0.0,
+            'point.edgewidth' : 0.5,
             'point.textcolor' : '#000000',
-            'point.fontsize'  : 10.0,
+            'point.fontsize'  : kwargs.get('fontsize', 10),
 
             'line.width'    : 1.0,
             'line.color'    : '#000000',
             'line.textcolor': '#000000',
-            'line.fontsize' : 10.0,
+            'line.fontsize' : kwargs.get('fontsize', 10),
 
             'polygon.facecolor' : '#ffffff',
             'polygon.edgecolor' : '#000000',
-            'polygon.edgewidth' : 1.0,
+            'polygon.edgewidth' : 0.1,
             'polygon.textcolor' : '#000000',
-            'polygon.fontsize'  : 10.0,
+            'polygon.fontsize'  : kwargs.get('fontsize', 10),
         }
-        self.tight = False
+        self.interactive = interactive
+        self.tight = tight
 
     @property
     def interactive(self):
@@ -163,6 +166,10 @@ class Plotter(object):
         return self.axes.get_figure()
 
     @property
+    def canvas(self):
+        return self.figure.canvas
+
+    @property
     def bgcolor(self):
         """Returns the background color.
 
@@ -212,6 +219,10 @@ class Plotter(object):
         """
         self.figure.canvas.set_window_title(value)
 
+    def register_listener(self, listener):
+        """"""
+        self.figure.canvas.mpl_connect('pick_event', listener)
+
     def clear_collection(self, collection):
         """Clears a matplotlib collection object.
 
@@ -230,6 +241,9 @@ class Plotter(object):
             plt.tight_layout()
         plt.show()
 
+    # def top(self):
+    #     self.figure.canvas.manager.show()
+
     def save(self, filepath, **kwargs):
         """Saves the plot on a file.
 
@@ -242,6 +256,21 @@ class Plotter(object):
         self.axes.autoscale()
         plt.savefig(filepath, **kwargs)
 
+    # def init_gif(self, filepath, **kwargs):
+    #     """Saves the plot on a file.
+
+    #     Parameters
+    #     ----------
+    #     filepath : str
+    #         Full path of the file.
+
+    #     """
+    #     self.axes.autoscale()
+    #     plt.savefig(filepath, **kwargs)
+
+    # def save_gifimage(self):
+    #     pass
+
     def update(self, pause=0.0001):
         """Updates and pauses the plot.
 
@@ -251,7 +280,7 @@ class Plotter(object):
             Ammount of time to pause the plot in seconds.
         """
         self.axes.autoscale()
-        self.figure.canvas.draw_idle()
+        # self.figure.canvas.draw_idle()
         plt.pause(pause)
 
     def update_pointcollection(self, collection, centers, radius=1.0):
@@ -366,6 +395,8 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
+    fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+
     points = []
     for key in mesh.vertices():
         points.append({
@@ -382,36 +413,36 @@ if __name__ == "__main__":
             'width': 1.0
         })
 
-    fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
-    plotter = Plotter()
+    plotter = Plotter(figsize=(10, 6))
 
-    points = plotter.draw_points(points)
-    lines = plotter.draw_lines(lines)
+    pcoll = plotter.draw_points(points)
+    lcoll = plotter.draw_lines(lines)
+
 
     def callback(vertices, k, args):
-        plotter, points, lines, pause = args
-
         pos = [vertices[key][0:2] for key in mesh.vertex]
-        plotter.update_pointcollection(points, pos, 0.1)
+        plotter.update_pointcollection(pcoll, pos, 0.1)
 
         segments = []
         for u, v in mesh.edges():
             a = vertices[u][0:2]
             b = vertices[v][0:2]
             segments.append([a, b])
-        plotter.update_linecollection(lines, segments)
 
-        plotter.update(pause=pause)
+        plotter.update_linecollection(lcoll, segments)
+        plotter.update(pause=0.001)
+
 
     vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
     adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
+
 
     smooth_centroid(vertices,
                     adjacency,
                     fixed=fixed,
                     kmax=100,
-                    callback=callback,
-                    callback_args=(plotter, points, lines, 0.01))
+                    callback=callback)
+
 
     plotter.show()

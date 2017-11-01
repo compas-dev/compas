@@ -1,7 +1,5 @@
 import random
 
-from compas.datastructures.mesh import Mesh
-
 from compas.datastructures.mesh.algorithms import mesh_dual
 from compas.datastructures.mesh.algorithms import trimesh_remesh
 from compas.datastructures.mesh.operations import trimesh_swap_edge
@@ -27,8 +25,8 @@ __email__     = 'rippmann@ethz.ch, vanmelet@ethz.ch'
 
 __all__ = [
     'mesh_quads_to_triangles',
-    'mesh_delaunay_from_points',
-    'mesh_voronoi_from_points'
+    'delaunay_from_points',
+    'voronoi_from_delaunay'
 ]
 
 
@@ -41,16 +39,16 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
             mesh_split_face(mesh, fkey, b, d)
 
 
-def mesh_delaunay_from_points(points, polygon=None, polygons=None):
+def delaunay_from_points(Mesh, points, boundary=None, holes=None):
     """Computes the delaunay triangulation for a list of points.
 
     Parameters:
         points (sequence of tuple): XYZ coordinates of the original points.
-        polygon (sequence of tuples): list of ordered points describing the outer boundary (optional)
-        polygons (list of sequences of tuples): list of polygons (ordered points describing internal holes (optional)
+        boundary (sequence of tuples): list of ordered points describing the outer boundary (optional)
+        holes (list of sequences of tuples): list of polygons (ordered points describing internal holes (optional)
 
     Returns:
-        list of lists: list of faces (face = list of vertex indices as integers)
+        Mesh: A mesh object.
 
     References:
         Sloan, S. W. (1987) A fast algorithm for constructing Delaunay triangulations in the plane
@@ -60,18 +58,14 @@ def mesh_delaunay_from_points(points, polygon=None, polygons=None):
         .. plot::
             :include-source:
 
-            import compas
+            from compas.geometry import pointcloud_xy
             from compas.datastructures import Mesh
-            from compas.datastructures import mesh_delaunay_from_points
+            from compas.datastructures import delaunay_from_points
 
             from compas.visualization import MeshPlotter
 
-            mesh = Mesh.from_obj(compas.get_data('faces.obj'))
-
-            vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-            faces = mesh_delaunay_from_points(vertices)
-
-            delaunay = Mesh.from_vertices_and_faces(vertices, faces)
+            points   = pointcloud_xy(10, (0, 10))
+            delaunay = delaunay_from_points(Mesh, points)
 
             plotter = MeshPlotter(delaunay)
 
@@ -171,31 +165,29 @@ def mesh_delaunay_from_points(points, polygon=None, polygons=None):
         mesh.delete_vertex(key)
 
     # Delete faces outside of boundary
-    if polygon:
+    if boundary:
         for fkey in list(mesh.faces()):
-            cent = mesh.face_centroid(fkey)
-            if not is_point_in_polygon_xy(cent, polygon):
+            centroid = mesh.face_centroid(fkey)
+            if not is_point_in_polygon_xy(centroid, boundary):
                 mesh.delete_face(fkey)
 
     # Delete faces inside of inside boundaries
-    if polygons:
-        for polygon in polygons:
+    if holes:
+        for polygon in holes:
             for fkey in list(mesh.faces()):
-                cent = mesh.face_centroid(fkey)
-                if is_point_in_polygon_xy(cent, polygon):
+                centroid = mesh.face_centroid(fkey)
+                if is_point_in_polygon_xy(centroid, polygon):
                     mesh.delete_face(fkey)
 
-    return [[int(key) for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    # return [[int(key) for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    return mesh
 
 
-def mesh_voronoi_from_points(points, boundary=None, holes=None, return_delaunay=False):
+def voronoi_from_delaunay(delaunay):
     """Construct the Voronoi dual of the triangulation of a set of points.
 
     Parameters:
-        points
-        boundary
-        holes
-        return_delaunay
+        delaunay
 
     Warning:
         This function does not work properly if all vertices of the delaunay
@@ -206,48 +198,46 @@ def mesh_voronoi_from_points(points, boundary=None, holes=None, return_delaunay=
         .. plot::
             :include-source:
 
-            from numpy import random
-            from numpy import hstack
-            from numpy import zeros
-
             from compas.datastructures import Mesh
             from compas.datastructures import trimesh_remesh
-            from compas.datastructures import mesh_delaunay_from_points
-            from compas.datastructures import mesh_voronoi_from_points
+            from compas.datastructures import delaunay_from_points
+            from compas.datastructures import voronoi_from_delaunay
+
+            from compas.geometry import pointcloud_xy
 
             from compas.visualization import MeshPlotter
 
-            points = hstack((10.0 * random.random_sample((20, 2)), zeros((20, 1)))).tolist()
-            mesh = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
+            points   = pointcloud_xy(10, (0, 10))
+            delaunay = delaunay_from_points(Mesh, points)
 
-            trimesh_remesh(mesh, 1.0, allow_boundary_split=True)
+            trimesh_remesh(delaunay, 1.0, allow_boundary_split=True)
 
-            points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-            voronoi, delaunay = mesh_voronoi_from_points(points, return_delaunay=True)
+            points   = [delaunay.vertex_coordinates(key) for key in delaunay.vertices()]
+            delaunay = delaunay_from_points(Mesh, points)
+            voronoi  = voronoi_from_delaunay(delaunay)
 
             lines = []
             for u, v in voronoi.edges():
                 lines.append({
                     'start': voronoi.vertex_coordinates(u, 'xy'),
-                    'end'  : voronoi.vertex_coordinates(v, 'xy')
+                    'end'  : voronoi.vertex_coordinates(v, 'xy'),
+                    'width': 1.0
                 })
 
-            boundary = set(delaunay.vertices_on_boundary())
-
-            plotter = MeshPlotter(delaunay)
+            plotter = MeshPlotter(delaunay, figsize=(10, 6))
 
             plotter.draw_lines(lines)
 
-            facecolor = {key: '#0092d2' for key in delaunay.vertices() if key not in boundary}
+            plotter.draw_vertices(
+                radius=0.075,
+                facecolor={key: '#0092d2' for key in delaunay.vertices() if key not in delaunay.vertices_on_boundary()})
 
-            plotter.draw_vertices(radius=0.075, facecolor=facecolor)
             plotter.draw_edges(color='#cccccc')
 
             plotter.show()
 
     """
-    delaunay = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
-    voronoi  = mesh_dual(delaunay)
+    voronoi = mesh_dual(delaunay)
 
     for key in voronoi.vertices():
         a, b, c = delaunay.face_coordinates(key)
@@ -255,9 +245,6 @@ def mesh_voronoi_from_points(points, boundary=None, holes=None, return_delaunay=
         voronoi.vertex[key]['x'] = center[0]
         voronoi.vertex[key]['y'] = center[1]
         voronoi.vertex[key]['z'] = center[2]
-
-    if return_delaunay:
-        return voronoi, delaunay
 
     return voronoi
 
@@ -268,24 +255,23 @@ def mesh_voronoi_from_points(points, boundary=None, holes=None, return_delaunay=
 
 if __name__ == "__main__":
 
-    from numpy import random
-    from numpy import hstack
-    from numpy import zeros
-
     from compas.datastructures import Mesh
     from compas.datastructures import trimesh_remesh
-    from compas.datastructures import mesh_delaunay_from_points
-    from compas.datastructures import mesh_voronoi_from_points
+    from compas.datastructures import delaunay_from_points
+    from compas.datastructures import voronoi_from_delaunay
+
+    from compas.geometry import pointcloud_xy
 
     from compas.visualization import MeshPlotter
 
-    points = hstack((10.0 * random.random_sample((20, 2)), zeros((20, 1)))).tolist()
-    mesh = Mesh.from_vertices_and_faces(points, mesh_delaunay_from_points(points))
+    points   = pointcloud_xy(10, (0, 10))
+    delaunay = delaunay_from_points(Mesh, points)
 
-    trimesh_remesh(mesh, 1.0, allow_boundary_split=True)
+    trimesh_remesh(delaunay, 1.0, kmax=300, allow_boundary_split=True)
 
-    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    voronoi, delaunay = mesh_voronoi_from_points(points, return_delaunay=True)
+    points   = [delaunay.vertex_coordinates(key) for key in delaunay.vertices()]
+    delaunay = delaunay_from_points(Mesh, points)
+    voronoi  = voronoi_from_delaunay(delaunay)
 
     lines = []
     for u, v in voronoi.edges():
@@ -295,15 +281,14 @@ if __name__ == "__main__":
             'width': 1.0
         })
 
-    boundary = set(delaunay.vertices_on_boundary())
-
-    plotter = MeshPlotter(delaunay)
+    plotter = MeshPlotter(delaunay, figsize=(10, 6))
 
     plotter.draw_lines(lines)
 
-    facecolor = {key: '#0092d2' for key in delaunay.vertices() if key not in boundary}
+    plotter.draw_vertices(
+        radius=0.075,
+        facecolor={key: '#0092d2' for key in delaunay.vertices() if key not in delaunay.vertices_on_boundary()})
 
-    plotter.draw_vertices(radius=0.075, facecolor=facecolor)
     plotter.draw_edges(color='#cccccc')
 
     plotter.show()

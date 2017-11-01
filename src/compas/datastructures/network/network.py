@@ -708,22 +708,6 @@ network: {0}
 
 if __name__ == '__main__':
 
-    from compas.visualization.plotters.networkplotter import NetworkPlotter
-
     network = Network.from_obj(compas.get_data('open_edges.obj'))
 
     print(network)
-
-    plotter = NetworkPlotter(network, figsize=(10, 7))
-
-    plotter.defaults['vertex.fontsize'] = 8.0
-
-    plotter.draw_vertices(
-        facecolor={key: '#ff0000' for key in network.leaves()},
-        radius=0.2,
-        text={key: key for key in network.vertices()}
-    )
-
-    plotter.draw_edges()
-
-    plotter.show()
