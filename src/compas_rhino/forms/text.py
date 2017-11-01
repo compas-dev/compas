@@ -39,7 +39,7 @@ class TextForm(Form):
         textbox.Multiline = True
         textbox.ScrollBars = ScrollBars.Vertical
         textbox.Font = Font(FontFamily.GenericMonospace, 8.0)
-        if isinstance(self.text, (str, unicode)):
+        if isinstance(self.text, str):
             textbox.Text = self.text
         else:
             try:

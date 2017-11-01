@@ -2,6 +2,8 @@ import os
 import json
 import inspect
 
+import compas
+
 import uuid
 from xml.etree import ElementTree as ET
 from xml.dom import minidom
@@ -177,7 +179,10 @@ def get_method_oneliner(obj):
 
 
 def get_methods(obj, bysource=False):
-    methods = inspect.getmembers(obj, inspect.ismethod)
+    if compas.PY3:
+        methods = inspect.getmembers(obj, inspect.isfunction)
+    else:
+        methods = inspect.getmembers(obj, inspect.ismethod)
     if not bysource:
         return methods
     linenumbers = dict((method[0], get_method_lineno(method[1])) for method in methods)
@@ -249,11 +254,11 @@ class Rui(object):
                 if e.errno != os.errno.EEXIST:
                     raise e
         if not os.path.exists(self.filepath):
-            with open(self.filepath, 'wb+'):
+            with open(self.filepath, 'w+'):
                 pass
 
     def init(self):
-        with open(self.filepath, 'wb+') as f:
+        with open(self.filepath, 'w+') as f:
             f.write(TPL_RUI.format(uuid.uuid4(), uuid.uuid4()))
         self.xml                = ET.parse(self.filepath)
         self.root               = self.xml.getroot()
