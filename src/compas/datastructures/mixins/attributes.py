@@ -337,7 +337,6 @@ class EdgeAttributesManagement(object):
                     self.edge[u][v] = self.default_edge_attributes.copy()
                     self.edge[u][v][name] = value
 
-
     def set_edge_attributes(self, key, attr_dict=None, **kwattr):
         """Set multiple attributes of one edge.
 
