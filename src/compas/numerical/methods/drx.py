@@ -403,7 +403,8 @@ if __name__ == "__main__":
 
     # Plotter
 
-    plotter = NetworkPlotter(network)
+    plotter = NetworkPlotter(network, figsize=(10, 7))
+
     lines = []
     for u, v in network.edges():
         lines.append({
@@ -437,4 +438,5 @@ if __name__ == "__main__":
         color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
         width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
 
+    plotter.update()
     plotter.show()
