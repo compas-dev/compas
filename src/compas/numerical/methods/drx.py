@@ -344,4 +344,30 @@ def _create_arrays(network):
 
 if __name__ == "__main__":
 
-    pass
+    import compas
+    from compas.datastructures import Network
+    from compas.visualization import NetworkPlotter
+    from compas.geometry import rotate_points_degrees
+
+
+    network = Network.from_obj(compas.get('spline.obj'))
+
+    points = network.get_vertices_attributes('xyz')
+    points = rotate_points_degrees(points, [1.0, 0.0, 0.0], -90)
+
+    for index, (key, attr) in enumerate(network.vertices(True)):
+        attr['x'] = points[index][0]
+        attr['y'] = points[index][1]
+        attr['z'] = points[index][2]
+
+    # network.beams = {'beam': {'nodes': range(network.number_of_vertices())}}
+
+    plotter = NetworkPlotter(network)
+
+    plotter.draw_vertices()
+    plotter.draw_edges()
+
+    plotter.show()
+
+
+
