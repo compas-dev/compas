@@ -1,4 +1,8 @@
 """"""
+try:
+    basestring
+except NameError:
+    basestring = str
 
 from matplotlib.patches import Circle
 from matplotlib.patches import Polygon

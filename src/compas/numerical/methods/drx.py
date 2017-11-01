@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import absolute_import
 
 from numpy import arccos
 from numpy import array
@@ -27,7 +28,7 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'drx',
+    'drx'
 ]
 
 
@@ -47,6 +48,36 @@ def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False, call
         array: Vertex co-ordinates.
         array: Edge forces.
         array: Edge lengths.
+
+    Example:
+
+    .. plot::
+        :include-source:
+
+        import compas
+        from compas.datastructures import Network
+        from compas.visualization import NetworkPlotter
+
+        network = Network.from_obj(compas.get('lines.obj'))
+        network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
+        network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
+        network.set_vertices_attributes(network.leaves(), {'B': [0, 0, 0], 'is_fixed': True})
+
+        drx(network=network, tol=0.001, refresh=5, update=True)
+
+        plotter = NetworkPlotter(network)
+        lines = []
+        for u, v in network.edges():
+            lines.append({
+                'start': network.vertex_coordinates(u, 'xy'),
+                'end'  : network.vertex_coordinates(v, 'xy'),
+                'color': '#cccccc',
+                'width': 1.0})
+        plotter.draw_lines(lines)
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+        plotter.draw_edges()
+        plotter.show()
+
     """
 
     # Setup
@@ -344,4 +375,44 @@ def _create_arrays(network):
 
 if __name__ == "__main__":
 
-    pass
+    import compas
+
+    from compas.datastructures import Network
+    from compas.visualization import NetworkPlotter
+
+    # Load Network
+
+    network = Network.from_obj(compas.get('lines.obj'))
+    network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
+    network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
+    network.set_vertices_attributes(network.leaves(), {'B': [0, 0, 0], 'is_fixed': True})
+
+    # Plotter
+
+    plotter = NetworkPlotter(network)
+    lines = []
+    for u, v in network.edges():
+        lines.append({
+            'start': network.vertex_coordinates(u, 'xy'),
+            'end'  : network.vertex_coordinates(v, 'xy'),
+            'color': '#cccccc',
+            'width': 1.0})
+    plotter.draw_lines(lines)
+    plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+    plotter.draw_edges()
+
+    def plot_iterations(X):
+
+        for i in network.vertices():
+            x, y, z = X[i, :]
+            network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
+
+        plotter.update_vertices()
+        plotter.update_edges()
+        plotter.update(pause=0.01)
+
+    plotter.show()
+
+    # Solver
+
+    drx(network=network, tol=0.001, refresh=1, update=True, callback=plot_iterations)

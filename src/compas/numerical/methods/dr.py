@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import absolute_import
 
 from numpy import array
 from numpy import isnan
@@ -15,7 +16,7 @@ from compas.numerical.linalg import normrow
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
@@ -262,7 +263,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # --------------------------------------------------------------------------
     # start iterating
     # --------------------------------------------------------------------------
-    for k in xrange(kmax):
+    for k in range(kmax):
         q_fpre = fpre / l
         q_lpre = f / lpre
         q_EA   = EA * (l - linit) / (linit * l)
