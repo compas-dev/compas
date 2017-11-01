@@ -70,7 +70,7 @@ def dfs_ordering(adjacency, root):
     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
     tovisit = [root]
     visited = set()
-    tree = []
+    ordering = [root]
 
     while tovisit:
         # pop the last added element from the stack
@@ -78,11 +78,11 @@ def dfs_ordering(adjacency, root):
         if node not in visited:
             # mark the node as visited
             visited.add(node)
-            tree.append(node)
+            ordering.append(node)
             # add the unvisited nbrs to the stack
             tovisit.extend(adjacency[node] - visited)
 
-    return tree
+    return ordering
 
 
 # def network_dfs_tree(adjacency, root):
@@ -505,6 +505,27 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
     return path
 
 
+def travel(adjacency, weights, start=None):
+    points = list(adjacency.keys())
+    start = start or points[0]
+    distance = dijkstra_distances(adjacency, weights, start)
+
+    must_visit = points[:]
+    path = [start]
+    must_visit.remove(start)
+
+    while must_visit:
+        point = path[-1]
+        nearest = min(adjacency[point], key=lambda nbr: distance[nbr])
+
+        print(nearest)
+
+        path.append(nearest)
+        must_visit.remove(nearest)
+
+    return path
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================
@@ -521,37 +542,46 @@ if __name__ == '__main__':
 
     adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 
-    start = 22
-    end = 25
+    weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
+    weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
 
-    paths = list(dfs_paths(adjacency, start, end))
-    path = paths[-1]
+    start = 0
+    end = 24
 
-    print(paths)
+    path = travel(adjacency, weight)
 
-    edges = []
-    for i in range(len(path) - 1):
-        u = path[i]
-        v = path[i + 1]
-        if v not in network.edge[u]:
-            u, v = v, u
-        edges.append([u, v])
+    # n = 0
+
+    # for p in bfs_paths(adjacency, start, end):
+    #     if len(p) > n:
+    #         n = len(p)
+    #         path = p
+
+    # print(paths)
+
+    # edges = []
+    # for i in range(len(path) - 1):
+    #     u = path[i]
+    #     v = path[i + 1]
+    #     if v not in network.edge[u]:
+    #         u, v = v, u
+    #     edges.append([u, v])
 
     plotter = NetworkPlotter(network)
 
     plotter.draw_vertices(text='key')
     plotter.draw_edges()
 
-    plotter.draw_vertices(
-        text={key: key for key in network.vertices()},
-        facecolor={key: '#ff0000' for key in (path[0], path[-1])},
-        radius=0.15
-    )
+    # plotter.draw_vertices(
+    #     text={key: key for key in network.vertices()},
+    #     facecolor={key: '#ff0000' for key in (path[0], path[-1])},
+    #     radius=0.15
+    # )
 
-    plotter.draw_edges(
-        color={(u, v): '#ff0000' for u, v in edges},
-        width={(u, v): 2.0 for u, v in edges}
-    )
+    # plotter.draw_edges(
+    #     color={(u, v): '#ff0000' for u, v in edges},
+    #     width={(u, v): 2.0 for u, v in edges}
+    # )
 
     plotter.show()
 
