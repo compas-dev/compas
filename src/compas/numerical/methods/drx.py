@@ -57,6 +57,7 @@ def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False, call
         import compas
         from compas.datastructures import Network
         from compas.visualization import NetworkPlotter
+        from compas.utilities import i_to_rgb
 
         network = Network.from_obj(compas.get('lines.obj'))
         network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
@@ -75,7 +76,13 @@ def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False, call
                 'width': 1.0})
         plotter.draw_lines(lines)
         plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
-        plotter.draw_edges()
+
+        fmax = max(network.get_edges_attribute('f'))
+
+        plotter.draw_edges(
+            color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
+            width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
+
         plotter.show()
 
     """
@@ -109,11 +116,17 @@ def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False, call
     # Update
 
     if update:
+
         k_i = network.key_index()
         for key in network.vertices():
             i = k_i[key]
             x, y, z = X[i, :]
             network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
+
+        uv_i = network.uv_index()
+        for edge in network.edges():
+            i = uv_i[edge]
+            network.set_edge_attribute(edge, 'f', float(f[i]))
 
     return X, f, l
 
@@ -379,6 +392,7 @@ if __name__ == "__main__":
 
     from compas.datastructures import Network
     from compas.visualization import NetworkPlotter
+    from compas.utilities import i_to_rgb
 
     # Load Network
 
@@ -413,4 +427,14 @@ if __name__ == "__main__":
 
     # Solver
 
-    drx(network=network, tol=0.001, refresh=2, update=True, callback=plot_iterations)
+    X, f, l = drx(network=network, tol=0.001, refresh=2, update=True, callback=plot_iterations)
+
+    # Forces
+
+    fmax = max(network.get_edges_attribute('f'))
+
+    plotter.draw_edges(
+        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
+        width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
+
+    plotter.show()

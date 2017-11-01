@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import absolute_import
 
 from numpy import asarray
 
@@ -10,7 +11,7 @@ from compas.numerical.linalg import normrow
 
 
 __author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
 __license__    = 'MIT'
 __email__      = 'vanmelet@ethz.ch'
 
