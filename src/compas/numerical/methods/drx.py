@@ -411,8 +411,6 @@ if __name__ == "__main__":
         plotter.update_edges()
         plotter.update(pause=0.01)
 
-    plotter.show()
-
     # Solver
 
-    drx(network=network, tol=0.001, refresh=1, update=True, callback=plot_iterations)
+    drx(network=network, tol=0.001, refresh=2, update=True, callback=plot_iterations)
