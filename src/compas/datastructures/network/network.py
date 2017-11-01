@@ -474,8 +474,19 @@ network: {0}
     # modifiers
     # --------------------------------------------------------------------------
 
-    # def delete_vertex(self, key):
-    #     pass
+    def delete_vertex(self, key):
+        if key not in self.vertex:
+            return
+        for nbr in self.vertex_neighbours(key):
+            del self.halfedge[key][nbr]
+            del self.halfedge[nbr][key]
+            if key in self.edge and nbr in self.edge[key]:
+                del self.edge[key][nbr]
+            else:
+                del self.edge[nbr][key]
+        del self.vertex[key]
+        del self.halfedge[key]
+        del self.edge[key]
 
     # def delete_edge(self, u, v):
     #     raise NotImplementedError
@@ -708,6 +719,16 @@ network: {0}
 
 if __name__ == '__main__':
 
-    network = Network.from_obj(compas.get_data('open_edges.obj'))
+    import compas
+    from compas.visualization import NetworkPlotter
 
-    print(network)
+    network = Network.from_obj(compas.get('lines.obj'))
+
+    plotter = NetworkPlotter(network)
+
+    network.delete_vertex(17)
+
+    plotter.draw_vertices(text='key')
+    plotter.draw_edges()
+
+    plotter.show()
