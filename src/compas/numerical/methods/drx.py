@@ -396,7 +396,6 @@ if __name__ == "__main__":
 
     from numpy import linspace
 
-
     def plot_iterations(X, radius=0.01):
 
         for i in network.vertices():
@@ -406,7 +405,6 @@ if __name__ == "__main__":
         plotter.update_vertices(radius)
         plotter.update_edges()
         plotter.update(pause=0.01)
-
 
     # ==========================================================================
     # Example 1
@@ -427,7 +425,7 @@ if __name__ == "__main__":
     for u, v in network.edges():
         lines.append({
             'start': network.vertex_coordinates(u, 'xy'),
-            'end'  : network.vertex_coordinates(v, 'xy'),
+            'end':   network.vertex_coordinates(v, 'xy'),
             'color': '#cccccc',
             'width': 1.0})
     plotter.draw_lines(lines)
@@ -448,7 +446,6 @@ if __name__ == "__main__":
 
     plotter.update()
     plotter.show()
-
 
     # ==========================================================================
     # Example 2
@@ -480,7 +477,7 @@ if __name__ == "__main__":
     for u, v in network.edges():
         lines.append({
             'start': network.vertex_coordinates(u, 'xy'),
-            'end'  : network.vertex_coordinates(v, 'xy'),
+            'end':   network.vertex_coordinates(v, 'xy'),
             'color': '#cccccc',
             'width': 1.0})
     plotter.draw_lines(lines)
@@ -492,4 +489,3 @@ if __name__ == "__main__":
     drx(network=network, tol=0.01, refresh=10, factor=30, update=True, callback=plot_iterations)
 
     plotter.show()
-
