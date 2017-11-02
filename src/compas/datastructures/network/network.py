@@ -475,8 +475,6 @@ network: {0}
     # --------------------------------------------------------------------------
 
     def delete_vertex(self, key):
-        if key not in self.vertex:
-            return
         for nbr in self.vertex_neighbours(key):
             del self.halfedge[key][nbr]
             del self.halfedge[nbr][key]
@@ -488,20 +486,13 @@ network: {0}
         del self.halfedge[key]
         del self.edge[key]
 
-    # def delete_edge(self, u, v):
-    #     raise NotImplementedError
-    #     if self.face:
-    #         # there are faces
-    #         f1 = self.halfedge[u][v]
-    #         f2 = self.halfedge[v][u]
-    #         if f1 is not None and f2 is not None:
-    #             vertices1 = self.face[f1]
-    #             vertices2 = self.face[f2]
-    #     else:
-    #         # there are no faces
-    #         del self.halfedge[u][v]
-    #         del self.halfedge[v][u]
-    #         del self.edge[u][v]
+    def delete_edge(self, u, v):
+        del self.halfedge[u][v]
+        del self.halfedge[v][u]
+        if u in self.edge and v in self.edge[u]:
+            del self.edge[u][v]
+        else:
+            del self.edge[v][u]
 
     # --------------------------------------------------------------------------
     # info

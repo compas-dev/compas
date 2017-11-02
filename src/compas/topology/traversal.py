@@ -510,18 +510,20 @@ def travel(adjacency, weights, start=None):
     start = start or points[0]
     distance = dijkstra_distances(adjacency, weights, start)
 
-    must_visit = points[:]
+    tovisit = set(adjacency.keys())
+    visited = set()
+
+    tovisit.remove(start)
+    visited.add(start)
+
     path = [start]
-    must_visit.remove(start)
 
-    while must_visit:
-        point = path[-1]
-        nearest = min(adjacency[point], key=lambda nbr: distance[nbr])
+    while tovisit:
+        u = min(tovisit, key=lambda k: distance[k])
+        tovisit.remove(u)
+        visited.add(u)
 
-        print(nearest)
-
-        path.append(nearest)
-        must_visit.remove(nearest)
+        path.append(u)
 
     return path
 
@@ -550,6 +552,8 @@ if __name__ == '__main__':
 
     path = travel(adjacency, weight)
 
+    print(path)
+
     # n = 0
 
     # for p in bfs_paths(adjacency, start, end):
@@ -559,29 +563,29 @@ if __name__ == '__main__':
 
     # print(paths)
 
-    # edges = []
-    # for i in range(len(path) - 1):
-    #     u = path[i]
-    #     v = path[i + 1]
-    #     if v not in network.edge[u]:
-    #         u, v = v, u
-    #     edges.append([u, v])
+    edges = []
+    for i in range(len(path) - 1):
+        u = path[i]
+        v = path[i + 1]
+        if v not in network.edge[u]:
+            u, v = v, u
+        edges.append([u, v])
 
     plotter = NetworkPlotter(network)
 
-    plotter.draw_vertices(text='key')
-    plotter.draw_edges()
+    # plotter.draw_vertices(text='key')
+    # plotter.draw_edges()
 
-    # plotter.draw_vertices(
-    #     text={key: key for key in network.vertices()},
-    #     facecolor={key: '#ff0000' for key in (path[0], path[-1])},
-    #     radius=0.15
-    # )
+    plotter.draw_vertices(
+        text={key: key for key in network.vertices()},
+        facecolor={key: '#ff0000' for key in (path[0], path[-1])},
+        radius=0.15
+    )
 
-    # plotter.draw_edges(
-    #     color={(u, v): '#ff0000' for u, v in edges},
-    #     width={(u, v): 2.0 for u, v in edges}
-    # )
+    plotter.draw_edges(
+        color={(u, v): '#ff0000' for u, v in edges},
+        width={(u, v): 2.0 for u, v in edges}
+    )
 
     plotter.show()
 
