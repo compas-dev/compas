@@ -474,23 +474,25 @@ network: {0}
     # modifiers
     # --------------------------------------------------------------------------
 
-    # def delete_vertex(self, key):
-    #     pass
+    def delete_vertex(self, key):
+        for nbr in self.vertex_neighbours(key):
+            del self.halfedge[key][nbr]
+            del self.halfedge[nbr][key]
+            if key in self.edge and nbr in self.edge[key]:
+                del self.edge[key][nbr]
+            else:
+                del self.edge[nbr][key]
+        del self.vertex[key]
+        del self.halfedge[key]
+        del self.edge[key]
 
-    # def delete_edge(self, u, v):
-    #     raise NotImplementedError
-    #     if self.face:
-    #         # there are faces
-    #         f1 = self.halfedge[u][v]
-    #         f2 = self.halfedge[v][u]
-    #         if f1 is not None and f2 is not None:
-    #             vertices1 = self.face[f1]
-    #             vertices2 = self.face[f2]
-    #     else:
-    #         # there are no faces
-    #         del self.halfedge[u][v]
-    #         del self.halfedge[v][u]
-    #         del self.edge[u][v]
+    def delete_edge(self, u, v):
+        del self.halfedge[u][v]
+        del self.halfedge[v][u]
+        if u in self.edge and v in self.edge[u]:
+            del self.edge[u][v]
+        else:
+            del self.edge[v][u]
 
     # --------------------------------------------------------------------------
     # info
@@ -708,6 +710,16 @@ network: {0}
 
 if __name__ == '__main__':
 
-    network = Network.from_obj(compas.get_data('open_edges.obj'))
+    import compas
+    from compas.visualization import NetworkPlotter
 
-    print(network)
+    network = Network.from_obj(compas.get('lines.obj'))
+
+    plotter = NetworkPlotter(network)
+
+    network.delete_vertex(17)
+
+    plotter.draw_vertices(text='key')
+    plotter.draw_edges()
+
+    plotter.show()

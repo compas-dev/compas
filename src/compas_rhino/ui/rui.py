@@ -2,6 +2,8 @@ import os
 import json
 import inspect
 
+import compas
+
 import uuid
 from xml.etree import ElementTree as ET
 from xml.dom import minidom
@@ -13,7 +15,10 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['Rui', ]
+__all__ = [
+    'Rui',
+    'compile_rui'
+]
 
 
 TPL_RUI = '''<?xml version="1.0" encoding="utf-8"?>
@@ -174,7 +179,10 @@ def get_method_oneliner(obj):
 
 
 def get_methods(obj, bysource=False):
-    methods = inspect.getmembers(obj, inspect.ismethod)
+    if compas.PY3:
+        methods = inspect.getmembers(obj, inspect.isfunction)
+    else:
+        methods = inspect.getmembers(obj, inspect.ismethod)
     if not bysource:
         return methods
     linenumbers = dict((method[0], get_method_lineno(method[1])) for method in methods)
@@ -246,11 +254,11 @@ class Rui(object):
                 if e.errno != os.errno.EEXIST:
                     raise e
         if not os.path.exists(self.filepath):
-            with open(self.filepath, 'wb+'):
+            with open(self.filepath, 'w+'):
                 pass
 
     def init(self):
-        with open(self.filepath, 'wb+') as f:
+        with open(self.filepath, 'w+') as f:
             f.write(TPL_RUI.format(uuid.uuid4(), uuid.uuid4()))
         self.xml                = ET.parse(self.filepath)
         self.root               = self.xml.getroot()
@@ -407,32 +415,68 @@ class Rui(object):
         root.append(e_item)
 
 
+def compile_rui(oclass, opath, rui_config='rui_config.json'):
+    """Compile an RUI file from a MacroController class.
+
+    Parameters
+    ----------
+    oclass : MacroController
+        The controller class.
+    opath : str
+        The module path of the controller class.
+    rui_config : str, optional
+        The path of the configuration file.
+        Defaults to ``'rui_config.json'``
+
+    Example
+    -------
+    * :download:`fofin_controller.py </../../examples/workshops/acadia2017/fofin_controller.py>`
+    * :download:`fofin_config.json </../../examples/workshops/acadia2017/fofin_config.json>`
+
+    .. literalinclude:: /../../examples/workshops/acadia2017/fofin_controller.py
+
+    .. literalinclude:: /../../examples/workshops/acadia2017/fofin_config.json
+
+    """
+
+    if not oclass.instancename:
+        raise Exception('MacroController instance name not set.')
+
+    with open(os.path.join(rui_config), 'r') as fp:
+        config = json.load(fp)
+
+    macros = get_macros(oclass, oclass.instancename)
+
+    init_script = [
+        '-_RunPythonScript ResetEngine (',
+        'import rhinoscriptsyntax as rs;',
+        'import sys;',
+        'import os;',
+        'path = rs.ToolbarCollectionPath(\'{}\');'.format(oclass.instancename),
+        'path = os.path.dirname(path);',
+        'sys.path.insert(0, path);',
+        'from {} import {};'.format(opath, oclass.__name__),
+        '{} = {}();'.format(oclass.instancename, oclass.__name__),
+        '{}.init();'.format(oclass.instancename),
+        ')'
+    ]
+
+    update_macro(macros, '{}.init'.format(oclass.instancename), 'script', ''.join(init_script))
+
+    rui = Rui('./{}.rui'.format(oclass.instancename))
+
+    rui.init()
+    rui.add_macros(macros)
+    rui.add_menus(config['menus'])
+    rui.add_toolbars(config['toolbars'])
+    rui.add_toolbargroups(config['toolbargroups'])
+    rui.write()
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    import compas
-    import os
-
-    test = compas.get_data('ruitest.json')
-
-    with open(test, 'rb') as fp:
-        config = json.loads(fp.read())
-
-    macros        = config['rui']['macros']
-    menus         = config['rui']['menus']
-    toolbars      = config['rui']['toolbars']
-    toolbargroups = config['rui']['toolbargroups']
-
-    rui = Rui(os.path.join(os.path.dirname(test), 'test.rui'))
-
-    rui.init()
-
-    rui.add_macros(macros)
-    rui.add_menus(menus)
-    rui.add_toolbars(toolbars)
-    rui.add_toolbargroups(toolbargroups)
-
-    rui.write()
+    pass

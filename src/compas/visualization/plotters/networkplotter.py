@@ -187,12 +187,11 @@ class NetworkPlotter(Plotter):
             collection.set_picker(picker)
         return collection
 
-    def update_vertices(self):
+    def update_vertices(self, radius=0.1):
         """Updates the plotter vertex collection based on the network."""
         circles = []
         for key in self.network.vertices():
             center = self.network.vertex_coordinates(key, 'xy')
-            radius = 0.1
             circles.append(Circle(center, radius))
         self.vertexcollection.set_paths(circles)
 

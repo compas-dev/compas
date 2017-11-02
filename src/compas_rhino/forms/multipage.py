@@ -60,7 +60,7 @@ class MultiPageForm(Form):
         cancel.DialogResult = DialogResult.Cancel
         self.buttons = FlowLayoutPanel()
         self.buttons.FlowDirection = FlowDirection.RightToLeft
-        self.buttons.BorderStyle = BorderStyle.None
+        # self.buttons.BorderStyle = BorderStyle.None
         self.buttons.Controls.Add(cancel)
         self.buttons.Controls.Add(ok)
         self.buttons.Size = Size(580, 30)

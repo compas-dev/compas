@@ -244,6 +244,7 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
     for key, attr in network.vertices(True):
         i = k_i[key]
+
         attr['x'] = xyz[i][0]
         attr['y'] = xyz[i][1]
         attr['z'] = xyz[i][2]
@@ -254,6 +255,7 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
     for u, v, attr in network.edges(True):
         l = network.edge_length(u, v)
         f = ij_q[(k_i[u], k_i[v])] * l
+
         attr['f'] = f
         attr['l'] = l
 
