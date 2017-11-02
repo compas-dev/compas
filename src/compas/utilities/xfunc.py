@@ -288,3 +288,6 @@ if __name__ == '__main__':
     res = test_xfunc(numiter=10, pause=0.5)
 
     print(res['error'])
+    print(res['profile'])
+    print(res['iterations'])
+    print(res['data'])

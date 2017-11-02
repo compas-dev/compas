@@ -70,7 +70,7 @@ def dfs_ordering(adjacency, root):
     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
     tovisit = [root]
     visited = set()
-    tree = []
+    ordering = [root]
 
     while tovisit:
         # pop the last added element from the stack
@@ -78,11 +78,11 @@ def dfs_ordering(adjacency, root):
         if node not in visited:
             # mark the node as visited
             visited.add(node)
-            tree.append(node)
+            ordering.append(node)
             # add the unvisited nbrs to the stack
             tovisit.extend(adjacency[node] - visited)
 
-    return tree
+    return ordering
 
 
 # def network_dfs_tree(adjacency, root):
@@ -505,11 +505,89 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
     return path
 
 
+def travel(adjacency, weights, start=None):
+    points = list(adjacency.keys())
+    start = start or points[0]
+    distance = dijkstra_distances(adjacency, weights, start)
+
+    tovisit = set(adjacency.keys())
+    visited = set()
+
+    tovisit.remove(start)
+    visited.add(start)
+
+    path = [start]
+
+    while tovisit:
+        u = min(tovisit, key=lambda k: distance[k])
+        tovisit.remove(u)
+        visited.add(u)
+
+        path.append(u)
+
+    return path
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================
 
 if __name__ == '__main__':
+
+    import compas
+
+    from compas.datastructures import Network
+    from compas.topology import bfs_paths
+    from compas.visualization import NetworkPlotter
+
+    network = Network.from_obj(compas.get('lines.obj'))
+
+    adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+
+    weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
+    weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
+
+    start = 0
+    end = 24
+
+    path = travel(adjacency, weight)
+
+    print(path)
+
+    # n = 0
+
+    # for p in bfs_paths(adjacency, start, end):
+    #     if len(p) > n:
+    #         n = len(p)
+    #         path = p
+
+    # print(paths)
+
+    edges = []
+    for i in range(len(path) - 1):
+        u = path[i]
+        v = path[i + 1]
+        if v not in network.edge[u]:
+            u, v = v, u
+        edges.append([u, v])
+
+    plotter = NetworkPlotter(network)
+
+    # plotter.draw_vertices(text='key')
+    # plotter.draw_edges()
+
+    plotter.draw_vertices(
+        text={key: key for key in network.vertices()},
+        facecolor={key: '#ff0000' for key in (path[0], path[-1])},
+        radius=0.15
+    )
+
+    plotter.draw_edges(
+        color={(u, v): '#ff0000' for u, v in edges},
+        width={(u, v): 2.0 for u, v in edges}
+    )
+
+    plotter.show()
 
     # import compas
 
@@ -583,73 +661,73 @@ if __name__ == '__main__':
 
     # plotter.show()
 
-    import compas
+    # import compas
 
-    from compas.datastructures import Network
-    from compas.visualization import NetworkPlotter
+    # from compas.datastructures import Network
+    # from compas.visualization import NetworkPlotter
 
-    from compas.topology import dijkstra_path
+    # from compas.topology import dijkstra_path
 
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
+    # network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-    adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+    # adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 
-    weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
-    weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
+    # weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
+    # weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
 
-    heavy = [(7, 17), (9, 19)]
+    # heavy = [(7, 17), (9, 19)]
 
-    for u, v in heavy:
-        weight[(u, v)] = 1000.0
-        weight[(v, u)] = 1000.0
+    # for u, v in heavy:
+    #     weight[(u, v)] = 1000.0
+    #     weight[(v, u)] = 1000.0
 
-    start = 21
-    via = 0
-    end = 22
+    # start = 21
+    # via = 0
+    # end = 22
 
-    index_key = network.index_key()
+    # index_key = network.index_key()
 
-    plotter = NetworkPlotter(network, figsize=(10, 8), fontsize=6)
+    # plotter = NetworkPlotter(network, figsize=(10, 8), fontsize=6)
 
-    def via_via(via):
-        path1 = dijkstra_path(adjacency, weight, start, via)
-        path2 = dijkstra_path(adjacency, weight, via, end)
-        path = path1 + path2[1:]
+    # def via_via(via):
+    #     path1 = dijkstra_path(adjacency, weight, start, via)
+    #     path2 = dijkstra_path(adjacency, weight, via, end)
+    #     path = path1 + path2[1:]
 
-        edges = []
-        for i in range(len(path) - 1):
-            u = path[i]
-            v = path[i + 1]
-            if v not in network.edge[u]:
-                u, v = v, u
-            edges.append([u, v])
+    #     edges = []
+    #     for i in range(len(path) - 1):
+    #         u = path[i]
+    #         v = path[i + 1]
+    #         if v not in network.edge[u]:
+    #             u, v = v, u
+    #         edges.append([u, v])
 
-        vertexcolor = {}
-        vertexcolor[start] = '#00ff00'
-        vertexcolor[end] = '#00ff00'
-        vertexcolor[via] = '#0000ff'
+    #     vertexcolor = {}
+    #     vertexcolor[start] = '#00ff00'
+    #     vertexcolor[end] = '#00ff00'
+    #     vertexcolor[via] = '#0000ff'
 
-        plotter.clear_vertices()
-        plotter.clear_edges()
+    #     plotter.clear_vertices()
+    #     plotter.clear_edges()
 
-        plotter.draw_vertices(text={key: key for key in (start, via, end)},
-                              textcolor={key: '#ffffff' for key in path[1:-1]},
-                              facecolor=vertexcolor,
-                              radius=0.15,
-                              picker=10)
+    #     plotter.draw_vertices(text={key: key for key in (start, via, end)},
+    #                           textcolor={key: '#ffffff' for key in path[1:-1]},
+    #                           facecolor=vertexcolor,
+    #                           radius=0.15,
+    #                           picker=10)
 
-        plotter.draw_edges(color={(u, v): '#ff0000' for u, v in edges},
-                           width={(u, v): 4.0 for u, v in edges},
-                           text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()},
-                           fontsize=4.0)
+    #     plotter.draw_edges(color={(u, v): '#ff0000' for u, v in edges},
+    #                        width={(u, v): 4.0 for u, v in edges},
+    #                        text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()},
+    #                        fontsize=4.0)
 
-    def onpick(e):
-        index = e.ind[0]
-        via = index_key[index]
-        via_via(via)
-        plotter.update()
+    # def onpick(e):
+    #     index = e.ind[0]
+    #     via = index_key[index]
+    #     via_via(via)
+    #     plotter.update()
 
-    via_via(via)
+    # via_via(via)
 
-    plotter.register_listener(onpick)
-    plotter.show()
+    # plotter.register_listener(onpick)
+    # plotter.show()
