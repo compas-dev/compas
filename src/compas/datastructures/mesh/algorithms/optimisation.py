@@ -277,7 +277,9 @@ def trimesh_remesh(mesh,
 
         # smoothen
         if smooth:
-            boundary  = set(mesh.vertices_on_boundary())
+            if allow_boundary_split:
+                boundary  = set(mesh.vertices_on_boundary())
+
             vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
             faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
             adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
