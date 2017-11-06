@@ -343,8 +343,8 @@ def trimesh_remesh(mesh,
         :include-source:
 
         from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
-        from compas.topology import trimesh_remesh
+        from compas.visualization import MeshPlotter
+        from compas.datastructures import trimesh_remesh
 
         vertices = [
             (0.0, 0.0, 0.0),
@@ -398,6 +398,7 @@ def trimesh_remesh(mesh,
     fac = target_start / target
 
     boundary = set(mesh.vertices_on_boundary())
+    fixed = set(fixed)
     count = 0
 
     kmax_start = kmax / 2.0
@@ -516,12 +517,14 @@ def trimesh_remesh(mesh,
 
         # smoothen
         if smooth:
-            boundary  = set(mesh.vertices_on_boundary())
+            if allow_boundary_split:
+                boundary  = set(mesh.vertices_on_boundary())
+
             vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
             faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
             adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
 
-            smooth_area(vertices, faces, adjacency, fixed=boundary, kmax=1)
+            smooth_area(vertices, faces, adjacency, fixed=boundary.union(fixed), kmax=1)
 
             for key, attr in mesh.vertices(True):
                 attr['x'] = vertices[key][0]

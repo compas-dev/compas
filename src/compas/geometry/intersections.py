@@ -303,7 +303,7 @@ def intersection_segment_plane(segment, plane, epsilon=1e-6):
     if fabs(dot) > epsilon:
         v2 = subtract_vectors(pt1, p_cent)
         fac = - dot_vectors(p_norm, v2) / dot
-        if fac >= -0. and fac <= 1.:
+        if fac >= 0. and fac <= 1.:
             vec = scale_vector(v1, fac)
             return add_vectors(pt1, vec)
         return None

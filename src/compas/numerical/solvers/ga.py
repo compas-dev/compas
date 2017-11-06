@@ -6,7 +6,7 @@ import copy
 
 
 __author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
@@ -367,9 +367,9 @@ class GA(object):
                 self.update_min_fit_flag()
             else:
                 self.get_best_fit()
-            print ('generation ', generation, ' best fit ', self.best_fit, 'min fit', self.min_fit)
+            print('generation ', generation, ' best fit ', self.best_fit, 'min fit', self.min_fit)
             if self.check_diversity:
-                print ('num repeated individuals', self.check_pop_diversity())
+                print('num repeated individuals', self.check_pop_diversity())
             if generation < self.num_gen - 1 and self.min_fit_flag is False:
                 self.elite_pop = self.select_elite_pop(self.current_pop)
                 self.tournament_selection()  # n-e
@@ -381,7 +381,7 @@ class GA(object):
                 self.end_gen = generation
                 self.get_best_individual_index()
                 self.write_ga_json_file()
-                print (self)
+                print(self)
                 break
 
     def check_pop_diversity(self):
