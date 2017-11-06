@@ -11,7 +11,6 @@ compas
 .. toctree::
     :maxdepth: 1
 
-    compas.cad
     compas.com
     compas.datastructures
     compas.files
