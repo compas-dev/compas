@@ -33,7 +33,7 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
         import compas
 
         from compas.datastructures import Mesh
-        from compas.topology import mesh_unweld_vertices
+        from compas.datastructures import mesh_unweld_vertices
 
         from compas.plotters import MeshPlotter
 
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas.topology import mesh_unweld_vertices
+    from compas.datastructures import mesh_unweld_vertices
 
     from compas.plotters import MeshPlotter
 

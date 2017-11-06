@@ -41,15 +41,6 @@ mesh.operations
     trimesh_swap_edge
 
 
-**The following operations are designed for triangle meshes.**
-
-.. autosummary::
-    :toctree: generated/
-
-    trimesh_remesh
-    trimesh_subdivide_loop
-
-
 Network
 =======
 
