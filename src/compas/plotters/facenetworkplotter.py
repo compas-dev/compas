@@ -1,5 +1,5 @@
 from compas.utilities import valuedict
-from compas.visualization.plotters.networkplotter import NetworkPlotter
+from compas.plotters.networkplotter import NetworkPlotter
 
 
 __author__    = ['Tom Van Mele', ]
@@ -113,8 +113,8 @@ class FaceNetworkPlotter(NetworkPlotter):
 if __name__ == "__main__":
 
     import compas
-    from compas.datastructures import FaceNetwork
-    from compas.datastructures import network_find_faces
+    from compas.topology import FaceNetwork
+    from compas.topology import network_find_faces
 
     network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
 

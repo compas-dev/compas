@@ -17,10 +17,13 @@ from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import normal_polygon
 from compas.geometry import area_polygon
-
 from compas.geometry import bestfit_plane_from_points
+from compas.geometry import flatness
 
 from compas.geometry import Polyhedron
+
+# from compas.topology import bfs_traverse
+
 
 from compas.datastructures import Datastructure
 
@@ -43,10 +46,6 @@ from compas.datastructures.mixins import VertexMappings
 from compas.datastructures.mixins import EdgeMappings
 from compas.datastructures.mixins import FaceMappings
 
-from compas.datastructures.mesh.algorithms import delaunay_from_points
-
-from compas.topology import bfs_traverse
-from compas.geometry import flatness
 
 
 __author__     = 'Tom Van Mele'
@@ -400,8 +399,8 @@ class Mesh(FromToJson,
         >>> mesh = Mesh.from_obj(compas.get('bunny.ply'))
 
         """
-        from compas.datastructures import network_find_faces
-        from compas.datastructures import FaceNetwork
+        from compas.topology import network_find_faces
+        from compas.topology import FaceNetwork
 
         network = FaceNetwork.from_lines(lines, precision=precision)
 
@@ -485,6 +484,8 @@ class Mesh(FromToJson,
             A mesh object.
 
         """
+        from compas.topology import delaunay_from_points
+
         return delaunay_from_points(cls, points, boundary=boundary, holes=holes)
 
     # --------------------------------------------------------------------------
@@ -888,7 +889,7 @@ class Mesh(FromToJson,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -910,7 +911,7 @@ class Mesh(FromToJson,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -976,7 +977,7 @@ class Mesh(FromToJson,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1019,7 +1020,7 @@ class Mesh(FromToJson,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1162,27 +1163,27 @@ class Mesh(FromToJson,
 
         return True
 
-    def is_connected(self):
-        """Verify that the mesh is connected.
+    # def is_connected(self):
+    #     """Verify that the mesh is connected.
 
-        A mesh is connected if the following conditions are fulfilled:
+    #     A mesh is connected if the following conditions are fulfilled:
 
-        * For every two vertices a path exists connecting them.
+    #     * For every two vertices a path exists connecting them.
 
-        Returns
-        -------
-        bool
-            True, if the mesh is connected.
-            False, otherwise.
+    #     Returns
+    #     -------
+    #     bool
+    #         True, if the mesh is connected.
+    #         False, otherwise.
 
-        """
-        if not self.vertex:
-            return False
+    #     """
+    #     if not self.vertex:
+    #         return False
 
-        root = self.get_any_vertex()
-        nodes = bfs_traverse(self.halfedge, root)
+    #     root = self.get_any_vertex()
+    #     nodes = bfs_traverse(self.halfedge, root)
 
-        return len(nodes) == self.number_of_vertices()
+    #     return len(nodes) == self.number_of_vertices()
 
     def is_manifold(self):
         """Verify that the mesh is manifold.
@@ -1370,7 +1371,7 @@ class Mesh(FromToJson,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1540,7 +1541,7 @@ class Mesh(FromToJson,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1627,7 +1628,7 @@ class Mesh(FromToJson,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1754,7 +1755,7 @@ class Mesh(FromToJson,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1957,7 +1958,7 @@ class Mesh(FromToJson,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -2056,7 +2057,7 @@ class Mesh(FromToJson,
 
     #         import compas
     #         from compas.datastructures import Mesh
-    #         from compas.visualization import MeshPlotter
+    #         from compas.plotters import MeshPlotter
 
     #         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -2218,7 +2219,7 @@ class Mesh(FromToJson,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 

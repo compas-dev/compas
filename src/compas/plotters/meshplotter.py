@@ -12,7 +12,7 @@ from matplotlib.patches import Polygon
 from compas.utilities import valuedict
 from compas.utilities import color_to_rgb
 
-from compas.visualization.plotters.plotter import Plotter
+from compas.plotters.plotter import Plotter
 
 
 __author__    = ['Tom Van Mele', ]
@@ -54,7 +54,7 @@ class MeshPlotter(Plotter):
 
         import compas
         from compas.datastructures import Mesh
-        from compas.visualization import MeshPlotter
+        from compas.plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 

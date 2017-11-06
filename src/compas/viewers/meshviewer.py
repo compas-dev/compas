@@ -3,11 +3,11 @@ import compas
 
 from compas.geometry import centroid_points
 
-from compas.visualization.viewers.viewer import Viewer
+from compas.viewers.viewer import Viewer
 
-from compas.visualization.viewers.core.drawing import xdraw_polygons
-from compas.visualization.viewers.core.drawing import xdraw_lines
-from compas.visualization.viewers.core.drawing import xdraw_points
+from compas.viewers.core.drawing import xdraw_polygons
+from compas.viewers.core.drawing import xdraw_lines
+from compas.viewers.core.drawing import xdraw_points
 
 
 __author__     = 'Tom Van Mele'
@@ -119,8 +119,8 @@ class SubdMeshViewer(Viewer):
             from functools import partial
         
             from compas.datastructures import Mesh
-            from compas.datastructures import mesh_subdivide
-            from compas.visualization.viewers import SubdMeshViewer
+            from compas.topology import mesh_subdivide
+            from compas.viewers import SubdMeshViewer
 
             subdivide = partial(mesh_subdivide, scheme='doosabin')
 
@@ -247,7 +247,7 @@ if __name__ == '__main__':
     from functools import partial
 
     from compas.datastructures import Mesh
-    from compas.datastructures import mesh_subdivide
+    from compas.topology import mesh_subdivide
 
     subdivide = partial(mesh_subdivide, scheme='doosabin')
 

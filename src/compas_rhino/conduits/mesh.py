@@ -39,7 +39,7 @@ class MeshConduit(Conduit):
             import compas_rhino as compas_rhino
 
             from compas.datastructures.mesh import Mesh
-            from compas.datastructures.mesh.algorithms import smooth_mesh_centroid
+            from compas.topology import smooth_mesh_centroid
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 

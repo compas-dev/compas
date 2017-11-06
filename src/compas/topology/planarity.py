@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import absolute_import
 
 from math import cos
 from math import sin
@@ -203,9 +204,9 @@ def network_is_planar(network):
         import compas
 
         from compas.datastructures import Network
-        from compas.datastructures import network_is_planar
-        from compas.datastructures import network_find_crossings
-        from compas.visualization import NetworkPlotter
+        from compas.topology import network_is_planar
+        from compas.topology import network_find_crossings
+        from compas.plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get_data('lines.obj'))
 
@@ -288,8 +289,8 @@ def network_embed_in_plane(network, fix=None, straightline=True):
         import compas
 
         from compas.datastructures import Network
-        from compas.datastructures import network_embed_in_plane
-        from compas.visualization import NetworkPlotter
+        from compas.topology import network_embed_in_plane
+        from compas.plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get_data('fink.obj'))
 
@@ -393,7 +394,7 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Network
-    from compas.visualization import NetworkPlotter
+    from compas.plotters import NetworkPlotter
 
     network = Network.from_obj(compas.get_data('fink.obj'))
 
@@ -403,7 +404,7 @@ if __name__ == '__main__':
 
     if network_embed_in_plane(embedding, fix=fix):
 
-        plotter = NetworkPlotter(embedding)
+        plotter = NetworkPlotter(embedding, figsize=(10, 7))
 
         plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
                               'end': network.vertex_coordinates(v, 'xy'),

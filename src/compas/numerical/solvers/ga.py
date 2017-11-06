@@ -846,7 +846,7 @@ if __name__ == '__main__':
 
     import os
     import compas
-    from compas.visualization.plotters.gaplotter import Ga_Plotter
+    from compas.plotters.gaplotter import Ga_Plotter
 
     def foo(X):
         fit = sum(X)

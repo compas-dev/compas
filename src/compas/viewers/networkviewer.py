@@ -6,10 +6,10 @@ from math import sqrt
 
 from compas.geometry import centroid_points
 
-from compas.visualization.viewers.viewer import Viewer
+from compas.viewers.viewer import Viewer
 
-from compas.visualization.viewers.core.drawing import xdraw_points
-from compas.visualization.viewers.core.drawing import xdraw_lines
+from compas.viewers.core.drawing import xdraw_points
+from compas.viewers.core.drawing import xdraw_lines
 
 from compas.utilities import color_to_colordict
 from compas.utilities import color_to_rgb

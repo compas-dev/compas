@@ -8,7 +8,6 @@ from numpy import argmax
 from numpy import array
 from numpy import asarray
 from numpy import atleast_2d
-from numpy import float32
 from numpy import nan_to_num
 from numpy import nonzero
 from numpy import seterr
@@ -99,7 +98,7 @@ def nullspace(A, tol=0.001):
          [ 0.52381647]]
 
     """
-    A = atleast_2d(asarray(A, dtype=float32))
+    A = atleast_2d(asarray(A, dtype=float))
     u, s, vh = svd(A, compute_uv=True)
     tol = s[0] * tol
     r = (s >= tol).sum()
@@ -129,7 +128,7 @@ def rank(A, tol=0.001):
         2
 
     """
-    A = atleast_2d(asarray(A, dtype=float32))
+    A = atleast_2d(asarray(A, dtype=float))
     s = svd(A, compute_uv=False)
     tol = s[0] * tol
     r = (s >= tol).sum()
@@ -156,7 +155,7 @@ def dof(A, tol=0.001, condition=False):
         (0, 1, 5.073597)
 
     """
-    A = atleast_2d(asarray(A, dtype=float32))
+    A = atleast_2d(asarray(A, dtype=float))
     r = rank(A, tol=tol)
     k = A.shape[1] - r
     m = A.shape[0] - r
@@ -185,7 +184,7 @@ def pivots(U, tol=None):
     """
     if tol is None:
         tol = sys.float_info.epsilon
-    U = atleast_2d(array(U, dtype=float32))
+    U = atleast_2d(array(U, dtype=float))
     U[absolute(U) < tol] = 0.0
     pivots = []
     for row in U:
@@ -212,7 +211,7 @@ def nonpivots(U, tol=None):
         >>> nonpivots(n)
         [2, 3]
     """
-    U = atleast_2d(asarray(U, dtype=float32))
+    U = atleast_2d(asarray(U, dtype=float))
     cols = pivots(U, tol=tol)
     return list(set(range(U.shape[1])) - set(cols))
 
@@ -240,7 +239,7 @@ def rref(A, algo='qr', tol=None, **kwargs):
          [0 0 0 0]]
 
     """
-    A = atleast_2d(asarray(A, dtype=float32))
+    A = atleast_2d(asarray(A, dtype=float))
     if algo == 'qr':
         # do qr with column pivoting
         # to have non-decreasing absolute values on the diagonal of R
@@ -474,7 +473,7 @@ def normrow(A):
          [ 2.23606798]]
 
     """
-    A = atleast_2d(asarray(A, dtype=float32))
+    A = atleast_2d(asarray(A, dtype=float))
     return (sum(A ** 2, axis=1) ** 0.5).reshape((-1, 1))
 
 
@@ -624,7 +623,7 @@ if __name__ == '__main__':
 
     np.set_printoptions(precision=3, threshold=10000, linewidth=1000)
 
-    E = array([[2, 3, 5], [-4, 2, 3]], dtype=float32)
+    E = array([[2, 3, 5], [-4, 2, 3]], dtype=float)
 
     null = nullspace(E)
 

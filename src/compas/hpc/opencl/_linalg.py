@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 from numpy import asarray
-from numpy import float32
 
 import pyopencl as cl
 import pyopencl.array as cl_array
@@ -19,8 +18,8 @@ __all__ = [
 
 
 def opencl_cross(a, b):
-    a     = asarray(a, dtype=float32)
-    b     = asarray(b, dtype=float32)
+    a     = asarray(a, dtype=float)
+    b     = asarray(b, dtype=float)
     ctx   = cl.create_some_context()
     queue = cl.CommandQueue(ctx)
     a_dev = cl_array.to_device(queue, a)

@@ -5,7 +5,7 @@ from numpy import zeros
 
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-from compas.visualization.plotters.core.utilities import assert_axes_dimension
+from compas.plotters.core.utilities import assert_axes_dimension
 
 
 __author__    = ['Tom Van Mele', ]

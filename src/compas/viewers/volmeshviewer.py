@@ -2,10 +2,10 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
-from compas.visualization.viewers.viewer import Viewer
-from compas.visualization.viewers.core.drawing import xdraw_polygons
-from compas.visualization.viewers.core.drawing import xdraw_lines
-from compas.visualization.viewers.core.drawing import xdraw_points
+from compas.viewers.viewer import Viewer
+from compas.viewers.core.drawing import xdraw_polygons
+from compas.viewers.core.drawing import xdraw_lines
+from compas.viewers.core.drawing import xdraw_points
 
 
 __author__     = 'Tom Van Mele'
@@ -23,7 +23,7 @@ class VolMeshViewer(Viewer):
     def __init__(self, volmesh, width=1440, height=900, **kwargs):
         super(VolMeshViewer, self).__init__(width=width, height=height)
         self.volmesh   = volmesh
-        self.num_cells = len(self.volmesh.cells())
+        self.num_cells = self.volmesh.number_of_cells()
 
     def display(self):
         polygons = []

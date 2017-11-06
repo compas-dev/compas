@@ -46,7 +46,7 @@ class KDTree(object):
         
         from compas.geometry import KDTree
         from compas.geometry import pointcloud_xy
-        from compas.visualization import Plotter
+        from compas.plotters import Plotter
 
         plotter = Plotter()
 
@@ -220,7 +220,7 @@ class KDTree(object):
 if __name__ == '__main__':
 
     from compas.geometry import pointcloud_xy
-    from compas.visualization import Plotter
+    from compas.plotters import Plotter
 
     plotter = Plotter()
 

@@ -116,10 +116,10 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
         import compas
         from compas.datastructures import Mesh
-        from compas.datastructures import mesh_split_face
-        from compas.datastructures import trimesh_split_edge
+        from compas.topology import mesh_split_face
+        from compas.topology import trimesh_split_edge
 
-        from compas.visualization import MeshPlotter
+        from compas.plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -232,10 +232,10 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Mesh
-    from compas.datastructures import mesh_split_face
-    from compas.datastructures import trimesh_split_edge
+    from compas.topology import mesh_split_face
+    from compas.topology import trimesh_split_edge
 
-    from compas.visualization import MeshPlotter
+    from compas.plotters import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 

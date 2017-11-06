@@ -32,7 +32,7 @@ def vertex_coloring(network):
 
         import compas
         from compas.datastructures import Network
-        from compas.visualization import NetworkPlotter
+        from compas.plotters import NetworkPlotter
         from compas.topology import vertex_coloring
 
         network = Network.from_obj(compas.get_data('grid_irregular.obj'))
@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures.network import Network
-    from compas.visualization.plotters.networkplotter import NetworkPlotter
+    from compas.plotters.networkplotter import NetworkPlotter
 
     network = Network.from_obj(compas.get_data('grid_irregular.obj'))
 

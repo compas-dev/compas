@@ -387,7 +387,7 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
+    from compas.plotters import MeshPlotter
     from compas.utilities import i_to_rgb
 
     mesh = Mesh.from_obj(compas.get_data('hypar.obj'))

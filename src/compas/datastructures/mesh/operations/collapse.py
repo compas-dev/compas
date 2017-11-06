@@ -236,7 +236,7 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
             import compas
 
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -253,10 +253,10 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
             import compas
 
             from compas.datastructures import Mesh
-            from compas.datastructures import mesh_split_face
-            from compas.datastructures import trimesh_swap_edge
-            from compas.datastructures import trimesh_collapse_edge
-            from compas.visualization import MeshPlotter
+            from compas.topology import mesh_split_face
+            from compas.topology import trimesh_swap_edge
+            from compas.topology import trimesh_collapse_edge
+            from compas.plotters import MeshPlotter
 
             from compas.geometry import centroid_points
 
@@ -399,7 +399,7 @@ if __name__ == "__main__":
     from compas.datastructures.mesh.operations import split_face_mesh
     from compas.datastructures.mesh.operations import swap_edge_trimesh
 
-    from compas.visualization.plotters.meshplotter import MeshPlotter
+    from compas.plotters.meshplotter import MeshPlotter
 
     from compas.geometry import centroid_points
 

@@ -56,7 +56,8 @@ def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False, call
 
         import compas
         from compas.datastructures import Network
-        from compas.visualization import NetworkPlotter
+        from compas.plotters import NetworkPlotter
+        from compas.numerical import drx
         from compas.utilities import i_to_rgb
 
         network = Network.from_obj(compas.get('lines.obj'))
@@ -391,13 +392,13 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Network
-    from compas.visualization import NetworkPlotter
+    from compas.plotters import NetworkPlotter
     from compas.utilities import i_to_rgb
 
     from numpy import linspace
 
 
-    def plot_iterations(X, radius=0.01):
+    def plot_iterations(X, radius=0.005):
 
         for i in network.vertices():
             x, y, z = X[i, :]
@@ -484,7 +485,7 @@ if __name__ == "__main__":
             'color': '#cccccc',
             'width': 1.0})
     plotter.draw_lines(lines)
-    plotter.draw_vertices(radius=0.05, facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+    plotter.draw_vertices(radius=0.005, facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
     # Solver

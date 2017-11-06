@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 
 from matplotlib.patches import Circle
 
-from compas.visualization.plotters.core.drawing import create_axes_xy
-from compas.visualization.plotters.core.drawing import draw_xpoints_xy
-from compas.visualization.plotters.core.drawing import draw_xlines_xy
-from compas.visualization.plotters.core.drawing import draw_xpolygons_xy
-from compas.visualization.plotters.core.drawing import draw_xarrows_xy
+from compas.plotters.core.drawing import create_axes_xy
+from compas.plotters.core.drawing import draw_xpoints_xy
+from compas.plotters.core.drawing import draw_xlines_xy
+from compas.plotters.core.drawing import draw_xpolygons_xy
+from compas.plotters.core.drawing import draw_xarrows_xy
 
 
 __author__    = ['Tom Van Mele', ]

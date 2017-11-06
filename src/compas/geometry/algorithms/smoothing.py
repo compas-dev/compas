@@ -71,7 +71,7 @@ def smooth_centroid(vertices,
         import compas
         from compas.datastructures import Mesh
         from compas.geometry import smooth_centroid
-        from compas.visualization import MeshPlotter
+        from compas.plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -181,7 +181,7 @@ def smooth_centerofmass(vertices,
         import compas
         from compas.datastructures import Mesh
         from compas.geometry import smooth_centerofmass
-        from compas.visualization import MeshPlotter
+        from compas.plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -286,7 +286,7 @@ def smooth_resultant(vertices,
         import compas
         from compas.datastructures import Mesh
         from compas.geometry import smooth_resultant
-        from compas.visualization import MeshPlotter
+        from compas.plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -396,7 +396,7 @@ def smooth_area(vertices,
         import compas
 
         from compas.datastructures import Mesh
-        from compas.visualization import MeshPlotter
+        from compas.plotters import MeshPlotter
         from compas.geometry import smooth_area
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
@@ -507,7 +507,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=1.0, callback=None,
         import compas
 
         from compas.datastructures import Mesh
-        from compas.visualization import MeshPlotter
+        from compas.plotters import MeshPlotter
         from compas.geometry import mesh_smooth_centroid
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
@@ -585,7 +585,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
         import compas
 
         from compas.datastructures import Network
-        from compas.visualization import NetworkPlotter
+        from compas.plotters import NetworkPlotter
         from compas.geometry import network_smooth_centroid
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
@@ -651,7 +651,7 @@ def network_smooth_resultant(network, fixed=None, kmax=100, damping=0.05, callba
         import compas
 
         from compas.datastructures import Network
-        from compas.visualization import NetworkPlotter
+        from compas.plotters import NetworkPlotter
         from compas.geometry import network_smooth_resultant
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
@@ -705,7 +705,7 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
+    from compas.plotters import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 

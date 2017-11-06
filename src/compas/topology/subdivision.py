@@ -3,7 +3,7 @@ from math import pi
 
 from compas.geometry import centroid_points
 
-from compas.datastructures.mesh.operations import mesh_split_edge
+from compas.datastructures import mesh_split_edge
 
 
 __author__     = 'Tom Van Mele'
@@ -187,8 +187,8 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
             :include-source:
 
             from compas.datastructures import Mesh
-            from compas.datastructures import mesh_subdivide_catmullclark
-            from compas.visualization import MeshPlotter
+            from compas.topology import mesh_subdivide_catmullclark
+            from compas.plotters import MeshPlotter
 
             vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
             faces = [[0, 1, 2, 3], ]
@@ -208,8 +208,8 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
             :include-source:
 
             from compas.datastructures import Mesh
-            from compas.datastructures import mesh_subdivide_catmullclark
-            from compas.visualization import MeshPlotter
+            from compas.topology import mesh_subdivide_catmullclark
+            from compas.plotters import MeshPlotter
 
             vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
             faces = [[0, 1, 2, 3], ]
@@ -229,9 +229,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
             from compas.datastructures.mesh import Mesh
 
-            from compas.datastructures import mesh_subdivide_catmullclark
+            from compas.topology import mesh_subdivide_catmullclark
             from compas.geometry import Polyhedron
-            from compas.visualization import SubdMeshViewer
+            from compas.plotters import SubdMeshViewer
 
             cube = Polyhedron.generate(6)
 
@@ -453,8 +453,8 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
         .. code-block:: python
 
             from compas.datastructures import Mesh
-            from compas.datastructures import mesh_flip_cycle_directions
-            from compas.visualization import SubdMeshViewer
+            from compas.topology import mesh_flip_cycle_directions
+            from compas.plotters import SubdMeshViewer
 
             mesh = Mesh.from_polyhedron(4)
             mesh_flip_cycle_directions(mesh)
@@ -503,7 +503,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
         for u, v in list(subd.edges()):
 
-            w = split_edge(subd, u, v, allow_boundary=True)
+            w = mesh_split_edge(subd, u, v, allow_boundary=True)
 
             edgepoints[(u, v)] = w
             edgepoints[(v, u)] = w
@@ -624,10 +624,10 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas.datastructures import mesh_subdivide
+    from compas.topology import mesh_subdivide
 
-    from compas.visualization import MeshPlotter
-    from compas.visualization.viewers import SubdMeshViewer
+    from compas.plotters import MeshPlotter
+    from compas.viewers import SubdMeshViewer
 
     subdivide = partial(mesh_subdivide, scheme='doosabin')
 
