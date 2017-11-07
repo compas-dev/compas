@@ -317,7 +317,7 @@ if __name__ == '__main__':
     key = mesh.insert_vertex(0)
 
     fixed = [key]
-    #ixed = None
+    #fixed = None
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 

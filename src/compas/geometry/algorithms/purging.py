@@ -39,14 +39,14 @@ def mesh_cull_duplicate_vertices(mesh, precision='3f'):
             geo_keys[geo_key] = key
             keys_geo[key] = geo_key
 
-    # this doesn't seem to do anything
-    # is the same as geo_keys.values()
-    keys_remain = [geo_keys[geo_key] for geo_key in geo_keys]
+    keys_remain = geo_keys.values()
     keys_del = [key for key in mesh.vertices() if key not in keys_remain]
 
+    # delete vertices
     for key in keys_del:
         del mesh.vertex[key]
 
+    # sanitize affected faces
     new_faces = {}
     for fkey in mesh.faces():
         face = []
@@ -72,4 +72,30 @@ def mesh_cull_duplicate_vertices(mesh, precision='3f'):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+    
+
+    from compas.datastructures import Mesh
+    from compas.visualization import MeshPlotter
+
+    vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (10.0, 10.0, 0.0), (0.0, 10.0, 0.0), (5.0, 5.0, 0.0), (5.0, 5.0, 0.0)]
+    faces = [[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 5]]
+
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+
+   
+
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
+
+    plotter.draw_edges(width=0.5)
+
+    print("Original mesh:")
+    print(mesh)
+    
+    mesh_cull_duplicate_vertices(mesh)
+
+    print("Mesh with duplicate vertices deleted:")
+    print(mesh)
+    #plotter.update(pause=2.0)
+    plotter.show()
+
