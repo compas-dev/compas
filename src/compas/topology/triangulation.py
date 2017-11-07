@@ -493,6 +493,10 @@ def trimesh_remesh(mesh,
                 valency3 = mesh.vertex_degree(v1)
                 valency4 = mesh.vertex_degree(v2)
 
+                # improvement:
+                # boundary vertex valencies should be asigned based
+                # on their inner corner angle
+                # there could be an optional parameter for a list of target valencies
                 if u in boundary:
                     valency1 += 2
                 if v in boundary:
