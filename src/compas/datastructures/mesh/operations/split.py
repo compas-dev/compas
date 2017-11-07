@@ -116,8 +116,6 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
         import compas
         from compas.datastructures import Mesh
-        from compas.datastructures import mesh_split_face
-        from compas.datastructures import trimesh_split_edge
 
         from compas.plotters import MeshPlotter
 
@@ -125,9 +123,9 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
         for fkey in list(mesh.faces()):
             a, b, c, d = mesh.face_vertices(fkey)
-            mesh_split_face(mesh, fkey, b, d)
+            mesh.split_face(fkey, b, d)
 
-        split = trimesh_split_edge(mesh, 17, 30)
+        split = mesh.split_edge_tri(17, 30)
 
         facecolor = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
 

@@ -3,12 +3,6 @@ from __future__ import division
 
 import random
 
-from compas.datastructures import trimesh_split_edge
-from compas.datastructures import trimesh_collapse_edge
-from compas.datastructures import trimesh_swap_edge
-
-from compas.datastructures import mesh_split_face
-
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import add_vectors
@@ -45,7 +39,7 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
         vertices = mesh.face_vertices(fkey)
         if len(vertices) == 4:
             a, b, c, d = vertices
-            mesh_split_face(mesh, fkey, b, d)
+            mesh.split_face(fkey, b, d)
 
 
 def delaunay_from_points(Mesh, points, boundary=None, holes=None):
@@ -167,7 +161,7 @@ def delaunay_from_points(Mesh, points, boundary=None, holes=None):
                 circle = circle_from_points_xy(a, b, c)
 
                 if is_point_in_circle_xy(pt, circle):
-                    fkey, fkey_op = trimesh_swap_edge(mesh, u, v)
+                    fkey, fkey_op = mesh.swap_edge_tri(u, v)
                     newtris.append(fkey)
                     newtris.append(fkey_op)
 
@@ -382,7 +376,8 @@ def trimesh_remesh(mesh,
 
     References
     ----------
-    * Botsch, M. & Kobbelt, L., 2004. A remeshing approach to multiresolution modeling. Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
+    * Botsch, M. & Kobbelt, L., 2004. A remeshing approach to multiresolution modeling.
+      Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
       Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457
 
     """
@@ -398,6 +393,7 @@ def trimesh_remesh(mesh,
     fac = target_start / target
 
     boundary = set(mesh.vertices_on_boundary())
+
     fixed = fixed or []
     fixed = set(fixed)
     count = 0
@@ -435,7 +431,7 @@ def trimesh_remesh(mesh,
                 if verbose:
                     print('split edge: {0} - {1}'.format(u, v))
 
-                trimesh_split_edge(mesh, u, v, allow_boundary=allow_boundary_split)
+                mesh.split_edge_tri(u, v, allow_boundary=allow_boundary_split)
 
                 visited.add(u)
                 visited.add(v)
@@ -452,7 +448,7 @@ def trimesh_remesh(mesh,
                 if verbose:
                     print('collapse edge: {0} - {1}'.format(u, v))
 
-                trimesh_collapse_edge(mesh, u, v, allow_boundary=allow_boundary_collapse, fixed=fixed)
+                mesh.collapse_edge_tri(u, v, allow_boundary=allow_boundary_collapse, fixed=fixed)
 
                 visited.add(u)
                 visited.add(v)
@@ -502,7 +498,7 @@ def trimesh_remesh(mesh,
                 if verbose:
                     print('swap edge: {0} - {1}'.format(u, v))
 
-                trimesh_swap_edge(mesh, u, v, allow_boundary=allow_boundary_swap)
+                mesh.swap_edge_tri(u, v, allow_boundary=allow_boundary_swap)
 
                 visited.add(u)
                 visited.add(v)

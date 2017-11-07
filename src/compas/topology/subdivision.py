@@ -3,8 +3,6 @@ from math import pi
 
 from compas.geometry import centroid_points
 
-from compas.datastructures import mesh_split_edge
-
 
 __author__     = 'Tom Van Mele'
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -93,7 +91,7 @@ def mesh_subdivide_quad(mesh, k=1):
         subd = mesh.copy()
 
         for u, v in list(subd.halfedges()):
-            mesh_split_edge(subd, u, v, allow_boundary=True)
+            subd.split_edge(u, v, allow_boundary=True)
 
         for fkey in mesh.faces():
 
@@ -135,7 +133,7 @@ def mesh_subdivide_corner(mesh, k=1):
 
         # split every edge
         for u, v in list(subd.halfedges()):
-            mesh_split_edge(subd, u, v, allow_boundary=True)
+            subd.split_edge(u, v, allow_boundary=True)
 
         # create 4 new faces for every old face
         for fkey in mesh.faces():
@@ -283,7 +281,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         for u, v in list(subd.halfedges()):
 
-            w = mesh_split_edge(subd, u, v, allow_boundary=True)
+            w = subd.split_edge(u, v, allow_boundary=True)
 
             # document why this is necessary
             # everything else in this loop is just quad subdivision
@@ -503,7 +501,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
         for u, v in list(subd.edges()):
 
-            w = mesh_split_edge(subd, u, v, allow_boundary=True)
+            w = subd.split_edge(u, v, allow_boundary=True)
 
             edgepoints[(u, v)] = w
             edgepoints[(v, u)] = w

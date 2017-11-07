@@ -31,14 +31,13 @@ planarity
 .. autosummary::
     :toctree: generated/
 
-    'network_is_crossed',
-    'network_count_crossings',
-    'network_find_crossings',
-    'network_is_xy',
-    'network_is_planar',
-    'network_is_planar_embedding',
-    'network_embed_in_plane',
-
+    network_is_crossed
+    network_count_crossings
+    network_find_crossings
+    network_is_xy
+    network_is_planar
+    network_is_planar_embedding
+    network_embed_in_plane
 
 subdivision
 -----------

@@ -24,7 +24,6 @@ from compas.geometry import Polyhedron
 
 # from compas.topology import bfs_traverse
 
-
 from compas.datastructures import Datastructure
 
 from compas.datastructures.mixins import VertexAttributesManagement
@@ -46,6 +45,13 @@ from compas.datastructures.mixins import VertexMappings
 from compas.datastructures.mixins import EdgeMappings
 from compas.datastructures.mixins import FaceMappings
 
+from compas.datastructures.mesh.operations import mesh_collapse_edge
+from compas.datastructures.mesh.operations import trimesh_collapse_edge
+from compas.datastructures.mesh.operations import mesh_split_face
+from compas.datastructures.mesh.operations import mesh_split_edge
+from compas.datastructures.mesh.operations import trimesh_split_edge
+from compas.datastructures.mesh.operations import trimesh_swap_edge
+from compas.datastructures.mesh.operations import mesh_unweld_vertices
 
 
 __author__     = 'Tom Van Mele'
@@ -112,6 +118,14 @@ class Mesh(FromToJson,
         General mesh attributes.
 
     """
+
+    collapse_edge     = mesh_collapse_edge
+    collapse_edge_tri = trimesh_collapse_edge
+    split_edge        = mesh_split_edge
+    split_face        = mesh_split_face
+    split_edge_tri    = trimesh_split_edge
+    swap_edge_tri     = trimesh_swap_edge
+    unweld_vertices   = mesh_unweld_vertices
 
     def __init__(self):
         super(Mesh, self).__init__()
