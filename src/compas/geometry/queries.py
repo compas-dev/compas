@@ -22,7 +22,7 @@ from compas.geometry.angles import angle_smallest_vectors
 from compas.geometry.average import center_of_mass_polygon
 
 
-__author__    = ['Tom Van Mele', ]
+__author__    = ['Tom Van Mele', 'Matthias Rippmann']
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
@@ -36,6 +36,7 @@ __all__ = [
     'is_polygon_convex',
     'is_polygon_convex_xy',
     'is_point_on_plane',
+    'is_point_infront_plane',
     'is_point_on_line',
     'is_point_on_line_xy',
     'is_point_on_segment',
@@ -280,6 +281,27 @@ def is_point_on_plane(point, plane, tol=0.0):
 
     """
     return distance_point_plane(point, plane) <= tol
+
+
+def is_point_infront_plane(point, plane):
+    """Verify if a point lies in front of a plane.
+
+    Parameters
+    ----------
+    point : sequence of float
+        XYZ coordinates.
+    plane : tuple
+        Base point and normal defining a plane.
+
+    Returns
+    -------
+    bool
+        ``True`` if the point is in front of the plane.
+        ``False`` otherwise.
+
+    """
+    return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > 0.0
+    
 
 
 def is_point_on_line(point, line, tol=0.0):
