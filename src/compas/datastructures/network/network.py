@@ -29,6 +29,8 @@ from compas.datastructures.mixins import EdgeFilter
 from compas.datastructures.mixins import FromToData
 from compas.datastructures.mixins import FromToJson
 
+from compas.datastructures.network.operations import network_split_edge
+
 # from compas.topology import bfs_traverse
 
 
@@ -103,6 +105,8 @@ class Network(FromToJson,
         plotter.show()
 
     """
+
+    split_edge = network_split_edge
 
     def __init__(self):
         super(Network, self).__init__()
