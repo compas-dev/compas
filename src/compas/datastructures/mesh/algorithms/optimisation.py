@@ -158,7 +158,11 @@ def trimesh_remesh(mesh,
     fac = target_start / target
 
     boundary = set(mesh.vertices_on_boundary())
-    fixed = set(fixed)
+    if fixed:
+        fixed = set(fixed)
+    else:
+        fixed =set()    
+
     count = 0
 
     kmax_start = kmax / 2.0
@@ -278,13 +282,13 @@ def trimesh_remesh(mesh,
         # smoothen
         if smooth:
             if allow_boundary_split:
-                boundary  = set(mesh.vertices_on_boundary())
+                boundary = set(mesh.vertices_on_boundary())
 
             vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
             faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
             adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
 
-            smooth_area(vertices, faces, adjacency, fixed=boundary.union(fixed), kmax=1)
+            smooth_area(vertices, faces, adjacency, fixed=fixed.union(boundary), kmax=1)
 
             for key, attr in mesh.vertices(True):
                 attr['x'] = vertices[key][0]
@@ -313,6 +317,7 @@ if __name__ == '__main__':
     key = mesh.insert_vertex(0)
 
     fixed = [key]
+    #ixed = None
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
