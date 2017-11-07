@@ -58,7 +58,7 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
         import compas
         from compas.datastructures import Network
-        from compas.visualization import NetworkPlotter
+        from compas.plotters import NetworkPlotter
         from compas.geometry import network_relax
 
         network = Network.from_obj(compas.get('lines.obj'))
@@ -104,8 +104,8 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
     k_i = network.key_index()
 
-    ij_q = {(k_i[u], k_i[v]): network.get_edge_attribute((u, v), 'q', 1.0) for u, v in network.edges()}
-    ij_q.update({(j, i): q for (i, j), q in ij_q.items()})
+    ij_e = {(k_i[u], k_i[v]): index for index, (u, v) in enumerate(network.edges())}
+    ij_e.update({(j, i): index for (i, j), index in ij_e.items()})
 
     i_nbrs = {k_i[key]: [k_i[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()}
 
@@ -118,113 +118,124 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
     fixed = [k_i[key] for key in network.vertices() if network.vertex[key]['is_fixed']]
     free  = list(set(range(n)) - set(fixed))
-    p     = network.get_vertices_attributes(('px', 'py', 'pz'), [0.0, 0.0, 0.0])
-    v     = [[0.0, 0.0, 0.0] for _ in range(network.number_of_vertices())]
-    xyz   = network.get_vertices_attributes(('x', 'y', 'z'))
 
-    mass = [
-        sum(0.5 * dt ** 2 * network.get_edge_attribute((key, nbr), 'q') for nbr in network.vertex_neighbours(key))
-        for key in network.vertices()
-    ]
+    X = network.get_vertices_attributes(('x', 'y', 'z'))
+    P = network.get_vertices_attributes(('px', 'py', 'pz'), [0.0, 0.0, 0.0])
+
+    Q = network.get_edges_attribute('qpre', 1.0)
+
+    M = [sum(0.5 * dt ** 2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
+
+    V = [[0.0, 0.0, 0.0] for _ in range(n)]
+    R = [[0.0, 0.0, 0.0] for _ in range(n)]
 
     # helpers
 
-    def residual(xyz):
+    def compute_Q():
+        pass
+
+    def compute_M():
+        pass
+
+    def update_R(X):
         """Compute the residual forces."""
-        r = [None] * n
-        for i in range(n):
-            x = xyz[i][0]
-            y = xyz[i][1]
-            z = xyz[i][2]
+        for i in free:
+            x = X[i][0]
+            y = X[i][1]
+            z = X[i][2]
 
             f = [0.0, 0.0, 0.0]
+
             for j in i_nbrs[i]:
-                q  = ij_q[(i, j)]
-                xn = xyz[j][0]
-                yn = xyz[j][1]
-                zn = xyz[j][2]
-                f[0] += q * (xn - x)
-                f[1] += q * (yn - y)
-                f[2] += q * (zn - z)
+                q  = Q[ij_e[(i, j)]]
 
-            if i in fixed:
-                r[i] = [f[j] for j in range(3)]
-            else:
-                r[i] = [p[i][j] + f[j] for j in range(3)]
+                f[0] += q * (X[j][0] - x)
+                f[1] += q * (X[j][1] - y)
+                f[2] += q * (X[j][2] - z)
 
-        return r
+            R[i] = [P[i][axis] + f[axis] for axis in (0, 1, 2)]
 
-    def rk(xyz0, v0, steps=2):
+    def compute_dV(X0, V0, steps=2):
         """Compute the acceleration of the vertices, taking into account two intermediate updates.
         """
+        def compute_A(V, t):
+            dX = [[V[i][axis] * t for axis in (0, 1, 2)] for i in range(n)]
 
-        def acceleration(v, t):
-            dx  = [[v[i][j] * t for j in range(3)] for i in range(n)]
-            xyz = [None] * n
-            for i in range(n):
-                if i in fixed:
-                    xyz[i] = xyz0[i]
-                else:
-                    xyz[i] = [xyz0[i][j] + dx[i][j] for j in range(3)]
+            for i in free:
+                X[i] = [X0[i][axis] + dX[i][axis] for axis in (0, 1, 2)]
 
-            r = residual(xyz)
+            update_R(X)
 
-            return [[b * r[i][j] / mass[i] for j in range(3)] for i in range(n)]
-
-        # integration scheme
+            return [[b * R[i][axis] / M[i] for axis in (0, 1, 2)] for i in range(n)]
 
         if steps == 2:
             B  = [0.0, 1.0]
-            a0 = acceleration(v0, K[0][0] * dt)
-            k0 = [[dt * a0[i][j] for j in range(3)] for i in range(n)]
-            a1 = acceleration([[v0[i][j] + K[1][1] * k0[i][j] for j in range(3)] for i in range(n)], K[1][0] * dt)
-            k1 = [[dt * a1[i][j] for j in range(3)] for i in range(n)]
-            dv = [[B[0] * k0[i][j] + B[1] * k1[i][j] for j in range(3)] for i in range(n)]
+
+            a0 = compute_A(V0, K[0][0] * dt)
+            k0 = [[dt * a0[i][axis] for axis in (0, 1, 2)] for i in range(n)]
+
+            a1 = compute_A(
+                [[V0[i][axis] +
+                  K[1][1] * k0[i][axis] for axis in (0, 1, 2)] for i in range(n)], K[1][0] * dt)
+
+            k1 = [[dt * a1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
+
+            dV = [[B[0] * k0[i][axis] +
+                   B[1] * k1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
 
         elif steps == 4:
             B  = [1.0 / 6.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0]
 
-            a0 = acceleration(v0, K[0][0] * dt)
-            k0 = [[dt * a0[i][j] for j in range(3)] for i in range(n)]
+            a0 = compute_A(V0, K[0][0] * dt)
+            k0 = [[dt * a0[i][axis] for axis in (0, 1, 2)] for i in range(n)]
 
-            a1 = acceleration([[v0[i][j] + K[1][1] * k0[i][j] for j in range(3)] for i in range(n)], K[1][0] * dt)
+            a1 = compute_A(
+                [[V0[i][axis] +
+                  K[1][1] * k0[i][axis] for axis in (0, 1, 2)] for i in range(n)], K[1][0] * dt)
 
-            k1 = [[dt * a1[i][j] for j in range(3)] for i in range(n)]
+            k1 = [[dt * a1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
 
-            a2 = acceleration(
-                [[v0[i][j] +
-                  K[2][1] * k0[i][j] +
-                  K[2][2] * k1[i][j] for j in range(3)] for i in range(n)], K[2][0] * dt)
+            a2 = compute_A(
+                [[V0[i][axis] +
+                  K[2][1] * k0[i][axis] +
+                  K[2][2] * k1[i][axis] for axis in (0, 1, 2)] for i in range(n)], K[2][0] * dt)
 
-            k2 = [[dt * a2[i][j] for j in range(3)] for i in range(n)]
+            k2 = [[dt * a2[i][axis] for axis in (0, 1, 2)] for i in range(n)]
 
-            a3 = acceleration(
-                [[v0[i][j] +
-                  K[3][1] * k0[i][j] +
-                  K[3][2] * k1[i][j] +
-                  K[3][3] * k2[i][j] for j in range(3)] for i in range(n)], K[3][0] * dt)
+            a3 = compute_A(
+                [[V0[i][axis] +
+                  K[3][1] * k0[i][axis] +
+                  K[3][2] * k1[i][axis] +
+                  K[3][3] * k2[i][axis] for axis in (0, 1, 2)] for i in range(n)], K[3][0] * dt)
 
-            k3 = [[dt * a3[i][j] for j in range(3)] for i in range(n)]
+            k3 = [[dt * a3[i][axis] for axis in (0, 1, 2)] for i in range(n)]
 
-            dv = [[B[0] * k0[i][j] +
-                   B[1] * k1[i][j] +
-                   B[2] * k2[i][j] +
-                   B[3] * k3[i][j] for j in range(3)] for i in range(n)]
+            dV = [[B[0] * k0[i][axis] +
+                   B[1] * k1[i][axis] +
+                   B[2] * k2[i][axis] +
+                   B[3] * k3[i][axis] for axis in (0, 1, 2)] for i in range(n)]
 
-        return dv
+        else:
+            raise NotImplementedError
+
+        return dV
 
     # iterate
 
     for k in range(kmax):
 
-        xyz0 = deepcopy(xyz)
-        v0   = [[a * v[i][j] for j in range(3)] for i in range(n)]
-        dv   = rk(xyz0, v0, 4)
-        v    = [[v0[i][j] + dv[i][j] for j in range(3)] for i in range(n)]
-        dx   = [[v[i][j] * dt for j in range(3)] for i in range(n)]
+        # compute L
+        # compute Qs
+        # compute updated mass
+
+        X0 = deepcopy(X)
+        V0 = [[a * V[i][axis] for axis in (0, 1, 2)] for i in range(n)]
+
+        dV = compute_dV(X0, V0, 4)
 
         for i in free:
-            xyz[i] = [xyz0[i][j] + dx[i][j] for j in range(3)]
+            V[i] = [V0[i][axis] + dV[i][axis] for axis in (0, 1, 2)]
+            X[i] = [X0[i][axis] + V[i][axis] * dt for axis in (0, 1, 2)]
 
         # compute residual forces
         # check convergence
@@ -234,27 +245,29 @@ def network_relax(network, kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callba
 
             for key, attr in network.vertices(True):
                 i = k_i[key]
-                attr['x'] = xyz[i][0]
-                attr['y'] = xyz[i][1]
-                attr['z'] = xyz[i][2]
+                attr['x'] = X[i][0]
+                attr['y'] = X[i][1]
+                attr['z'] = X[i][2]
 
     # update
 
-    r = residual(xyz)
+    update_R(X)
 
     for key, attr in network.vertices(True):
         i = k_i[key]
 
-        attr['x'] = xyz[i][0]
-        attr['y'] = xyz[i][1]
-        attr['z'] = xyz[i][2]
-        attr['rx'] = r[i][0]
-        attr['ry'] = r[i][1]
-        attr['rz'] = r[i][2]
+        attr['x']  = X[i][0]
+        attr['y']  = X[i][1]
+        attr['z']  = X[i][2]
+        attr['rx'] = R[i][0]
+        attr['ry'] = R[i][1]
+        attr['rz'] = R[i][2]
 
     for u, v, attr in network.edges(True):
+        i, j = k_i[u], k_i[v]
+
         l = network.edge_length(u, v)
-        f = ij_q[(k_i[u], k_i[v])] * l
+        f = Q[ij_e[(i, j)]] * l
 
         attr['f'] = f
         attr['l'] = l
@@ -270,7 +283,7 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Network
-    from compas.visualization import NetworkPlotter
+    from compas.plotters import NetworkPlotter
     from compas.utilities import i_to_rgb
 
     # create a network from sample data
@@ -283,11 +296,20 @@ if __name__ == "__main__":
         'px': 0.0,
         'py': 0.0,
         'pz': 0.0,
+        'rx': 0.0,
+        'ry': 0.0,
+        'rz': 0.0,
     }
     dea = {
-        'q': 1.0,
-        'f': 0.0,
-        'l': 0.0
+        'qpre'  : 1.0,
+        'fpre'  : 0.0,
+        'lpre'  : 0.0,
+        'l0'    : 0.0,
+        'E'     : 0.0,
+        'radius': 0.0,
+        'q'     : 0.0,
+        'f'     : 0.0,
+        'l'     : 0.0
     }
 
     network.update_default_vertex_attributes(dva)
@@ -300,7 +322,7 @@ if __name__ == "__main__":
         attr['is_fixed'] = network.is_vertex_leaf(key)
 
     for index, (u, v, attr) in enumerate(network.edges(True)):
-        attr['q'] = 1.0 * random.randint(1, 7)
+        attr['qpre'] = 1.0 * random.randint(1, 7)
 
     # make a plotter
     # draw the original geometry of the network as lines
@@ -331,11 +353,11 @@ if __name__ == "__main__":
         print(k)
         plotter.update_vertices()
         plotter.update_edges()
-        plotter.update(pause=0.001)
+        plotter.update(pause=0.0001)
 
     # run the relaxation algorithm
 
-    network_relax(network, kmax=50, callback=callback)
+    network_relax(network, kmax=100, callback=callback)
 
     # compute the maximum force in the edges
     # for normalising colors and widths

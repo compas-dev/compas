@@ -850,7 +850,7 @@ under construction
 if __name__ == '__main__':
 
     import compas
-    from viewer import VolMeshViewer
+    from compas.viewers import VolMeshViewer
 
     mesh = VolMesh.from_obj(compas.get_data('boxes.obj'))
 

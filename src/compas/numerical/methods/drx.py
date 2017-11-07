@@ -56,7 +56,8 @@ def drx(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False, call
 
         import compas
         from compas.datastructures import Network
-        from compas.visualization import NetworkPlotter
+        from compas.plotters import NetworkPlotter
+        from compas.numerical import drx
         from compas.utilities import i_to_rgb
 
         network = Network.from_obj(compas.get('lines.obj'))
@@ -391,12 +392,13 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Network
-    from compas.visualization import NetworkPlotter
+    from compas.plotters import NetworkPlotter
     from compas.utilities import i_to_rgb
 
     from numpy import linspace
 
-    def plot_iterations(X, radius=0.01):
+
+    def plot_iterations(X, radius=0.005):
 
         for i in network.vertices():
             x, y, z = X[i, :]
@@ -406,46 +408,48 @@ if __name__ == "__main__":
         plotter.update_edges()
         plotter.update(pause=0.01)
 
+
     # ==========================================================================
     # Example 1
     # ==========================================================================
 
-    # Load Network
+    # # Load Network
 
-    network = Network.from_obj(compas.get('lines.obj'))
-    network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
-    network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
-    network.set_vertices_attributes(network.leaves(), {'B': [0, 0, 0], 'is_fixed': True})
+    # network = Network.from_obj(compas.get('lines.obj'))
+    # network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
+    # network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
+    # network.set_vertices_attributes(network.leaves(), {'B': [0, 0, 0], 'is_fixed': True})
 
-    # Plotter
+    # # Plotter
 
-    plotter = NetworkPlotter(network, figsize=(10, 7))
+    # plotter = NetworkPlotter(network, figsize=(10, 7))
 
-    lines = []
-    for u, v in network.edges():
-        lines.append({
-            'start': network.vertex_coordinates(u, 'xy'),
-            'end':   network.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
-            'width': 1.0})
-    plotter.draw_lines(lines)
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
-    plotter.draw_edges()
+    # lines = []
+    # for u, v in network.edges():
+    #     lines.append({
+    #         'start': network.vertex_coordinates(u, 'xy'),
+    #         'end'  : network.vertex_coordinates(v, 'xy'),
+    #         'color': '#cccccc',
+    #         'width': 1.0})
+    # plotter.draw_lines(lines)
+    # plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+    # plotter.draw_edges()
 
-    # Solver
+    # # Solver
 
-    X, f, l = drx(network=network, tol=0.001, refresh=2, update=True, callback=plot_iterations, radius=0.1)
+    # X, f, l = drx(network=network, tol=0.001, refresh=2, update=True, callback=plot_iterations, radius=0.1)
 
-    # Forces
+    # # Forces
 
-    fmax = max(network.get_edges_attribute('f'))
+    # fmax = max(network.get_edges_attribute('f'))
 
-    plotter.draw_edges(
-        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
-        width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
+    # plotter.draw_edges(
+    #     color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
+    #     width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
 
-    plotter.update()
-    plotter.show()
+    # plotter.update()
+    # plotter.show()
+
 
     # ==========================================================================
     # Example 2
@@ -472,16 +476,16 @@ if __name__ == "__main__":
 
     # Plotter
 
-    plotter = NetworkPlotter(network)
+    plotter = NetworkPlotter(network, figsize=(10, 7))
     lines = []
     for u, v in network.edges():
         lines.append({
             'start': network.vertex_coordinates(u, 'xy'),
-            'end':   network.vertex_coordinates(v, 'xy'),
+            'end'  : network.vertex_coordinates(v, 'xy'),
             'color': '#cccccc',
             'width': 1.0})
     plotter.draw_lines(lines)
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+    plotter.draw_vertices(radius=0.005, facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
     # Solver
@@ -489,3 +493,4 @@ if __name__ == "__main__":
     drx(network=network, tol=0.01, refresh=10, factor=30, update=True, callback=plot_iterations)
 
     plotter.show()
+

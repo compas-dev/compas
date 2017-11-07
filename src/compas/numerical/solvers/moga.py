@@ -1051,7 +1051,7 @@ if __name__ == "__main__":
     import os
     import compas
     import math
-    from compas.visualization.plotters.mogaplotter import MogaPlotter
+    from compas.plotters.mogaplotter import MogaPlotter
 
     def zdt3_f1(X, a):
         fit = X[0]

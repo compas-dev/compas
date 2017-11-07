@@ -47,10 +47,10 @@ def principal_components(data):
             from compas.numerical.xforms import rotation_matrix
             from compas.numerical.transformations import transform
 
-            from compas.visualization.plotters.core.helpers import Axes3D
-            from compas.visualization.plotters.core.helpers import Cloud3D
-            from compas.visualization.plotters.core.helpers import Bounds
-            from compas.visualization.plotters.core.drawing import create_axes_3d
+            from compas.plotters.core.helpers import Axes3D
+            from compas.plotters.core.helpers import Cloud3D
+            from compas.plotters.core.helpers import Bounds
+            from compas.plotters.core.drawing import create_axes_3d
 
             from compas.numerical.statistics import principal_components
 
@@ -133,10 +133,10 @@ if __name__ == "__main__":
     from compas.numerical.xforms import rotation_matrix
     from compas.numerical.transformations import transform
 
-    from compas.visualization.plotters.helpers import Axes3D
-    from compas.visualization.plotters.helpers import Cloud3D
-    from compas.visualization.plotters.helpers import Bounds
-    from compas.visualization.plotters.drawing import create_axes_3d
+    from compas.plotters.helpers import Axes3D
+    from compas.plotters.helpers import Cloud3D
+    from compas.plotters.helpers import Bounds
+    from compas.plotters.drawing import create_axes_3d
 
     from compas.numerical.statistics import principal_components
 

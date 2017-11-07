@@ -236,7 +236,7 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
             import compas
 
             from compas.datastructures import Mesh
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
@@ -256,7 +256,7 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
             from compas.datastructures import mesh_split_face
             from compas.datastructures import trimesh_swap_edge
             from compas.datastructures import trimesh_collapse_edge
-            from compas.visualization import MeshPlotter
+            from compas.plotters import MeshPlotter
 
             from compas.geometry import centroid_points
 
@@ -395,26 +395,26 @@ if __name__ == "__main__":
 
     import compas
 
-    from compas.datastructures.mesh.mesh import Mesh
-    from compas.datastructures.mesh.operations import split_face_mesh
-    from compas.datastructures.mesh.operations import swap_edge_trimesh
+    from compas.datastructures import Mesh
+    from compas.datastructures import mesh_split_face
+    from compas.datastructures import trimesh_swap_edge
 
-    from compas.visualization.plotters.meshplotter import MeshPlotter
+    from compas.plotters.meshplotter import MeshPlotter
 
     from compas.geometry import centroid_points
 
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
     for fkey in list(mesh.faces()):
-        vertices = mesh.face_vertices(fkey, ordered=True)
-        split_face_mesh(mesh, fkey, vertices[0], vertices[2])
+        vertices = mesh.face_vertices(fkey)
+        mesh_split_face(mesh, fkey, vertices[0], vertices[2])
 
-    swap_edge_trimesh(mesh, 14, 16)
-    swap_edge_trimesh(mesh, 31, 22)
+    trimesh_swap_edge(mesh, 14, 16)
+    trimesh_swap_edge(mesh, 31, 22)
 
-    collapse_edge_trimesh(mesh, 30, 17)
-    collapse_edge_trimesh(mesh, 30, 31)
-    collapse_edge_trimesh(mesh, 30, 22)
+    trimesh_collapse_edge(mesh, 30, 17)
+    trimesh_collapse_edge(mesh, 30, 31)
+    trimesh_collapse_edge(mesh, 30, 22)
 
     points = mesh.get_vertices_attributes('xyz', keys=mesh.vertex_neighbours(30))
     x, y, z = centroid_points(points)

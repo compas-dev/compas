@@ -57,7 +57,7 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
         import compas
 
         from compas.datastructures import Mesh
-        from compas.visualization import MeshPlotter
+        from compas.plotters import MeshPlotter
         from compas.numerical import fd
         from compas.utilities import i_to_black
 
@@ -151,7 +151,7 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Mesh
-    from compas.visualization import MeshPlotter
+    from compas.plotters import MeshPlotter
     from compas.utilities import i_to_rgb
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))

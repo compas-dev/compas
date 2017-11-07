@@ -240,7 +240,7 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
              [-1.  1.  1.]]
 
     """
-    xyz = asarray(xyz, dtype=float32)
+    xyz = asarray(xyz, dtype=float)
     C   = csr_matrix(C)
     xy  = xyz[:, :2]
     uv  = C.dot(xy)

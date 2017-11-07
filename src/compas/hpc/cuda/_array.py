@@ -176,7 +176,7 @@ def cuda_imag(a):
 
     Examples:
         >>> cuda_imag(cuda_give([1 + 2.j, 2 - 4.j], type='complex'))
-        array([ 2., -4.], dtype=float32)
+        array([ 2., -4.], dtype=float)
     """
     return a.imag
 
@@ -239,7 +239,7 @@ def cuda_real(a):
 
     Examples:
         >>> cuda_real(cuda_give([1 + 2.j, 2 - 4.j], type='complex'))
-        array([ 1.,  2.], dtype=float32)
+        array([ 1.,  2.], dtype=float)
     """
     return a.real
 

@@ -29,7 +29,7 @@ from compas.datastructures.mixins import EdgeFilter
 from compas.datastructures.mixins import FromToData
 from compas.datastructures.mixins import FromToJson
 
-from compas.topology import bfs_traverse
+# from compas.topology import bfs_traverse
 
 
 __author__     = 'Tom Van Mele'
@@ -91,7 +91,7 @@ class Network(FromToJson,
 
         import compas
         from compas.datastructures import Network
-        from compas.visualization import NetworkPlotter
+        from compas.plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get_data('lines.obj'))
 
@@ -507,15 +507,15 @@ network: {0}
     def number_of_halfedges(self):
         return len(list(self.halfedges()))
 
-    def is_connected(self):
-        """Return True if for every two vertices a path exists connecting them."""
-        if not self.vertex:
-            return False
+    # def is_connected(self):
+    #     """Return True if for every two vertices a path exists connecting them."""
+    #     if not self.vertex:
+    #         return False
 
-        root = self.get_any_vertex()
-        nodes = bfs_traverse(self.halfedge, root)
+    #     root = self.get_any_vertex()
+    #     nodes = bfs_traverse(self.halfedge, root)
 
-        return len(nodes) == self.number_of_vertices()
+    #     return len(nodes) == self.number_of_vertices()
 
     # --------------------------------------------------------------------------
     # accessors
@@ -711,7 +711,7 @@ network: {0}
 if __name__ == '__main__':
 
     import compas
-    from compas.visualization import NetworkPlotter
+    from compas.plotters import NetworkPlotter
 
     network = Network.from_obj(compas.get('lines.obj'))
 

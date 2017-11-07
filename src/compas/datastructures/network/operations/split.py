@@ -37,9 +37,9 @@ def network_split_edge(network, u, v, t=0.5, allow_boundary=True):
 
             import compas
             from compas.datastructures import FaceNetwork
-            from compas.visualization import FaceNetworkPlotter
-            from compas.datastructures import network_find_faces
             from compas.datastructures import network_split_edge
+            from compas.plotters import FaceNetworkPlotter
+            from compas.topology import network_find_faces
 
             network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
 
@@ -149,11 +149,11 @@ def network_split_edge(network, u, v, t=0.5, allow_boundary=True):
 if __name__ == "__main__":
 
     import compas
-    from compas.datastructures.network import FaceNetwork
-    from compas.visualization.plotters.networkplotter import NetworkPlotter
+    from compas.datastructures import FaceNetwork
+    from compas.plotters import FaceNetworkPlotter
 
-    from compas.datastructures.network.algorithms import network_find_faces
-    from compas.datastructures.network.operations import network_split_edge
+    from compas.topology import network_find_faces
+    from compas.datastructures import network_split_edge
 
     network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
 
@@ -174,7 +174,7 @@ if __name__ == "__main__":
             'color': '#00ff00'
         })
 
-    plotter = NetworkPlotter(network)
+    plotter = FaceNetworkPlotter(network)
 
     plotter.draw_vertices(radius=0.2,
                           facecolor={key: '#ff0000' for key in (a, b, c, d)},
