@@ -245,6 +245,7 @@ Queries
     is_point_on_line
     is_point_on_line_xy
     is_point_on_plane
+    is_point_infront_plane
     is_point_in_polygon_xy
     is_point_on_polyline
     is_point_on_segment

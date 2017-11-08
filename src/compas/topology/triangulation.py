@@ -42,7 +42,7 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
             mesh.split_face(fkey, b, d)
 
 
-def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
+def delaunay_from_points(points, boundary=None, holes=None):
     """Computes the delaunay triangulation for a list of points.
 
     Parameters:
@@ -97,7 +97,7 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     mesh = Mesh()
 
     # to avoid numerical issues for perfectly structured point sets
-    pts = [(point[0] + random.uniform(-tiny, tiny), point[1] + random.uniform(-tiny, tiny), 0.0) for point in points]
+    # pts = [(point[0] + random.uniform(-tiny, tiny), point[1] + random.uniform(-tiny, tiny), 0.0) for point in points]
 
     # create super triangle
     pt1, pt2, pt3 = super_triangle(points)
@@ -113,7 +113,7 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     mesh.add_face(super_keys)
 
     # iterate over points
-    for i, pt in enumerate(pts):
+    for i, pt in enumerate(points):
         key = i
 
         # newtris should be intialised here
@@ -132,7 +132,7 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
             b = [dictb['x'], dictb['y']]
             c = [dictc['x'], dictc['y']]
 
-            if is_point_in_triangle_xy(pt, [a, b, c]):
+            if is_point_in_triangle_xy(pt, [a, b, c], True):
                 # generate 3 new triangles (faces) and delete surrounding triangle
                 key, newtris = mesh.insert_vertex(fkey, key=key, xyz=pt, return_fkeys=True)
                 break
@@ -161,7 +161,6 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
                 c = [dictc['x'], dictc['y']]
 
                 circle = circle_from_points_xy(a, b, c)
-
                 if is_point_in_circle_xy(pt, circle):
                     fkey, fkey_op = mesh.swap_edge_tri(u, v)
                     newtris.append(fkey)
@@ -557,19 +556,28 @@ if __name__ == "__main__":
     from compas.topology import trimesh_remesh
     from compas.topology import delaunay_from_points
     from compas.topology import voronoi_from_delaunay
-
     from compas.geometry import pointcloud_xy
-
     from compas.plotters import MeshPlotter
 
-    points = pointcloud_xy(10, (0, 10))
-    faces = delaunay_from_points(points)
+    # points = pointcloud_xy(10, (0, 10))
+    # faces = delaunay_from_points(points)
 
-    mesh = Mesh.from_vertices_and_faces(points, faces)
+    # mesh = Mesh.from_vertices_and_faces(points, faces)
 
-    trimesh_remesh(mesh, 1.0, kmax=300, allow_boundary_split=True)
+    # trimesh_remesh(mesh, 1.0, kmax=300, allow_boundary_split=True)
 
-    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+    # points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+
+    points = [[0, 0, 0],
+              [1, 0, 0],
+              [2, 0, 0],
+              [0, 1, 0],
+              [1, 1, 0],
+              [2, 1, 0],
+              [0, 2, 0],
+              [1, 2, 0],
+              [2, 2, 0]]
+
     faces = delaunay_from_points(points)
 
     mesh = Mesh.from_vertices_and_faces(points, faces)

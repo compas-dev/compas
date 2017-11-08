@@ -22,7 +22,7 @@ from compas.geometry.angles import angle_smallest_vectors
 from compas.geometry.average import center_of_mass_polygon
 
 
-__author__    = ['Tom Van Mele', ]
+__author__    = ['Tom Van Mele', 'Matthias Rippmann']
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
@@ -36,6 +36,7 @@ __all__ = [
     'is_polygon_convex',
     'is_polygon_convex_xy',
     'is_point_on_plane',
+    'is_point_infront_plane',
     'is_point_on_line',
     'is_point_on_line_xy',
     'is_point_on_segment',
@@ -282,6 +283,27 @@ def is_point_on_plane(point, plane, tol=0.0):
     return distance_point_plane(point, plane) <= tol
 
 
+def is_point_infront_plane(point, plane):
+    """Verify if a point lies in front of a plane.
+
+    Parameters
+    ----------
+    point : sequence of float
+        XYZ coordinates.
+    plane : tuple
+        Base point and normal defining a plane.
+
+    Returns
+    -------
+    bool
+        ``True`` if the point is in front of the plane.
+        ``False`` otherwise.
+
+    """
+    return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > 0.0
+    
+
+
 def is_point_on_line(point, line, tol=0.0):
     """Verify if a point lies on a line.
 
@@ -513,7 +535,7 @@ def is_point_in_triangle(point, triangle):
     return False
 
 
-def is_point_in_triangle_xy(point, triangle):
+def is_point_in_triangle_xy(point, triangle, colinear=False):
     """Verify if a point is in the interior of a triangle lying in the XY-plane.
 
     Parameters
@@ -522,7 +544,10 @@ def is_point_in_triangle_xy(point, triangle):
         XY(Z) coordinates of a point.
     triangle : sequence
         XY(Z) coordinates of the corners of the triangle.
-
+    colinear : bool, optional
+        Allow points to be colinear.
+        Default is ``False``.
+        
     Returns
     -------
     bool
@@ -531,12 +556,12 @@ def is_point_in_triangle_xy(point, triangle):
 
     """
     a, b, c = triangle
-    ccw = is_ccw_xy(c, a, point, True)
+    ccw = is_ccw_xy(c, a, point, colinear)
 
-    if ccw != is_ccw_xy(a, b, point, True):
+    if ccw != is_ccw_xy(a, b, point, colinear):
         return False
 
-    if ccw != is_ccw_xy(b, c, point, True):
+    if ccw != is_ccw_xy(b, c, point, colinear):
         return False
 
     return True
