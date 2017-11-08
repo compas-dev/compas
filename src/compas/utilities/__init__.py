@@ -161,8 +161,8 @@ def valuedict(keys, value, default):
 
 
 from .animation import *
-from .datetime_ import *
-from .itertools_ import *
+from .datetime import *
+from .itertools import *
 from .colors import *
 from .maps import *
 from .mixing import *
@@ -173,8 +173,8 @@ from .xfunc import *
 from .xscript import *
 
 from .animation import __all__ as a
-from .datetime_ import __all__ as b
-from .itertools_ import __all__ as c
+from .datetime import __all__ as b
+from .itertools import __all__ as c
 from .colors import __all__ as d
 from .maps import __all__ as e
 from .mixing import __all__ as f

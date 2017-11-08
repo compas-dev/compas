@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 
-def mesh_unweld_vertices(mesh, fkey, where=None):
+def mesh_unweld_vertices(self, fkey, where=None):
     """Unweld a face of the mesh.
 
     Parameters
@@ -56,25 +56,25 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
 
     """
     face = []
-    vertices = mesh.face_vertices(fkey)
+    vertices = self.face_vertices(fkey)
 
     if not where:
         where = vertices
 
     for key in vertices:
         if key in where:
-            x, y, z = mesh.vertex_coordinates(key)
-            key = mesh.add_vertex(x=x, y=y, z=z)
+            x, y, z = self.vertex_coordinates(key)
+            key = self.add_vertex(x=x, y=y, z=z)
         face.append(key)
 
-    mesh.add_face(face)
+    self.add_face(face)
 
     for key in where:
-        d = mesh.face_vertex_descendant(fkey, key)
-        a = mesh.face_vertex_ancestor(fkey, key)
-        mesh.halfedge[a][key] = None
-        mesh.halfedge[key][d] = None
-    del mesh.face[fkey]
+        d = self.face_vertex_descendant(fkey, key)
+        a = self.face_vertex_ancestor(fkey, key)
+        self.halfedge[a][key] = None
+        self.halfedge[key][d] = None
+    del self.face[fkey]
 
 
 # ==============================================================================

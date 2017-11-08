@@ -2,6 +2,13 @@ from compas.utilities import color_to_colordict
 
 import compas_rhino
 
+try:
+    import rhinoscriptsyntax as rs
+except ImportError:
+    import platform
+    if platform.python_implementation() == 'IronPython':
+        raise
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
@@ -26,7 +33,7 @@ class FaceArtist(object):
                 guids.append(guid)
         compas_rhino.delete_objects(guids)
 
-    def draw_faces(self, fkeys=None, color=None):
+    def draw_faces(self, fkeys=None, color=None, join_faces=False):
         """Draw a selection of faces of the mesh.
 
         Parameters
@@ -69,7 +76,12 @@ class FaceArtist(object):
                 'name'  : self.datastructure.face_name(fkey),
                 'color' : colordict[fkey],
             })
-        return compas_rhino.xdraw_faces(faces, layer=self.layer, clear=False, redraw=False)
+
+        guids = compas_rhino.xdraw_faces(faces, layer=self.layer, clear=False, redraw=False)
+        if not join_faces:
+            return guids
+        guid = rs.JoinMeshes(guids, delete_input=True)
+        return guid
 
     def draw_facelabels(self, text=None, color=None):
         """Draw labels for selected faces of the mesh.

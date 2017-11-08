@@ -72,7 +72,6 @@ def mesh_cull_duplicate_vertices(mesh, precision='3f'):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
 
     from compas.datastructures import Mesh
     from compas.visualization import MeshPlotter
@@ -82,20 +81,16 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-
-   
-
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
     plotter.draw_edges(width=0.5)
 
     print("Original mesh:")
     print(mesh)
-    
+
     mesh_cull_duplicate_vertices(mesh)
 
     print("Mesh with duplicate vertices deleted:")
     print(mesh)
-    #plotter.update(pause=2.0)
-    plotter.show()
 
+    plotter.show()

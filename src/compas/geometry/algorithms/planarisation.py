@@ -2,12 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry import bestfit_plane_from_points
 from compas.geometry import project_points_plane
 from compas.geometry import centroid_points
 
 from compas.geometry import distance_point_point
 from compas.geometry import distance_line_line
+from compas.geometry import bestfit_plane
 
 from compas.utilities import window
 
@@ -114,7 +114,7 @@ def planarize_faces(vertices,
 
         for face in iter(faces):
             points = [vertices[index] for index in face]
-            plane = bestfit_plane_from_points(points)
+            plane = bestfit_plane(points)
             projections = project_points_plane(points, plane)
 
             for i, index in enumerate(face):

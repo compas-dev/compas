@@ -15,11 +15,16 @@ __email__      = '<vanmelet@ethz.ch>'
 
 
 __all__ = [
-    'bestfit_plane_from_points',
+    'bestfit_plane',
 ]
 
 
-def bestfit_plane_from_points(points):
+# ==============================================================================
+# bestfit plane
+# ==============================================================================
+
+
+def bestfit_plane(points):
     """Fit a plane to a list of (more than three) points.
 
     Parameters
@@ -94,4 +99,5 @@ def bestfit_plane_from_points(points):
 # ==============================================================================
 
 if __name__ == "__main__":
+
     pass

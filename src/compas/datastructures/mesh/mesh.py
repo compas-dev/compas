@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+# from types import MethodType
 from copy import deepcopy
 from ast import literal_eval
 
@@ -17,12 +18,10 @@ from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import normal_polygon
 from compas.geometry import area_polygon
-from compas.geometry import bestfit_plane_from_points
+from compas.geometry import bestfit_plane
 from compas.geometry import flatness
 
 from compas.geometry import Polyhedron
-
-# from compas.topology import bfs_traverse
 
 from compas.datastructures import Datastructure
 
@@ -47,10 +46,11 @@ from compas.datastructures.mixins import FaceMappings
 
 from compas.datastructures.mesh.operations import mesh_collapse_edge
 from compas.datastructures.mesh.operations import trimesh_collapse_edge
-from compas.datastructures.mesh.operations import mesh_split_face
-from compas.datastructures.mesh.operations import mesh_split_edge
 from compas.datastructures.mesh.operations import trimesh_split_edge
 from compas.datastructures.mesh.operations import trimesh_swap_edge
+
+from compas.datastructures.mesh.operations import mesh_split_face
+from compas.datastructures.mesh.operations import mesh_split_edge
 from compas.datastructures.mesh.operations import mesh_unweld_vertices
 
 
@@ -92,7 +92,9 @@ class Mesh(FromToJson,
            VertexAttributesManagement,
            Datastructure):
     """Definition of a mesh.
-
+    
+    Note
+    ----
     The datastructure of the mesh is implemented as a half-edge.
 
     Attributes
@@ -118,14 +120,6 @@ class Mesh(FromToJson,
         General mesh attributes.
 
     """
-
-    collapse_edge     = mesh_collapse_edge
-    collapse_edge_tri = trimesh_collapse_edge
-    split_edge        = mesh_split_edge
-    split_face        = mesh_split_face
-    split_edge_tri    = trimesh_split_edge
-    swap_edge_tri     = trimesh_swap_edge
-    unweld_vertices   = mesh_unweld_vertices
 
     def __init__(self):
         super(Mesh, self).__init__()
@@ -172,6 +166,10 @@ class Mesh(FromToJson,
     # --------------------------------------------------------------------------
     # special properties
     # --------------------------------------------------------------------------
+
+    @property
+    def adjacency(self):
+        return self.halfedge
 
     @property
     def name(self):
@@ -1177,28 +1175,6 @@ class Mesh(FromToJson,
 
         return True
 
-    # def is_connected(self):
-    #     """Verify that the mesh is connected.
-
-    #     A mesh is connected if the following conditions are fulfilled:
-
-    #     * For every two vertices a path exists connecting them.
-
-    #     Returns
-    #     -------
-    #     bool
-    #         True, if the mesh is connected.
-    #         False, otherwise.
-
-    #     """
-    #     if not self.vertex:
-    #         return False
-
-    #     root = self.get_any_vertex()
-    #     nodes = bfs_traverse(self.halfedge, root)
-
-    #     return len(nodes) == self.number_of_vertices()
-
     def is_manifold(self):
         """Verify that the mesh is manifold.
 
@@ -1581,6 +1557,9 @@ class Mesh(FromToJson,
         temp = list(self.halfedge[key])
 
         if not ordered:
+            return temp
+
+        if not temp:
             return temp
 
         if len(temp) == 1:
@@ -2526,6 +2505,32 @@ class Mesh(FromToJson,
         return [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
 
+# Mesh.collapse_edge = MethodType(mesh_collapse_edge, None, Mesh)
+# Mesh.collapse_edge_tri = MethodType(trimesh_collapse_edge, None, Mesh)
+# Mesh.split_face = MethodType(mesh_split_face, None, Mesh)
+# Mesh.split_edge = MethodType(mesh_split_edge, None, Mesh)
+# Mesh.split_edge_tri = MethodType(trimesh_split_edge, None, Mesh)
+# Mesh.swap_edge_tri = MethodType(trimesh_swap_edge, None, Mesh)
+# Mesh.unweld_vertices = MethodType(mesh_unweld_vertices, None, Mesh)
+
+Mesh.collapse_edge = mesh_collapse_edge.__get__(None, Mesh)
+Mesh.split_face = mesh_split_face.__get__(None, Mesh)
+Mesh.split_edge = mesh_split_edge.__get__(None, Mesh)
+Mesh.unweld_vertices = mesh_unweld_vertices.__get__(None, Mesh)
+
+Mesh.collapse_edge_tri = trimesh_collapse_edge.__get__(None, Mesh)
+Mesh.split_edge_tri = trimesh_split_edge.__get__(None, Mesh)
+Mesh.swap_edge_tri = trimesh_swap_edge.__get__(None, Mesh)
+
+# setattr(Mesh, "collapse_edge", mesh_collapse_edge)
+# setattr(Mesh, "split_face", mesh_split_face)
+# setattr(Mesh, "split_edge", mesh_split_edge)
+# setattr(Mesh, "unweld_vertices", mesh_unweld_vertices)
+# setattr(Mesh, "collapse_edge_tri", trimesh_collapse_edge)
+# setattr(Mesh, "split_edge_tri", trimesh_split_edge)
+# setattr(Mesh, "swap_edge_tri", trimesh_swap_edge)
+
+
 # ==============================================================================
 # Debugging
 # ==============================================================================
@@ -2537,4 +2542,3 @@ if __name__ == '__main__':
     mesh = Mesh.from_obj(compas.get_data('faces.obj'))
 
     print(mesh)
-

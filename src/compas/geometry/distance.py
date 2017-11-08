@@ -5,7 +5,7 @@ from __future__ import division
 
 from math import fabs
 
-from compas.utilities.itertools_ import pairwise
+from compas.utilities import pairwise
 
 from compas.geometry.basic import add_vectors
 from compas.geometry.basic import add_vectors_xy

@@ -22,7 +22,7 @@ plotters
 
 """
 
-from core import *
+from .core import *
 
 from .plotter import Plotter
 from .networkplotter import NetworkPlotter

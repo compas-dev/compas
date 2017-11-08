@@ -1,10 +1,11 @@
 from __future__ import print_function
 
-from compas.geometry import cross_vectors
-from compas.geometry import subtract_vectors
-from compas.geometry import dot_vectors
-from compas.geometry import distance_point_point
-from compas.geometry import cross_vectors_xy
+from compas.geometry.basic import cross_vectors
+from compas.geometry.basic import subtract_vectors
+from compas.geometry.basic import dot_vectors
+from compas.geometry.basic import cross_vectors_xy
+
+from compas.geometry.distance import distance_point_point
 
 
 __author__     = ['Matthias Rippmann <rippmann@ethz.ch>']
@@ -107,6 +108,20 @@ def convex_hull(points):
     return hull
 
 
+def convex_hull_numpy(points):
+    from numpy import asarray
+    from scipy.spatial import ConvexHull
+
+    points = asarray(points)
+    n, dim = points.shape
+
+    assert 2 < dim, "The point coordinates should be at least 3D: %i" % dim
+
+    points = points[:, :3]
+    hull = ConvexHull(points)
+    return points[hull.vertices]
+
+
 # https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain
 def convex_hull_xy(points):
     """Computes the convex hull of a set of 2D points.
@@ -148,6 +163,20 @@ def convex_hull_xy(points):
     # Concatenation of the lower and upper hulls gives the convex hull.
     # Last point of each list is omitted because it is repeated at the beginning of the other list.
     return lower[:-1] + upper[:-1]
+
+
+def convex_hull_xy_numpy(points):
+    from numpy import asarray
+    from scipy.spatial import ConvexHull
+
+    points = asarray(points)
+    n, dim = points.shape
+
+    assert 1 < dim, "The point coordinates should be at least 2D: %i" % dim
+
+    points = points[:, :2]
+    hull = ConvexHull(points)
+    return points[hull.vertices].reshape((-1, 2))
 
 
 # ==============================================================================

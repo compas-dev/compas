@@ -534,6 +534,9 @@ def travel(adjacency, weights, start=None):
 
 if __name__ == '__main__':
 
+    # dynamic traversal to visualize the difference
+    # between DFS and BFS
+
     # import compas
 
     # from compas.datastructures import Network

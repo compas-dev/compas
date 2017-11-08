@@ -21,19 +21,20 @@ from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import multiply_matrix_vector
 from compas.geometry.basic import vector_component
 from compas.geometry.basic import vector_component_xy
+from compas.geometry.basic import homogenise_vectors
+from compas.geometry.basic import dehomogenise_vectors
+from compas.geometry.basic import multiply_matrices
+from compas.geometry.basic import transpose_matrix
 
 from compas.geometry.angles import angle_smallest_vectors
 from compas.geometry.average import centroid_points
+
 from compas.geometry.intersections import intersection_line_line
 from compas.geometry.intersections import intersection_line_plane
 from compas.geometry.intersections import intersection_line_triangle
 
 from compas.geometry.orientation import normal_polygon
 from compas.geometry.orientation import normal_triangle
-
-from compas.geometry.xforms import transform
-from compas.geometry.xforms import rotation_matrix
-from compas.geometry.xforms import scale_matrix
 
 from compas.geometry.distance import closest_point_on_plane
 
@@ -45,6 +46,13 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
+    'transform',
+    'translation_matrix',
+    'rotation_matrix',
+    'scale_matrix',
+    'shear_matrix',
+    'projection_matrix',
+
     'translate_points',
     'translate_points_xy',
     'translate_lines',
@@ -77,6 +85,130 @@ __all__ = [
     'project_points_line',
     'project_points_line_xy',
 ]
+
+
+# ==============================================================================
+# helpers
+# ==============================================================================
+
+
+def transform(points, T):
+    points = homogenise_vectors(points)
+    points = transpose_matrix(multiply_matrices(T, transpose_matrix(points)))
+    return dehomogenise_vectors(points)
+
+
+# ==============================================================================
+# xforms
+# ==============================================================================
+
+
+def translation_matrix(direction):
+    """Creates a translation matrix to translate vectors.
+
+    Parameters:
+        direction (list): The x, y and z components of the translation.
+
+    Returns:
+        list: The (4 x 4) translation matrix.
+
+    Homogeneous vectors are used, i.e. vector [x, y, z].T is represented as
+    [x, y, z, 1].T. Matrix multiplication of the translation matrix with the
+    homogeneous vector will return the new translated vector.
+
+    Examples:
+        >>> T = translation_matrix([1, 2, 3])
+        [[1 0 0 1]
+         [0 1 0 2]
+         [0 0 1 3]
+         [0 0 0 1]]
+    """
+    return [[1.0, 0.0, 0.0, direction[0]],
+            [0.0, 1.0, 0.0, direction[1]],
+            [0.0, 0.0, 1.0, direction[2]],
+            [0.0, 0.0, 0.0, 1.0]]
+
+
+def rotation_matrix(angle, direction, point=None):
+    """Creates a rotation matrix for rotating vectors around an axis.
+
+    Parameters:
+        angle (float): Angle in radians to rotate by.
+        direction (list): The x, y and z components of the rotation axis.
+
+    Returns:
+        list: The (3 x 3) rotation matrix.
+
+    Rotates a vector around a given axis (the axis will be unitised), the
+    rotation is based on the right hand rule, i.e. anti-clockwise when the axis
+    of rotation points towards the observer.
+
+    Examples:
+        >>> R = rotation_matrix(angle=pi/2, direction=[0, 0, 1])
+        [[  6.12-17  -1.00+00   0.00+00]
+         [  1.00+00   6.12-17   0.00+00]
+         [  0.00+00   0.00+00   1.00+00]]
+    """
+    # To perform a rotation around an arbitrary line (i.e. an axis not through
+    # the origin) an origin other than (0, 0, 0) may be provided for the
+    # direction vector. Note that the returned 'rotation matrix' is then
+    # composed of three translations and a rotation: Tp-1 Txy-1 Tz-1 R Tz Txy Tp
+    # l = sum(direction[i] ** 2 for i in range(3)) ** 0.5
+    # u = [direction[i] / l for i in range(3)]
+    x, y, z = normalize_vector(direction)
+    c = cos(angle)
+    t = 1 - c
+    s = sin(angle)
+    R = [
+        [t * x * x + c    , t * x * y - s * z, t * x * z + s * y, 0.0],
+        [t * x * y + s * z, t * y * y + c    , t * y * z - s * x, 0.0],
+        [t * x * z - s * y, t * y * z + s * x, t * z * z + c    , 0.0],
+        [0.0              , 0.0              , 0.0              , 1.0]
+    ]
+
+    if point is None:
+        return R
+
+    T1 = translation_matrix([-p for p in point])
+    T2 = translation_matrix(point)
+
+    return multiply_matrices(T2, multiply_matrices(R, T1))
+
+
+def scale_matrix(x, y=None, z=None):
+    """Creates a scale matrix to scale vectors.
+
+    Parameters:
+        factor (float): Uniform scale factor for the  x, y and z components.
+
+    Returns:
+        list: The (3 x 3) scale matrix.
+
+    The scale matrix is a (3 x 3) matrix with the scale factor along all of the
+    three diagonal elements, used to scale a vector.
+
+    Examples:
+        >>> S = scale_matrix(2)
+        [[2 0 0]
+         [0 2 0]
+         [0 0 2]]
+    """
+    if y is None:
+        y = x
+    if z is None:
+        z = x
+    return [[x, 0.0, 0.0, 0.0],
+            [0.0, y, 0.0, 0.0],
+            [0.0, 0.0, z, 0.0],
+            [0.0, 0.0, 0.0, 1.0]]
+
+
+def shear_matrix():
+    pass
+
+
+def projection_matrix(point, normal):
+    pass
 
 
 # ==============================================================================
@@ -121,26 +253,6 @@ def scale_points(points, scale):
 # ==============================================================================
 
 
-def rotate_points_degrees(points, axis, angle, origin=None):
-    """Rotates points around an arbitrary axis in 3D (degrees).
-
-    Parameters:
-        points (sequence of sequence of float): XYZ coordinates of the points.
-        axis (sequence of float): The rotation axis.
-        angle (float): the angle of rotation in degrees.
-        origin (sequence of float): Optional. The origin of the rotation axis.
-            Default is ``[0.0, 0.0, 0.0]``.
-
-    Returns:
-        list: the rotated points
-
-    References:
-        https://en.wikipedia.org/wiki/Rotation_matrix
-
-    """
-    return rotate_points(points, axis, radians(angle), origin)
-
-
 def rotate_points(points, axis, angle, origin=None):
     """Rotates points around an arbitrary axis in 3D (radians).
 
@@ -163,6 +275,26 @@ def rotate_points(points, axis, angle, origin=None):
     # apply rotation
     points = transform(points, R)
     return points
+
+
+def rotate_points_degrees(points, axis, angle, origin=None):
+    """Rotates points around an arbitrary axis in 3D (degrees).
+
+    Parameters:
+        points (sequence of sequence of float): XYZ coordinates of the points.
+        axis (sequence of float): The rotation axis.
+        angle (float): the angle of rotation in degrees.
+        origin (sequence of float): Optional. The origin of the rotation axis.
+            Default is ``[0.0, 0.0, 0.0]``.
+
+    Returns:
+        list: the rotated points
+
+    References:
+        https://en.wikipedia.org/wiki/Rotation_matrix
+
+    """
+    return rotate_points(points, axis, radians(angle), origin)
 
 
 def rotate_points_xy(points, axis, angle, origin=None):

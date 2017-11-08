@@ -1,3 +1,8 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+
 from compas.geometry import centroid_points
 from compas.geometry import center_of_mass_polygon
 from compas.geometry import area_polygon
@@ -19,6 +24,7 @@ __all__ = [
     'smooth_resultant',
 
     'mesh_smooth_centroid',
+    'mesh_smooth_area',
 
     'network_smooth_centroid',
     'network_smooth_resultant',
@@ -545,8 +551,34 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=1.0, callback=None,
         if callback:
             callback(mesh, k, callback_args)
 
-            vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-            adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
+            vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+
+
+def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=1.0, callback=None, callback_args=None):
+    """"""
+    if callback:
+        if not callable(callback):
+            raise Exception('Callback is not callable.')
+
+    fixed = fixed or []
+    fixed = set(fixed)
+
+    vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    faces = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
+    adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
+
+    for k in range(kmax):
+        smooth_area(vertices, faces, adjacency, fixed=fixed, kmax=1, damping=damping)
+
+        for key, attr in mesh.vertices(True):
+            attr['x'] = vertices[key][0]
+            attr['y'] = vertices[key][1]
+            attr['z'] = vertices[key][2]
+
+        if callback:
+            callback(mesh, k, callback_args)
+
+            vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
 
 
 # ==============================================================================

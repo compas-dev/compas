@@ -2,6 +2,7 @@
 # see: https://docs.python.org/3.6/library/itertools.html
 
 from __future__ import print_function
+from __future__ import absolute_import
 
 import random
 import collections

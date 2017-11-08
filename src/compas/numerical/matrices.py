@@ -7,7 +7,6 @@ from compas.geometry import cross_vectors
 from numpy import abs
 from numpy import array
 from numpy import asarray
-from numpy import float32
 from numpy import tile
 from numpy import ones
 
@@ -543,28 +542,9 @@ if __name__ == "__main__":
 
     from compas.datastructures import Network
 
-    from numpy import allclose
-
     network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-    # key_index = {key: index for index, key in enumerate(network.vertices())}
 
     A = network_adjacency_matrix(network)
     C = network_connectivity_matrix(network)
     L = network_laplacian_matrix(network, normalize=True, rtype='csr')
     D = network_degree_matrix(network)
-
-    # xy = [network.vertex_coordinates(key, 'xy') for key in network.vertices()]
-    # xy = array(xy, dtype=float).reshape((-1, 2))
-
-    # centroids1 = [network.vertex_neighbourhood_centroid(key) for key in network.vertices()]
-    # centroids1 = array(centroids1, dtype=float)[:, 0:2]
-
-    # d = L.dot(xy)
-
-    # centroids2 = xy - d
-    # centroids3 = A.dot(xy) / D.diagonal().reshape((-1, 1))
-
-    # print(allclose(centroids1, centroids2))
-    # print(allclose(centroids2, centroids3))
-    # print(allclose(centroids1, centroids3))

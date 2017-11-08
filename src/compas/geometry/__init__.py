@@ -24,38 +24,7 @@ geometry
     - **frame** -- A list of three orthonormal vectors.
 
 
-Algorithms
-==========
-
-.. autosummary::
-    :toctree: generated/
-
-    flatness
-    planarize_faces
-    smooth_centroid
-    smooth_centerofmass
-    smooth_area
-    smooth_resultant
-    discrete_coons_patch
-
-.. autosummary::
-    :toctree: generated/
-
-    mesh_flatness
-    mesh_planarize_faces
-    mesh_planarize_faces_shapeop
-    mesh_circularize_faces_shapeop
-    mesh_smooth_centroid
-
-.. autosummary::
-    :toctree: generated/
-
-    network_smooth_centroid
-    network_smooth_resultant
-    network_relax
-
-
-Objects
+Classes
 =======
 
 This package provides an object-oriented interface to the above functionality.
@@ -77,11 +46,30 @@ This package provides an object-oriented interface to the above functionality.
     KDTree
 
 
-Core
-====
+Algorithms
+==========
 
-Basics
-------
+.. autosummary::
+    :toctree: generated/
+
+    flatness
+    mesh_flatness
+    planarize_faces
+    mesh_planarize_faces
+    mesh_planarize_faces_shapeop
+    mesh_circularize_faces_shapeop
+    smooth_centroid
+    mesh_smooth_centroid
+    network_smooth_centroid
+    smooth_centerofmass
+    smooth_area
+    smooth_resultant
+    network_smooth_resultant
+    discrete_coons_patch
+
+
+Functions
+=========
 
 .. autosummary::
     :toctree: generated/
@@ -125,6 +113,14 @@ Basics
     transpose_matrix
     vector_component
     vector_component_xy
+    vector_from_points
+    vector_from_points_xy
+    plane_from_points
+    circle_from_points
+    circle_from_points_xy
+    pointcloud
+    pointcloud_xy
+
 
 Distance
 --------
@@ -141,10 +137,6 @@ Distance
     closest_point_on_polyline_xy
     closest_point_on_segment
     closest_point_on_segment_xy
-
-.. autosummary::
-    :toctree: generated/
-
     distance_line_line
     distance_point_line
     distance_point_line_xy
@@ -162,7 +154,7 @@ Angles
 .. note::
 
     All angle functions return a result in radians.
-    For a result in degrees, use the *degrees* variation.
+    For a result in degrees use the *degrees* variation.
 
 .. autosummary::
     :toctree: generated/
@@ -175,10 +167,6 @@ Angles
     angle_smallest_vectors_xy
     angle_smallest_vectors_degrees
     angle_smallest_vectors_degrees_xy
-
-.. autosummary::
-    :toctree: generated/
-
     angles_points
     angles_points_xy
     angles_points_degrees
@@ -187,6 +175,7 @@ Angles
     angles_vectors_xy
     angles_vectors_degrees
     angles_vectors_degrees_xy
+
 
 Average
 -------
@@ -204,20 +193,6 @@ Average
     midpoint_point_point
     midpoint_point_point_xy
 
-Constructors
-------------
-
-.. autosummary::
-    :toctree: generated/
-
-    circle_from_points
-    circle_from_points_xy
-    plane_from_points
-    pointcloud
-    pointcloud_xy
-    vector_from_points
-    vector_from_points_xy
-
 
 Orientation
 -----------
@@ -228,14 +203,6 @@ Orientation
     normal_polygon
     normal_triangle
     normal_triangle_xy
-
-Bestfit
--------
-
-.. autosummary::
-    :toctree: generated/
-
-    bestfit_plane_from_points
 
 
 Queries
@@ -318,13 +285,25 @@ Size
     area_polygon_xy
     area_triangle
     area_triangle_xy
-    bounding_box
-    bounding_box_xy
     volume_polyhedron
 
 
 Transformations
 ---------------
+
+.. autosummary::
+    :toctree: generated/
+
+    transform
+
+.. autosummary::
+    :toctree: generated/
+
+    projection_matrix
+    rotation_matrix
+    scale_matrix
+    shear_matrix
+    translation_matrix
 
 .. autosummary::
     :toctree: generated/
@@ -340,34 +319,18 @@ Transformations
     mirror_points_point
     mirror_points_point_xy
     mirror_vector_vector
-
-.. autosummary::
-    :toctree: generated/
-
     offset_line
     offset_polyline
     offset_polygon
     orient_points
-
-.. autosummary::
-    :toctree: generated/
-
     project_point_line
     project_point_line_xy
     project_point_plane
     project_points_line
     project_points_line_xy
     project_points_plane
-
-.. autosummary::
-    :toctree: generated/
-
     reflect_line_plane
     reflect_line_triangle
-
-.. autosummary::
-    :toctree: generated/
-
     rotate_points
     rotate_points_xy
     rotate_points_degrees
@@ -376,24 +339,6 @@ Transformations
     translate_lines_xy
     translate_points
     translate_points_xy
-
-
-XForms
-------
-
-.. autosummary::
-    :toctree: generated/
-
-    transform
-
-.. autosummary::
-    :toctree: generated/
-
-    projection_matrix
-    rotation_matrix
-    scale_matrix
-    shear_matrix
-    translation_matrix
 
 """
 
@@ -476,12 +421,14 @@ from .basic import *
 from .distance import *
 from .angles import *
 from .average import *
-from .constructors import *
 
 # level 2
 
-from .orientation import *
 from .bestfit import *
+from .bbox import *
+from .hull import *
+
+from .orientation import *
 from .queries import *
 from .intersections import *
 
@@ -489,12 +436,10 @@ from .intersections import *
 
 from .size import *
 from .transformations import *
-from .xforms import *
 
 # level 4
 
 from .objects import *
-from .methods import *
 from .algorithms import *
 
 # recompile the __all__ variable
@@ -503,18 +448,21 @@ from .basic import __all__ as a
 from .distance import __all__ as b
 from .angles import __all__ as c
 from .average import __all__ as d
-from .intersections import __all__ as e
-from .constructors import __all__ as f
-from .orientation import __all__ as g
-from .bestfit import __all__ as h
-from .queries import __all__ as i
-from .size import __all__ as j
-from .transformations import __all__ as k
-from .xforms import __all__ as l
+
+from .bestfit import __all__ as e
+from .bbox import __all__ as f
+from .hull import __all__ as g
+
+from .orientation import __all__ as h
+from .intersections import __all__ as i
+from .queries import __all__ as j
+
+from .size import __all__ as k
+from .transformations import __all__ as l
+
 from .objects import __all__ as m
-from .methods import __all__ as o
 from .algorithms import __all__ as n
 
 
 __all__  = ['is_point', 'is_vector', 'is_line', 'is_segment', 'is_plane', 'is_circle', 'is_polygon', 'is_polyline', 'is_polyhedron', 'is_frame']
-__all__ += a + b + c + d + e + f + g + h + i + j + k + l + m + n + o
+__all__ += a + b + c + d + e + f + g + h + i + j + k + l + m + n

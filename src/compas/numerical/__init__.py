@@ -6,16 +6,9 @@ numerical
 
 .. module:: compas.numerical
 
-.. note::
 
-    The numerical package is built around NumPy and SciPy.
-
-    * NumPy: http://www.numpy.org/
-    * SciPy: http://www.scipy.org/
-
-
-Methods
-=======
+Algorithms
+==========
 
 .. autosummary::
     :toctree: generated/
@@ -39,21 +32,10 @@ Solvers
     moga
 
 
-Core
-====
+Functions
+=========
 
-geometry
---------
-
-.. autosummary::
-    :toctree: generated/
-
-    scalarfield_contours
-    plot_scalarfield_contours
-
-
-linalg
-------
+**linalg**
 
 .. autosummary::
     :toctree: generated/
@@ -73,8 +55,7 @@ linalg
     spsolve_with_known
 
 
-matrices
---------
+**matrices**
 
 .. autosummary::
     :toctree: generated/
@@ -89,8 +70,7 @@ matrices
     equilibrium_matrix
 
 
-operators
----------
+**operators**
 
 .. autosummary::
     :toctree: generated/
@@ -100,44 +80,8 @@ operators
     curl
 
 
-spatial
--------
-
-.. autosummary::
-    :toctree: generated/
-
-    closest_points_points
-    project_points_heightfield
-    iterative_closest_point
-    bounding_box_xy
-    bounding_box
-
-
-statistics
-----------
-
-.. autosummary::
-    :toctree: generated/
-
-    principal_components
-
-
-transformations
----------------
-
-.. autosummary::
-    :toctree: generated/
-
-
-triangulation
--------------
-
-.. autosummary::
-    :toctree: generated/
-
-
-utilities
----------
+Utilities
+=========
 
 .. autosummary::
     :toctree: generated/
@@ -146,46 +90,22 @@ utilities
     unset_array_print_precision
 
 
-xforms
-------
-
-.. autosummary::
-    :toctree: generated/
-
-    translation_matrix
-    rotation_matrix
-    random_rotation_matrix
-    scale_matrix
-    projection_matrix
-
 """
 
-from .geometry import *
 from .linalg import *
 from .matrices import *
 from .operators import *
-from .spatial import *
-from .statistics import *
-from .transformations import *
-from .triangulation import *
 from .utilities import *
-from .xforms import *
 
 from .solvers import *
-from .methods import *
+from .algorithms import *
 
-from .geometry import __all__ as a
-from .linalg import __all__ as b
-from .matrices import __all__ as c
-from .operators import __all__ as d
-from .spatial import __all__ as e
-from .statistics import __all__ as f
-from .transformations import __all__ as g
-from .triangulation import __all__ as h
-from .utilities import __all__ as i
-from .xforms import __all__ as j
+from .linalg import __all__ as a
+from .matrices import __all__ as b
+from .operators import __all__ as c
+from .utilities import __all__ as d
 
-from .solvers import __all__ as k
-from .methods import __all__ as l
+from .solvers import __all__ as e
+from .algorithms import __all__ as f
 
-__all__ = a + b + c + d + e + f + g + h + i + j + k + l
+__all__ = a + b + c + d + e + f

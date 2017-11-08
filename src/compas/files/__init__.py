@@ -7,8 +7,10 @@ files
 
 .. module:: compas.files
 
+.. warning::
 
-A package for working with different types of files.
+    The functionality of this package is experimental and subject to frequent change.
+    For now, don't use it for anything important :)
 
 
 amf

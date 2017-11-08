@@ -115,12 +115,12 @@ opencl
 """
 
 from .cuda import *
-from .numba_ import *
+from .numba import *
 # from .opencl import *
 from .euler import *
 
 from .cuda import __all__ as a
-from .numba_ import __all__ as b
+from .numba import __all__ as b
 # from .opencl import __all__ as c
 from .euler import __all__ as d
 

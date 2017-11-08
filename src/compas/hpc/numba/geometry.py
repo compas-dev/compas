@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
 from numba import jit
 from numba import int64
 from numba import float64

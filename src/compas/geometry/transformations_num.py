@@ -1,14 +1,15 @@
 from __future__ import print_function
 
+from random import choice
+
 from numpy import array
 from numpy import asarray
-from numpy import ones
-from numpy import hstack
 from numpy import vstack
 
 from numpy.random import randint
 
-from compas.numerical.xforms import rotation_matrix
+from compas.geometry.basic_num import homogenize_vectors_numpy
+from compas.geometry.basic_num import dehomogenize_vectors_numpy
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
@@ -22,48 +23,19 @@ __all__ = [
 ]
 
 
-def homogenize(points):
-    points = asarray(points)
-    points = hstack((points, ones((points.shape[0], 1))))
-    return points
-
-
-def dehomogenize(points):
-    points = asarray(points)
-    return points[:, :-1] / points[:, -1].reshape((-1, 1))
-
-
-def transform(points, T):
-    points = homogenize(points)
+def transform_numpy(points, T):
+    T = asarray(T)
+    points = homogenize_vectors_numpy(points)
     points = T.dot(points.T).T
-    return dehomogenize(points)
+    return dehomogenize_vectors_numpy(points)
 
 
-# ==============================================================================
-# rotate
-# ==============================================================================
-
-
-def rotate_points(points, axis, angle, origin=None):
-    """Rotates points around an arbitrary axis in 3D (radians).
-
-    Parameters:
-        points (sequence of sequence of float): XYZ coordinates of the points.
-        axis (sequence of float): The rotation axis.
-        angle (float): the angle of rotation in radians.
-        origin (sequence of float): Optional. The origin of the rotation axis.
-            Default is ``[0.0, 0.0, 0.0]``.
-
-    Returns:
-        list: the rotated points
-
-    References:
-        https://en.wikipedia.org/wiki/Rotation_matrix
-
-    """
-    R = rotation_matrix(angle, axis, origin)
-    points = transform(points, R)
-    return points
+# def random_rotation_matrix():
+#     a = randint(1, high=8) * 10 * 3.14159 / 180
+#     d = [choice([0, 1]), choice([0, 1]), choice([0, 1])]
+#     if d == [0, 0, 0]:
+#         d = [0, 0, 1]
+#     return rotation_matrix(a, d)
 
 
 # ==============================================================================
@@ -76,6 +48,8 @@ if __name__ == "__main__":
 
     import matplotlib.pyplot as plt
 
+    from compas.geometry.transformations import rotation_matrix
+
     n = 200
 
     points = randint(0, high=100, size=(n, 3)).astype(float)
@@ -85,7 +59,7 @@ if __name__ == "__main__":
 
     a = pi / randint(1, high=8)
 
-    points_ = rotate_points(points, [0, 0, 1], a, [0, 0, 0])
+    points_ = transform_numpy(points, [0, 0, 1], a, [0, 0, 0])
 
     # R = rotation_matrix(a, (0, 0, 1), [50, 0, 0]).astype(float).reshape((4, 4))
 

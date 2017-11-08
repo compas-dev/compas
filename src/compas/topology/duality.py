@@ -569,17 +569,15 @@ if __name__ == '__main__':
     from compas.topology import trimesh_remesh
     from compas.plotters import MeshPlotter
 
-    # points = [[2853.0, -29.0, 594.0], [2922.0, -29.0, 594.0], [2922.0, 59.0, 594.0], [2853.0, 59.0, 594.0], [3028.0, -29.0, 594.0], [3097.0, -29.0, 594.0], [3097.0, 59.0, 594.0], [3028.0, 59.0, 594.0]]
-    # faces = delaunay_from_points(points)
-    # mesh = Mesh.from_vertices_and_faces(points, faces)
-
     points = hstack((10.0 * random.random_sample((10, 2)), zeros((10, 1)))).tolist()
-    mesh = delaunay_from_points(Mesh, points)
+    faces = delaunay_from_points(points)
+    mesh = Mesh.from_vertices_and_faces(points, faces)
 
     trimesh_remesh(mesh, 1.0, allow_boundary_split=True)
 
     points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    mesh = delaunay_from_points(Mesh, points)
+    faces = delaunay_from_points(points)
+    mesh = Mesh.from_vertices_and_faces(points, faces)
 
     dual = mesh_voronoi(mesh, update_coordinates=True)
 

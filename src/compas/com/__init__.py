@@ -58,11 +58,11 @@ class Client(object):
     pass
 
 
-from .mlab import *
+from .matlab import *
 from .ssh import *
 # from .rhino import *
 
-from .mlab import __all__ as a
+from .matlab import __all__ as a
 from .ssh import __all__ as b
 # from .rhino import __all__ as b
 

@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import absolute_import
 
 from numpy import arccos
 from numpy import array
@@ -15,9 +16,9 @@ from compas.numerical import uvw_lengths
 from compas.numerical.methods.drx import _beam_data
 from compas.numerical.methods.drx import _create_arrays
 
-from compas.hpc.numba_.geometry import numba_cross
-from compas.hpc.numba_.geometry import numba_vdot
-from compas.hpc.numba_.geometry import numba_length
+from compas.hpc.numba.geometry import numba_cross
+from compas.hpc.numba.geometry import numba_vdot
+from compas.hpc.numba.geometry import numba_length
 
 
 from time import time
