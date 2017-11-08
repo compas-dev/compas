@@ -535,7 +535,7 @@ def is_point_in_triangle(point, triangle):
     return False
 
 
-def is_point_in_triangle_xy(point, triangle):
+def is_point_in_triangle_xy(point, triangle, colinear=False):
     """Verify if a point is in the interior of a triangle lying in the XY-plane.
 
     Parameters
@@ -544,7 +544,10 @@ def is_point_in_triangle_xy(point, triangle):
         XY(Z) coordinates of a point.
     triangle : sequence
         XY(Z) coordinates of the corners of the triangle.
-
+    colinear : bool, optional
+        Allow points to be colinear.
+        Default is ``False``.
+        
     Returns
     -------
     bool
@@ -553,12 +556,12 @@ def is_point_in_triangle_xy(point, triangle):
 
     """
     a, b, c = triangle
-    ccw = is_ccw_xy(c, a, point, True)
+    ccw = is_ccw_xy(c, a, point, colinear)
 
-    if ccw != is_ccw_xy(a, b, point, True):
+    if ccw != is_ccw_xy(a, b, point, colinear):
         return False
 
-    if ccw != is_ccw_xy(b, c, point, True):
+    if ccw != is_ccw_xy(b, c, point, colinear):
         return False
 
     return True
