@@ -13,8 +13,8 @@ from numba import jit
 from scipy.sparse import find
 
 from compas.numerical import uvw_lengths
-from compas.numerical.methods.drx import _beam_data
-from compas.numerical.methods.drx import _create_arrays
+from compas.numerical.algorithms.drx import _beam_data
+from compas.numerical.algorithms.drx import _create_arrays
 
 from compas.hpc.numba.geometry import numba_cross
 from compas.hpc.numba.geometry import numba_vdot

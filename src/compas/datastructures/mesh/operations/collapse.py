@@ -62,7 +62,7 @@ def is_collapse_legal(mesh, u, v, allow_boundary=False):
     return True
 
 
-def mesh_collapse_edge(self, u, v, t=0.0, allow_boundary=False, fixed=None):
+def mesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
     """Collapse an edge to its first or second vertex, or to an intermediate
     point.
 
@@ -213,7 +213,7 @@ def mesh_collapse_edge(self, u, v, t=0.0, allow_boundary=False, fixed=None):
 # - u and v on boundary
 
 
-def trimesh_collapse_edge(self, u, v, t=0.0, allow_boundary=False, fixed=None):
+def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
     """Collapse an edge to its first or second vertex, or to an intermediate
     point.
 

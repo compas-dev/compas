@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import absolute_import
 
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
@@ -99,3 +101,11 @@ def discrete_coons_patch(ab, bc, dc, ad):
         for j in range(m - 1):
             face_vertices.append([i * m + j , i * m + j + 1 , (i + 1) * m + j + 1, (i + 1) * m + j])
     return vertices, face_vertices
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+    pass

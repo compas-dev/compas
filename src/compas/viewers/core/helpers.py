@@ -19,6 +19,10 @@ __all__ = [
 ]
 
 
+class Arrow(object):
+    pass
+
+
 class Axes(object):
     """"""
     def __init__(self, x_color=None, y_color=None, z_color=None):

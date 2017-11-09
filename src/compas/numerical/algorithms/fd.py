@@ -1,14 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-from numpy import asarray
-
-from scipy.sparse import diags
-from scipy.sparse.linalg import spsolve
-
-from compas.numerical.matrices import connectivity_matrix
-from compas.numerical.linalg import normrow
-
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
@@ -17,11 +9,11 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'fd'
+    'fd_numpy'
 ]
 
 
-def fd(vertices, edges, fixed, q, loads, rtype='list'):
+def fd_numpy(vertices, edges, fixed, q, loads):
     """Implementation of the force density method to compute equilibrium of axial force networks.
 
     The force density method ... [schek1974]_
@@ -58,7 +50,7 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
 
         from compas.datastructures import Mesh
         from compas.plotters import MeshPlotter
-        from compas.numerical import fd
+        from compas.numerical import fd_numpy
         from compas.utilities import i_to_black
 
         # make a mesh
@@ -90,13 +82,13 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
         # compute equilibrium
         # update the mesh geometry
 
-        xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads, rtype='list')
+        xyz, q, f, l, r = fd_numpy(xyz, edges, fixed, q, loads)
 
         for key, attr in mesh.vertices(True):
             index = k_i[key]
-            attr['x'] = xyz[index][0]
-            attr['y'] = xyz[index][1]
-            attr['z'] = xyz[index][2]
+            attr['x'] = xyz[index, 0]
+            attr['y'] = xyz[index, 1]
+            attr['z'] = xyz[index, 2]
 
         # visualisae the result
         # color the vertices according to their elevation
@@ -113,20 +105,23 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
         plotter.show()
 
     """
+    from numpy import asarray
+    from scipy.sparse import diags
+    from scipy.sparse.linalg import spsolve
+    from compas.numerical import connectivity_matrix
+    from compas.numerical import normrow
+
     v    = len(vertices)
     free = list(set(range(v)) - set(fixed))
     xyz  = asarray(vertices, dtype=float).reshape((-1, 3))
     q    = asarray(q, dtype=float).reshape((-1, 1))
     p    = asarray(loads, dtype=float).reshape((-1, 3))
     C    = connectivity_matrix(edges, 'csr')
-
     Ci   = C[:, free]
     Cf   = C[:, fixed]
     Ct   = C.transpose()
     Cit  = Ci.transpose()
-
     Q    = diags([q.flatten()], [0])
-
     A    = Cit.dot(Q).dot(Ci)
     b    = p[free] - Cit.dot(Q).dot(Cf).dot(xyz[fixed])
 
@@ -135,9 +130,6 @@ def fd(vertices, edges, fixed, q, loads, rtype='list'):
     l = normrow(C.dot(xyz))
     f = q * l
     r = p - Ct.dot(Q).dot(C).dot(xyz)
-
-    if rtype == 'list':
-        return xyz.tolist(), q.ravel().tolist(), f.ravel().tolist(), l.ravel().tolist(), r.tolist()
 
     return xyz, q, f, l, r
 
@@ -179,16 +171,16 @@ if __name__ == '__main__':
     fixed = [k_i[k] for k in fixed]
     edges = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
 
-    xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads, rtype='list')
+    xyz, q, f, l, r = fd_numpy(xyz, edges, fixed, q, loads)
 
     for key, attr in mesh.vertices(True):
         index = k_i[key]
-        attr['x'] = xyz[index][0]
-        attr['y'] = xyz[index][1]
-        attr['z'] = xyz[index][2]
+        attr['x'] = xyz[index, 0]
+        attr['y'] = xyz[index, 1]
+        attr['z'] = xyz[index, 2]
 
     for index, (u, v, attr) in enumerate(mesh.edges(True)):
-        attr['f'] = f[index]
+        attr['f'] = f[index, 0]
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 

@@ -1,5 +1,3 @@
-""""""
-
 from __future__ import print_function
 from __future__ import division
 
@@ -21,8 +19,6 @@ from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import multiply_matrix_vector
 from compas.geometry.basic import vector_component
 from compas.geometry.basic import vector_component_xy
-from compas.geometry.basic import homogenise_vectors
-from compas.geometry.basic import dehomogenise_vectors
 from compas.geometry.basic import multiply_matrices
 from compas.geometry.basic import transpose_matrix
 
@@ -47,6 +43,17 @@ __email__     = 'vanmelet@ethz.ch'
 
 __all__ = [
     'transform',
+    'homogenize',
+    'dehomogenize',
+
+    'transform_numpy',
+    'homogenize_numpy',
+    'dehomogenize_numpy',
+
+    'local_axes',
+    'local_coords_numpy',
+    'global_coords_numpy',
+
     'translation_matrix',
     'rotation_matrix',
     'scale_matrix',
@@ -87,15 +94,120 @@ __all__ = [
 ]
 
 
+def transform(points, T):
+    points = homogenize(points)
+    points = transpose_matrix(multiply_matrices(T, transpose_matrix(points)))
+    return dehomogenize(points)
+
+
+def transform_numpy(points, T):
+    from numpy import asarray
+
+    T = asarray(T)
+    points = homogenize_numpy(points)
+    points = T.dot(points.T).T
+    return dehomogenize_numpy(points)
+
+
 # ==============================================================================
 # helpers
 # ==============================================================================
 
 
-def transform(points, T):
-    points = homogenise_vectors(points)
-    points = transpose_matrix(multiply_matrices(T, transpose_matrix(points)))
-    return dehomogenise_vectors(points)
+def homogenize(vectors, w=1.0):
+    """Homogenise a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+    w : float, optional
+        Homogenisation parameter.
+        Defaults to ``1.0``.
+
+    Returns
+    -------
+    list
+        Homogenised vectors.
+
+    Note
+    ----
+    Vectors described by XYZ components are homogenised by appending a homogenisation
+    parameter to the components, and by dividing each component by that parameter.
+    Homogenisatioon of vectors is often used in relation to transformations.
+
+    Examples
+    --------
+    >>> vectors = [[1.0, 0.0, 0.0]]
+    >>> homogenise_vectors(vectors)
+
+    """
+    return [[x / w, y / w, z / w, w] for x, y, z in vectors]
+
+
+def dehomogenize(vectors):
+    """Dehomogenise a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+
+    Returns
+    -------
+    list
+        Dehomogenised vectors.
+
+    Examples
+    --------
+    >>>
+
+    """
+    return [[x * w, y * w, z * w] for x, y, z, w in vectors]
+
+
+def homogenize_numpy(points):
+    from numpy import asarray
+    from numpy import hstack
+    from numpy import ones
+
+    points = asarray(points)
+    points = hstack((points, ones((points.shape[0], 1))))
+    return points
+
+
+def dehomogenize_numpy(points):
+    from numpy import asarray
+
+    points = asarray(points)
+    return points[:, :-1] / points[:, -1].reshape((-1, 1))
+
+
+def local_axes(a, b, c):
+    u = b - a
+    v = c - a
+    w = cross_vectors(u, v)
+    v = cross_vectors(w, u)
+    return normalize_vector(u), normalize_vector(v), normalize_vector(w)
+
+
+def local_coords_numpy(o, uvw, xyz):
+    from numpy import asarray
+    from scipy.linalg import solve
+
+    uvw = asarray(uvw).T
+    xyz = asarray(xyz).T - asarray(o).reshape((-1, 1))
+    rst = solve(uvw, xyz)
+    return rst.T
+
+
+def global_coords_numpy(o, uvw, rst):
+    from numpy import asarray
+
+    uvw = asarray(uvw).T
+    rst = asarray(rst).T
+    xyz = uvw.dot(rst) + asarray(o).reshape((-1, 1))
+    return xyz.T
 
 
 # ==============================================================================
@@ -103,7 +215,7 @@ def transform(points, T):
 # ==============================================================================
 
 
-def translation_matrix(direction):
+def translation_matrix(direction, rtype='list'):
     """Creates a translation matrix to translate vectors.
 
     Parameters:
@@ -123,13 +235,21 @@ def translation_matrix(direction):
          [0 0 1 3]
          [0 0 0 1]]
     """
-    return [[1.0, 0.0, 0.0, direction[0]],
-            [0.0, 1.0, 0.0, direction[1]],
-            [0.0, 0.0, 1.0, direction[2]],
-            [0.0, 0.0, 0.0, 1.0]]
+    T = [[1.0, 0.0, 0.0, direction[0]],
+         [0.0, 1.0, 0.0, direction[1]],
+         [0.0, 0.0, 1.0, direction[2]],
+         [0.0, 0.0, 0.0, 1.0]]
+
+    if rtype == 'list':
+        return T
+    if rtype == 'array':
+        from numpy import asarray
+        return asarray(T)
+
+    raise NotImplementedError
 
 
-def rotation_matrix(angle, direction, point=None):
+def rotation_matrix(angle, direction, point=None, rtype='list'):
     """Creates a rotation matrix for rotating vectors around an axis.
 
     Parameters:
@@ -171,11 +291,19 @@ def rotation_matrix(angle, direction, point=None):
 
     T1 = translation_matrix([-p for p in point])
     T2 = translation_matrix(point)
+    B  = multiply_matrices(R, T1)
+    R  = multiply_matrices(T2, B)
 
-    return multiply_matrices(T2, multiply_matrices(R, T1))
+    if rtype == 'list':
+        return R
+    if rtype == 'array':
+        from numpy import asarray
+        return asarray(R)
+
+    raise NotImplementedError
 
 
-def scale_matrix(x, y=None, z=None):
+def scale_matrix(x, y=None, z=None, rtype='list'):
     """Creates a scale matrix to scale vectors.
 
     Parameters:
@@ -197,18 +325,26 @@ def scale_matrix(x, y=None, z=None):
         y = x
     if z is None:
         z = x
-    return [[x, 0.0, 0.0, 0.0],
-            [0.0, y, 0.0, 0.0],
-            [0.0, 0.0, z, 0.0],
-            [0.0, 0.0, 0.0, 1.0]]
+    S = [[x, 0.0, 0.0, 0.0],
+         [0.0, y, 0.0, 0.0],
+         [0.0, 0.0, z, 0.0],
+         [0.0, 0.0, 0.0, 1.0]]
+
+    if rtype == 'list':
+        return S
+    if rtype == 'array':
+        from numpy import asarray
+        return asarray(S)
+
+    raise NotImplementedError
 
 
 def shear_matrix():
-    pass
+    raise NotImplementedError
 
 
 def projection_matrix(point, normal):
-    pass
+    raise NotImplementedError
 
 
 # ==============================================================================
@@ -910,7 +1046,6 @@ def project_points_line_xy(points, line):
 if __name__ == "__main__":
 
     from numpy import array
-    from numpy import asarray
     from numpy import vstack
 
     from numpy.random import randint
@@ -920,14 +1055,13 @@ if __name__ == "__main__":
     n = 200
 
     points = randint(0, high=100, size=(n, 3)).astype(float)
-    points = vstack((points, array([[0, 0, 0], [100, 0, 0]], dtype=float).reshape((-1, 3)))).tolist()
+    points = vstack((points, array([[0, 0, 0], [100, 0, 0]], dtype=float).reshape((-1, 3))))
 
     a = pi / randint(1, high=8)
 
-    points_ = rotate_points(points, [0, 0, 1], a, [0, 0, 0])
+    R = rotation_matrix(a, [0, 0, 1], [0, 0, 0])
 
-    points = asarray(points)
-    points_ = asarray(points_)
+    points_ = transform_numpy(points, R)
 
     plt.plot(points[:, 0], points[:, 1], 'bo')
     plt.plot(points_[:, 0], points_[:, 1], 'ro')

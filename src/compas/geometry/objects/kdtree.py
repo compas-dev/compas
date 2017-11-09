@@ -1,7 +1,5 @@
-# Wikipedia KDTree <http://en.wikipedia.org/wiki/Kd-tree>
-# ActiveState KDTree <http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space>
-
 from __future__ import print_function
+from __future__ import absolute_import
 
 import collections
 
@@ -43,7 +41,7 @@ class KDTree(object):
     -------
     .. plot::
         :include-source:
-        
+
         from compas.geometry import KDTree
         from compas.geometry import pointcloud_xy
         from compas.plotters import Plotter
@@ -99,6 +97,11 @@ class KDTree(object):
         plotter.draw_points(points)
         plotter.show()
 
+    References
+    ----------
+    * `Wikipedia KDTree <http://en.wikipedia.org/wiki/Kd-tree>`_
+    * `ActiveState KDTree <http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space>`_
+
     """
 
     def __init__(self, objects=None):
@@ -109,14 +112,14 @@ class KDTree(object):
 
     def build(self, objects, axis=0):
         """Populate a kd-tree with given objects.
-        
+
         Parameters
         ----------
         objects : list
             The tree objects.
         axis : int, optional
             The axis along which to build.
-        
+
         Returns
         -------
         Node
@@ -141,7 +144,7 @@ class KDTree(object):
     def nearest_neighbour(self, point, exclude=None):
         """Find the nearest neighbour to a given point,
         excluding neighbours that have already been found.
-        
+
         Parameters
         ----------
         point : list
@@ -149,14 +152,14 @@ class KDTree(object):
         exclude : set, optional
             A set of points to exclude from the search.
             Defaults to an empty set.
-    
+
         Returns
         -------
         list:
             XYZ coordinates of the nearest neighbour.
             Label of the nearest neighbour.
             Distance to the base point.
-    
+
         """
         def search(node):
             if node is None:
@@ -195,7 +198,7 @@ class KDTree(object):
         distance_sort : bool, optional
             Sort the nearest neighbours by distance to the base point.
             Default is ``False``.
-        
+
         Returns
         -------
         list

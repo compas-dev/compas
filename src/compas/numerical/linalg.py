@@ -296,67 +296,6 @@ def rref(A, algo='qr', tol=None, **kwargs):
         odict = loadmat(ofile)
         return odict['R']
 
-# if algo == 'lu':
-#     _, _, u = lu(A)
-#     if tol is None:
-#         eps = sys.float_info.epsilon
-#         tol = max(u.shape) * eps * max(sum(abs(u), axis=1))
-#     pivots = {}
-#     # iterate over the rows to find the non-pivoting elements
-#     # a pivoting element in an upper triangular matrix is the first nonzero
-#     # element in a row, if all elements below are also zero
-#     m, n = u.shape
-#     for i in range(m):
-#         row = u[i]
-#         # find the first element in the row of which the abs value is above
-#         # the threshold
-#         cols = nonzero(abs(row) > tol)[0]
-#         if len(cols) == 0:
-#             # in this row, all elements are zero
-#             col = None
-#         else:
-#             # in this row, the first nonzero element is at cols[0]
-#             # this is not necessarily a pivot,
-#             # since this column might have been identified in a previous
-#             # row as the pivot
-#             piv = i
-#             col = cols[0]
-#             # check if the rows below for the highest value at this column
-#             # swap rows to put the higher row on top
-#             j = argmax(abs(u[i : m, col]))
-#             if j > 0:
-#                 u[i], u[i + j] = u[i + j], u[i]
-#                 row = u[i]
-#         # subtract multiples from previously found pivoting rows
-#         # until the actual pivot is found
-#         # or until the entire row is zero
-#         count = 10000
-#         while True:
-#             if count == 0:
-#                 # make sure the loop is not infinite
-#                 break
-#             count -= 1
-#             if col not in pivots:
-#                 # if this pivot was not yet found
-#                 # update the row in the upper triangular matrix
-#                 # this is not a row 'switch'
-#                 u[i] = row
-#                 break
-#             # if there is a row that already had a pivot at this column
-#             # update the row by subtracting a multiple of the previously
-#             # found row such that the pivot becomes zero
-#             piv  = pivots[col]
-#             row  = row - (row[col] / u[piv, col]) * u[piv]
-#             cols = nonzero(abs(row) > tol)[0]
-#             if len(cols) == 0:
-#                 # the entire row has become zero
-#                 col = None
-#             else:
-#                 col = cols[0]
-#         if col is not None:
-#             pivots[col] = piv
-#     nonpivots = list(set(range(n)) - set(pivots))
-
 
 # ------------------------------------------------------------------------------
 # Factorisation

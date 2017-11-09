@@ -9,7 +9,7 @@ from OpenGL.GL import *
 from compas.geometry import normalize_vector
 from compas.geometry import cross_vectors
 
-from compas.numerical.spatial import _compute_global_coords
+from compas.geometry import global_coords_numpy
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 'Shajay Bhooshan']
@@ -73,12 +73,6 @@ def draw_sphere(r=1.):
     glutWireSphere(r, slices, stacks)
 
 
-# circle => plane, radius => (base, normal), radius
-# - compute a discretisation of a 2D circle with the same radius at the origin
-# - transform into 3D coordinates using a transformation matrix
-
-# - compute_global_coords
-
 def draw_circle(circle, color=None, n=100):
     (center, normal), radius = circle
     cx, cy, cz = center
@@ -101,7 +95,7 @@ def draw_circle(circle, color=None, n=100):
         x = radius * cos(a)
         y = radius * sin(a)
         z = 0
-        x, y, z = _compute_global_coords(center, uvw, [[x, y, z]]).tolist()[0]
+        x, y, z = global_coords_numpy(center, uvw, [[x, y, z]]).tolist()[0]
         glVertex3f(x, y, z)
     glEnd()
 
@@ -111,7 +105,7 @@ def draw_circle(circle, color=None, n=100):
         x = radius * cos(a)
         y = radius * sin(a)
         z = 0
-        x, y, z = _compute_global_coords(center, uvw, [[x, y, z]]).tolist()[0]
+        x, y, z = global_coords_numpy(center, uvw, [[x, y, z]]).tolist()[0]
         glVertex3f(x, y, z)
     glEnd()
 

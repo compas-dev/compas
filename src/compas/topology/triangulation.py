@@ -6,8 +6,7 @@ import random
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import add_vectors
-from compas.geometry import bounding_box
-from compas.geometry import circle_from_points
+from compas.geometry import aabb
 
 from compas.geometry import is_point_in_polygon_xy
 from compas.geometry import is_point_in_triangle_xy
@@ -42,7 +41,7 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
             mesh.split_face(fkey, b, d)
 
 
-def delaunay_from_points(points, boundary=None, holes=None):
+def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     """Computes the delaunay triangulation for a list of points.
 
     Parameters:
@@ -83,7 +82,7 @@ def delaunay_from_points(points, boundary=None, holes=None):
 
     def super_triangle(coords):
         centpt = centroid_points(coords)
-        bbpts  = bounding_box(coords)
+        bbpts  = aabb(coords)
         dis    = distance_point_point(bbpts[0], bbpts[2])
         dis    = dis * 300
         v1     = (0 * dis, 2 * dis, 0)
@@ -97,7 +96,7 @@ def delaunay_from_points(points, boundary=None, holes=None):
     mesh = Mesh()
 
     # to avoid numerical issues for perfectly structured point sets
-    # pts = [(point[0] + random.uniform(-tiny, tiny), point[1] + random.uniform(-tiny, tiny), 0.0) for point in points]
+    points = [(point[0] + random.uniform(-tiny, tiny), point[1] + random.uniform(-tiny, tiny), 0.0) for point in points]
 
     # create super triangle
     pt1, pt2, pt3 = super_triangle(points)
@@ -161,6 +160,7 @@ def delaunay_from_points(points, boundary=None, holes=None):
                 c = [dictc['x'], dictc['y']]
 
                 circle = circle_from_points_xy(a, b, c)
+
                 if is_point_in_circle_xy(pt, circle):
                     fkey, fkey_op = mesh.swap_edge_tri(u, v)
                     newtris.append(fkey)
@@ -409,6 +409,7 @@ def trimesh_remesh(mesh,
 
     fixed = fixed or []
     fixed = set(fixed)
+
     count = 0
 
     kmax_start = kmax / 2.0
@@ -553,33 +554,28 @@ def trimesh_remesh(mesh,
 if __name__ == "__main__":
 
     from compas.datastructures import Mesh
-    from compas.topology import trimesh_remesh
-    from compas.topology import delaunay_from_points
-    from compas.topology import voronoi_from_delaunay
     from compas.geometry import pointcloud_xy
     from compas.plotters import MeshPlotter
 
-    # points = pointcloud_xy(10, (0, 10))
-    # faces = delaunay_from_points(points)
+    points = pointcloud_xy(10, (0, 10))
+    faces = delaunay_from_points(points)
+    mesh = Mesh.from_vertices_and_faces(points, faces)
 
-    # mesh = Mesh.from_vertices_and_faces(points, faces)
+    trimesh_remesh(mesh, 1.0, kmax=300, allow_boundary_split=True)
 
-    # trimesh_remesh(mesh, 1.0, kmax=300, allow_boundary_split=True)
+    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
 
-    # points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-
-    points = [[0, 0, 0],
-              [1, 0, 0],
-              [2, 0, 0],
-              [0, 1, 0],
-              [1, 1, 0],
-              [2, 1, 0],
-              [0, 2, 0],
-              [1, 2, 0],
-              [2, 2, 0]]
+    # points = [[0, 0, 0],
+    #           [1, 0, 0],
+    #           [2, 0, 0],
+    #           [0, 1, 0],
+    #           [1, 1, 0],
+    #           [2, 1, 0],
+    #           [0, 2, 0],
+    #           [1, 2, 0],
+    #           [2, 2, 0]]
 
     faces = delaunay_from_points(points)
-
     mesh = Mesh.from_vertices_and_faces(points, faces)
 
     voronoi  = voronoi_from_delaunay(mesh)

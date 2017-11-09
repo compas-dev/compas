@@ -215,6 +215,7 @@ def mesh_voronoi(mesh, cls=None, update_coordinates=True):
 
     for key, (x, y, z) in vertices.items():
         voronoi.add_vertex(key, x=x, y=y, z=z)
+
     for fkey, vertices in faces.items():
         voronoi.add_face(vertices, fkey=fkey)
 

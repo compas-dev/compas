@@ -1,5 +1,11 @@
-from .dr import dr
-from .drx import drx
-from .fd import fd
+from .dr import *
+from .drx import *
+from .fd import *
+from .pca import *
 
-__all__ = ['dr', 'drx', 'fd']
+from .dr import __all__ as a
+from .drx import __all__ as b
+from .fd import __all__ as c
+from .pca import __all__ as d
+
+__all__ = a + b + c + d

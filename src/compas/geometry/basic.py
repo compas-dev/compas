@@ -49,8 +49,6 @@ __all__ = [
     'vector_component_xy',
     'multiply_matrices',
     'multiply_matrix_vector',
-    'homogenise_vectors',
-    'dehomogenise_vectors',
     'orthonormalise_vectors',
     'transpose_matrix',
 
@@ -932,13 +930,13 @@ def multiply_matrices(A, B):
     [[4.0, 0.0, 0.0], [0.0, 4.0, 0.0], [0.0, 0.0, 4.0]]
 
     """
-    n = len(B)  # number of rows in B
+    n = len(B)     # number of rows in B
     o = len(B[0])  # number of cols in B
-    if not all([len(row) == o for row in B]):
+    if not all(len(row) == o for row in B):
         raise Exception('Row length in matrix B is inconsistent.')
     if not all([len(row) == n for row in A]):
         raise Exception('Matrix shapes are not compatible.')
-    B = zip(*B)
+    B = list(zip(*B))
     return [[dot_vectors(row, col) for col in B] for row in A]
 
 
@@ -990,58 +988,6 @@ def multiply_matrix_vector(A, b):
 # ==============================================================================
 
 
-def homogenise_vectors(vectors, w=1.0):
-    """Homogenise a list of vectors.
-
-    Parameters
-    ----------
-    vectors : list
-        A list of vectors.
-    w : float, optional
-        Homogenisation parameter.
-        Defaults to ``1.0``.
-
-    Returns
-    -------
-    list
-        Homogenised vectors.
-
-    Note
-    ----
-    Vectors described by XYZ components are homogenised by appending a homogenisation
-    parameter to the components, and by dividing each component by that parameter.
-    Homogenisatioon of vectors is often used in relation to transformations.
-
-    Examples
-    --------
-    >>> vectors = [[1.0, 0.0, 0.0]]
-    >>> homogenise_vectors(vectors)
-
-    """
-    return [[x / w, y / w, z / w, w] for x, y, z in vectors]
-
-
-def dehomogenise_vectors(vectors):
-    """Dehomogenise a list of vectors.
-
-    Parameters
-    ----------
-    vectors : list
-        A list of vectors.
-
-    Returns
-    -------
-    list
-        Dehomogenised vectors.
-
-    Examples
-    --------
-    >>>
-
-    """
-    return [[x * w, y * w, z * w] for x, y, z, w in vectors]
-
-
 def orthonormalise_vectors(vectors):
     """Orthonormalise a set of vectors.
 
@@ -1075,14 +1021,6 @@ def orthonormalise_vectors(vectors):
         if any(axis > 1e-10 for axis in e):
             basis.append(normalize_vector(e))
     return basis
-
-
-def compute_local_axes(a, b, c):
-    u = b - a
-    v = c - a
-    w = cross_vectors(u, v)
-    v = cross_vectors(w, u)
-    return normalize_vector(u), normalize_vector(v), normalize_vector(w)
 
 
 # ==============================================================================

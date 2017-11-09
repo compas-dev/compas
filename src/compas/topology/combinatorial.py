@@ -66,7 +66,7 @@ def vertex_coloring(adjacency):
         key_to_color[a] = current_color
         colored_with_current = [a]
         for b in uncolored:
-            if not any([b in adjacency[key] for key in colored_with_current]):
+            if not any(b in adjacency[key] for key in colored_with_current):
                 key_to_color[b] = current_color
                 colored_with_current.append(b)
         for key in colored_with_current[1:]:

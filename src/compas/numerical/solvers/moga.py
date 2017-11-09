@@ -1,8 +1,10 @@
 from __future__ import print_function
+from __future__ import absolute_import
 
 import re
 import random
 import json
+
 
 __author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'

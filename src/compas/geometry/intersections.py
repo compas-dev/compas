@@ -1,9 +1,10 @@
-""""""
-
 from __future__ import print_function
+from __future__ import absolute_import
 from __future__ import division
 
 from math import fabs
+
+from compas.utilities import pairwise
 
 from compas.geometry.basic import add_vectors
 from compas.geometry.basic import subtract_vectors
@@ -35,9 +36,9 @@ __all__ = [
     'intersection_segment_plane',
     'intersection_plane_plane',
     'intersection_plane_plane_plane',
-    'intersection_lines',
-    'intersection_lines_xy',
-    'intersection_planes',
+    # 'intersection_lines',
+    # 'intersection_lines_xy',
+    # 'intersection_planes',
 ]
 
 
@@ -348,18 +349,74 @@ def intersection_plane_plane_plane(plane1, plane2, plane3, epsilon=1e-6):
         Currently this only computes the intersection point. E.g.: If two planes
         are parallel the intersection lines are not computed. see:
         http://geomalgorithms.com/Pic_3-planes.gif
+
     """
     line = intersection_plane_plane(plane1, plane2, epsilon)
     if not line:
         return None
-    pt = intersection_line_plane(line, plane3, epsilon)
-    if pt:
-        return pt
+    point = intersection_line_plane(line, plane3, epsilon)
+    if point:
+        return point
     return None
 
 
-def intersection_lines():
-    raise NotImplementedError
+def intersection_lines_numpy(lines):
+    """
+    Examples
+    --------
+    .. code-block:: python
+
+        lines = []
+    """
+    from numpy import array
+    from numpy import arange
+    from numpy import eye
+    from scipy.linalg import norm
+    from scipy.linalg import solve
+
+    l1 = array([[-2, 0], [0, 1]], dtype=float).T
+    l2 = array([[0, -2], [1, 0]], dtype=float).T
+    l3 = array([[5, 0], [0, 7]], dtype=float).T
+    l4 = array([[3, 0], [0, 20]], dtype=float).T
+
+    p1 = l1[:, 0].reshape((-1, 1))
+    p2 = l2[:, 0].reshape((-1, 1))
+    p3 = l3[:, 0].reshape((-1, 1))
+    p4 = l4[:, 0].reshape((-1, 1))
+
+    n1 = (l1[:, 1] - l1[:, 0]).reshape((-1, 1))
+    n2 = (l2[:, 1] - l2[:, 0]).reshape((-1, 1))
+    n3 = (l3[:, 1] - l3[:, 0]).reshape((-1, 1))
+    n4 = (l4[:, 1] - l4[:, 0]).reshape((-1, 1))
+
+    n1 = n1 / norm(n1)
+    n2 = n2 / norm(n2)
+    n3 = n3 / norm(n3)
+    n4 = n4 / norm(n4)
+
+    # an eye matrix (ones on the diagonal)
+
+    I = eye(2, dtype=float)
+
+    # R.p = q
+
+    R = (I - n1.dot(n1.T)) + (I - n2.dot(n2.T)) + (I - n3.dot(n3.T)) + (I - n4.dot(n4.T))
+    q = ((I - n1.dot(n1.T)).dot(p1) +
+         (I - n2.dot(n2.T)).dot(p2) +
+         (I - n3.dot(n3.T)).dot(p3) +
+         (I - n4.dot(n4.T)).dot(p4))
+
+    RtR = R.T.dot(R)
+    Rtq = R.T.dot(q)
+
+    p = solve(RtR, Rtq)
+
+    # plot the lines
+
+    xy1 = p1 + n1 * arange(10)
+    xy2 = p2 + n2 * arange(10)
+    xy3 = p3 + n3 * arange(10)
+    xy4 = p4 + n4 * arange(10)
 
 
 def intersection_lines_xy(lines):
@@ -380,129 +437,17 @@ def intersection_lines_xy(lines):
         https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
 
     """
-    import itertools
-
-    pdic = []
-    for a, b in itertools.combinations(lines, 2):
-        intx = intersection_line_line_xy(a, b)
-        if not intx:
-            continue
-        pdic.append(intx)
-    if pdic:
-        return pdic
-    return None
+    # points = []
+    # for a, b in pairwise(lines):
+    #     point = intersection_line_line_xy(a, b)
+    #     if point:
+    #         points.append(point)
+    # return points
+    raise NotImplementedError
 
 
 def intersection_planes():
     raise NotImplementedError
-
-
-# def is_intersection_box_box(box_1, box_2):
-#     """Checks if two boxes are intersecting in 3D.
-
-#     Parameters:
-#         box_1 (list of tuples): list of 8 points (bottom: 0,1,2,3 top: 4,5,6,7)
-#         box_2 (list of tuples): list of 8 points (bottom: 0,1,2,3 top: 4,5,6,7)
-
-#     Returns:
-#         bool: True if the boxes intersect, False otherwise.
-
-#     Examples:
-
-#         .. code-block:: python
-
-#             x, y, z = 1, 1, 1
-#             box_a = [
-#                 (0.0, 0.0, 0.0),
-#                 (x,   0.0, 0.0),
-#                 (x,   y,   0.0),
-#                 (0.0, y,   0.0),
-#                 (0.0, 0.0, z),
-#                 (x,   0.0, z),
-#                 (x,   y,   z),
-#                 (0.0, y,   z)
-#             ]
-#             box_b = [
-#                 (0.5, 0.5, 0.0),
-#                 (1.5, 0.5, 0.0),
-#                 (1.5, 1.5, 0.0),
-#                 (0.5, 1.5, 0.0),
-#                 (0.5, 0.5, 1.0),
-#                 (1.5, 0.5, 1.0),
-#                 (1.5, 1.5, 1.0),
-#                 (0.5, 1.5, 1.0)
-#             ]
-#             if is_box_intersecting_box(box_a, box_b):
-#                 print("intersection found")
-#             else:
-#                 print("no intersection found")
-
-#     Warning:
-#         Does not check if one box is completely enclosed by the other.
-
-#     """
-#     # all edges of box one
-#     edges = [
-#         (box_1[0], box_1[1]),
-#         (box_1[1], box_1[2]),
-#         (box_1[2], box_1[3]),
-#         (box_1[3], box_1[0])
-#     ]
-#     edges += [
-#         (box_1[4], box_1[5]),
-#         (box_1[5], box_1[6]),
-#         (box_1[6], box_1[7]),
-#         (box_1[7], box_1[4])
-#     ]
-#     edges += [
-#         (box_1[0], box_1[4]),
-#         (box_1[1], box_1[5]),
-#         (box_1[2], box_1[6]),
-#         (box_1[3], box_1[7])
-#     ]
-#     # triangulation of box two
-#     tris = [
-#         (box_2[0], box_2[1], box_2[2]),
-#         (box_2[0], box_2[2], box_2[3])
-#     ]  # bottom
-#     tris += [
-#         (box_2[4], box_2[5], box_2[6]),
-#         (box_2[4], box_2[6], box_2[7])
-#     ]  # top
-#     tris += [
-#         (box_2[0], box_2[4], box_2[7]),
-#         (box_2[0], box_2[7], box_2[3])
-#     ]  # side 1
-#     tris += [
-#         (box_2[0], box_2[1], box_2[5]),
-#         (box_2[0], box_2[5], box_2[4])
-#     ]  # side 2
-#     tris += [
-#         (box_2[1], box_2[2], box_2[6]),
-#         (box_2[1], box_2[6], box_2[5])
-#     ]  # side 3
-#     tris += [
-#         (box_2[2], box_2[3], box_2[7]),
-#         (box_2[2], box_2[7], box_2[6])
-#     ]  # side 4
-#     # checks for edge triangle intersections
-#     intx = False
-#     for pt1, pt2 in edges:
-#         for tri in tris:
-#             for line in [(pt1, pt2), (pt2, pt1)]:
-#                 test_pt = intersection_line_triangle(line, tri)
-#                 if test_pt:
-#                     if is_point_on_segment(test_pt, line):
-#                         # intersection found
-#                         intx = True
-#                         break
-#             else:
-#                 continue
-#             break
-#         else:
-#             continue
-#         break
-#     return intx
 
 
 # ==============================================================================

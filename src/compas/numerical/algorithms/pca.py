@@ -1,6 +1,5 @@
-from numpy import asarray
-
-from scipy.linalg import svd
+from __future__ import print_function
+from __future__ import absolute_import
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>']
@@ -10,11 +9,11 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'principal_components'
+    'pca_numpy'
 ]
 
 
-def principal_components(data):
+def pca_numpy(data):
     """Compute the principle components of a set of data points.
 
     PCA of a dataset finds the directions along which the variance of the data
@@ -44,15 +43,15 @@ def principal_components(data):
 
             import matplotlib.pyplot as plt
 
-            from compas.numerical.xforms import rotation_matrix
-            from compas.numerical.transformations import transform
+            from compas.geometry import rotation_matrix
+            from compas.geometry import transform_numpy
 
-            from compas.plotters.core.helpers import Axes3D
-            from compas.plotters.core.helpers import Cloud3D
-            from compas.plotters.core.helpers import Bounds
-            from compas.plotters.core.drawing import create_axes_3d
+            from compas.plotters import Axes3D
+            from compas.plotters import Cloud3D
+            from compas.plotters import Bounds
+            from compas.plotters import create_axes_3d
 
-            from compas.numerical.statistics import principal_components
+            from compas.numerical import pca_numpy
 
             data = random.rand(300, 3)
             data[:, 0] *= 10.0
@@ -60,16 +59,16 @@ def principal_components(data):
             data[:, 2] *= 4.0
 
             a = 3.14159 * 30.0 / 180
-            Ry = rotation_matrix(a, [0, 1.0, 0.0])
+            Ry = rotation_matrix(a, [0, 1.0, 0.0], rtype='array')
 
             a = -3.14159 * 45.0 / 180
-            Rz = rotation_matrix(a, [0, 0, 1.0])
+            Rz = rotation_matrix(a, [0, 0, 1.0], rtype='array')
 
             R = Rz.dot(Ry)
 
-            data = transform(data, R)
+            data = transform_numpy(data, R)
 
-            average, vectors, values = principal_components(data)
+            average, vectors, values = pca_numpy(data)
 
             axes = create_axes_3d()
 
@@ -80,18 +79,25 @@ def principal_components(data):
             plt.show()
 
     """
+    from numpy import asarray
+    from scipy.linalg import svd
+
     X = asarray(data)
     n, dim = X.shape
+
     assert n >= dim, "The number of observations (n) should be higher than the number of measured variables (dimensions)."
+
     # the average of the observations for each of the variables
     # for example, if the data are 2D point coordinates,
     # the average is the average of the x-coordinate across all observations
     # and the average of the y-coordinate across all observations
     mean = (X.sum(axis=0) / n).reshape((-1, dim))
+
     # the spread matrix
     # i.e. the variation of each variable compared to the average of the variable
     # across all observations
     Y = X - mean
+
     # covariance matrix of spread
     # note: there is a covariance function in NumPy...
     # the shape of the covariance matrix is dim x dim
@@ -100,9 +106,12 @@ def principal_components(data):
     # the off-diagonal elements of the covariannce matrix contain the covariance
     # of two independent variables
     C = Y.T.dot(Y) / (n - 1)
+
     assert C.shape[0] == dim, "The shape of the covariance matrix is not correct."
+
     # SVD of covariance matrix
     u, s, vT = svd(C, full_matrices=False)
+
     # eigenvectors
     # ------------
     # note: the eigenvectors are normalised
@@ -110,12 +119,16 @@ def principal_components(data):
     # => take the rows of vT, or the columns of v
     # the right-singular vectors of C (the columns of V or the rows of Vt)
     # are the eigenvectors of CtC
+
     eigenvectors = vT
+
     # eigenvalues
     # -----------
     # the nonzero singular values of C are the square roots
     # of the nonzero eigenvalues of CtC and CCt
+
     eigenvalues = s
+
     # return
     return mean, eigenvectors, eigenvalues
 
@@ -127,18 +140,17 @@ def principal_components(data):
 if __name__ == "__main__":
 
     from numpy import random
+    from numpy import asarray
 
     import matplotlib.pyplot as plt
 
-    from compas.numerical.xforms import rotation_matrix
-    from compas.numerical.transformations import transform
+    from compas.geometry import rotation_matrix
+    from compas.geometry import transform_numpy
 
-    from compas.plotters.helpers import Axes3D
-    from compas.plotters.helpers import Cloud3D
-    from compas.plotters.helpers import Bounds
-    from compas.plotters.drawing import create_axes_3d
-
-    from compas.numerical.statistics import principal_components
+    from compas.plotters import Axes3D
+    from compas.plotters import Cloud3D
+    from compas.plotters import Bounds
+    from compas.plotters import create_axes_3d
 
     data = random.rand(300, 3)
     data[:, 0] *= 10.0
@@ -146,16 +158,16 @@ if __name__ == "__main__":
     data[:, 2] *= 4.0
 
     a = 3.14159 * 30.0 / 180
-    Ry = rotation_matrix(a, [0, 1.0, 0.0])
+    Ry = asarray(rotation_matrix(a, [0, 1.0, 0.0]))
 
     a = -3.14159 * 45.0 / 180
-    Rz = rotation_matrix(a, [0, 0, 1.0])
+    Rz = asarray(rotation_matrix(a, [0, 0, 1.0]))
 
     R = Rz.dot(Ry)
 
-    data = transform(data, R)
+    data = transform_numpy(data, R)
 
-    average, vectors, values = principal_components(data)
+    average, vectors, values = pca_numpy(data)
 
     axes = create_axes_3d()
 

@@ -43,11 +43,64 @@ This package provides an object-oriented interface to the above functionality.
     Polyhedron
     Spline
     Surface
-    KDTree
 
 
 Algorithms
 ==========
+
+**bounding box**
+
+.. autosummary::
+    :toctree: generated/
+
+    aabb
+    aabb_xy
+    obb_numpy
+    obb_xy_numpy
+
+**fitting**
+
+.. autosummary::
+    :toctree: generated/
+
+    bestfit_plane
+    bestfit_plane_numpy
+    bestfit_circle_numpy
+
+**convex hull**
+
+.. autosummary::
+    :toctree: generated/
+
+    convex_hull
+    convex_hull_xy
+    convex_hull_numpy
+    convex_hull_xy_numpy
+
+**interpolation**
+
+.. autosummary::
+    :toctree: generated/
+
+    discrete_coons_patch
+
+**isolines**
+
+.. autosummary::
+    :toctree: generated/
+
+    scalarfield_contours
+    mesh_contours
+    mesh_isolines
+
+**parallelisation**
+
+.. autosummary::
+    :toctree: generated/
+
+    network_parallelise_edges
+
+**planarisation**
 
 .. autosummary::
     :toctree: generated/
@@ -58,6 +111,19 @@ Algorithms
     mesh_planarize_faces
     mesh_planarize_faces_shapeop
     mesh_circularize_faces_shapeop
+
+**purging**
+
+.. autosummary::
+    :toctree: generated/
+
+    mesh_cull_duplicate_vertices
+
+**smoothing**
+
+.. autosummary::
+    :toctree: generated/
+
     smooth_centroid
     mesh_smooth_centroid
     network_smooth_centroid
@@ -65,7 +131,6 @@ Algorithms
     smooth_area
     smooth_resultant
     network_smooth_resultant
-    discrete_coons_patch
 
 
 Functions
@@ -78,12 +143,10 @@ Functions
     add_vectors_xy
     cross_vectors
     cross_vectors_xy
-    dehomogenise_vectors
     divide_vectors
     divide_vectors_xy
     dot_vectors
     dot_vectors_xy
-    homogenise_vectors
     length_vector
     length_vector_xy
     length_vector_sqrd
@@ -98,7 +161,6 @@ Functions
     normalize_vector_xy
     normalize_vectors
     normalize_vectors_xy
-    orthonormalise_vectors
     power_vector
     power_vectors
     scale_vector
@@ -113,6 +175,10 @@ Functions
     transpose_matrix
     vector_component
     vector_component_xy
+
+.. autosummary::
+    :toctree: generated/
+
     vector_from_points
     vector_from_points_xy
     plane_from_points
@@ -211,20 +277,6 @@ Queries
 .. autosummary::
     :toctree: generated/
 
-    is_circle
-    is_frame
-    is_line
-    is_plane
-    is_polygon
-    is_polyhedron
-    is_polyline
-    is_point
-    is_segment
-    is_vector
-
-.. autosummary::
-    :toctree: generated/
-
     is_ccw_xy
     is_colinear
     is_colinear_xy
@@ -266,11 +318,8 @@ Intersections
     intersection_line_line_xy
     intersection_line_plane
     intersection_line_triangle
-    intersection_lines
-    intersection_lines_xy
     intersection_plane_plane
     intersection_plane_plane_plane
-    intersection_planes
     intersection_segment_segment
     intersection_segment_segment_xy
     intersection_segment_plane
@@ -296,6 +345,18 @@ Transformations
     :toctree: generated/
 
     transform
+    transform_numpy
+
+.. autosummary::
+    :toctree: generated/
+
+    homogenize
+    dehomogenize
+    homogenize_numpy
+    dehomogenize_numpy
+    local_axes
+    local_coords_numpy
+    global_coords_numpy
 
 .. autosummary::
     :toctree: generated/
@@ -344,78 +405,79 @@ Transformations
 """
 
 
-def is_point(point):
-    """Verify that a given input represents a point.
-    """
-    assert len(point) >= 2, "A point is defined by at least two coordinates."
+# def is_point(point):
+#     """Verify that a given input represents a point.
+#     """
+#     assert len(point) >= 2, "A point is defined by at least two coordinates."
 
 
-def is_vector(vector):
-    """Verify that a given input represents a vector.
-    """
-    assert len(vector) >= 2, "A vector has at least two components."
+# def is_vector(vector):
+#     """Verify that a given input represents a vector.
+#     """
+#     assert len(vector) >= 2, "A vector has at least two components."
 
 
-def is_line(line):
-    """Verify that a given input represents a line.
-    """
-    assert len(line) == 2, "A line is specified by two points."
-    a, b = line
-    is_point(a)
-    is_point(b)
+# def is_line(line):
+#     """Verify that a given input represents a line.
+#     """
+#     assert len(line) == 2, "A line is specified by two points."
+#     a, b = line
+#     is_point(a)
+#     is_point(b)
 
 
-def is_segment(segment):
-    """Verify that a given input represents a segment.
-    """
-    assert len(segment) == 2, "A segment is defined by two points."
-    a, b = segment
-    is_point(a)
-    is_point(b)
+# def is_segment(segment):
+#     """Verify that a given input represents a segment.
+#     """
+#     assert len(segment) == 2, "A segment is defined by two points."
+#     a, b = segment
+#     is_point(a)
+#     is_point(b)
 
 
-def is_plane(plane):
-    """Verify that a given input represents a plane.
-    """
-    assert len(plane) == 2, "A plane is defined by a base point and a normal vector."
-    base, normal = plane
-    is_point(base)
-    is_vector(normal)
+# def is_plane(plane):
+#     """Verify that a given input represents a plane.
+#     """
+#     assert len(plane) == 2, "A plane is defined by a base point and a normal vector."
+#     base, normal = plane
+#     is_point(base)
+#     is_vector(normal)
 
 
-def is_circle(circle):
-    """Verify that a given input represents a circle.
-    """
-    pass
+# def is_circle(circle):
+#     """Verify that a given input represents a circle.
+#     """
+#     pass
 
 
-def is_polygon(polygon):
-    """Verify that a given input represents a polygon.
-    """
-    pass
+# def is_polygon(polygon):
+#     """Verify that a given input represents a polygon.
+#     """
+#     pass
 
 
-def is_polyline(polyline):
-    """Verify that a given input represents a polyline.
-    """
-    pass
+# def is_polyline(polyline):
+#     """Verify that a given input represents a polyline.
+#     """
+#     pass
 
 
-def is_polyhedron(polyhedron):
-    """Verify that a given input represents a polyhedron.
-    """
-    pass
+# def is_polyhedron(polyhedron):
+#     """Verify that a given input represents a polyhedron.
+#     """
+#     pass
 
 
-def is_frame(frame):
-    """Verify that a given input represents a frame.
-    """
-    pass
+# def is_frame(frame):
+#     """Verify that a given input represents a frame.
+#     """
+#     pass
 
 
 # level 0
 
 from .basic import *
+from .basic import __all__ as a
 
 # level 1
 
@@ -423,47 +485,35 @@ from .distance import *
 from .angles import *
 from .average import *
 
-# level 2
+from .distance import __all__ as b
+from .angles import __all__ as c
+from .average import __all__ as d
 
-from .bestfit import *
-from .bbox import *
-from .hull import *
+# level 2
 
 from .orientation import *
 from .queries import *
 from .intersections import *
+
+from .orientation import __all__ as h
+from .intersections import __all__ as i
+from .queries import __all__ as j
 
 # level 3
 
 from .size import *
 from .transformations import *
 
+from .size import __all__ as k
+from .transformations import __all__ as l
+
 # level 4
 
 from .objects import *
 from .algorithms import *
 
-# recompile the __all__ variable
-
-from .basic import __all__ as a
-from .distance import __all__ as b
-from .angles import __all__ as c
-from .average import __all__ as d
-
-from .bestfit import __all__ as e
-from .bbox import __all__ as f
-from .hull import __all__ as g
-
-from .orientation import __all__ as h
-from .intersections import __all__ as i
-from .queries import __all__ as j
-
-from .size import __all__ as k
-from .transformations import __all__ as l
-
 from .objects import __all__ as m
 from .algorithms import __all__ as n
 
 
-__all__  = ['is_point', 'is_vector', 'is_line', 'is_segment', 'is_plane', 'is_circle', 'is_polygon', 'is_polyline', 'is_polyhedron', 'is_frame']
-__all__ += a + b + c + d + e + f + g + h + i + j + k + l + m + n
+__all__ = a + b + c + d + h + i + j + k + l + m + n

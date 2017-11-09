@@ -10,25 +10,41 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'parallelise_edges',
+    'network_parallelise_edges',
 ]
 
 
-def parallelise_edges(network, targets, fixed=None, kmax=1, callback=None):
+def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=None, callback_args=None):
     """Parallelise the edges of a network to given target vectors.
 
-    Parameters:
-        network (compas.datastructures.Network): The network object.
-        targets (list): A list of target vectors.
-        fixed (list): Optional.
-            The fixed vertices of the network.
-            Default is ``None``.
-        kmax (int): Optional.
-            Maximum number of iterations.
-            Default is ``1``.
-        callback (callable): Optional.
-            A user-defined callback function to be executed after every iteration.
-            Default is ``None``.
+    Parameters
+    ----------
+    network : Network
+        The network object.
+    targets : list
+        A list of target vectors.
+    fixed : list, optional
+        The fixed vertices of the network.
+        Default is ``None``.
+    kmax : int, optional
+        Maximum number of iterations.
+        Default is ``1``.
+    callback : callable, optional
+        A user-defined callback function to be executed after every iteration.
+        Default is ``None``.
+    callback_args : tuple, optional
+        Additional parameters to be passed to the callback.
+        Default is ``None``.
+
+    Returns
+    -------
+    None
+
+    Example
+    -------
+    .. code-block:: python
+
+        #
 
     """
     if callback:
