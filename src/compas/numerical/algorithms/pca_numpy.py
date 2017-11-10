@@ -158,10 +158,10 @@ if __name__ == "__main__":
     data[:, 2] *= 4.0
 
     a = 3.14159 * 30.0 / 180
-    Ry = asarray(rotation_matrix(a, [0, 1.0, 0.0]))
+    Ry = rotation_matrix(a, [0, 1.0, 0.0], rtype='array')
 
     a = -3.14159 * 45.0 / 180
-    Rz = asarray(rotation_matrix(a, [0, 0, 1.0]))
+    Rz = rotation_matrix(a, [0, 0, 1.0], rtype='array')
 
     R = Rz.dot(Ry)
 

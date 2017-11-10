@@ -286,13 +286,11 @@ def rotation_matrix(angle, direction, point=None, rtype='list'):
         [0.0              , 0.0              , 0.0              , 1.0]
     ]
 
-    if point is None:
-        return R
-
-    T1 = translation_matrix([-p for p in point])
-    T2 = translation_matrix(point)
-    B  = multiply_matrices(R, T1)
-    R  = multiply_matrices(T2, B)
+    if point:
+        U = translation_matrix([-p for p in point])
+        V = translation_matrix(point)
+        B  = multiply_matrices(R, U)
+        R  = multiply_matrices(V, B)
 
     if rtype == 'list':
         return R
@@ -1059,7 +1057,7 @@ if __name__ == "__main__":
 
     a = pi / randint(1, high=8)
 
-    R = rotation_matrix(a, [0, 0, 1], [0, 0, 0])
+    R = rotation_matrix(a, [0, 0, 1], point=None, rtype='array')
 
     points_ = transform_numpy(points, R)
 

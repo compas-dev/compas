@@ -87,10 +87,6 @@ euler
     sync_folder_to_euler
 
 
-geometry
-========
-
-
 numba
 =====
 

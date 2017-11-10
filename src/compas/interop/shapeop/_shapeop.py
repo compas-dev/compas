@@ -1,13 +1,12 @@
-"""Wrapper for the ShapeOp library."""
-
 from __future__ import print_function
+from __future__ import absolute_import
 
 import os
 import sys
 
 import compas
 
-from compas.utilities.itertools_ import flatten
+from compas.utilities import flatten
 
 sys.path.insert(0, os.path.join(compas.LIBS, "ShapeOp/bindings/python"))
 

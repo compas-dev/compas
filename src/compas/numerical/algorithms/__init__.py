@@ -1,11 +1,13 @@
 from .dr import *
+from .dr_numpy import *
 from .drx import *
-from .fd import *
-from .pca import *
+from .fd_numpy import *
+from .pca_numpy import *
 
 from .dr import __all__ as a
-from .drx import __all__ as b
-from .fd import __all__ as c
-from .pca import __all__ as d
+from .dr_numpy import __all__ as b
+from .drx import __all__ as c
+from .fd_numpy import __all__ as d
+from .pca_numpy import __all__ as e
 
-__all__ = a + b + c + d
+__all__ = a + b + c + d + e

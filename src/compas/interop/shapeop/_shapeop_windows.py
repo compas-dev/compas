@@ -1,13 +1,12 @@
-"""Wrapper for the ShapeOp library that works on Windows."""
-
 from __future__ import print_function
+from __future__ import absolute_import
 
 import os
 import ctypes
 
 import compas
 
-from compas.utilities.itertools_ import flatten
+from compas.utilities import flatten
 
 dll = os.path.join(compas.LIBS, "ShapeOp/bindings/python/_ShapeOp.0.1.0.dll")
 

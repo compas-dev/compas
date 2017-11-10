@@ -13,8 +13,8 @@ Algorithms
 .. autosummary::
     :toctree: generated/
 
+    dr
     dr_numpy
-    network_dr
     drx
     fd_numpy
     pca_numpy

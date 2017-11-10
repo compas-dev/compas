@@ -406,25 +406,19 @@ if __name__ == "__main__":
     plotter.draw_edges()
 
     key_index = mesh.key_index()
-    vertices = mesh.get_vertices_attributes('xyz')
-    faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
-    fixed = [key_index[key] for key in fixed]
+    # vertices = mesh.get_vertices_attributes('xyz')
+    # faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    # fixed = [key_index[key] for key in fixed]
 
     def callback(k, args):
         if k % 10 == 0:
-            dev = flatness(vertices, faces, maxdev=0.02)
-
-            for key, attr in mesh.vertices(True):
-                index = key_index[key]
-                attr['x'] = vertices[index][0]
-                attr['y'] = vertices[index][1]
-                attr['z'] = vertices[index][2]
+            dev = mesh_flatness(mesh, maxdev=0.02)
 
             plotter.update_vertices(radius=radius)
             plotter.update_faces(facecolor={fkey: i_to_rgb(dev[fkey]) for fkey in mesh.faces()})
             plotter.update_edges()
             plotter.update()
 
-    planarize_faces(vertices, faces, fixed=fixed, kmax=1000, callback=callback)
+    mesh_planarize_faces_shapeop(mesh, fixed=fixed, kmax=1000, callback=callback)
 
     plotter.show()

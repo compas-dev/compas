@@ -1,10 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-from copy import deepcopy
-
-from compas.geometry import norm_vectors
-
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>']
 __copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
@@ -13,7 +9,7 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'dr',
+    'dr_numpy'
 ]
 
 
@@ -32,9 +28,10 @@ class Coeff():
         self.b = 0.5 * (1 + self.a)
 
 
-def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
-       kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callback=None, callback_args=None):
-    """Implementation of dynamic relaxation with RK integration scheme in pure Python.
+def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
+             callback=None, callback_args=None, **kwargs):
+    """Implementation of the dynamic relaxation method for finding the equilibrium
+    of articulated networks of axial force members [delaet2013]_.
 
     Parameters
     ----------
@@ -58,33 +55,20 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         Stiffness of the edges.
     radius : list
         Radius of the edges.
-    kmax : int, optional
-        Maximum number of iterations.
-    dt : float, optional
-        The time step.
-    tol1 : float, optional
-        Convergence criterion for the residual forces.
-    tol2 : float, optional
-        Convergence criterion for the displacements in between interations.
-    c : float, optional
-        Damping factor for viscous damping.
     callback : callable, optional
-        A user-defined callback that is called after every iteration.
+        User-defined function that is called at every iteration.
     callback_args : tuple, optional
-        Additional arguments to be passed to the callback.
+        Additional arguments passed to the callback.
 
     Example
     -------
     .. plot::
         :include-source:
 
-        import random
-
         import compas
         from compas.datastructures import Network
         from compas.plotters import NetworkPlotter
-        from compas.numerical import dr
-        from compas.utilities import i_to_rgb
+        from compas.numerical import dr_numpy
 
         dva = {
             'is_fixed': False,
@@ -109,15 +93,14 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         }
 
         network = Network.from_obj(compas.get('lines.obj'))
-
         network.update_default_vertex_attributes(dva)
         network.update_default_edge_attributes(dea)
 
         for key, attr in network.vertices(True):
             attr['is_fixed'] = network.vertex_degree(key) == 1
 
-        for u, v, attr in network.edges(True):
-            attr['qpre'] = 1.0 * random.randint(1, 7)
+        for index, (u, v, attr) in enumerate(network.edges(True)):
+            attr['qpre'] = index + 1
 
         k_i = network.key_index()
 
@@ -138,119 +121,126 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
                 'start': network.vertex_coordinates(u, 'xy'),
                 'end'  : network.vertex_coordinates(v, 'xy'),
                 'color': '#cccccc',
-                'width': 0.5
+                'width': 1.0
             })
 
         plotter = NetworkPlotter(network)
         plotter.draw_lines(lines)
 
-        xyz, q, f, l, r = dr(vertices, edges, fixed, loads,
-                             qpre, fpre, lpre,
-                             linit, E, radius,
-                             kmax=100)
+        xyz, q, f, l, r = dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius)
 
-        for index, (u, v, attr) in enumerate(network.edges(True)):
-            attr['f'] = f[index]
-            attr['l'] = l[index]
-
-        fmax = max(network.get_edges_attribute('f'))
+        for key, attr in network.vertices(True):
+            index = k_i[key]
+            attr['x'] = xyz[index, 0]
+            attr['y'] = xyz[index, 1]
+            attr['z'] = xyz[index, 2]
 
         plotter.draw_vertices(
-            facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})}
-        )
-
-        plotter.draw_edges(
-            text={(u, v): '{:.0f}'.format(attr['f']) for u, v, attr in network.edges(True)},
-            color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
-            width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)}
-        )
-
+            facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+        plotter.draw_edges()
         plotter.show()
 
     """
+    from numpy import array
+    from numpy import isnan
+    from numpy import isinf
+    from numpy import ones
+    from numpy import zeros
+    from scipy.linalg import norm
+    from scipy.sparse import diags
+    from compas.numerical import connectivity_matrix
+    from compas.numerical import normrow
+    # --------------------------------------------------------------------------
+    # callback
+    # --------------------------------------------------------------------------
     if callback:
-        if not callable(callback):
-            raise Exception('The callback is not callable.')
+        assert callable(callback), 'The provided callback is not callable.'
     # --------------------------------------------------------------------------
-    # preprocess
+    # configuration
     # --------------------------------------------------------------------------
-    n = len(vertices)
-
-    # i_nbrs = {i: [ij[1] if ij[0] == i else ij[0] for ij in edges if i in ij] for i in range(n)}
-
-    i_nbrs = {i: [] for i in range(n)}
-
-    for i, j in iter(edges):
-        i_nbrs[i].append(j)
-        i_nbrs[j].append(i)
-
-    ij_e   = {(i, j): index for index, (i, j) in enumerate(edges)}
-    ij_e.update({(j, i): index for (i, j), index in ij_e.items()})
-
-    coeff = Coeff(c)
+    kmax  = kwargs.get('kmax', 10000)
+    dt    = kwargs.get('dt', 1.0)
+    tol1  = kwargs.get('tol1', 1e-3)
+    tol2  = kwargs.get('tol2', 1e-6)
+    coeff = Coeff(kwargs.get('c', 0.1))
     ca    = coeff.a
     cb    = coeff.b
-    free  = list(set(range(n)) - set(fixed))
+    # --------------------------------------------------------------------------
+    # attribute lists
+    # --------------------------------------------------------------------------
+    num_v = len(vertices)
+    num_e = len(edges)
+    free  = list(set(range(num_v)) - set(fixed))
     # --------------------------------------------------------------------------
     # attribute arrays
     # --------------------------------------------------------------------------
-    X = vertices
-    P = loads
-    Q = qpre
+    x      = array(vertices, dtype=float).reshape((-1, 3))                      # m
+    p      = array(loads, dtype=float).reshape((-1, 3))                         # kN
+    qpre   = array(qpre, dtype=float).reshape((-1, 1))
+    fpre   = array(fpre, dtype=float).reshape((-1, 1))                          # kN
+    lpre   = array(lpre, dtype=float).reshape((-1, 1))                          # m
+    linit  = array(linit, dtype=float).reshape((-1, 1))                         # m
+    E      = array(E, dtype=float).reshape((-1, 1))                             # kN/mm2 => GPa
+    radius = array(radius, dtype=float).reshape((-1, 1))                        # mm
+    # --------------------------------------------------------------------------
+    # sectional properties
+    # --------------------------------------------------------------------------
+    A  = 3.14159 * radius ** 2                                                  # mm2
+    EA = E * A                                                                  # kN
+    # --------------------------------------------------------------------------
+    # create the connectivity matrices
+    # after spline edges have been aligned
+    # --------------------------------------------------------------------------
+    C   = connectivity_matrix(edges, 'csr')
+    Ct  = C.transpose()
+    Ci  = C[:, free]
+    Cit = Ci.transpose()
+    Ct2 = Ct.copy()
+    Ct2.data **= 2
+    # --------------------------------------------------------------------------
+    # if none of the initial lengths are set,
+    # set the initial lengths to the current lengths
+    # --------------------------------------------------------------------------
+    if all(linit == 0):
+        linit = normrow(C.dot(x))
     # --------------------------------------------------------------------------
     # initial values
     # --------------------------------------------------------------------------
-    M  = [sum(0.5 * dt ** 2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
-    V  = [[0.0, 0.0, 0.0] for _ in range(n)]
-    R  = [[0.0, 0.0, 0.0] for _ in range(n)]
-    dX = [[0.0, 0.0, 0.0] for _ in range(n)]
+    q = ones((num_e, 1), dtype=float)
+    l = normrow(C.dot(x))
+    f = q * l
+    v = zeros((num_v, 3), dtype=float)
+    r = zeros((num_v, 3), dtype=float)
     # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
 
-    def update_R():
-        for i in range(n):
-            x = X[i][0]
-            y = X[i][1]
-            z = X[i][2]
-            f = [0.0, 0.0, 0.0]
-            for j in i_nbrs[i]:
-                q  = Q[ij_e[(i, j)]]
-                f[0] += q * (X[j][0] - x)
-                f[1] += q * (X[j][1] - y)
-                f[2] += q * (X[j][2] - z)
-            R[i] = [P[i][axis] + f[axis] for axis in (0, 1, 2)]
+    def rk(x0, v0, steps=2):
+        def a(t, v):
+            dx      = v * t
+            x[free] = x0[free] + dx[free]
+            # update residual forces
+            r[free] = p[free] - D.dot(x)
+            return cb * r / mass
 
-    def rk(X0, V0, steps=2):
-        def a(t, V):
-            dX = [[V[i][axis] * t for axis in (0, 1, 2)] for i in range(n)]
-            for i in free:
-                X[i] = [X0[i][axis] + dX[i][axis] for axis in (0, 1, 2)]
-            update_R()
-            return [[cb * R[i][axis] / M[i] for axis in (0, 1, 2)] for i in range(n)]
+        if steps == 1:
+            return a(dt, v0)
 
         if steps == 2:
-            B  = [0.0, 1.0]
-            a0 = a(K[0][0] * dt, V0)
-            k0 = [[dt * a0[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            a1 = a(K[1][0] * dt, [[V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)] for i in range(n)])
-            k1 = [[dt * a1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            return [[B[0] * k0[i][axis] + B[1] * k1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
+            B = [0.0, 1.0]
+            K0 = dt * a(K[0][0] * dt, v0)
+            K1 = dt * a(K[1][0] * dt, v0 + K[1][1] * K0)
+            dv = B[0] * K0 + B[1] * K1
+            return dv
 
         if steps == 4:
-            B  = [1.0 / 6.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0]
-            a0 = a(K[0][0] * dt, V0)
-            k0 = [[dt * a0[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            a1 = a(K[1][0] * dt, [[V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)] for i in range(n)])
-            k1 = [[dt * a1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            a2 = a(K[2][0] * dt, [[V0[i][axis] + K[2][1] * k0[i][axis] + K[2][2] * k1[i][axis] for axis in (0, 1, 2)] for i in range(n)])
-            k2 = [[dt * a2[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            a3 = a(K[3][0] * dt, [[V0[i][axis] + K[3][1] * k0[i][axis] + K[3][2] * k1[i][axis] + K[3][3] * k2[i][axis] for axis in (0, 1, 2)] for i in range(n)])
-            k3 = [[dt * a3[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            return [[B[0] * k0[i][axis] +
-                     B[1] * k1[i][axis] +
-                     B[2] * k2[i][axis] +
-                     B[3] * k3[i][axis] for axis in (0, 1, 2)] for i in range(n)]
+            B = [1. / 6., 1. / 3., 1. / 3., 1. / 6.]
+            K0 = dt * a(K[0][0] * dt, v0)
+            K1 = dt * a(K[1][0] * dt, v0 + K[1][1] * K0)
+            K2 = dt * a(K[2][0] * dt, v0 + K[2][1] * K0 + K[2][2] * K1)
+            K3 = dt * a(K[3][0] * dt, v0 + K[3][1] * K0 + K[3][2] * K1 + K[3][3] * K2)
+            dv = B[0] * K0 + B[1] * K1 + B[2] * K2 + B[3] * K3
+            return dv
 
         raise NotImplementedError
 
@@ -258,42 +248,42 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # start iterating
     # --------------------------------------------------------------------------
     for k in range(kmax):
-        X0 = deepcopy(X)
-        V0 = [[ca * V[i][axis] for axis in (0, 1, 2)] for i in range(n)]
+        q_fpre = fpre / l
+        q_lpre = f / lpre
+        q_EA   = EA * (l - linit) / (linit * l)
+        q_lpre[isinf(q_lpre)] = 0
+        q_lpre[isnan(q_lpre)] = 0
+        q_EA[isinf(q_EA)]     = 0
+        q_EA[isnan(q_EA)]     = 0
 
+        q    = qpre + q_fpre + q_lpre + q_EA
+        Q    = diags([q[:, 0]], [0])
+        D    = Cit.dot(Q).dot(C)
+        mass = 0.5 * dt ** 2 * Ct2.dot(qpre + q_fpre + q_lpre + EA / linit)
         # RK
-        dV = rk(X0, V0, steps=4)
-
+        x0      = x.copy()
+        v0      = ca * v.copy()
+        dv      = rk(x0, v0, steps=4)
+        v[free] = v0[free] + dv[free]
+        dx      = v * dt
+        x[free] = x0[free] + dx[free]
         # update
-        for i in free:
-            V[i]  = [V0[i][axis] + dV[i][axis] for axis in (0, 1, 2)]
-            dX[i] = [V[i][axis] * dt for axis in (0, 1, 2)]
-            X[i]  = [X0[i][axis] + dX[i][axis] for axis in (0, 1, 2)]
-
-        L = [sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5 for i, j in iter(edges)]
-        F = [q * l for q, l in zip(Q, L)]
-
-        update_R()
-
+        u = C.dot(x)
+        l = normrow(u)
+        f = q * l
+        r = p - Ct.dot(Q).dot(u)
         # crits
-        crit1 = max(norm_vectors([R[i] for i in free]))
-        crit2 = max(norm_vectors([dX[i] for i in free]))
-
+        crit1 = norm(r[free])
+        crit2 = norm(dx[free])
         # callback
         if callback:
-            callback(k, X, (crit1, crit2), callback_args)
-
+            callback(k, x, [crit1, crit2], callback_args)
         # convergence
         if crit1 < tol1:
             break
         if crit2 < tol2:
             break
-    # --------------------------------------------------------------------------
-    # update
-    # --------------------------------------------------------------------------
-    update_R()
-
-    return X, Q, F, L, R
+    return x, q, f, l, r
 
 
 # ==============================================================================
@@ -381,18 +371,18 @@ if __name__ == "__main__":
 
         for key, attr in network.vertices(True):
             index = k_i[key]
-            attr['x'] = xyz[index][0]
-            attr['y'] = xyz[index][1]
-            attr['z'] = xyz[index][2]
+            attr['x'] = xyz[index, 0]
+            attr['y'] = xyz[index, 1]
+            attr['z'] = xyz[index, 2]
 
-    xyz, q, f, l, r = dr(vertices, edges, fixed, loads,
-                         qpre, fpre, lpre,
-                         linit, E, radius,
-                         kmax=100, callback=callback)
+    xyz, q, f, l, r = dr_numpy(vertices, edges, fixed, loads,
+                               qpre, fpre, lpre,
+                               linit, E, radius,
+                               kmax=100, callback=callback)
 
     for index, (u, v, attr) in enumerate(network.edges(True)):
-        attr['f'] = f[index]
-        attr['l'] = l[index]
+        attr['f'] = f[index, 0]
+        attr['l'] = l[index, 0]
 
     fmax = max(network.get_edges_attribute('f'))
 
