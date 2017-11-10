@@ -12,6 +12,7 @@ Algorithms
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     dr
     dr_numpy
@@ -25,6 +26,7 @@ Solvers
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     descent
     devo
@@ -41,6 +43,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     nullspace
     rank
@@ -64,6 +67,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     adjacency_matrix
     degree_matrix
@@ -79,6 +83,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     grad
     div
@@ -90,6 +95,7 @@ Utilities
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     set_array_print_precision
     unset_array_print_precision
