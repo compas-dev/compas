@@ -149,6 +149,12 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
                              linit, E, radius,
                              kmax=100)
 
+        for key, attr in network.vertices(True):
+            index = k_i[key]
+            attr['x'] = xyz[index][0]
+            attr['y'] = xyz[index][1]
+            attr['z'] = xyz[index][2]
+
         for index, (u, v, attr) in enumerate(network.edges(True)):
             attr['f'] = f[index]
             attr['l'] = l[index]

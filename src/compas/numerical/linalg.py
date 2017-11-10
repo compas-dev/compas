@@ -54,6 +54,8 @@ __all__ = [
     'pivots',
     'nonpivots',
     'rref',
+    'rref_sympy',
+    'rref_matlab',
     'uvw_lengths',
     'normrow',
     'normalizerow',
@@ -217,7 +219,7 @@ def nonpivots(U, tol=None):
     return list(set(range(U.shape[1])) - set(cols))
 
 
-def rref(A, algo='qr', tol=None, **kwargs):
+def rref(A, tol=None):
     r"""Reduced row-echelon form of matrix A.
 
     Parameters:
@@ -241,60 +243,110 @@ def rref(A, algo='qr', tol=None, **kwargs):
 
     """
     A = atleast_2d(asarray(A, dtype=float))
-    if algo == 'qr':
-        # do qr with column pivoting
-        # to have non-decreasing absolute values on the diagonal of R
-        # column pivoting ensures that the largest absolute value is used
-        # as leading element
-        _, U = qr(A)
-        lead_pos = 0
-        num_rows, num_cols = U.shape
-        for r in range(num_rows):
-            if lead_pos >= num_cols:
-                return
-            i = r
-            # find a nonzero lead in column lead_pos
-            while U[i][lead_pos] == 0:
-                i += 1
-                if i == num_rows:
-                    i = r
-                    lead_pos += 1
-                    if lead_pos == num_cols:
-                        return
-            # swap the row with the nonzero lead with the current row
-            U[[i, r]] = U[[r, i]]
-            # "normalize" the values of the row
-            lead_val = U[r][lead_pos]
-            U[r] = U[r] / lead_val
-            # make sure all other column values are zero
-            for i in range(num_rows):
-                if i != r:
-                    lead_val = U[i][lead_pos]
-                    U[i] = U[i] - lead_val * U[r]
-            # go to the next column
-            lead_pos += 1
-        return U
-    if algo == 'sympy':
-        # return asarray?
-        import sympy
-        return sympy.Matrix(A).rref()[0].tolist()
-    if algo == 'matlab':
-        # replace this by the matlab com interface implementation
-        import platform
-        ifile = kwargs['ifile']
-        ofile = kwargs['ofile']
-        idict = {'A': A}
-        savemat(ifile, idict)
-        matlab = ['matlab']
-        if platform.system() == 'Windows':
-            options = ['-nosplash', '-wait', '-r']
-        else:
-            options = ['-nosplash', '-r']
-        command = ["load('{0}');[R, jb]=rref(A);save('{1}');exit;".format(ifile, ofile)]
-        p = Popen(matlab + options + command)
-        stdout, stderr = p.communicate()
-        odict = loadmat(ofile)
-        return odict['R']
+
+    # do qr with column pivoting
+    # to have non-decreasing absolute values on the diagonal of R
+    # column pivoting ensures that the largest absolute value is used
+    # as leading element
+    _, U = qr(A)
+    lead_pos = 0
+    num_rows, num_cols = U.shape
+    for r in range(num_rows):
+        if lead_pos >= num_cols:
+            return
+        i = r
+        # find a nonzero lead in column lead_pos
+        while U[i][lead_pos] == 0:
+            i += 1
+            if i == num_rows:
+                i = r
+                lead_pos += 1
+                if lead_pos == num_cols:
+                    return
+        # swap the row with the nonzero lead with the current row
+        U[[i, r]] = U[[r, i]]
+        # "normalize" the values of the row
+        lead_val = U[r][lead_pos]
+        U[r] = U[r] / lead_val
+        # make sure all other column values are zero
+        for i in range(num_rows):
+            if i != r:
+                lead_val = U[i][lead_pos]
+                U[i] = U[i] - lead_val * U[r]
+        # go to the next column
+        lead_pos += 1
+    return U
+
+
+def rref_sympy(A, tol=None):
+    r"""Reduced row-echelon form of matrix A.
+
+    Parameters:
+        A (array, list): Matrix A represented as an array or list.
+        tol (float): Tolerance.
+
+    Returns:
+        array/list: RREF of A.
+
+    A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the
+    result is independent of the method/algorithm used.
+
+    Examples:
+        >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
+        >>> n = rref(A, algo='sympy')
+        >>> array(n)
+        [[1.0 0 1.0 3.0]
+         [0 1.0 0.667 0.333]
+         [0 0 0 0]]
+
+    """
+    import sympy
+
+    A = atleast_2d(asarray(A, dtype=float))
+    return sympy.Matrix(A).rref()[0].tolist()
+
+
+def rref_matlab(A, ifile, ofile, tol=None):
+    r"""Reduced row-echelon form of matrix A.
+
+    Parameters:
+        A (array, list): Matrix A represented as an array or list.
+        tol (float): Tolerance.
+
+    Returns:
+        array/list: RREF of A.
+
+    A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the
+    result is independent of the method/algorithm used.
+
+    Examples:
+        >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
+        >>> n = rref(A, algo='sympy')
+        >>> array(n)
+        [[1.0 0 1.0 3.0]
+         [0 1.0 0.667 0.333]
+         [0 0 0 0]]
+
+    """
+    import platform
+
+    A = atleast_2d(asarray(A, dtype=float))
+
+    idict = {'A': A}
+    savemat(ifile, idict)
+
+    matlab = ['matlab']
+    if platform.system() == 'Windows':
+        options = ['-nosplash', '-wait', '-r']
+    else:
+        options = ['-nosplash', '-r']
+    command = ["load('{0}');[R, jb]=rref(A);save('{1}');exit;".format(ifile, ofile)]
+
+    p = Popen(matlab + options + command)
+    stdout, stderr = p.communicate()
+
+    odict = loadmat(ofile)
+    return odict['R']
 
 
 # ------------------------------------------------------------------------------

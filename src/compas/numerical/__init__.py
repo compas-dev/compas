@@ -48,8 +48,11 @@ Functions
     pivots
     nonpivots
     rref
+    rref_sympy
+    rref_matlab
     chofactor
     lufactorized
+    uvw_lengths
     normrow
     normalizerow
     rot90
