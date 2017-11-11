@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-from compas.topology import bfs_traverse
+from compas.topology import breadth_first_traverse
 
 
 __author__     = 'Tom Van Mele'
@@ -136,7 +136,7 @@ def mesh_unify_cycles(mesh, root=None):
     if root is None:
         root = mesh.get_any_face()
 
-    bfs_traverse(face_adjacency(mesh), root, unify)
+    breadth_first_traverse(face_adjacency(mesh), root, unify)
 
     mesh.halfedge = {key: {} for key in mesh.vertices()}
     for fkey in mesh.faces():

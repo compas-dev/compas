@@ -10,9 +10,9 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'scalarfield_contours',
-    'mesh_contours',
-    'mesh_isolines',
+    'scalarfield_contours_numpy',
+    'mesh_contours_numpy',
+    'mesh_isolines_numpy',
 ]
 
 
@@ -32,7 +32,7 @@ __all__ = [
 # ==============================================================================
 
 
-def scalarfield_contours(xy, s, N=50):
+def scalarfield_contours_numpy(xy, s, N=50):
     r"""Compute the contour lines of a scalarfield.
 
     Note
@@ -67,7 +67,7 @@ def scalarfield_contours(xy, s, N=50):
         from compas.datastructures import Mesh
         from compas.geometry import centroid_points
         from compas.geometry import distance_point_point
-        from compas.geometry import scalarfield_contours
+        from compas.geometry import scalarfield_contours_numpy
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -77,7 +77,7 @@ def scalarfield_contours(xy, s, N=50):
 
         xy = [point[0:2] for point in points]
 
-        levels, contours = scalarfield_contours(xy, distances)
+        levels, contours = scalarfield_contours_numpy(xy, distances)
 
         for i in range(len(contours)):
             level = levels[i]
@@ -121,7 +121,7 @@ def scalarfield_contours(xy, s, N=50):
     return levels, contours
 
 
-def mesh_contours(mesh, N=50):
+def mesh_contours_numpy(mesh, N=50):
     """Compute the contours of the mesh.
 
     Note
@@ -151,10 +151,10 @@ def mesh_contours(mesh, N=50):
 
         import compas
         from compas.datastructures import Mesh
-        from compas.geometry import mesh_contours
+        from compas.geometry import mesh_contours_numpy
 
         mesh = Mesh.from_obj(compas.get('hypar.obj'))
-        print(mesh_contours(mesh))
+        print(mesh_contours_numpy(mesh))
 
     """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
@@ -162,7 +162,7 @@ def mesh_contours(mesh, N=50):
     return scalarfield_contours(xy, z, N)
 
 
-def mesh_isolines(mesh, attr_name, N=50):
+def mesh_isolines_numpy(mesh, attr_name, N=50):
     """Compute the isolines of a specified attribute of the vertices of a mesh.
 
     Parameters

@@ -83,8 +83,13 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         import compas
         from compas.datastructures import Network
         from compas.plotters import NetworkPlotter
-        from compas.numerical import dr
         from compas.utilities import i_to_rgb
+        from compas.numerical import dr
+
+        # make a network
+        # and set the default vertex and edge attributes
+
+        network = Network.from_obj(compas.get('lines.obj'))
 
         dva = {
             'is_fixed': False,
@@ -108,10 +113,11 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
             'radius': 0.0,
         }
 
-        network = Network.from_obj(compas.get('lines.obj'))
-
         network.update_default_vertex_attributes(dva)
         network.update_default_edge_attributes(dea)
+
+        # identify the fixed vertices
+        # and assign random prescribed force densities to the edges
 
         for key, attr in network.vertices(True):
             attr['is_fixed'] = network.vertex_degree(key) == 1
@@ -119,11 +125,11 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         for u, v, attr in network.edges(True):
             attr['qpre'] = 1.0 * random.randint(1, 7)
 
-        k_i = network.key_index()
+        # extract numerical data from the datastructure
 
         vertices = network.get_vertices_attributes(('x', 'y', 'z'))
-        edges    = [(k_i[u], k_i[v]) for u, v in network.edges()]
-        fixed    = [k_i[key] for key in network.vertices_where({'is_fixed': True})]
+        edges    = list(network.edges())
+        fixed    = network.vertices_where({'is_fixed': True})
         loads    = network.get_vertices_attributes(('px', 'py', 'pz'))
         qpre     = network.get_edges_attribute('qpre')
         fpre     = network.get_edges_attribute('fpre')
@@ -131,6 +137,11 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         linit    = network.get_edges_attribute('linit')
         E        = network.get_edges_attribute('E')
         radius   = network.get_edges_attribute('radius')
+
+        # make a plotter for (dynamic) visualization
+        # plot the lines of the original configuration of the network as reference
+
+        plotter = NetworkPlotter(network)
 
         lines = []
         for u, v in network.edges():
@@ -141,25 +152,30 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
                 'width': 0.5
             })
 
-        plotter = NetworkPlotter(network)
         plotter.draw_lines(lines)
 
-        xyz, q, f, l, r = dr(vertices, edges, fixed, loads,
-                             qpre, fpre, lpre,
-                             linit, E, radius,
+        # run the dynamic relaxation
+        # update vertices and edges
+        # visualize the final geometry
+        # color the edges according to the size of the forces
+        # set the width of the edges proportional to the internal forces
+
+        xyz, q, f, l, r = dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
                              kmax=100)
 
         for key, attr in network.vertices(True):
-            index = k_i[key]
-            attr['x'] = xyz[index][0]
-            attr['y'] = xyz[index][1]
-            attr['z'] = xyz[index][2]
+            attr['x'] = xyz[key][0]
+            attr['y'] = xyz[key][1]
+            attr['z'] = xyz[key][2]
 
         for index, (u, v, attr) in enumerate(network.edges(True)):
             attr['f'] = f[index]
             attr['l'] = l[index]
 
         fmax = max(network.get_edges_attribute('f'))
+
+        plotter.clear_vertices()
+        plotter.clear_edges()
 
         plotter.draw_vertices(
             facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})}

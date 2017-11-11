@@ -11,6 +11,7 @@ from matplotlib.patches import Polygon
 
 from compas.utilities import valuedict
 from compas.utilities import color_to_rgb
+from compas.utilities import pairwise
 
 from compas.plotters.plotter import Plotter
 
@@ -275,6 +276,19 @@ class MeshPlotter(Plotter):
         for u, v in self.mesh.edges():
             segments.append([self.mesh.vertex_coordinates(u, 'xy'), self.mesh.vertex_coordinates(v, 'xy')])
         self.edgecollection.set_segments(segments)
+
+    def highlight_path(self, path, edgecolor=None, edgetext=None, edgewidth=None):
+        lines = []
+        for u, v in pairwise(path):
+            sp = self.mesh.vertex_coordinates(u, 'xy')
+            ep = self.mesh.vertex_coordinates(v, 'xy')
+            lines.append({
+                'start' : sp,
+                'end'   : ep,
+                'width' : edgewidth or self.defaults.get('edge.width', 2.0),
+                'color' : edgecolor or self.defaults.get('edge.color', '#ff0000')
+            })
+        self.draw_lines(lines)
 
     def draw_faces(self,
                    keys=None,

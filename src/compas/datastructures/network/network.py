@@ -31,7 +31,7 @@ from compas.datastructures.mixins import FromToJson
 
 from compas.datastructures.network.operations import network_split_edge
 
-# from compas.topology import bfs_traverse
+# from compas.topology import breadth_first_traverse
 
 
 __author__     = 'Tom Van Mele'
@@ -517,7 +517,7 @@ network: {0}
     #         return False
 
     #     root = self.get_any_vertex()
-    #     nodes = bfs_traverse(self.halfedge, root)
+    #     nodes = breadth_first_traverse(self.halfedge, root)
 
     #     return len(nodes) == self.number_of_vertices()
 

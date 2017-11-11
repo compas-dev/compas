@@ -89,9 +89,9 @@ Algorithms
 .. autosummary::
     :toctree: generated/
 
-    scalarfield_contours
-    mesh_contours
-    mesh_isolines
+    scalarfield_contours_numpy
+    mesh_contours_numpy
+    mesh_isolines_numpy
 
 **parallelisation**
 
