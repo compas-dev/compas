@@ -111,12 +111,14 @@ def depth_first_tree(adjacency, root):
 
     Example
     -------
-    .. code-block:: python
+    .. plot::
+        :include-source:
 
         import compas
         from compas.datastructures import Mesh
         from compas.plotters import MeshPlotter
         from compas.topology import depth_first_tree
+        from compas.utilities import pairwise
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -145,7 +147,7 @@ def depth_first_tree(adjacency, root):
 
         plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-        plotter.draw_vertices(text='key', facecolor={key: '#ff0000' for key in (root, )}, radius=0.2)
+        plotter.draw_vertices(text='key', facecolor={root: '#ff0000'}, radius=0.2)
         plotter.draw_edges(color=edgecolor, width=edgewidth)
 
         plotter.show()

@@ -60,14 +60,28 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
         from compas.numerical import drx_numpy
         from compas.utilities import i_to_rgb
 
-        network = Network.from_obj(compas.get('lines.obj'))
-        network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
-        network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
-        network.set_vertices_attributes(network.leaves(), {'B': [0, 0, 0], 'is_fixed': True})
+        from numpy import linspace
 
-        drx_numpy(network=network, tol=0.001, refresh=5, update=True)
+        L0 = 1
+        L = 1.5
+        n = 40
+        EI = 0.2
+        pins = [0, 5, 20, n - 5]
 
-        plotter = NetworkPlotter(network)
+        # Network
+
+        vertices = [[i, i, 0] for i in list(linspace(0, L0, n))]
+        edges = [[i, i + 1] for i in range(n - 1)]
+
+        network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+        network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, -2, 0], 'EIx': EI, 'EIy': EI})
+        network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+        network.set_vertices_attributes(pins, {'B': [0, 0, 0], 'is_fixed': True})
+        network.beams = {'beam': {'nodes': list(range(n))}}
+
+        # Plotter
+
+        plotter = NetworkPlotter(network, figsize=(10, 7))
         lines = []
         for u, v in network.edges():
             lines.append({
@@ -76,13 +90,12 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
                 'color': '#cccccc',
                 'width': 1.0})
         plotter.draw_lines(lines)
-        plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+        plotter.draw_vertices(radius=0.005, facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+        plotter.draw_edges()
 
-        fmax = max(network.get_edges_attribute('f'))
+        # Solver
 
-        plotter.draw_edges(
-            color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
-            width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
+        drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=True)
 
         plotter.show()
 

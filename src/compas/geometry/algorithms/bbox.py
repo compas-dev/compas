@@ -10,14 +10,14 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'aabb',
-    'aabb_xy',
-    'obb_numpy',
-    'obb_xy_numpy',
+    'bounding_box',
+    'bounding_box_xy',
+    'oriented_bounding_box_numpy',
+    'oriented_bounding_box_xy_numpy',
 ]
 
 
-def aabb(points):
+def bounding_box(points):
     """Computes the axis-aligned minimum bounding box of a list of points.
 
     Parameters
@@ -54,7 +54,7 @@ def aabb(points):
             (min_x, max_y, max_z)]
 
 
-def aabb_xy(points):
+def bounding_box_xy(points):
     """Compute the axis-aligned minimum bounding box of a list of points in the XY-plane.
 
     Note
@@ -89,7 +89,7 @@ def aabb_xy(points):
             (min_x, max_y, 0.0)]
 
 
-def obb_numpy(points):
+def oriented_bounding_box_numpy(points):
     """Compute the oriented minimum bounding box of a set of points in 3D space.
 
     Note
@@ -122,7 +122,7 @@ def obb_numpy(points):
         from compas.plotters import create_axes_3d
         from compas.geometry import rotation_matrix
         from compas.geometry import transform
-        from compas.geometry import obb_numpy
+        from compas.geometry import oriented_bounding_box_numpy
 
         clouds = []
 
@@ -167,7 +167,7 @@ def obb_numpy(points):
         bounds.plot(axes)
 
         for cloud in clouds:
-            bbox = obb_numpy(cloud)
+            bbox = oriented_bounding_box_numpy(cloud)
 
             Cloud3D(cloud).plot(axes)
             Box(bbox[1]).plot(axes)
@@ -224,7 +224,7 @@ def obb_numpy(points):
     return hull, bbox, volume
 
 
-def obb_xy_numpy(points):
+def oriented_bounding_box_xy_numpy(points):
     """Compute the oriented minimum bounding box of set of points in the XY plane.
 
     Note
