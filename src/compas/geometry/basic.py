@@ -926,7 +926,7 @@ def multiply_matrices(A, B):
     --------
     >>> A = [[2.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 2.0]]
     >>> B = [[2.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 2.0]]
-    >>> dot_matrices(A, B)
+    >>> multiply_matrices(A, B)
     [[4.0, 0.0, 0.0], [0.0, 4.0, 0.0], [0.0, 0.0, 4.0]]
 
     """
@@ -973,7 +973,7 @@ def multiply_matrix_vector(A, b):
     --------
     >>> matrix = [[2.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 2.0]]
     >>> vector = [1.0, 2.0, 3.0]
-    >>> dot_matrix_vector(matrix, vector)
+    >>> multiply_matrix_vector(matrix, vector)
     [2.0, 4.0, 6.0]
 
     """
