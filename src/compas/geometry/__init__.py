@@ -53,10 +53,10 @@ Algorithms
 .. autosummary::
     :toctree: generated/
 
-    aabb
-    aabb_xy
-    obb_numpy
-    obb_xy_numpy
+    bounding_box
+    bounding_box_xy
+    oriented_bounding_box_numpy
+    oriented_bounding_box_xy_numpy
 
 **fitting**
 
@@ -89,9 +89,9 @@ Algorithms
 .. autosummary::
     :toctree: generated/
 
-    scalarfield_contours
-    mesh_contours
-    mesh_isolines
+    scalarfield_contours_numpy
+    mesh_contours_numpy
+    mesh_isolines_numpy
 
 **parallelisation**
 

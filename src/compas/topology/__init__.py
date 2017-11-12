@@ -56,11 +56,11 @@ traversal
 .. autosummary::
     :toctree: generated/
 
-    dfs_ordering
-    dfs_paths
-    bfs_ordering
-    bfs_traverse
-    bfs_paths
+    depth_first_ordering
+    depth_first_tree
+    breadth_first_ordering
+    breadth_first_traverse
+    breadth_first_paths
     shortest_path
     dijkstra_distances
     dijkstra_path

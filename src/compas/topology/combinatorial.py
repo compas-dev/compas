@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 from collections import deque
-from compas.topology import bfs_traverse
+from compas.topology import breadth_first_traverse
 
 
 __author__    = ['Tom Van Mele', ]
@@ -80,7 +80,7 @@ def connected_components(adjacency):
     components = []
     while tovisit:
         root = tovisit.pop()
-        visited = bfs_traverse(adjacency, root)
+        visited = breadth_first_traverse(adjacency, root)
         tovisit -= visited
         components.append(list(visited))
     return components
@@ -103,7 +103,7 @@ def network_is_connected(network):
     if not network.vertex:
         return False
 
-    nodes = bfs_traverse(network.adjacency, network.get_any_vertex())
+    nodes = breadth_first_traverse(network.adjacency, network.get_any_vertex())
 
     return len(nodes) == network.number_of_vertices()
 
@@ -125,7 +125,7 @@ def mesh_is_connected(mesh):
     if not mesh.vertex:
         return False
 
-    nodes = bfs_traverse(mesh.adjacency, mesh.get_any_vertex())
+    nodes = breadth_first_traverse(mesh.adjacency, mesh.get_any_vertex())
 
     return len(nodes) == mesh.number_of_vertices()
 

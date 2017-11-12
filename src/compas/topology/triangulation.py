@@ -6,7 +6,7 @@ import random
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import add_vectors
-from compas.geometry import aabb
+from compas.geometry import bounding_box
 
 from compas.geometry import is_point_in_polygon_xy
 from compas.geometry import is_point_in_triangle_xy
@@ -82,7 +82,7 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
     def super_triangle(coords):
         centpt = centroid_points(coords)
-        bbpts  = aabb(coords)
+        bbpts  = bounding_box(coords)
         dis    = distance_point_point(bbpts[0], bbpts[2])
         dis    = dis * 300
         v1     = (0 * dis, 2 * dis, 0)
@@ -389,7 +389,7 @@ def trimesh_remesh(mesh,
 
     References
     ----------
-    * Botsch, M. & Kobbelt, L., 2004. A remeshing approach to multiresolution modeling.
+    * Botsch, M. & Koriented_bounding_boxelt, L., 2004. A remeshing approach to multiresolution modeling.
       Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
       Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457
 

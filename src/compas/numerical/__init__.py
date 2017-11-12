@@ -16,7 +16,7 @@ Algorithms
 
     dr
     dr_numpy
-    drx
+    drx_numpy
     fd_numpy
     pca_numpy
 
