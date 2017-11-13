@@ -5,6 +5,7 @@ from numba import float64
 from numba import int64
 from numba import jit
 
+from numpy import array
 from numpy import sqrt
 from numpy import sum
 from numpy import zeros
@@ -577,8 +578,6 @@ def multiply_matrix_vector_numba(A, b):
 
 if __name__ == "__main__":
 
-    from numpy import array
-
     u = array([1., 2., 3.])
     v = array([4., 5., 6.])
     c = array([[1., 2., 3.], [1., 1., 1.]])
@@ -623,6 +622,7 @@ if __name__ == "__main__":
 
     print(multiply_matrices_numba(e, f))
     print(multiply_matrix_vector_numba(e, d))
+
 #     print(vector_component_numba(u, v))
 #     print(vector_component_xy_numba(u, v))
 #     print(homogenise_vectors_numba(d,3))
