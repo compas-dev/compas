@@ -28,11 +28,11 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'devo'
+    'devo_numpy'
 ]
 
 
-def devo(fn, bounds, population, generations, limit=0, results=None, vectored=False, F=0.8, CR=0.9, polish=False,
+def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vectored=False, F=0.8, CR=0.9, polish=False,
          args=(), callback=None, **kwargs):
     """Call the Differential Evolution solver.
 
@@ -204,7 +204,7 @@ def devo(fn, bounds, population, generations, limit=0, results=None, vectored=Fa
 
 if __name__ == "__main__":
 
-    from compas.visualization.plotters.evoplotter import EvoPlotter
+    from compas.plotters.evoplotter import EvoPlotter
 
     def fn(u, *args):
         # Booth's function, fopt=0, uopt=(1, 3)
@@ -220,4 +220,4 @@ if __name__ == "__main__":
     evoplotter = EvoPlotter(generations=50, fmax=30, xaxis_div=25, yaxis_div=10, pointsize=0.1)
 
     bounds = [(-10, 10), (-15, 15)]
-    devo(fn, bounds, population=20, generations=50, polish=False, callback=callback, evoplotter=evoplotter)
+    devo_numpy(fn, bounds, population=20, generations=50, polish=False, callback=callback, evoplotter=evoplotter)

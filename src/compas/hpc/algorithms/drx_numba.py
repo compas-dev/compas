@@ -16,9 +16,9 @@ from compas.numerical import uvw_lengths
 from compas.numerical.algorithms.drx_numpy import _beam_data
 from compas.numerical.algorithms.drx_numpy import _create_arrays
 
-from compas.hpc.numba.geometry import numba_cross
-from compas.hpc.numba.geometry import numba_vdot
-from compas.hpc.numba.geometry import numba_length
+from compas.hpc import cross_vectors_numba
+from compas.hpc import dot_vectors_numba
+from compas.hpc import length_vector_numba
 
 
 from time import time
@@ -31,11 +31,11 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'numba_drx',
+    'drx_numba',
 ]
 
 
-def numba_drx(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
+def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
     """ Run Numba accelerated dynamic relaxation analysis.
 
     Parameters:
@@ -198,33 +198,33 @@ def drx_solver(tol, steps, factor, u, v, X, ks, l0, f0, ind_c, ind_t, rows, cols
                 Qa = Xi - Xs
                 Qb = Xf - Xi
                 Qc = Xf - Xs
-                Qn = numba_cross(Qa, Qb)
+                Qn = cross_vectors_numba(Qa, Qb)
                 mu = 0.5 * (Xf - Xs)
-                La = numba_length(Qa)
-                Lb = numba_length(Qb)
-                Lc = numba_length(Qc)
-                LQn = numba_length(Qn)
-                Lmu = numba_length(mu)
+                La = length_vector_numba(Qa)
+                Lb = length_vector_numba(Qb)
+                Lc = length_vector_numba(Qc)
+                LQn = length_vector_numba(Qn)
+                Lmu = length_vector_numba(mu)
                 a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
                 k = 2 * sin(a) / Lc
                 ex = Qn / LQn
                 ez = mu / Lmu
-                ey = numba_cross(ez, ex)
+                ey = cross_vectors_numba(ez, ex)
                 K = k * Qn / LQn
-                Kx = numba_vdot(K, ex) * ex
-                Ky = numba_vdot(K, ey) * ey
+                Kx = dot_vectors_numba(K, ex) * ex
+                Ky = dot_vectors_numba(K, ey) * ey
                 Mc = EIx[i] * Kx + EIy[i] * Ky
-                cma = numba_cross(Mc, Qa)
-                cmb = numba_cross(Mc, Qb)
-                ua = cma / numba_length(cma)
-                ub = cmb / numba_length(cmb)
-                c1 = numba_cross(Qa, ua)
-                c2 = numba_cross(Qb, ub)
-                Lc1 = numba_length(c1)
-                Lc2 = numba_length(c2)
+                cma = cross_vectors_numba(Mc, Qa)
+                cmb = cross_vectors_numba(Mc, Qb)
+                ua = cma / length_vector_numba(cma)
+                ub = cmb / length_vector_numba(cmb)
+                c1 = cross_vectors_numba(Qa, ua)
+                c2 = cross_vectors_numba(Qb, ub)
+                Lc1 = length_vector_numba(c1)
+                Lc2 = length_vector_numba(c2)
                 Ms = Mc[0]**2 + Mc[1]**2 + Mc[2]**2
-                Sa = ua * Ms * Lc1 / (La * numba_vdot(Mc, c1))
-                Sb = ub * Ms * Lc2 / (Lb * numba_vdot(Mc, c2))
+                Sa = ua * Ms * Lc1 / (La * dot_vectors_numba(Mc, c1))
+                Sb = ub * Ms * Lc2 / (Lb * dot_vectors_numba(Mc, c2))
                 S[inds[i], :] += Sa
                 S[indi[i], :] -= Sa + Sb
                 S[indf[i], :] += Sb

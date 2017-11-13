@@ -13,57 +13,61 @@ hpc
     For now, don't use it for anything important :)
 
 
+algorithms
+==========
+
+.. autosummary::
+    :toctree: generated/
+
+    drx_numba
+
+
+geometry
+========
+
+.. autosummary::
+    :toctree: generated/
+
+    sum_vectors_numba
+    norm_vector_numba
+    norm_vectors_numba
+    length_vector_numba
+    length_vector_xy_numba
+    length_vector_sqrd_numba
+    length_vector_sqrd_xy_numba
+    scale_vector_numba
+    scale_vector_xy_numba
+    scale_vectors_numba
+    scale_vectors_xy_numba
+    normalize_vector_numba
+    normalize_vector_xy_numba
+    normalize_vectors_numba
+    normalize_vectors_xy_numba
+    power_vector_numba
+    power_vectors_numba
+    square_vector_numba
+    square_vectors_numba
+    add_vectors_numba
+    add_vectors_xy_numba
+    subtract_vectors_numba
+    subtract_vectors_xy_numba
+    multiply_vectors_numba
+    multiply_vectors_xy_numba
+    divide_vectors_numba
+    divide_vectors_xy_numba
+    cross_vectors_numba
+    cross_vectors_xy_numba
+    dot_vectors_numba
+    dot_vectors_xy_numba
+    multiply_matrices_numba
+    multiply_matrix_vector_numba
+
+
 cuda
 ====
 
 .. autosummary::
     :toctree: generated/
-
-    cuda_diag
-    cuda_eye
-    cuda_get
-    cuda_give
-    cuda_ones
-    cuda_random
-    cuda_real
-    cuda_reshape
-    cuda_flatten
-    cuda_tile
-    cuda_zeros
-    cuda_conj
-    cuda_cross
-    cuda_det
-    cuda_dot
-    cuda_eig
-    cuda_hermitian
-    cuda_inv
-    cuda_normrow
-    cuda_pinv
-    cuda_svd
-    cuda_trace
-    cuda_transpose
-    cuda_abs
-    cuda_argmax
-    cuda_argmin
-    cuda_acos
-    cuda_asin
-    cuda_atan
-    cuda_ceil
-    cuda_cos
-    cuda_cosh
-    cuda_exp
-    cuda_floor
-    cuda_log
-    cuda_max
-    cuda_min
-    cuda_mean
-    cuda_sin
-    cuda_sinh
-    cuda_sqrt
-    cuda_sum
-    cuda_tan
-    cuda_tanh
-    cuda_device
 
 
 euler
@@ -87,20 +91,6 @@ euler
     sync_folder_to_euler
 
 
-numba
-=====
-
-.. autosummary::
-    :toctree: generated/
-
-    numba_devo
-    numba_drx
-    numba_cross
-    numba_vdot
-    numba_dot
-    numba_length
-
-
 opencl
 ======
 
@@ -110,14 +100,12 @@ opencl
 
 """
 
-from .cuda import *
-from .numba import *
-# from .opencl import *
+from .geometry import *
 from .euler import *
+from .algorithms import *
 
-from .cuda import __all__ as a
-from .numba import __all__ as b
-# from .opencl import __all__ as c
-from .euler import __all__ as d
+from .geometry import __all__ as a
+from .euler import __all__ as b
+from .algorithms import __all__ as c
 
-__all__ = a + b  + d
+__all__ = a + b + c
