@@ -30,9 +30,9 @@ import importlib
 
 import json
 try:
-    import cStringIO
+    from cStringIO import StringIO
 except:
-    import io
+    from io import StringIO
 import cProfile
 import pstats
 import traceback
@@ -72,10 +72,7 @@ try:
 
     profile.disable()
 
-    try:
-        stream = cStringIO.StringIO()
-    except:
-        stream = io.StringIO()
+    stream = StringIO()
     stats  = pstats.Stats(profile, stream=stream)
     stats.strip_dirs()
     stats.sort_stats(1)
