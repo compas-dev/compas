@@ -1,8 +1,8 @@
 from .descent import descent
-from .devo import devo
+from .devo_numpy import devo_numpy
 from .ga import ga
 from .lma import lma
 from .mma import mma
 from .moga import moga
 
-__all__ = ['descent', 'devo', 'ga', 'lma', 'mma', 'moga']
+__all__ = ['descent', 'devo_numpy', 'ga', 'lma', 'mma', 'moga']

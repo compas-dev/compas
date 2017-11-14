@@ -29,7 +29,10 @@ import sys
 import importlib
 
 import json
-import cStringIO
+try:
+    from cStringIO import StringIO
+except:
+    from io import StringIO
 import cProfile
 import pstats
 import traceback
@@ -69,7 +72,7 @@ try:
 
     profile.disable()
 
-    stream = cStringIO.StringIO()
+    stream = StringIO()
     stats  = pstats.Stats(profile, stream=stream)
     stats.strip_dirs()
     stats.sort_stats(1)
@@ -121,6 +124,7 @@ def test_xfunc(numiter=100, pause=0.1):
     for k in range(numiter):
         print(k)
         time.sleep(pause)
+    return 'test_xfunc_finished'
 
 
 def _xecute(funcname, basedir, tmpdir, delete_files, mode, callback, callback_args,
