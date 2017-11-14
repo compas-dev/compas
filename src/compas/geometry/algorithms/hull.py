@@ -174,10 +174,6 @@ def convex_hull_xy(points):
 def convex_hull_numpy(points):
     """Compute the convex hull of a set of points.
 
-    Warning
-    -------
-    This function requires Numpy ands Scipy.
-
     Parameters
     ----------
     points : list
@@ -188,6 +184,10 @@ def convex_hull_numpy(points):
     tuple
         Indices of the points on the hull.
         Faces of the hull.
+
+    Warning
+    -------
+    This function requires Numpy ands Scipy.
 
     Example
     -------

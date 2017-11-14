@@ -1,6 +1,24 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
+import sys
+
+try:
+    from numpy import array
+    from numpy import isnan
+    from numpy import isinf
+    from numpy import ones
+    from numpy import zeros
+    from scipy.linalg import norm
+    from scipy.sparse import diags
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
+
+from compas.numerical import connectivity_matrix
+from compas.numerical import normrow
+
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>']
 __copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
@@ -141,15 +159,6 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         plotter.show()
 
     """
-    from numpy import array
-    from numpy import isnan
-    from numpy import isinf
-    from numpy import ones
-    from numpy import zeros
-    from scipy.linalg import norm
-    from scipy.sparse import diags
-    from compas.numerical import connectivity_matrix
-    from compas.numerical import normrow
     # --------------------------------------------------------------------------
     # callback
     # --------------------------------------------------------------------------

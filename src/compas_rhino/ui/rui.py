@@ -232,10 +232,17 @@ def update_macro(macros, name, key, value):
 
 
 class Rui(object):
+    """Class for generating *.rui files.
 
-    def __init__(self, filepath, **config):
+    Parameters
+    ----------
+    filepath : str
+        Path to the *.rui file.
+
+    """
+
+    def __init__(self, filepath):
         self.filepath = filepath
-        self.config = config
         self.macros = {}
         self.toolbars = {}
         self.xml = None
@@ -357,14 +364,14 @@ class Rui(object):
         self.root_toolbars.append(e_tb)
         self.toolbars[toolbar['name']] = e_tb
         for item in toolbar['items']:
-            if item['type'] == 'normal':
+            if item.get('type', 'normal') == 'normal':
                 left_guid = None
-                left_macro = item.get('left_macro')
+                left_macro = item.get('left_macro', item.get('left'))
                 if left_macro:
                     e_left = self.macros[left_macro]
                     left_guid  = e_left.attrib['guid']
                 right_guid = None
-                right_macro = item.get('right_macro')
+                right_macro = item.get('right_macro', item.get('right'))
                 if right_macro:
                     e_right    = self.macros[right_macro]
                     right_guid = e_right.attrib['guid']

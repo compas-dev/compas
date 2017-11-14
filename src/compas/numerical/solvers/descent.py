@@ -1,18 +1,28 @@
-from numpy import array
-from numpy import eye
-from numpy import finfo
-from numpy import float64
-from numpy import maximum
-from numpy import mean
-from numpy import newaxis
-from numpy import ones
-from numpy import reshape
-from numpy import sqrt
-from numpy import sum
-from numpy import zeros
+from __future__ import print_function
+from __future__ import absolute_import
 
-eps = finfo(float64).eps
-e = sqrt(eps)
+import sys
+
+try:
+    from numpy import array
+    from numpy import eye
+    from numpy import finfo
+    from numpy import float64
+    from numpy import maximum
+    from numpy import mean
+    from numpy import newaxis
+    from numpy import ones
+    from numpy import reshape
+    from numpy import sqrt
+    from numpy import sum
+    from numpy import zeros
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
+else:
+    eps = finfo(float64).eps
+    e = sqrt(eps)
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']

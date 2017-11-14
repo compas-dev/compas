@@ -1,20 +1,27 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-from numpy import array
-from numpy import argmin
-from numpy import delete
-from numpy import eye
-from numpy import min
-from numpy import newaxis
-from numpy import reshape
-from numpy import tile
-from numpy import where
-from numpy import zeros
-from numpy.random import choice
-from numpy.random import rand
+import sys
 
-from scipy.optimize import fmin_l_bfgs_b
+try:
+    from numpy import array
+    from numpy import argmin
+    from numpy import delete
+    from numpy import eye
+    from numpy import min
+    from numpy import newaxis
+    from numpy import reshape
+    from numpy import tile
+    from numpy import where
+    from numpy import zeros
+    from numpy.random import choice
+    from numpy.random import rand
+
+    from scipy.optimize import fmin_l_bfgs_b
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 from time import time
 

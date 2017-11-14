@@ -44,6 +44,11 @@ This package provides an object-oriented interface to the above functionality.
     Spline
     Surface
 
+.. autosummary::
+    :toctree: generated/
+
+    KDTree
+
 
 Algorithms
 ==========
@@ -188,8 +193,7 @@ Functions
     pointcloud_xy
 
 
-Distance
---------
+**Distance**
 
 .. autosummary::
     :toctree: generated/
@@ -214,8 +218,7 @@ Distance
     distance_point_point_sqrd
     distance_point_point_sqrd_xy
 
-Angles
-------
+**Angles**
 
 .. note::
 
@@ -243,8 +246,7 @@ Angles
     angles_vectors_degrees_xy
 
 
-Average
--------
+**Average**
 
 .. autosummary::
     :toctree: generated/
@@ -260,8 +262,7 @@ Average
     midpoint_point_point_xy
 
 
-Orientation
------------
+**Orientation**
 
 .. autosummary::
     :toctree: generated/
@@ -271,8 +272,7 @@ Orientation
     normal_triangle_xy
 
 
-Queries
--------
+**Queries**
 
 .. autosummary::
     :toctree: generated/
@@ -306,8 +306,7 @@ Queries
     is_point_in_triangle_xy
 
 
-Intersections
--------------
+**Intersections**
 
 .. autosummary::
     :toctree: generated/
@@ -325,8 +324,7 @@ Intersections
     intersection_segment_plane
 
 
-Size
-----
+**Size**
 
 .. autosummary::
     :toctree: generated/
@@ -338,8 +336,7 @@ Size
     volume_polyhedron
 
 
-Transformations
----------------
+**Transformations**
 
 .. autosummary::
     :toctree: generated/

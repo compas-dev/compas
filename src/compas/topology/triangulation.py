@@ -553,86 +553,80 @@ def trimesh_remesh(mesh,
 
 if __name__ == "__main__":
 
-    from compas.datastructures import Mesh
-    from compas.geometry import pointcloud_xy
-    from compas.plotters import MeshPlotter
+    testrun = 2
 
-    points = pointcloud_xy(10, (0, 10))
-    faces = delaunay_from_points(points)
-    mesh = Mesh.from_vertices_and_faces(points, faces)
+    if testrun == 1:
+        from compas.datastructures import Mesh
+        from compas.geometry import pointcloud_xy
+        from compas.plotters import MeshPlotter
 
-    trimesh_remesh(mesh, 1.0, kmax=300, allow_boundary_split=True)
+        points = pointcloud_xy(10, (0, 10))
+        faces = delaunay_from_points(points)
+        mesh = Mesh.from_vertices_and_faces(points, faces)
 
-    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+        trimesh_remesh(mesh, 1.0, kmax=300, allow_boundary_split=True)
 
-    # points = [[0, 0, 0],
-    #           [1, 0, 0],
-    #           [2, 0, 0],
-    #           [0, 1, 0],
-    #           [1, 1, 0],
-    #           [2, 1, 0],
-    #           [0, 2, 0],
-    #           [1, 2, 0],
-    #           [2, 2, 0]]
+        points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
 
-    faces = delaunay_from_points(points)
-    mesh = Mesh.from_vertices_and_faces(points, faces)
+        faces = delaunay_from_points(points)
+        mesh = Mesh.from_vertices_and_faces(points, faces)
 
-    voronoi  = voronoi_from_delaunay(mesh)
+        voronoi  = voronoi_from_delaunay(mesh)
 
-    lines = []
-    for u, v in voronoi.edges():
-        lines.append({
-            'start': voronoi.vertex_coordinates(u, 'xy'),
-            'end'  : voronoi.vertex_coordinates(v, 'xy'),
-            'width': 1.0
-        })
+        lines = []
+        for u, v in voronoi.edges():
+            lines.append({
+                'start': voronoi.vertex_coordinates(u, 'xy'),
+                'end'  : voronoi.vertex_coordinates(v, 'xy'),
+                'width': 1.0
+            })
 
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
+        plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-    plotter.draw_lines(lines)
+        plotter.draw_lines(lines)
 
-    plotter.draw_vertices(
-        radius=0.075,
-        facecolor={key: '#0092d2' for key in mesh.vertices() if key not in mesh.vertices_on_boundary()})
+        plotter.draw_vertices(
+            radius=0.075,
+            facecolor={key: '#0092d2' for key in mesh.vertices() if key not in mesh.vertices_on_boundary()})
 
-    plotter.draw_edges(color='#cccccc')
+        plotter.draw_edges(color='#cccccc')
 
-    plotter.show()
+        plotter.show()
 
-    # from compas.datastructures import Mesh
-    # from compas.plotters import MeshPlotter
-    # from compas.geometry import mesh_smooth_area
+    if testrun == 2:
+        from compas.datastructures import Mesh
+        from compas.plotters import MeshPlotter
+        from compas.geometry import mesh_smooth_area
 
-    # vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (10.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
-    # faces = [[0, 1, 2, 3]]
+        vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (10.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
+        faces = [[0, 1, 2, 3]]
 
-    # mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-    # key = mesh.insert_vertex(0)
-    # fixed = [key]
+        key = mesh.insert_vertex(0)
+        fixed = [key]
 
-    # plotter = MeshPlotter(mesh, figsize=(10, 7))
+        plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-    # plotter.draw_edges(width=0.5)
+        plotter.draw_edges(width=0.5)
 
-    # def callback(mesh, k, args):
-    #     print(k)
-    #     plotter.update_edges()
-    #     plotter.update()
+        def callback(mesh, k, args):
+            print(k)
+            plotter.update_edges()
+            plotter.update()
 
-    # trimesh_remesh(
-    #     mesh,
-    #     1.0,
-    #     kmax=200,
-    #     allow_boundary_split=True,
-    #     allow_boundary_swap=True,
-    #     allow_boundary_collapse=False,
-    #     fixed=fixed,
-    #     callback=callback)
+        trimesh_remesh(
+            mesh,
+            1.0,
+            kmax=200,
+            allow_boundary_split=True,
+            allow_boundary_swap=True,
+            allow_boundary_collapse=False,
+            fixed=fixed,
+            callback=callback)
 
-    # mesh_smooth_area(mesh, fixed=mesh.vertices_on_boundary())
+        mesh_smooth_area(mesh, fixed=mesh.vertices_on_boundary())
 
-    # plotter.update_edges()
-    # plotter.update(pause=2.0)
-    # plotter.show()
+        plotter.update_edges()
+        plotter.update(pause=2.0)
+        plotter.show()

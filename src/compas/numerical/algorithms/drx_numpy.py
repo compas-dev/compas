@@ -1,22 +1,30 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-from numpy import arccos
-from numpy import array
-from numpy import cross
-from numpy import int64
-from numpy import isnan
-from numpy import mean
-from numpy import newaxis
-from numpy import sin
-from numpy import sum
-from numpy import tile
-from numpy import zeros
+import sys
+
+try:
+    from numpy import arccos
+    from numpy import array
+    from numpy import cross
+    from numpy import int64
+    from numpy import isnan
+    from numpy import mean
+    from numpy import newaxis
+    from numpy import sin
+    from numpy import sum
+    from numpy import tile
+    from numpy import zeros
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import mass_matrix
 from compas.numerical import normrow
 from compas.numerical import uvw_lengths
+
 
 from time import time
 
@@ -51,53 +59,126 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
 
     Example:
 
-    .. plot::
-        :include-source:
+        .. plot::
 
-        import compas
-        from compas.datastructures import Network
-        from compas.plotters import NetworkPlotter
-        from compas.numerical import drx_numpy
-        from compas.utilities import i_to_rgb
+            import compas
+            from compas.datastructures import Network
+            from compas.plotters import NetworkPlotter
+            from compas.numerical import drx_numpy
+            from compas.utilities import i_to_rgb
 
-        from numpy import linspace
+            from numpy import linspace
 
-        L0 = 1
-        L = 1.5
-        n = 40
-        EI = 0.2
-        pins = [0, 5, 20, n - 5]
+            L0 = 1
+            L = 1.5
+            n = 40
+            EI = 0.2
+            pins = [0, 5, 20, n - 5]
 
-        # Network
+            # Network
 
-        vertices = [[i, i, 0] for i in list(linspace(0, L0, n))]
-        edges = [[i, i + 1] for i in range(n - 1)]
+            vertices = [[i, i, 0] for i in list(linspace(0, L0, n))]
+            edges = [[i, i + 1] for i in range(n - 1)]
 
-        network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-        network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, -2, 0], 'EIx': EI, 'EIy': EI})
-        network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
-        network.set_vertices_attributes(pins, {'B': [0, 0, 0], 'is_fixed': True})
-        network.beams = {'beam': {'nodes': list(range(n))}}
+            network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+            network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, -2, 0], 'EIx': EI, 'EIy': EI})
+            network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+            network.set_vertices_attributes(pins, {'B': [0, 0, 0], 'is_fixed': True})
+            network.beams = {'beam': {'nodes': list(range(n))}}
 
-        # Plotter
+            # Plotter
 
-        plotter = NetworkPlotter(network, figsize=(10, 7))
-        lines = []
-        for u, v in network.edges():
-            lines.append({
-                'start': network.vertex_coordinates(u, 'xy'),
-                'end'  : network.vertex_coordinates(v, 'xy'),
-                'color': '#cccccc',
-                'width': 1.0})
-        plotter.draw_lines(lines)
-        plotter.draw_vertices(radius=0.005, facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
-        plotter.draw_edges()
+            plotter = NetworkPlotter(network)
 
-        # Solver
+            lines = []
+            for u, v in network.edges():
+                lines.append({
+                    'start': network.vertex_coordinates(u, 'xy'),
+                    'end'  : network.vertex_coordinates(v, 'xy'),
+                    'color': '#cccccc',
+                    'width': 1.0})
 
-        drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=True)
+            plotter.draw_lines(lines)
 
-        plotter.show()
+            # Solver
+
+            drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=True)
+
+            # Result
+
+            plotter.draw_vertices(radius=0.005, facecolor={key: '#ff0000' for key in pins})
+            plotter.draw_edges()
+
+            plotter.show()
+
+
+        .. code-block:: python
+
+            # This code block produces a dynamic visualization
+            # of the figure above using a callback function.
+
+            import compas
+            from compas.datastructures import Network
+            from compas.plotters import NetworkPlotter
+            from compas.numerical import drx_numpy
+            from compas.utilities import i_to_rgb
+
+            from numpy import linspace
+
+            # Callback
+
+            def plot_iterations(X, radius=0.005):
+
+                for i in network.vertices():
+                    x, y, z = X[i, :]
+                    network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
+
+                plotter.update_vertices(radius)
+                plotter.update_edges()
+                plotter.update(pause=0.01)
+
+            # Setup
+
+            L0 = 1
+            L = 1.5
+            n = 40
+            EI = 0.2
+            pins = [0, 5, 20, n - 5]
+
+            # Network
+
+            vertices = [[i, i, 0] for i in list(linspace(0, L0, n))]
+            edges = [[i, i + 1] for i in range(n - 1)]
+
+            network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+            network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, -2, 0], 'EIx': EI, 'EIy': EI})
+            network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+            network.set_vertices_attributes(pins, {'B': [0, 0, 0], 'is_fixed': True})
+            network.beams = {'beam': {'nodes': list(range(n))}}
+
+            # Plotter
+
+            plotter = NetworkPlotter(network, figsize=(10, 7))
+
+            # Initial configuration
+
+            lines = []
+            for u, v in network.edges():
+                lines.append({
+                    'start': network.vertex_coordinates(u, 'xy'),
+                    'end'  : network.vertex_coordinates(v, 'xy'),
+                    'color': '#cccccc',
+                    'width': 1.0})
+
+            plotter.draw_lines(lines)
+            plotter.draw_vertices(radius=0.005, facecolor={key: '#ff0000' for key in pins})
+            plotter.draw_edges()
+
+            # Solver with dynamic visualization
+
+            drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=True, callback=plot_iterations)
+
+            plotter.show()
 
     """
 
@@ -490,6 +571,7 @@ if __name__ == "__main__":
     # Plotter
 
     plotter = NetworkPlotter(network, figsize=(10, 7))
+
     lines = []
     for u, v in network.edges():
         lines.append({
@@ -497,7 +579,9 @@ if __name__ == "__main__":
             'end'  : network.vertex_coordinates(v, 'xy'),
             'color': '#cccccc',
             'width': 1.0})
+
     plotter.draw_lines(lines)
+
     plotter.draw_vertices(radius=0.005, facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
@@ -506,4 +590,3 @@ if __name__ == "__main__":
     drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=True, callback=plot_iterations)
 
     plotter.show()
-

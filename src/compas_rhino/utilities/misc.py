@@ -17,6 +17,11 @@ except ImportError:
     if platform.python_implementation() == 'IronPython':
         raise
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
@@ -197,7 +202,7 @@ def update_settings(settings, message='', title='Update settings'):
         for name, value in list(zip(names, values)):
             try:
                 settings[name] = ast.literal_eval(value)
-            except (TypeError, ValueError):
+            except (TypeError, ValueError, SyntaxError):
                 settings[name] = value
         return True
     return False

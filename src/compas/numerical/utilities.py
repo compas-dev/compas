@@ -1,4 +1,14 @@
-from numpy import set_printoptions
+from __future__ import print_function
+from __future__ import absolute_import
+
+import sys
+
+try:
+    from numpy import set_printoptions
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
