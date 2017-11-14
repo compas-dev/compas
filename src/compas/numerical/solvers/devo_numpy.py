@@ -40,7 +40,7 @@ __all__ = [
 
 
 def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vectored=False, F=0.8, CR=0.9, polish=False,
-         args=(), callback=None, **kwargs):
+               args=(), callback=None, **kwargs):
     """Call the Differential Evolution solver.
 
     Note:
