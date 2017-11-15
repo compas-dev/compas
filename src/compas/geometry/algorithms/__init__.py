@@ -9,6 +9,7 @@ from .parallelisation import *
 from .planarisation import *
 from .purging import *
 from .smoothing import *
+from .smoothing_cpp import *
 
 from .bbox import __all__ as a
 from .bestfit import __all__ as b
@@ -21,5 +22,6 @@ from .parallelisation import __all__ as h
 from .planarisation import __all__ as i
 from .purging import __all__ as j
 from .smoothing import __all__ as k
+from .smoothing_cpp import __all__ as l
 
-__all__ = a + b + d + e + f + g + h + i + j + k
+__all__ = a + b + d + e + f + g + h + i + j + k + l
