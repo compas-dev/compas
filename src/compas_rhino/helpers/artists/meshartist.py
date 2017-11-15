@@ -58,7 +58,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, ArtistInterface):
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

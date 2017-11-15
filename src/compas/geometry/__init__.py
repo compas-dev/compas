@@ -12,16 +12,54 @@ geometry
     The functions in this package expect input arguments to be structured in a certain
     way.
 
-    - **point** -- The xyz coordinates as a sequence of floats.
-    - **vector** -- The xyz coordinates of the end point. The start is always the origin.
-    - **line** -- A tuple with two points representing a continuous line (ray).
-    - **segment** -- A tuple with two points representing a line segment.
-    - **plane** -- A tuple with a base point and normal vector.
-    - **circle** -- A tuple with a point the normal vector of the plane of the circle and the radius as float.
-    - **polygon** -- A sequence of points. First and last are not the same. The polygon is assumed closed.
-    - **polyline** -- A sequence of points. First and last are the same if the polyline is closed. Otherwise it is assumed open.
-    - **polyhedron** -- A list of vertices represented by their XYZ coordinates and a list of faces referencing the vertex list.
-    - **frame** -- A list of three orthonormal vectors.
+    - **point**: The xyz coordinates as a sequence of floats.
+    - **vector**: The xyz coordinates of the end point. The start is always the origin.
+    - **line**: A tuple with two points representing a continuous line (ray).
+    - **segment**: A tuple with two points representing a line segment.
+    - **plane**: A tuple with a base point and normal vector.
+    - **circle**: A tuple with a point the normal vector of the plane of the circle and the radius as float.
+    - **polygon**: A sequence of points. First and last are not the same. The polygon is assumed closed.
+    - **polyline**: A sequence of points. First and last are the same if the polyline is closed. Otherwise it is assumed open.
+    - **polyhedron**: A list of vertices represented by their XYZ coordinates and a list of faces referencing the vertex list.
+    - **frame**: A list of three orthonormal vectors.
+
+
+Algorithms
+==========
+
+.. autosummary::
+    :toctree: generated/
+
+    bestfit_plane
+    bestfit_plane_numpy
+    bestfit_circle_numpy
+    bounding_box
+    bounding_box_xy
+    convex_hull
+    convex_hull_xy
+    convex_hull_numpy
+    convex_hull_xy_numpy
+    discrete_coons_patch
+    flatness
+    mesh_circularize_faces_shapeop
+    mesh_contours_numpy
+    mesh_cull_duplicate_vertices
+    mesh_flatness
+    mesh_isolines_numpy
+    mesh_planarize_faces
+    mesh_planarize_faces_shapeop
+    mesh_smooth_centroid
+    network_parallelise_edges
+    network_smooth_centroid
+    network_smooth_resultant
+    oriented_bounding_box_numpy
+    oriented_bounding_box_xy_numpy
+    planarize_faces
+    scalarfield_contours_numpy
+    smooth_area
+    smooth_centroid
+    smooth_centerofmass
+    smooth_resultant
 
 
 Classes
@@ -50,94 +88,6 @@ This package provides an object-oriented interface to the above functionality.
     KDTree
 
 
-Algorithms
-==========
-
-**bounding box**
-
-.. autosummary::
-    :toctree: generated/
-
-    bounding_box
-    bounding_box_xy
-    oriented_bounding_box_numpy
-    oriented_bounding_box_xy_numpy
-
-**fitting**
-
-.. autosummary::
-    :toctree: generated/
-
-    bestfit_plane
-    bestfit_plane_numpy
-    bestfit_circle_numpy
-
-**convex hull**
-
-.. autosummary::
-    :toctree: generated/
-
-    convex_hull
-    convex_hull_xy
-    convex_hull_numpy
-    convex_hull_xy_numpy
-
-**interpolation**
-
-.. autosummary::
-    :toctree: generated/
-
-    discrete_coons_patch
-
-**isolines**
-
-.. autosummary::
-    :toctree: generated/
-
-    scalarfield_contours_numpy
-    mesh_contours_numpy
-    mesh_isolines_numpy
-
-**parallelisation**
-
-.. autosummary::
-    :toctree: generated/
-
-    network_parallelise_edges
-
-**planarisation**
-
-.. autosummary::
-    :toctree: generated/
-
-    flatness
-    mesh_flatness
-    planarize_faces
-    mesh_planarize_faces
-    mesh_planarize_faces_shapeop
-    mesh_circularize_faces_shapeop
-
-**purging**
-
-.. autosummary::
-    :toctree: generated/
-
-    mesh_cull_duplicate_vertices
-
-**smoothing**
-
-.. autosummary::
-    :toctree: generated/
-
-    smooth_centroid
-    mesh_smooth_centroid
-    network_smooth_centroid
-    smooth_centerofmass
-    smooth_area
-    smooth_resultant
-    network_smooth_resultant
-
-
 Functions
 =========
 
@@ -146,6 +96,7 @@ Functions
 
     add_vectors
     add_vectors_xy
+    sum_vectors
     cross_vectors
     cross_vectors_xy
     divide_vectors
@@ -166,6 +117,7 @@ Functions
     normalize_vector_xy
     normalize_vectors
     normalize_vectors_xy
+    orthonormalise_vectors
     power_vector
     power_vectors
     scale_vector
@@ -176,7 +128,6 @@ Functions
     square_vectors
     subtract_vectors
     subtract_vectors_xy
-    sum_vectors
     transpose_matrix
     vector_component
     vector_component_xy

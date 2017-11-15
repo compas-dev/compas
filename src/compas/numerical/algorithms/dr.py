@@ -4,6 +4,7 @@ from __future__ import absolute_import
 from copy import deepcopy
 
 from compas.geometry import norm_vectors
+from compas.topology import adjacency_from_edges
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>']
@@ -345,11 +346,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
     # i_nbrs = {i: [ij[1] if ij[0] == i else ij[0] for ij in edges if i in ij] for i in range(n)}
 
-    i_nbrs = {i: [] for i in range(n)}
-
-    for i, j in iter(edges):
-        i_nbrs[i].append(j)
-        i_nbrs[j].append(i)
+    i_nbrs = adjacency_from_edges(edges)
 
     ij_e   = {(i, j): index for index, (i, j) in enumerate(edges)}
     ij_e.update({(j, i): index for (i, j), index in ij_e.items()})
@@ -464,7 +461,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

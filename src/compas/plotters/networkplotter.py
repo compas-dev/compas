@@ -264,7 +264,7 @@ class NetworkPlotter(Plotter):
         self.edgecollection.set_segments(segments)
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

@@ -206,7 +206,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

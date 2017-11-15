@@ -27,7 +27,8 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'dr_numpy'
+    'dr_numpy',
+    'dr_numpy_xfunc'
 ]
 
 
@@ -44,6 +45,40 @@ class Coeff():
         self.c = c
         self.a = (1 - c * 0.5) / (1 + c * 0.5)
         self.b = 0.5 * (1 + self.a)
+
+
+def dr_numpy_xfunc(network):
+    from compas.datastructures import Network
+
+    network = Network.from_data(network)
+
+    vertices = network.get_vertices_attributes(('x', 'y', 'z'))
+    edges    = list(network.edges())
+    fixed    = network.vertices_where({'is_fixed': True})
+    loads    = network.get_vertices_attributes(('px', 'py', 'pz'))
+    qpre     = network.get_edges_attribute('qpre')
+    fpre     = network.get_edges_attribute('fpre')
+    lpre     = network.get_edges_attribute('lpre')
+    linit    = network.get_edges_attribute('linit')
+    E        = network.get_edges_attribute('E')
+    radius   = network.get_edges_attribute('radius')
+
+    x, q, f, l, r = dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius)
+
+    for key, attr in network.vertices(True):
+        attr['x']  = x[key, 0]
+        attr['y']  = x[key, 1]
+        attr['z']  = x[key, 2]
+        attr['rx'] = r[key, 0]
+        attr['ry'] = r[key, 1]
+        attr['rz'] = r[key, 2]
+
+    for index, (u, v, attr) in enumerate(network.edges(True)):
+        attr['q'] = f[index, 0]
+        attr['f'] = f[index, 0]
+        attr['l'] = l[index, 0]
+
+    return network.to_data()
 
 
 def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
@@ -257,6 +292,8 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # start iterating
     # --------------------------------------------------------------------------
     for k in range(kmax):
+        print(k)
+
         q_fpre = fpre / l
         q_lpre = f / lpre
         q_EA   = EA * (l - linit) / (linit * l)
@@ -296,7 +333,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

@@ -83,7 +83,7 @@ def normalize_values(l, new_min=0.0, new_max=1.0):
     return [(((item - old_min) * new_range) / old_range) + new_min for item in l]
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":
