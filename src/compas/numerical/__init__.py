@@ -29,7 +29,7 @@ Solvers
     :nosignatures:
 
     descent
-    devo
+    devo_numpy
     ga
     lma
     mma

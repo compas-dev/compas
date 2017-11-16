@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>
-#include <array>
 #include <vector>
 
 // cd _smoothing_cpp
@@ -19,12 +14,13 @@ extern "C"
 
 void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback_smoothing func) 
 {
-    int i, j, n, k;
+    int k;
+    int i;
+    int j, n;
     double cx, cy, cz;
     double c;
 
     vector< vector<double> > xyz(v, vector<double>(3, 0.0));
-
 
     for (k = 0; k < kmax; k++) {
 
@@ -35,11 +31,14 @@ void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neig
         }
 
         for (i = 0; i < v; i++) {
+
+            if (fixed[i]) {
+                continue;
+            }
+
             cx = 0.0;
             cy = 0.0;
             cz = 0.0;
-
-            c = 0.0;
 
             for (j = 0; j < nbrs[i]; j++) {
                 n = neighbours[i][j];
@@ -47,15 +46,11 @@ void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neig
                 cx += xyz[n][0];
                 cy += xyz[n][1];
                 cz += xyz[n][2];
-
-                c += 1.0;
             }
 
-            if (! fixed[i]) {
-                vertices[i][0] = cx / c;
-                vertices[i][1] = cy / c;
-                vertices[i][2] = cz / c;
-            }
+            vertices[i][0] = cx / nbrs[i];
+            vertices[i][1] = cy / nbrs[i];
+            vertices[i][2] = cz / nbrs[i];
         }
 
         func(k);

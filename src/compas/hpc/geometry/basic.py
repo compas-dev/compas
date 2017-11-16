@@ -18,7 +18,7 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'sum_vectors_numba',
+    # 'sum_vectors_numba',
     'norm_vector_numba',
     'norm_vectors_numba',
     'length_vector_numba',
@@ -69,18 +69,19 @@ __all__ = [
 
 # ==============================================================================
 
-@jit(float64[:](float64[:, :], int64), nogil=True, nopython=True)
-def sum_vectors_numba(a, axis=0):
-    """ Calculate the sum of an array of vectors along the specified axis.
 
-    Parameters:
-        a (array): Array of vectors (m x 3).
-        axis (int): Dimension to sum through.
+# @jit(float64[:](float64[:, :], int64), nogil=True, nopython=True)
+# def sum_vectors_numba(a, axis=0):
+#     """ Calculate the sum of an array of vectors along the specified axis.
 
-    Returns:
-        array: The summed values according to the axis of choice.
-    """
-    return sum(a, axis=axis)
+#     Parameters:
+#         a (array): Array of vectors (m x 3).
+#         axis (int): Dimension to sum through.
+
+#     Returns:
+#         array: The summed values according to the axis of choice.
+#     """
+#     return sum(a, axis=axis)
 
 
 @jit(float64(float64[:]), nogil=True, nopython=True)
@@ -166,6 +167,7 @@ def length_vector_sqrd_xy_numba(a):
 
 
 # ==============================================================================
+
 
 @jit(float64[:](float64[:], float64), nogil=True, nopython=True)
 def scale_vector_numba(a, factor):
@@ -356,6 +358,7 @@ def square_vectors_numba(a):
 
 # ==============================================================================
 
+
 @jit(float64[:](float64[:], float64[:]), nogil=True, nopython=True)
 def add_vectors_numba(u, v):
     """ Add two vectors.
@@ -470,6 +473,7 @@ def divide_vectors_xy_numba(u, v):
 
 # ==============================================================================
 
+
 @jit(float64[:](float64[:], float64[:]), nogil=True, nopython=True)
 def cross_vectors_numba(u, v):
     """ Compute the cross product of two vectors.
@@ -532,6 +536,7 @@ def dot_vectors_xy_numba(u, v):
 
 # ==============================================================================
 
+
 @jit(float64[:, :](float64[:, :], float64[:, :]), nogil=True, nopython=True)
 def multiply_matrices_numba(A, B):
     """ The multiplication of matrices.
@@ -585,7 +590,7 @@ if __name__ == "__main__":
     e = array([[1., 2.], [0., 2.]])
     f = array([[4., 5.], [1., 2.]])
 
-    print(sum_vectors_numba(c, axis=1))
+    # print(sum_vectors_numba(c, axis=1))
     print(norm_vector_numba(u))
     print(norm_vectors_numba(c))
     print(length_vector_numba(u))
