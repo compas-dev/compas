@@ -5,6 +5,8 @@
 #include <array>
 #include <vector>
 
+// g++ -shared -fPIC src/main.cpp -o smoothing.so
+
 using namespace std;
 
 extern "C"

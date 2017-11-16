@@ -27,7 +27,7 @@ __all__ = [
 ]
 
 
-def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None):
+def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, callback_args=None):
     """
     """
     try:
@@ -58,6 +58,13 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None):
     c_neighbours = Array2D(neighbours, 'int')
     c_callback = CFUNCTYPE(None, c_int)
 
+    mesh, plotter = callback_args
+
+    def wrapper(k):
+        print(k)
+        xyz = c_vertices.pydata
+        callback(xyz)
+
     smooth_centroid.smooth_centroid.argtypes = [
         c_int,
         c_nbrs.ctype,
@@ -75,7 +82,7 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None):
         c_vertices.cdata,
         c_neighbours.cdata,
         c_int(kmax),
-        c_callback(callback)
+        c_callback(wrapper)
     )
 
     return c_vertices.pydata
@@ -97,9 +104,7 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    dva = {
-        'is_fixed': False,
-    }
+    dva = {'is_fixed': False, }
 
     mesh.update_default_vertex_attributes(dva)
 
@@ -116,22 +121,23 @@ if __name__ == "__main__":
     fixed     = list(mesh.vertices_where({'is_fixed': True}))
     adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
 
+    v = len(vertices)
+
     # make a plotter for (dynamic) visualization
     # and define a callback function
     # for plotting the intermediate configurations
 
     plotter = MeshPlotter(mesh, figsize=(10, 6))
 
-    def callback(k):
-        print(k)
-        # plotter.update_vertices()
-        # plotter.update_edges()
-        # plotter.update(pause=0.001)
+    def callback(xyz):
+        plotter.update_vertices()
+        plotter.update_edges()
+        plotter.update(pause=0.001)
 
-        # for key, attr in mesh.vertices(True):
-        #     attr['x'] = float(xyz[key][0])
-        #     attr['y'] = xyz[key][1]
-        #     attr['z'] = xyz[key][2]
+        for key, attr in mesh.vertices(True):
+            attr['x'] = xyz[key][0]
+            attr['y'] = xyz[key][1]
+            attr['z'] = xyz[key][2]
 
     # plot the lines of the original configuration of the mesh
     # as a reference
@@ -153,11 +159,11 @@ if __name__ == "__main__":
     plotter.draw_vertices(facecolor={key: '#000000' for key in mesh.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
-    plotter.update(pause=1.0)
+    plotter.update(pause=0.5)
 
     # run the dynamic relaxation
 
-    xyz = smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=callback)
+    xyz = smooth_centroid_cpp(vertices, adjacency, fixed, kmax=50, callback=callback, callback_args=(mesh, plotter))
 
     # update vertices and edges to reflect the end result
 
