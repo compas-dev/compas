@@ -58,12 +58,9 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
     c_neighbours = Array2D(neighbours, 'int')
     c_callback = CFUNCTYPE(None, c_int)
 
-    mesh, plotter = callback_args
-
     def wrapper(k):
         print(k)
-        xyz = c_vertices.pydata
-        callback(xyz)
+        callback(c_vertices.pydata)
 
     smooth_centroid.smooth_centroid.argtypes = [
         c_int,
@@ -163,22 +160,8 @@ if __name__ == "__main__":
 
     # run the dynamic relaxation
 
-    xyz = smooth_centroid_cpp(vertices, adjacency, fixed, kmax=50, callback=callback, callback_args=(mesh, plotter))
-
-    # update vertices and edges to reflect the end result
-
-    for key, attr in mesh.vertices(True):
-        attr['x'] = xyz[key][0]
-        attr['y'] = xyz[key][1]
-        attr['z'] = xyz[key][2]
+    xyz = smooth_centroid_cpp(vertices, adjacency, fixed, kmax=50, callback=callback)
 
     # # visualize the final geometry
 
-    plotter.clear_vertices()
-    plotter.clear_edges()
-
-    plotter.draw_vertices(facecolor={key: '#000000' for key in mesh.vertices_where({'is_fixed': True})})
-    plotter.draw_edges()
-
-    plotter.update(pause=1.0)
     plotter.show()
