@@ -28,7 +28,6 @@ geometry
 .. autosummary::
     :toctree: generated/
 
-    sum_vectors_numba
     norm_vector_numba
     norm_vectors_numba
     length_vector_numba

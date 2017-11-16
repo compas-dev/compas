@@ -7,18 +7,17 @@ using namespace std;
 
 extern "C"
 {
-    typedef void callback_smoothing(int k);
+    typedef void callback(int k);
 
-    void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback_smoothing func);
+    void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback func);
 }
 
-void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback_smoothing func) 
+void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback func) 
 {
     int k;
     int i;
     int j, n;
     double cx, cy, cz;
-    double c;
 
     vector< vector<double> > xyz(v, vector<double>(3, 0.0));
 

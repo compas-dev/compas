@@ -31,10 +31,10 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
     """
     """
     try:
-        smooth_centroid = ctypes.cdll.LoadLibrary(SO)
+        smoothing = ctypes.cdll.LoadLibrary(SO)
     except Exception:
         try:
-            smooth_centroid = ctypes.cdll.LoadLibrary(DLL)
+            smoothing = ctypes.cdll.LoadLibrary(DLL)
         except Exception:
             print(SO)
             print(DLL)
@@ -48,7 +48,6 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
     v = len(vertices)
     nbrs = [len(adjacency[i]) for i in range(v)]
     neighbours = [adjacency[i] + [0] * (10 - nbrs[i]) for i in range(v)]
-    fixed = [i in fixed for i in range(v)]
     # --------------------------------------------------------------------------
     # call
     # --------------------------------------------------------------------------
@@ -60,11 +59,15 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
 
     def wrapper(k):
         print(k)
-        if k < kmax - 1:
-            c_vertices.cdata[18][0] = 0.1 * (k + 1)
-        callback(c_vertices.pydata)
 
-    smooth_centroid.smooth_centroid.argtypes = [
+        xyz = c_vertices.cdata
+
+        if k < kmax - 1:
+            xyz[18][0] = 0.1 * (k + 1)
+
+        callback(xyz)
+
+    smoothing.smooth_centroid.argtypes = [
         c_int,
         c_nbrs.ctype,
         c_fixed.ctype,
@@ -74,7 +77,7 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
         c_callback
     ]
 
-    smooth_centroid.smooth_centroid(
+    smoothing.smooth_centroid(
         c_int(v),
         c_nbrs.cdata,
         c_fixed.cdata,
@@ -103,22 +106,11 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    dva = {'is_fixed': False, }
-
-    mesh.update_default_vertex_attributes(dva)
-
-    # identify the fixed vertices
-    # and assign random prescribed force densities to the edges
-
-    for key, attr in mesh.vertices(True):
-        attr['is_fixed'] = mesh.vertex_degree(key) == 2
-
     # extract numerical data from the datastructure
 
     vertices  = mesh.get_vertices_attributes(('x', 'y', 'z'))
-    edges     = list(mesh.edges())
-    fixed     = list(mesh.vertices_where({'is_fixed': True}))
     adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
+    fixed     = [int(mesh.vertex_degree(key) == 2) for key in mesh.vertices()]
 
     # make a plotter for (dynamic) visualization
     # and define a callback function
@@ -150,18 +142,18 @@ if __name__ == "__main__":
 
     plotter.draw_lines(lines)
 
-    # # draw the vertices and edges in the starting configuration
-    # # and pause for a second before starting the dynamic visualization
+    # draw the vertices and edges in the starting configuration
+    # and pause for a second before starting the dynamic visualization
 
-    plotter.draw_vertices(facecolor={key: '#000000' for key in mesh.vertices_where({'is_fixed': True})})
+    plotter.draw_vertices(facecolor={key: '#000000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2})
     plotter.draw_edges()
 
     plotter.update(pause=0.5)
 
-    # run the dynamic relaxation
+    # run the smoother
 
     xyz = smooth_centroid_cpp(vertices, adjacency, fixed, kmax=50, callback=callback)
 
-    # # visualize the final geometry
+    # keep the plot alive
 
     plotter.show()
