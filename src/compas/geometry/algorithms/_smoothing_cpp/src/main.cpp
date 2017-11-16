@@ -5,6 +5,7 @@
 #include <array>
 #include <vector>
 
+// cd _smoothing_cpp
 // g++ -shared -fPIC src/main.cpp -o smoothing.so
 
 using namespace std;
@@ -22,7 +23,7 @@ void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neig
     double cx, cy, cz;
     double c;
 
-    vector<vector<double>> xyz(v, vector<double>(3, 0.0));
+    vector< vector<double> > xyz(v, vector<double>(3, 0.0));
 
 
     for (k = 0; k < kmax; k++) {

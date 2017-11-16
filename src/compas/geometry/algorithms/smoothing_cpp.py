@@ -60,6 +60,7 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
 
     def wrapper(k):
         print(k)
+        c_vertices.cdata[18][0] = 0.01 * k
         callback(c_vertices.pydata)
 
     smooth_centroid.smooth_centroid.argtypes = [
@@ -118,7 +119,7 @@ if __name__ == "__main__":
     fixed     = list(mesh.vertices_where({'is_fixed': True}))
     adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
 
-    v = len(vertices)
+    print(fixed)
 
     # make a plotter for (dynamic) visualization
     # and define a callback function
