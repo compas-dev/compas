@@ -326,7 +326,7 @@ def center_of_mass_polyhedron(polyhedron):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     from compas.geometry import Polyhedron
 
     p = Polyhedron.generate(6)
