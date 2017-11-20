@@ -47,9 +47,9 @@ void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neig
                 cz += xyz[n][2];
             }
 
-            vertices[i][0] = cx / nbrs[i];
-            vertices[i][1] = cy / nbrs[i];
-            vertices[i][2] = cz / nbrs[i];
+            vertices[i][0] = cx / (float)nbrs[i];
+            vertices[i][1] = cy / (float)nbrs[i];
+            vertices[i][2] = cz / (float)nbrs[i];
         }
 
         func(k);

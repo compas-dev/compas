@@ -62,16 +62,15 @@ class LinesConduit(Conduit):
                 del conduit
 
     """
-    def __init__(self, lines, thickness=1.0, color=None, **kwargs):
+    def __init__(self, lines=None, thickness=1.0, color=None, **kwargs):
         super(LinesConduit, self).__init__(**kwargs)
-        self.lines = lines
-        self.n = len(lines)
+        self.lines = lines or []
         self.thickness = thickness
         color = color or (255, 255, 255)
         self.color = FromArgb(*color)
 
     def DrawForeground(self, e):
-        lines = List[Line](self.n)
+        lines = List[Line](len(self.lines))
         for start, end in self.lines:
             lines.Add(Line(Point3d(*start), Point3d(*end)))
         e.Display.DrawLines(lines, self.color, self.thickness)

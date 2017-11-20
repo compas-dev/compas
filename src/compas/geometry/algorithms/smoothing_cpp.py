@@ -44,6 +44,9 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
     # --------------------------------------------------------------------------
     if callback:
         assert callable(callback), 'The provided callback is not callable.'
+    else:
+        def callback(k, xyz):
+            pass
 
     v = len(vertices)
     nbrs = [len(adjacency[i]) for i in range(v)]
@@ -58,14 +61,7 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
     c_callback = CFUNCTYPE(None, c_int)
 
     def wrapper(k):
-        print(k)
-
-        xyz = c_vertices.cdata
-
-        if k < kmax - 1:
-            xyz[18][0] = 0.1 * (k + 1)
-
-        callback(xyz)
+        callback(k, c_vertices.cdata)
 
     smoothing.smooth_centroid.argtypes = [
         c_int,
@@ -101,6 +97,8 @@ if __name__ == "__main__":
     from compas.plotters import MeshPlotter
     from compas.geometry import smooth_centroid_cpp
 
+    kmax = 50
+
     # make a mesh
     # and set the default vertex and edge attributes
 
@@ -112,13 +110,20 @@ if __name__ == "__main__":
     adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
     fixed     = [int(mesh.vertex_degree(key) == 2) for key in mesh.vertices()]
 
+    slider = list(mesh.vertices_where({'x': (-0.1, 0.1), 'y': (9.9, 10.1)}))[0]
+
     # make a plotter for (dynamic) visualization
     # and define a callback function
     # for plotting the intermediate configurations
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-    def callback(xyz):
+    def callback(k, xyz):
+        print(k)
+
+        if k < kmax - 1:
+            xyz[slider][0] = 0.1 * (k + 1)
+
         plotter.update_vertices()
         plotter.update_edges()
         plotter.update(pause=0.001)
@@ -152,7 +157,7 @@ if __name__ == "__main__":
 
     # run the smoother
 
-    xyz = smooth_centroid_cpp(vertices, adjacency, fixed, kmax=50, callback=callback)
+    xyz = smooth_centroid_cpp(vertices, adjacency, fixed, kmax=kmax, callback=callback)
 
     # keep the plot alive
 
