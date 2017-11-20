@@ -1,10 +1,20 @@
-from numpy import tile
-from numpy import divide
-from numpy import hstack
-from numpy import arange
+from __future__ import print_function
+from __future__ import absolute_import
 
-from scipy import cross
-from scipy.sparse import coo_matrix
+import sys
+
+try:
+    from numpy import tile
+    from numpy import divide
+    from numpy import hstack
+    from numpy import arange
+
+    from scipy import cross
+    from scipy.sparse import coo_matrix
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 from compas.numerical.linalg import normrow
 from compas.numerical.linalg import normalizerow
@@ -86,7 +96,7 @@ def curl():
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

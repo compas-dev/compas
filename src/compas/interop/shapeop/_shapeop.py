@@ -71,7 +71,6 @@ class ShapeOpSolver(object):
 
     def solve(self, kmax=1):
         self.kmax = kmax
-        self.init()
         shapeopPython.shapeop_solve(self.solver, self.kmax)
 
     def set_points(self, xyz):
@@ -85,22 +84,19 @@ class ShapeOpSolver(object):
 
     def add_plane_constraint(self, vertices, weight):
         vertices_array = int_array(vertices)
-        constraint_id = shapeopPython.shapeop_addConstraint(self.solver, 'Plane', vertices_array, len(vertices), weight)
-        return constraint_id
+        return shapeopPython.shapeop_addConstraint(self.solver, 'Plane', vertices_array, len(vertices), weight)
 
     def add_circle_constraint(self, vertices, weight):
         vertices_array = int_array(vertices)
-        constraint_id = shapeopPython.shapeop_addConstraint(self.solver, 'Circle', vertices_array, len(vertices), weight)
-        return constraint_id
+        return shapeopPython.shapeop_addConstraint(self.solver, 'Circle', vertices_array, len(vertices), weight)
 
     def add_closeness_constraint(self, vertex, weight):
         vertices_array = int_array([vertex])
-        constraint_id = shapeopPython.shapeop_addConstraint(self.solver, 'Closeness', vertices_array, 1, weight)
-        return constraint_id
+        return shapeopPython.shapeop_addConstraint(self.solver, 'Closeness', vertices_array, 1, weight)
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

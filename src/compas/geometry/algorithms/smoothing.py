@@ -135,6 +135,14 @@ def smooth_centroid(vertices,
             callback(vertices, k, callback_args)
 
 
+def smooth_laplacian():
+    pass
+
+
+def smooth_laplacian_numpy():
+    pass
+
+
 def smooth_centerofmass(vertices,
                         adjacency,
                         fixed=None,
@@ -729,7 +737,7 @@ def network_smooth_resultant(network, fixed=None, kmax=100, damping=0.05, callba
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

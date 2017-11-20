@@ -1,6 +1,16 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
+import sys
+
+try:
+    from numpy import asarray
+    from scipy.linalg import svd
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
+
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>']
 __copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
@@ -79,9 +89,6 @@ def pca_numpy(data):
             plt.show()
 
     """
-    from numpy import asarray
-    from scipy.linalg import svd
-
     X = asarray(data)
     n, dim = X.shape
 
@@ -134,7 +141,7 @@ def pca_numpy(data):
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

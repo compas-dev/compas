@@ -21,7 +21,7 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'sum_vectors_numba',
+    # 'sum_vectors_numba',
     'norm_vector_numba',
     'norm_vectors_numba',
     'length_vector_numba',
@@ -739,7 +739,7 @@ def circle_from_points_numba(a, b, c):
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

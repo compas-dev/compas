@@ -1,38 +1,47 @@
 from __future__ import print_function
+from __future__ import absolute_import
 
 import sys
 
 from functools import wraps
 
-from numpy import argmax
-from numpy import array
-from numpy import asarray
-from numpy import atleast_2d
-from numpy import nan_to_num
-from numpy import nonzero
-from numpy import seterr
-from numpy import sum
-from numpy import where
-from numpy import zeros
-from numpy import absolute
+try:
+    from numpy import argmax
+    from numpy import array
+    from numpy import asarray
+    from numpy import atleast_2d
+    from numpy import nan_to_num
+    from numpy import nonzero
+    from numpy import seterr
+    from numpy import sum
+    from numpy import where
+    from numpy import zeros
+    from numpy import absolute
 
-from numpy.linalg import cond
+    from numpy.linalg import cond
 
-from scipy import cross
+    from scipy import cross
 
-from scipy.linalg import cho_factor
-from scipy.linalg import cho_solve
-from scipy.linalg import lstsq
-from scipy.linalg import lu
-from scipy.linalg import qr
-from scipy.linalg import solve
-from scipy.linalg import svd
+    from scipy.linalg import cho_factor
+    from scipy.linalg import cho_solve
+    from scipy.linalg import lstsq
+    from scipy.linalg import lu
+    from scipy.linalg import qr
+    from scipy.linalg import solve
+    from scipy.linalg import svd
 
-from scipy.io import loadmat
-from scipy.io import savemat
+    from scipy.io import loadmat
+    from scipy.io import savemat
 
-from scipy.sparse.linalg import factorized
-from scipy.sparse.linalg import spsolve
+    from scipy.sparse.linalg import factorized
+    from scipy.sparse.linalg import spsolve
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
+else:
+    old_settings = seterr(all='ignore')
+
 
 from subprocess import Popen
 
@@ -42,9 +51,6 @@ __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
 __copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
-
-
-old_settings = seterr(all='ignore')
 
 
 __all__ = [
@@ -633,7 +639,7 @@ def spsolve_with_known(A, b, x, known):
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == '__main__':

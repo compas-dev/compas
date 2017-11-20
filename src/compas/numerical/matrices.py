@@ -1,20 +1,28 @@
 from __future__ import print_function
+from __future__ import absolute_import
+
+import sys
 
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 
-from numpy import abs
-from numpy import array
-from numpy import asarray
-from numpy import tile
-from numpy import ones
+try:
+    from numpy import abs
+    from numpy import array
+    from numpy import asarray
+    from numpy import tile
+    from numpy import ones
 
-from scipy.sparse import coo_matrix
-from scipy.sparse import csr_matrix
-from scipy.sparse import diags
-from scipy.sparse import spdiags
-from scipy.sparse import vstack as svstack
+    from scipy.sparse import coo_matrix
+    from scipy.sparse import csr_matrix
+    from scipy.sparse import diags
+    from scipy.sparse import spdiags
+    from scipy.sparse import vstack as svstack
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
@@ -533,7 +541,7 @@ def trimesh_positive_cotangent_laplacian_matrix(mesh):
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

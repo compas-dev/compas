@@ -26,10 +26,10 @@ __all__ = ['PointsConduit', ]
 
 class PointsConduit(Conduit):
     """"""
-    def __init__(self, points, radius=3, color=None, **kwargs):
+    def __init__(self, points=None, radius=3, color=None, **kwargs):
         super(PointsConduit, self).__init__(**kwargs)
-        self.points = points
-        self.n = len(points)
+        self.points = points or []
+        self.n = len(self.points)
         self.radius = radius
         color = color or (255, 0, 0)
         self.color = FromArgb(*color)
@@ -42,7 +42,7 @@ class PointsConduit(Conduit):
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

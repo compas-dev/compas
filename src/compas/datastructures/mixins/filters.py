@@ -32,9 +32,9 @@ class VertexFilter(object):
             The next vertex that matches the condition.
         2-tuple
             The next vertex and its attributes, if ``data=True``.
-    
+
         """
-        # keys = []
+        # turn this inside out
         for key, attr in self.vertices(True):
             is_match = True
             for name, value in conditions.items():
@@ -55,8 +55,6 @@ class VertexFilter(object):
                     yield key, attr
                 else:
                     yield key
-        #         keys.append(key)
-        # return keys
 
 
 class EdgeFilter(object):
@@ -105,7 +103,7 @@ class FaceFilter(object):
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

@@ -1,6 +1,20 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
+import sys
+
+try:
+    from numpy import asarray
+    from scipy.sparse import diags
+    from scipy.sparse.linalg import spsolve
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
+
+from compas.numerical import connectivity_matrix
+from compas.numerical import normrow
+
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
@@ -105,12 +119,6 @@ def fd_numpy(vertices, edges, fixed, q, loads):
         plotter.show()
 
     """
-    from numpy import asarray
-    from scipy.sparse import diags
-    from scipy.sparse.linalg import spsolve
-    from compas.numerical import connectivity_matrix
-    from compas.numerical import normrow
-
     v    = len(vertices)
     free = list(set(range(v)) - set(fixed))
     xyz  = asarray(vertices, dtype=float).reshape((-1, 3))
@@ -135,7 +143,7 @@ def fd_numpy(vertices, edges, fixed, q, loads):
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == '__main__':

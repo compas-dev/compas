@@ -14,43 +14,43 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
+    'add_vectors',
+    'add_vectors_xy',
     'sum_vectors',
-    'norm_vector',
-    'norm_vectors',
+    'cross_vectors',
+    'cross_vectors_xy',
+    'divide_vectors',
+    'divide_vectors_xy',
+    'dot_vectors',
+    'dot_vectors_xy',
     'length_vector',
     'length_vector_xy',
     'length_vector_sqrd',
     'length_vector_sqrd_xy',
-    'scale_vector',
-    'scale_vector_xy',
-    'scale_vectors',
-    'scale_vectors_xy',
+    'multiply_matrices',
+    'multiply_matrix_vector',
+    'multiply_vectors',
+    'multiply_vectors_xy',
+    'norm_vector',
+    'norm_vectors',
     'normalize_vector',
     'normalize_vector_xy',
     'normalize_vectors',
     'normalize_vectors_xy',
+    'orthonormalise_vectors',
     'power_vector',
     'power_vectors',
+    'scale_vector',
+    'scale_vector_xy',
+    'scale_vectors',
+    'scale_vectors_xy',
     'square_vector',
     'square_vectors',
-    'add_vectors',
-    'add_vectors_xy',
     'subtract_vectors',
     'subtract_vectors_xy',
-    'multiply_vectors',
-    'multiply_vectors_xy',
-    'divide_vectors',
-    'divide_vectors_xy',
-    'cross_vectors',
-    'cross_vectors_xy',
-    'dot_vectors',
-    'dot_vectors_xy',
+    'transpose_matrix',
     'vector_component',
     'vector_component_xy',
-    'multiply_matrices',
-    'multiply_matrix_vector',
-    'orthonormalise_vectors',
-    'transpose_matrix',
 
     'vector_from_points',
     'vector_from_points_xy',
@@ -1272,7 +1272,7 @@ def pointcloud_xy(n, xbounds, ybounds=None):
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

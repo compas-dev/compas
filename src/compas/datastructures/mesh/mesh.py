@@ -92,7 +92,7 @@ class Mesh(FromToJson,
            VertexAttributesManagement,
            Datastructure):
     """Definition of a mesh.
-    
+
     Note
     ----
     The datastructure of the mesh is implemented as a half-edge.
@@ -2532,7 +2532,7 @@ Mesh.swap_edge_tri = trimesh_swap_edge.__get__(None, Mesh)
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == '__main__':

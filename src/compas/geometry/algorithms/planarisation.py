@@ -279,6 +279,8 @@ def mesh_planarize_faces_shapeop(mesh,
         vertex = key_index[key]
         solver.add_closeness_constraint(vertex, 1.0)
 
+    solver.init()
+
     for k in range(kmax):
         # solve
         solver.solve(1)
@@ -360,10 +362,12 @@ def mesh_circularize_faces_shapeop(mesh,
         vertex = key_index[key]
         solver.add_closeness_constraint(vertex, 1.0)
 
+    solver.init()
+
     for k in range(kmax):
         # solve
         solver.solve(1)
-        # update the points array
+        # # update the points array
         points = solver.get_points()
         # update
         for index, (key, attr) in enumerate(mesh.vertices(True)):
@@ -380,7 +384,7 @@ def mesh_circularize_faces_shapeop(mesh,
 
 
 # ==============================================================================
-# Debugging
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":
