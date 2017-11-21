@@ -856,9 +856,9 @@ if __name__ == '__main__':
 
     fit_function = foo
     fit_type = 'min'
-    num_var = 10
+    num_var = 3
     boundaries = [(0, 1)] * num_var
-    num_bin_dig  = [8] * num_var
+    num_bin_dig  = [4] * num_var
     output_path = os.path.join(compas.TEMP, 'ga_out/')
 
     if not os.path.exists(output_path):
@@ -869,11 +869,11 @@ if __name__ == '__main__':
              num_var,
              boundaries,
              num_gen=100,
-             num_pop=100,
-             num_elite=40,
+             num_pop=30,
+             num_elite=10,
              num_bin_dig=num_bin_dig,
              output_path=output_path,
-             min_fit=0.01)
+             min_fit=0.001)
 
     plt = Ga_Plotter()
     plt.input_path = ga_.output_path
