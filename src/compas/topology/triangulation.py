@@ -282,15 +282,6 @@ def trimesh_remesh(mesh,
                    callback_args=None):
     """Remesh until all edges have a specified target length.
 
-    This involves three operations:
-
-        * split edges that are longer than a maximum length,
-        * collapse edges that are shorter than a minimum length,
-        * swap edges if this improves the valency error.
-
-    The minimum and maximum lengths are calculated based on a desired target
-    length.
-
     Parameters
     ----------
     mesh : Mesh
@@ -329,20 +320,19 @@ def trimesh_remesh(mesh,
     This algorithm not only changes the geometry of the mesh, but also its
     topology as needed to achieve the specified target lengths.
     Topological changes are made such that vertex valencies are well-balanced
-    and close to six.
+    and close to six. This involves three operations:
 
-    Note
-    ----
-    Smoothing is done with area-based smoothing as this tends to produce better results.
+        * split edges that are longer than a maximum length,
+        * collapse edges that are shorter than a minimum length,
+        * swap edges if this improves the valency error.
+
+    The minimum and maximum lengths are calculated based on a desired target
+    length.
 
     Warning
     -------
     In the current implementation, allowing boundary collapses may lead to unexpected
     results since it will not preserve the gometry of the original boundary.
-
-    See Also
-    --------
-    * :func:`compas.geometry.smooth_area`
 
     Examples
     --------
@@ -386,6 +376,10 @@ def trimesh_remesh(mesh,
         plotter.draw_edges()
 
         plotter.show()
+
+    See Also
+    --------
+    * :func:`compas.geometry.smooth_area`
 
     References
     ----------

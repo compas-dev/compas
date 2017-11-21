@@ -79,36 +79,36 @@ def screenshot_current_view(path,
     return result
 
 
-def add_gui_helpers(helpers, overwrite=False, protected=False):
-    def decorate(cls):
-        # attr = {}
-        for helper in helpers:
-            # for name, value in helper.__dict__.items():
-            for name, value in inspect.getmembers(helper):
-                # magic methods
-                if name.startswith('__') and name.endswith('__'):
-                    continue
-                # protected / private methods
-                if not protected and name.startswith('_'):
-                    continue
-                # existing methods
-                if not overwrite:
-                    if hasattr(cls, name):
-                        continue
-                # attr[name] = value
-                # try:
-                #     setattr(cls, name, value.__func__)
-                # except:
-                #     setattr(cls, name, value)
-                # inspect.ismethoddescriptor
-                # inspect.isdatadescriptor
-                if inspect.ismethod(value):
-                    setattr(cls, name, value.__func__)
-                else:
-                    setattr(cls, name, value)
-        # cls = type(cls.__name__, (cls, ), attr)
-        return cls
-    return decorate
+# def add_gui_helpers(helpers, overwrite=False, protected=False):
+#     def decorate(cls):
+#         # attr = {}
+#         for helper in helpers:
+#             # for name, value in helper.__dict__.items():
+#             for name, value in inspect.getmembers(helper):
+#                 # magic methods
+#                 if name.startswith('__') and name.endswith('__'):
+#                     continue
+#                 # protected / private methods
+#                 if not protected and name.startswith('_'):
+#                     continue
+#                 # existing methods
+#                 if not overwrite:
+#                     if hasattr(cls, name):
+#                         continue
+#                 # attr[name] = value
+#                 # try:
+#                 #     setattr(cls, name, value.__func__)
+#                 # except:
+#                 #     setattr(cls, name, value)
+#                 # inspect.ismethoddescriptor
+#                 # inspect.isdatadescriptor
+#                 if inspect.ismethod(value):
+#                     setattr(cls, name, value.__func__)
+#                 else:
+#                     setattr(cls, name, value)
+#         # cls = type(cls.__name__, (cls, ), attr)
+#         return cls
+#     return decorate
 
 
 def wait():

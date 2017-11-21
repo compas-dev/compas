@@ -212,11 +212,10 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
 
     if update:
 
-        k_i = network.key_index()
-        for key in network.vertices():
-            i = k_i[key]
+        i_k = network.index_key()
+        for i in sorted(list(network.vertices()), key=int):
             x, y, z = X[i, :]
-            network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
+            network.set_vertex_attributes(i_k[i], {'x': x, 'y': y, 'z': z})
 
         uv_i = network.uv_index()
         for edge in network.edges():
