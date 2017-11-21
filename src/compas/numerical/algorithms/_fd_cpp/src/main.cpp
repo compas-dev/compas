@@ -6,10 +6,10 @@ extern "C"
 {
 	typedef void callback(int k);
 
-	void fd(int numv, int nume, int numfix, double **vertices, int **edges, double **loads, double *q, int *fixed, int *free);
+	void fd(int numv, int nume, int numfix, double** vertices, int** edges, double** loads, double* q, int* fixed, int* free);
 }
 
-void fd(int numv, int nume, int numfix, double **vertices, int **edges, double **loads, double *q, int *fixed, int *free)
+void fd(int numv, int nume, int numfix, double** vertices, int** edges, double** loads, double* q, int* fixed, int* free)
 {
 	int i;
 	int numfree = numv - numfix;
@@ -70,8 +70,8 @@ void fd(int numv, int nume, int numfix, double **vertices, int **edges, double *
 
 	Cit = Ci.transpose();
 
-	A = Ci.transpose() * Q * Ci;
-	b = Pi - Cit * Q * Cf * Xf;
+	A.noalias() = Cit * Q * Ci;
+	b.noalias() = Pi - Cit * Q * Cf * Xf;
 
 	Xi = A.colPivHouseholderQr().solve(b);
 

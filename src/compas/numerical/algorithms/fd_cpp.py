@@ -37,12 +37,14 @@ def fd_cpp(vertices, edges, fixed, q, loads):
             print(DLL)
             raise
 
+    free = [i for i in range(len(vertices)) if i not in fixed]
+
     cvertices = Array2D(vertices, 'double')
-    cedges = Array2D(edges, 'int')
-    cloads = Array2D(loads, 'double')
-    cq = Array1D(q, 'double')
-    cfixed = Array1D(fixed, 'int')
-    cfree = Array1D(free, 'int')
+    cedges    = Array2D(edges, 'int')
+    cloads    = Array2D(loads, 'double')
+    cq        = Array1D(q, 'double')
+    cfixed    = Array1D(fixed, 'int')
+    cfree     = Array1D(free, 'int')
 
     lib.fd.argtypes = [
         ctypes.c_int,
@@ -86,7 +88,6 @@ if __name__ == "__main__":
     vertices = network.get_vertices_attributes('xyz')
     loads    = network.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
     fixed    = network.leaves()
-    free     = [i for i in range(len(vertices)) if i not in fixed]
     edges    = list(network.edges())
     q        = network.get_edges_attribute('q', 1.0)
 
