@@ -18,7 +18,7 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'numba_devo'
+    'devo_numba'
 ]
 
 
@@ -26,7 +26,7 @@ args = 0
 
 
 @jit(nogil=True, nopython=True)
-def numba_devo(bounds, population, iterations):
+def devo_numba(bounds, population, iterations):
     """ Call the Numba accelerated differential evolution solver.
 
     Parameters:
@@ -125,5 +125,5 @@ def _fn(u, args):
 if __name__ == "__main__":
 
     bounds = array([[-10., 10.], [-10., 10.]])
-    xopt = numba_devo(bounds, population=20, iterations=100)
+    xopt = devo_numba(bounds, population=20, iterations=100)
     print(xopt)
