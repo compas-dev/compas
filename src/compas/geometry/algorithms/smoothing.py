@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from copy import deepcopy
 
 from compas.geometry import centroid_points
 from compas.geometry import center_of_mass_polygon
@@ -118,7 +119,8 @@ def smooth_centroid(vertices,
     fixed = set(fixed)
 
     for k in range(kmax):
-        vertices_0 = {key: xyz for key, xyz in iter(vertices.items())}
+        vertices_0 = {key: xyz[:] for key, xyz in iter(vertices.items())}
+        # vertices_0 = deepcopy(vertices)
 
         for key, point in iter(vertices_0.items()):
             if key in fixed:
@@ -130,6 +132,10 @@ def smooth_centroid(vertices,
             vertices[key][0] += damping * (centroid[0] - point[0])
             vertices[key][1] += damping * (centroid[1] - point[1])
             vertices[key][2] += damping * (centroid[2] - point[2])
+
+            # vertices[key][0] = centroid[0]
+            # vertices[key][1] = centroid[1]
+            # vertices[key][2] = centroid[2]
 
         if callback:
             callback(vertices, k, callback_args)
@@ -236,7 +242,7 @@ def smooth_centerofmass(vertices,
             raise Exception('The callback is not callable.')
 
     for k in range(kmax):
-        vertices_0 = {key: xyz for key, xyz in iter(vertices.items())}
+        vertices_0 = {key: xyz[:] for key, xyz in iter(vertices.items())}
 
         for key, point in iter(vertices_0.items()):
             if key in fixed:
@@ -341,7 +347,7 @@ def smooth_resultant(vertices,
     fixed = set(fixed)
 
     for k in range(kmax):
-        vertices_0 = {key: xyz for key, xyz in iter(vertices.items())}
+        vertices_0 = {key: xyz[:] for key, xyz in iter(vertices.items())}
 
         for key, point in iter(vertices_0.items()):
             if key in fixed:
@@ -453,7 +459,7 @@ def smooth_area(vertices,
     fixed = set(fixed)
 
     for k in range(kmax):
-        vertices_0 = {key: point for key, point in iter(vertices.items())}
+        vertices_0 = {key: point[:] for key, point in iter(vertices.items())}
 
         face_centroid = {fkey: centroid_points([vertices[key] for key in keys]) for fkey, keys in iter(faces.items())}
         face_area = {fkey: area_polygon([vertices[key] for key in keys]) for fkey, keys in iter(faces.items())}
@@ -742,6 +748,9 @@ def network_smooth_resultant(network, fixed=None, kmax=100, damping=0.05, callba
 
 if __name__ == "__main__":
 
+    import os
+    import sys
+
     import compas
 
     from compas.datastructures import Mesh
@@ -749,9 +758,13 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
+    edges = list(mesh.edges())
+
     fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
+
+    images = []
 
     lines = []
     for u, v in mesh.edges():
@@ -763,11 +776,15 @@ if __name__ == "__main__":
         })
     plotter.draw_lines(lines)
 
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
+    plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed}, text={key: key for key in fixed})
     plotter.draw_faces()
     plotter.draw_edges()
 
     plotter.update(pause=1.0)
+
+    # filepath = os.path.join(compas.TEMP, 'image_{}.jpg'.format(0))
+    # plotter.save(filepath)
+    # images.append(filepath)
 
     def callback(mesh, k, args):
         print(k)
@@ -776,7 +793,15 @@ if __name__ == "__main__":
         plotter.update_edges()
         plotter.update(pause=0.001)
 
+        # filepath = os.path.join(compas.TEMP, 'image_{}.jpg'.format(k + 1))
+        # plotter.save(filepath)
+        # images.append(filepath)
+
     mesh_smooth_centroid(mesh, kmax=50, fixed=fixed, callback=callback)
 
-    plotter.update(pause=1.0)
+    # plotter.saveas_gif(os.path.join(compas.TEMP, 'smoothing.gif'), images)
+
+    for filepath in images:
+        os.remove(filepath)
+
     plotter.show()

@@ -1,15 +1,19 @@
-from __future__ import division
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from numba import f8
 from numba import i8
 from numba import jit
-from numba import prange
+
+try:
+    from numba import prange
+except ImportError:
+    prange = range
 
 from numpy import array
 from numpy import empty
 from numpy import sqrt
-from numpy import zeros
 
 import numpy as np
 
@@ -21,7 +25,7 @@ __email__      = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    # 'sum_vectors_numba',
+    'sum_vectors_numba',
     'norm_vector_numba',
     'norm_vectors_numba',
     'length_vector_numba',
@@ -60,7 +64,7 @@ __all__ = [
     'orthonormalise_vectors_numba',
     'plane_from_points_numba',
     'circle_from_points_numba',
-    'circle_from_points_xy_numba',
+    # 'circle_from_points_xy_numba',
 ]
 
 

@@ -46,7 +46,7 @@ HOME = os.path.abspath(os.path.join(HERE, '../../'))
 DATA = os.path.abspath(os.path.join(HOME, 'samples'))
 DOCS = os.path.abspath(os.path.join(HOME, 'docs'))
 LIBS = os.path.abspath(os.path.join(HOME, 'libs'))
-TEMP = os.path.abspath(os.path.join(HOME, '__temp'))
+TEMP = os.path.abspath(os.path.join(HOME, 'temp'))
 
 
 def _find_resource(filename):
