@@ -109,6 +109,9 @@ ENV/
 libs/**
 !libs/PLACEHOLDER
 
+temp/**
+!temp/PLACEHOLDER
+
 src/.build/**
 *.rhl
 
