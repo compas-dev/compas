@@ -1,5 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import sys
 
@@ -11,11 +12,10 @@ except ImportError:
         raise
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
-                  'Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+__author__    = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -31,17 +31,21 @@ float_precision = '2f'
 def float_formatter(x):
     """Formats float to truncated string.
 
-    Note:
+    Note
+    ----
         stackoverflow.com/questions/21008858/formatting-floats-in-a-numpy-array
         float_formatter = lambda x: '%.2f' % x
 
-    Parameters:
+    Parameters
+    ----------
         x (float): Input float.
 
-    Returns:
+    Returns
+    -------
         str: Truncated string with default precision .2f.
 
-    Examples:
+    Examples
+    --------
         >>> float_formatter(3.14159265359)
         '+3.14'
     """
@@ -51,17 +55,21 @@ def float_formatter(x):
 def set_array_print_precision(precision='2f'):
     """Changes float precision of float_formatter.
 
-    Note:
+    Note
+    ----
         stackoverflow.com/questions/21008858/formatting-floats-in-a-numpy-array
         set_printoptions(formatter={'float_kind': float_formatter})
 
-    Parameters:
+    Parameters
+    ----------
         precision (str): Precision e.g. '3f'.
 
-    Returns:
+    Returns
+    -------
         None
 
-    Examples:
+    Examples
+    --------
         >>> set_array_print_precision(precision='4f')
         >>> float_formatter(3.14159265359)
         '+3.1416'
@@ -74,10 +82,12 @@ def set_array_print_precision(precision='2f'):
 def unset_array_print_precision():
     """Unchanges float precision of float_formatter back to default.
 
-    Parameters:
+    Parameters
+    ----------
         None
 
-    Returns:
+    Returns
+    -------
         None
     """
     set_printoptions(formatter=None)

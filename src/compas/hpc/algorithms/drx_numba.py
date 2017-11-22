@@ -1,5 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from numpy import arccos
 from numpy import array
@@ -24,10 +25,10 @@ from compas.hpc import length_vector_numba
 from time import time
 
 
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
+__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
@@ -38,7 +39,8 @@ __all__ = [
 def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
     """ Run Numba accelerated dynamic relaxation analysis.
 
-    Parameters:
+    Parameters
+    ----------
         network (obj): Network to analyse.
         factor (float): Convergence factor.
         tol (float): Tolerance value.
@@ -46,7 +48,8 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
         summary (int): Print summary at end.
         update (bool): Update the co-ordinates of the Network.
 
-    Returns:
+    Returns
+    -------
         array: Vertex co-ordinates.
         array: Edge forces.
         array: Edge lengths.
@@ -118,12 +121,13 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
     return X, f, l
 
 
-@jit(nogil=True, nopython=True)
+@jit(nogil=True, nopython=True, parallel=False)
 def drx_solver(tol, steps, factor, u, v, X, ks, l0, f0, ind_c, ind_t, rows, cols, vals, P, S, B, M, summary,
                inds, indi, indf, EIx, EIy, beams):
     """ Numba accelerated dynamic relaxation solver.
 
-    Parameters:
+    Parameters
+    ----------
         tol (float): Tolerance limit.
         steps (int): Maximum number of steps.
         factor (float): Convergence factor.
@@ -150,7 +154,8 @@ def drx_solver(tol, steps, factor, u, v, X, ks, l0, f0, ind_c, ind_t, rows, cols
         EIy (array): Nodal EIy flexural stiffnesses.
         beams (int): Beam analysis on: 1 or off: 0.
 
-    Returns:
+    Returns
+    -------
         array: Updated nodal co-ordinates.
     """
     m   = len(u)
@@ -269,7 +274,7 @@ def drx_solver(tol, steps, factor, u, v, X, ks, l0, f0, ind_c, ind_t, rows, cols
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

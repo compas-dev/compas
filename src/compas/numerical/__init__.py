@@ -75,8 +75,17 @@ Functions
     laplacian_matrix
     face_matrix
     mass_matrix
-    stiffness_matrix
     equilibrium_matrix
+    network_adjacency_matrix
+    network_degree_matrix
+    network_connectivity_matrix
+    network_laplacian_matrix
+    mesh_adjacency_matrix
+    mesh_degree_matrix
+    mesh_face_matrix
+    mesh_connectivity_matrix
+    mesh_laplacian_matrix
+    trimesh_cotangent_laplacian_matrix
 
 
 **operators**
@@ -86,8 +95,6 @@ Functions
     :nosignatures:
 
     grad
-    div
-    curl
 
 
 Utilities
@@ -97,6 +104,7 @@ Utilities
     :toctree: generated/
     :nosignatures:
 
+    float_formatter
     set_array_print_precision
     unset_array_print_precision
 

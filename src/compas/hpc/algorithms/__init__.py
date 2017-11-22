@@ -1,4 +1,4 @@
-from .drx_numba import drx_numba
+from .drx_numba import *
 
 from .drx_numba import __all__ as a
 
