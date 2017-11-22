@@ -1,5 +1,5 @@
-from .basic import *
+from .basic_numba import *
 
-from .basic import __all__ as a
+from .basic_numba import __all__ as a
 
 __all__ = a

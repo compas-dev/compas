@@ -21,6 +21,11 @@ __license__   = 'MIT License'
 __email__     = 'liew@arch.ethz.ch'
 
 
+__all__ = [
+    'devo_numba',
+]
+
+
 args = 0
 
 

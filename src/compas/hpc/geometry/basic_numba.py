@@ -10,7 +10,6 @@ from numba import prange
 from numpy import array
 from numpy import empty
 from numpy import sqrt
-from numpy import zeros
 
 import numpy as np
 
@@ -63,7 +62,7 @@ __all__ = [
     'orthonormalise_vectors_numba',
     'plane_from_points_numba',
     'circle_from_points_numba',
-    # 'circle_from_points_xy_numba',
+    'circle_from_points_xy_numba',
 ]
 
 
@@ -803,39 +802,33 @@ def circle_from_points_numba(a, b, c):
     return cr
 
 
-# @jit(f8[:](f8[:], f8[:], f8[:]), nogil=True, nopython=True, parallel=True)
-# def circle_from_points_xy_numba(u, v, w):
-#     """Construct a circle from three points assumed to be in the XY plan
+@jit(f8[:](f8[:], f8[:], f8[:]), nogil=True, nopython=True, parallel=True)
+def circle_from_points_xy_numba(u, v, w):
+    """Construct a circle from three points assumed to be in the XY plane.
 
-#      Parameter
-#      ---------
-#          a (array): XY(Z) components of the base point
-#          b (array): XY(Z) components of the second point
-#          c (array): XY(Z) components of the third point
-
-#     Returns
-#     -------
-#         array: (x, y, z, r) where x, y, z are coords of the centre point and r the radius.
-#    """
-#     ax, ay = u[0], u[1]
-#     bx, by = v[0], v[1]
-#     cx, cy = w[0], w[1]
-#     a = bx - ax
-#     b = by - ay
-#     c = cx - ax
-#     d = cy - ay
-#     e = a * (ax + bx) + b * (ay + by)
-#     f = c * (ax + cx) + d * (ay + cy)
-#     g = 2 * (a * (cy - by) - b * (cx - bx))
-#     centrex = (d * e - b * f) / g
-#     centrey = (a * f - c * e) / g
-#     radius = sqrt((ax - centrex) ** 2 + (ay - centrey) ** 2)
-#     cr = array([
-#         centrex,
-#         centrey,
-#         0.0,
-#         radius])
-#     return cr
+    Parameters
+    ----------
+         u (array): XY(Z) components of the base point.
+         v (array): XY(Z) components of the second point.
+         w (array): XY(Z) components of the third point.
+    Returns
+    -------
+        array: (x, y, z, r) where x, y, z are coords of the centre point and r the radius.
+   """
+    ax, ay = u[0], u[1]
+    bx, by = v[0], v[1]
+    cx, cy = w[0], w[1]
+    a = bx - ax
+    b = by - ay
+    c = cx - ax
+    d = cy - ay
+    e = a * (ax + bx) + b * (ay + by)
+    f = c * (ax + cx) + d * (ay + cy)
+    g = 2 * (a * (cy - by) - b * (cx - bx))
+    centrex = (d * e - b * f) / g
+    centrey = (a * f - c * e) / g
+    radius = sqrt((ax - centrex)**2 + (ay - centrey)**2)
+    return array([centrex, centrey, 0.0, radius])
 
 
 # ==============================================================================
@@ -849,7 +842,7 @@ if __name__ == "__main__":
     u = array([1., 2., 3.])
     v = array([4., 5., 6.])
     w = array([5., 2., 10.])
-    c = array([[1., 2., 3.], [4., 4., 4.], [2., 3., 3.]])
+    c = array([[1., 2., 3.], [4., 4., 4.]])
     d = array([4., 5.])
     e = array([[1., 2.], [0., 2.]])
     f = array([[4., 5.], [1., 2.]])
@@ -900,7 +893,7 @@ if __name__ == "__main__":
         # transpose_matrix_numba(e)
         # orthonormalise_vectors_numba(c)
         # plane_from_points_numba(u, v, w)
-        circle_from_points_numba(u, v, w)
-        # circle_from_points_xy_numba(u, v, w)
+        # circle_from_points_numba(u, v, w)
+        circle_from_points_xy_numba(u, v, w)
 
     print(time() - tic)
