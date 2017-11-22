@@ -1,5 +1,5 @@
-from .euler_ import *
+from .euler import *
 
-from .euler_ import __all__ as a
+from .euler import __all__ as a
 
 __all__ = a
