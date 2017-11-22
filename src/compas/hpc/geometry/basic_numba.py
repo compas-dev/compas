@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
@@ -13,15 +14,17 @@ from numpy import zeros
 
 import numpy as np
 
+# Note: Numba experimental features parallel and prange are implementated but generally disabled.
 
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
+
+__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    # 'sum_vectors_numba',
+    'sum_vectors_numba',
     'norm_vector_numba',
     'norm_vectors_numba',
     'length_vector_numba',
@@ -60,21 +63,23 @@ __all__ = [
     'orthonormalise_vectors_numba',
     'plane_from_points_numba',
     'circle_from_points_numba',
-    'circle_from_points_xy_numba',
+    # 'circle_from_points_xy_numba',
 ]
 
 
 # ==============================================================================
 
-@jit(f8[:](f8[:, :], i8), nogil=True, nopython=True, parallel=True)
+@jit(f8[:](f8[:, :], i8), nogil=True, nopython=True, parallel=False)
 def sum_vectors_numba(a, axis=0):
     """ Calculate the sum of an array of vectors along the specified axis.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): Array of vectors (m x 3).
         axis (int): Dimension to sum through.
 
-    Returns:
+    Returns
+    -------
         array: The summed values according to the axis of choice.
     """
     m = a.shape[0]
@@ -92,30 +97,33 @@ def sum_vectors_numba(a, axis=0):
             b[i] += a[i, 0] + a[i, 1] + a[i, 2]
 
     return b
-    # return sum(a, axis=axis)
 
 
 @jit(f8(f8[:]), nogil=True, nopython=True, parallel=True)
 def norm_vector_numba(a):
     """ Calculate the L2 norm or length of a vector.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vector.
 
-    Returns:
+    Returns
+    -------
         float: The L2 norm of the vector.
     """
     return sqrt(a[0]**2 + a[1]**2 + a[2]**2)
 
 
-@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=True)
+@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False)
 def norm_vectors_numba(a):
     """ Calculate the L2 norm or length of vectors.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vectors (m x 3).
 
-    Returns:
+    Returns
+    -------
         array: The L2 norm of the vectors.
     """
     m = a.shape[0]
@@ -129,10 +137,12 @@ def norm_vectors_numba(a):
 def length_vector_numba(a):
     """ Calculate the length of a vector.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vector.
 
-    Returns:
+    Returns
+    -------
         float: The length of the vector.
     """
     return sqrt(a[0]**2 + a[1]**2 + a[2]**2)
@@ -142,10 +152,12 @@ def length_vector_numba(a):
 def length_vector_xy_numba(a):
     """ Calculate the length of the vector, assuming it lies in the XY plane.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XY(Z) components of the vector.
 
-    Returns:
+    Returns
+    -------
         float: The length of the XY component of the vector
     """
     return sqrt(a[0]**2 + a[1]**2)
@@ -155,10 +167,12 @@ def length_vector_xy_numba(a):
 def length_vector_sqrd_numba(a):
     """ Calculate the squared length of the vector.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vector.
 
-    Returns:
+    Returns
+    -------
         float: The squared length of the XYZ components.
     """
     return a[0]**2 + a[1]**2 + a[2]**2
@@ -168,10 +182,12 @@ def length_vector_sqrd_numba(a):
 def length_vector_sqrd_xy_numba(a):
     """ Calculate the squared length of the vector, assuming it lies in the XY plane.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XY(Z) components of the vector.
 
-    Returns:
+    Returns
+    -------
         float: The squared length of the XY components.
     """
     return a[0]**2 + a[1]**2
@@ -183,11 +199,13 @@ def length_vector_sqrd_xy_numba(a):
 def scale_vector_numba(a, factor):
     """ Scale a vector by a given factor.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vector.
         factor (float): Scale factor.
 
-    Returns:
+    Returns
+    -------
         array: The scaled vector, factor * a.
     """
     b = empty(3)
@@ -201,11 +219,13 @@ def scale_vector_numba(a, factor):
 def scale_vector_xy_numba(a, factor):
     """ Scale a vector by a given factor, assuming it lies in the XY plane.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XY(Z) components of the vector.
         factor (float): Scale factor.
 
-    Returns:
+    Returns
+    -------
         array: The scaled vector, factor * a (XY).
     """
     b = empty(3)
@@ -215,15 +235,17 @@ def scale_vector_xy_numba(a, factor):
     return b
 
 
-@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=True)
+@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False)
 def scale_vectors_numba(a, factor):
     """ Scale multiple vectors by a given factor.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vectors.
         factor (float): Scale factor.
 
-    Returns:
+    Returns
+    -------
         array: Scaled vectors.
     """
     m = a.shape[0]
@@ -233,15 +255,17 @@ def scale_vectors_numba(a, factor):
     return b
 
 
-@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=True)
+@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False)
 def scale_vectors_xy_numba(a, factor):
     """ Scale multiple vectors by a given factor, assuming they lie in the XY plane
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XY(Z)components of the vectors.
         factor (float): Scale factor.
 
-    Returns:
+    Returns
+    -------
         array: Scaled vectors (XY).
     """
     m = a.shape[0]
@@ -255,10 +279,12 @@ def scale_vectors_xy_numba(a, factor):
 def normalize_vector_numba(a):
     """ Normalize a given vector.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vector.
 
-    Returns:
+    Returns
+    -------
         array: The normalised vector.
     """
     l = length_vector_numba(a)
@@ -273,10 +299,12 @@ def normalize_vector_numba(a):
 def normalize_vector_xy_numba(a):
     """ Normalize a given vector, assuming it lies in the XY-plane.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XY(Z) components of the vector.
 
-    Returns:
+    Returns
+    -------
         array: The normalised vector in the XY-plane (Z = 0.0).
     """
     l = length_vector_xy_numba(a)
@@ -287,14 +315,16 @@ def normalize_vector_xy_numba(a):
     return b
 
 
-@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=True)
+@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False)
 def normalize_vectors_numba(a):
     """ Normalise multiple vectors.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of vectors.
 
-    Returns:
+    Returns
+    -------
         array: The normalised vectors.
     """
     m = a.shape[0]
@@ -304,14 +334,16 @@ def normalize_vectors_numba(a):
     return b
 
 
-@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=True)
+@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False)
 def normalize_vectors_xy_numba(a):
     """ Normalise multiple vectors, assuming they lie in the XY plane.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XY(Z) components of vectors.
 
-    Returns:
+    Returns
+    -------
         array: The normalised vectors in the XY plane.
     """
     m = a.shape[0]
@@ -325,25 +357,29 @@ def normalize_vectors_xy_numba(a):
 def power_vector_numba(a, power):
     """ Raise a vector to the given power.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vector.
         power (float): Power to raise to.
 
-    Returns:
+    Returns
+    -------
         array: a^power.
     """
     return array([a[0]**power, a[1]**power, a[2]**power])
 
 
-@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=True)
+@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False)
 def power_vectors_numba(a, power):
     """ Raise multiple vectors to the given power.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vectors (m x 3).
         power (float): Power to raise to.
 
-    Returns:
+    Returns
+    -------
         array: a^power.
     """
     m = a.shape[0]
@@ -357,10 +393,12 @@ def power_vectors_numba(a, power):
 def square_vector_numba(a):
     """ Raise a single vector to the power 2.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vector.
 
-    Returns:
+    Returns
+    -------
         array: a^2.
     """
     return power_vector_numba(a, power=2.)
@@ -370,10 +408,12 @@ def square_vector_numba(a):
 def square_vectors_numba(a):
     """ Raise multiple vectors to the power 2.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the vectors (m x 3).
 
-    Returns:
+    Returns
+    -------
         array: a^2.
     """
     return power_vectors_numba(a, power=2.)
@@ -385,11 +425,13 @@ def square_vectors_numba(a):
 def add_vectors_numba(u, v):
     """ Add two vectors.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XYZ components of the first vector.
         v (array): XYZ components of the second vector.
 
-    Returns:
+    Returns
+    -------
         array: u + v.
     """
     return array([u[0] + v[0], u[1] + v[1], u[2] + v[2]])
@@ -399,11 +441,13 @@ def add_vectors_numba(u, v):
 def add_vectors_xy_numba(u, v):
     """ Add two vectors, assuming they lie in the XY-plane.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XYZ components of the first vector.
         v (array): XYZ components of the second vector.
 
-    Returns:
+    Returns
+    -------
         array: u + v (Z = 0.0).
     """
     return array([u[0] + v[0], u[1] + v[1], 0.])
@@ -413,11 +457,13 @@ def add_vectors_xy_numba(u, v):
 def subtract_vectors_numba(u, v):
     """ Subtract one vector from another.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XYZ components of the first vector.
         v (array): XYZ components of the second vector.
 
-    Returns:
+    Returns
+    -------
         array: u - v.
     """
     return array([u[0] - v[0], u[1] - v[1], u[2] - v[2]])
@@ -427,11 +473,13 @@ def subtract_vectors_numba(u, v):
 def subtract_vectors_xy_numba(u, v):
     """ Subtract one vector from another, assuming they lie in the XY plane.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XY(Z) components of the first vector.
         v (array): XY(Z) components of the second vector.
 
-    Returns:
+    Returns
+    -------
         array: u - v (Z = 0.0).
     """
     return array([u[0] - v[0], u[1] - v[1], 0.])
@@ -441,11 +489,13 @@ def subtract_vectors_xy_numba(u, v):
 def multiply_vectors_numba(u, v):
     """ Element-wise multiplication of two vectors.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XYZ components of the first vector.
         v (array): XYZ components of the second vector.
 
-    Returns:
+    Returns
+    -------
         array: [ui * vi, uj * vj, uk * vk].
     """
     return array([u[0] * v[0], u[1] * v[1], u[2] * v[2]])
@@ -455,11 +505,13 @@ def multiply_vectors_numba(u, v):
 def multiply_vectors_xy_numba(u, v):
     """ Element-wise multiplication of two vectors assumed to lie in the XY plane..
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XY(Z) components of the first vector.
         v (array): XY(Z) components of the second vector.
 
-    Returns:
+    Returns
+    -------
         array: [ui * vi, uj * vj, (Z = 0.0)].
     """
     return array([u[0] * v[0], u[1] * v[1], 0.])
@@ -469,11 +521,13 @@ def multiply_vectors_xy_numba(u, v):
 def divide_vectors_numba(u, v):
     """ Element-wise division of two vectors.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XYZ components of the first vector.
         v (array): XYZ components of the second vector.
 
-    Returns:
+    Returns
+    -------
         array: [ui / vi, uj / vj, uk / vk].
     """
     return array([u[0] / v[0], u[1] / v[1], u[2] / v[2]])
@@ -483,11 +537,13 @@ def divide_vectors_numba(u, v):
 def divide_vectors_xy_numba(u, v):
     """ Element-wise division of two vectors assumed to lie in the XY plane.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XY(Z) components of the first vector.
         v (array): XY(Z) components of the second vector.
 
-    Returns:
+    Returns
+    -------
         array: [ui / vi, uj / vj, (Z = 0.0)].
     """
     return array([u[0] / v[0], u[1] / v[1], 0.])
@@ -499,11 +555,13 @@ def divide_vectors_xy_numba(u, v):
 def cross_vectors_numba(u, v):
     """ Compute the cross product of two vectors.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XYZ components of the first vector.
         v (array): XYZ components of the second vector.
 
-    Returns:
+    Returns
+    -------
         array: u X v.
     """
     w = empty(3)
@@ -517,11 +575,13 @@ def cross_vectors_numba(u, v):
 def cross_vectors_xy_numba(u, v):
     """ Compute the cross product of two vectors, assuming they lie in the XY-plane.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XY(Z) components of the first vector.
         v (array): XY(Z) components of the second vector.
 
-    Returns:
+    Returns
+    -------
         array: u X v.
     """
     return array([0., 0., u[0] * v[1] - u[1] * v[0]])
@@ -531,11 +591,13 @@ def cross_vectors_xy_numba(u, v):
 def dot_vectors_numba(u, v):
     """ Compute the dot product of two vectors.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XYZ components of the first vector.
         v (array): XYZ components of the second vector.
 
-    Returns:
+    Returns
+    -------
         float: u . v.
     """
     return u[0] * v[0] + u[1] * v[1] + u[2] * v[2]
@@ -545,11 +607,13 @@ def dot_vectors_numba(u, v):
 def dot_vectors_xy_numba(u, v):
     """ Compute the dot product of two vectors, assuming they lie in the XY-plane.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XY(Z) components of the first vector.
         v (array): XY(Z) components of the second vector.
 
-    Returns:
+    Returns
+    -------
         float: u . v (Z = 0.0).
     """
     return u[0] * v[0] + u[1] * v[1]
@@ -559,11 +623,13 @@ def dot_vectors_xy_numba(u, v):
 def vector_component_numba(u, v):
     """Compute the component of u in the direction of v.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XYZ components of the vector.
         v (array): XYZ components of the direction.
 
-    Returns:
+    Returns
+    -------
         float: The component of u in the direction of v.
     """
     factor = dot_vectors_numba(u, v) / length_vector_sqrd_numba(v)
@@ -574,11 +640,13 @@ def vector_component_numba(u, v):
 def vector_component_xy_numba(u, v):
     """Compute the component of u in the direction of v, assuming they lie in the XY-plane.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XY(Z) components of the vector.
         v (array): XY(Z) components of the direction.
 
-    Returns:
+    Returns
+    -------
         float: The component of u in the direction of v (Z = 0.0).
     """
     factor = dot_vectors_xy_numba(u, v) / length_vector_sqrd_xy_numba(v)
@@ -587,15 +655,17 @@ def vector_component_xy_numba(u, v):
 
 # ==============================================================================
 
-@jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=True)
+@jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False)
 def multiply_matrices_numba(A, B):
     """ The multiplication of matrices.
 
-    Parameters:
+    Parameters
+    ----------
         A (array): The first matrix (m x n).
         B (array): The second matrix (n x p).
 
-    Returns:
+    Returns
+    -------
         array: A * B of size (m x p).
     """
     m, n = A.shape
@@ -608,15 +678,17 @@ def multiply_matrices_numba(A, B):
     return C
 
 
-@jit(f8[:](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=True)
+@jit(f8[:](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=False)
 def multiply_matrix_vector_numba(A, b):
     """ The multiplication of a matrix with a vector.
 
-    Parameters:
+    Parameters
+    ----------
         A (array): The matrix (m x n).
         b (array): The vector (n,).
 
-    Returns:
+    Returns
+    -------
         array: A * b of size (m,).
     """
     m, n = A.shape
@@ -627,14 +699,16 @@ def multiply_matrix_vector_numba(A, b):
     return C
 
 
-@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=True)
+@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False)
 def transpose_matrix_numba(A):
     """ Transpose an array.
 
-    Parameters:
+    Parameters
+    ----------
         A (array): The matrix (m x n).
 
-    Returns:
+    Returns
+    -------
         array: A transposed (n x m).
     """
     m, n = A.shape
@@ -645,22 +719,24 @@ def transpose_matrix_numba(A):
     return B
 
 
-@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=True)
+@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False)
 def orthonormalise_vectors_numba(a):
     """ Orthonomalise a set of vectors using the Gram-Schmidt process.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XYZ components of the vectors (m x 3).
 
-    Returns:
+    Returns
+    -------
         array: Array of othonormal basis for the input vectors.
     """
     m = a.shape[0]
     b = empty((m, 3))
     b[0, :] = a[0, :]
-    for i in range(1, m):
+    for i in prange(1, m):
         proj = empty((i, 3))
-        for j in range(i):
+        for j in prange(i):
             proj[j, :] = vector_component_numba(a[i, :], b[j, :])
         b[i, :] = subtract_vectors_numba(a[i, :], sum_vectors_numba(proj, axis=0))
     return b
@@ -670,12 +746,14 @@ def orthonormalise_vectors_numba(a):
 def plane_from_points_numba(u, v, w):
     """Construct a plane from three points.
 
-    Parameters:
+    Parameters
+    ----------
         u (array): XYZ components of the base point.
         v (array): XYZ components of the second point.
         w (array): XYZ components of the third point.
 
-    Returns:
+    Returns
+    -------
         p : Normalised vector
     """
     uv = subtract_vectors_numba(v, u)
@@ -688,12 +766,14 @@ def plane_from_points_numba(u, v, w):
 def circle_from_points_numba(a, b, c):
     """Construct a circle from three points.
 
-    Parameters:
+    Parameters
+    ----------
         a (array): XYZ components of the base point.
         b (array): XYZ components of the second point.
         c (array): XYZ components of the third point.
 
-    Returns:
+    Returns
+    -------
         array: (xyz, r, normal) x, y, z centre, radius, nx, ny, nz normal.
     """
     ab = subtract_vectors_numba(b, a)
@@ -724,74 +804,103 @@ def circle_from_points_numba(a, b, c):
 
 
 # @jit(f8[:](f8[:], f8[:], f8[:]), nogil=True, nopython=True, parallel=True)
-# def circle_from_points_xy_numba(a, b, c):
-#     """Construct a circle from three points assumed to be in the XY plane.
+# def circle_from_points_xy_numba(u, v, w):
+#     """Construct a circle from three points assumed to be in the XY plan
 
-#     Parameters:
-#         a (array): XY(Z) components of the base point.
-#         b (array): XY(Z) components of the second point.
-#         c (array): XY(Z) components of the third point.
+#      Parameter
+#      ---------
+#          a (array): XY(Z) components of the base point
+#          b (array): XY(Z) components of the second point
+#          c (array): XY(Z) components of the third point
 
-#     Returns:
+#     Returns
+#     -------
 #         array: (x, y, z, r) where x, y, z are coords of the centre point and r the radius.
-#     """
-#     pass
+#    """
+#     ax, ay = u[0], u[1]
+#     bx, by = v[0], v[1]
+#     cx, cy = w[0], w[1]
+#     a = bx - ax
+#     b = by - ay
+#     c = cx - ax
+#     d = cy - ay
+#     e = a * (ax + bx) + b * (ay + by)
+#     f = c * (ax + cx) + d * (ay + cy)
+#     g = 2 * (a * (cy - by) - b * (cx - bx))
+#     centrex = (d * e - b * f) / g
+#     centrey = (a * f - c * e) / g
+#     radius = sqrt((ax - centrex) ** 2 + (ay - centrey) ** 2)
+#     cr = array([
+#         centrex,
+#         centrey,
+#         0.0,
+#         radius])
+#     return cr
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
+    from time import time
+
     u = array([1., 2., 3.])
     v = array([4., 5., 6.])
-    w = array([1., 2., 6.])
+    w = array([5., 2., 10.])
     c = array([[1., 2., 3.], [4., 4., 4.], [2., 3., 3.]])
     d = array([4., 5.])
     e = array([[1., 2.], [0., 2.]])
     f = array([[4., 5.], [1., 2.]])
 
-    print(sum_vectors_numba(c, axis=0))
-    print(norm_vector_numba(u))
-    print(norm_vectors_numba(c))
-    print(length_vector_numba(u))
-    print(length_vector_xy_numba(u))
-    print(length_vector_sqrd_numba(u))
-    print(length_vector_sqrd_xy_numba(u))
+    tic = time()
 
-    print(scale_vector_numba(u, factor=4.))
-    print(scale_vector_xy_numba(u, factor=4.))
-    print(scale_vectors_numba(c, factor=4.))
-    print(scale_vectors_xy_numba(c, factor=4.))
-    print(normalize_vector_numba(u))
-    print(normalize_vector_xy_numba(u))
-    print(normalize_vectors_numba(c))
-    print(normalize_vectors_xy_numba(c))
-    print(power_vector_numba(u, 3.))
-    print(power_vectors_numba(c, 3.))
-    print(square_vector_numba(u))
-    print(square_vectors_numba(c))
+    for i in range(10**5):
 
-    print(add_vectors_numba(u, v))
-    print(add_vectors_xy_numba(u, v))
-    print(subtract_vectors_numba(u, v))
-    print(subtract_vectors_xy_numba(u, v))
-    print(multiply_vectors_numba(u, v))
-    print(multiply_vectors_xy_numba(u, v))
-    print(divide_vectors_numba(u, v))
-    print(divide_vectors_xy_numba(u, v))
+        # sum_vectors_numba(c, axis=0)
+        # norm_vector_numba(u)
+        # norm_vectors_numba(c)
+        # length_vector_numba(u)
+        # length_vector_xy_numba(u)
+        # length_vector_sqrd_numba(u)
+        # length_vector_sqrd_xy_numba(u)
 
-    print(cross_vectors_numba(u, v))
-    print(cross_vectors_xy_numba(u, v))
-    print(dot_vectors_numba(u, v))
-    print(dot_vectors_xy_numba(u, v))
-    print(vector_component_numba(u, v))
-    print(vector_component_xy_numba(u, v))
+        # scale_vector_numba(u, factor=4.)
+        # scale_vector_xy_numba(u, factor=4.)
+        # scale_vectors_numba(c, factor=4.)
+        # scale_vectors_xy_numba(c, factor=4.)
+        # normalize_vector_numba(u)
+        # normalize_vector_xy_numba(u)
+        # normalize_vectors_numba(c)
+        # normalize_vectors_xy_numba(c)
+        # power_vector_numba(u, 3.)
+        # power_vectors_numba(c, 3.)
+        # square_vector_numba(u)
+        # square_vectors_numba(c)
 
-    print(multiply_matrices_numba(e, f))
-    print(multiply_matrix_vector_numba(e, d))
-    print(transpose_matrix_numba(e))
-    print(orthonormalise_vectors_numba(c))
-    print(plane_from_points_numba(u, v, w))
-    print(circle_from_points_numba(u, v, w))
+        # add_vectors_numba(u, v)
+        # add_vectors_xy_numba(u, v)
+        # subtract_vectors_numba(u, v)
+        # subtract_vectors_xy_numba(u, v)
+        # multiply_vectors_numba(u, v)
+        # multiply_vectors_xy_numba(u, v)
+        # divide_vectors_numba(u, v)
+        # divide_vectors_xy_numba(u, v)
+
+        # cross_vectors_numba(u, v)
+        # cross_vectors_xy_numba(u, v)
+        # dot_vectors_numba(u, v)
+        # dot_vectors_xy_numba(u, v)
+        # vector_component_numba(u, v)
+        # vector_component_xy_numba(u, v)
+
+        # multiply_matrices_numba(e, f)
+        # multiply_matrix_vector_numba(e, d)
+        # transpose_matrix_numba(e)
+        # orthonormalise_vectors_numba(c)
+        # plane_from_points_numba(u, v, w)
+        circle_from_points_numba(u, v, w)
+        # circle_from_points_xy_numba(u, v, w)
+
+    print(time() - tic)

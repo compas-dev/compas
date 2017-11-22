@@ -1,5 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import sys
 
@@ -25,9 +26,8 @@ except ImportError:
         raise
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
-                  'Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']
+__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
@@ -41,17 +41,15 @@ __all__ = [
     'mass_matrix',
     'stiffness_matrix',
     'equilibrium_matrix',
-
     'network_adjacency_matrix',
     'network_degree_matrix',
     'network_connectivity_matrix',
     'network_laplacian_matrix',
-
     'mesh_adjacency_matrix',
     'mesh_degree_matrix',
     'mesh_connectivity_matrix',
     'mesh_laplacian_matrix',
-
+    'mesh_face_matrix',
     'trimesh_cotangent_laplacian_matrix',
 ]
 
@@ -74,8 +72,18 @@ def _return_matrix(M, rtype):
 # adjacency
 # ==============================================================================
 
-
 def adjacency_matrix(adjacency, rtype='array'):
+    """Creates a vertex adjacency matrix.
+
+    Parameters
+    ----------
+        adjacency (list): List of lists, vertex adjacency data.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed adjacency matrix.
+    """
     a = [(1, i, j) for i in range(len(adjacency)) for j in adjacency[i]]
     data, rows, cols = zip(*a)
     A = coo_matrix((data, (rows, cols))).asfptype()
@@ -85,10 +93,14 @@ def adjacency_matrix(adjacency, rtype='array'):
 def face_matrix(face_vertices, rtype='array'):
     """Creates a face-vertex adjacency matrix.
 
-    Parameters:
-        face_vertices (list of list) : List of vertices per face.
-        rtype (str) : The return type.
+    Parameters
+    ----------
+        face_vertices (list): List of lists, vertices per face.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
 
+    Returns
+    -------
+        array, sparse, list: Constructed face matrix.
     """
     f = array([(i, j, 1) for i, vertices in enumerate(face_vertices) for j in vertices])
     F = coo_matrix((f[:, 2], (f[:, 0], f[:, 1]))).asfptype()
@@ -99,8 +111,18 @@ def face_matrix(face_vertices, rtype='array'):
 # degree
 # ==============================================================================
 
-
 def degree_matrix(adjacency, rtype='array'):
+    """Creates a matrix representing vertex degrees.
+
+    Parameters
+    ----------
+        adjacency (list): List of lists, vertex adjacency data.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed degree matrix.
+    """
     d = [(len(adjacency[i]), i, i) for i in range(len(adjacency))]
     data, rows, cols = zip(*d)
     D = coo_matrix((data, (rows, cols))).asfptype()
@@ -111,9 +133,22 @@ def degree_matrix(adjacency, rtype='array'):
 # connectivity
 # ==============================================================================
 
-
 def connectivity_matrix(edges, rtype='array'):
     r"""Creates a connectivity matrix from a list of vertex index pairs.
+
+    Note
+    ----
+        A connectivity matrix is generally sparse and will perform superior
+        in numerical calculations as a sparse matrix.
+
+    Parameters
+    ----------
+        edges (list): List of lists [[node_i, node_j], [node_k, node_l]].
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed connectivity matrix.
 
     The connectivity matrix encodes how edges in a network are connected
     together. Each row represents an edge and has 1 and -1 inserted into the
@@ -128,20 +163,8 @@ def connectivity_matrix(edges, rtype='array'):
             0  & otherwise
         }
 
-    Note:
-        A connectivity matrix is generally sparse and will perform superior
-        in numerical calculations as a sparse matrix.
-
-    Parameters:
-        edges (list of list): List of lists [[node_i, node_j], [node_k, node_l]].
-        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
-
-    Returns:
-        sparse: If ``rtype`` is ``None``, ``'csc'``, ``'csr'``, ``'coo'``.
-
-        array: If ``rtype`` is ``'array'``.
-
-    Examples:
+    Examples
+    --------
         >>> connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
         [[-1  1  0  0]
          [-1  0  1  0]
@@ -160,11 +183,24 @@ def connectivity_matrix(edges, rtype='array'):
 # laplacian
 # ==============================================================================
 
-
 # change this to a procedural approach
 # constructing (fundamental) matrices should not involve matrix operations
 def laplacian_matrix(edges, normalize=False, rtype='array'):
     r"""Creates a laplacian matrix from a list of edge topologies.
+
+    Note
+    ----
+        The current implementation only supports umbrella weights,
+        as other weighting schemes are not generally applicable.
+
+    Parameters
+    ----------
+        edges (list): List of lists [[node_i, node_j], [node_k, node_l]].
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed Laplacian matrix.
 
     The laplacian matrix is defined as
 
@@ -172,19 +208,8 @@ def laplacian_matrix(edges, normalize=False, rtype='array'):
 
         \mathbf{L} = \mathbf{C} ^ \mathrm{T} \mathbf{C}
 
-    Note:
-        The current implementation only supports umbrella weights,
-        as other weighting schemes are not generally applicable.
-
-    Parameters:
-        edges (list of list): List of lists [[node_i, node_j], [node_k, node_l]].
-        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
-
-    Returns:
-        sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
-        array: If ''rtype'' is ``'array'``.
-
-    Examples:
+    Examples
+    --------
         >>> laplacian_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
         [[ 3 -1 -1 -1]
          [-1  1  0  0]
@@ -204,23 +229,24 @@ def laplacian_matrix(edges, normalize=False, rtype='array'):
 # structural
 # ==============================================================================
 
-
 def equilibrium_matrix(C, xyz, free, rtype='array'):
     r"""Construct the equilibrium matrix of a structural system.
 
-    Note:
+    Note
+    ----
         The matrix of vertex coordinates is vectorised to speed up the
         calculations.
 
-    Parameters:
+    Parameters
+    ----------
         C (array, sparse): Connectivity matrix (m x n).
         xyz (array, list): Array of vertex coordinates (n x 3).
         free (list): The index values of the free vertices.
-        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
 
-    Returns:
-        sparse : If ``rtype`` is ``'csc', 'csr', 'coo'``.
-        array : If ``rtype`` is ``'array'``.
+    Returns
+    -------
+        array, sparse, list: Constructed equilibrium matrix.
 
     Analysis of the equilibrium matrix reveals some of the properties of the
     structural system, its size is (2ni x m) where ni is the number of free or
@@ -238,8 +264,8 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
             \end{array}
         \right].
 
-
-    Examples:
+    Examples
+    --------
         >>> C = connectivity_matrix([[0, 1], [0, 2], [0, 3]])
         >>> xyz = [[0, 0, 1], [0, 1, 0], [-1, -1, 0], [1, -1, 0]]
         >>> equilibrium_matrix(C, xyz, [0], rtype='array')
@@ -262,6 +288,18 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
 def mass_matrix(Ct, ks, q=0, c=1, tiled=True):
     r"""Creates a network's nodal mass matrix.
 
+    Parameters
+    ----------
+        Ct (sparse): Sparse transpose of the connectivity matrix (n x m).
+        ks (array): Vector of member EA / L (m x 1).
+        q (array): Vector of member force densities (m x 1).
+        c (float): Convergence factor.
+        tiled (boolean): Whether to tile horizontally by 3 for x, y, z.
+
+    Returns
+    -------
+        array: Mass matrix, either (m x 1) or (m x 3).
+
     The mass matrix is defined as the sum of the member axial stiffnesses
     (inline) of the elements connected to each node, plus the force density.
     The force density ensures a non-zero value in form-finding/pre-stress
@@ -272,16 +310,6 @@ def mass_matrix(Ct, ks, q=0, c=1, tiled=True):
         \mathbf{m} =
         |\mathbf{C}^\mathrm{T}|
         (\mathbf{E} \circ \mathbf{A} \oslash \mathbf{l} + \mathbf{f} \oslash \mathbf{l})
-
-    Parameters:
-        Ct (sparse): Sparse transpose of the connectivity matrix (n x m).
-        ks (array): Vector of member EA / L (m x 1).
-        q (array): Vector of member force densities (m x 1).
-        c (float): Convergence factor.
-        tiled (boolean): Whether to tile horizontally by 3 for x, y, z.
-
-    Returns:
-        array : mass matrix, either (m x 1) or (m x 3).
 
     """
     m = c * abs(Ct).dot(ks + q)
@@ -295,60 +323,81 @@ def stiffness_matrix():
 
 
 # ==============================================================================
-# data structure variations
+# datastructure variations
 # ==============================================================================
 
-
 def network_adjacency_matrix(network, rtype='array'):
+    """Creates a vertex adjacency matrix from a Network datastructure.
+
+    Parameters
+    ----------
+        network (obj): Network datastructure object to get data from.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed adjacency matrix.
+    """
     key_index = network.key_index()
     adjacency = [[key_index[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
 def network_degree_matrix(network, rtype='array'):
+    """Creates a vertex degree matrix from a Network datastructure.
+
+    Parameters
+    ----------
+        network (obj): Network datastructure object to get data from.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed vertex degree matrix.
+    """
     key_index = network.key_index()
     adjacency = [[key_index[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
 def network_connectivity_matrix(network, rtype='array'):
+    """Creates a connectivity matrix from a Network datastructure.
+
+    Parameters
+    ----------
+        network (obj): Network datastructure object to get data from.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed connectivity matrix.
+    """
     key_index = network.key_index()
     edges = [(key_index[u], key_index[v]) for u, v in network.edges()]
     return connectivity_matrix(edges, rtype=rtype)
 
 
 def network_laplacian_matrix(network, normalize=False, rtype='array'):
-    r"""Construct the Laplacian matrix of a network.
+    r"""Construct a Laplacian matrix from a Network datastructure.
 
-    Parameters:
-        network (compas.datastructures.network.network.Network) :
-            The network datastructure.
-
-        rtype (str) :
-            Optional.
-            The format in which the Laplacian should be returned.
-            Default is `'array'`.
-
-        normalize (bool):
-            Optional.
-            Normalize the entries such that the value on the diagonal is ``1``.
-            Default is ``False``.
-
-    Returns:
-        array-like: The Laplacian matrix in the format specified by ``rtype``.
-
-        Possible values of ``rtype`` are ``'list'``, ``'array'``, ``'csr'``, ``'csc'``, ``'coo'``.
-
-
-    Note:
+    Note
+    ----
         ``d = L.dot(xyz)`` is currently a vector that points from the centroid to the vertex.
-        Therefore ``c = xyz - d``.
-        By changing the signs in the laplacian,
-        the dsiplacement vectors could be used in a more natural way ``c = xyz + d``.
+        Therefore ``c = xyz - d``. By changing the signs in the laplacian, the dsiplacement
+        vectors could be used in a more natural way ``c = xyz + d``.
 
+    Parameters
+    ----------
+        network (obj): Network datastructure object to get data from.
+        normalize (bool): Normalize the entries such that the value on the diagonal is ``1``.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
 
-    Example:
+    Returns
+    -------
+        array, sparse, list: Constructed Laplacian matrix.
 
+    Examples
+    --------
         .. plot::
             :include-source:
 
@@ -373,24 +422,68 @@ def network_laplacian_matrix(network, normalize=False, rtype='array'):
 
 
 def mesh_adjacency_matrix(mesh, rtype='array'):
+    """Creates a vertex adjacency matrix from a Mesh datastructure.
+
+    Parameters
+    ----------
+        mesh (obj): Mesh datastructure object to get data from.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed adjacency matrix.
+    """
     key_index = mesh.key_index()
     adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbours(key)] for key in mesh.vertices()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
 def mesh_connectivity_matrix(mesh, rtype='array'):
+    """Creates a connectivity matrix from a Mesh datastructure.
+
+    Parameters
+    ----------
+        mesh (obj): Mesh datastructure object to get data from.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed connectivity matrix.
+    """
     key_index = mesh.key_index()
     edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
     return connectivity_matrix(edges, rtype=rtype)
 
 
 def mesh_degree_matrix(mesh, rtype='array'):
+    """Creates a vertex degree matrix from a Mesh datastructure.
+
+    Parameters
+    ----------
+        mesh (obj): Mesh datastructure object to get data from.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed vertex degree matrix.
+    """
     key_index = mesh.key_index()
     adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbours(key)] for key in mesh.vertices()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
 def mesh_laplacian_matrix(mesh, rtype='csr'):
+    """Construct a Laplacian matrix from a Mesh datastructure.
+
+    Parameters
+    ----------
+        mesh (obj): Mesh datastructure object to get data from.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
+
+    Returns
+    -------
+        array, sparse, list: Constructed Laplacian matrix.
+    """
     data, rows, cols = [], [], []
     key_index = mesh.key_index()
     for key in mesh.vertices():
@@ -412,19 +505,16 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
 
 
 def mesh_face_matrix(mesh, rtype='csr'):
-    r"""Construct the face matrix of a mesh.
+    r"""Construct the face matrix from a Mesh datastructure.
 
-    Parameters:
-        mesh (compas.datastructures.mesh.mesh.Network) :
-            A ``compas`` mesh datastructure object.
-        rtype (str) : Optional.
-            The type of matrix to be returned. The default is ``'csr'``.
+    Parameters
+    ----------
+        mesh (obj): Mesh datastructure object to get data from.
+        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo', 'list'.
 
-    Returns:
-        array-like: The face matrix in the format specified by ``rtype``.
-
-        Possible values of ``rtype`` are ``'list'``, ``'array'``, ``'csr'``, ``'csc'``, ``'coo'``.
-
+    Returns
+    -------
+        array, sparse, list: Constructed mesh face matrix.
 
     The face matrix represents the relationship between faces and vertices.
     Each row of the matrix represents a face. Each column represents a vertex.
@@ -442,8 +532,8 @@ def mesh_face_matrix(mesh, rtype='csr'):
     The face matrix can for example be used to compute the centroids of all
     faces of a mesh.
 
-    Example:
-
+    Examples
+    --------
         .. code-block:: python
 
             import compas
@@ -482,16 +572,8 @@ def trimesh_edge_cotangents(mesh, u, v):
 def trimesh_cotangent_laplacian_matrix(mesh):
     """Construct the Laplacian of a triangular mesh with cotangent weights.
 
-    Parameters:
-        mesh (compas.datastructures.mesh.tri.TriMesh) :
-            The triangular mesh.
-
-    Returns:
-        array-like :
-            The Laplacian matrix with cotangent weights.
-            ...
-
-    Note:
+    Note
+    ----
         The matrix is constructed such that the diagonal contains the sum of the
         weights of the adjacent vertices, multiplied by `-1`.
         The entries of the matrix are thus
@@ -505,8 +587,13 @@ def trimesh_cotangent_laplacian_matrix(mesh):
                     0 & otherwise
                 \end{cases}
 
-    >>> ...
+    Parameters
+    ----------
+        mesh (obj): The triangular Mesh datastructure object.
 
+    Returns
+    -------
+        array: The Laplacian matrix with cotangent weights.
     """
     # minus sum of the adjacent weights on the diagonal
     # cotangent weights on the neighbours

@@ -28,6 +28,7 @@ geometry
 .. autosummary::
     :toctree: generated/
 
+    sum_vectors_numba
     norm_vector_numba
     norm_vectors_numba
     length_vector_numba
@@ -58,18 +59,26 @@ geometry
     cross_vectors_xy_numba
     dot_vectors_numba
     dot_vectors_xy_numba
+    vector_component_numba
+    vector_component_xy_numba
     multiply_matrices_numba
     multiply_matrix_vector_numba
+    transpose_matrix_numba
+    orthonormalise_vectors_numba
+    plane_from_points_numba
+    circle_from_points_numba
 
 
-cuda
+solvers
 ====
 
 .. autosummary::
     :toctree: generated/
 
+    devo_numba
 
-euler
+
+core
 =====
 
 .. autosummary::
@@ -89,22 +98,16 @@ euler
     kill_job
     sync_folder_to_euler
 
-
-opencl
-======
-
-.. autosummary::
-    :toctree: generated/
-
-
 """
 
 from .geometry import *
-from .euler import *
+from .core import *
 from .algorithms import *
+from .solvers import *
 
 from .geometry import __all__ as a
-from .euler import __all__ as b
+from .core import __all__ as b
 from .algorithms import __all__ as c
+from .solvers import __all__ as d
 
-__all__ = a + b + c
+__all__ = a + b + c + d

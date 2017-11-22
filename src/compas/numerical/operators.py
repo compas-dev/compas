@@ -1,13 +1,14 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import sys
 
 try:
-    from numpy import tile
+    from numpy import arange
     from numpy import divide
     from numpy import hstack
-    from numpy import arange
+    from numpy import tile
 
     from scipy import cross
     from scipy.sparse import coo_matrix
@@ -21,10 +22,10 @@ from compas.numerical.linalg import normalizerow
 from compas.numerical.linalg import rot90
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+__author__    = ['Tom Van Mele <vanmelet@ethz.ch>', ]
+__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -37,14 +38,15 @@ __all__ = [
 def grad(V, F, rtype='array'):
     """Construct the gradient operator of a trianglular mesh.
 
-    Parameters:
+    Parameters
+    ----------
         V (array): Vertex coordinates of the mesh.
         F (array): Face vertex indices of the mesh.
         rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
 
-    Returns:
-        sparse: If ''rtype'' is ``None, 'csc', 'csr', 'coo'``.
-        array: If ''rtype'' is ``'array'``.
+    Returns
+    -------
+        array, sparse: Depending on rtype return type.
 
     The gradient operator is fully determined by the connectivity of the mesh
     and the coordinate difference vectors associated with the edges
