@@ -1,6 +1,10 @@
-""""""
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+import os
+import subprocess
 import matplotlib
-# matplotlib.use('TkAgg')
 
 import matplotlib.pyplot as plt
 
@@ -256,20 +260,42 @@ class Plotter(object):
         self.axes.autoscale()
         plt.savefig(filepath, **kwargs)
 
-    # def init_gif(self, filepath, **kwargs):
-    #     """Saves the plot on a file.
+    def saveas_gif(self, filepath, images, delay=10, loop=0):
+        """Save a series of images as an animated gif.
 
-    #     Parameters
-    #     ----------
-    #     filepath : str
-    #         Full path of the file.
+        Parameters
+        ----------
+        filepath : str
+            The full path to the output file.
+        images : list
+            A list of paths to input files.
 
-    #     """
-    #     self.axes.autoscale()
-    #     plt.savefig(filepath, **kwargs)
+        Returns
+        -------
+        None
 
-    # def save_gifimage(self):
-    #     pass
+        Warning
+        -------
+        This function assumes ImageMagick is installed on your system, and on
+        *convert* being on your system path.
+
+        """
+        command = ['convert', '-delay', '{}'.format(delay), '-loop', '{}'.format(loop)]
+        subprocess.call(command + images + [filepath])
+
+    # def init_animated_gif(self, folder):
+    #     if os.path.exists(folder) and os.path.isdir(folder):
+    #         if not os.access(folder, os.W_OK):
+    #             raise Exception('You do not have write access to this folder: {}'.format(folder))
+    #     else:
+    #         os.makedirs(folder)
+
+    # # def save_animated_gif_frame(self):
+    # #     pass
+
+    # def save_animated_gif(self, filepath, images, delay=10, loop=0):
+    #     command = ['convert', '-delay', '{}'.format(delay), '-loop', '{}'.format(loop)]
+    #     subprocess.call(command + images + [filepath])
 
     def update(self, pause=0.0001):
         """Updates and pauses the plot.
@@ -413,12 +439,10 @@ if __name__ == "__main__":
             'width': 1.0
         })
 
-
     plotter = Plotter(figsize=(10, 6))
 
     pcoll = plotter.draw_points(points)
     lcoll = plotter.draw_lines(lines)
-
 
     def callback(vertices, k, args):
         pos = [vertices[key][0:2] for key in mesh.vertex]
@@ -433,16 +457,13 @@ if __name__ == "__main__":
         plotter.update_linecollection(lcoll, segments)
         plotter.update(pause=0.001)
 
-
     vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
     adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
-
 
     smooth_centroid(vertices,
                     adjacency,
                     fixed=fixed,
                     kmax=100,
                     callback=callback)
-
 
     plotter.show()
