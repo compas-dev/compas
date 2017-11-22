@@ -5,7 +5,11 @@ from __future__ import print_function
 from numba import f8
 from numba import i8
 from numba import jit
-from numba import prange
+
+try:
+    from numba import prange
+except ImportError:
+    prange = range
 
 from numpy import array
 from numpy import empty
@@ -832,7 +836,7 @@ def circle_from_points_xy_numba(u, v, w):
 
 
 # ==============================================================================
-# Main
+# Testing
 # ==============================================================================
 
 if __name__ == "__main__":

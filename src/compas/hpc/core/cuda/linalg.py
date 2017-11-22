@@ -1,8 +1,12 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from numpy import float64
 from numpy import ceil
 
-from compas.hpc.cuda._math import cuda_sqrt
-from compas.hpc.cuda._math import cuda_sum
+from compas.hpc.cuda.math import cuda_sqrt
+from compas.hpc.cuda.math import cuda_sum
 
 try:
     import pycuda

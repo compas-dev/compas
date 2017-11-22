@@ -70,45 +70,61 @@ geometry
     circle_from_points_xy_numba
 
 
-solvers
+core
 ====
 
-.. autosummary::
-    :toctree: generated/
-
-    devo_numba
-
-
-core
-=====
+cuda
+----
 
 .. autosummary::
     :toctree: generated/
 
-    connect_to_euler
-    load_euler_module
-    recieve_file_from_euler
-    send_file_to_euler
-    send_folder_to_euler
-    show_euler_jobs
-    show_euler_quotas
-    show_euler_modules
-    show_euler_module_info
-    show_euler_resources
-    submit_job
-    kill_job
-    sync_folder_to_euler
+
+euler
+-----
+
+.. autosummary::
+    :toctree: generated/
+
+    euler.connect_to_euler
+    euler.load_euler_module
+    euler.recieve_file_from_euler
+    euler.send_file_to_euler
+    euler.send_folder_to_euler
+    euler.show_euler_jobs
+    euler.show_euler_quotas
+    euler.show_euler_modules
+    euler.show_euler_module_info
+    euler.show_euler_resources
+    euler.submit_job
+    euler.kill_job
+    euler.sync_folder_to_euler
+
+numba
+-----
+
+.. autosummary::
+    :toctree: generated/
+
+    numba.numba_cross
+    numba.numba_vdot
+    numba.numba_dot
+    numba.numba_length
+    numba.numba_subtract
+
+
+opencl
+------
+
+.. autosummary::
+    :toctree: generated/
+
 
 """
-
 from .geometry import *
-from .core import *
 from .algorithms import *
-from .solvers import *
 
 from .geometry import __all__ as a
-from .core import __all__ as b
-from .algorithms import __all__ as c
-from .solvers import __all__ as d
+from .algorithms import __all__ as b
 
-__all__ = a + b + c + d
+__all__ = a + b
