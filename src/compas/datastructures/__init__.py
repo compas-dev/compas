@@ -10,6 +10,7 @@ datastructures
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     Mesh
     Network

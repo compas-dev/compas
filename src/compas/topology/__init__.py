@@ -13,6 +13,7 @@ combinatorial
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     vertex_coloring
 
@@ -21,6 +22,7 @@ orientation
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     mesh_flip_cycles
     mesh_unify_cycles
@@ -30,6 +32,7 @@ planarity
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     network_is_crossed
     network_count_crossings
@@ -44,6 +47,7 @@ subdivision
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     mesh_subdivide
     mesh_subdivide_tri
@@ -55,6 +59,7 @@ traversal
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     depth_first_ordering
     depth_first_tree
@@ -70,6 +75,7 @@ triangulation
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     delaunay_from_points
     voronoi_from_delaunay

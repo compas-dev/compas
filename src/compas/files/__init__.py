@@ -24,6 +24,7 @@ dxf
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     DXF
     DXFReader
@@ -43,6 +44,7 @@ obj
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     OBJ
     OBJReader
@@ -56,6 +58,7 @@ ply
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     PLYreader
 

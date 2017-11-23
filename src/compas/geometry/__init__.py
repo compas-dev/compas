@@ -29,6 +29,7 @@ Algorithms
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     bestfit_plane
     bestfit_plane_numpy
@@ -67,6 +68,7 @@ This package provides an object-oriented interface to the above functionality.
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     Vector
     Point
@@ -82,6 +84,7 @@ This package provides an object-oriented interface to the above functionality.
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     KDTree
 
@@ -91,6 +94,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     add_vectors
     add_vectors_xy
@@ -132,6 +136,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     vector_from_points
     vector_from_points_xy
@@ -146,6 +151,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     closest_point_in_cloud
     closest_point_in_cloud_xy
@@ -176,6 +182,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     angle_smallest_points
     angle_smallest_points_xy
@@ -199,6 +206,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     center_of_mass_polygon
     center_of_mass_polygon_xy
@@ -215,6 +223,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     normal_polygon
     normal_triangle
@@ -225,6 +234,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     is_ccw_xy
     is_colinear
@@ -259,6 +269,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     intersection_circle_circle
     intersection_circle_circle_xy
@@ -277,6 +288,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     area_polygon
     area_polygon_xy
@@ -289,12 +301,14 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     transform
     transform_numpy
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     homogenize
     dehomogenize
@@ -306,6 +320,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     projection_matrix
     rotation_matrix
@@ -315,6 +330,7 @@ Functions
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     mirror_point_line
     mirror_point_line_xy

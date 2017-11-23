@@ -17,6 +17,7 @@ animation
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     gif_from_images
 
@@ -26,6 +27,7 @@ colors
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     i_to_rgb
     i_to_red
@@ -43,6 +45,7 @@ datetime
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     timestamp
 
@@ -52,6 +55,7 @@ itertools
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     take
     tabulate
@@ -83,6 +87,7 @@ maps
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     geometric_key
     geometric_key2
@@ -94,6 +99,7 @@ mixing
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     mix_in_functions
     mix_in_class_attributes
@@ -104,6 +110,7 @@ names
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     random_name
 
@@ -113,6 +120,7 @@ profiling
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     print_profile
 
@@ -122,6 +130,7 @@ xfunc
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     XFunc
 

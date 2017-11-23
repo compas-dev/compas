@@ -18,11 +18,13 @@ ShapeOp
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     shapeop.ShapeOpSolver
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     shapeop.int_array
     shapeop.float_array
@@ -33,6 +35,7 @@ Core
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     core.cpp.xdarray.Array1D
     core.cpp.xdarray.Array2D

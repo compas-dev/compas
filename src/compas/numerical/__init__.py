@@ -6,6 +6,13 @@ numerical
 
 .. module:: compas.numerical
 
+.. note::
+
+    The array and matrix-based implementations of the numerical package are built around NumPy and SciPy.
+
+    * NumPy: http://www.numpy.org/
+    * SciPy: https://www.scipy.org/
+
 
 Algorithms
 ==========

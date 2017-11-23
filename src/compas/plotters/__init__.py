@@ -12,8 +12,10 @@ plotters
 
     * Matplotlib: https://matplotlib.org/
 
+
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     Plotter
     NetworkPlotter
