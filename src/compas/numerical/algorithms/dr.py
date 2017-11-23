@@ -388,7 +388,7 @@ if __name__ == "__main__":
     # and define a callback function
     # for plotting the intermediate configurations
 
-    plotter = NetworkPlotter(network, figsize=(10, 6))
+    plotter = NetworkPlotter(network, figsize=(10, 7), fontsize=6)
 
     def callback(k, xyz, crits, args):
         print(k)

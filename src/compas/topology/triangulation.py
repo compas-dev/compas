@@ -13,7 +13,7 @@ from compas.geometry import is_point_in_triangle_xy
 from compas.geometry import is_point_in_circle_xy
 from compas.geometry import circle_from_points_xy
 
-from compas.geometry import smooth_area
+from compas.geometry import mesh_smooth_area
 
 from compas.topology import mesh_dual
 
@@ -525,16 +525,7 @@ def trimesh_remesh(mesh,
             if allow_boundary_split:
                 boundary  = set(mesh.vertices_on_boundary())
 
-            vertices  = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-            faces     = {fkey: mesh.face_vertices(fkey) for fkey in mesh.faces()}
-            adjacency = {key: mesh.vertex_faces(key) for key in mesh.vertices()}
-
-            smooth_area(vertices, faces, adjacency, fixed=fixed.union(boundary), kmax=1)
-
-            for key, attr in mesh.vertices(True):
-                attr['x'] = vertices[key][0]
-                attr['y'] = vertices[key][1]
-                attr['z'] = vertices[key][2]
+            mesh_smooth_area(mesh, fixed=fixed.union(boundary), kmax=1)
 
         # callback
         if callback:
