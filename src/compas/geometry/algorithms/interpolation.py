@@ -49,14 +49,21 @@ def discrete_coons_patch(ab, bc, dc, ad):
     faces : list of lists
         List of faces (face = list of vertex indices as integers)
 
-    References
-    ----------
-    * https://en.wikipedia.org/wiki/Coons_patch
-    * https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml
+    Examples
+    --------
+    .. code-block:: python
+
+        #
+
 
     See Also
     --------
     * :func:`compas.datastructures.mesh_cull_duplicate_vertices`
+
+    References
+    ----------
+    * https://en.wikipedia.org/wiki/Coons_patch
+    * https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml
 
     """
     if not ab:

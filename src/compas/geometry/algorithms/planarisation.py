@@ -30,7 +30,7 @@ __all__ = [
 ]
 
 
-def flatness(vertices, faces, maxdev=1.0):
+def flatness(vertices, faces, maxdev=0.02):
     """Compute mesh flatness per face.
 
     Parameters
@@ -41,7 +41,7 @@ def flatness(vertices, faces, maxdev=1.0):
         The face vertices.
     maxdev : float, optional
         A maximum value for the allowed deviation from flatness.
-        Default is ``1.0``.
+        Default is ``0.02``.
 
     Returns
     -------
@@ -166,9 +166,14 @@ def mesh_flatness(mesh, maxdev=1.0):
     This function only works as expected for quadrilateral faces.
 
     """
-    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-    faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
-    return flatness(vertices, faces, maxdev=maxdev)
+    dev = []
+    for fkey in mesh.faces():
+        points = mesh.face_coordinates(fkey)
+        lengths = [distance_point_point(a, b) for a, b in window(points + points[0:1], 2)]
+        l = sum(lengths) / len(lengths)
+        d = distance_line_line((points[0], points[2]), (points[1], points[3]))
+        dev.append((d / l) / maxdev)
+    return dev
 
 
 def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_args=None):
@@ -194,6 +199,16 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
     callback_args : list, optional [None]
         A list of arguments to be passed to the callback function.
 
+    Returns
+    -------
+    None
+
+    Examples
+    --------
+    .. code-block:: python
+
+        #
+
     """
     if callback:
         if not callable(callback):
@@ -202,19 +217,34 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
     fixed = fixed or []
     fixed = set(fixed)
 
-    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-    faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
-
     for k in range(kmax):
-        planarize_faces(vertices, faces, fixed=fixed, kmax=1)
+
+        positions = {key: [] for key in mesh.vertices()}
+
+        for fkey in mesh.faces():
+            vertices = mesh.face_vertices(fkey)
+            points = [mesh.vertex_coordinates(key) for key in vertices]
+            plane = bestfit_plane(points)
+            projections = project_points_plane(points, plane)
+
+            for index, key in enumerate(vertices):
+                positions[key].append(projections[index])
 
         for key, attr in mesh.vertices(True):
-            attr['x'] = vertices[key][0]
-            attr['y'] = vertices[key][1]
-            attr['z'] = vertices[key][2]
+            if key in fixed:
+                continue
+
+            x, y, z = centroid_points(positions[key])
+            attr['x'] = x
+            attr['y'] = y
+            attr['z'] = z
 
         if callback:
             callback(k, callback_args)
+
+
+def mesh_planarize_faces_numpy(mesh, fixed=None, kmax=100, callback=None, callback_args=None):
+    pass
 
 
 def mesh_planarize_faces_shapeop(mesh,
@@ -409,13 +439,10 @@ if __name__ == "__main__":
     plotter.draw_faces()
     plotter.draw_edges()
 
-    key_index = mesh.key_index()
-    # vertices = mesh.get_vertices_attributes('xyz')
-    # faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
-    # fixed = [key_index[key] for key in fixed]
-
     def callback(k, args):
-        if k % 10 == 0:
+        print(k)
+
+        if k % 100 == 0:
             dev = mesh_flatness(mesh, maxdev=0.02)
 
             plotter.update_vertices(radius=radius)
@@ -423,6 +450,6 @@ if __name__ == "__main__":
             plotter.update_edges()
             plotter.update()
 
-    mesh_planarize_faces_shapeop(mesh, fixed=fixed, kmax=1000, callback=callback)
+    mesh_planarize_faces_shapeop(mesh, fixed=fixed, kmax=2000, callback=callback)
 
     plotter.show()

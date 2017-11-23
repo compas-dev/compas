@@ -37,10 +37,6 @@ def convex_hull(points):
         The triangular faces of the convex hull as lists of vertex indices
         referring to the original point coordinates.
 
-    References
-    ----------
-    * https://gist.github.com/anonymous/5184ba0bcab21d3dd19781efd3aae543
-
     Note
     ----
     The algorithm is not optimized and relatively slow on large sets of points.
@@ -79,6 +75,10 @@ def convex_hull(points):
                     show_faces = True,
                     show_vertices = False,
                     show_edges = False)
+
+    References
+    ----------
+    * https://gist.github.com/anonymous/5184ba0bcab21d3dd19781efd3aae543
 
     """
     def _normal_face(face):
