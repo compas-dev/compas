@@ -3,8 +3,13 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
+import sys
+import shutil
+
 import subprocess
 import matplotlib
+
+from contextlib import contextmanager
 
 import matplotlib.pyplot as plt
 
@@ -260,7 +265,41 @@ class Plotter(object):
         self.axes.autoscale()
         plt.savefig(filepath, **kwargs)
 
-    def saveas_gif(self, filepath, images, delay=10, loop=0):
+    @contextmanager
+    def gifified(self, func, tempfolder, outfile, pattern='image_{}.png'):
+        """"""
+        images = []
+
+        def gifify(f):
+            def wrapper(*args, **kwargs):
+                f(*args, **kwargs)
+                image = os.path.join(tempfolder, pattern.format(len(images)))
+                images.append(image)
+                self.save(image)
+            return wrapper
+
+        if not os.path.exists(tempfolder) or not os.path.isdir(tempfolder):
+            os.makedirs(tempfolder)
+
+        for file in os.listdir(tempfolder):
+            filepath = os.path.join(tempfolder, file)
+            try:
+                if os.path.isfile(filepath):
+                    os.remove(filepath)
+            except Exception as e:
+                print(e)
+
+        image = os.path.join(tempfolder, pattern.format(len(images)))
+        images.append(image)
+        self.save(image)
+        #
+        yield gifify(func)
+        #
+        self.save_gif(outfile, images)
+        shutil.rmtree(tempfolder)
+        print('done gififying!')
+
+    def save_gif(self, filepath, images, delay=10, loop=0):
         """Save a series of images as an animated gif.
 
         Parameters
@@ -280,22 +319,8 @@ class Plotter(object):
         *convert* being on your system path.
 
         """
-        command = ['convert', '-delay', '{}'.format(delay), '-loop', '{}'.format(loop)]
+        command = ['convert', '-delay', '{}'.format(delay), '-loop', '{}'.format(loop), '-layers', 'optimize']
         subprocess.call(command + images + [filepath])
-
-    # def init_animated_gif(self, folder):
-    #     if os.path.exists(folder) and os.path.isdir(folder):
-    #         if not os.access(folder, os.W_OK):
-    #             raise Exception('You do not have write access to this folder: {}'.format(folder))
-    #     else:
-    #         os.makedirs(folder)
-
-    # # def save_animated_gif_frame(self):
-    # #     pass
-
-    # def save_animated_gif(self, filepath, images, delay=10, loop=0):
-    #     command = ['convert', '-delay', '{}'.format(delay), '-loop', '{}'.format(loop)]
-    #     subprocess.call(command + images + [filepath])
 
     def update(self, pause=0.0001):
         """Updates and pauses the plot.
