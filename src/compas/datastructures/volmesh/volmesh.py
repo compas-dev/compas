@@ -9,20 +9,20 @@ from compas.geometry import centroid_points
 from compas.datastructures import Datastructure
 from compas.datastructures import Mesh
 
-from compas.datastructures.mixins import VertexAttributesManagement
-from compas.datastructures.mixins import VertexHelpers
-from compas.datastructures.mixins import VertexCoordinatesDescriptors
+from compas.datastructures._mixins import VertexAttributesManagement
+from compas.datastructures._mixins import VertexHelpers
+from compas.datastructures._mixins import VertexCoordinatesDescriptors
 
-from compas.datastructures.mixins import EdgeAttributesManagement
-from compas.datastructures.mixins import EdgeHelpers
-from compas.datastructures.mixins import EdgeGeometry
+from compas.datastructures._mixins import EdgeAttributesManagement
+from compas.datastructures._mixins import EdgeHelpers
+from compas.datastructures._mixins import EdgeGeometry
 
-from compas.datastructures.mixins import FaceAttributesManagement
-from compas.datastructures.mixins import FaceHelpers
+from compas.datastructures._mixins import FaceAttributesManagement
+from compas.datastructures._mixins import FaceHelpers
 
-from compas.datastructures.mixins import FromToData
-from compas.datastructures.mixins import FromToJson
-# from compas.datastructures.mixins import MagicMethods
+from compas.datastructures._mixins import FromToData
+from compas.datastructures._mixins import FromToJson
+# from compas.datastructures._mixins import MagicMethods
 
 
 __author__     = ['Tom Van Mele', ]
