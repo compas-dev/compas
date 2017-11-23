@@ -100,18 +100,6 @@ euler
     euler.kill_job
     euler.sync_folder_to_euler
 
-numba
------
-
-.. autosummary::
-    :toctree: generated/
-
-    numba.numba_cross
-    numba.numba_vdot
-    numba.numba_dot
-    numba.numba_length
-    numba.numba_subtract
-
 
 opencl
 ------
