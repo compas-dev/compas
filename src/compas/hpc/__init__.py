@@ -86,19 +86,26 @@ euler
 .. autosummary::
     :toctree: generated/
 
-    euler.connect_to_euler
-    euler.load_euler_module
-    euler.recieve_file_from_euler
-    euler.send_file_to_euler
-    euler.send_folder_to_euler
-    euler.show_euler_jobs
-    euler.show_euler_quotas
-    euler.show_euler_modules
-    euler.show_euler_module_info
-    euler.show_euler_resources
-    euler.submit_job
-    euler.kill_job
-    euler.sync_folder_to_euler
+    core.euler.connect_to_euler
+    core.euler.load_euler_module
+    core.euler.recieve_file_from_euler
+    core.euler.send_file_to_euler
+    core.euler.send_folder_to_euler
+    core.euler.show_euler_jobs
+    core.euler.show_euler_quotas
+    core.euler.show_euler_modules
+    core.euler.show_euler_module_info
+    core.euler.show_euler_resources
+    core.euler.submit_job
+    core.euler.kill_job
+    core.euler.sync_folder_to_euler
+
+    
+numba
+-----
+
+.. autosummary::
+    :toctree: generated/
 
 
 opencl

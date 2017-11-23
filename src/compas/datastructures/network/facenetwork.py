@@ -22,9 +22,9 @@ from compas.geometry import area_polygon
 
 from compas.datastructures.network import Network
 
-from compas.datastructures.mixins import FaceAttributesManagement
-from compas.datastructures.mixins import FaceHelpers
-from compas.datastructures.mixins import FaceMappings
+from compas.datastructures._mixins import FaceAttributesManagement
+from compas.datastructures._mixins import FaceHelpers
+from compas.datastructures._mixins import FaceMappings
 
 
 __author__     = 'Tom Van Mele'

@@ -51,7 +51,6 @@ Algorithms
     mesh_smooth_centroid
     network_parallelise_edges
     network_smooth_centroid
-    network_smooth_resultant
     oriented_bounding_box_numpy
     oriented_bounding_box_xy_numpy
     planarize_faces
@@ -59,7 +58,6 @@ Algorithms
     smooth_area
     smooth_centroid
     smooth_centerofmass
-    smooth_resultant
 
 
 Classes

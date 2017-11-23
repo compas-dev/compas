@@ -35,11 +35,6 @@ __all__ = [
 def scalarfield_contours_numpy(xy, s, N=50):
     r"""Compute the contour lines of a scalarfield.
 
-    Note
-    ----
-    The computation of the contour lines is based on the `contours function`_
-    available through matplotlib.
-
     Parameters
     ----------
     xy : array-like
@@ -58,6 +53,11 @@ def scalarfield_contours_numpy(xy, s, N=50):
         The list of levels contains the values of the scalarfield at each of
         the contours. The second item in the tuple is a list of contour lines.
         Each contour line is a list of paths, and each path is a list polygons.
+
+    Note
+    ----
+    The computation of the contour lines is based on the `contours function`_
+    available through matplotlib.
 
     Examples
     --------
@@ -117,7 +117,7 @@ def scalarfield_contours_numpy(xy, s, N=50):
             polygons = path.to_polygons()
             contours[i][j] = [0] * len(polygons)
             for k, polygon in enumerate(iter(polygons)):
-                contours[i][j][k] = polygon.tolist()
+                contours[i][j][k] = polygon
     return levels, contours
 
 
@@ -159,7 +159,7 @@ def mesh_contours_numpy(mesh, N=50):
     """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
     z = [mesh.vertex_coordinates(key, 'z') for key in mesh.vertices()]
-    return scalarfield_contours(xy, z, N)
+    return scalarfield_contours_numpy(xy, z, N)
 
 
 def mesh_isolines_numpy(mesh, attr_name, N=50):
@@ -186,7 +186,7 @@ def mesh_isolines_numpy(mesh, attr_name, N=50):
     """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
     s = [mesh.vertex[key][attr_name] for key in mesh.vertices()]
-    return scalarfield_contours(xy, s, N)
+    return scalarfield_contours_numpy(xy, s, N)
 
 
 # ==============================================================================
@@ -195,4 +195,26 @@ def mesh_isolines_numpy(mesh, attr_name, N=50):
 
 if __name__ == "__main__":
 
-    pass
+    import compas
+    from compas.datastructures import Mesh
+    from compas.geometry import centroid_points
+    from compas.geometry import distance_point_point
+    from compas.geometry import scalarfield_contours_numpy
+
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+    centroid = centroid_points(points)
+    distances = [distance_point_point(point, centroid) for point in points]
+
+    xy = [point[0:2] for point in points]
+
+    levels, contours = scalarfield_contours_numpy(xy, distances)
+
+    for i in range(len(contours)):
+        level = levels[i]
+        contour = contours[i]
+        print(level)
+        for path in contour:
+            for polygon in path:
+                print([point.tolist() for point in polygon])

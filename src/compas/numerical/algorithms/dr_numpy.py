@@ -400,7 +400,7 @@ if __name__ == "__main__":
             'width': 0.5
         })
 
-    plotter = NetworkPlotter(network, figsize=(10, 6))
+    plotter = NetworkPlotter(network, figsize=(10, 7), fontsize=6)
 
     plotter.draw_lines(lines)
     plotter.draw_vertices(facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})})

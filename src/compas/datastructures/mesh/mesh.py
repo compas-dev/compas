@@ -25,24 +25,24 @@ from compas.geometry import Polyhedron
 
 from compas.datastructures import Datastructure
 
-from compas.datastructures.mixins import VertexAttributesManagement
-from compas.datastructures.mixins import VertexHelpers
-from compas.datastructures.mixins import VertexFilter
-from compas.datastructures.mixins import VertexCoordinatesDescriptors
+from compas.datastructures._mixins import VertexAttributesManagement
+from compas.datastructures._mixins import VertexHelpers
+from compas.datastructures._mixins import VertexFilter
+from compas.datastructures._mixins import VertexCoordinatesDescriptors
 
-from compas.datastructures.mixins import EdgeAttributesManagement
-from compas.datastructures.mixins import EdgeHelpers
-from compas.datastructures.mixins import EdgeGeometry
+from compas.datastructures._mixins import EdgeAttributesManagement
+from compas.datastructures._mixins import EdgeHelpers
+from compas.datastructures._mixins import EdgeGeometry
 
-from compas.datastructures.mixins import FaceAttributesManagement
-from compas.datastructures.mixins import FaceHelpers
+from compas.datastructures._mixins import FaceAttributesManagement
+from compas.datastructures._mixins import FaceHelpers
 
-from compas.datastructures.mixins import FromToData
-from compas.datastructures.mixins import FromToJson
+from compas.datastructures._mixins import FromToData
+from compas.datastructures._mixins import FromToJson
 
-from compas.datastructures.mixins import VertexMappings
-from compas.datastructures.mixins import EdgeMappings
-from compas.datastructures.mixins import FaceMappings
+from compas.datastructures._mixins import VertexMappings
+from compas.datastructures._mixins import EdgeMappings
+from compas.datastructures._mixins import FaceMappings
 
 from compas.datastructures.mesh.operations import mesh_collapse_edge
 from compas.datastructures.mesh.operations import trimesh_collapse_edge
