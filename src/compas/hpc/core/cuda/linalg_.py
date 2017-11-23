@@ -5,8 +5,8 @@ from __future__ import division
 from numpy import float64
 from numpy import ceil
 
-from compas.hpc.cuda.math import cuda_sqrt
-from compas.hpc.cuda.math import cuda_sum
+from compas.hpc.cuda.math_ import cuda_sqrt
+from compas.hpc.cuda.math_ import cuda_sum
 
 try:
     import pycuda
@@ -302,7 +302,7 @@ def cuda_transpose(a):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

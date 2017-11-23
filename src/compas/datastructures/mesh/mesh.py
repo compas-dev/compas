@@ -1,6 +1,7 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
-# from types import MethodType
 from copy import deepcopy
 from ast import literal_eval
 
@@ -2532,7 +2533,7 @@ Mesh.swap_edge_tri = trimesh_swap_edge.__get__(None, Mesh)
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':

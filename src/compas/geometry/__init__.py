@@ -42,7 +42,6 @@ Algorithms
     convex_hull_xy_numpy
     discrete_coons_patch
     flatness
-    mesh_circularize_faces_shapeop
     mesh_contours_numpy
     mesh_cull_duplicate_vertices
     mesh_flatness

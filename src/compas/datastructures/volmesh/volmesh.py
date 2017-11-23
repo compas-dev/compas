@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from ast import literal_eval as _eval
 from math import sqrt
 from copy import deepcopy
@@ -22,7 +26,6 @@ from compas.datastructures._mixins import FaceHelpers
 
 from compas.datastructures._mixins import FromToData
 from compas.datastructures._mixins import FromToJson
-# from compas.datastructures._mixins import MagicMethods
 
 
 __author__     = ['Tom Van Mele', ]
@@ -525,6 +528,22 @@ under construction
     # info
     # --------------------------------------------------------------------------
 
+    def number_of_vertices(self):
+        """Count the number of vertices in the mesh."""
+        return len(list(self.vertices()))
+
+    def number_of_edges(self):
+        """Count the number of edges in the mesh."""
+        return len(list(self.edges()))
+
+    def number_of_faces(self):
+        """Count the number of faces in the mesh."""
+        return len(list(self.faces()))
+
+    def number_of_cells(self):
+        """Count the number of faces in the mesh."""
+        return len(list(self.cells()))
+
     # --------------------------------------------------------------------------
     # accessors
     # --------------------------------------------------------------------------
@@ -844,7 +863,7 @@ under construction
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':
@@ -868,11 +887,6 @@ if __name__ == '__main__':
     viewer.axes.z_color = (0.1, 0.1, 0.1)
 
     viewer.setup()
+
+    viewer.camera.zoom_out(5)    
     viewer.show()
-
-    # dual = mesh.dual()
-
-    # viewer = NetworkViewer(dual, 600, 600)
-    # viewer.grid_on = True
-    # viewer.setup()
-    # viewer.show()

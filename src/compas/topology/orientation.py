@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from compas.topology import breadth_first_traverse
 
@@ -170,7 +172,7 @@ def mesh_flip_cycles(mesh):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

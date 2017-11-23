@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 
 __author__    = ['Tom Van Mele', ]
@@ -56,7 +58,7 @@ def mix_in_class_attributes(mixins, overwrite=False, protected=False):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':

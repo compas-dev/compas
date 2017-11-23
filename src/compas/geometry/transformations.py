@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import absolute_import
 from __future__ import division
 
 from math import sin
@@ -1038,7 +1039,7 @@ def project_points_line_xy(points, line):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

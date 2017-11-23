@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
 
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
@@ -111,7 +112,7 @@ def discrete_coons_patch(ab, bc, dc, ad):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

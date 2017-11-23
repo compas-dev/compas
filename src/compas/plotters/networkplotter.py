@@ -1,4 +1,6 @@
-""""""
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from matplotlib.patches import Circle
 
@@ -263,8 +265,9 @@ class NetworkPlotter(Plotter):
             segments.append([self.network.vertex_coordinates(u, 'xy'), self.network.vertex_coordinates(v, 'xy')])
         self.edgecollection.set_segments(segments)
 
+
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":
@@ -274,7 +277,6 @@ if __name__ == "__main__":
     from compas.datastructures import Network
     from compas.plotters import NetworkPlotter
 
-
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 
     plotter = NetworkPlotter(network, figsize=(10, 8))
@@ -282,10 +284,8 @@ if __name__ == "__main__":
     plotter.draw_vertices(radius=0.1, picker=10)
     plotter.draw_edges()
 
-
     default = [plotter.defaults['vertex.facecolor'] for key in network.vertices()]
     highlight = '#ff0000'
-
 
     def on_pick(event):
         index = event.ind[0]
@@ -295,7 +295,6 @@ if __name__ == "__main__":
 
         plotter.vertexcollection.set_facecolor(colors)
         plotter.update()
-
 
     plotter.register_listener(on_pick)
     plotter.show()

@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from math import cos
 from math import pi
 
@@ -529,7 +533,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

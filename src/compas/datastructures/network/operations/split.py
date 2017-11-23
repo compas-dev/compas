@@ -1,4 +1,6 @@
-""""""
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 
 __author__     = ['Tom Van Mele', ]
@@ -142,7 +144,7 @@ def network_split_edge(network, u, v, t=0.5, allow_boundary=True):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

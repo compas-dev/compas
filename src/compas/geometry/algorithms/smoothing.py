@@ -101,7 +101,6 @@ def smooth_centroid(vertices,
     --------
     * :func:`smooth_centerofmass`
     * :func:`smooth_area`
-    * :func:`compas.geometry.centroid_points`
 
     """
     if callback:
@@ -127,10 +126,6 @@ def smooth_centroid(vertices,
 
         if callback:
             callback(k, callback_args)
-
-
-def smooth_laplacian():
-    pass
 
 
 def smooth_centerofmass(vertices,
@@ -215,7 +210,6 @@ def smooth_centerofmass(vertices,
     --------
     * :func:`smooth_centroid`
     * :func:`smooth_area`
-    * :func:`compas.geometry.center_of_mass_polygon`
 
     """
     fixed = fixed or []
@@ -324,8 +318,6 @@ def smooth_area(vertices,
     --------
     * :func:`smooth_centroid`
     * :func:`smooth_centerofmass`
-    * :func:`compas.geometry.centroid_points`
-    * :func:`compas.geometry.area_polygon`
 
     """
     if callback:
@@ -365,6 +357,10 @@ def smooth_area(vertices,
 
         if callback:
             callback(k, callback_args)
+
+
+def smooth_laplacian():
+    pass
 
 
 # ==============================================================================
@@ -419,6 +415,10 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
 
         plotter.show()
 
+    See Also
+    --------
+    * :func:`mesh_smooth_area`
+
     """
     if callback:
         if not callable(callback):
@@ -434,13 +434,91 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
             if key in fixed:
                 continue
 
-            point = key_xyz[key]
+            x, y, z = key_xyz[key]
 
-            centroid = centroid_points([key_xyz[nbr] for nbr in mesh.vertex_neighbours(key)])
+            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in mesh.vertex_neighbours(key)])
 
-            attr['x'] += damping * (centroid[0] - point[0])
-            attr['y'] += damping * (centroid[1] - point[1])
-            attr['z'] += damping * (centroid[2] - point[2])
+            attr['x'] += damping * (cx - x)
+            attr['y'] += damping * (cy - y)
+            attr['z'] += damping * (cz - z)
+
+        if callback:
+            callback(k, callback_args)
+
+
+def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
+    """Smooth a mesh by moving every free vertex to the center of mass of the polygon formed by the neighbouring vertices.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    fixed : list, optional
+        The fixed vertices of the mesh.
+    kmax : int, optional
+        The maximum number of iterations.
+    damping : float, optional
+        The damping factor.
+    callback : callable, optional
+        A user-defined callback function to be executed after every iteration.
+    callback_args : list, optional
+        A list of arguments to be passed to the callback.
+
+    Raises
+    ------
+    Exception
+        If a callback is provided, but it is not callable.
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        import compas
+
+        from compas.datastructures import Mesh
+        from compas.plotters import MeshPlotter
+        from compas.geometry import mesh_smooth_centerofmass
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+        fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+
+        mesh_smooth_centerofmass(mesh, fixed=fixed)
+
+        plotter = MeshPlotter(mesh)
+
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
+        plotter.draw_faces()
+        plotter.draw_edges()
+
+        plotter.show()
+
+    See Also
+    --------
+    * :func:`mesh_smooth_area`
+
+    """
+    if callback:
+        if not callable(callback):
+            raise Exception('Callback is not callable.')
+
+    fixed = fixed or []
+    fixed = set(fixed)
+
+    for k in range(kmax):
+        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+
+        for key, attr in mesh.vertices(True):
+            if key in fixed:
+                continue
+
+            x, y, z = key_xyz[key]
+
+            cx, cy, cz = center_of_mass_polygon([key_xyz[nbr] for nbr in mesh.vertex_neighbours(key)])
+
+            attr['x'] += damping * (cx - x)
+            attr['y'] += damping * (cy - y)
+            attr['z'] += damping * (cz - z)
 
         if callback:
             callback(k, callback_args)
@@ -493,6 +571,10 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
 
         plotter.show()
 
+    See Also
+    --------
+    * :func:`mesh_smooth_centroid`
+
     """
     if callback:
         if not callable(callback):
@@ -510,10 +592,10 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
             if key in fixed:
                 continue
 
-            point = key_xyz[key]
+            x, y, z = key_xyz[key]
 
             A = 0
-            x, y, z = 0, 0, 0
+            ax, ay, az = 0, 0, 0
 
             for fkey in mesh.vertex_faces(key, ordered=True):
                 if fkey is None:
@@ -521,19 +603,19 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
 
                 a  = fkey_area[fkey]
                 c  = fkey_centroid[fkey]
-                x += a * c[0]
-                y += a * c[1]
-                z += a * c[2]
+                ax += a * c[0]
+                ay += a * c[1]
+                az += a * c[2]
                 A += a
 
             if A:
-                x = x / A
-                y = y / A
-                z = z / A
+                ax = ax / A
+                ay = ay / A
+                az = az / A
 
-            attr['x'] += damping * (x - point[0])
-            attr['y'] += damping * (y - point[1])
-            attr['z'] += damping * (z - point[2])
+            attr['x'] += damping * (ax - x)
+            attr['y'] += damping * (ay - y)
+            attr['z'] += damping * (az - z)
 
         if callback:
             callback(k, callback_args)
@@ -605,83 +687,57 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
             if key in fixed:
                 continue
 
-            point = key_xyz[key]
+            x, y, z = key_xyz[key]
 
-            centroid = centroid_points([key_xyz[nbr] for nbr in network.vertex_neighbours(key)])
+            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in network.vertex_neighbours(key)])
 
-            attr['x'] += damping * (centroid[0] - point[0])
-            attr['y'] += damping * (centroid[1] - point[1])
-            attr['z'] += damping * (centroid[2] - point[2])
+            attr['x'] += damping * (cx - x)
+            attr['y'] += damping * (cy - y)
+            attr['z'] += damping * (cz - z)
 
         if callback:
             callback(k, callback_args)
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    import os
-    import sys
 
     import compas
 
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
+    from compas.geometry import smooth_area
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
-
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-    # images = []
+    vertices  = mesh.get_vertices_attributes('xyz')
+    faces     = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
+    adjacency = [mesh.vertex_faces(key, ordered=True) for key in mesh.vertices()]
+    fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
     lines = []
     for u, v in mesh.edges():
         lines.append({
-            'start' : mesh.vertex_coordinates(u, 'xy'),
-            'end'   : mesh.vertex_coordinates(v, 'xy'),
-            'color' : '#cccccc',
-            'width' : 0.5
+            'start': mesh.vertex_coordinates(u, 'xy'),
+            'end'  : mesh.vertex_coordinates(v, 'xy'),
+            'color': '#cccccc',
+            'width': 1.0,
         })
+
+    smooth_area(vertices, faces, adjacency, fixed=fixed, kmax=100)
+
+    for key, attr in mesh.vertices(True):
+        attr['x'] = vertices[key][0]
+        attr['y'] = vertices[key][1]
+        attr['z'] = vertices[key][2]
+
+    plotter = MeshPlotter(mesh)
+
     plotter.draw_lines(lines)
-
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
-    plotter.draw_faces()
     plotter.draw_edges()
-
-    plotter.update(pause=1.0)
-
-    # filepath = os.path.join(compas.TEMP, 'image_{}.jpg'.format(0))
-    # plotter.save(filepath)
-    # images.append(filepath)
-
-    def callback(k, args):
-        print(k)
-
-        # for key, attr in mesh.vertices(True):
-        #     index = key_index[key]
-        #     attr['x'] = vertices[index][0]
-        #     attr['y'] = vertices[index][1]
-        #     attr['z'] = vertices[index][2]
-
-        plotter.update_vertices()
-        plotter.update_faces()
-        plotter.update_edges()
-        plotter.update(pause=0.001)
-
-        # filepath = os.path.join(compas.TEMP, 'image_{}.jpg'.format(k + 1))
-        # plotter.save(filepath)
-        # images.append(filepath)
-
-    mesh_smooth_area(mesh, kmax=50, fixed=fixed, callback=callback)
-
-    # plotter.saveas_gif(os.path.join(compas.TEMP, 'smoothing.gif'), images)
-
-    # for filepath in images:
-    #     os.remove(filepath)
 
     plotter.show()

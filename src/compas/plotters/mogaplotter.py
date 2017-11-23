@@ -1,4 +1,6 @@
-# from __future__ import print_funtion
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 import os
 import matplotlib
@@ -142,7 +144,7 @@ class MogaPlotter(object):
                     pdf.savefig()
                     # plt.show()
                     plt.close()
-        print 'pdf file written'
+        print('pdf file written')
 
     def get_ga_input_from_file(self, filename):
         with open(self.input_path + filename, 'rb') as fh:
@@ -162,7 +164,7 @@ class MogaPlotter(object):
         filename = self.input_path + filename
         try:
             pf_file = open(filename, 'r')
-        except:
+        except Exception:
             return None
         lines = pf_file.readlines()
         pf_file.close()

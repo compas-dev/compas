@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
 
 
 __author__    = ['Tom Van Mele', ]
@@ -16,7 +17,7 @@ __all__ = [
 
 def adjacency_from_edges(edges):
     """Construct an adjacency dictionary from a set of edges.
-    
+
     Parameters
     ----------
     edges : list
@@ -47,9 +48,8 @@ def connectivity_from_edges(edges):
     raise NotImplementedError
 
 
-
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

@@ -111,7 +111,7 @@ euler
     core.euler.kill_job
     core.euler.sync_folder_to_euler
 
-    
+
 numba
 -----
 

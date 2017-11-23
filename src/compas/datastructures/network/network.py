@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from copy import deepcopy
 from ast import literal_eval
@@ -30,8 +32,6 @@ from compas.datastructures._mixins import FromToData
 from compas.datastructures._mixins import FromToJson
 
 from compas.datastructures.network.operations import network_split_edge
-
-# from compas.topology import breadth_first_traverse
 
 
 __author__     = 'Tom Van Mele'
@@ -709,7 +709,7 @@ network: {0}
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':

@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from compas.utilities import valuedict
 from compas.plotters.networkplotter import NetworkPlotter
 
@@ -107,7 +111,7 @@ class FaceNetworkPlotter(NetworkPlotter):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

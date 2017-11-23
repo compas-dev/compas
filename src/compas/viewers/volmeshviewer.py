@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
@@ -27,7 +31,7 @@ class VolMeshViewer(Viewer):
 
     def display(self):
         polygons = []
-        for ckey in self.volmesh.cells_iter():
+        for ckey in self.volmesh.cells():
             for fkey in self.volmesh.cell_halffaces(ckey):
                 vkeys       = self.volmesh.halfface_vertices(fkey, ordered=True)
                 points      = [self.volmesh.vertex_coordinates(vkey) for vkey in vkeys]
@@ -39,7 +43,7 @@ class VolMeshViewer(Viewer):
                     'color.back'  : color_back
                 })
         lines = []
-        for u, v in self.volmesh.edges_iter():
+        for u, v in self.volmesh.edges():
             lines.append({
                 'start': self.volmesh.vertex_coordinates(u),
                 'end'  : self.volmesh.vertex_coordinates(v),
@@ -47,7 +51,7 @@ class VolMeshViewer(Viewer):
                 'width': 3.
             })
         points = []
-        for u in self.volmesh.vertices_iter():
+        for u in self.volmesh.vertices():
             points.append({
                 'pos'   : self.volmesh.vertex_coordinates(u),
                 'size'  : 10.,
@@ -81,7 +85,7 @@ class VolMeshViewer(Viewer):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':
@@ -89,7 +93,7 @@ if __name__ == '__main__':
     import compas
     from compas.datastructures import VolMesh
 
-    mesh = VolMesh.from_json(compas.get('boxes.json'))
+    mesh = VolMesh.from_obj(compas.get('boxes.obj'))
 
     viewer = VolMeshViewer(mesh)
     viewer.setup()

@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import absolute_import
 from __future__ import division
 
 from math import pi
@@ -534,7 +535,7 @@ def angles_points_degrees_xy(a, b, c):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

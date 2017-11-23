@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
 
 import os
 import ctypes
@@ -87,7 +88,7 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 
 __author__    = ['Tom Van Mele', 'Matthias Rippmann']
@@ -83,7 +85,7 @@ def normalize_values(l, new_min=0.0, new_max=1.0):
     return [(((item - old_min) * new_range) / old_range) + new_min for item in l]
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

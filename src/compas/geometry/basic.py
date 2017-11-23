@@ -1,7 +1,6 @@
-""""""
-
-from __future__ import division
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from math import sqrt
 from random import sample
@@ -1272,7 +1271,7 @@ def pointcloud_xy(n, xbounds, ybounds=None):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

@@ -49,7 +49,7 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, ArtistInterface):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

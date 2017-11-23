@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from compas.geometry import circle_from_points_xy
 from compas.geometry import angle_smallest_vectors
 from compas.geometry import is_ccw_xy
@@ -11,7 +15,6 @@ __email__      = 'vanmelet@ethz.ch'
 
 __all__ = [
     'mesh_dual',
-    'mesh_voronoi',
     'network_dual',
     'network_find_faces',
 ]
@@ -92,142 +95,142 @@ def mesh_dual(mesh, cls=None):
     return dual
 
 
-def mesh_voronoi(mesh, cls=None, update_coordinates=True):
-    """Construct the Voronoi dual of the triangulation of a set of points.
+# def mesh_voronoi(mesh, cls=None, update_coordinates=True):
+#     """Construct the Voronoi dual of the triangulation of a set of points.
 
-    Parameters
-    ----------
-    mesh : Mesh
-        A mesh object.
-    cls : Mesh, optional
-        The type of the dual mesh.
-        Defaults to the type of the provided mesh object.
-    update_coordinates : bool, optional
-        Update the vertex coordinates of the voronoi.
-        Defaults to true.
+#     Parameters
+#     ----------
+#     mesh : Mesh
+#         A mesh object.
+#     cls : Mesh, optional
+#         The type of the dual mesh.
+#         Defaults to the type of the provided mesh object.
+#     update_coordinates : bool, optional
+#         Update the vertex coordinates of the voronoi.
+#         Defaults to true.
 
-    Note
-    ----
-    This function produces a mesh with faces that have the oposite cycle direction
-    of the original mesh.
+#     Note
+#     ----
+#     This function produces a mesh with faces that have the oposite cycle direction
+#     of the original mesh.
 
-    Example
-    -------
-    .. plot::
-        :include-source:
+#     Example
+#     -------
+#     .. plot::
+#         :include-source:
 
-        from numpy import random
-        from numpy import hstack
-        from numpy import zeros
+#         from numpy import random
+#         from numpy import hstack
+#         from numpy import zeros
 
-        from compas.datastructures import Mesh
-        from compas.topology import mesh_dual
-        from compas.topology import mesh_voronoi
-        from compas.topology import delaunay_from_points
-        from compas.topology import trimesh_remesh
+#         from compas.datastructures import Mesh
+#         from compas.topology import mesh_dual
+#         from compas.topology import mesh_voronoi
+#         from compas.topology import delaunay_from_points
+#         from compas.topology import trimesh_remesh
 
-        from compas.plotters import MeshPlotter
+#         from compas.plotters import MeshPlotter
 
-        points = hstack((10.0 * random.random_sample((10, 2)), zeros((10, 1)))).tolist()
-        mesh = Mesh.from_vertices_and_faces(points, delaunay_from_points(points))
+#         points = hstack((10.0 * random.random_sample((10, 2)), zeros((10, 1)))).tolist()
+#         mesh = Mesh.from_vertices_and_faces(points, delaunay_from_points(points))
 
-        trimesh_remesh(mesh, 1.0, allow_boundary_split=True)
+#         trimesh_remesh(mesh, 1.0, allow_boundary_split=True)
 
-        points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-        mesh = Mesh.from_vertices_and_faces(points, delaunay_from_points(points))
+#         points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+#         mesh = Mesh.from_vertices_and_faces(points, delaunay_from_points(points))
 
-        dual = mesh_voronoi(mesh)
+#         dual = mesh_voronoi(mesh)
 
-        lines = []
-        for u, v in mesh.edges():
-            lines.append({
-                'start': mesh.vertex_coordinates(u, 'xy'),
-                'end'  : mesh.vertex_coordinates(v, 'xy'),
-                'color': '#cccccc',
-                'width': 0.5
-            })
+#         lines = []
+#         for u, v in mesh.edges():
+#             lines.append({
+#                 'start': mesh.vertex_coordinates(u, 'xy'),
+#                 'end'  : mesh.vertex_coordinates(v, 'xy'),
+#                 'color': '#cccccc',
+#                 'width': 0.5
+#             })
 
-        plotter = MeshPlotter(dual, figsize=(10, 7))
+#         plotter = MeshPlotter(dual, figsize=(10, 7))
 
-        plotter.draw_lines(lines)
-        plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.05)
-        plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text='key')
-        plotter.draw_edges(keys=[(u, v) for u, v in dual.edges() if not dual.is_edge_naked(u, v)])
+#         plotter.draw_lines(lines)
+#         plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.05)
+#         plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text='key')
+#         plotter.draw_edges(keys=[(u, v) for u, v in dual.edges() if not dual.is_edge_naked(u, v)])
 
-        plotter.show()
+#         plotter.show()
 
-    """
-    if not cls:
-        cls = type(mesh)
+#     """
+#     if not cls:
+#         cls = type(mesh)
 
-    fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
-    uv_fkey = {}
+#     fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
+#     uv_fkey = {}
 
-    outer = mesh.vertices_on_boundary(ordered=True)[::-1]
-    inner = list(set(mesh.vertices()) - set(outer))
+#     outer = mesh.vertices_on_boundary(ordered=True)[::-1]
+#     inner = list(set(mesh.vertices()) - set(outer))
 
-    f = mesh._get_face_key(None)
+#     f = mesh._get_face_key(None)
 
-    for i in range(-1, len(outer) - 1):
-        u = outer[i]
-        v = outer[i + 1]
-        uv_fkey[(u, v)] = f
-        fkey_centroid[f] = mesh.edge_midpoint(u, v)
-        f += 1
+#     for i in range(-1, len(outer) - 1):
+#         u = outer[i]
+#         v = outer[i + 1]
+#         uv_fkey[(u, v)] = f
+#         fkey_centroid[f] = mesh.edge_midpoint(u, v)
+#         f += 1
 
-    vertices = {}
-    faces = {}
+#     vertices = {}
+#     faces = {}
 
-    for key in inner:
-        fkeys = mesh.vertex_faces(key, ordered=True)
-        for fkey in fkeys:
-            if fkey not in vertices:
-                vertices[fkey] = fkey_centroid[fkey]
-        faces[key] = fkeys
+#     for key in inner:
+#         fkeys = mesh.vertex_faces(key, ordered=True)
+#         for fkey in fkeys:
+#             if fkey not in vertices:
+#                 vertices[fkey] = fkey_centroid[fkey]
+#         faces[key] = fkeys
 
-    for key in outer:
-        nbrs = mesh.vertex_neighbours(key, ordered=True)
+#     for key in outer:
+#         nbrs = mesh.vertex_neighbours(key, ordered=True)
 
-        if len(nbrs) < 2:
-            continue
+#         if len(nbrs) < 2:
+#             continue
 
-        # the first boundary edge
-        fkey = uv_fkey[(nbrs[0], key)]
-        fkeys = [fkey]
-        if fkey not in vertices:
-            vertices[fkey] = fkey_centroid[fkey]
+#         # the first boundary edge
+#         fkey = uv_fkey[(nbrs[0], key)]
+#         fkeys = [fkey]
+#         if fkey not in vertices:
+#             vertices[fkey] = fkey_centroid[fkey]
 
-        # all internal edges
-        for nbr in nbrs[0:-1]:
-            fkey = mesh.halfedge[nbr][key]
-            fkeys.append(fkey)
-            if fkey not in vertices:
-                vertices[fkey] = fkey_centroid[fkey]
+#         # all internal edges
+#         for nbr in nbrs[0:-1]:
+#             fkey = mesh.halfedge[nbr][key]
+#             fkeys.append(fkey)
+#             if fkey not in vertices:
+#                 vertices[fkey] = fkey_centroid[fkey]
 
-        # the last boundary edge
-        fkey = uv_fkey[(key, nbrs[-1])]
-        fkeys.append(fkey)
-        if fkey not in vertices:
-            vertices[fkey] = fkey_centroid[fkey]
-        faces[key] = fkeys
+#         # the last boundary edge
+#         fkey = uv_fkey[(key, nbrs[-1])]
+#         fkeys.append(fkey)
+#         if fkey not in vertices:
+#             vertices[fkey] = fkey_centroid[fkey]
+#         faces[key] = fkeys
 
-    voronoi = cls()
+#     voronoi = cls()
 
-    for key, (x, y, z) in vertices.items():
-        voronoi.add_vertex(key, x=x, y=y, z=z)
+#     for key, (x, y, z) in vertices.items():
+#         voronoi.add_vertex(key, x=x, y=y, z=z)
 
-    for fkey, vertices in faces.items():
-        voronoi.add_face(vertices, fkey=fkey)
+#     for fkey, vertices in faces.items():
+#         voronoi.add_face(vertices, fkey=fkey)
 
-    if update_coordinates:
-        for key in mesh.faces():
-            a, b, c = mesh.face_coordinates(key)
-            center, radius, normal = circle_from_points_xy(a, b, c)
-            voronoi.vertex[key]['x'] = center[0]
-            voronoi.vertex[key]['y'] = center[1]
-            voronoi.vertex[key]['z'] = center[2]
+#     if update_coordinates:
+#         for key in mesh.faces():
+#             a, b, c = mesh.face_coordinates(key)
+#             center, radius, normal = circle_from_points_xy(a, b, c)
+#             voronoi.vertex[key]['x'] = center[0]
+#             voronoi.vertex[key]['y'] = center[1]
+#             voronoi.vertex[key]['z'] = center[2]
 
-    return voronoi
+#     return voronoi
 
 
 def network_dual(network, cls=None):
@@ -410,12 +413,6 @@ def network_find_faces(network, breakpoints=None):
             plotter.show()
 
     """
-    # from compas.datastructures.network.mixins.facemixin import FaceMixin
-
-    # for name, value in FaceMixin.__dict__.items():
-    #     if not name.startswith('_'):
-    #         setattr(type(network), 'add_face', FaceMixin.add_face.__func__)
-
     if not breakpoints:
         breakpoints = []
 
@@ -554,7 +551,7 @@ def _break_faces(network, breakpoints):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':
@@ -565,7 +562,6 @@ if __name__ == '__main__':
 
     from compas.datastructures import Mesh
     from compas.topology import mesh_dual
-    from compas.topology import mesh_voronoi
     from compas.topology import delaunay_from_points
     from compas.topology import trimesh_remesh
     from compas.plotters import MeshPlotter
@@ -580,7 +576,7 @@ if __name__ == '__main__':
     faces = delaunay_from_points(points)
     mesh = Mesh.from_vertices_and_faces(points, faces)
 
-    dual = mesh_voronoi(mesh, update_coordinates=True)
+    dual = mesh_dual(mesh)
 
     lines = []
     for u, v in mesh.edges():
@@ -596,6 +592,6 @@ if __name__ == '__main__':
     plotter.draw_lines(lines)
     plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.05)
     plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text='key')
-    plotter.draw_edges(keys=[(u, v) for u, v in dual.edges() if not dual.is_edge_on_boundary(u, v)])
+    plotter.draw_edges()
 
     plotter.show()

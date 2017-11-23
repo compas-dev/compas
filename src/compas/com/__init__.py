@@ -8,9 +8,6 @@ com
 .. module:: compas.com
 
 
-Interface(s) for communication with external software.
-
-
 Matlab
 ======
 
@@ -49,11 +46,11 @@ class Client(object):
     pass
 
 
-from .matlab import *
+from .matlab_ import *
 from .ssh import *
 # from .rhino import *
 
-from .matlab import __all__ as a
+from .matlab_ import __all__ as a
 from .ssh import __all__ as b
 # from .rhino import __all__ as b
 

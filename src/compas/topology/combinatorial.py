@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from collections import deque
 from compas.topology import breadth_first_traverse
@@ -131,7 +133,7 @@ def mesh_is_connected(mesh):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

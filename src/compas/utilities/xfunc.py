@@ -1,6 +1,9 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 import os
+import sys
 import json
 import time
 import inspect
@@ -9,7 +12,8 @@ try:
     from subprocess import Popen
     from subprocess import PIPE
 except ImportError:
-    pass
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 from functools import wraps
 
@@ -282,7 +286,7 @@ class XFunc(object):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':

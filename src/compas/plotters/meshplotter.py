@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import absolute_import
 from __future__ import division
 
 try:
@@ -373,7 +374,7 @@ class MeshPlotter(Plotter):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

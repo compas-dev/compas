@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
@@ -88,7 +89,7 @@ class MatlabSession(object):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

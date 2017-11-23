@@ -1,6 +1,8 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
 
+import sys
 import time
 
 from subprocess import Popen
@@ -10,10 +12,9 @@ try:
     from scipy.io import savemat
     from scipy.io import loadmat
 except ImportError:
-    pass
-    # import platform
-    # if platform.python_implementation() != 'IronPython':
-    #     raise
+    if 'ironpython' not in sys.version.lower():
+        raise
+
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -182,7 +183,7 @@ class MatlabProcess(object):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

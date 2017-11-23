@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
 
 from math import cos
 from math import sin
@@ -386,7 +387,7 @@ def network_embed_in_plane(network, fix=None, straightline=True):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':

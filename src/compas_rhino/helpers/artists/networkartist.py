@@ -59,7 +59,7 @@ class NetworkArtist(PathArtist, EdgeArtist, VertexArtist, ArtistInterface):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 import time
 
@@ -7,7 +9,7 @@ try:
     from comtypes.client import GetModule
 except ImportError:
     import platform
-    if platform.python_implementation() == 'IronPython':
+    if 'windows' in platform.system().lower():
         raise
 
 
@@ -61,16 +63,33 @@ class RhinoClient(object):
             raise RhinoClientError()
 
     def start(self):
-        self.app = CreateObject('Rhino5.Application')
-        self.rsm = GetModule(['{75B1E1B4-8CAA-43C3-975E-373504024FDB}', 1, 0])
+        # self.rsm = GetModule(['{75B1E1B4-8CAA-43C3-975E-373504024FDB}', 1, 0])
+        # self.rsm = GetModule(['{1C7A3523-9A8F-4CEC-A8E0-310F580536A7}', 1, 0])
+        # self.rsm = GetModule(['{814d908a-e25c-493d-97e9-ee3861957f49}', 1, 0])
+        # self.rsm = GetModule(['{8ABB4303-8057-47AD-BAEB-263965E5565D}', 1, 0])
+        # self.rsm = GetModule(['{75B1E1B4-8CAA-43C3-975E-373504024FDB}', 1, 0])
+        R = GetModule(r"C:\Program Files\Rhinoceros 5\System\Rhino5.tlb")
+        RS = GetModule(r"C:\Program Files\Rhinoceros 5\Plug-ins\RhinoScript.tlb")
+
+        print(dir(R))
+        print(dir(RS))
+
         print('loading script interface...')
+
         attempts = 20
+
+        self.app = CreateObject('Rhino5x64.Application')
+
         while attempts:
             try:
                 print('attempt %s' % attempts)
-                self.rsi = self.app.GetScriptObject.QueryInterface(self.rsm.IRhinoScript)
+                # self.rsi = self.app.GetScriptObject.QueryInterface(self.rsm.IRhinoScript)
+                # self.rsi = self.app.QueryInterface(self.rsm.IRhino5x64Application).GetScriptObject()
+                o = self.app.QueryInterface(R.IRhino5x64Interface).GetScriptObject()
+                self.rsi = o.QueryInterface(RS.IRhinoScript)
                 break
-            except Exception:
+            except Exception as e:
+                print(e)
                 time.sleep(0.5)
             attempts -= 1
         if self.rsi is None:
@@ -89,8 +108,10 @@ class RhinoClient(object):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    client = RhinoClient()
+    client.rsi.AddPoint([0, 0, 0])

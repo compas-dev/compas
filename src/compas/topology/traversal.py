@@ -1,8 +1,6 @@
-"""
-http://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/
-"""
-
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from collections import deque
 from compas.utilities import pairwise
@@ -596,7 +594,7 @@ def travel(adjacency, weights, start=None):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':

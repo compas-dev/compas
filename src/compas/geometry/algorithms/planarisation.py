@@ -22,11 +22,9 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = [
     'flatness',
     'planarize_faces',
-
     'mesh_flatness',
     'mesh_planarize_faces',
     'mesh_planarize_faces_shapeop',
-    'mesh_circularize_faces_shapeop',
 ]
 
 
@@ -58,9 +56,9 @@ def flatness(vertices, faces, maxdev=0.02):
     -------
     This function only works as expected for quadrilateral faces.
 
-    Example
-    -------
-    >>>
+    See Also
+    --------
+    * :func:`compas.geometry.mesh_flatness`
 
     """
     dev = []
@@ -100,6 +98,11 @@ def planarize_faces(vertices,
         A user-defined callback that is called after every iteration.
     callback_args : list, optional [None]
         A list of arguments to be passed to the callback function.
+
+    See Also
+    --------
+    * :func:`compas.geometry.mesh_planarize_faces`
+    * :func:`compas.geometry.mesh_planarize_faces_shapeop`
 
     """
     if callback:
@@ -165,6 +168,10 @@ def mesh_flatness(mesh, maxdev=1.0):
     -------
     This function only works as expected for quadrilateral faces.
 
+    See Also
+    --------
+    * :func:`compas.geometry.flatness`
+
     """
     dev = []
     for fkey in mesh.faces():
@@ -203,11 +210,10 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
     -------
     None
 
-    Examples
+    See Also
     --------
-    .. code-block:: python
-
-        #
+    * :func:`compas.geometry.planarize_faces`
+    * :func:`compas.geometry.mesh_planarize_faces_shapeop`
 
     """
     if callback:
@@ -272,9 +278,10 @@ def mesh_planarize_faces_shapeop(mesh,
     This planarization algorithm relies on the Python binding of the ShapeOp
     library. Installation instructions are available in :mod:`compas.interop`.
 
-    Examples
+    See Also
     --------
-    >>>
+    * :func:`compas.geometry.planarize_faces`
+    * :func:`compas.geometry.mesh_planarize_faces`
 
     """
     from compas.interop import shapeop
@@ -330,91 +337,87 @@ def mesh_planarize_faces_shapeop(mesh,
     solver.delete()
 
 
-def mesh_circularize_faces_shapeop(mesh,
-                                   fixed=None,
-                                   kmax=100,
-                                   callback=None,
-                                   callback_args=None):
-    """Circularize the faces of a mesh using ShapeOp.
+# def mesh_circularize_faces_shapeop(mesh,
+#                                    fixed=None,
+#                                    kmax=100,
+#                                    callback=None,
+#                                    callback_args=None):
+#     """Circularize the faces of a mesh using ShapeOp.
 
-    Parameters
-    ----------
-    mesh : Mesh
-        A mesh object.
-    fixed : list, optional [None]
-        A list of fixed vertices.
-    kmax : int, optional [100]
-        The number of iterations.
-    callback : callable, optional [None]
-        A user-defined callback that is called after every iteration.
-    callback_args : list, optional [None]
-        A list of arguments to be passed to the callback function.
+#     Parameters
+#     ----------
+#     mesh : Mesh
+#         A mesh object.
+#     fixed : list, optional [None]
+#         A list of fixed vertices.
+#     kmax : int, optional [100]
+#         The number of iterations.
+#     callback : callable, optional [None]
+#         A user-defined callback that is called after every iteration.
+#     callback_args : list, optional [None]
+#         A list of arguments to be passed to the callback function.
 
-    Note
-    ----
-    This cicularization algorithm relies on the Python binding of the ShapeOp
-    library. Installation instructions are available in :mod:`compas.interop`.
+#     Note
+#     ----
+#     This cicularization algorithm relies on the Python binding of the ShapeOp
+#     library. Installation instructions are available in :mod:`compas.interop`.
 
-    Examples
-    --------
-    >>>
+#     """
+#     from compas.interop import shapeop
 
-    """
-    from compas.interop import shapeop
+#     if callback:
+#         if not callable(callback):
+#             raise Exception('The callback is not callable.')
 
-    if callback:
-        if not callable(callback):
-            raise Exception('The callback is not callable.')
+#     fixed = fixed or []
+#     fixed = set(fixed)
 
-    fixed = fixed or []
-    fixed = set(fixed)
+#     # create a shapeop solver
+#     solver = shapeop.ShapeOpSolver()
 
-    # create a shapeop solver
-    solver = shapeop.ShapeOpSolver()
+#     # make a key-index map
+#     # and count the number of vertices in the mesh
+#     key_index = mesh.key_index()
 
-    # make a key-index map
-    # and count the number of vertices in the mesh
-    key_index = mesh.key_index()
+#     # get the vertex coordinates
+#     xyz = mesh.get_vertices_attributes('xyz')
 
-    # get the vertex coordinates
-    xyz = mesh.get_vertices_attributes('xyz')
+#     # set the coordinates in the solver
+#     solver.set_points(xyz)
 
-    # set the coordinates in the solver
-    solver.set_points(xyz)
+#     # add a plane constraint to all faces
+#     for fkey in mesh.faces():
+#         vertices = [key_index[key] for key in mesh.face_vertices(fkey)]
+#         solver.add_circle_constraint(vertices, 1.0)
 
-    # add a plane constraint to all faces
-    for fkey in mesh.faces():
-        vertices = [key_index[key] for key in mesh.face_vertices(fkey)]
-        solver.add_circle_constraint(vertices, 1.0)
+#     # add a closeness constraint to the fixed vertices
+#     for key in fixed:
+#         vertex = key_index[key]
+#         solver.add_closeness_constraint(vertex, 1.0)
 
-    # add a closeness constraint to the fixed vertices
-    for key in fixed:
-        vertex = key_index[key]
-        solver.add_closeness_constraint(vertex, 1.0)
+#     solver.init()
 
-    solver.init()
+#     for k in range(kmax):
+#         # solve
+#         solver.solve(1)
+#         # # update the points array
+#         points = solver.get_points()
+#         # update
+#         for index, (key, attr) in enumerate(mesh.vertices(True)):
+#             index *= 3
+#             attr['x'] = points[index + 0]
+#             attr['y'] = points[index + 1]
+#             attr['z'] = points[index + 2]
+#         # callback
+#         if callback:
+#             callback(k, callback_args)
 
-    for k in range(kmax):
-        # solve
-        solver.solve(1)
-        # # update the points array
-        points = solver.get_points()
-        # update
-        for index, (key, attr) in enumerate(mesh.vertices(True)):
-            index *= 3
-            attr['x'] = points[index + 0]
-            attr['y'] = points[index + 1]
-            attr['z'] = points[index + 2]
-        # callback
-        if callback:
-            callback(k, callback_args)
-
-    # clean up
-    solver.delete()
+#     # clean up
+#     solver.delete()
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

@@ -1,6 +1,5 @@
-""""""
-
 from __future__ import print_function
+from __future__ import absolute_import
 from __future__ import division
 
 from math import pi
@@ -868,7 +867,7 @@ def is_intersection_plane_plane(plane1, plane2, epsilon=1e-6):
 
 
 # ==============================================================================
-# Testing
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":
