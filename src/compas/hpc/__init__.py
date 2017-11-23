@@ -67,6 +67,7 @@ geometry
     orthonormalise_vectors_numba
     plane_from_points_numba
     circle_from_points_numba
+    circle_from_points_xy_numba
 
 
 core
