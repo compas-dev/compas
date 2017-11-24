@@ -26,10 +26,10 @@ except ImportError:
         raise
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+__author__    = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -136,11 +136,6 @@ def degree_matrix(adjacency, rtype='array'):
 def connectivity_matrix(edges, rtype='array'):
     r"""Creates a connectivity matrix from a list of vertex index pairs.
 
-    Note
-    ----
-        A connectivity matrix is generally sparse and will perform superior
-        in numerical calculations as a sparse matrix.
-
     Parameters
     ----------
         edges (list): List of lists [[node_i, node_j], [node_k, node_l]].
@@ -162,6 +157,11 @@ def connectivity_matrix(edges, rtype='array'):
             +1 & if edge i ends at vertex j \cr
             0  & otherwise
         }
+
+    Note
+    ----
+        A connectivity matrix is generally sparse and will perform superior
+        in numerical calculations as a sparse matrix.
 
     Examples
     --------
@@ -188,11 +188,6 @@ def connectivity_matrix(edges, rtype='array'):
 def laplacian_matrix(edges, normalize=False, rtype='array'):
     r"""Creates a laplacian matrix from a list of edge topologies.
 
-    Note
-    ----
-        The current implementation only supports umbrella weights,
-        as other weighting schemes are not generally applicable.
-
     Parameters
     ----------
         edges (list): List of lists [[node_i, node_j], [node_k, node_l]].
@@ -207,6 +202,11 @@ def laplacian_matrix(edges, normalize=False, rtype='array'):
     .. math::
 
         \mathbf{L} = \mathbf{C} ^ \mathrm{T} \mathbf{C}
+
+    Note
+    ----
+        The current implementation only supports umbrella weights,
+        as other weighting schemes are not generally applicable.
 
     Examples
     --------
@@ -231,11 +231,6 @@ def laplacian_matrix(edges, normalize=False, rtype='array'):
 
 def equilibrium_matrix(C, xyz, free, rtype='array'):
     r"""Construct the equilibrium matrix of a structural system.
-
-    Note
-    ----
-        The matrix of vertex coordinates is vectorised to speed up the
-        calculations.
 
     Parameters
     ----------
@@ -263,6 +258,11 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
                 \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{V}
             \end{array}
         \right].
+
+    Note
+    ----
+        The matrix of vertex coordinates is vectorised to speed up the
+        calculations.
 
     Examples
     --------
@@ -380,12 +380,6 @@ def network_connectivity_matrix(network, rtype='array'):
 def network_laplacian_matrix(network, normalize=False, rtype='array'):
     r"""Construct a Laplacian matrix from a Network datastructure.
 
-    Note
-    ----
-        ``d = L.dot(xyz)`` is currently a vector that points from the centroid to the vertex.
-        Therefore ``c = xyz - d``. By changing the signs in the laplacian, the dsiplacement
-        vectors could be used in a more natural way ``c = xyz + d``.
-
     Parameters
     ----------
         network (obj): Network datastructure object to get data from.
@@ -395,6 +389,12 @@ def network_laplacian_matrix(network, normalize=False, rtype='array'):
     Returns
     -------
         array, sparse, list: Constructed Laplacian matrix.
+
+    Note
+    ----
+        ``d = L.dot(xyz)`` is currently a vector that points from the centroid to the vertex.
+        Therefore ``c = xyz - d``. By changing the signs in the laplacian, the dsiplacement
+        vectors could be used in a more natural way ``c = xyz + d``.
 
     Examples
     --------
@@ -572,6 +572,14 @@ def trimesh_edge_cotangents(mesh, u, v):
 def trimesh_cotangent_laplacian_matrix(mesh):
     """Construct the Laplacian of a triangular mesh with cotangent weights.
 
+    Parameters
+    ----------
+        mesh (obj): The triangular Mesh datastructure object.
+
+    Returns
+    -------
+        array: The Laplacian matrix with cotangent weights.
+
     Note
     ----
         The matrix is constructed such that the diagonal contains the sum of the
@@ -586,14 +594,6 @@ def trimesh_cotangent_laplacian_matrix(mesh):
                     w_{ij} & if (i, j) \in \mathbf{E} \\
                     0 & otherwise
                 \end{cases}
-
-    Parameters
-    ----------
-        mesh (obj): The triangular Mesh datastructure object.
-
-    Returns
-    -------
-        array: The Laplacian matrix with cotangent weights.
     """
     # minus sum of the adjacent weights on the diagonal
     # cotangent weights on the neighbours

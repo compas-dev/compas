@@ -1,5 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import sys
 
@@ -16,10 +17,10 @@ from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__    = 'MIT'
-__email__      = 'vanmelet@ethz.ch'
+__author__    = ['Tom Van Mele', ]
+__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
+__license__   = 'MIT'
+__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [

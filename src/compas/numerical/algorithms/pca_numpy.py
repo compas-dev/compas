@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
 
 import sys
 
@@ -12,10 +13,10 @@ except ImportError:
         raise
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>']
-__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+__author__    = ['Tom Van Mele <vanmelet@ethz.ch>']
+__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [

@@ -75,7 +75,7 @@ def load_euler_module(client, module):
     -------
         None
     """
-    ssh.server_command(client=client, command='module load {0}; module list'.format(module))
+    ssh.server_command(client=client, command='module load {0}: module list'.format(module))
 
 
 # def loaded_euler_modules(client):
@@ -98,8 +98,8 @@ def recieve_file_from_euler(username, remote_file, local_file):
     Parameters
     ----------
         username (str): Username.
-        remote_file (str); Path of remote file to recieve.
-        local_file (str); Path to save local file as.
+        remote_file (str): Path of remote file to recieve.
+        local_file (str): Path to save local file as.
 
     Returns
     -------
@@ -114,7 +114,7 @@ def send_file_to_euler(username, local_file):
     Parameters
     ----------
         username (str): Username.
-        local_file (str); Path of local file to send.
+        local_file (str): Path of local file to send.
 
     Returns
     -------
@@ -129,7 +129,7 @@ def send_folder_to_euler(username, local_folder):
     Parameters
     ----------
         username (str): Username.
-        local_folder (str); Path of local folder to send.
+        local_folder (str): Path of local folder to send.
 
     Returns
     -------
@@ -236,7 +236,7 @@ def submit_job(client, command, time='60', output='output.txt', cpus=1):
         None
     """
     n = min([24, int(cpus)])
-    cmd = 'export OMP_NUM_THREADS={0}; bsub -n {0} -W {1} -oo {2} {3}; bbjobs'.format(n, int(time), output, command)
+    cmd = 'export OMP_NUM_THREADS={0}: bsub -n {0} -W {1} -oo {2} {3}: bbjobs'.format(n, int(time), output, command)
     ssh.server_command(client=client, command=cmd)
 
 
@@ -250,8 +250,8 @@ def sync_folder_to_euler(username, local_folder, remote_folder):
     Parameters
     ----------
         username (str): Username.
-        local_folder (str); Path of local folder to sync.
-        remote_folder (str); Path of remote folder to sync.
+        local_folder (str): Path of local folder to sync.
+        remote_folder (str): Path of remote folder to sync.
 
     Returns
     -------
