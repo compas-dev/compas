@@ -17,7 +17,7 @@ from compas.geometry.distance import distance_point_line
 from compas.geometry.distance import distance_point_line_xy
 from compas.geometry.distance import closest_point_on_segment
 
-from compas.geometry.angles import angle_smallest_vectors
+from compas.geometry.angles import angle_vectors
 from compas.geometry.average import center_of_mass_polygon
 
 
@@ -220,8 +220,8 @@ def is_polygon_convex(polygon):
         v0 = subtract_vectors(c, p0)
         v1 = subtract_vectors(p1, p0)
         v2 = subtract_vectors(p2, p0)
-        a1 = angle_smallest_vectors(v1, v0)
-        a2 = angle_smallest_vectors(v0, v2)
+        a1 = angle_vectors(v1, v0)
+        a2 = angle_vectors(v0, v2)
         if a1 + a2 > pi:
             return False
 

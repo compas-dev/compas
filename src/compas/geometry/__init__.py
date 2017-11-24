@@ -183,22 +183,14 @@ Functions
     :toctree: generated/
     :nosignatures:
 
-    angle_smallest_points
-    angle_smallest_points_xy
-    angle_smallest_points_degrees
-    angle_smallest_points_degrees_xy
-    angle_smallest_vectors
-    angle_smallest_vectors_xy
-    angle_smallest_vectors_degrees
-    angle_smallest_vectors_degrees_xy
+    angle_points
+    angle_points_xy
+    angle_vectors
+    angle_vectors_xy
     angles_points
     angles_points_xy
-    angles_points_degrees
-    angles_points_degrees_xy
     angles_vectors
     angles_vectors_xy
-    angles_vectors_degrees
-    angles_vectors_degrees_xy
 
 
 **Average**
@@ -356,7 +348,6 @@ Functions
     reflect_line_triangle
     rotate_points
     rotate_points_xy
-    rotate_points_degrees
     scale_points
     translate_lines
     translate_lines_xy

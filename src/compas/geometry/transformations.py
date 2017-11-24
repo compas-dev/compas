@@ -4,7 +4,6 @@ from __future__ import division
 
 from math import sin
 from math import cos
-from math import radians
 from math import pi
 
 from compas.geometry.basic import scale_vector
@@ -23,7 +22,7 @@ from compas.geometry.basic import vector_component_xy
 from compas.geometry.basic import multiply_matrices
 from compas.geometry.basic import transpose_matrix
 
-from compas.geometry.angles import angle_smallest_vectors
+from compas.geometry.angles import angle_vectors
 from compas.geometry.average import centroid_points
 
 from compas.geometry.intersections import intersection_line_line
@@ -68,7 +67,6 @@ __all__ = [
     'scale_points',
     'rotate_points',
     'rotate_points_xy',
-    'rotate_points_degrees',
     'offset_line',
     'offset_polyline',
     'offset_polygon',
@@ -412,26 +410,6 @@ def rotate_points(points, axis, angle, origin=None):
     return points
 
 
-def rotate_points_degrees(points, axis, angle, origin=None):
-    """Rotates points around an arbitrary axis in 3D (degrees).
-
-    Parameters:
-        points (sequence of sequence of float): XYZ coordinates of the points.
-        axis (sequence of float): The rotation axis.
-        angle (float): the angle of rotation in degrees.
-        origin (sequence of float): Optional. The origin of the rotation axis.
-            Default is ``[0.0, 0.0, 0.0]``.
-
-    Returns:
-        list: the rotated points
-
-    References:
-        https://en.wikipedia.org/wiki/Rotation_matrix
-
-    """
-    return rotate_points(points, axis, radians(angle), origin)
-
-
 def rotate_points_xy(points, axis, angle, origin=None):
     """Rotates points around an arbitrary axis in 2D.
 
@@ -690,7 +668,7 @@ def orient_points(points, reference_plane=None, target_plane=None):
         reference_plane = [(0., 0., 0.,), (0., 0., 1.)]
 
     vec_rot = cross_vectors(reference_plane[1], target_plane[1])
-    angle = angle_smallest_vectors(reference_plane[1], target_plane[1])
+    angle = angle_vectors(reference_plane[1], target_plane[1])
     if angle:
         points = rotate_points(points, vec_rot, angle, reference_plane[0])
     vec_trans = subtract_vectors(target_plane[0], reference_plane[0])
@@ -852,7 +830,7 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
         return None
     vec_line = subtract_vectors(line[1], line[0])
     vec_reflect = mirror_vector_vector(vec_line, plane[1])
-    if angle_smallest_vectors(plane[1], vec_reflect) > 0.5 * pi:
+    if angle_vectors(plane[1], vec_reflect) > 0.5 * pi:
         return None
     return [intx_pt, add_vectors(intx_pt, vec_reflect)]
 
@@ -923,7 +901,7 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
     vec_line = subtract_vectors(line[1], line[0])
     vec_normal = normal_triangle(triangle, unitized=True)
     vec_reflect = mirror_vector_vector(vec_line, vec_normal)
-    if angle_smallest_vectors(vec_normal, vec_reflect) > 0.5 * pi:
+    if angle_vectors(vec_normal, vec_reflect) > 0.5 * pi:
         return None
     return [intx_pt, add_vectors(intx_pt, vec_reflect)]
 
