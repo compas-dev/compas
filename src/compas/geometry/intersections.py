@@ -86,7 +86,7 @@ def intersection_line_line(l1, l2):
 
 
 def intersection_line_line_xy(l1, l2):
-    """Compute the intersection of two lines, assuming they lie in the XY plane.
+    """Compute the intersection of two lines, assuming they lie in the XY plane [wikipedia2017f]_.
 
     Parameters
     ----------
@@ -105,10 +105,6 @@ def intersection_line_line_xy(l1, l2):
     Note
     ----
     Only if the lines are parallel, there is no intersection point.
-
-    References
-    ----------
-    https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
 
     """
     a, b = l1
@@ -420,7 +416,7 @@ def intersection_lines_numpy(lines):
 
 
 def intersection_lines_xy(lines):
-    """Compute the intersections of mulitple lines in the XY plane.
+    """Compute the intersections of mulitple lines in the XY plane [wikipedia2017f]_.
 
     Parameters:
         lines: (sequence): A list of sequences of XY(Z) coordinates of two 2D or 3D points
@@ -432,9 +428,6 @@ def intersection_lines_xy(lines):
 
     Note:
         If the lines are parallel, there is no intersection point.
-
-    References:
-        https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
 
     """
     # points = []

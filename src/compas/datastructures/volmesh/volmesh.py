@@ -66,8 +66,8 @@ class VolMesh(FromToData,
 
     Volumetric meshes are 3-mainfold, cellular structures.
 
-    The implementation of ``VolMesh`` is based on the notion of *x-maps* [xmaps]
-    and the concepts behind the *OpenVolumeMesh* library [ovm].
+    The implementation of ``VolMesh`` is based on the notion of *x-maps*
+    and the concepts behind the *OpenVolumeMesh* library [vci2016]_.
     In short, we add an additional entity compared to polygonal meshes,
     the *cell*, and relate cells not through *half-edges*, but through a combination
     of *half-faces* and *planes*. Each cell consists of a series of vertex pairs,
@@ -92,7 +92,7 @@ class VolMesh(FromToData,
         halffaces.
         ``self.cell[ckey][u][v] -> fkey``
     halfface : dict
-        The halffaces of the volmesh. Each halfface is represented by 
+        The halffaces of the volmesh. Each halfface is represented by
         ``self.halfface[fkey] -> vertex cycle``
     plane : dict
         The planes of the volmesh. Every plane is uniquely defined by three
@@ -103,11 +103,6 @@ class VolMesh(FromToData,
         of the latter identify oriented faces (planes) of the volmesh, finally
         pointing at the cells of the volmesh.
         ``self.plane[u][v][w] -> ckey``.
-
-    References
-    ----------
-    .. [xmaps] xxx
-    .. [ovm] `Open Volum Mesh <http://www.openvolumemesh.org>`_
 
     """
 
@@ -888,5 +883,5 @@ if __name__ == '__main__':
 
     viewer.setup()
 
-    viewer.camera.zoom_out(5)    
+    viewer.camera.zoom_out(5)
     viewer.show()

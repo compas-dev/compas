@@ -40,7 +40,7 @@ class OBJ(object):
 
 
 class OBJReader(object):
-    """Read the contents of an *obj* file.
+    """Read the contents of an *obj* file [Bourke]_.
 
     Parameters:
         filepath (str): Path to the file.
@@ -60,9 +60,6 @@ class OBJReader(object):
         curves (list): Curves
         curves2 (list): Curves
         surfaces (list): Surfaces
-
-    References:
-        http://paulbourke.net/dataformats/obj/
 
     """
 

@@ -27,7 +27,7 @@ __all__ = []
 
 
 class MeshPlotter(Plotter):
-    """Definition of a plotter object based on matplotlib for compas Networks.
+    """Definition of a plotter object based on matplotlib [hunter2007]_ for compas Networks.
 
     Parameters
     ----------
@@ -67,12 +67,6 @@ class MeshPlotter(Plotter):
         plotter.draw_faces()
 
         plotter.show()
-
-
-    References
-    ----------
-    * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science & Engineering (9) 3, p.90-95.
-      Available at: http://ieeexplore.ieee.org/document/4160265/citations
 
     """
 

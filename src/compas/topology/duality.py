@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.geometry import circle_from_points_xy
-from compas.geometry import angle_smallest_vectors
+from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
 
 
@@ -459,7 +459,7 @@ def _find_first_neighbour(key, network):
         w = [network.vertex[nbr][_] for _ in 'xyz']
         v = [network.vertex[key][_] for _ in 'xyz']
         vw = [w[0] - v[0], w[1] - v[1], 0]
-        angles.append(angle_smallest_vectors(vu, vw))
+        angles.append(angle_vectors(vu, vw))
     return nbrs[angles.index(min(angles))]
 
 

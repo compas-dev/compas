@@ -27,7 +27,8 @@ for instructions.
 
 
 class MatlabEngine(object):
-    """Communicate with Matlab through the MATLAB engine.
+    """Communicate with Matlab through the MATLAB engine [mathworks2017a]_, [mathworks2017b]_,
+        [mathworks2017c]_, [mathworks2017d]_, [mathworks2017e]_.
 
     Attributes
     ----------
@@ -42,14 +43,6 @@ class MatlabEngine(object):
     >>> matlab = MatlabEngine()
     >>> matlab.engine.isprime(37)
     True
-
-    References
-    ----------
-    * `MATLAB Engine API for Python <https://ch.mathworks.com/help/matlab/matlab-engine-for-python.html>`_
-    * `Pass Data to MATLAB from Python <https://ch.mathworks.com/help/matlab/matlab_external/pass-data-to-matlab-from-python.html>`_
-    * `Use MATLAB Arrays in Python <https://ch.mathworks.com/help/matlab/matlab_external/use-matlab-arrays-in-python.html>`_
-    * `Use MATLAB Engine Workspace in Python <https://ch.mathworks.com/help/matlab/matlab_external/use-the-matlab-engine-workspace-in-python.html>`_
-    * `Call MATLAB Functions from Python <https://ch.mathworks.com/help/matlab/matlab_external/call-matlab-functions-from-python.html>`_
 
     """
 

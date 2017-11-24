@@ -29,7 +29,7 @@ __all__ = [
 
 
 def bestfit_plane(points):
-    """Fit a plane to a list of (more than three) points.
+    """Fit a plane to a list of (more than three) points [Ernerfeldt2015]_.
 
     Parameters
     ----------
@@ -40,10 +40,6 @@ def bestfit_plane(points):
     -------
     plane : tuple
         Base point and normal vector (normalized).
-
-    References
-    ----------
-    http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points
 
     Warning
     -------
@@ -210,7 +206,7 @@ def bestfit_plane_numpy4(points):
 
 
 def bestfit_circle_numpy(points):
-    """Fit a circle through a set of points.
+    """Fit a circle through a set of points [Scipya]_.
 
     Warning
     -------
@@ -232,11 +228,6 @@ def bestfit_circle_numpy(points):
     .. code-block:: python
 
         #
-
-
-    References
-    ----------
-    * http://scipy-cookbook.readthedocs.io/items/Least_Squares_Circle.html
 
     """
     from numpy import sqrt

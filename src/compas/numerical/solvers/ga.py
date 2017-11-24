@@ -61,7 +61,8 @@ def ga(fit_function,
        output_path=None,
        input_path=None):
 
-    """Genetic Algorithm optimisation (Holland 1975).
+    ga_ = GA()
+    """Genetic Algorithm optimisation [holland1975]_.
 
     Parameters
     ----------
@@ -119,11 +120,6 @@ def ga(fit_function,
 
     ga_ : object
         The resulting :class'GA' instance.
-
-    References
-    ----------
-    * Holland, J. H. (1975), Adaptation in Natural and Artificial Systems, 1st edn,
-    The University of Michigan, Ann Arbor.
 
     Example
     -------

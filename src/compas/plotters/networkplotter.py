@@ -23,7 +23,7 @@ __all__ = ['NetworkPlotter', ]
 
 
 class NetworkPlotter(Plotter):
-    """Definition of a plotter object based on matplotlib for compas Networks.
+    """Definition of a plotter object based on matplotlib [hunter2007]_ for compas Networks.
 
     Parameters
     ----------
@@ -64,11 +64,6 @@ class NetworkPlotter(Plotter):
         plotter.draw_edges()
 
         plotter.show()
-
-    References
-    ----------
-    * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science & Engineering (9) 3, p.90-95.
-      Available at: http://ieeexplore.ieee.org/document/4160265/citations
 
     """
 

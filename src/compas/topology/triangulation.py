@@ -43,7 +43,7 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
 
 
 def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
-    """Computes the delaunay triangulation for a list of points.
+    """Computes the delaunay triangulation for a list of points [sloan1987]_.
 
     Parameters:
         points (sequence of tuple): XYZ coordinates of the original points.
@@ -52,9 +52,6 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
     Returns:
         Mesh: A mesh object.
-
-    References:
-        Sloan, S. W. (1987) A fast algorithm for constructing Delaunay triangulations in the plane
 
     Example:
 
@@ -281,7 +278,7 @@ def trimesh_remesh(mesh,
                    fixed=None,
                    callback=None,
                    callback_args=None):
-    """Remesh until all edges have a specified target length.
+    """Remesh until all edges have a specified target length [botsch2004]_.
 
     Parameters
     ----------
@@ -381,12 +378,6 @@ def trimesh_remesh(mesh,
     See Also
     --------
     * :func:`compas.geometry.smooth_area`
-
-    References
-    ----------
-    * Botsch, M. & Koriented_bounding_boxelt, L., 2004. A remeshing approach to multiresolution modeling.
-      Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
-      Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457
 
     """
     if verbose:
