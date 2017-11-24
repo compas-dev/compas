@@ -3,8 +3,10 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import imageio
-
+try:
+    import imageio
+except:
+    pass
 
 __author__    = ['Matthias Rippmann', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'

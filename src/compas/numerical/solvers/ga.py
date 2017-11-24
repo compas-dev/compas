@@ -1,5 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import re
 import random
@@ -7,10 +8,10 @@ import json
 import copy
 
 
-__author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
-__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'mtomas@ethz.ch'
+__author__    = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
+__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'mtomas@ethz.ch'
 
 
 __all__ = [
@@ -60,7 +61,6 @@ def ga(fit_function,
        output_path=None,
        input_path=None):
 
-    ga_ = GA()
     """Genetic Algorithm optimisation (Holland 1975).
 
     Parameters
@@ -181,6 +181,7 @@ def ga(fit_function,
         ================================================================================
 
     """
+    ga_ = GA()
 
     ga_.fit_name             = fit_name or fit_function.__name__
     ga_.fit_type             = fit_type
@@ -448,7 +449,6 @@ class GA(object):
         scaled_pop: list
             The scaled ppopulation list.
         """
-
         scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
             for i in range(self.num_var):
@@ -496,7 +496,6 @@ class GA(object):
         elite_pop: dict
             The elite population dictionary.
         """
-
         if self.fit_type == 'min':
             sorted_ind = self.get_sorting_indices(self.current_pop['fit_value'])
         elif self.fit_type == 'max':
@@ -565,7 +564,6 @@ class GA(object):
         combined with individuals in ``GA.mating_pool_b`` using a single, randomly selected
         crossover point.
         """
-
         self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
         self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range((self.num_pop - self.num_elite) / 2):
@@ -603,7 +601,7 @@ class GA(object):
         Parameters
         ----------
         decoded_pop: dict
-        The decoded population dictionary to be coded
+            The decoded population dictionary to be coded
 
         Returns
         -------
@@ -843,6 +841,10 @@ class GA(object):
             indices = self.get_sorting_indices(fit_values, reverse=True)
         self.best_individual_index = indices[0]
 
+
+# ==============================================================================
+# Main
+# ==============================================================================
 
 if __name__ == '__main__':
 

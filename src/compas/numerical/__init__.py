@@ -38,8 +38,6 @@ Solvers
     descent
     devo_numpy
     ga
-    lma
-    mma
     moga
 
 

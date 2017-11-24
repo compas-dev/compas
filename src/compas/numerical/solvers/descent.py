@@ -1,5 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import sys
 
@@ -25,10 +26,10 @@ else:
     e = sqrt(eps)
 
 
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
+__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
@@ -39,7 +40,8 @@ __all__ = [
 def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=()):
     """A gradient descent optimisation solver.
 
-    Parameters:
+    Parameters
+    ----------
         x0 (array, list): n x 1 starting guess of x.
         fn (obj): The objective function to minimise.
         iterations (int): Maximum number of iterations.
@@ -48,7 +50,8 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
         limit (float): Value of the objective function for which to terminate optimisation.
         args (tuple): Additional parameters needed for fn.
 
-    Returns:
+    Returns
+    -------
         float: Final value of the objective function.
         array: Values of x at the found local minimum.
     """
@@ -56,6 +59,7 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
     c = 0.0001
     n = len(x0)
     x0 = reshape(array(x0), (n, 1))
+
     if bounds:
         bounds = array(bounds)
         lb = bounds[:, 0][:, newaxis]
@@ -63,6 +67,7 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
     else:
         lb = ones((n, 1)) * -10**20
         ub = ones((n, 1)) * +10**20
+
     zn = zeros((n, 1))
     g = zeros((n, 1))
     v = eye(n) * e
@@ -74,26 +79,32 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
     i = 0
     mu = 1
     while i < iterations:
+
         p0 = phi(x0, mu, *args)
         for j in range(n):
             vj = v[:, j][:, newaxis]
             g[j, 0] = (phi(x0 + vj, mu, *args) - p0) / e
         D = sum(-g * g)
+
         a = 1
         x1 = x0 - a * g
         while phi(x1, mu, *args) > p0 + c * a * D:
             a *= r
             x1 = x0 - a * g
         x0 -= a * g
+
         mu *= 10
         res = mean(abs(g))
         i += 1
         f1 = phi(x0, mu, *args)
-        print('Iteration: {0}  fopt: {1:.3g}  gres: {2:.3g}  step: {3}'.format(i, f1, res, a))
+
         if f1 < limit:
             break
         if res < gtol:
             break
+
+        print('Iteration: {0}  fopt: {1:.3g}  gres: {2:.3g}  step: {3}'.format(i, f1, res, a))
+
     return f1, x0
 
 

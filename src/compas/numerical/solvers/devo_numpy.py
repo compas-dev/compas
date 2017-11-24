@@ -1,5 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import sys
 
@@ -28,10 +29,10 @@ from time import time
 import json
 
 
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
+__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
@@ -43,10 +44,8 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
                args=(), callback=None, **kwargs):
     """Call the Differential Evolution solver.
 
-    Note:
-        fn must return vectorised output for input (k, population) if vectored is True.
-
-    Parameters:
+    Parameters
+    ----------
         fn (obj): The function to evaluate and minimise.
         bounds (list): Lower and upper bounds for each DoF [[lb, ub], ...].
         population (int): Number of agents in the population.
@@ -60,11 +59,15 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
         args (seq): Sequence of optional arguments to pass to fn.
         callback (obj): Callback function for each generation.
 
-    Returns:
+    Returns
+    -------
         float: Optimal value of objective function.
         list: Values that give the optimum (minimised) function.
-    """
 
+    Note
+    ----
+        fn must return vectorised output for input (k, population) if vectored is True.
+    """
     tic = time()
 
     # Heading

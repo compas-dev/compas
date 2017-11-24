@@ -1,15 +1,16 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import re
 import random
 import json
 
 
-__author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'mtomas@ethz.ch'
+__author__    = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
+__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'mtomas@ethz.ch'
 
 
 __all__ = [
@@ -54,11 +55,10 @@ def moga(fit_functions,
          fkwargs=None,
          output_path=None):
 
-    """Genetic Algorithm optimisation [deb2001]_.
+    """Multi-objective Genetic Algorithm optimisation [deb2001]_.
 
     Parameters
     ----------
-
     fit_functions : list
         List of functions to be used by the :class'MOGA' to determine the fitness values.
         The function must have as a first argument a list of variables that determine the
@@ -471,7 +471,6 @@ class MOGA(object):
         return decoded_pop
 
     def scale_population(self, decoded_pop):
-
         """Scales the decoded population, variable values are scaled according to each
         of their bounds contained in ``GA.boundaries``.
 
@@ -485,7 +484,6 @@ class MOGA(object):
         scaled_pop: list
             The scaled ppopulation list.
         """
-
         scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
             for i in range(self.num_var):
@@ -802,7 +800,6 @@ class MOGA(object):
         lines = pf_file.readlines()
         pf_file.close()
 
-
         file_pop['scaled'] = [[[]] * self.num_var for i in range(self.num_pop)]
         file_pop['scaled'] = [[[]] * self.num_fit_func for i in range(self.num_pop)]
         for i in range(self.num_pop):
@@ -923,7 +920,6 @@ class MOGA(object):
         -------
         pf_dict: dict
             The dictionary containing the pareto front level of all individuals.
-
         """
         pf_dict = {}
         for j in range(len(self.pareto_front_indices) - 1):
