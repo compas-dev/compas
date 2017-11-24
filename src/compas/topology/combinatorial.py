@@ -18,7 +18,7 @@ __all__ = [
 
 
 def vertex_coloring(adjacency):
-    """Color the vertices of a network such that no two colors are adjacent.
+    """Color the vertices of a network such that no two colors are adjacent [chucarroll2007]_.
 
     Parameters
     ----------
@@ -51,11 +51,6 @@ def vertex_coloring(adjacency):
         plotter.draw_edges()
 
         plotter.show()
-
-
-    References
-    ----------
-    * http://scienceblogs.com/goodmath/2007/06/28/graph-coloring-algorithms-1/
 
     """
     key_to_color = {}

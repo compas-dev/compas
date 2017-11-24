@@ -18,7 +18,7 @@ __all__ = []
 
 def binomial(n, k):
     """Returns the binomial coefficient of the :math:`x^k` term in the
-    polynomial expansion of the binmoial power :math:`(1 + x)^n`.
+    polynomial expansion of the binmoial power :math:`(1 + x)^n` [wikipedia2017j]_.
 
     Note:
         Arranging binomial coefficients into rows for successive values of `n`,
@@ -32,9 +32,6 @@ def binomial(n, k):
     Returns:
         int: The coefficient.
 
-    References:
-        http://en.wikipedia.org/wiki/Binomial_coefficient
-
     """
     return factorial(n) / float(factorial(k) * factorial(n - k))
 
@@ -42,7 +39,7 @@ def binomial(n, k):
 def bernstein(n, k, t):
     """k:sup:`th` of `n` + 1 Bernstein basis polynomials of degree `n`. A
     weighted linear combination of these basis polynomials is called a Bernstein
-    polynomial.
+    polynomial [wikipedia2017k]_.
 
     Note:
         When constructing Bezier curves, the weights are simply the coordinates
@@ -55,9 +52,6 @@ def bernstein(n, k, t):
 
     Returns:
         float: The value of the Bernstein basis polynomial at `t`.
-
-    References:
-        http://en.wikipedia.org/wiki/Bernstein_polynomial
 
     """
     return binomial(n, k) * t ** k * (1 - t) ** (n - k)

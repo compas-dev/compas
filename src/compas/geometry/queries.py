@@ -60,7 +60,7 @@ __all__ = [
 
 def is_ccw_xy(a, b, c, colinear=False):
     """Verify if ``c`` is on the left of ``ab`` when looking from ``a`` to ``b``,
-    and assuming that all points lie in the XY plane.
+    and assuming that all points lie in the XY plane [marsh2017]_.
 
     Parameters
     ----------
@@ -93,10 +93,6 @@ def is_ccw_xy(a, b, c, colinear=False):
 
     >>> print(is_ccw_xy([0,0,0], [1,0,0], [2,0,0], True))
     True
-
-    References
-    ----------
-    https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation
 
     """
     ab_x = b[0] - a[0]
@@ -300,7 +296,7 @@ def is_point_infront_plane(point, plane):
 
     """
     return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > 0.0
-    
+
 
 
 def is_point_on_line(point, line, tol=0.0):
@@ -546,7 +542,7 @@ def is_point_in_triangle_xy(point, triangle, colinear=False):
     colinear : bool, optional
         Allow points to be colinear.
         Default is ``False``.
-        
+
     Returns
     -------
     bool

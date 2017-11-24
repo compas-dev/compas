@@ -15,7 +15,7 @@ __all__ = ['Line']
 
 
 class Line(object):
-    r"""A line object is defined by two points in three-dimensional space.
+    r"""A line object is defined by two points in three-dimensional space [wikipedia2017h]_.
 
     Parameters:
         p1 (tuple, list, Point): The xyz coordinates of the first point.
@@ -54,10 +54,6 @@ class Line(object):
         <class 'point.Point'>
         >>> type(line.direction)
         <class 'vector.Vector'>
-
-    References:
-        https://en.wikipedia.org/wiki/Linear_equation
-
 
     """
     def __init__(self, p1, p2):

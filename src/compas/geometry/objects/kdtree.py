@@ -23,7 +23,7 @@ Node = collections.namedtuple("Node", 'point axis label left right')
 
 
 class KDTree(object):
-    """A tree for nearest neighbor search in a k-dimensional space.
+    """A tree for nearest neighbor search in a k-dimensional space [wikipedia2017g]_, [dellamico2010]_.
 
     Parameters
     ----------
@@ -97,11 +97,6 @@ class KDTree(object):
         plotter.draw_lines(lines)
         plotter.draw_points(points)
         plotter.show()
-
-    References
-    ----------
-    * `Wikipedia KDTree <http://en.wikipedia.org/wiki/Kd-tree>`_
-    * `ActiveState KDTree <http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space>`_
 
     """
 

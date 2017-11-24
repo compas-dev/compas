@@ -387,7 +387,7 @@ def scale_points(points, scale):
 
 
 def rotate_points(points, axis, angle, origin=None):
-    """Rotates points around an arbitrary axis in 3D (radians).
+    """Rotates points around an arbitrary axis in 3D (radians) [wikipedia2017l]_.
 
     Parameters:
         points (sequence of sequence of float): XYZ coordinates of the points.
@@ -399,9 +399,6 @@ def rotate_points(points, axis, angle, origin=None):
     Returns:
         list: the rotated points
 
-    References:
-        https://en.wikipedia.org/wiki/Rotation_matrix
-
     """
     # rotation matrix
     R = rotation_matrix(angle, axis, origin)
@@ -411,7 +408,7 @@ def rotate_points(points, axis, angle, origin=None):
 
 
 def rotate_points_xy(points, axis, angle, origin=None):
-    """Rotates points around an arbitrary axis in 2D.
+    """Rotates points around an arbitrary axis in 2D [wikipedia2017l]_.
 
     Parameters:
         points (sequence of sequence of float): XY coordinates of the points.
@@ -422,9 +419,6 @@ def rotate_points_xy(points, axis, angle, origin=None):
 
     Returns:
         list: the rotated points
-
-    References:
-        https://en.wikipedia.org/wiki/Rotation_matrix
 
     """
     if not origin:
@@ -742,7 +736,7 @@ def mirror_points_plane(points, plane):
 
 
 def mirror_vector_vector(v1, v2):
-    """Mirrors vector about vector.
+    """Mirrors vector about vector [mathstackexchange_b]_.
 
     Parameters:
         v1 (tuple, list, Vector): The vector.
@@ -751,8 +745,6 @@ def mirror_vector_vector(v1, v2):
     Returns:
         Tuple: mirrored vector
 
-    Resources:
-        http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
     """
     return subtract_vectors(v1, scale_vector(v2, 2 * dot_vectors(v1, v2)))
 
@@ -763,7 +755,7 @@ def mirror_vector_vector(v1, v2):
 
 
 def reflect_line_plane(line, plane, epsilon=1e-6):
-    """Reflects a line at plane.
+    """Reflects a line at plane [mathstackexchange_b]_.
 
     Parameters:
         line (tuple): Two points defining the line.
@@ -778,9 +770,6 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
         reflected if it points (direction start -> end) in the direction of the plane
         and if the line intersects with the front face of the plane (normal direction
         of the plane).
-
-    Resources:
-        http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
 
     Examples:
 
@@ -912,11 +901,11 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
 
 
 def project_point_plane(point, plane):
-    """Project a point onto a plane.
+    """Project a point onto a plane [mathstackexchange_a]_.
 
     The projection is in the direction perpendicular to the plane.
     The projected point is thus the closest point on the plane to the original
-    point.
+    point [stackoverflow_b]_.
 
     Parameters:
         point (sequence of float): XYZ coordinates of the original point.
@@ -932,11 +921,6 @@ def project_point_plane(point, plane):
         >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])  # the XY plane
         >>> project_point_plane(point, plane)
         [3.0, 3.0, 3.0]
-
-
-    References:
-        http://stackoverflow.com/questions/8942950/how-do-i-find-the-orthogonal-projection-of-a-point-onto-a-plane
-        http://math.stackexchange.com/questions/444968/project-a-point-in-3d-on-a-given-plane
 
     """
     base, normal = plane
@@ -964,7 +948,7 @@ def project_points_plane(points, plane):
 
 
 def project_point_line(point, line):
-    """Project a point onto a line.
+    """Project a point onto a line [wikibooks2017a]_.
 
     Parameters:
         point (sequence of float): XYZ coordinates.
@@ -972,9 +956,6 @@ def project_point_line(point, line):
 
     Returns:
         list: XYZ coordinates of the projected point.
-
-    References:
-        https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line
 
     """
     a, b = line
@@ -986,7 +967,7 @@ def project_point_line(point, line):
 
 
 def project_point_line_xy(point, line):
-    """Project a point onto a line.
+    """Project a point onto a line [wikibooks2017a]_.
 
     Parameters:
         point (sequence of float): XY coordinates.
@@ -994,9 +975,6 @@ def project_point_line_xy(point, line):
 
     Returns:
         list: XY coordinates of the projected point.
-
-    References:
-        https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line
 
     """
     a, b = line

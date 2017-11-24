@@ -191,7 +191,7 @@ def moga(fit_functions,
 
 class MOGA(object):
     """This class contains a binary coded, multiple objective genetic algorithm called
-    NSGA-II (K. Deb). NSGA-II uses the concept of non-domination (Pareto-domination) to
+    NSGA-II [deb2001]_. NSGA-II uses the concept of non-domination (Pareto-domination) to
     classify solutions and optimize as a genetic algorith. NSGA-II also employs a crowding distance
     operator designed to distribute individuals in the population allong the Pareto
     front, avoid crowding in small areas.
@@ -256,11 +256,6 @@ class MOGA(object):
     fkwargs : dict, optional [None]
         Keyword arguments to be fed to the fitness function.
 
-
-    References
-    ----------
-    * Deb, K. (2001), Multi-Objective Optimization using Evolutionary Algorithms,
-    John Wiley & Sons, Chichester.
     """
 
     def __init__(self):

@@ -23,7 +23,7 @@ __all__ = ['Point']
 
 
 class Point(object):
-    """A three-dimensional location in space.
+    """A three-dimensional location in space [stackoverflow_a]_.
 
     Parameters
     ----------
@@ -83,10 +83,6 @@ class Point(object):
     the dot notation, as well list-style access using indices. Indexed
     access is implemented such that the ``Point`` behaves like a circular
     list.
-
-    References
-    ----------
-    * http://stackoverflow.com/questions/8951020/pythonic-circular-list
 
     """
 

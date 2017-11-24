@@ -112,7 +112,7 @@ def area_triangle_xy(triangle):
 
 
 def volume_polyhedron(polyhedron):
-    r"""Compute the volume of a polyhedron represented by a closed mesh.
+    r"""Compute the volume of a polyhedron represented by a closed mesh [nurnberg2013]_.
 
     This implementation is based on the divergence theorem, the fact that the
     *area vector* is constant for each face, and the fact that the area of each
@@ -129,10 +129,6 @@ def volume_polyhedron(polyhedron):
               &= \frac{1}{6} \sum_{i=0}^{N-1} a_{i} \cdot \hat n_{i}
         \end{align}
 
-
-    References
-    ----------
-    http://www.ma.ic.ac.uk/~rn/centroid.pdf
 
     """
     V = 0
