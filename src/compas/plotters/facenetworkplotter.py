@@ -16,7 +16,7 @@ __all__ = ['FaceNetworkPlotter', ]
 
 
 class FaceNetworkPlotter(NetworkPlotter):
-    """Definition of a plotter object based on matplotlib for compas FaceNetworks.
+    """Definition of a plotter object based on matplotlib [hunter2007]_ for compas FaceNetworks.
 
     Parameters
     ----------
@@ -32,10 +32,6 @@ class FaceNetworkPlotter(NetworkPlotter):
     defaults : dict
         Dictionary containing default attributes for vertices and edges.
 
-    References
-    ----------
-    * Hunter, J. D., 2007. Matplotlib: A 2D graphics environment. Computing In Science & Engineering (9) 3, p.90-95.
-      Available at: http://ieeexplore.ieee.org/document/4160265/citations
 
     """
 

@@ -22,7 +22,7 @@ __all__ = [
 
 def discrete_coons_patch(ab, bc, dc, ad):
     """Creates a coons patch from a set of four or three boundary
-    polylines (ab, bc, dc, ad).
+    polylines (ab, bc, dc, ad) [wikipedia2017]_, [ferreol2013]_.
 
     Direction and order of polylines::
 
@@ -60,11 +60,6 @@ def discrete_coons_patch(ab, bc, dc, ad):
     See Also
     --------
     * :func:`compas.datastructures.mesh_cull_duplicate_vertices`
-
-    References
-    ----------
-    * https://en.wikipedia.org/wiki/Coons_patch
-    * https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml
 
     """
     if not ab:

@@ -173,7 +173,7 @@ def distance_point_point_sqrd_xy(a, b):
 
 
 def distance_point_line(point, line):
-    """Compute the distance between a point and a line.
+    """Compute the distance between a point and a line [wikipedia2017c]_.
 
     This implementation computes the *right angle distance* from a point P to a
     line defined by points A and B as twice the area of the triangle ABP divided
@@ -195,10 +195,6 @@ def distance_point_line(point, line):
     --------
     >>>
 
-    References
-    ----------
-    https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-
     """
     a, b = line
     ab   = subtract_vectors(b, a)
@@ -210,7 +206,7 @@ def distance_point_line(point, line):
 
 
 def distance_point_line_xy(point, line):
-    """Compute the distance between a point and a line, assuming they lie in the XY-plane.
+    """Compute the distance between a point and a line, assuming they lie in the XY-plane [wikipedia2017c]_.
 
     This implementation computes the orthogonal distance from a point P to a
     line defined by points A and B as twice the area of the triangle ABP divided
@@ -228,10 +224,6 @@ def distance_point_line_xy(point, line):
     float
         The distance between the point and the line.
 
-    References
-    ----------
-    https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-
     """
     a, b = line
     ab   = subtract_vectors_xy(b, a)
@@ -243,7 +235,7 @@ def distance_point_line_xy(point, line):
 
 
 def distance_point_line_sqrd(point, line):
-    """Compute the squared distance between a point and a line.
+    """Compute the squared distance between a point and a line [wikipedia2017c]_.
 
     Parameters
     ----------
@@ -257,9 +249,6 @@ def distance_point_line_sqrd(point, line):
     float
         The squared distance between the point and the line.
 
-    References
-    ----------
-    https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
     """
     a, b = line
@@ -272,7 +261,7 @@ def distance_point_line_sqrd(point, line):
 
 
 def distance_point_line_sqrd_xy(point, line):
-    """Compute the squared distance between a point and a line lying in the XY-plane.
+    """Compute the squared distance between a point and a line lying in the XY-plane [wikipedia2017c]_.
 
     This implementation computes the orthogonal squared distance from a point P to a
     line defined by points A and B as twice the area of the triangle ABP divided
@@ -290,10 +279,6 @@ def distance_point_line_sqrd_xy(point, line):
     float
         The squared distance between the point and the line.
 
-    References
-    ----------
-    https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-
     """
     a, b = line
     ab   = subtract_vectors_xy(b, a)
@@ -305,7 +290,7 @@ def distance_point_line_sqrd_xy(point, line):
 
 
 def distance_point_plane(point, plane):
-    r"""Compute the distance from a point to a plane defined by three points.
+    r"""Compute the distance from a point to a plane defined by three points [nykamp2012]_.
 
     The distance from a pioint to a planbe can be computed from the coefficients
     of the equation of the plane and the coordinates of the point.
@@ -350,10 +335,6 @@ def distance_point_plane(point, plane):
     --------
     >>>
 
-    References
-    ----------
-    http://mathinsight.org/distance_point_plane
-
     """
     base, normal = plane
     vector = subtract_vectors(point, base)
@@ -361,7 +342,7 @@ def distance_point_plane(point, plane):
 
 
 def distance_line_line(l1, l2, tol=0.0):
-    """Compute the shortest distance between two lines.
+    """Compute the shortest distance between two lines [wisstein2017]_, [wikipedia2017d]_.
 
     The distance is the absolute value of the dot product of a unit vector that
     is perpendicular to the two lines, and the vector between two points on the lines.
@@ -385,11 +366,6 @@ def distance_line_line(l1, l2, tol=0.0):
     Examples
     --------
     >>>
-
-    References
-    ----------
-    http://mathworld.wolfram.com/Line-LineDistance.html
-    https://en.wikipedia.org/wiki/Skew_lines#Distance
 
     """
     a, b = l1
@@ -763,7 +739,7 @@ def closest_point_on_polygon_xy(point, polygon):
 
 def closest_point_on_plane(point, plane):
     """
-    Compute closest point on a plane to a given point.
+    Compute closest point on a plane to a given point [wikipedia2017e]_.
 
     Parameters
     ----------
@@ -782,10 +758,6 @@ def closest_point_on_plane(point, plane):
     >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
     >>> point = [1.0, 2.0, 3.0]
     >>> closest_point_on_plane(point, plane)
-
-    References
-    ----------
-    http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
     """
     base, normal = plane

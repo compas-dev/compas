@@ -25,7 +25,7 @@ __all__ = [
 
 
 def convex_hull(points):
-    """Construct convex hull for a set of points.
+    """Construct convex hull for a set of points [githubgist_a]_.
 
     Parameters
     ----------
@@ -77,9 +77,6 @@ def convex_hull(points):
                     show_vertices = False,
                     show_edges = False)
 
-    References
-    ----------
-    * https://gist.github.com/anonymous/5184ba0bcab21d3dd19781efd3aae543
 
     """
     def _normal_face(face):
@@ -118,7 +115,7 @@ def convex_hull(points):
 
 
 def convex_hull_xy(points):
-    """Computes the convex hull of a set of 2D points.
+    """Computes the convex hull of a set of 2D points [wikibooks2017]_.
 
     Note
     ----
@@ -139,9 +136,6 @@ def convex_hull_xy(points):
         XY(Z) coordinates of vertices of the convex hull in counter-clockwise order,
         starting from the vertex with the lexicographically smallest coordinates.
 
-    References
-    ----------
-    * https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain
 
     """
 

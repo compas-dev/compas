@@ -1103,7 +1103,7 @@ def plane_from_points(a, b, c):
 
 
 def circle_from_points(a, b, c):
-    """Construct a circle from three points.
+    """Construct a circle from three points [wikipedia2017b]_.
 
     Parameters
     ----------
@@ -1118,10 +1118,6 @@ def circle_from_points(a, b, c):
     -------
     circle : tuple
         Center, radius, normal  of the circle.
-
-    References
-    ----------
-    https://en.wikipedia.org/wiki/Circumscribed_circle
 
     Examples
     --------
@@ -1148,7 +1144,7 @@ def circle_from_points(a, b, c):
 
 
 def circle_from_points_xy(a, b, c):
-    """Create a circle from three points lying in the XY-plane.
+    """Create a circle from three points lying in the XY-plane [wikipedia2017b]_
 
     Parameters
     ----------
@@ -1163,10 +1159,6 @@ def circle_from_points_xy(a, b, c):
     -------
     tuple
         XYZ coordinates of center in the XY-plane (Z = 0.0) and radius of the circle.
-
-    References
-    ----------
-    https://en.wikipedia.org/wiki/Circumscribed_circle
 
     Examples
     --------
