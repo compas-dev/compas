@@ -41,13 +41,15 @@ def angle_vectors(u, v, deg=False):
     ----------
     u : sequence of float
         XYZ components of the first vector.
-    v : sequence of float)
+    v : sequence of float
         XYZ components of the second vector.
+    deg : boolean
+        returns angle in degrees if True
 
     Returns
     -------
     float
-        The smallest angle in radians.
+        The smallest angle in radians (in degrees if deg == True).
         The angle is always positive.
 
     Examples
@@ -72,11 +74,13 @@ def angle_vectors_xy(u, v, deg=False):
         The first 2D or 3D vector (Z will be ignored).
     v : sequence of float)
         The second 2D or 3D vector (Z will be ignored).
+    deg : boolean
+        returns angle in degrees if True
 
     Returns
     -------
     float
-        The smallest angle between the vectors in radians.
+        The smallest angle between the vectors in radians (in degrees if deg == True).
         The angle is always positive.
 
     Examples
@@ -102,11 +106,13 @@ def angle_points(a, b, c, deg=False):
         XYZ coordinates.
     c : sequence of float
         XYZ coordinates.
+    deg : boolean
+        returns angle in degrees if True
 
     Returns
     -------
     float
-        The smallest angle in radians.
+        The smallest angle between the vectors in radians (in degrees if deg == True).
         The angle is always positive.
 
     Note
@@ -137,11 +143,13 @@ def angle_points_xy(a, b, c, deg=False):
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
     c : sequence of float)
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+    deg : boolean
+        returns angle in degrees if True
 
     Returns
     -------
     float
-        The smallest angle between the vectors.
+        The smallest angle between the vectors in radians (in degrees if deg == True).
         The angle is always positive.
 
     Note
@@ -171,11 +179,13 @@ def angles_vectors(u, v, deg=False):
         XYZ components of the first vector.
     v : sequence of float
         XYZ components of the second vector.
+    deg : boolean
+        returns angles in degrees if True
 
     Returns
     -------
     tuple
-        The two angles in radians.
+        The smallest angle between the vectors in radians (in degrees if deg == True).
         The smallest angle is returned first.
 
     Examples
@@ -200,11 +210,13 @@ def angles_vectors_xy(u, v, deg=False):
         XY(Z) coordinates of the first vector.
     v : sequence of float
         XY(Z) coordinates of the second vector.
+    deg : boolean
+        returns angles in degrees if True
 
     Returns
     -------
     tuple
-        The two angles.
+        The smallest angle between the vectors in radians (in degrees if deg == True).
         The smallest angle is returned first.
 
     Notes
@@ -234,11 +246,13 @@ def angles_points(a, b, c, deg=False):
         XYZ coordinates.
     c : sequence of float)
         XYZ coordinates.
+    deg : boolean
+        returns angles in degrees if True
 
     Returns
     -------
     tuple
-        The two angles in radians.
+        The smallest angle between the vectors in radians (in degrees if deg == True).
         The smallest angle is returned first.
 
     Note
@@ -271,11 +285,13 @@ def angles_points_xy(a, b, c, deg=False):
         XY(Z) coordinates.
     c : sequence of float)
         XY(Z) coordinates.
+    deg : boolean
+        returns angles in degrees if True
 
     Returns
     -------
     tuple
-        The two angles in degrees.
+        The smallest angle between the vectors in radians (in degrees if deg == True).
         The smallest angle is returned first.
 
     Note
