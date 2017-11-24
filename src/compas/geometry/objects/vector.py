@@ -280,7 +280,7 @@ class Vector(object):
 
     @staticmethod
     def angle_vectors(left, right):
-        return [angle_smallest_vectors(u, v) for u, v in zip(left, right)]
+        return [angle_vectors(u, v) for u, v in zip(left, right)]
 
     @staticmethod
     def homogenise_vectors(vectors):
@@ -381,7 +381,7 @@ class Vector(object):
         return Vector(* cross_vectors(self, other))
 
     def angle(self, other):
-        return angle_smallest_vectors(self, other)
+        return angle_vectors(self, other)
 
     def angles(self, other):
         return angles_vectors(self, other)

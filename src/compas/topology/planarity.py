@@ -6,7 +6,7 @@ from math import cos
 from math import sin
 from math import pi
 
-from compas.geometry import angle_smallest_vectors_xy
+from compas.geometry import angle_vectors_xy
 from compas.geometry import is_intersection_segment_segment_xy
 from compas.geometry import is_ccw_xy
 
@@ -355,7 +355,7 @@ def network_embed_in_plane(network, fix=None, straightline=True):
         vec0 = [network.vertex[b][axis] - network.vertex[a][axis] for axis in 'xy']
         vec1 = [pos[b][axis] - pos[a][axis] for axis in (0, 1)]
         # rotate
-        a = angle_smallest_vectors_xy(vec0, vec1)
+        a = angle_vectors_xy(vec0, vec1)
         if is_ccw_xy(p0, p1, p2):
             a = 2 * pi - a
         cosa = cos(a)

@@ -13,6 +13,8 @@ __all__ = []
 
 
 class Surface(object):
+    """NOT IMPLEMENTED YET.
+    """    
     pass
 
 

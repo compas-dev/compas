@@ -13,6 +13,8 @@ __all__ = ['Circle']
 
 
 class Circle(object):
+    """NOT IMPLEMENTED YET.
+    """    
     pass
 
 
