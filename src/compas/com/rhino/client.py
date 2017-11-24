@@ -44,16 +44,15 @@ class RhinoClient(object):
     """
 
     def __init__(self, delay_start=False):
-        self.app = None
-        self.rsm = None
-        self.rsi = None
+        self.Rhino = None
+        self.rs = None
         if not delay_start:
             self.start()
-            self.wait()
+            # self.wait()
 
     def __getattr__(self, name):
-        if self.rsi:
-            method = getattr(self.rsi, name)
+        if self.rs:
+            method = getattr(self.rs, name)
 
             def wrapper(*args, **kwargs):
                 return method(*args, **kwargs)
@@ -63,48 +62,30 @@ class RhinoClient(object):
             raise RhinoClientError()
 
     def start(self):
-        # self.rsm = GetModule(['{75B1E1B4-8CAA-43C3-975E-373504024FDB}', 1, 0])
-        # self.rsm = GetModule(['{1C7A3523-9A8F-4CEC-A8E0-310F580536A7}', 1, 0])
-        # self.rsm = GetModule(['{814d908a-e25c-493d-97e9-ee3861957f49}', 1, 0])
-        # self.rsm = GetModule(['{8ABB4303-8057-47AD-BAEB-263965E5565D}', 1, 0])
-        # self.rsm = GetModule(['{75B1E1B4-8CAA-43C3-975E-373504024FDB}', 1, 0])
-        R = GetModule(r"C:\Program Files\Rhinoceros 5\System\Rhino5.tlb")
-        RS = GetModule(r"C:\Program Files\Rhinoceros 5\Plug-ins\RhinoScript.tlb")
-
-        print(dir(R))
-        print(dir(RS))
-
-        print('loading script interface...')
-
-        attempts = 20
-
-        self.app = CreateObject('Rhino5x64.Application')
-
-        while attempts:
-            try:
-                print('attempt %s' % attempts)
-                # self.rsi = self.app.GetScriptObject.QueryInterface(self.rsm.IRhinoScript)
-                # self.rsi = self.app.QueryInterface(self.rsm.IRhino5x64Application).GetScriptObject()
-                o = self.app.QueryInterface(R.IRhino5x64Interface).GetScriptObject()
-                self.rsi = o.QueryInterface(RS.IRhinoScript)
-                break
-            except Exception as e:
-                print(e)
-                time.sleep(0.5)
-            attempts -= 1
-        if self.rsi is None:
-            raise Exception('error loading script interface...')
-        print('script interface loaded!')
+        Rhino_tlb = GetModule("C:/Program Files/Rhinoceros 5/System/Rhino5.tlb")
+        RhinoScript_tlb = GetModule("C:/Program Files/Rhinoceros 5/Plug-ins/RhinoScript.tlb")
+        self.Rhino = CreateObject('Rhino5x64.Application').QueryInterface(Rhino_tlb.IRhino5x64Application)
+        while not self.Rhino.IsInitialized():
+            print('Initialising Rhino...')
+            time.sleep(0.5)
+        print('Rhino initialised!')
+        self.rs = self.Rhino.GetScriptObject().QueryInterface(RhinoScript_tlb.IRhinoScript)
 
     def stop(self):
         raise NotImplementedError
 
-    def show(self, flag=1):
-        self.app.Visible = flag
+    def show(self):
+        self.Rhino.Visible = True
 
-    def wait(self):
-        self.rsi.GetString('Press enter to exit...', 'exit')
-        self.rsi.Command('_Exit')
+    def hide(self):
+        self.Rhino.Visible = False
+
+    def top(self):
+        self.Rhino.BringToTop()
+
+    # def wait(self):
+    #     self.rs.GetString('Press enter to exit...', 'exit')
+    #     self.rs.Command('_Exit')
 
 
 # ==============================================================================
@@ -113,5 +94,9 @@ class RhinoClient(object):
 
 if __name__ == "__main__":
 
-    client = RhinoClient()
-    client.rsi.AddPoint([0, 0, 0])
+    Rhino = RhinoClient()
+
+    Rhino.show()
+    Rhino.top()
+
+    Rhino.rs.AddPoint([0, 0, 0])
