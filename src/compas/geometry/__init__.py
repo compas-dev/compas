@@ -71,15 +71,10 @@ This package provides an object-oriented interface to the above functionality.
 
     Vector
     Point
-    Circle
     Line
-    Frame
-    Plane
     Polyline
     Polygon
     Polyhedron
-    Spline
-    Surface
 
 .. autosummary::
     :toctree: generated/

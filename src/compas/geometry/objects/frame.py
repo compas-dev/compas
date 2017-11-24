@@ -13,6 +13,8 @@ __all__ = ['Frame']
 
 
 class Frame(object):
+    """NOT IMPLEMENTED YET.
+    """    
     pass
 
 
