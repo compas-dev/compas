@@ -20,6 +20,15 @@ Matlab
     MatlabProcess
     MatlabSession
 
+Rhino
+=====
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    RhinoClient
+
 ssh
 ===
 
@@ -48,10 +57,10 @@ class Client(object):
 
 from .matlab_ import *
 from .ssh import *
-# from .rhino import *
+from .rhino import *
 
 from .matlab_ import __all__ as a
 from .ssh import __all__ as b
-# from .rhino import __all__ as b
+from .rhino import __all__ as b
 
 __all__ = a + b

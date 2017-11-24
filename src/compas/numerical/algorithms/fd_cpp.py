@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import os
 import ctypes
@@ -16,7 +16,7 @@ DLL = os.path.join(HERE, '_fd_cpp', 'fd.dll')
 
 
 __author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
+__copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 

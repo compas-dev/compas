@@ -408,10 +408,6 @@ def memoize(f):
 def _chofactor(A):
     """Returns the Cholesky factorisation/decomposition matrix.
 
-    Note
-    ----
-        Random data inserted in the entries not used by Cholesky factorisation.
-
     Parameters
     ----------
         A (array): Matrix A represented as an (m x m) array.
@@ -427,6 +423,10 @@ def _chofactor(A):
     .. math::
 
         \mathbf{A} = \mathbf{L} \mathbf{L}^{\mathrm{T}}
+
+    Note
+    ----
+        Random data inserted in the entries not used by Cholesky factorisation.
 
     Examples
     --------
@@ -534,10 +534,6 @@ def normrow(A):
 def normalizerow(A, do_nan_to_num=True):
     """Normalise the rows of matrix A.
 
-    Note
-    ----
-        Tiling is not necessary, because of NumPy's broadcasting behaviour.
-
     Parameters
     ----------
         A (array): Matrix A represented as an (m x n) array.
@@ -549,6 +545,10 @@ def normalizerow(A, do_nan_to_num=True):
 
     Normalises the row vectors of A by the normrows, i.e. creates an array of
     vectors where the row vectors have length of unity.
+
+    Note
+    ----
+        Tiling is not necessary, because of NumPy's broadcasting behaviour.
 
     Examples
     --------
@@ -642,10 +642,6 @@ def solve_with_known(A, b, x, known):
 def spsolve_with_known(A, b, x, known):
     """Solve (sparse) a system of linear equations with part of solution known.
 
-    Note
-    ----
-        Same function as solve_with_known, but for sparse matrix A.
-
     Parameters
     ----------
         A (array): Coefficient matrix (sparse) represented as an (m x n) array.
@@ -662,6 +658,10 @@ def spsolve_with_known(A, b, x, known):
     .. math::
 
         \mathbf{A} \mathbf{x} = \mathbf{b}
+
+    Note
+    ----
+        Same function as solve_with_known, but for sparse matrix A.
 
     Examples
     --------

@@ -1,11 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__    = 'MIT'
-__email__      = 'vanmelet@ethz.ch'
+__author__    = ['Tom Van Mele', ]
+__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
+__license__   = 'MIT'
+__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -39,7 +40,6 @@ def fd(vertices, edges, fixed, q, loads):
         ``xyz, q, f, l, r`` as lists, if ``rtype == 'list'``.
 
         ``xyz, q, f, l, r`` as arrays.
-
 
     Example
     -------
