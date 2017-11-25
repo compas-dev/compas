@@ -61,7 +61,6 @@ def ga(fit_function,
        output_path=None,
        input_path=None):
 
-    ga_ = GA()
     """Genetic Algorithm optimisation [holland1975]_.
 
     Parameters
@@ -546,12 +545,12 @@ class GA(object):
         """
         self.mating_pool_a = []
         self.mating_pool_b = []
-        for i in range((self.num_pop - self.num_elite) / 2):
+        for i in range(int((self.num_pop - self.num_elite) / 2)):
             chrom_a = []
             chrom_b = []
             for j in range(self.num_var):
                 chrom_a += self.current_pop['binary'][self.mp_indices[i]][j]
-                chrom_b += self.current_pop['binary'][self.mp_indices[i + ((self.num_pop - self.num_elite) / 2)]][j]
+                chrom_b += self.current_pop['binary'][self.mp_indices[i + (int((self.num_pop - self.num_elite) / 2))]][j]
             self.mating_pool_a.append(chrom_a)
             self.mating_pool_b.append(chrom_b)
 
@@ -562,7 +561,7 @@ class GA(object):
         """
         self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
         self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
-        for j in range((self.num_pop - self.num_elite) / 2):
+        for j in range(int((self.num_pop - self.num_elite) / 2)):
             cross = random.randint(1, self.total_bin_dig - 1)
             a = self.mating_pool_a[j]
             b = self.mating_pool_b[j]
@@ -575,7 +574,7 @@ class GA(object):
                 variable_b = d[:self.num_bin_dig[i]]
                 del d[:self.num_bin_dig[i]]
                 self.current_pop['binary'][j][i] = variable_a
-                self.current_pop['binary'][j + ((self.num_pop - self.num_elite) / 2)][i] = variable_b
+                self.current_pop['binary'][j + (int((self.num_pop - self.num_elite) / 2))][i] = variable_b
 
     def random_mutation(self):
         """This mutation operator replaces a gene from 0 to 1 or viceversa
