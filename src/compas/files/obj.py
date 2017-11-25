@@ -40,7 +40,7 @@ class OBJ(object):
 
 
 class OBJReader(object):
-    """Read the contents of an *obj* file [Bourke]_.
+    """Read the contents of an *obj* file [bourke]_.
 
     Parameters:
         filepath (str): Path to the file.
