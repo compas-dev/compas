@@ -257,7 +257,6 @@ Functions
     :toctree: generated/
     :nosignatures:
 
-    intersection_circle_circle
     intersection_circle_circle_xy
     intersection_line_line
     intersection_line_line_xy
@@ -265,7 +264,6 @@ Functions
     intersection_line_triangle
     intersection_plane_plane
     intersection_plane_plane_plane
-    intersection_segment_segment
     intersection_segment_segment_xy
     intersection_segment_plane
 

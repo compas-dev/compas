@@ -17,6 +17,8 @@ from compas.geometry.distance import distance_point_line
 from compas.geometry.distance import distance_point_line_xy
 from compas.geometry.distance import closest_point_on_segment
 
+from compas.geometry.size import area_triangle
+
 from compas.geometry.angles import angle_vectors
 from compas.geometry.average import center_of_mass_polygon
 
@@ -124,11 +126,28 @@ def is_colinear(a, b, c):
         ``False`` otherwise.
 
     """
-    raise NotImplementedError
+    return area_triangle([a, b, c]) < 1e-9
 
 
 def is_colinear_xy(a, b, c):
-    """"""
+    """Verify if three points are colinear in the XY plane.
+
+    Parameters
+    ----------
+    a : tuple, list, Point
+        Point 1.
+    b : tuple, list, Point
+        Point 2.
+    c : tuple, list, Point
+        Point 3.
+
+    Returns
+    -------
+    bool
+        ``True`` if the points are collinear
+        ``False`` otherwise.
+
+    """
     ab_x = b[0] - a[0]
     ab_y = b[1] - a[1]
     ac_x = c[0] - a[0]
@@ -624,6 +643,16 @@ def is_point_in_polygon_xy(point, polygon):
 
 
 def is_point_in_circle(point, circle):
+    """Verify if a point lies in a circle.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates of a 3D point.
+        circle (tuple): center, radius, normal
+
+    Returns:
+        (bool): True if the point lies in the circle, False otherwise.
+
+    """
     center, radius, normal = circle
     if is_point_on_plane(point, (center, normal)):
         return distance_point_point(point, center) <= radius

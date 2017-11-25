@@ -113,6 +113,8 @@ def normal_triangle(triangle, unitized=True):
 
 
 def normal_triangle_xy(triangle, unitized=True):
+    """Compute the normal vector of a triangle assumed to lie in the XY plane.
+    """
     a, b, c = triangle
     ab = subtract_vectors_xy(b, a)
     ac = subtract_vectors_xy(c, a)

@@ -27,9 +27,7 @@ __email__ = 'vanmelet@ethz.ch'
 __all__ = [
     'intersection_line_line',
     'intersection_line_line_xy',
-    'intersection_segment_segment',
     'intersection_segment_segment_xy',
-    'intersection_circle_circle',
     'intersection_circle_circle_xy',
     'intersection_line_triangle',
     'intersection_line_plane',
@@ -39,6 +37,8 @@ __all__ = [
     # 'intersection_lines',
     # 'intersection_lines_xy',
     # 'intersection_planes',
+    # 'intersection_segment_segment',
+    # 'intersection_circle_circle',
 ]
 
 
@@ -129,7 +129,22 @@ def intersection_line_line_xy(l1, l2):
 
 
 def intersection_segment_segment(ab, cd, tol=0.0):
-    """"""
+    """Compute the intersection of two lines segments.
+
+    Parameters
+    ----------
+    ab : tuple
+        XYZ coordinates of two points defining a line segment.
+    cd : tuple
+        XYZ coordinates of two points defining another line segment.
+
+    Returns
+    -------
+    None
+        If there is no intersection point.
+    list
+        XYZ coordinates of intersection point if one exists.
+    """
     intx_pt = intersection_line_line(ab, cd)
 
     if not intx_pt:
@@ -145,7 +160,22 @@ def intersection_segment_segment(ab, cd, tol=0.0):
 
 
 def intersection_segment_segment_xy(ab, cd, tol=0.):
-    """"""
+    """Compute the intersection of two lines segments, assuming they lie in the XY plane.
+
+    Parameters
+    ----------
+    ab : tuple
+        XY(Z) coordinates of two points defining a line segment.
+    cd : tuple
+        XY(Z) coordinates of two points defining another line segment.
+
+    Returns
+    -------
+    None
+        If there is no intersection point.
+    list
+        XYZ coordinates of intersection point if one exists.
+    """
     intx_pt = intersection_line_line_xy(ab, cd)
 
     if not intx_pt:

@@ -874,6 +874,34 @@ def vector_component(u, v):
 
 
 def vector_component_xy(u, v):
+    """Compute the component of u in the direction of v, assuming they lie in the XY-plane.
+
+    Note
+    ----
+    This is similar to computing direction cosines, or to the projection of
+    a vector onto another vector. See the respective Wikipedia pages for more
+    info:
+
+        - `Direction cosine <https://en.wikipedia.org/wiki/Direction_cosine>`_
+        - `Vector projection <https://en.wikipedia.org/wiki/Vector_projection>`_
+
+    Parameters
+    ----------
+    u : sequence of float
+        XYZ components of the vector.
+    v : sequence of float
+        XYZ components of the direction.
+
+    Returns
+    -------
+    proj_v(u) : list
+        The component of u in the direction of v.
+
+    Examples
+    --------
+    >>> vector_component_xy([1, 2, 0], [1, 0, 0])
+    [1.0, 0.0, 0.0]
+    """
     l2 = length_vector_sqrd_xy(v)
     if not l2:
         return [0, 0, 0]
@@ -888,11 +916,24 @@ def vector_component_xy(u, v):
 
 
 def transpose_matrix(M):
+    """Transpose a matrix.
+
+    Parameters
+    ----------
+    M : sequence of sequence of float
+        The matrix to be transposed.
+    
+    Returns
+    -------
+    list of list of float
+        The result matrix.
+
+    """
     return zip(*M)
 
 
 def multiply_matrices(A, B):
-    r"""Mutliply a matrix with a matrix.
+    """Mutliply a matrix with a matrix.
 
     This is a pure Python version of the following linear algebra procedure:
 
@@ -940,7 +981,7 @@ def multiply_matrices(A, B):
 
 
 def multiply_matrix_vector(A, b):
-    r"""Multiply a matrix with a vector.
+    """Multiply a matrix with a vector.
 
     This is a Python version of the following linear algebra procedure:
 
@@ -1268,6 +1309,4 @@ def pointcloud_xy(n, xbounds, ybounds=None):
 
 if __name__ == "__main__":
 
-    basis = orthonormalise_vectors([[1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
-
-    print(basis)
+    print(vector_component_xy([1, 2, 0], [1, 0, 0]))
