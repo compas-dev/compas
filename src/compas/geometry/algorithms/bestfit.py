@@ -29,7 +29,7 @@ __all__ = [
 
 
 def bestfit_plane(points):
-    """Fit a plane to a list of (more than three) points [Ernerfeldt2015]_.
+    """Fit a plane to a list of (more than three) points [ernerfeldt2015]_.
 
     Parameters
     ----------
@@ -206,7 +206,7 @@ def bestfit_plane_numpy4(points):
 
 
 def bestfit_circle_numpy(points):
-    """Fit a circle through a set of points [Scipya]_.
+    """Fit a circle through a set of points [scipya]_.
 
     Warning
     -------
