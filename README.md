@@ -28,10 +28,15 @@ In short:
 
 For example, start Python from the command line, and try
 
-
 ```python
 >>> import compas
 >>> compas.verify()
+```
+
+
+This will produce something like the following:
+
+```
 -------------------------------------------------------------------------------
 Checking required packages...
 
@@ -55,16 +60,16 @@ Python distribution such as Anaconda or EPD.
 
 | package               | dependencies             | exceptions
 | --------------------- | ------------------------ | -------------------------- 
-| compas.com            | none                     | matlab (MatlabEngine, MatlabSession), paramiko (ssh)
-| compas.datastructures | none                     |
-| compas.files          | none                     |
-| compas.geometry       | none                     | NumPy, SciPy (all function variations with the ``numpy`` suffix)
+| compas.com            | -                        | matlab (MatlabEngine, MatlabSession), paramiko (ssh)
+| compas.datastructures | -                        |
+| compas.files          | -                        |
+| compas.geometry       | -                        | NumPy, SciPy (all function variations with the ``xxx_numpy`` suffix)
 | compas.hpc            | Numba, PyCuda, PyOpenCL  | 
-| compas.interop        | none                     |
+| compas.interop        | -                        |
 | compas.numerical      | NumPy, SciPy             |
 | compas.plotters       | Matplotlib               |
-| compas.topology       | none                     | NumPy, SciPy (all function variations with the ``numpy`` suffix), planarity (compas.topology.planarity), NetworkX (compas.topology.planarity)
-| compas.utilities      | none                     | imageio (compas.utilities.animation)
+| compas.topology       | -                        | NumPy, SciPy (all function variations with the ``xxx_numpy`` suffix), planarity (compas.topology.planarity), NetworkX (compas.topology.planarity)
+| compas.utilities      | -                        | imageio (compas.utilities.animation)
 | compas.viewers        | PyOpenGL, PySide         |
 
 
