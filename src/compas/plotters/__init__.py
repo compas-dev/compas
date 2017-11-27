@@ -19,7 +19,6 @@ plotters
 
     Plotter
     NetworkPlotter
-    FaceNetworkPlotter
     MeshPlotter
 
 """

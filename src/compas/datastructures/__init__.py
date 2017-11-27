@@ -14,7 +14,6 @@ datastructures
 
     Mesh
     Network
-    FaceNetwork
     VolMesh
 
 """
