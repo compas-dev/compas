@@ -63,13 +63,13 @@ Python distribution such as Anaconda or EPD.
 | compas.com            | -                        | matlab (MatlabEngine, MatlabSession), paramiko (ssh)
 | compas.datastructures | -                        |
 | compas.files          | -                        |
-| compas.geometry       | -                        | NumPy, SciPy (all function variations with the ``xxx_numpy`` suffix)
+| compas.geometry       | -                        | NumPy, SciPy (all functions with a ``_numpy`` suffix)
 | compas.hpc            | Numba, PyCuda, PyOpenCL  | 
 | compas.interop        | -                        |
 | compas.numerical      | NumPy, SciPy             |
 | compas.plotters       | Matplotlib               |
-| compas.topology       | -                        | NumPy, SciPy (all function variations with the ``xxx_numpy`` suffix), planarity (compas.topology.planarity), NetworkX (compas.topology.planarity)
-| compas.utilities      | -                        | imageio (compas.utilities.animation)
+| compas.topology       | -                        | NumPy, SciPy (all functions with a ``_numpy`` suffix), planarity (``network_is_planar``), NetworkX (``network_embed_in_plane``)
+| compas.utilities      | -                        | imageio (``gif_from_images``)
 | compas.viewers        | PyOpenGL, PySide         |
 
 
