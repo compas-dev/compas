@@ -104,6 +104,6 @@ The **compas** framework is developed by the Block Research Group at ETH Zurich,
 with the support of the NCCR (National Centre for Competence in Research) in *Digital fabrication*.
 Main contributors are Tom Van Mele, Andrew Liew, Tomás Méndez and Matthias Rippmann.
 
-For questions, comments, requests, ..., please [contact the main developers directly](mailto:van.mele@arch.ethz.ch,mailto:liew@arch.ethz.ch,mailto:mendez@arch.ethz.ch,mailto:rippmann@arch.ethz.ch).
+For questions, comments, requests, ..., please [contact the main developers directly](mailto:van.mele@arch.ethz.ch,liew@arch.ethz.ch,mendez@arch.ethz.ch,rippmann@arch.ethz.ch).
 
 
