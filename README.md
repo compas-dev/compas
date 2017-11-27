@@ -60,7 +60,7 @@ Python distribution such as Anaconda or EPD.
 
 | package               | dependencies             | exceptions
 | --------------------- | ------------------------ | -------------------------- 
-| compas.com            | -                        | matlab (MatlabEngine, MatlabSession), paramiko (ssh)
+| compas.com            | -                        | matlab (``MatlabEngine``, ``MatlabSession``), paramiko (``ssh``)
 | compas.datastructures | -                        |
 | compas.files          | -                        |
 | compas.geometry       | -                        | NumPy, SciPy (all functions with a ``_numpy`` suffix)
