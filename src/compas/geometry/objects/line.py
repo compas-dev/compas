@@ -15,45 +15,63 @@ __all__ = ['Line']
 
 
 class Line(object):
-    r"""A line object is defined by two points in three-dimensional space [wikipedia2017h]_.
+    r"""A line object is defined by two points in three-dimensional space.
 
-    Parameters:
-        p1 (tuple, list, Point): The xyz coordinates of the first point.
-        p2 (tuple, list, Point): The xyz coordinates of the second point.
+    Parameters
+    ----------
+    p1 : tuple, list, Point
+        The xyz coordinates of the first point.
+    p2 : tuple, list, Point
+        The xyz coordinates of the second point.
 
-    Attributes:
-        start (Point): The start point.
-        end (Point): The end point.
-        length (float): (**read-only**) The length of the line between start and end.
-        midpoint (Point): (**read-only**) The midpoint between start and end.
-        direction (Vector): (**read-only**) A unit vector pointing from start to end.
+    Attributes
+    ----------
+    start : Point
+        The start point.
+    end : Point
+        The end point.
+    length : float, **read-only**
+        The length of the line between start and end.
+    midpoint : Point, **read-only**
+        The midpoint between start and end.
+    direction : Vector, **read-only**
+        A unit vector pointing from start to end.
 
-    Note:
-        For convenience, this class implements the following *magic* methods:
+    Notes
+    -----
+    For more info on lines and linear equations, see [1]_.
 
-        * ``__repr__``
-        * ``__len__``
-        * ``__getitem__``
-        * ``__setitem__``
-        * ``__iter__``
-        * ``__mul__``
-        * ``__imul__``
+    For convenience, this class implements the following *magic* methods:
 
-    Examples:
-        >>> line = Line([0,0,0], [1,1,1])
-        >>> line.midpoint
-        [0.5, 0.5, 0.0]
-        >>> line.length
-        1.73205080757
-        >>> line.direction
-        [0.57735026919, 0.57735026919, 0.57735026919]
+    * ``__repr__``
+    * ``__len__``
+    * ``__getitem__``
+    * ``__setitem__``
+    * ``__iter__``
+    * ``__mul__``
+    * ``__imul__``
 
-        >>> type(line.start)
-        <class 'point.Point'>
-        >>> type(line.midpoint)
-        <class 'point.Point'>
-        >>> type(line.direction)
-        <class 'vector.Vector'>
+    References
+    ----------
+    .. [1] Wikipedia. *Linear equation*.
+           Available at: https://en.wikipedia.org/wiki/Linear_equation.
+
+    Examples
+    --------
+    >>> line = Line([0,0,0], [1,1,1])
+    >>> line.midpoint
+    [0.5, 0.5, 0.0]
+    >>> line.length
+    1.73205080757
+    >>> line.direction
+    [0.57735026919, 0.57735026919, 0.57735026919]
+
+    >>> type(line.start)
+    <class 'point.Point'>
+    >>> type(line.midpoint)
+    <class 'point.Point'>
+    >>> type(line.direction)
+    <class 'vector.Vector'>
 
     """
     def __init__(self, p1, p2):
@@ -194,7 +212,7 @@ class Line(object):
         Parameters:
             n (int, float): The scaling factor.
 
-        Note:
+        Notes:
             This is an alias for self \*= n
         """
         self *= n

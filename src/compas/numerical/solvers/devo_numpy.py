@@ -46,27 +46,42 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
 
     Parameters
     ----------
-        fn (obj): The function to evaluate and minimise.
-        bounds (list): Lower and upper bounds for each DoF [[lb, ub], ...].
-        population (int): Number of agents in the population.
-        generations (int): Number of cross-over cycles/steps to perform.
-        limit (float): Value of the objective function for which to terminate optimisation.
-        results (str): Where to store results files.
-        vectored (bool): Vectored function output.
-        F (float): Differential evolution parameter.
-        CR (float): Differential evolution cross-over ratio parameter.
-        polish (bool): Polish the final result with L-BFGS-B.
-        args (seq): Sequence of optional arguments to pass to fn.
-        callback (obj): Callback function for each generation.
+    fn : obj
+        The function to evaluate and minimise.
+    bounds : list
+        Lower and upper bounds for each DoF [[lb, ub], ...].
+    population : int
+        Number of agents in the population.
+    generations : int
+        Number of cross-over cycles/steps to perform.
+    limit : float
+        Value of the objective function for which to terminate optimisation.
+    results : str
+        Where to store results files.
+    vectored : bool
+        Vectored function output.
+    F : float
+        Differential evolution parameter.
+    CR : float
+        Differential evolution cross-over ratio parameter.
+    polish : bool
+        Polish the final result with L-BFGS-B.
+    args : seq
+        Sequence of optional arguments to pass to fn.
+    callback : obj
+        Callback function for each generation.
 
     Returns
     -------
-        float: Optimal value of objective function.
-        list: Values that give the optimum (minimised) function.
+    float
+        Optimal value of objective function.
+    list
+        Values that give the optimum (minimised) function.
 
-    Note
-    ----
-        fn must return vectorised output for input (k, population) if vectored is True.
+    Notes
+    -----
+    fn must return vectorised output for input (k, population) if vectored is True.
+
     """
     tic = time()
 

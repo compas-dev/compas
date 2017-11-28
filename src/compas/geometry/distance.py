@@ -157,15 +157,16 @@ def distance_point_point_sqrd_xy(a, b):
     float
         Squared distance between a and b in the XY-plane.
 
-    Examples:
-        distance([0.0, 0.0], [2.0, 0.0])
-        #4.0
+    Examples
+    --------
+    >>> distance([0.0, 0.0], [2.0, 0.0])
+    4.0
 
-        distance([0.0, 0.0, 0.0], [2.0, 0.0, 0.0])
-        #4.0
+    >>> distance([0.0, 0.0, 0.0], [2.0, 0.0, 0.0])
+    4.0
 
-        distance([0.0, 0.0, 1.0], [2.0, 0.0, 1.0])
-        #4.0
+    >>> distance([0.0, 0.0, 1.0], [2.0, 0.0, 1.0])
+    4.0
 
     """
     ab = subtract_vectors_xy(b, a)
@@ -173,11 +174,7 @@ def distance_point_point_sqrd_xy(a, b):
 
 
 def distance_point_line(point, line):
-    """Compute the distance between a point and a line [wikipedia2017c]_.
-
-    This implementation computes the *right angle distance* from a point P to a
-    line defined by points A and B as twice the area of the triangle ABP divided
-    by the length of AB.
+    """Compute the distance between a point and a line.
 
     Parameters
     ----------
@@ -190,6 +187,17 @@ def distance_point_line(point, line):
     -------
     d : float
         The distance between the point and the line.
+
+    Notes
+    -----
+    This implementation computes the *right angle distance* from a point P to a
+    line defined by points A and B as twice the area of the triangle ABP divided
+    by the length of AB [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia. *Distance from a point to a line*.
+           Available at: https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
     Examples
     --------
@@ -206,11 +214,7 @@ def distance_point_line(point, line):
 
 
 def distance_point_line_xy(point, line):
-    """Compute the distance between a point and a line, assuming they lie in the XY-plane [wikipedia2017c]_.
-
-    This implementation computes the orthogonal distance from a point P to a
-    line defined by points A and B as twice the area of the triangle ABP divided
-    by the length of AB.
+    """Compute the distance between a point and a line, assuming they lie in the XY-plane.
 
     Parameters
     ----------
@@ -224,6 +228,17 @@ def distance_point_line_xy(point, line):
     float
         The distance between the point and the line.
 
+    Notes
+    -----
+    This implementation computes the orthogonal distance from a point P to a
+    line defined by points A and B as twice the area of the triangle ABP divided
+    by the length of AB [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia. *Distance from a point to a line*.
+           Available at: https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line.
+
     """
     a, b = line
     ab   = subtract_vectors_xy(b, a)
@@ -235,7 +250,7 @@ def distance_point_line_xy(point, line):
 
 
 def distance_point_line_sqrd(point, line):
-    """Compute the squared distance between a point and a line [wikipedia2017c]_.
+    """Compute the squared distance between a point and a line.
 
     Parameters
     ----------
@@ -249,6 +264,14 @@ def distance_point_line_sqrd(point, line):
     float
         The squared distance between the point and the line.
 
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia. *Distance from a point to a line*.
+           Available at: https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line.
 
     """
     a, b = line
@@ -261,11 +284,7 @@ def distance_point_line_sqrd(point, line):
 
 
 def distance_point_line_sqrd_xy(point, line):
-    """Compute the squared distance between a point and a line lying in the XY-plane [wikipedia2017c]_.
-
-    This implementation computes the orthogonal squared distance from a point P to a
-    line defined by points A and B as twice the area of the triangle ABP divided
-    by the length of AB.
+    """Compute the squared distance between a point and a line lying in the XY-plane.
 
     Parameters
     ----------
@@ -279,6 +298,17 @@ def distance_point_line_sqrd_xy(point, line):
     float
         The squared distance between the point and the line.
 
+    Notes
+    -----
+    This implementation computes the orthogonal squared distance from a point P to a
+    line defined by points A and B as twice the area of the triangle ABP divided
+    by the length of AB [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia. *Distance from a point to a line*.
+           Available at: https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line.
+
     """
     a, b = line
     ab   = subtract_vectors_xy(b, a)
@@ -290,10 +320,7 @@ def distance_point_line_sqrd_xy(point, line):
 
 
 def distance_point_plane(point, plane):
-    r"""Compute the distance from a point to a plane defined by three points [nykamp2012]_.
-
-    The distance from a pioint to a planbe can be computed from the coefficients
-    of the equation of the plane and the coordinates of the point.
+    r"""Compute the distance from a point to a plane defined by three points.
 
     Parameters
     ----------
@@ -309,6 +336,9 @@ def distance_point_plane(point, plane):
 
     Notes
     -----
+    The distance from a pioint to a planbe can be computed from the coefficients
+    of the equation of the plane and the coordinates of the point [1]_.
+
     The equation of a plane is
 
     .. math::
@@ -331,6 +361,11 @@ def distance_point_plane(point, plane):
     absolute value of the dot product of the vector from :math:`Q` to :math:`P`
     and the normal at :math:`Q`.
 
+    References
+    ----------
+    .. [1] Nykamp, D. *Distance from point to plane*.
+           Available at: http://mathinsight.org/distance_point_plane.
+
     Examples
     --------
     >>>
@@ -342,14 +377,7 @@ def distance_point_plane(point, plane):
 
 
 def distance_line_line(l1, l2, tol=0.0):
-    """Compute the shortest distance between two lines [wisstein2017]_, [wikipedia2017d]_.
-
-    The distance is the absolute value of the dot product of a unit vector that
-    is perpendicular to the two lines, and the vector between two points on the lines.
-
-    If each of the lines is defined by two points (:math:`l_1 = (\mathbf{x_1}, \mathbf{x_2})`,
-    :math:`l_2 = (\mathbf{x_3}, \mathbf{x_4})`), then the unit vector that is
-    perpendicular to both lines is...
+    """Compute the shortest distance between two lines.
 
     Parameters
     ----------
@@ -362,6 +390,22 @@ def distance_line_line(l1, l2, tol=0.0):
     -------
     d : float
         The distance between the two lines.
+
+    Notes
+    -----
+    The distance is the absolute value of the dot product of a unit vector that
+    is perpendicular to the two lines, and the vector between two points on the lines ([1]_, [2]_).
+
+    If each of the lines is defined by two points (:math:`l_1 = (\mathbf{x_1}, \mathbf{x_2})`,
+    :math:`l_2 = (\mathbf{x_3}, \mathbf{x_4})`), then the unit vector that is
+    perpendicular to both lines is...
+
+    References
+    ----------
+    .. [1] Weisstein, E.W. *Line-line Distance*.
+           Available at: http://mathworld.wolfram.com/Line-LineDistance.html.
+    .. [2] Wikipedia. *Skew lines Distance*.
+           Available at: https://en.wikipedia.org/wiki/Skew_lines#Distance.
 
     Examples
     --------
@@ -389,10 +433,6 @@ def distance_line_line(l1, l2, tol=0.0):
 def sort_points(point, cloud):
     """Sorts points of a pointcloud based on their distance from a given point.
 
-    Notes
-    -----
-    Check kdTree class for an optimized implementation (MR).
-
     Parameters
     ----------
     point : tuple
@@ -407,6 +447,10 @@ def sort_points(point, cloud):
         Each item in the list contains the distance to the base point, the XYZ coordinates
         of the point in the cloud, and the index of the point in the original cloud.
 
+    Notes
+    -----
+    Check kdTree class for an optimized implementation (MR).
+
     Examples
     --------
     >>> sort_points()
@@ -419,10 +463,6 @@ def sort_points(point, cloud):
 def sort_points_xy(point, cloud):
     """Sorts points of a pointcloud based on their distance from a given point,
     assuming all points lie in the XY plane.
-
-    Notes
-    -----
-    Check kdTree class for an optimized implementation (MR).
 
     Parameters
     ----------
@@ -438,6 +478,10 @@ def sort_points_xy(point, cloud):
         Each item in the list contains the distance to the base point, the XYZ coordinates
         of the point in the cloud, and the index of the point in the original cloud.
 
+    Notes
+    -----
+    Check kdTree class for an optimized implementation (MR).
+
     Examples
     --------
     >>>
@@ -449,10 +493,6 @@ def sort_points_xy(point, cloud):
 
 def closest_point_in_cloud(point, cloud):
     """Calculates the closest point in a pointcloud.
-
-    Notes
-    -----
-    Check kdTree class for an optimized implementation (MR).
 
     Parameters
     ----------
@@ -468,6 +508,10 @@ def closest_point_in_cloud(point, cloud):
         XYZ coordinates of the closest point.
         The index of the closest point in the original list.
 
+    Notes
+    -----
+    Check kdTree class for an optimized implementation (MR).
+
     Examples
     --------
     >>>
@@ -480,29 +524,40 @@ def closest_point_in_cloud(point, cloud):
 def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True, num_nbrs=1):
     """Find the closest points in a point cloud to a set of sample points.
 
-    Note:
-        Items in cloud further from items in points than threshold return zero
-        distance and will affect the indices returned if not set suitably high.
+    Parameters
+    ----------
+    points : array, list
+        The sample points (n,).
+    cloud : array, list
+        The cloud points to compare to (n,).
+    threshold : float
+        Points are checked within this distance.
+    distances : bool
+        Return distance matrix.
 
-    Parameters:
-        points (array, list): The sample points (n,).
-        cloud (array, list): The cloud points to compare to (n,).
-        threshold (float): Points are checked within this distance.
-        distances (boolean): Return distance matrix.
+    Returns
+    -------
+    list
+        Indices of the closest points in the cloud per point in points.
+    array
+        Distances between points and closest points in cloud (n x n).
 
-    Returns:
-        list: Indices of the closest points in the cloud per point in points.
-        array: Distances between points and closest points in cloud (n x n).
+    Notes
+    -----
+    Items in cloud further from items in points than threshold return zero
+    distance and will affect the indices returned if not set suitably high.
 
-    Examples:
-        >>> a = np.random.rand(4, 3)
-        >>> b = np.random.rand(4, 3)
-        >>> indices, distances = closest_points(a, b, distances=True)
-        [1, 2, 0, 3]
-        array([[ 1.03821946,  0.66226402,  0.67964346,  0.98877891],
-               [ 0.4650432 ,  0.54484186,  0.36158995,  0.60385484],
-               [ 0.19562088,  0.73240154,  0.50235761,  0.51439644],
-               [ 0.84680233,  0.85390316,  0.72154983,  0.50432293]])
+    Examples
+    --------
+    >>> a = np.random.rand(4, 3)
+    >>> b = np.random.rand(4, 3)
+    >>> indices, distances = closest_points(a, b, distances=True)
+    [1, 2, 0, 3]
+    array([[ 1.03821946,  0.66226402,  0.67964346,  0.98877891],
+           [ 0.4650432 ,  0.54484186,  0.36158995,  0.60385484],
+           [ 0.19562088,  0.73240154,  0.50235761,  0.51439644],
+           [ 0.84680233,  0.85390316,  0.72154983,  0.50432293]])
+
     """
     from numpy import asarray
     from numpy import argmin
@@ -524,10 +579,6 @@ def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True
 def closest_point_in_cloud_xy(point, cloud):
     """Calculates the closest point in a list of points in the XY-plane.
 
-    Notes
-    -----
-    Check kdTree class for an optimized implementation (MR).
-
     Parameters
     ----------
     point : sequence of float
@@ -541,6 +592,10 @@ def closest_point_in_cloud_xy(point, cloud):
         The distance to the closest point.
         The XYZ coordinates of the closest point (with Z = 0).
         The index of the closest point in the cloud.
+
+    Notes
+    -----
+    Check kdTree class for an optimized implementation (MR).
 
     """
     data = sort_points_xy(point, cloud)
@@ -562,13 +617,13 @@ def closest_point_on_line(point, line):
     list
         XYZ coordinates of closest point.
 
-    See Also
-    --------
-    :func:`compas.geometry.transformations.project_point_line`
-
     Examples
     --------
     >>>
+
+    See Also
+    --------
+    :func:`compas.geometry.transformations.project_point_line`
 
     """
     a, b = line
@@ -718,15 +773,20 @@ def closest_point_on_polyline_xy(point, polyline):
 def closest_point_on_polygon_xy(point, polygon):
     """Compute closest point on a polygon to a given point lying in the XY-plane.
 
-    Parameters:
-        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-        polygon (sequence) : A sequence of XY(Z) coordinates of 2D or 3D points
+    Parameters
+    ----------
+    point : sequence of float
+        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+    polygon : sequence
+        A sequence of XY(Z) coordinates of 2D or 3D points
         (Z will be ignored) representing the locations of the corners of a polygon.
         The vertices are assumed to be in order. The polygon is assumed to be closed:
         the first and last vertex in the sequence should not be the same.
 
-    Returns:
-        list: XYZ coordinates of closest point (Z = 0.0).
+    Returns
+    -------
+    list
+        XYZ coordinates of closest point (Z = 0.0).
 
     """
     points = []
@@ -738,8 +798,7 @@ def closest_point_on_polygon_xy(point, polygon):
 
 
 def closest_point_on_plane(point, plane):
-    """
-    Compute closest point on a plane to a given point [wikipedia2017e]_.
+    """Compute closest point on a plane to a given point.
 
     Parameters
     ----------
@@ -752,6 +811,15 @@ def closest_point_on_plane(point, plane):
     -------
     list
         XYZ coordinates of the closest point.
+
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia. *Distance from a point to a plane*.
+           Available at: https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
     Examples
     --------

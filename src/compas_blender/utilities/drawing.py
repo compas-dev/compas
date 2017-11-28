@@ -67,7 +67,7 @@ def delete_all_materials():
 def create_material(color, alpha=1):
     """ Create a material of given RGB color and alpha.
 
-    Note:
+    Notes:
         - If the material already exists, the existing object is returned.
 
     Parameters:

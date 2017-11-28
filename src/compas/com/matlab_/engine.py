@@ -27,8 +27,7 @@ for instructions.
 
 
 class MatlabEngine(object):
-    """Communicate with Matlab through the MATLAB engine [mathworks2017a]_, [mathworks2017b]_,
-        [mathworks2017c]_, [mathworks2017d]_, [mathworks2017e]_.
+    """Communicate with Matlab through the MATLAB engine.
 
     Attributes
     ----------
@@ -37,6 +36,23 @@ class MatlabEngine(object):
         The Matlab engine exposes Matlab functions as methods.
     session_name : str
         The name of the current Matlab session.
+
+    Notes
+    -----
+    For more info, see [1]_, [2]_, [3]_, [4]_, [5]_.
+
+    References
+    ----------
+    .. [1] MathWorks, 2017. *MATLAB APY for Python*.
+           Available at: https://ch.mathworks.com/help/matlab/matlab-engine-for-python.html
+    .. [2] MathWorks, 2017. *Pass Data to MATLAB from Python*.
+           Available at: https://ch.mathworks.com/help/matlab/matlab_external/pass-data-to-matlab-from-python.
+    .. [3] MathWorks, 2017. *Use MATLAB Arrays in Python*.
+           Available at: https://ch.mathworks.com/help/matlab/matlab_external/use-matlab-arrays-in-python.html
+    .. [4] MathWorks, 2017. *Use MATLAB Engine Workspace in Python*.
+           Available at: https://ch.mathworks.com/help/matlab/matlab_external/use-the-matlab-engine-workspace-in-python.html
+    .. [5] MathWorks, 2017. *Call MATLAB Functions from Python*.
+           Available at: https://ch.mathworks.com/help/matlab/matlab_external/call-matlab-functions-from-python.html
 
     Examples
     --------

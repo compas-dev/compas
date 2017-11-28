@@ -40,16 +40,23 @@ def grad(V, F, rtype='array'):
 
     Parameters
     ----------
-        V (array): Vertex coordinates of the mesh.
-        F (array): Face vertex indices of the mesh.
-        rtype (str): Format of the result, 'array', 'csc', 'csr', 'coo'.
+    V : array
+        Vertex coordinates of the mesh.
+    F : array
+        Face vertex indices of the mesh.
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+        Format of the result.
 
     Returns
     -------
-        array, sparse: Depending on rtype return type.
+    array-like
+        Depending on rtype return type.
 
+    Notes
+    -----
     The gradient operator is fully determined by the connectivity of the mesh
     and the coordinate difference vectors associated with the edges
+
     """
     v = V.shape[0]
     f = F.shape[0]

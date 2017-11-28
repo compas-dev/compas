@@ -30,8 +30,8 @@ def face_adjacency(mesh):
     dict
         A dictionary mapping face identifiers (keys) to lists of neighbouring faces.
 
-    Note
-    ----
+    Notes
+    -----
     This algorithm is used primarily to unify the cycle directions of a given mesh.
     Therefore, the premise is that the topological information of the mesh is corrupt
     and cannot be used to construct the adjacency structure. The algorithm is thus
@@ -156,8 +156,8 @@ def mesh_flip_cycles(mesh):
     mesh : Mesh
         A mesh object.
 
-    Note
-    ----
+    Notes
+    -----
     This function does not care about the directions being unified or not. It
     just reverses whatever direction it finds.
 

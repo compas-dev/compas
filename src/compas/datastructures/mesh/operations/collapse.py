@@ -68,7 +68,7 @@ def mesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
     """Collapse an edge to its first or second vertex, or to an intermediate
     point.
 
-    Note:
+    Notes:
         An edge can only be collapsed if the collapse is `legal`. A collapse is
         legal if it meets the following requirements:
 
@@ -219,8 +219,8 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
     """Collapse an edge to its first or second vertex, or to an intermediate
     point.
 
-    Note
-    ----
+    Notes
+    -----
     An edge can only be collapsed if the collapse is `legal`. A collapse is
     legal if it meets the following requirements:
 
@@ -252,8 +252,8 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
     ValueError
         If `u` and `v` are not neighbours.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 

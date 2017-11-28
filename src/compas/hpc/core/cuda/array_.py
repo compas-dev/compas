@@ -47,7 +47,7 @@ __all__ = [
 def cuda_diag(a):
     """ Construct or extract GPUArray diagonal.
 
-    Note:
+    Notes:
         If a is 1D, a GPUArray is constructed, if 2D, the diagonal is extracted.
 
     Parameters:

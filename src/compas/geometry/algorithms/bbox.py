@@ -30,8 +30,8 @@ def bounding_box(points):
     list
         XYZ coordinates of 8 points defining a box.
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         #
@@ -57,8 +57,8 @@ def bounding_box(points):
 def bounding_box_xy(points):
     """Compute the axis-aligned minimum bounding box of a list of points in the XY-plane.
 
-    Note
-    ----
+    Notes
+    -----
     This function simply ignores the Z components of the points, if it is provided.
 
     Parameters
@@ -71,8 +71,8 @@ def bounding_box_xy(points):
     list
         XYZ coordinates of four points defining a rectangle in the XY plane.
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         #
@@ -92,8 +92,8 @@ def bounding_box_xy(points):
 def oriented_bounding_box_numpy(points):
     """Compute the oriented minimum bounding box of a set of points in 3D space.
 
-    Note
-    ----
+    Notes
+    -----
     The implementation is based on the convex hull of the points.
 
     Parameters
@@ -106,8 +106,8 @@ def oriented_bounding_box_numpy(points):
     list
         The XYZ coordinates of the corners of the bounding box.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 
@@ -227,8 +227,8 @@ def oriented_bounding_box_numpy(points):
 def oriented_bounding_box_xy_numpy(points):
     """Compute the oriented minimum bounding box of set of points in the XY plane.
 
-    Note
-    ----
+    Notes
+    -----
     The *oriented (minimum) bounding box* (OBB) is computed using the following
     procedure:
 

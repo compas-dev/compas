@@ -86,7 +86,7 @@ def intersection_line_line(l1, l2):
 
 
 def intersection_line_line_xy(l1, l2):
-    """Compute the intersection of two lines, assuming they lie in the XY plane [wikipedia2017f]_.
+    """Compute the intersection of two lines, assuming they lie in the XY plane.
 
     Parameters
     ----------
@@ -102,9 +102,14 @@ def intersection_line_line_xy(l1, l2):
     list
         XYZ coordinates of intersection point if one exists (Z = 0).
 
-    Note
-    ----
-    Only if the lines are parallel, there is no intersection point.
+    Notes
+    -----
+    Only if the lines are parallel, there is no intersection point [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia. *Line-line intersection*.
+           Available at: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
 
     """
     a, b = l1
@@ -175,6 +180,7 @@ def intersection_segment_segment_xy(ab, cd, tol=0.):
         If there is no intersection point.
     list
         XYZ coordinates of intersection point if one exists.
+
     """
     intx_pt = intersection_line_line_xy(ab, cd)
 
@@ -197,13 +203,19 @@ def intersection_circle_circle():
 def intersection_circle_circle_xy(circle1, circle2):
     """Calculates the intersection points of two circles in 2d lying in the XY plane.
 
-    Parameters:
-        circle1 (tuple): center, radius of the first circle in the xy plane.
-        circle2 (tuple): center, radius of the second circle in the xy plane.
+    Parameters
+    ----------
+    circle1 : tuple
+        center, radius of the first circle in the xy plane.
+    circle2 : tuple
+        center, radius of the second circle in the xy plane.
 
-    Returns:
-        points (list of tuples): the intersection points if there are any
-        None: if there are no intersection points
+    Returns
+    -------
+    points : list of tuples
+        the intersection points if there are any
+    None
+        if there are no intersection points
 
     """
     p1, r1 = circle1[0], circle1[1]
@@ -231,19 +243,25 @@ def intersection_circle_circle_xy(circle1, circle2):
 
 
 def intersection_line_triangle(line, triangle, epsilon=1e-6):
-    """
-    Computes the intersection point of a line (ray) and a triangle
+    """Computes the intersection point of a line (ray) and a triangle
     based on the Moeller Trumbore intersection algorithm
 
-    Parameters:
-        line (tuple): Two points defining the line.
-        triangle (sequence of sequence of float): XYZ coordinates of the triangle corners.
+    Parameters
+    ----------
+    line : tuple
+        Two points defining the line.
+    triangle : sequence of sequence of float
+        XYZ coordinates of the triangle corners.
 
-    Returns:
-        point (tuple) if the line (ray) intersects with the triangle, None otherwise.
+    Returns
+    -------
+    point : tuple
+        if the line (ray) intersects with the triangle, None otherwise.
 
-    Note:
-        The line is treated as continues, directed ray and not as line segment with a start and end point
+    Notes
+    -----
+    The line is treated as continues, directed ray and not as line segment with a start and end point
+
     """
     a, b, c = triangle
     v1 = subtract_vectors(line[1], line[0])
@@ -283,12 +301,17 @@ def intersection_line_triangle(line, triangle, epsilon=1e-6):
 def intersection_line_plane(line, plane, epsilon=1e-6):
     """Computes the intersection point of a line (ray) and a plane
 
-    Parameters:
-        line (tuple): Two points defining the line.
-        plane (tuple): The base point and normal defining the plane.
+    Parameters
+    ----------
+    line : tuple
+        Two points defining the line.
+    plane : tuple
+        The base point and normal defining the plane.
 
-    Returns:
-        point (tuple) if the line (ray) intersects with the plane, None otherwise.
+    Returns
+    -------
+    point : tuple
+        if the line (ray) intersects with the plane, None otherwise.
 
     """
     pt1 = line[0]
@@ -311,12 +334,17 @@ def intersection_line_plane(line, plane, epsilon=1e-6):
 def intersection_segment_plane(segment, plane, epsilon=1e-6):
     """Computes the intersection point of a line segment and a plane
 
-    Parameters:
-        segment (tuple): Two points defining the line segment.
-        plane (tuple): The base point and normal defining the plane.
+    Parameters
+    ----------
+    segment : tuple
+        Two points defining the line segment.
+    plane : tuple
+        The base point and normal defining the plane.
 
-    Returns:
-        point (tuple) if the line segment intersects with the plane, None otherwise.
+    Returns
+    -------
+    point : tuple
+        if the line segment intersects with the plane, None otherwise.
 
     """
     pt1 = segment[0]
@@ -341,12 +369,17 @@ def intersection_segment_plane(segment, plane, epsilon=1e-6):
 def intersection_plane_plane(plane1, plane2, epsilon=1e-6):
     """Computes the intersection of two planes
 
-    Parameters:
-        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
-        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
+    Parameters
+    ----------
+    plane1 : tuple
+        The base point and normal (normalized) defining the 1st plane.
+    plane2 : tuple
+        The base point and normal (normalized) defining the 2nd plane.
 
-    Returns:
-        line (tuple): Two points defining the intersection line. None if planes are parallel.
+    Returns
+    -------
+    line : tuple
+        Two points defining the intersection line. None if planes are parallel.
 
     """
     # check for parallelity of planes
@@ -364,17 +397,26 @@ def intersection_plane_plane(plane1, plane2, epsilon=1e-6):
 def intersection_plane_plane_plane(plane1, plane2, plane3, epsilon=1e-6):
     """Computes the intersection of three planes
 
-    Parameters:
-        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
-        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
+    Parameters
+    ----------
+    plane1 : tuple
+        The base point and normal (normalized) defining the 1st plane.
+    plane2 : tuple
+        The base point and normal (normalized) defining the 2nd plane.
 
-    Returns:
-        point (tuple): The intersection point. None if two (or all three) planes are parallel.
+    Returns
+    -------
+    point : tuple
+        The intersection point. None if two (or all three) planes are parallel.
 
-    Note:
-        Currently this only computes the intersection point. E.g.: If two planes
-        are parallel the intersection lines are not computed. see:
-        http://geomalgorithms.com/Pic_3-planes.gif
+    Notes
+    -----
+    Currently this only computes the intersection point. E.g.: If two planes
+    are parallel the intersection lines are not computed [1]_.
+
+    References
+    ----------
+    .. [1] http://geomalgorithms.com/Pic_3-planes.gif
 
     """
     line = intersection_plane_plane(plane1, plane2, epsilon)
@@ -446,18 +488,29 @@ def intersection_lines_numpy(lines):
 
 
 def intersection_lines_xy(lines):
-    """Compute the intersections of mulitple lines in the XY plane [wikipedia2017f]_.
+    """Compute the intersections of mulitple lines in the XY plane.
 
-    Parameters:
-        lines: (sequence): A list of sequences of XY(Z) coordinates of two 2D or 3D points
+    Parameters
+    ----------
+    lines : sequence
+        A list of sequences of XY(Z) coordinates of two 2D or 3D points
         (Z will be ignored) representing the lines.
 
-    Returns:
-        None: if there is no intersection point (parallel lines).
-        list: XY coordinates of intersection point.
+    Returns
+    -------
+    None
+        If there is no intersection point (parallel lines).
+    list
+        XY coordinates of intersection point.
 
-    Note:
-        If the lines are parallel, there is no intersection point.
+    Notes
+    -----
+    If the lines are parallel, there is no intersection point [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia.*Line-line intersection*.
+           Available at: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
 
     """
     # points = []

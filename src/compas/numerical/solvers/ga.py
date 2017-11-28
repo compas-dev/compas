@@ -61,11 +61,10 @@ def ga(fit_function,
        output_path=None,
        input_path=None):
 
-    """Genetic Algorithm optimisation [holland1975]_.
+    """Genetic Algorithm optimisation.
 
     Parameters
     ----------
-
     fit_function : callable
         The function used by the :class'GA' to determine the fitness value. The function
         must have as a first argument a list of variables that determine the
@@ -116,12 +115,20 @@ def ga(fit_function,
 
     Returns
     -------
-
     ga_ : object
         The resulting :class'GA' instance.
 
-    Example
-    -------
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Holland, J. H., *Adaptation in Natural and Artificial Systems*, 1st edn,
+           The University of Michigan, Ann Arbor, 1975.
+
+    Examples
+    --------
     .. code-block:: python
 
         import os

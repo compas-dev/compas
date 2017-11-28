@@ -23,7 +23,7 @@ __all__ = ['Point']
 
 
 class Point(object):
-    """A three-dimensional location in space [stackoverflow_a]_.
+    """A three-dimensional location in space.
 
     Parameters
     ----------
@@ -77,12 +77,19 @@ class Point(object):
     >>> p1
     [100.0, 196.0, 324.0]
 
-    Note
-    ----
+    Notes
+    -----
     A ``Point`` object supports direct access to its xyz coordinates through
     the dot notation, as well list-style access using indices. Indexed
     access is implemented such that the ``Point`` behaves like a circular
     list.
+
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Stack Overflow. *Pythonic Circular List*.
+           Available at: https://stackoverflow.com/questions/8951020/pythonic-circular-list.
 
     """
 
@@ -177,7 +184,7 @@ class Point(object):
         """Is this point equal to the other point? Tow points are considered
         equal if their XYZ coordinates are identical.
 
-        Note:
+        Notes:
             Perhaps it makes sense to add a *precision* attribute to the point
             class. This would allow comparisons to be made up to a certain
             tolerance.

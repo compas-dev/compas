@@ -31,8 +31,6 @@ __all__ = [
 def fd_numpy(vertices, edges, fixed, q, loads):
     """Implementation of the force density method to compute equilibrium of axial force networks.
 
-    The force density method ... [schek1974]_
-
     Parameters
     ----------
     vertices : list
@@ -45,19 +43,31 @@ def fd_numpy(vertices, edges, fixed, q, loads):
         Force density of edges.
     loads : list
         XYZ components of the loads on the vertices.
-    rtype : str, optional
-        Type of returned results.
 
     Returns
     -------
-    tuple
-        ``xyz, q, f, l, r`` as lists, if ``rtype == 'list'``.
+    xyz : array
+        XYZ coordinates of the equilibrium geometry.
+    q : array
+        Force densities in the edges.
+    f : array
+        Forces in the edges.
+    l : array
+        Lengths of the edges
+    r : array
+        Residual forces.
 
-        ``xyz, q, f, l, r`` as arrays.
+    Notes
+    -----
+    For more info, see [1]_
 
+    References
+    ----------
+    .. [1] Schek H., *The Force Density Method for Form Finding and Computation of General Networks*,
+           Computer Methods in Applied Mechanics and Engineering 3: 115-134, 1974.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 

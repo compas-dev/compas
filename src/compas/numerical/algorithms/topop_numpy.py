@@ -45,17 +45,25 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
 
     Parameters
     ----------
-        nelx (int): Number of elements in x.
-        nely (int): Number of elements in y.
-        loads (dic): {'i-j': [Px, Py]}.
-        supports (dic): {'i-j': [Bx, By]} 1=fixed, 0=free.
-        volfrac (float): Volume fraction.
-        penal (float): Penalisation power.
-        rmin (float): Filter radius.
+    nelx : int
+        Number of elements in x.
+    nely : int
+        Number of elements in y.
+    loads : dict
+        {'i-j': [Px, Py]}.
+    supports : dict
+        {'i-j': [Bx, By]} 1=fixed, 0=free.
+    volfrac : float
+        Volume fraction.
+    penal : float
+        Penalisation power.
+    rmin : float
+        Filter radius.
 
     Returns
     -------
-        array: Density array.
+    array
+        Density array.
 
     """
     nx = nelx + 1

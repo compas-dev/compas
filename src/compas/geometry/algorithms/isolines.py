@@ -55,8 +55,8 @@ def scalarfield_contours_numpy(xy, s, N=50):
         the contours. The second item in the tuple is a list of contour lines.
         Each contour line is a list of paths, and each path is a list polygons.
 
-    Note
-    ----
+    Notes
+    -----
     The computation of the contour lines is based on the `contours function`_
     available through matplotlib.
 
@@ -125,8 +125,8 @@ def scalarfield_contours_numpy(xy, s, N=50):
 def mesh_contours_numpy(mesh, N=50):
     """Compute the contours of the mesh.
 
-    Note
-    ----
+    Notes
+    -----
     The contours are defined as the isolines of the z-coordinates of the vertices
     of the mesh.
 

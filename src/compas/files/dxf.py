@@ -19,7 +19,7 @@ __all__ = [
 
 
 class DXF(object):
-    """
+    """Drawing Exchange Format.
 
     See Also
     --------

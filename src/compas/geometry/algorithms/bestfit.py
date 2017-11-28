@@ -29,7 +29,7 @@ __all__ = [
 
 
 def bestfit_plane(points):
-    """Fit a plane to a list of (more than three) points [ernerfeldt2015]_.
+    """Fit a plane to a list of (more than three) points.
 
     Parameters
     ----------
@@ -41,23 +41,29 @@ def bestfit_plane(points):
     plane : tuple
         Base point and normal vector (normalized).
 
-    Warning
-    -------
+    Notes
+    -----
     This method will minimize the squares of the residuals as perpendicular
     to the main axis, not the residuals perpendicular to the plane. If the
     residuals are small (i.e. your points all lie close to the resulting plane),
     then this method will probably suffice. However, if your points are more
-    spread then this method may not be the best fit.
+    spread then this method may not be the best fit. For more information see
+    [ernerfeldt2015]_
 
-    See also
-    --------
-    * :func:`compas.geometry.bestfit_plane_numpy`
+    References
+    ----------
+    .. [ernerfeldt2015] Ernerfeldt, E. *Fitting a plane to many points in 3D*.
+                        Available at: http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points
 
     Examples
     --------
     .. code-block:: python
 
         #
+
+    See also
+    --------
+    :func:`bestfit_plane_numpy` : Variation using NumPy.
 
     """
     centroid = centroid_points(points)
@@ -115,12 +121,12 @@ def bestfit_plane_numpy(points):
 
     See also
     --------
-    * :func:`compas.geometry.bestfit_plane_numpy2`
-    * :func:`compas.geometry.bestfit_plane_numpy3`
-    * :func:`compas.geometry.bestfit_plane_numpy4`
+    :func:`bestfit_plane_numpy2`
+    :func:`bestfit_plane_numpy3`
+    :func:`bestfit_plane_numpy4`
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         #
@@ -206,11 +212,7 @@ def bestfit_plane_numpy4(points):
 
 
 def bestfit_circle_numpy(points):
-    """Fit a circle through a set of points [scipya]_.
-
-    Warning
-    -------
-    This function requires Numpy and Scipy.
+    """Fit a circle through a set of points.
 
     Parameters
     ----------
@@ -223,8 +225,17 @@ def bestfit_circle_numpy(points):
         XYZ coordinates of the center of the circle, the normal vector of the
         local frame, and the radius of the circle.
 
-    Example
-    -------
+    Notes
+    -----
+    For more information see [1]_.
+
+    References
+    ----------
+    .. [1] Scipy. *Least squares circle*.
+           Available at: http://scipy-cookbook.readthedocs.io/items/Least_Squares_Circle.html.
+
+    Examples
+    --------
     .. code-block:: python
 
         #

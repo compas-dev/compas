@@ -25,7 +25,7 @@ __all__ = [
 
 
 def convex_hull(points):
-    """Construct convex hull for a set of points [githubgist_a]_.
+    """Construct convex hull for a set of points.
 
     Parameters
     ----------
@@ -38,11 +38,17 @@ def convex_hull(points):
         The triangular faces of the convex hull as lists of vertex indices
         referring to the original point coordinates.
 
-    Note
-    ----
-    The algorithm is not optimized and relatively slow on large sets of points.
-    See here for a more optimized version of this algorithm:
-    http://thomasdiewald.com/blog/?p=1888
+    Notes
+    -----
+    This algorithm is based on [1]_. Note that is not optimized and relatively
+    slow on large sets of points. For a more optimized version of this algorithm,
+    see [2]_.
+
+    References
+    ----------
+    .. [1] GitHubGist. *Convex Hull*.
+           Available at: https://gist.github.com/anonymous/5184ba0bcab21d3dd19781efd3aae543
+    .. [2] http://thomasdiewald.com/blog/?p=1888
 
     Examples
     --------
@@ -115,15 +121,7 @@ def convex_hull(points):
 
 
 def convex_hull_xy(points):
-    """Computes the convex hull of a set of 2D points [wikibooks2017]_.
-
-    Note
-    ----
-    Implements Andrew's monotone chain algorithm. O(n log n) complexity.
-
-    Warning
-    -------
-    This implementation needs to be checked as it seems to use sets incorrectly.
+    """Computes the convex hull of a set of 2D points.
 
     Parameters
     ----------
@@ -136,6 +134,14 @@ def convex_hull_xy(points):
         XY(Z) coordinates of vertices of the convex hull in counter-clockwise order,
         starting from the vertex with the lexicographically smallest coordinates.
 
+    Notes
+    -----
+    Implements Andrew's monotone chain algorithm [1]_. O(n log n) complexity.
+
+    References
+    ----------
+    .. [1] Wiki Books. *Algorithm Implementation/Geometry/Convex hull/Monotone chain*.
+           Available at: https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain.
 
     """
 
@@ -184,8 +190,8 @@ def convex_hull_numpy(points):
     -------
     This function requires Numpy ands Scipy.
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         #
@@ -222,8 +228,8 @@ def convex_hull_xy_numpy(points):
         Indices of the points on the hull.
         Faces of the hull.
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         #

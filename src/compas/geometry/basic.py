@@ -703,6 +703,20 @@ def divide_vectors_xy(u, v):
 def cross_vectors(u, v):
     r"""Compute the cross product of two vectors.
 
+    Parameters
+    ----------
+    u : tuple, list, Vector
+        XYZ components of the first vector.
+    v : tuple, list, Vector
+        XYZ components of the second vector.
+
+    Returns
+    -------
+    cross : list
+        The cross product of the two vectors.
+
+    Notes
+    -----
     The xyz components of the cross product of two vectors :math:`\mathbf{u}`
     and :math:`\mathbf{v}` can be computed as the *minors* of the following matrix:
 
@@ -728,17 +742,6 @@ def cross_vectors(u, v):
         u_{x} * v_{y} - u_{y} * v_{x}
         \end{bmatrix}
 
-    Parameters
-    ----------
-    u : tuple, list, Vector
-        XYZ components of the first vector.
-    v : tuple, list, Vector
-        XYZ components of the second vector.
-
-    Returns
-    -------
-    cross : list
-        The cross product of the two vectors.
 
     Examples
     --------
@@ -839,15 +842,6 @@ def dot_vectors_xy(u, v):
 def vector_component(u, v):
     """Compute the component of u in the direction of v.
 
-    Note
-    ----
-    This is similar to computing direction cosines, or to the projection of
-    a vector onto another vector. See the respective Wikipedia pages for more
-    info:
-
-        - `Direction cosine <https://en.wikipedia.org/wiki/Direction_cosine>`_
-        - `Vector projection <https://en.wikipedia.org/wiki/Vector_projection>`_
-
     Parameters
     ----------
     u : sequence of float
@@ -859,6 +853,17 @@ def vector_component(u, v):
     -------
     proj_v(u) : list
         The component of u in the direction of v.
+
+    Notes
+    -----
+    This is similar to computing direction cosines, or to the projection of
+    a vector onto another vector. See the respective Wikipedia pages ([1]_, [2]_)
+    for more info.
+
+    References
+    ----------
+    .. [1] *Direction cosine*. Available at https://en.wikipedia.org/wiki/Direction_cosine.
+    .. [2] *Vector projection*. Available at https://en.wikipedia.org/wiki/Vector_projection.
 
     Examples
     --------
@@ -876,15 +881,6 @@ def vector_component(u, v):
 def vector_component_xy(u, v):
     """Compute the component of u in the direction of v, assuming they lie in the XY-plane.
 
-    Note
-    ----
-    This is similar to computing direction cosines, or to the projection of
-    a vector onto another vector. See the respective Wikipedia pages for more
-    info:
-
-        - `Direction cosine <https://en.wikipedia.org/wiki/Direction_cosine>`_
-        - `Vector projection <https://en.wikipedia.org/wiki/Vector_projection>`_
-
     Parameters
     ----------
     u : sequence of float
@@ -897,10 +893,22 @@ def vector_component_xy(u, v):
     proj_v(u) : list
         The component of u in the direction of v.
 
+    Notes
+    -----
+    This is similar to computing direction cosines, or to the projection of
+    a vector onto another vector. See the respective Wikipedia pages ([1]_, [2]_)
+    for more info.
+
+    References
+    ----------
+    .. [1] *Direction cosine*. Available at https://en.wikipedia.org/wiki/Direction_cosine.
+    .. [2] *Vector projection*. Available at https://en.wikipedia.org/wiki/Vector_projection.
+
     Examples
     --------
     >>> vector_component_xy([1, 2, 0], [1, 0, 0])
     [1.0, 0.0, 0.0]
+
     """
     l2 = length_vector_sqrd_xy(v)
     if not l2:
@@ -922,7 +930,7 @@ def transpose_matrix(M):
     ----------
     M : sequence of sequence of float
         The matrix to be transposed.
-    
+
     Returns
     -------
     list of list of float
@@ -933,16 +941,7 @@ def transpose_matrix(M):
 
 
 def multiply_matrices(A, B):
-    """Mutliply a matrix with a matrix.
-
-    This is a pure Python version of the following linear algebra procedure:
-
-    .. math::
-
-        \mathbf{A} \cdot \mathbf{B} = \mathbf{C}
-
-    with :math:`\mathbf{A}` a *m* by *n* matrix, :math:`\mathbf{B}` a *n* by *o*
-    matrix, and :math:`\mathbf{C}` a *m* by *o* matrix.
+    r"""Mutliply a matrix with a matrix.
 
     Parameters
     ----------
@@ -961,6 +960,17 @@ def multiply_matrices(A, B):
     Exception
         If the shapes of the matrices are not compatible.
         If the row length of B is inconsistent.
+
+    Notes
+    -----
+    This is a pure Python version of the following linear algebra procedure:
+
+    .. math::
+
+        \mathbf{A} \cdot \mathbf{B} = \mathbf{C}
+
+    with :math:`\mathbf{A}` a *m* by *n* matrix, :math:`\mathbf{B}` a *n* by *o*
+    matrix, and :math:`\mathbf{C}` a *m* by *o* matrix.
 
     Examples
     --------
@@ -981,16 +991,7 @@ def multiply_matrices(A, B):
 
 
 def multiply_matrix_vector(A, b):
-    """Multiply a matrix with a vector.
-
-    This is a Python version of the following linear algebra procedure:
-
-    .. math::
-
-        \mathbf{A} \cdot \mathbf{x} = \mathbf{b}
-
-    with :math:`\mathbf{A}` a *m* by *n* matrix, :math:`\mathbf{x}` a vector of
-    length *n*, and :math:`\mathbf{b}` a vector of length *m*.
+    r"""Multiply a matrix with a vector.
 
     Parameters
     ----------
@@ -1008,6 +1009,17 @@ def multiply_matrix_vector(A, b):
     ------
     Exception
         If not all rows of the matrix have the same length as the vector.
+
+    Notes
+    -----
+    This is a Python version of the following linear algebra procedure:
+
+    .. math::
+
+        \mathbf{A} \cdot \mathbf{x} = \mathbf{b}
+
+    with :math:`\mathbf{A}` a *m* by *n* matrix, :math:`\mathbf{x}` a vector of
+    length *n*, and :math:`\mathbf{b}` a vector of length *m*.
 
     Examples
     --------
@@ -1031,11 +1043,6 @@ def multiply_matrix_vector(A, b):
 def orthonormalise_vectors(vectors):
     """Orthonormalise a set of vectors.
 
-    This creates a basis for the range (column space) of the matrix A.T,
-    with A = vectors.
-
-    Orthonormalisation is according to the Gram-Schmidt process.
-
     Parameters
     ----------
     vectors : list of list
@@ -1045,6 +1052,13 @@ def orthonormalise_vectors(vectors):
     -------
     basis : list of list
         An othonormal basis for the input vectors.
+
+    Notes
+    -----
+    This creates a basis for the range (column space) of the matrix A.T,
+    with A = vectors.
+
+    Orthonormalisation is according to the Gram-Schmidt process.
 
     Examples
     --------
@@ -1160,6 +1174,15 @@ def circle_from_points(a, b, c):
     circle : tuple
         Center, radius, normal  of the circle.
 
+    Notes
+    -----
+    For more information, see [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia. *Circumscribed circle*.
+           Available at: https://en.wikipedia.org/wiki/Circumscribed_circle.
+
     Examples
     --------
     >>>
@@ -1185,7 +1208,7 @@ def circle_from_points(a, b, c):
 
 
 def circle_from_points_xy(a, b, c):
-    """Create a circle from three points lying in the XY-plane [wikipedia2017b]_
+    """Create a circle from three points lying in the XY-plane
 
     Parameters
     ----------
@@ -1200,6 +1223,15 @@ def circle_from_points_xy(a, b, c):
     -------
     tuple
         XYZ coordinates of center in the XY-plane (Z = 0.0) and radius of the circle.
+
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia. *Circumscribed circle*.
+           Available at: https://en.wikipedia.org/wiki/Circumscribed_circle.
 
     Examples
     --------

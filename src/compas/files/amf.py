@@ -13,7 +13,7 @@ __all__ = []
 
 
 class AMF(object):
-    """
+    """File format for additive manufacturing processes.
 
     See Also
     --------

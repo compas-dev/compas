@@ -27,8 +27,8 @@ def mesh_unweld_vertices(self, fkey, where=None):
         A list of vertices to unweld.
         Default is to unweld all vertices of the face.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 

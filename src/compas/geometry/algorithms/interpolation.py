@@ -22,7 +22,7 @@ __all__ = [
 
 def discrete_coons_patch(ab, bc, dc, ad):
     """Creates a coons patch from a set of four or three boundary
-    polylines (ab, bc, dc, ad) [wikipedia2017]_, [ferreol2013]_.
+    polylines (ab, bc, dc, ad).
 
     Direction and order of polylines::
 
@@ -50,12 +50,22 @@ def discrete_coons_patch(ab, bc, dc, ad):
     faces : list of lists
         List of faces (face = list of vertex indices as integers)
 
+    Notes
+    -----
+    For more information see [1]_ and [2]_.
+
+    References
+    ----------
+    .. [1] Wikipedia. *Coons patch*.
+           Available at: https://en.wikipedia.org/wiki/Coons_patch.
+    .. [2] Robert Ferreol. *Patch de Coons*.
+           Available at: https://www.mathcurve.com/surfaces/patchcoons/patchcoons.shtml
+
     Examples
     --------
     .. code-block:: python
 
         #
-
 
     See Also
     --------

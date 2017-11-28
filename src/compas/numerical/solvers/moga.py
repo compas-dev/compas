@@ -55,7 +55,7 @@ def moga(fit_functions,
          fkwargs=None,
          output_path=None):
 
-    """Multi-objective Genetic Algorithm optimisation [deb2001]_.
+    """Multi-objective Genetic Algorithm optimisation.
 
     Parameters
     ----------
@@ -100,8 +100,17 @@ def moga(fit_functions,
     moga : object
         The resulting :class'MOGA' instance.
 
-    Example
-    -------
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Deb K., *Multi-Objective Optimization using Evolutionary Algorithms*,
+           John Wiley & Sons, Chichester, 2001.
+
+    Examples
+    --------
     Zitzler-Deb-Thiele Test problem 3
 
     .. code-block:: python

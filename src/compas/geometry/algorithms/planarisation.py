@@ -46,8 +46,8 @@ def flatness(vertices, faces, maxdev=0.02):
     dict
         For each face, a deviation from *flatness*.
 
-    Note
-    ----
+    Notes
+    -----
     The "flatness" of a face is expressed as the ratio of the distance between
     the diagonals to the average edge length. For the fabrication of glass panels,
     for example, ``0.02`` could be a reasonable maximum value.
@@ -158,8 +158,8 @@ def mesh_flatness(mesh, maxdev=1.0):
     dict
         For each face, a deviation from *flatness*.
 
-    Note
-    ----
+    Notes
+    -----
     The "flatness" of a face is expressed as the ratio of the distance between
     the diagonals to the average edge length. For the fabrication of glass panels,
     for example, ``0.02`` could be a reasonable maximum value.
@@ -273,8 +273,8 @@ def mesh_planarize_faces_shapeop(mesh,
     callback_args : list, optional [None]
         A list of arguments to be passed to the callback function.
 
-    Note
-    ----
+    Notes
+    -----
     This planarization algorithm relies on the Python binding of the ShapeOp
     library. Installation instructions are available in :mod:`compas.interop`.
 

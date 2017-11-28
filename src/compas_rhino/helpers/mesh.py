@@ -264,16 +264,16 @@ def mesh_draw(mesh,
         The face color specification.
         Default is to use the color of the parent layer.
 
-    Note
-    ----
+    Notes
+    -----
     Colors can be specifiedin different ways:
 
     * str: A hexadecimal color that will be applied to all elements subject to the specification.
     * tuple, list: RGB color that will be applied to all elements subject to the specification.
     * dict: RGB or hex color dict with a specification for some or all of the related elements.
 
-    Note
-    ----
+    Notes
+    -----
     RGB colors specified as values between 0 and 255, should be integers.
     RGB colors specified as values between 0.0 and 1.0, should be floats.
 

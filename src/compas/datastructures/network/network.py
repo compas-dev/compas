@@ -58,8 +58,6 @@ class Network(FromToJson,
               Datastructure):
     """Definition of a network.
 
-    The ``Network`` class is implemented as a directed edge graph.
-
     Attributes
     ----------
     vertex : dict
@@ -87,7 +85,6 @@ class Network(FromToJson,
 
     Examples
     --------
-
     .. plot::
         :include-source:
 
@@ -406,7 +403,7 @@ network: {0}
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
         """Add a vertex and specify its attributes (optional).
 
-        Note:
+        Notes:
             If no key is provided for the vertex, one is generated
             automatically. An automatically generated key increments the highest
             key in use by 1::

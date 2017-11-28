@@ -20,7 +20,7 @@ def binomial(n, k):
     """Returns the binomial coefficient of the :math:`x^k` term in the
     polynomial expansion of the binmoial power :math:`(1 + x)^n` [wikipedia2017j]_.
 
-    Note:
+    Notes:
         Arranging binomial coefficients into rows for successive values of `n`,
         and in which `k` ranges from 0 to `n`, gives a triangular array known as
         Pascal's triangle.
@@ -41,7 +41,7 @@ def bernstein(n, k, t):
     weighted linear combination of these basis polynomials is called a Bernstein
     polynomial [wikipedia2017k]_.
 
-    Note:
+    Notes:
         When constructing Bezier curves, the weights are simply the coordinates
         of the control points of the curve.
 

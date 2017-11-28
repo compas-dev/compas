@@ -84,8 +84,8 @@ def dr_numpy_xfunc(network):
 
 def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
              callback=None, callback_args=None, **kwargs):
-    """Implementation of the dynamic relaxation method for finding the equilibrium
-    of articulated networks of axial force members [delaet2013]_.
+    """Implementation of the dynamic relaxation method for form findong and analysis
+    of articulated networks of axial-force members.
 
     Parameters
     ----------
@@ -114,8 +114,18 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     callback_args : tuple, optional
         Additional arguments passed to the callback.
 
-    Example
-    -------
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] De Laet L., Veenendaal D., Van Mele T., Mollaert M. and Block P.,
+           *Bending incorporated: designing tension structures by integrating bending-active elements*,
+           Proceedings of Tensinet Symposium 2013,Istanbul, Turkey, 2013.
+
+    Examples
+    --------
     .. plot::
         :include-source:
 

@@ -15,18 +15,18 @@ __all__ = ['Polyhedron']
 
 
 class Polyhedron(object):
-    """Compute the vertices and faces of one of the Platonic solids [wikipedia2017i]_.
+    """Compute the vertices and faces of one of the Platonic solids.
 
+    Notes
+    -----
     A Platonic solid is a regular, convex polyhedron. It is constructed by
     congruent regular polygonal faces with the same number of faces meeting
-    at each vertex [wiki:platonic-solid].
+    at each vertex [1]_.
 
-    The coordinates of the vertices can be simply calcul;ated with the following
-    formulae:
-
-    * tetrahedron::
-
-        >>> ()
+    References
+    ----------
+    .. [1] Wikipedia. *Platonic solids*.
+           Available at: https://en.wikipedia.org/wiki/Platonic_solid.
 
     """
 

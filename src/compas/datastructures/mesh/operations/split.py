@@ -99,12 +99,12 @@ def trimesh_split_edge(self, u, v, t=0.5, allow_boundary=False):
     allow_boundary : bool (False)
         Allow splits on boundary edges.
 
-    Note
-    ----
+    Notes
+    -----
     This operation only works as expected for triangle meshes.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 

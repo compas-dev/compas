@@ -30,7 +30,7 @@ class Polygon(object):
     exterior. The boundary does not intersect itself, and is described by an
     ordered set of of points.
 
-    Note:
+    Notes:
         All ``Polygon`` objects are considered closed. Therefore the first and
         last element in the list of points are not the same. The existence of the
         closing edge is implied.

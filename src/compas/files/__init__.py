@@ -7,10 +7,8 @@ files
 
 .. module:: compas.files
 
-.. warning::
-
-    The functionality of this package is experimental and subject to frequent change.
-    For now, don't use it for anything important :)
+This package provides support for file types related to geometry definition,
+manufacturing processes, CAD interoperability, ...
 
 
 amf

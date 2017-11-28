@@ -40,8 +40,8 @@ def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=Non
     -------
     None
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         #

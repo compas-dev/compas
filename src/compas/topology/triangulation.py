@@ -43,37 +43,52 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
 
 
 def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
-    """Computes the delaunay triangulation for a list of points [sloan1987]_.
+    """Computes the delaunay triangulation for a list of points.
 
-    Parameters:
-        points (sequence of tuple): XYZ coordinates of the original points.
-        boundary (sequence of tuples): list of ordered points describing the outer boundary (optional)
-        holes (list of sequences of tuples): list of polygons (ordered points describing internal holes (optional)
+    Parameters
+    ----------
+    points : sequence of tuple
+        XYZ coordinates of the original points.
+    boundary : sequence of tuples
+        list of ordered points describing the outer boundary (optional)
+    holes : list of sequences of tuples
+        list of polygons (ordered points describing internal holes (optional)
 
-    Returns:
-        Mesh: A mesh object.
+    Returns
+    -------
+    Mesh
+        A mesh object.
 
-    Example:
+    Notes
+    -----
+    For more info, see [1]_.
 
-        .. plot::
-            :include-source:
+    References
+    ----------
+    .. [1] Sloan, S. W., 1987 *A fast algorithm for constructing Delaunay triangulations in the plane*
+           Advances in Engineering Software 9(1): 34-55, 1978.
 
-            from compas.geometry import pointcloud_xy
-            from compas.datastructures import Mesh
-            from compas.topology import delaunay_from_points
-            from compas.plotters import MeshPlotter
+    Example
+    -------
+    .. plot::
+        :include-source:
 
-            points = pointcloud_xy(10, (0, 10))
-            faces = delaunay_from_points(points)
+        from compas.geometry import pointcloud_xy
+        from compas.datastructures import Mesh
+        from compas.topology import delaunay_from_points
+        from compas.plotters import MeshPlotter
 
-            delaunay = Mesh.from_vertices_and_faces(points, faces)
+        points = pointcloud_xy(10, (0, 10))
+        faces = delaunay_from_points(points)
 
-            plotter = MeshPlotter(delaunay)
+        delaunay = Mesh.from_vertices_and_faces(points, faces)
 
-            plotter.draw_vertices(radius=0.1)
-            plotter.draw_faces()
+        plotter = MeshPlotter(delaunay)
 
-            plotter.show()
+        plotter.draw_vertices(radius=0.1)
+        plotter.draw_faces()
+
+        plotter.show()
 
     """
     from compas.datastructures import Mesh
@@ -199,58 +214,66 @@ def delaunay_from_points_numpy(points):
 def voronoi_from_delaunay(delaunay):
     """Construct the Voronoi dual of the triangulation of a set of points.
 
-    Parameters:
-        delaunay
+    Parameters
+    ----------
+    delaunay : Mesh
+        A delaunay mesh.
 
-    Warning:
-        This function does not work properly if all vertices of the delaunay
-        are on the boundary.
+    Returns
+    -------
+    Mesh
+        The corresponding voronoi mesh.
 
-    Example:
+    Warning
+    -------
+    This function does not work properly if all vertices of the delaunay
+    are on the boundary.
 
-        .. plot::
-            :include-source:
+    Example
+    -------
+    .. plot::
+        :include-source:
 
-            from compas.datastructures import Mesh
-            from compas.topology import trimesh_remesh
-            from compas.topology import delaunay_from_points
-            from compas.topology import voronoi_from_delaunay
+        from compas.datastructures import Mesh
+        from compas.topology import trimesh_remesh
+        from compas.topology import delaunay_from_points
+        from compas.topology import voronoi_from_delaunay
 
-            from compas.geometry import pointcloud_xy
+        from compas.geometry import pointcloud_xy
 
-            from compas.plotters import MeshPlotter
+        from compas.plotters import MeshPlotter
 
-            points = pointcloud_xy(10, (0, 10))
-            faces = delaunay_from_points(points)
-            delaunay = Mesh.from_vertices_and_faces(points, faces)
+        points = pointcloud_xy(10, (0, 10))
+        faces = delaunay_from_points(points)
+        delaunay = Mesh.from_vertices_and_faces(points, faces)
 
-            trimesh_remesh(delaunay, 1.0, allow_boundary_split=True)
+        trimesh_remesh(delaunay, 1.0, allow_boundary_split=True)
 
-            points = [delaunay.vertex_coordinates(key) for key in delaunay.vertices()]
-            faces = delaunay_from_points(points)
-            delaunay = Mesh.from_vertices_and_faces(points, faces)
+        points = [delaunay.vertex_coordinates(key) for key in delaunay.vertices()]
+        faces = delaunay_from_points(points)
+        delaunay = Mesh.from_vertices_and_faces(points, faces)
 
-            voronoi  = voronoi_from_delaunay(delaunay)
+        voronoi  = voronoi_from_delaunay(delaunay)
 
-            lines = []
-            for u, v in voronoi.edges():
-                lines.append({
-                    'start': voronoi.vertex_coordinates(u, 'xy'),
-                    'end'  : voronoi.vertex_coordinates(v, 'xy'),
-                    'width': 1.0
-                })
+        lines = []
+        for u, v in voronoi.edges():
+            lines.append({
+                'start': voronoi.vertex_coordinates(u, 'xy'),
+                'end'  : voronoi.vertex_coordinates(v, 'xy'),
+                'width': 1.0
+            })
 
-            plotter = MeshPlotter(delaunay, figsize=(10, 6))
+        plotter = MeshPlotter(delaunay, figsize=(10, 6))
 
-            plotter.draw_lines(lines)
+        plotter.draw_lines(lines)
 
-            plotter.draw_vertices(
-                radius=0.075,
-                facecolor={key: '#0092d2' for key in delaunay.vertices() if key not in delaunay.vertices_on_boundary()})
+        plotter.draw_vertices(
+            radius=0.075,
+            facecolor={key: '#0092d2' for key in delaunay.vertices() if key not in delaunay.vertices_on_boundary()})
 
-            plotter.draw_edges(color='#cccccc')
+        plotter.draw_edges(color='#cccccc')
 
-            plotter.show()
+        plotter.show()
 
     """
     voronoi = mesh_dual(delaunay)
@@ -278,7 +301,7 @@ def trimesh_remesh(mesh,
                    fixed=None,
                    callback=None,
                    callback_args=None):
-    """Remesh until all edges have a specified target length [botsch2004]_.
+    """Remesh until all edges have a specified target length.
 
     Parameters
     ----------
@@ -313,8 +336,8 @@ def trimesh_remesh(mesh,
     -------
     None
 
-    Note
-    ----
+    Notes
+    -----
     This algorithm not only changes the geometry of the mesh, but also its
     topology as needed to achieve the specified target lengths.
     Topological changes are made such that vertex valencies are well-balanced
@@ -326,6 +349,14 @@ def trimesh_remesh(mesh,
 
     The minimum and maximum lengths are calculated based on a desired target
     length.
+
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Botsch, M. & Kobbelt, L., 2004. *A remeshing approach to multiresolution modeling*.
+           Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
+           Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457.
 
     Warning
     -------

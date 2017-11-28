@@ -36,15 +36,15 @@ def network_is_crossed(network):
     network : Network
         A network object.
 
-    Note
-    ----
-    This algorithm assumes that the network lies in the XY plane.
-
     Returns
     -------
     bool
         True if the network has at least one pair of crossing edges.
         False otherwise.
+
+    Notes
+    -----
+    This algorithm assumes that the network lies in the XY plane.
 
     """
     for u1, v1 in network.edges():
@@ -84,14 +84,14 @@ def network_count_crossings(network):
     network : Network
         A network object.
 
-    Note
-    ----
-    This algorithm assumes that the network lies in the XY plane.
-
     Returns
     -------
     int
         The number of crossings.
+
+    Notes
+    -----
+    This algorithm assumes that the network lies in the XY plane.
 
     """
     count = 0
@@ -117,14 +117,14 @@ def network_find_crossings(network):
     network : Network
         A network object.
 
-    Note
-    ----
-    This algorithm assumes that the network lies in the XY plane.
-
     Returns
     -------
     list
         A list of edge pairs, with each edge represented by two vertex keys.
+
+    Notes
+    -----
+    This algorithm assumes that the network lies in the XY plane.
 
     """
     crossings = []
@@ -170,16 +170,6 @@ def network_is_xy(network):
 def network_is_planar(network):
     """Check if the network is planar.
 
-    A network is planar if it can be drawn in the plane without crossing edges.
-    If a network is planar, it can be shown that an embedding of the network in
-    the plane exists, and, furthermore, that straight-line embedding in the plane
-    exists.
-
-    Warning
-    -------
-    This function uses the python binding of the *edge addition planarity suite*.
-    It is available on GitHub: https://github.com/hagberg/planarity.
-
     Parameters
     ----------
     network : Network
@@ -196,8 +186,20 @@ def network_is_planar(network):
     ImportError
         If the planarity package is not installed.
 
-    Example
+    Notes
+    -----
+    A network is planar if it can be drawn in the plane without crossing edges.
+    If a network is planar, it can be shown that an embedding of the network in
+    the plane exists, and, furthermore, that straight-line embedding in the plane
+    exists.
+
+    Warning
     -------
+    This function uses the python binding of the *edge addition planarity suite*.
+    It is available on GitHub: https://github.com/hagberg/planarity.
+
+    Examples
+    --------
 
     .. plot::
         :include-source:
@@ -273,17 +275,17 @@ def network_embed_in_plane(network, fix=None, straightline=True):
         True if the embedding was successful.
         False otherwise.
 
-    Warning
-    -------
-    This function uses the Python package NetworkX. NetworkX can be *pip installed*.
-
     Raises
     ------
     ImportError
         If NetworkX is not installed.
 
-    Example
+    Warning
     -------
+    This function uses the Python package NetworkX. NetworkX can be *pip installed*.
+
+    Examples
+    --------
     .. plot::
         :include-source:
 

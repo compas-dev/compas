@@ -59,7 +59,7 @@ def angle_vectors(u, v, deg=False):
     """
     a = dot_vectors(u, v) / (length_vector(u) * length_vector(v))
     a = max(min(a, 1), -1)
-    
+
     if deg:
         return degrees(acos(a))
     return acos(a)
@@ -115,8 +115,8 @@ def angle_points(a, b, c, deg=False):
         The smallest angle between the vectors in radians (in degrees if deg == True).
         The angle is always positive.
 
-    Note
-    ----
+    Notes
+    -----
     The vectors are defined in the following way
 
     .. math::
@@ -152,8 +152,8 @@ def angle_points_xy(a, b, c, deg=False):
         The smallest angle between the vectors in radians (in degrees if deg == True).
         The angle is always positive.
 
-    Note
-    ----
+    Notes
+    -----
     The vectors are defined in the following way
 
     .. math::
@@ -193,7 +193,6 @@ def angles_vectors(u, v, deg=False):
     >>>
 
     """
-    
     if deg:
         a = angle_vectors(u, v, deg)
         return a, 360. - a
@@ -255,8 +254,8 @@ def angles_points(a, b, c, deg=False):
         The smallest angle between the vectors in radians (in degrees if deg == True).
         The smallest angle is returned first.
 
-    Note
-    ----
+    Notes
+    -----
     The vectors are defined in the following way
 
     .. math::
@@ -294,8 +293,8 @@ def angles_points_xy(a, b, c, deg=False):
         The smallest angle between the vectors in radians (in degrees if deg == True).
         The smallest angle is returned first.
 
-    Note
-    ----
+    Notes
+    -----
     The vectors are defined in the following way
 
     .. math::
@@ -320,7 +319,6 @@ def angles_points_xy(a, b, c, deg=False):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
 
     deg = False
 
