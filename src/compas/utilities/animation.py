@@ -29,14 +29,23 @@ def gif_from_images(files,
                     delete_files=False):
     """Create an animated GIF from a series of images.
 
-    Parameters:
-        files (list): The image series.
-        gif_path (str): The location to svae the- GIF.
-        fps (int): Optional. Frames per second. Default is ``10``.
-        loop ():
-        reverse (bool): Optional. Flag for reversing the image series. Default is ``False``.
-        pingpong (bool): Optional. ... Default is ``False``.
-        subrectangles (bool): Optional. ... Default is ``True``.
+    Parameters
+    ----------
+    files : list
+        The image series.
+    gif_path : str
+        The location to svae the- GIF.
+    fps : int, optional
+        Frames per second. Default is ``10``.
+    loop : int
+        The number of loops.
+    reverse : bool, optional
+        Flag for reversing the image series. Default is ``False``.
+    pingpong : bool, optional
+        Default is ``False``.
+    subrectangles : bool, optional
+        Default is ``True``.
+
     """
     if reverse:
         files.reverse()

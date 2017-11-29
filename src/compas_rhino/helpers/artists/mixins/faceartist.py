@@ -81,6 +81,7 @@ class FaceArtist(object):
         if not join_faces:
             return guids
         guid = rs.JoinMeshes(guids, delete_input=True)
+        rs.ObjectLayer(guid, self.layer)
         return guid
 
     def draw_facelabels(self, text=None, color=None):

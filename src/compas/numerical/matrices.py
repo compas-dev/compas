@@ -637,7 +637,7 @@ def trimesh_edge_cotangents(mesh, u, v):
 
 
 def trimesh_cotangent_laplacian_matrix(mesh):
-    """Construct the Laplacian of a triangular mesh with cotangent weights.
+    r"""Construct the Laplacian of a triangular mesh with cotangent weights.
 
     Parameters
     ----------

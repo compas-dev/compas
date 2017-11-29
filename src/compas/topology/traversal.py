@@ -34,13 +34,16 @@ def depth_first_ordering(adjacency, root):
 
     Parameters
     ----------
-    adjacency (dict): An adjacency dictionary. Each key represents a vertex
+    adjacency : dict
+        An adjacency dictionary. Each key represents a vertex
         and maps to a list of neighbouring vertex keys.
-    root (str): The vertex from which to start the depth-first search.
+    root : str
+        The vertex from which to start the depth-first search.
 
     Returns
     -------
-    list: A depth-first ordering of all vertices in the network.
+    list
+        A depth-first ordering of all vertices in the network.
 
     Notes
     -----

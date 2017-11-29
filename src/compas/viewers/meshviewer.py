@@ -71,9 +71,22 @@ class MeshViewer(Viewer):
                            'color' : (0.4, 0.4, 0.4),
                            'size'  : 5.0})
 
+        normals = []
+        for fkey in self.mesh.faces():
+            n  = self.mesh.face_normal(fkey, unitized=True)
+            sp = self.mesh.face_centroid(fkey)
+            ep = [sp[axis] + n[axis] for axis in (0, 1, 2)]
+            normals.append({
+                'start' : sp,
+                'end'   : ep,
+                'color' : (0.0, 1.0, 0.0),
+                'width' : 2.0 
+            })
+
         xdraw_polygons(polygons)
         xdraw_lines(lines)
         xdraw_points(points)
+        xdraw_lines(normals)
 
     def keypress(self, key, x, y):
         """

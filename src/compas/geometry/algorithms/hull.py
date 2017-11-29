@@ -19,8 +19,6 @@ __email__      = '<rippmannt@ethz.ch>'
 __all__ = [
     'convex_hull',
     'convex_hull_xy',
-    'convex_hull_numpy',
-    'convex_hull_xy_numpy',
 ]
 
 
@@ -82,7 +80,6 @@ def convex_hull(points):
                     show_faces = True,
                     show_vertices = False,
                     show_edges = False)
-
 
     """
     def _normal_face(face):
@@ -172,87 +169,6 @@ def convex_hull_xy(points):
     return lower[:-1] + upper[:-1]
 
 
-def convex_hull_numpy(points):
-    """Compute the convex hull of a set of points.
-
-    Parameters
-    ----------
-    points : list
-        XYZ coordinates of the points.
-
-    Returns
-    -------
-    tuple
-        Indices of the points on the hull.
-        Faces of the hull.
-
-    Warning
-    -------
-    This function requires Numpy ands Scipy.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        #
-
-    """
-    from numpy import asarray
-    from scipy.spatial import ConvexHull
-
-    points = asarray(points)
-    n, dim = points.shape
-
-    assert 2 < dim, "The point coordinates should be at least 3D: %i" % dim
-
-    points = points[:, :3]
-    hull = ConvexHull(points)
-    return hull.vertices, hull.simplices
-
-
-def convex_hull_xy_numpy(points):
-    """Compute the convex hull of a set of points in the XY plane.
-
-    Warning
-    -------
-    This function requires Numpy ands Scipy.
-
-    Parameters
-    ----------
-    points : list
-        XY(Z) coordinates of the points.
-
-    Returns
-    -------
-    tuple
-        Indices of the points on the hull.
-        Faces of the hull.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        #
-
-    """
-    from numpy import asarray
-    # from numpy import hstack
-    # from numpy import zeros
-    from scipy.spatial import ConvexHull
-
-    points = asarray(points)
-    n, dim = points.shape
-
-    assert 1 < dim, "The point coordinates should be at least 2D: %i" % dim
-
-    points = points[:, :2]
-    hull = ConvexHull(points)
-    # temp = zeros((hull.vertices.shape[0], 1))
-    # temp[:, :-1] = points[hull.vertices]
-    # return temp
-    return hull.vertices, hull.simplices
-
-
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -266,6 +182,8 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
     from compas.viewers import MeshViewer
+
+    from compas.topology import mesh_unify_cycles
 
     radius = 5
     origin = (0., 0., 0.)
@@ -284,6 +202,8 @@ if __name__ == "__main__":
     faces = convex_hull(points)
 
     mesh = Mesh.from_vertices_and_faces(points, faces)
+
+    mesh_unify_cycles(mesh)
 
     viewer = MeshViewer(mesh)
 

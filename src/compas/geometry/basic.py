@@ -1158,7 +1158,7 @@ def plane_from_points(a, b, c):
 
 
 def circle_from_points(a, b, c):
-    """Construct a circle from three points [wikipedia2017b]_.
+    """Construct a circle from three points.
 
     Parameters
     ----------
