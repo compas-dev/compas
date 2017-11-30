@@ -33,6 +33,9 @@ algorithms
 geometry
 ========
 
+basic
+-----
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -77,6 +80,20 @@ geometry
     plane_from_points_numba
     circle_from_points_numba
     circle_from_points_xy_numba
+
+average
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    centroid_points_numba
+    centroid_points_xy_numba
+    midpoint_point_point_numba
+    midpoint_point_point_xy_numba
+    center_of_mass_polyline_numba
+    center_of_mass_polyline_xy_numba
 
 
 core
