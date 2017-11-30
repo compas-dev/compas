@@ -24,27 +24,39 @@ On Windows, *MatlabClient* is also available.
 class MatlabSession(object):
     """Communicate with Matlab through a shared session.
 
+    Parameters
+    ----------
+    name : str
+        Name of a running Matlab session.
+
+    Notes
+    -----
     Note that the Matlab engine for Python is only available since R2014b.
     For earlier versions of Matlab, use ``MatlabProcess`` instead.
 
-    For more information,
-    see `Connect Python to Running MATLAB Session <https://ch.mathworks.com/help/matlab/matlab_external/connect-python-to-running-matlab-session.html>`_
+    For more information, see [1]_
 
-    Examples:
-        >>> m = MatlabSession()
-        >>> m.session_name
-        'MATLAB_13404'
-        >>> m.isprime(37)
-        True
+    References
+    ----------
+    .. [1] MathWorks, 2017. *Connect Python to Running MATLAB Session*.
+           Available at https://ch.mathworks.com/help/matlab/matlab_external/connect-python-to-running-matlab-session.html
 
-        .. code-block:: python
+    Examples
+    --------
+    >>> m = MatlabSession()
+    >>> m.session_name
+    'MATLAB_13404'
+    >>> m.isprime(37)
+    True
 
-            # execute `matlab -nosplash -r "matlab.engine.shareEngine('MATLAB_xxx')"`
-            # to connect to an existing named session
+    .. code-block:: python
 
-        >>> m = MatlabSession('MATLAB_xxx')
-        >>> m.isprime(37)
-        True
+        # execute `matlab -nosplash -r "matlab.engine.shareEngine('MATLAB_xxx')"`
+        # to connect to an existing named session
+
+    >>> m = MatlabSession('MATLAB_xxx')
+    >>> m.isprime(37)
+    True
 
     """
 

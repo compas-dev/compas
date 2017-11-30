@@ -6,18 +6,19 @@ hpc
 
 .. module:: compas.hpc
 
+This package provides GPU-accelerated or JIT-compiled versions of many geometry,
+numerical and topological functions and algorithms. The package id built around
+`Numba`_, `PyCuda`_ and `PyOpenCL`_.
+
+.. _Numba: https://numba.pydata.org/
+.. _PyCuda: https://mathema.tician.de/software/pycuda/
+.. _PyOpenCL: https://mathema.tician.de/software/pyopencl/
+
+
 .. warning::
 
     The functionality of this package is experimental and subject to frequent change.
     For now, don't use it for anything important :)
-
-.. note::
-
-    The HPC package id built around Numba, PyCuda and PyOpenCL
-
-    * Numba: https://numba.pydata.org/
-    * PyCuda: https://mathema.tician.de/software/pycuda/
-    * PyOpenCL: https://mathema.tician.de/software/pyopencl/
 
 
 algorithms
@@ -94,55 +95,6 @@ average
     midpoint_point_point_xy_numba
     center_of_mass_polyline_numba
     center_of_mass_polyline_xy_numba
-
-
-core
-====
-
-cuda
-----
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-
-euler
------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    core.euler.connect_to_euler
-    core.euler.load_euler_module
-    core.euler.recieve_file_from_euler
-    core.euler.send_file_to_euler
-    core.euler.send_folder_to_euler
-    core.euler.show_euler_jobs
-    core.euler.show_euler_quotas
-    core.euler.show_euler_modules
-    core.euler.show_euler_module_info
-    core.euler.show_euler_resources
-    core.euler.submit_job
-    core.euler.kill_job
-    core.euler.sync_folder_to_euler
-
-
-numba
------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-
-opencl
-------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
 
 
 """

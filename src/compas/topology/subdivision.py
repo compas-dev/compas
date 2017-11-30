@@ -38,25 +38,24 @@ __all__ = [
 def mesh_subdivide(mesh, scheme='tri', **options):
     """Subdivide the input mesh.
 
-    Parameters:
-        mesh (Mesh) : A mesh object.
-        scheme (str) : Optional.
-            The scheme according to which the mesh should be subdivided.
-            Defult is 'tri'. Supported values are:
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    scheme : {'tri', 'corner', 'catmullclark', 'doosabin'}.
+        The scheme according to which the mesh should be subdivided.
+    options : dict
+        Optional additional keyword arguments.
 
-            * tri: insertion subdivision.
-            * corner: corner cutting.
-            * catmullclark : catmull-clark subdivision.
-            * doosabin : doo-sabin subdivision.
+    Returns
+    -------
+    Mesh
+        The subdivided mesh.
 
-        options (kwargs) : Optional additional keyword arguments.
-
-    Returns:
-        Mesh: The subdivided mesh.
-
-    Raises:
-        NotImplementedError
-        MeshError
+    Raises
+    ------
+    NotImplementedError
+        If the scheme is not supported.
 
     """
     if scheme == 'tri':
@@ -75,6 +74,19 @@ def mesh_subdivide(mesh, scheme='tri', **options):
 
 def mesh_subdivide_tri(mesh, k=1):
     """Subdivide a mesh using simple insertion of vertices.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh object that will be subdivided.
+    k : int
+        Optional. The number of levels of subdivision. Default is ``1``.
+
+    Returns
+    -------
+    Mesh
+        A new subdivided mesh.
+
     """
 
     for _ in range(k):
@@ -89,7 +101,8 @@ def mesh_subdivide_tri(mesh, k=1):
 
 
 def mesh_subdivide_quad(mesh, k=1):
-    """Subdivide a mesh such that all faces are quads."""
+    """Subdivide a mesh such that all faces are quads.
+    """
 
     for _ in range(k):
         subd = mesh.copy()
@@ -120,15 +133,27 @@ def mesh_subdivide_quad(mesh, k=1):
 def mesh_subdivide_corner(mesh, k=1):
     """Subdivide a mesh by cutting croners.
 
-    Note:
-        This is essentially the same as Loop subdivision, but applied to general
-        meshes.
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh object that will be subdivided.
+    k : int
+        Optional. The number of levels of subdivision. Default is ``1``.
 
-    Warning:
-        This algorithms does not yet support multiple levels of subd.
+    Returns
+    -------
+    Mesh
+        A new subdivided mesh.
 
-    Returns:
-        Mesh: The subdivided mesh.
+    Returns
+    -------
+    Mesh
+        The subdivided mesh.
+
+    Notes
+    -----
+    This is essentially the same as Loop subdivision, but applied to general
+    meshes.
 
     """
 
@@ -166,100 +191,99 @@ def mesh_subdivide_corner(mesh, k=1):
 def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     """Subdivide a mesh using the Catmull-Clark algorithm.
 
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh object that will be subdivided.
+    k : int
+        Optional. The number of levels of subdivision. Default is ``1``.
+    fixed : list
+        Optional. A list of fixed vertices. Default is ``None``.
+
+    Returns
+    -------
+    Mesh
+        A new subdivided mesh.
+
+    Notes
+    -----
     Note that *Catmull-Clark* subdivision is like *Quad* subdivision, but with
     smoothing after every level of further subdivision. Smoothing is done
     according to the scheme prescribed by the Catmull-Clark algorithm.
 
-    Parameters:
-        mesh (Mesh):
-            The mesh object that will be subdivided.
-        k (int): Optional.
-            The number of levels of subdivision.
-            Default is ``1``.
-        fixed (list): Optional.
-            A list of fixed vertices.
-            Default is ``None``.
+    Examples
+    --------
+    .. plot::
+        :include-source:
 
-    Returns:
-        Mesh: A new subdivided mesh.
+        from compas.datastructures import Mesh
+        from compas.topology import mesh_subdivide_catmullclark
+        from compas.plotters import MeshPlotter
 
-    Examples:
+        vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
+        faces = [[0, 1, 2, 3], ]
 
-        .. plot::
-            :include-source:
+        mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        subd = mesh_subdivide_catmullclark(mesh, k=3, fixed=mesh.vertices())
 
-            from compas.datastructures import Mesh
-            from compas.topology import mesh_subdivide_catmullclark
-            from compas.plotters import MeshPlotter
+        plotter = MeshPlotter(subd)
 
-            vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
-            faces = [[0, 1, 2, 3], ]
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in mesh.vertices()}, radius=0.01)
+        plotter.draw_faces()
 
-            mesh = Mesh.from_vertices_and_faces(vertices, faces)
-            subd = mesh_subdivide_catmullclark(mesh, k=3, fixed=mesh.vertices())
-
-            plotter = MeshPlotter(subd)
-
-            plotter.draw_vertices(facecolor={key: '#ff0000' for key in mesh.vertices()}, radius=0.01)
-            plotter.draw_faces()
-
-            plotter.show()
+        plotter.show()
 
 
-        .. plot::
-            :include-source:
+    .. plot::
+        :include-source:
 
-            from compas.datastructures import Mesh
-            from compas.topology import mesh_subdivide_catmullclark
-            from compas.plotters import MeshPlotter
+        from compas.datastructures import Mesh
+        from compas.topology import mesh_subdivide_catmullclark
+        from compas.plotters import MeshPlotter
 
-            vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
-            faces = [[0, 1, 2, 3], ]
+        vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
+        faces = [[0, 1, 2, 3], ]
 
-            mesh = Mesh.from_vertices_and_faces(vertices, faces)
-            subd = mesh_subdivide_catmullclark(mesh, k=3, fixed=None)
+        mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        subd = mesh_subdivide_catmullclark(mesh, k=3, fixed=None)
 
-            plotter = MeshPlotter(subd)
+        plotter = MeshPlotter(subd)
 
-            plotter.draw_vertices(facecolor={key: '#ff0000' for key in mesh.vertices()}, radius=0.01)
-            plotter.draw_faces()
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in mesh.vertices()}, radius=0.01)
+        plotter.draw_faces()
 
-            plotter.show()
+        plotter.show()
 
 
-        .. code-block:: python
+    .. code-block:: python
 
-            from compas.datastructures.mesh import Mesh
+        from compas.datastructures.mesh import Mesh
 
-            from compas.topology import mesh_subdivide_catmullclark
-            from compas.geometry import Polyhedron
-            from compas.plotters import SubdMeshViewer
+        from compas.topology import mesh_subdivide_catmullclark
+        from compas.geometry import Polyhedron
+        from compas.plotters import SubdMeshViewer
 
-            cube = Polyhedron.generate(6)
+        cube = Polyhedron.generate(6)
 
-            mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
+        mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
 
-            viewer = SubdMeshViewer(mesh, subdfunc=mesh_subdivide_catmullclark, width=1440, height=900)
+        viewer = SubdMeshViewer(mesh, subdfunc=mesh_subdivide_catmullclark, width=1440, height=900)
 
-            viewer.axes_on = False
-            viewer.grid_on = False
+        viewer.axes_on = False
+        viewer.grid_on = False
 
-            for _ in range(10):
-               viewer.camera.zoom_in()
+        for _ in range(10):
+           viewer.camera.zoom_in()
 
-            viewer.subdivide(k=4)
+        viewer.subdivide(k=4)
 
-            viewer.setup()
-            viewer.show()
+        viewer.setup()
+        viewer.show()
 
 
     .. figure:: /_images/subdivide_mesh_catmullclark-screenshot.*
         :figclass: figure
         :class: figure-img img-fluid
-
-    .. note::
-
-        Image generated with ``SubdMeshViewer.screenshot()``.
 
     """
     if not fixed:
@@ -365,7 +389,23 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
 
 def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
-    """"""
+    """Subdivide a mesh following the doo-sabin scheme.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh object that will be subdivided.
+    k : int
+        Optional. The number of levels of subdivision. Default is ``1``.
+    fixed : list
+        Optional. A list of fixed vertices. Default is ``None``.
+
+    Returns
+    -------
+    Mesh
+        A new subdivided mesh.
+
+    """
     if not fixed:
         fixed = []
 
@@ -450,27 +490,41 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 def trimesh_subdivide_loop(mesh, k=1, fixed=None):
     """Subdivide a triangle mesh using the Loop algorithm.
 
-    Examples:
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh object that will be subdivided.
+    k : int
+        Optional. The number of levels of subdivision. Default is ``1``.
+    fixed : list
+        Optional. A list of fixed vertices. Default is ``None``.
 
-        .. code-block:: python
+    Returns
+    -------
+    Mesh
+        A new subdivided mesh.
 
-            from compas.datastructures import Mesh
-            from compas.topology import mesh_flip_cycle_directions
-            from compas.plotters import SubdMeshViewer
+    Examples
+    --------
+    .. code-block:: python
 
-            mesh = Mesh.from_polyhedron(4)
-            mesh_flip_cycle_directions(mesh)
+        from compas.datastructures import Mesh
+        from compas.topology import mesh_flip_cycle_directions
+        from compas.plotters import SubdMeshViewer
 
-            viewer = SubdMeshViewer(mesh, subdfunc=loop_subdivision, width=600, height=600)
+        mesh = Mesh.from_polyhedron(4)
+        mesh_flip_cycle_directions(mesh)
 
-            viewer.axes_on = False
-            viewer.grid_on = False
+        viewer = SubdMeshViewer(mesh, subdfunc=loop_subdivision, width=600, height=600)
 
-            for _ in range(10):
-                viewer.camera.zoom_in()
+        viewer.axes_on = False
+        viewer.grid_on = False
 
-            viewer.setup()
-            viewer.show()
+        for _ in range(10):
+            viewer.camera.zoom_in()
+
+        viewer.setup()
+        viewer.show()
 
     """
     if not fixed:

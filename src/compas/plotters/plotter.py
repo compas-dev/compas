@@ -39,7 +39,7 @@ __all__ = ['Plotter', ]
 
 
 class Plotter(object):
-    """Definition of a plotter object based on matplotlib [hunter2007]_.
+    """Definition of a plotter object based on matplotlib.
 
     Parameters
     ----------
@@ -65,6 +65,16 @@ class Plotter(object):
     defaults : dict
         Dictionary containing default attributes for points, edges, lines, text
         and polygons.
+
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Hunter, J. D., 2007. *Matplotlib: A 2D graphics environment*.
+           Computing In Science & Engineering (9) 3, p.90-95.
+           Available at: http://ieeexplore.ieee.org/document/4160265/citations.
 
 
     """

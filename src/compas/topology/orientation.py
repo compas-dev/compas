@@ -30,8 +30,8 @@ def face_adjacency(mesh):
     dict
         A dictionary mapping face identifiers (keys) to lists of neighbouring faces.
 
-    Note
-    ----
+    Notes
+    -----
     This algorithm is used primarily to unify the cycle directions of a given mesh.
     Therefore, the premise is that the topological information of the mesh is corrupt
     and cannot be used to construct the adjacency structure. The algorithm is thus
@@ -80,6 +80,7 @@ def face_adjacency(mesh):
                 closest.append(data)
 
     adjacency  = {}
+
     for fkey in mesh.faces():
         nbrs  = []
         index = fkey_index[fkey]
@@ -90,21 +91,26 @@ def face_adjacency(mesh):
         for u, v in mesh.face_halfedges(fkey):
             for index in nnbrs:
                 nbr = index_fkey[index]
+
                 if nbr == fkey:
                     continue
                 if nbr in found:
                     continue
+
                 for a, b in mesh.face_halfedges(nbr):
                     if v == a and u == b:
                         nbrs.append(nbr)
                         found.add(nbr)
                         break
+
                 for a, b in mesh.face_halfedges(nbr):
                     if u == a and v == b:
                         nbrs.append(nbr)
                         found.add(nbr)
                         break
+
         adjacency[fkey] = nbrs
+
     return adjacency
 
 
@@ -123,22 +129,27 @@ def mesh_unify_cycles(mesh, root=None):
 
     """
     def unify(node, nbr):
+        # find the common edge
         for u, v in mesh.face_halfedges(nbr):
-            if u in mesh.face[node]:
-                if v in mesh.face[node]:
-                    i = mesh.face[node].index(u)
-                    j = mesh.face[node].index(v)
-                    if i == j - 1:
-                        # if the traversal of a neighbouring halfedge
-                        # is in the same direction
-                        # flip the neighbour
-                        mesh.face[nbr][:] = mesh.face[nbr][::-1]
-                        return
+            if u in mesh.face[node] and v in mesh.face[node]:
+                # node and nbr have edge u-v in common
+                i = mesh.face[node].index(u)
+                j = mesh.face[node].index(v)
+                if i == j - 1:
+                    # if the traversal of a neighbouring halfedge
+                    # is in the same direction
+                    # flip the neighbour
+                    mesh.face[nbr][:] = mesh.face[nbr][::-1]
+                    return
 
     if root is None:
         root = mesh.get_any_face()
 
-    breadth_first_traverse(face_adjacency(mesh), root, unify)
+    adj = face_adjacency(mesh)
+
+    visited = breadth_first_traverse(adj, root, unify)
+
+    assert len(list(visited)) == mesh.number_of_faces(), 'Not all faces were visited'
 
     mesh.halfedge = {key: {} for key in mesh.vertices()}
     for fkey in mesh.faces():
@@ -156,8 +167,8 @@ def mesh_flip_cycles(mesh):
     mesh : Mesh
         A mesh object.
 
-    Note
-    ----
+    Notes
+    -----
     This function does not care about the directions being unified or not. It
     just reverses whatever direction it finds.
 

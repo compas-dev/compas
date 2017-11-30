@@ -17,7 +17,7 @@ from numpy import sqrt
 
 import numpy as np
 
-# Note: Numba experimental features parallel and prange are implementated but generally disabled.
+# Notes: Numba experimental features parallel and prange are implementated but generally disabled.
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']

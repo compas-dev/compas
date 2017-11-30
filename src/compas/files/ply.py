@@ -25,7 +25,7 @@ def ply_binascii(ply):
 
 
 class PLY(object):
-    """
+    """Polygon file format, or Stanford triangle format.
 
     See Also
     --------

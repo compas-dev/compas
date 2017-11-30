@@ -145,7 +145,8 @@ def verify():
     ]
     current = installed()
 
-    print('Checking required packages...')
+    print('=' * 80)
+    print('Checking required packages...\n')
     issues = []
     for package in requirements:
         if package not in current:
@@ -157,7 +158,7 @@ def verify():
     else:
         print('All required packages are installed.')
 
-    print('\nChecking optional packages...')
+    print('\nChecking optional packages...\n')
     issues = []
     for package in optional:
         if package not in current:
@@ -168,6 +169,7 @@ def verify():
             print('- {}'.format(package))
     else:
         print('All optional packages are installed.')
+    print('=' * 80)
     print()
 
 

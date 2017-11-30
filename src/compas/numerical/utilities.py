@@ -31,23 +31,26 @@ float_precision = '2f'
 def float_formatter(x):
     """Formats float to truncated string.
 
-    Note
-    ----
-        stackoverflow.com/questions/21008858/formatting-floats-in-a-numpy-array
-        float_formatter = lambda x: '%.2f' % x
-
     Parameters
     ----------
-        x (float): Input float.
+    x : float
+        Input float.
 
     Returns
     -------
-        str: Truncated string with default precision .2f.
+    str
+        Truncated string with default precision .2f.
+
+    Notes
+    -----
+    stackoverflow.com/questions/21008858/formatting-floats-in-a-numpy-array
+    float_formatter = lambda x: '%.2f' % x
 
     Examples
     --------
-        >>> float_formatter(3.14159265359)
-        '+3.14'
+    >>> float_formatter(3.14159265359)
+    '+3.14'
+
     """
     return '{0:+.{1}}'.format(x, float_precision)
 
@@ -55,24 +58,25 @@ def float_formatter(x):
 def set_array_print_precision(precision='2f'):
     """Changes float precision of float_formatter.
 
-    Note
-    ----
-        stackoverflow.com/questions/21008858/formatting-floats-in-a-numpy-array
-        set_printoptions(formatter={'float_kind': float_formatter})
-
     Parameters
     ----------
-        precision (str): Precision e.g. '3f'.
+    precision : str
+        Precision e.g. '3f'.
 
     Returns
     -------
-        None
+    None
+
+    Notes
+    -----
+    stackoverflow.com/questions/21008858/formatting-floats-in-a-numpy-array
+    set_printoptions(formatter={'float_kind': float_formatter})
 
     Examples
     --------
-        >>> set_array_print_precision(precision='4f')
-        >>> float_formatter(3.14159265359)
-        '+3.1416'
+    >>> set_array_print_precision(precision='4f')
+    >>> float_formatter(3.14159265359)
+    '+3.1416'
     """
     global float_precision
     float_precision = precision
@@ -84,11 +88,12 @@ def unset_array_print_precision():
 
     Parameters
     ----------
-        None
+    None
 
     Returns
     -------
-        None
+    None
+
     """
     set_printoptions(formatter=None)
 

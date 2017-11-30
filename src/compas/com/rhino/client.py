@@ -29,17 +29,16 @@ class RhinoClientError(Exception):
 class RhinoClient(object):
     """Communicate with Rhino through Window's COM interface.
 
-    Warning:
-        This only works on Windows!
+    Parameters
+    ----------
+    delay_start : bool, optional
+        Delay the creation of a COM interface. Default is ``False``.
 
-    Parameters:
-        delay_start (bool, optional) : Delay the creation of a COM interface.
-            Default is ``False``.
-
-    Examples:
-        >>> r = RhinoApp()
-        >>> r.AddPoint(0, 0, 0)
-        <guid>
+    Examples
+    --------
+    >>> r = RhinoApp()
+    >>> r.AddPoint(0, 0, 0)
+    <guid>
 
     """
 

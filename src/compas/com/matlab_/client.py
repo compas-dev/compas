@@ -23,15 +23,6 @@ __all__ = ['MatlabClient']
 class MatlabClient(object):
     """Communicate with Matlab through Windows' COM interface.
 
-    Note
-    ----
-    This implementation uses Windows' COM interface to communicate with Matlab.
-    Therefore, it is obviously only available on Windows.
-    When an instance of this class is created, it automatically connects to Matlab,
-    and initializes a lease that keeps the interface alive for at least 5 minutes
-    such that subsequent calls can be executed immediately.
-    After every call, the lease is renewed...
-
     Parameters
     ----------
     verbose : bool
@@ -43,6 +34,15 @@ class MatlabClient(object):
     workspace : str
         The name of the Matlab workspace.
         Default is ``'base'``.
+
+    Notes
+    -----
+    This implementation uses Windows' COM interface to communicate with Matlab.
+    Therefore, it is obviously only available on Windows.
+    When an instance of this class is created, it automatically connects to Matlab,
+    and initializes a lease that keeps the interface alive for at least 5 minutes
+    such that subsequent calls can be executed immediately.
+    After every call, the lease is renewed...
 
     Examples
     --------
@@ -61,9 +61,9 @@ class MatlabClient(object):
 
     See Also
     --------
-    * compas.com.mlab.MatlabEngine
-    * compas.com.mlab.MatlabSession
-    * compas.com.mlab.MatlabProcess
+    compas.com.mlab.MatlabEngine
+    compas.com.mlab.MatlabSession
+    compas.com.mlab.MatlabProcess
 
     """
 

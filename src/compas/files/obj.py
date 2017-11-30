@@ -40,26 +40,52 @@ class OBJ(object):
 
 
 class OBJReader(object):
-    """Read the contents of an *obj* file [Bourke]_.
+    """Read the contents of an *obj* file.
 
-    Parameters:
-        filepath (str): Path to the file.
-        remote (bool): Optional. Is the file on a remote location? Default is ``False``.
+    Parameters
+    ----------
+    filepath : str
+        Path to the file.
+    remote : bool
+        Optional. Is the file on a remote location? Default is ``False``.
 
-    Attributes:
-        filepath (str): Path to the file.
-        remote (bool): Is the file on a remote location.
-        content (iter): The contents of the file, line by line.
-        vertices (list): Vertex coordinates.
-        weights (list): Vertex weights.
-        textures (list): Vertex textures.
-        normals (list): Vertex normals.
-        points (list): Point objects, referencing the list of vertices.
-        lines (list): Line objects, referencing the list of vertices.
-        faces (list): Face objects, referencing the list of vertices.
-        curves (list): Curves
-        curves2 (list): Curves
-        surfaces (list): Surfaces
+    Attributes
+    ----------
+    filepath : str
+        Path to the file.
+    remote : bool
+        Is the file on a remote location.
+    content : iter
+        The contents of the file, line by line.
+    vertices : list
+        Vertex coordinates.
+    weights : list
+        Vertex weights.
+    textures : list
+        Vertex textures.
+    normals : list
+        Vertex normals.
+    points : list
+        Point objects, referencing the list of vertices.
+    lines : list
+        Line objects, referencing the list of vertices.
+    faces : list
+        Face objects, referencing the list of vertices.
+    curves : list
+        Curves
+    curves2 : list
+        Curves
+    surfaces : list
+        Surfaces
+
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Bourke, P. *Object Files*.
+           Available at: http://paulbourke.net/dataformats/obj/.
 
     """
 

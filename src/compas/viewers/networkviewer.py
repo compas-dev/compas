@@ -31,31 +31,35 @@ __all__ = ['NetworkViewer', ]
 class NetworkViewer(Viewer):
     """An OpenGL viewer for networks.
 
-    Parameters:
-        network (compas.datastructures.network.Network): The network object.
-        width (int): Optional. The viewport width. Default is ``1280``.
-        height (int): Optional. The viewport height. Default is ``800``.
+    Parameters
+    ----------
+    network : Network
+        The network object.
+    width : int
+        Optional. The viewport width. Default is ``1280``.
+    height : int
+        Optional. The viewport height. Default is ``800``.
 
-    Example:
+    Example
+    -------
+    .. code-block:: python
 
-        .. code-block:: python
+        import compas
+        from compas.datastructures.network import Network
+        from compas.datastructures.network.viewer import NetworkViewer
 
-            import compas
-            from compas.datastructures.network import Network
-            from compas.datastructures.network.viewer import NetworkViewer
+        network = Network.from_obj(compas.get_data('lines.obj'))
 
-            network = Network.from_obj(compas.get_data('lines.obj'))
+        network.add_edge(0, 14)
+        network.add_edge(15, 10)
+        network.add_edge(21, 24)
 
-            network.add_edge(0, 14)
-            network.add_edge(15, 10)
-            network.add_edge(21, 24)
+        viewer = NetworkViewer(network, 600, 600)
 
-            viewer = NetworkViewer(network, 600, 600)
+        viewer.grid_on = False
 
-            viewer.grid_on = False
-
-            viewer.setup()
-            viewer.show()
+        viewer.setup()
+        viewer.show()
 
     """
 

@@ -13,7 +13,7 @@ __all__ = []
 
 
 class LAS(object):
-    """
+    """LASer file format.
 
     See Also
     --------

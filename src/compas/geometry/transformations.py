@@ -129,8 +129,8 @@ def homogenize(vectors, w=1.0):
     list
         Homogenised vectors.
 
-    Note
-    ----
+    Notes
+    -----
     Vectors described by XYZ components are homogenised by appending a homogenisation
     parameter to the components, and by dividing each component by that parameter.
     Homogenisatioon of vectors is often used in relation to transformations.
@@ -258,15 +258,17 @@ def rotation_matrix(angle, direction, point=None, rtype='list'):
     Returns:
         list: The (3 x 3) rotation matrix.
 
-    Rotates a vector around a given axis (the axis will be unitised), the
-    rotation is based on the right hand rule, i.e. anti-clockwise when the axis
-    of rotation points towards the observer.
+    Notes:
+        Rotates a vector around a given axis (the axis will be unitised), the
+        rotation is based on the right hand rule, i.e. anti-clockwise when the axis
+        of rotation points towards the observer.
 
     Examples:
         >>> R = rotation_matrix(angle=pi/2, direction=[0, 0, 1])
         [[  6.12-17  -1.00+00   0.00+00]
          [  1.00+00   6.12-17   0.00+00]
          [  0.00+00   0.00+00   1.00+00]]
+
     """
     # To perform a rotation around an arbitrary line (i.e. an axis not through
     # the origin) an origin other than (0, 0, 0) may be provided for the
@@ -309,8 +311,9 @@ def scale_matrix(x, y=None, z=None, rtype='list'):
     Returns:
         list: The (3 x 3) scale matrix.
 
-    The scale matrix is a (3 x 3) matrix with the scale factor along all of the
-    three diagonal elements, used to scale a vector.
+    Notes:
+        The scale matrix is a (3 x 3) matrix with the scale factor along all of the
+        three diagonal elements, used to scale a vector.
 
     Examples:
         >>> S = scale_matrix(2)
@@ -399,8 +402,12 @@ def rotate_points(points, axis, angle, origin=None):
     Returns:
         list: the rotated points
 
+    Notes:
+        For more info, see [1]_.
+
     References:
-        https://en.wikipedia.org/wiki/Rotation_matrix
+        .. [1] Wikipedia. *Rotation matrix*.
+               Available at: https://en.wikipedia.org/wiki/Rotation_matrix.
 
     """
     # rotation matrix
@@ -423,8 +430,12 @@ def rotate_points_xy(points, axis, angle, origin=None):
     Returns:
         list: the rotated points
 
+    Notes:
+        For more info, see [1]_.
+
     References:
-        https://en.wikipedia.org/wiki/Rotation_matrix
+        .. [1] Wikipedia. *Rotation matrix*.
+               Available at: https://en.wikipedia.org/wiki/Rotation_matrix.
 
     """
     if not origin:
@@ -449,7 +460,7 @@ def rotate_points_xy(points, axis, angle, origin=None):
 
 
 def offset_line(line, distance, normal=[0., 0., 1.]):
-    """Offset a line by a distance
+    """Offset a line by a distance.
 
     Parameters:
         line (tuple): Two points defining the line.
@@ -508,7 +519,7 @@ def offset_polygon(polygon, distance):
         offset polygon (sequence of sequence of floats): The XYZ coordinates of the
             corners of the offset polygon. The first and last coordinates are identical.
 
-    Note:
+    Notes:
         The offset direction is determined by the normal of the polygon. The
         algorithm works also for spatial polygons that do not perfectly fit a plane.
 
@@ -626,7 +637,7 @@ def orient_points(points, reference_plane=None, target_plane=None):
     Returns:
         points (sequence of sequence of float): XYZ coordinates of the oriented points.
 
-    Note:
+    Notes:
         This function is useful to orient a planar problem in the xy-plane to simplify
         the calculation (see example).
 
@@ -751,8 +762,13 @@ def mirror_vector_vector(v1, v2):
     Returns:
         Tuple: mirrored vector
 
-    Resources:
-        http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
+    Notes:
+        For more info, see [1]_.
+
+    References:
+        .. [1] Math Stack Exchange. *How to get a reflection vector?*
+               Available at: https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector.
+
     """
     return subtract_vectors(v1, scale_vector(v2, 2 * dot_vectors(v1, v2)))
 
@@ -773,14 +789,16 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
         line (tuple): The reflected line starting at the reflection point on the plane,
         None otherwise.
 
-    Note:
+    Notes:
         The directions of the line and plane are important! The line will only be
         reflected if it points (direction start -> end) in the direction of the plane
         and if the line intersects with the front face of the plane (normal direction
         of the plane).
+        For more info, see [1]_.
 
-    Resources:
-        http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
+    References:
+        .. [1] Math Stack Exchange. *How to get a reflection vector?*
+               Available at: https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector.
 
     Examples:
 
@@ -818,7 +836,7 @@ def reflect_line_plane(line, plane, epsilon=1e-6):
             print(polyline_projection)
 
 
-    Note:
+    Notes:
         This example visualized in Rhino:
 
 
@@ -846,7 +864,7 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
         line (tuple): The reflected line starting at the reflection point on the plane,
         None otherwise.
 
-    Note:
+    Notes:
         The directions of the line and triangular face are important! The line will only be
         reflected if it points (direction start -> end) in the direction of the triangular
         face and if the line intersects with the front face of the triangular face (normal
@@ -886,10 +904,6 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
             print(polyline)
 
 
-    Note:
-        This example visualized in Rhino:
-
-
     .. figure:: /_images/reflect_line_triangle.*
         :figclass: figure
         :class: figure-img img-fluid
@@ -914,16 +928,21 @@ def reflect_line_triangle(line, triangle, epsilon=1e-6):
 def project_point_plane(point, plane):
     """Project a point onto a plane.
 
-    The projection is in the direction perpendicular to the plane.
-    The projected point is thus the closest point on the plane to the original
-    point.
-
     Parameters:
         point (sequence of float): XYZ coordinates of the original point.
         plane (tuple): Base poin.t and normal vector defining the plane
 
     Returns:
         list: XYZ coordinates of the projected point.
+
+    Notes:
+        The projection is in the direction perpendicular to the plane.
+        The projected point is thus the closest point on the plane to the original
+        point [1]_.
+
+    References:
+        .. [1] Math Stack Exchange. *Project a point in 3D on a given plane*.
+               Available at: https://math.stackexchange.com/questions/444968/project-a-point-in-3d-on-a-given-plane.
 
     Examples:
 
@@ -932,11 +951,6 @@ def project_point_plane(point, plane):
         >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])  # the XY plane
         >>> project_point_plane(point, plane)
         [3.0, 3.0, 3.0]
-
-
-    References:
-        http://stackoverflow.com/questions/8942950/how-do-i-find-the-orthogonal-projection-of-a-point-onto-a-plane
-        http://math.stackexchange.com/questions/444968/project-a-point-in-3d-on-a-given-plane
 
     """
     base, normal = plane
@@ -973,8 +987,12 @@ def project_point_line(point, line):
     Returns:
         list: XYZ coordinates of the projected point.
 
+    Notes:
+        For more info, see [1]_.
+
     References:
-        https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line
+        .. [1] Wiki Books. *Linear Algebra/Orthogonal Projection Onto a Line*.
+               Available at: https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line.
 
     """
     a, b = line
@@ -995,8 +1013,12 @@ def project_point_line_xy(point, line):
     Returns:
         list: XY coordinates of the projected point.
 
+    Notes:
+        For more info, see [1]_.
+
     References:
-        https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line
+        .. [1] Wiki Books. *Linear Algebra/Orthogonal Projection Onto a Line*.
+               Available at: https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line.
 
     """
     a, b = line

@@ -64,17 +64,6 @@ class VolMesh(FromToData,
               Datastructure):
     """Class for working with volumetric meshes.
 
-    Volumetric meshes are 3-mainfold, cellular structures.
-
-    The implementation of ``VolMesh`` is based on the notion of *x-maps*
-    and the concepts behind the *OpenVolumeMesh* library [vci2016]_.
-    In short, we add an additional entity compared to polygonal meshes,
-    the *cell*, and relate cells not through *half-edges*, but through a combination
-    of *half-faces* and *planes*. Each cell consists of a series of vertex pairs,
-    forming half-edges. Every half-edge points at a half-face of the cell. The half-
-    faces are stored as vertex cycles. Every three adjacent vertices in the cycle,
-    through the planes, point at the cell of which they form the boundary.
-
     Attributes
     ----------
     vertex : dict
@@ -103,6 +92,24 @@ class VolMesh(FromToData,
         of the latter identify oriented faces (planes) of the volmesh, finally
         pointing at the cells of the volmesh.
         ``self.plane[u][v][w] -> ckey``.
+
+    Notes
+    -----
+    Volumetric meshes are 3-mainfold, cellular structures.
+
+    The implementation of *VolMesh* is based on the notion of *x-maps*
+    and the concepts behind the *OpenVolumeMesh* library [vci2016]_.
+    In short, we add an additional entity compared to polygonal meshes,
+    the *cell*, and relate cells not through *half-edges*, but through a combination
+    of *half-faces* and *planes*. Each cell consists of a series of vertex pairs,
+    forming half-edges. Every half-edge points at a half-face of the cell. The half-
+    faces are stored as vertex cycles. Every three adjacent vertices in the cycle,
+    through the planes, point at the cell of which they form the boundary.
+
+    References
+    ----------
+    .. [vci2016] Visual Computing Institute *Open Volum Mesh*.
+                 Available at: http://www.openvolumemesh.org
 
     """
 

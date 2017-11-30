@@ -25,13 +25,21 @@ def vertex_coloring(adjacency):
     network : compas.datastructures.Network
         The network object.
 
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Chu-Carroll, M. *Graph Coloring Algorithms*.
+           Available at: http://scienceblogs.com/goodmath/2007/06/28/graph-coloring-algorithms-1/.
+
     Warning
     -------
     This is a greedy algorithm, so it might be slow for large networks.
 
-    Example
-    -------
-
+    Examples
+    --------
     .. plot::
         :include-source:
 
@@ -51,11 +59,6 @@ def vertex_coloring(adjacency):
         plotter.draw_edges()
 
         plotter.show()
-
-
-    References
-    ----------
-    * http://scienceblogs.com/goodmath/2007/06/28/graph-coloring-algorithms-1/
 
     """
     key_to_color = {}

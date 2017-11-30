@@ -29,8 +29,8 @@ def adjacency_from_edges(edges):
         A dictionary mapping each index in the list of index pairs
         to a list of adjacent indices.
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         #

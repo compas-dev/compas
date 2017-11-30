@@ -71,9 +71,22 @@ class MeshViewer(Viewer):
                            'color' : (0.4, 0.4, 0.4),
                            'size'  : 5.0})
 
+        normals = []
+        for fkey in self.mesh.faces():
+            n  = self.mesh.face_normal(fkey, unitized=True)
+            sp = self.mesh.face_centroid(fkey)
+            ep = [sp[axis] + n[axis] for axis in (0, 1, 2)]
+            normals.append({
+                'start' : sp,
+                'end'   : ep,
+                'color' : (0.0, 1.0, 0.0),
+                'width' : 2.0 
+            })
+
         xdraw_polygons(polygons)
         xdraw_lines(lines)
         xdraw_points(points)
+        xdraw_lines(normals)
 
     def keypress(self, key, x, y):
         """
@@ -107,39 +120,45 @@ class MeshViewer(Viewer):
 class SubdMeshViewer(Viewer):
     """Viewer for subdivision meshes.
 
-    Parameters:
-        mesh (compas.datastructures.mesh.Mesh): The *control* mesh object.
-        subdfunc (callable): The subdivision algorithm/scheme.
-        width (int): Optional. Width of the viewport. Default is ``1440``.
-        height (int): Optional. Height of the viewport. Default is ``900``.
+    Parameters
+    ----------
+    mesh : Mesh
+        The *control* mesh object.
+    subdfunc :callable
+        The subdivision algorithm/scheme.
+    width : int
+        Optional. Width of the viewport. Default is ``1440``.
+    height : int
+        Optional. Height of the viewport. Default is ``900``.
 
-    Warning:
-        Not properly tested on meshes with a boundary.
+    Warning
+    -------
+    Not properly tested on meshes with a boundary.
 
-    Example:
+    Example
+    -------
+    .. code-block:: python
 
-        .. code-block:: python
+        from functools import partial
 
-            from functools import partial
-        
-            from compas.datastructures import Mesh
-            from compas.topology import mesh_subdivide
-            from compas.viewers import SubdMeshViewer
+        from compas.datastructures import Mesh
+        from compas.topology import mesh_subdivide
+        from compas.viewers import SubdMeshViewer
 
-            subdivide = partial(mesh_subdivide, scheme='doosabin')
+        subdivide = partial(mesh_subdivide, scheme='doosabin')
 
-            mesh = Mesh.from_polyhedron(6)
+        mesh = Mesh.from_polyhedron(6)
 
-            viewer = SubdMeshViewer(mesh, subdfunc=subdivide, width=600, height=600)
+        viewer = SubdMeshViewer(mesh, subdfunc=subdivide, width=600, height=600)
 
-            viewer.axes_on = False
-            viewer.grid_on = False
+        viewer.axes_on = False
+        viewer.grid_on = False
 
-            for i in range(10):
-                viewer.camera.zoom_in()
+        for i in range(10):
+            viewer.camera.zoom_in()
 
-            viewer.setup()
-            viewer.show()
+        viewer.setup()
+        viewer.show()
 
     """
 

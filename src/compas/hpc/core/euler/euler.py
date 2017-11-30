@@ -218,8 +218,8 @@ def show_euler_jobs(client, type='user'):
 def submit_job(client, command, time='60', output='output.txt', cpus=1):
     """ Submit a job to Euler.
 
-    Note
-    ----
+    Notes
+    -----
         - If the output file already exists, it will be overwritten.
         - STRICTLY do not request more than 24 CPUs, make sure the job can use all those requested.
 
@@ -243,8 +243,8 @@ def submit_job(client, command, time='60', output='output.txt', cpus=1):
 def sync_folder_to_euler(username, local_folder, remote_folder):
     """ Sync (rsync) a local folder to the ETHZ Euler cluster (home folder).
 
-    Note
-    ----
+    Notes
+    -----
         - Appropriate file/folder permissions are needed on the remote folder.
 
     Parameters

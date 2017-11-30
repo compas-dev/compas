@@ -36,8 +36,8 @@ def mesh_dual(mesh, cls=None):
     Mesh
         The dual mesh object.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 
@@ -327,7 +327,7 @@ def network_find_faces(network, breakpoints=None):
             The vertices at which to break the found faces.
             Default is ``None``.
 
-    Note:
+    Notes:
         ``breakpoints`` are primarily used to break up the outside face in between
         specific vertices. For example, in structural applications involving dual
         diagrams, any vertices where external forces are applied (loads or reactions)

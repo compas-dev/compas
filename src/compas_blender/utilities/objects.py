@@ -640,7 +640,7 @@ def set_objects_scale(objects, scales):
 def join_objects(objects):
     """ Join a list of objects.
 
-    Note:
+    Notes:
         - The first object in the list becomes the master object.
 
     Parameters:

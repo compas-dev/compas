@@ -5,7 +5,7 @@
 topology
 ********************************************************************************
 
-.. currentmodule:: compas.topology
+.. module:: compas.topology
 
 
 combinatorial

@@ -41,25 +41,30 @@ __all__ = [
 
 
 def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
-    """ Topology optimisation in 2D using NumPy and SciPy.
+    """ Topology optimisation in 2D using NumPy and SciPy [andreassen2011]_.
 
     Parameters
     ----------
-        nelx (int): Number of elements in x.
-        nely (int): Number of elements in y.
-        loads (dic): {'i-j': [Px, Py]}.
-        supports (dic): {'i-j': [Bx, By]} 1=fixed, 0=free.
-        volfrac (float): Volume fraction.
-        penal (float): Penalisation power.
-        rmin (float): Filter radius.
+    nelx : int
+        Number of elements in x.
+    nely : int
+        Number of elements in y.
+    loads : dict
+        {'i-j': [Px, Py]}.
+    supports : dict
+        {'i-j': [Bx, By]} 1=fixed, 0=free.
+    volfrac : float
+        Volume fraction.
+    penal : float
+        Penalisation power.
+    rmin : float
+        Filter radius.
 
     Returns
     -------
-        array: Density array.
+    array
+        Density array.
 
-    References
-    ----------
-        Based on the MATLAB code from [andreassen2011]_.
     """
     nx = nelx + 1
     ny = nely + 1

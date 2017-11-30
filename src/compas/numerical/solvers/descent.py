@@ -42,18 +42,28 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
 
     Parameters
     ----------
-        x0 (array, list): n x 1 starting guess of x.
-        fn (obj): The objective function to minimise.
-        iterations (int): Maximum number of iterations.
-        gtol (float): Mean residual of the gradient for convergence.
-        bounds (list): List of lower and upper bound pairs [lb, ub], None=unconstrained.
-        limit (float): Value of the objective function for which to terminate optimisation.
-        args (tuple): Additional parameters needed for fn.
+    x0 : array-like
+        n x 1 starting guess of x.
+    fn : obj
+        The objective function to minimise.
+    iterations : int
+        Maximum number of iterations.
+    gtol : float
+        Mean residual of the gradient for convergence.
+    bounds : list
+        List of lower and upper bound pairs [lb, ub], None=unconstrained.
+    limit : float
+        Value of the objective function for which to terminate optimisation.
+    args : tuple
+        Additional parameters needed for fn.
 
     Returns
     -------
-        float: Final value of the objective function.
-        array: Values of x at the found local minimum.
+    float
+        Final value of the objective function.
+    array
+        Values of x at the found local minimum.
+
     """
     r = 0.5
     c = 0.0001

@@ -7,6 +7,9 @@ interop
 
 .. module:: compas.interop
 
+This package includes utility functions for seamless integration of C
+and C++ code, and wrappers for external libraries.
+
 .. warning::
 
     The functionality of this package is experimental and subject to frequent change.
@@ -21,13 +24,6 @@ ShapeOp
     :nosignatures:
 
     shapeop.ShapeOpSolver
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    shapeop.int_array
-    shapeop.float_array
 
 
 Core

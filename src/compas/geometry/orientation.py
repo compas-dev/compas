@@ -28,10 +28,6 @@ __all__ = [
 def normal_polygon(points, unitized=True):
     """Compute the normal of a polygon defined by a sequence of points.
 
-    Note:
-        The points in the list should be unique. For example, the first and last
-        point in the list should not be the same.
-
     Parameters:
         points (sequence): A sequence of points.
 
@@ -40,6 +36,11 @@ def normal_polygon(points, unitized=True):
 
     Raises:
         ValueError: If less than three points are provided.
+
+    Notes:
+        The points in the list should be unique. For example, the first and last
+        point in the list should not be the same.
+
     """
     p = len(points)
     assert p > 2, "At least three points required"
@@ -64,10 +65,6 @@ def normal_polygon(points, unitized=True):
 def _normal_polygon(points, unitized=True):
     """Compute the normal of a polygon defined by a sequence of points.
 
-    Note:
-        The points in the list should be unique. For example, the first and last
-        point in the list should not be the same.
-
     Parameters:
         points (sequence): A sequence of points.
 
@@ -76,6 +73,11 @@ def _normal_polygon(points, unitized=True):
 
     Raises:
         ValueError: If less than three points are provided.
+
+    Notes:
+        The points in the list should be unique. For example, the first and last
+        point in the list should not be the same.
+
     """
     p = len(points)
     assert p > 2, "At least three points required"
@@ -113,6 +115,8 @@ def normal_triangle(triangle, unitized=True):
 
 
 def normal_triangle_xy(triangle, unitized=True):
+    """Compute the normal vector of a triangle assumed to lie in the XY plane.
+    """
     a, b, c = triangle
     ab = subtract_vectors_xy(b, a)
     ac = subtract_vectors_xy(c, a)

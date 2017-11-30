@@ -35,35 +35,37 @@ class MatlabProcessError(Exception):
 class MatlabProcess(object):
     """Communicate with Matlab through a subprocess.
 
-    Parameters:
-        matlab_exec (str, optional) : Path to the Matlab executable.
-            Defaults to `matlab`.
-        ws_data (dict, optional) : Workspace data to be loaded at startup.
-            Defaults to an empty dict.
-        ws_filename (str, optional) : Filename for workspace storage.
-            Defaults to `'./workspace.mat'`.
+    Parameters
+    ----------
+    matlab_exec : str, optional
+        Path to the Matlab executable. Defaults to ``matlab``.
+    ws_data : dict, optional
+        Workspace data to be loaded at startup. Defaults to an empty dict.
+    ws_filename : str, optional
+        Filename for workspace storage. Defaults to ``'./workspace.mat'``.
 
-    Examples:
-        >>> m = MatlabProcess()
+    Examples
+    --------
+    >>> m = MatlabProcess()
 
-        >>> m.start()
-        >>> m.write_value('a', 37)
-        >>> m.run_command('tf = isprime(a);')
-        >>> m.read_workspace()
-        >>> m.stop()
-        >>> print(m.ws_data)
+    >>> m.start()
+    >>> m.write_value('a', 37)
+    >>> m.run_command('tf = isprime(a);')
+    >>> m.read_workspace()
+    >>> m.stop()
+    >>> print(m.ws_data)
 
-        >>> m.write_value('a', 17)
-        >>> m.run_command('res = isprime(a);')
-        >>> m.read_value('res')
-        True
+    >>> m.write_value('a', 17)
+    >>> m.run_command('res = isprime(a);')
+    >>> m.read_value('res')
+    True
 
-        >>> m.run_command('res = isprime(a);', ivars={'a': 17})
-        >>> m.read_value('res')
-        True
+    >>> m.run_command('res = isprime(a);', ivars={'a': 17})
+    >>> m.read_value('res')
+    True
 
-        >>> m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None})
-        {'res': True}
+    >>> m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None})
+    {'res': True}
 
     """
 

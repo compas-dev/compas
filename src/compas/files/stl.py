@@ -13,7 +13,7 @@ __all__ = []
 
 
 class STL(object):
-    """
+    """Standard triangle library format.
 
     See Also
     --------

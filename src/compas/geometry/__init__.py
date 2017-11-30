@@ -5,23 +5,36 @@
 geometry
 ********************************************************************************
 
-.. currentmodule:: compas.geometry
+.. module:: compas.geometry
 
-.. note::
+This package provides functionality for working with geometry outside
+independent of CAD software.
 
-    The functions in this package expect input arguments to be structured in a certain
-    way.
-
-    - **point**: The xyz coordinates as a sequence of floats.
-    - **vector**: The xyz coordinates of the end point. The start is always the origin.
-    - **line**: A tuple with two points representing a continuous line (ray).
-    - **segment**: A tuple with two points representing a line segment.
-    - **plane**: A tuple with a base point and normal vector.
-    - **circle**: A tuple with a point the normal vector of the plane of the circle and the radius as float.
-    - **polygon**: A sequence of points. First and last are not the same. The polygon is assumed closed.
-    - **polyline**: A sequence of points. First and last are the same if the polyline is closed. Otherwise it is assumed open.
-    - **polyhedron**: A list of vertices represented by their XYZ coordinates and a list of faces referencing the vertex list.
-    - **frame**: A list of three orthonormal vectors.
+.. The functions in this package expect input arguments to be structured in a certain way:
+.. 
+.. point
+..     The xyz coordinates as a sequence of floats.
+.. vector
+..     The xyz coordinates of the end point.
+..     The start is always the origin.
+.. line
+..     A tuple with two points representing a continuous line (ray).
+.. segment
+..     A tuple with two points representing a line segment.
+.. plane
+..     A tuple with a base point and normal vector.
+.. circle
+..     A tuple with a point the normal vector of the plane of the circle and the radius as float.
+.. polygon
+..     A sequence of points. First and last are not the same.
+..     The polygon is assumed closed.
+.. polyline
+..     A sequence of points. First and last are the same if the polyline is closed.
+..     Otherwise it is assumed open.
+.. polyhedron
+..     A list of vertices represented by their XYZ coordinates and a list of faces referencing the vertex list.
+.. frame
+..     A list of three orthonormal vectors.
 
 
 Algorithms
@@ -60,31 +73,11 @@ Algorithms
     smooth_centerofmass
 
 
-Classes
-=======
-
-This package provides an object-oriented interface to the above functionality.
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Vector
-    Point
-    Line
-    Polyline
-    Polygon
-    Polyhedron
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    KDTree
-
-
 Functions
 =========
+
+Basic
+-----
 
 .. autosummary::
     :toctree: generated/
@@ -141,7 +134,8 @@ Functions
     pointcloud_xy
 
 
-**Distance**
+Distance
+--------
 
 .. autosummary::
     :toctree: generated/
@@ -167,12 +161,8 @@ Functions
     distance_point_point_sqrd
     distance_point_point_sqrd_xy
 
-**Angles**
-
-.. note::
-
-    All angle functions return a result in radians.
-    For a result in degrees use the *degrees* variation.
+Angles
+------
 
 .. autosummary::
     :toctree: generated/
@@ -188,7 +178,8 @@ Functions
     angles_vectors_xy
 
 
-**Average**
+Average
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -205,7 +196,8 @@ Functions
     midpoint_point_point_xy
 
 
-**Orientation**
+Orientation
+-----------
 
 .. autosummary::
     :toctree: generated/
@@ -216,7 +208,8 @@ Functions
     normal_triangle_xy
 
 
-**Queries**
+Queries
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -251,13 +244,13 @@ Functions
     is_point_in_triangle_xy
 
 
-**Intersections**
+Intersections
+-------------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    intersection_circle_circle
     intersection_circle_circle_xy
     intersection_line_line
     intersection_line_line_xy
@@ -265,12 +258,12 @@ Functions
     intersection_line_triangle
     intersection_plane_plane
     intersection_plane_plane_plane
-    intersection_segment_segment
     intersection_segment_segment_xy
     intersection_segment_plane
 
 
-**Size**
+Size
+----
 
 .. autosummary::
     :toctree: generated/
@@ -283,7 +276,8 @@ Functions
     volume_polyhedron
 
 
-**Transformations**
+Transformations
+---------------
 
 .. autosummary::
     :toctree: generated/
@@ -349,77 +343,28 @@ Functions
     translate_points
     translate_points_xy
 
+
+Classes
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Vector
+    Point
+    Line
+    Polyline
+    Polygon
+    Polyhedron
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    KDTree
+
 """
-
-
-# def is_point(point):
-#     """Verify that a given input represents a point.
-#     """
-#     assert len(point) >= 2, "A point is defined by at least two coordinates."
-
-
-# def is_vector(vector):
-#     """Verify that a given input represents a vector.
-#     """
-#     assert len(vector) >= 2, "A vector has at least two components."
-
-
-# def is_line(line):
-#     """Verify that a given input represents a line.
-#     """
-#     assert len(line) == 2, "A line is specified by two points."
-#     a, b = line
-#     is_point(a)
-#     is_point(b)
-
-
-# def is_segment(segment):
-#     """Verify that a given input represents a segment.
-#     """
-#     assert len(segment) == 2, "A segment is defined by two points."
-#     a, b = segment
-#     is_point(a)
-#     is_point(b)
-
-
-# def is_plane(plane):
-#     """Verify that a given input represents a plane.
-#     """
-#     assert len(plane) == 2, "A plane is defined by a base point and a normal vector."
-#     base, normal = plane
-#     is_point(base)
-#     is_vector(normal)
-
-
-# def is_circle(circle):
-#     """Verify that a given input represents a circle.
-#     """
-#     pass
-
-
-# def is_polygon(polygon):
-#     """Verify that a given input represents a polygon.
-#     """
-#     pass
-
-
-# def is_polyline(polyline):
-#     """Verify that a given input represents a polyline.
-#     """
-#     pass
-
-
-# def is_polyhedron(polyhedron):
-#     """Verify that a given input represents a polyhedron.
-#     """
-#     pass
-
-
-# def is_frame(frame):
-#     """Verify that a given input represents a frame.
-#     """
-#     pass
-
 
 # level 0
 

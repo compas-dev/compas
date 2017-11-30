@@ -63,14 +63,15 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
 
     Returns
     -------
-    tuple
+    array
+        Vertex co-ordinates.
+    array
+        Edge forces.
+    array
+        Edge lengths.
 
-        * array: Vertex co-ordinates.
-        * array: Edge forces.
-        * array: Edge lengths.
-
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 

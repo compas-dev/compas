@@ -94,10 +94,6 @@ class Mesh(FromToJson,
            Datastructure):
     """Definition of a mesh.
 
-    Note
-    ----
-    The datastructure of the mesh is implemented as a half-edge.
-
     Attributes
     ----------
     vertex : dict

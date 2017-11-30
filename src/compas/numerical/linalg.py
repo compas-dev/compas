@@ -75,13 +75,18 @@ def nullspace(A, tol=0.001):
 
     Parameters
     ----------
-        A (array, list): Matrix A represented as an array or list.
-        tol (float): Tolerance.
+    A : array-like
+        Matrix A represented as an array or list.
+    tol : float
+        Tolerance.
 
     Returns
     -------
-        array: Null(A).
+    array
+        Null(A).
 
+    Notes
+    -----
     The nullspace is the set of vector solutions to the equation
 
     .. math::
@@ -96,10 +101,10 @@ def nullspace(A, tol=0.001):
 
     Examples
     --------
-        >>> nullspace(array([[2, 3, 5], [-4, 2, 3]]))
-        [[-0.03273859]
-         [-0.85120177]
-         [ 0.52381647]]
+    >>> nullspace(array([[2, 3, 5], [-4, 2, 3]]))
+    [[-0.03273859]
+     [-0.85120177]
+     [ 0.52381647]]
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -119,20 +124,25 @@ def rank(A, tol=0.001):
 
     Parameters
     ----------
-        A (array, list): Matrix A represented as an array or list.
-        tol (float): Tolerance.
+    A : array-like
+        Matrix A represented as an array or list.
+    tol : float
+        Tolerance.
 
     Returns
     -------
-        int: rank(A).
+    int
+        rank(A)
 
+    Notes
+    -----
     The rank of a matrix is the maximum number of linearly independent rows in
     a matrix. Note that the row rank is equal to the column rank of the matrix.
 
     Examples
     --------
-        >>> rank([[1, 2, 1], [-2, -3, 1], [3, 5, 0]])
-        2
+    >>> rank([[1, 2, 1], [-2, -3, 1], [3, 5, 0]])
+    2
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -147,22 +157,30 @@ def dof(A, tol=0.001, condition=False):
 
     Parameters
     ----------
-        A (array, list): Matrix A represented as an array or list.
-        tol (float): Tolerance.
-        condition (boolean): Return the condition number of the matrix.
+    A : array-like
+        Matrix A represented as an array or list.
+    tol : float
+        Tolerance.
+    condition : bool
+        Return the condition number of the matrix.
 
     Returns
     -------
-        int: Column degrees-of-freedom.
-        int: Row degrees-of-freedom.
-        float: (Optional) Condition number.
+    int
+        Column degrees-of-freedom.
+    int
+        Row degrees-of-freedom.
+    float
+        Condition number, if ``condition`` is ``True``.
 
+    Notes
+    -----
     The degrees-of-freedom are the number of columns and rows minus the rank.
 
     Examples
     --------
-        >>> dof([[2, -1, 3,], [1, 0, 1], [0, 2, -1], [1, 1, 4]], condition=True)
-        (0, 1, 5.073597)
+    >>> dof([[2, -1, 3,], [1, 0, 1], [0, 2, -1], [1, 1, 4]], condition=True)
+    (0, 1, 5.073597)
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -180,20 +198,24 @@ def pivots(U, tol=None):
 
     Parameters
     ----------
-        U (array, list): Matrix U represented as an array or list.
+    U : array-like
+        Matrix U represented as an array or list.
 
     Returns
     -------
-        list: Pivot column indices.
+    list
+        Pivot column indices.
 
+    Notes
+    -----
     The pivots are the non-zero leading coefficients of each row.
 
     Examples
     --------
-        >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-        >>> n = rref(A, algo='sympy')
-        >>> pivots(n)
-        [0, 1]
+    >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
+    >>> n = rref(A, algo='sympy')
+    >>> pivots(n)
+    [0, 1]
 
     """
     if tol is None:
@@ -213,20 +235,24 @@ def nonpivots(U, tol=None):
 
     Parameters
     ----------
-        U (array, list): Matrix U represented as an array or list.
+    U : array-like
+        Matrix U represented as an array or list.
 
     Returns
     -------
-        list: Non-pivot column indices.
+    list
+        Non-pivot column indices.
 
+    Notes
+    -----
     The non-pivots are where there are no non-zero leading coefficients in a row.
 
     Examples
     --------
-        >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-        >>> n = rref(A, algo='sympy')
-        >>> nonpivots(n)
-        [2, 3]
+    >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
+    >>> n = rref(A, algo='sympy')
+    >>> nonpivots(n)
+    [2, 3]
 
     """
     U = atleast_2d(asarray(U, dtype=float))
@@ -239,25 +265,31 @@ def rref(A, tol=None):
 
     Parameters
     ----------
-        A (array, list): Matrix A represented as an array or list.
-        algo (str): Algorithm to use: 'qr', 'sympy', 'matlab'.
-        tol (float): Tolerance.
+    A : array-like
+        Matrix A represented as an array or list.
+    algo : str
+        Algorithm to use: 'qr', 'sympy', 'matlab'.
+    tol : float
+        Tolerance.
 
     Returns
     -------
-        array, list: RREF of A.
-
+    array
+        RREF of A.
+    
+    Notes
+    -----
     A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the
     result is independent of the method/algorithm used.
 
     Examples
     --------
-        >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-        >>> n = rref(A, algo='sympy')
-        >>> array(n)
-        [[1.0 0 1.0 3.0]
-         [0 1.0 0.667 0.333]
-         [0 0 0 0]]
+    >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
+    >>> n = rref(A, algo='sympy')
+    >>> array(n)
+    [[1.0 0 1.0 3.0]
+     [0 1.0 0.667 0.333]
+     [0 0 0 0]]
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -301,24 +333,29 @@ def rref_sympy(A, tol=None):
 
     Parameters
     ----------
-        A (array, list): Matrix A represented as an array or list.
-        tol (float): Tolerance.
+    A : array-like
+        Matrix A represented as an array or list.
+    tol : float
+        Tolerance.
 
     Returns
     -------
-        array, list: RREF of A.
+    array
+        RREF of A.
 
+    Notes
+    -----
     A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the
     result is independent of the method/algorithm used.
 
     Examples
     --------
-        >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-        >>> n = rref(A, algo='sympy')
-        >>> array(n)
-        [[1.0 0 1.0 3.0]
-         [0 1.0 0.667 0.333]
-         [0 0 0 0]]
+    >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
+    >>> n = rref(A, algo='sympy')
+    >>> array(n)
+    [[1.0 0 1.0 3.0]
+     [0 1.0 0.667 0.333]
+     [0 0 0 0]]
 
     """
     import sympy
@@ -332,24 +369,29 @@ def rref_matlab(A, ifile, ofile, tol=None):
 
     Parameters
     ----------
-        A (array, list): Matrix A represented as an array or list.
-        tol (float): Tolerance.
+    A : array-like
+        Matrix A represented as an array or list.
+    tol : float
+        Tolerance.
 
     Returns
     -------
-        array, list: RREF of A.
+    array
+        RREF of A.
 
+    Notes
+    -----
     A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the
     result is independent of the method/algorithm used.
 
     Examples
     --------
-        >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-        >>> n = rref(A, algo='sympy')
-        >>> array(n)
-        [[1.0 0 1.0 3.0]
-         [0 1.0 0.667 0.333]
-         [0 0 0 0]]
+    >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
+    >>> n = rref(A, algo='sympy')
+    >>> array(n)
+    [[1.0 0 1.0 3.0]
+     [0 1.0 0.667 0.333]
+     [0 0 0 0]]
 
     """
     import platform
@@ -410,30 +452,29 @@ def _chofactor(A):
 
     Parameters
     ----------
-        A (array): Matrix A represented as an (m x m) array.
+    A : array
+        Matrix A represented as an (m x m) array.
 
     Returns
     -------
-        array: Matrix (m x m) with upper/lower triangle containing Cholesky
-               factor of A.
+    array
+        Matrix (m x m) with upper/lower triangle containing Cholesky factor of A.
 
+    Notes
+    -----
     The Cholesky factorisation decomposes a Hermitian positive-definite matrix
-    A into the product of a lower/upper triangular matrix and its transpose.
+    into the product of a lower/upper triangular matrix and its transpose.
 
     .. math::
 
         \mathbf{A} = \mathbf{L} \mathbf{L}^{\mathrm{T}}
 
-    Note
-    ----
-        Random data inserted in the entries not used by Cholesky factorisation.
-
     Examples
     --------
-        >>> _chofactor(array([[25, 15, -5], [15, 18, 0], [-5, 0, 11]]))
-        (array([[  5.,   3.,  -1.],
-                [ 15.,   3.,   1.],
-                [ -5.,   0.,   3.]]), False)
+    >>> _chofactor(array([[25, 15, -5], [15, 18, 0], [-5, 0, 11]]))
+    (array([[  5.,   3.,  -1.],
+            [ 15.,   3.,   1.],
+            [ -5.,   0.,   3.]]), False)
 
     """
     return cho_factor(A)
@@ -444,12 +485,16 @@ def _lufactorized(A):
 
     Parameters
     ----------
-        A (array): Matrix A represented as an (m x n) array.
+    A : array
+        Matrix A represented as an (m x n) array.
 
     Returns
     -------
-        function: Function to solve linear system with input matrix (n x 1).
+    callable
+        Function to solve linear system with input matrix (n x 1).
 
+    Notes
+    -----
     LU decomposition factors a matrix as the product of a lower triangular and
     an upper triangular matrix L and U.
 
@@ -459,9 +504,9 @@ def _lufactorized(A):
 
     Examples
     --------
-        >>> fn = _lufactorized(array([[3, 2, -1], [2, -2, 4], [-1, 0.5, -1]]))
-        >>> fn(array([1, -2, 0]))
-        array([ 1., -2., -2.])
+    >>> fn = _lufactorized(array([[3, 2, -1], [2, -2, 4], [-1, 0.5, -1]]))
+    >>> fn(array([1, -2, 0]))
+    array([ 1., -2., -2.])
 
     """
     return factorized(A)
@@ -480,24 +525,28 @@ def uvw_lengths(C, X):
 
     Parameters
     ----------
-        C (sparse): Connectivity matrix (m x n).
-        X (array): Co-ordinates of vertices/points (n x 3).
+    C : sparse
+        Connectivity matrix (m x n).
+    X : array
+        Co-ordinates of vertices/points (n x 3).
 
     Returns
     -------
-        array: Vectors of co-ordinate differences in x, y and z (m x 3).
-        array: Lengths of members (m x 1).
+    array
+        Vectors of co-ordinate differences in x, y and z (m x 3).
+    array
+        Lengths of members (m x 1).
 
     Examples
     --------
-        >>> C = connectivity_matrix([[0, 1], [1, 2]], 'csr')
-        >>> X = array([[0, 0, 0], [1, 1, 0], [0, 0, 1]])
-        >>> uvw
-        array([[ 1,  1,  0],
-               [-1, -1,  1]])
-        >>> l
-        array([[ 1.41421356],
-               [ 1.73205081]])
+    >>> C = connectivity_matrix([[0, 1], [1, 2]], 'csr')
+    >>> X = array([[0, 0, 0], [1, 1, 0], [0, 0, 1]])
+    >>> uvw
+    array([[ 1,  1,  0],
+           [-1, -1,  1]])
+    >>> l
+    array([[ 1.41421356],
+           [ 1.73205081]])
 
     """
     uvw = C.dot(X)
@@ -509,22 +558,26 @@ def normrow(A):
 
     Parameters
     ----------
-        A (array): Matrix A represented as an (m x n) array.
+    A : array
+        Matrix A represented as an (m x n) array.
 
     Returns
     -------
-        array: Column vector (m x 1) of values.
+    array
+        Column vector (m x 1) of values.
 
+    Notes
+    -----
     The calculation is the Euclidean 2-norm, i.e. the square root of the sum
     of the squares of the elements in each row, this equates to the "length" of
     the m row vectors.
 
     Examples
     --------
-        >>> normrow(array([[2, -1, 3,], [1, 0, 1], [0, 2, -1]]))
-        [[ 3.74165739]
-         [ 1.41421356]
-         [ 2.23606798]]
+    >>> normrow(array([[2, -1, 3,], [1, 0, 1], [0, 2, -1]]))
+    [[ 3.74165739]
+     [ 1.41421356]
+     [ 2.23606798]]
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -536,26 +589,29 @@ def normalizerow(A, do_nan_to_num=True):
 
     Parameters
     ----------
-        A (array): Matrix A represented as an (m x n) array.
-        do_nan_to_num (boolean): Convert NaNs and INF to numbers, default=True.
+    A : array
+        Matrix A represented as an (m x n) array.
+    do_nan_to_num : bool
+        Convert NaNs and INF to numbers, default=True.
 
     Returns
     -------
-        array: Matrix of normalised row vectors (m x n).
+    array
+        Matrix of normalised row vectors (m x n).
 
+    Notes
+    -----
     Normalises the row vectors of A by the normrows, i.e. creates an array of
     vectors where the row vectors have length of unity.
 
-    Note
-    ----
-        Tiling is not necessary, because of NumPy's broadcasting behaviour.
+    Tiling is not necessary, because of NumPy's broadcasting behaviour.
 
     Examples
     --------
-        >>> normalizerow(array([[2, -1, 3,], [1, 0, 1], [0, 2, -1]]))
-        array([[ 0.53452248, -0.26726124,  0.80178373],
-               [ 0.70710678,  0.        ,  0.70710678],
-               [ 0.        ,  0.89442719, -0.4472136 ]])
+    >>> normalizerow(array([[2, -1, 3,], [1, 0, 1], [0, 2, -1]]))
+    array([[ 0.53452248, -0.26726124,  0.80178373],
+           [ 0.70710678,  0.        ,  0.70710678],
+           [ 0.        ,  0.89442719, -0.4472136 ]])
 
     """
     if do_nan_to_num:
@@ -569,24 +625,29 @@ def rot90(vectors, axes):
 
     Parameters
     ----------
-        vectors (array): An array of row vectors (m x 3).
-        axes (array): An array of axes (m x 3).
+    vectors : array
+        An array of row vectors (m x 3).
+    axes : array
+        An array of axes (m x 3).
 
     Returns
     -------
-        array: Matrix of row vectors (m x 3).
+    array
+        Matrix of row vectors (m x 3).
 
+    Notes
+    -----
     Computes the cross product of each row vector with its corresponding axis,
     and then rescales the resulting normal vectors to match the length of the
     original row vectors.
 
     Examples
     --------
-        >>> vectors = array([[2, 1, 3], [2, 6, 8]])
-        >>> axes = array([[7, 0, 1], [4, 4, 2]])
-        >>> rot90(vectors, axes)
-        [[-0.18456235 -3.50668461  1.29193644]
-         [ 5.3748385  -7.5247739   4.2998708 ]]
+    >>> vectors = array([[2, 1, 3], [2, 6, 8]])
+    >>> axes = array([[7, 0, 1], [4, 4, 2]])
+    >>> rot90(vectors, axes)
+    [[-0.18456235 -3.50668461  1.29193644]
+     [ 5.3748385  -7.5247739   4.2998708 ]]
 
     """
     return normalizerow(cross(axes, vectors)) * normrow(vectors)
@@ -601,15 +662,21 @@ def solve_with_known(A, b, x, known):
 
     Parameters
     ----------
-        A (array): Coefficient matrix represented as an (m x n) array.
-        b (array): Right-hand-side represented as an (m x 1) array.
-        x (array): Unknowns/knowns represented as an (n x 1) array.
-        known (list): The indices of the known elements of ``x``.
+    A : array
+        Coefficient matrix represented as an (m x n) array.
+    b : array
+        Right-hand-side represented as an (m x 1) array.
+    x : array
+        Unknowns/knowns represented as an (n x 1) array.
+    known : list
+        The indices of the known elements of ``x``.
 
     Returns
     -------
-        array: (n x 1) vector solution.
+    array: (n x 1) vector solution.
 
+    Notes
+    -----
     Computes the solution of the system of linear equations.
 
     .. math::
@@ -618,11 +685,11 @@ def solve_with_known(A, b, x, known):
 
     Examples
     --------
-        >>> A = array([[2, 1, 3], [2, 6, 8], [6, 8, 18]])
-        >>> b = array([[1], [3], [5]])
-        >>> x = array([[0.3], [0], [0]])
-        >>> solve_with_known(A, b, x, [0])
-        array([ 0.3, 0.4, 0.0])
+    >>> A = array([[2, 1, 3], [2, 6, 8], [6, 8, 18]])
+    >>> b = array([[1], [3], [5]])
+    >>> x = array([[0.3], [0], [0]])
+    >>> solve_with_known(A, b, x, [0])
+    array([ 0.3, 0.4, 0.0])
 
     """
     eps = 1 / sys.float_info.epsilon
@@ -644,32 +711,37 @@ def spsolve_with_known(A, b, x, known):
 
     Parameters
     ----------
-        A (array): Coefficient matrix (sparse) represented as an (m x n) array.
-        b (array): Right-hand-side represented as an (m x 1) array.
-        x (array): Unknowns/knowns represented as an (n x 1) array.
-        known (list): The indices of the known elements of ``x``.
+    A : array
+        Coefficient matrix (sparse) represented as an (m x n) array.
+    b : array
+        Right-hand-side represented as an (m x 1) array.
+    x : array
+        Unknowns/knowns represented as an (n x 1) array.
+    known : list
+        The indices of the known elements of ``x``.
 
     Returns
     -------
-        array: (n x 1) vector solution.
+    array
+        (n x 1) vector solution.
 
+    Notes
+    -----
     Computes the solution (using spsolve) of the system of linear equations.
 
     .. math::
 
         \mathbf{A} \mathbf{x} = \mathbf{b}
 
-    Note
-    ----
-        Same function as solve_with_known, but for sparse matrix A.
+    Same function as solve_with_known, but for sparse matrix A.
 
     Examples
     --------
-        >>> A = array([[2, 1, 3], [2, 6, 8], [6, 8, 18]])
-        >>> b = array([[1], [3], [5]])
-        >>> x = array([[0.3], [0], [0]])
-        >>> solve_with_known(A, b, x, [0])
-        array([ 0.3, 0.4, 0.0])
+    >>> A = array([[2, 1, 3], [2, 6, 8], [6, 8, 18]])
+    >>> b = array([[1], [3], [5]])
+    >>> x = array([[0.3], [0], [0]])
+    >>> solve_with_known(A, b, x, [0])
+    array([ 0.3, 0.4, 0.0])
 
     """
     unknown = list(set(range(x.shape[0])) - set(known))

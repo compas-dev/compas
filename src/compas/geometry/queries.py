@@ -17,6 +17,8 @@ from compas.geometry.distance import distance_point_line
 from compas.geometry.distance import distance_point_line_xy
 from compas.geometry.distance import closest_point_on_segment
 
+from compas.geometry.size import area_triangle
+
 from compas.geometry.angles import angle_vectors
 from compas.geometry.average import center_of_mass_polygon
 
@@ -59,7 +61,7 @@ __all__ = [
 
 
 def is_ccw_xy(a, b, c, colinear=False):
-    """Verify if ``c`` is on the left of ``ab`` when looking from ``a`` to ``b``,
+    """Verify if c is on the left of ab when looking from a to b,
     and assuming that all points lie in the XY plane.
 
     Parameters
@@ -80,6 +82,15 @@ def is_ccw_xy(a, b, c, colinear=False):
         ``True`` if ccw.
         ``False`` otherwise.
 
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Marsh, C. *Computational Geometry in Python: From Theory to Application*.
+           Available at: https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation
+
     Examples
     --------
     >>> print(is_ccw_xy([0,0,0], [0,1,0], [-1, 0, 0]))
@@ -93,10 +104,6 @@ def is_ccw_xy(a, b, c, colinear=False):
 
     >>> print(is_ccw_xy([0,0,0], [1,0,0], [2,0,0], True))
     True
-
-    References
-    ----------
-    https://www.toptal.com/python/computational-geometry-in-python-from-theory-to-implementation
 
     """
     ab_x = b[0] - a[0]
@@ -128,11 +135,28 @@ def is_colinear(a, b, c):
         ``False`` otherwise.
 
     """
-    raise NotImplementedError
+    return area_triangle([a, b, c]) < 1e-9
 
 
 def is_colinear_xy(a, b, c):
-    """"""
+    """Verify if three points are colinear in the XY plane.
+
+    Parameters
+    ----------
+    a : tuple, list, Point
+        Point 1.
+    b : tuple, list, Point
+        Point 2.
+    c : tuple, list, Point
+        Point 3.
+
+    Returns
+    -------
+    bool
+        ``True`` if the points are collinear
+        ``False`` otherwise.
+
+    """
     ab_x = b[0] - a[0]
     ab_y = b[1] - a[1]
     ac_x = c[0] - a[0]
@@ -144,16 +168,6 @@ def is_colinear_xy(a, b, c):
 def is_coplanar(points, tol=0.01):
     """Verify if the points are coplanar.
 
-    Compute the normal vector (cross product) of the vectors formed by the first
-    three points. Include one more vector at a time to compute a new normal and
-    compare with the original normal. If their cross product is not zero, they
-    are not parallel, which means the point are not in the same plane.
-
-    Four points are coplanar if the volume of the tetrahedron defined by them is
-    0. Coplanarity is equivalent to the statement that the pair of lines
-    determined by the four points are not skew, and can be equivalently stated
-    in vector form as (x2 - x0).[(x1 - x0) x (x3 - x2)] = 0.
-
     Parameters
     ----------
     points : sequence
@@ -164,6 +178,18 @@ def is_coplanar(points, tol=0.01):
     bool
         ``True`` if the points are coplanar.
         ``False`` otherwise.
+
+    Notes
+    -----
+    Compute the normal vector (cross product) of the vectors formed by the first
+    three points. Include one more vector at a time to compute a new normal and
+    compare with the original normal. If their cross product is not zero, they
+    are not parallel, which means the point are not in the same plane.
+
+    Four points are coplanar if the volume of the tetrahedron defined by them is
+    0. Coplanarity is equivalent to the statement that the pair of lines
+    determined by the four points are not skew, and can be equivalently stated
+    in vector form as (x2 - x0).[(x1 - x0) x (x3 - x2)] = 0.
 
     """
     tol2 = tol ** 2
@@ -201,8 +227,8 @@ def is_polygon_convex(polygon):
     polygon : sequence of sequence of floats
         The XYZ coordinates of the corners of the polygon.
 
-    Note
-    ----
+    Notes
+    -----
     Use this function for *spatial* polygons.
     If the polygon is in a horizontal plane, use :func:`is_polygon_convex_xy` instead.
 
@@ -300,7 +326,7 @@ def is_point_infront_plane(point, plane):
 
     """
     return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > 0.0
-    
+
 
 
 def is_point_on_line(point, line, tol=0.0):
@@ -308,9 +334,12 @@ def is_point_on_line(point, line, tol=0.0):
 
     Parameters
     ----------
-    point (sequence of float): XYZ coordinates.
-    line (tuple): Two points defining a line.
-    tol (float): Optional. A tolerance. Default is ``0.0``.
+    point : sequence of float
+        XYZ coordinates.
+    line : tuple
+        Two points defining a line.
+    tol : float, optional
+        A tolerance. Default is ``0.0``.
 
     Returns
     -------
@@ -504,8 +533,8 @@ def is_point_in_triangle(point, triangle):
         True if the point is in inside the triangle.
         False otherwise.
 
-    Note
-    ----
+    Notes
+    -----
     Should the point be in the same plane as the triangle?
 
     See Also
@@ -546,7 +575,7 @@ def is_point_in_triangle_xy(point, triangle, colinear=False):
     colinear : bool, optional
         Allow points to be colinear.
         Default is ``False``.
-        
+
     Returns
     -------
     bool
@@ -569,18 +598,25 @@ def is_point_in_triangle_xy(point, triangle, colinear=False):
 def is_point_in_convex_polygon_xy(point, polygon):
     """Verify if a point is in the interior of a convex polygon lying in the XY-plane.
 
-    Parameters:
-        (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-        polygon (sequence) : A sequence of XY(Z) coordinates of 2D or 3D points
+    Parameters
+    ----------
+    point : sequence of float
+        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+    polygon : sequence
+        A sequence of XY(Z) coordinates of 2D or 3D points
         (Z will be ignored) representing the locations of the corners of a polygon.
         The vertices are assumed to be in order. The polygon is assumed to be closed:
         the first and last vertex in the sequence should not be the same.
 
-    Warning:
-        Does not work for concave polygons.
+    Returns
+    -------
+    bool
+        True if the point is in the convex polygon, False otherwise.
 
-    Returns:
-        bool: True if the point is in the convex polygon, False otherwise.
+    Warning
+    -------
+    Does not work for concave polygons.
+
     """
     ccw = None
     for i in range(-1, len(polygon) - 1):
@@ -628,6 +664,16 @@ def is_point_in_polygon_xy(point, polygon):
 
 
 def is_point_in_circle(point, circle):
+    """Verify if a point lies in a circle.
+
+    Parameters:
+        point (sequence of float): XYZ coordinates of a 3D point.
+        circle (tuple): center, radius, normal
+
+    Returns:
+        (bool): True if the point lies in the circle, False otherwise.
+
+    """
     center, radius, normal = circle
     if is_point_on_plane(point, (center, normal)):
         return distance_point_point(point, center) <= radius

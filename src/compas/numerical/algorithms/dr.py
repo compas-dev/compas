@@ -75,8 +75,8 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     callback_args : tuple, optional
         Additional arguments to be passed to the callback.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 

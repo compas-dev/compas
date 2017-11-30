@@ -275,7 +275,7 @@ class FaceNetwork(FaceHelpers,
     def add_face(self, vertices, fkey=None, attr_dict=None, **kwattr):
         """Add a face and specify its attributes (optional).
 
-        Note:
+        Notes:
             * All faces are closed. The closing link is implied and, therefore,
               the last vertex in the list should be different from the first.
             * Building a face_adjacency list is slow, if we can't rely on the fact

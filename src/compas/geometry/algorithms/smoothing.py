@@ -57,8 +57,8 @@ def smooth_centroid(vertices,
     Exception
         If a callback is provided, but it is not callable.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 
@@ -160,14 +160,14 @@ def smooth_centerofmass(vertices,
     Exception
         If a callback is provided, but it is not callable.
 
-    Note
-    ----
+    Notes
+    -----
     When using this algorithm in combination with one of the datastructures (as in the example below),
     note that the neighbours of each vertex have to be listed in order, i.e. they have to form a polygon
     without self-intersections.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 
@@ -272,8 +272,8 @@ def smooth_area(vertices,
     Exception
         If a callback is provided, but it is not callable.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 
@@ -391,8 +391,8 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
     Exception
         If a callback is provided, but it is not callable.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 
@@ -469,8 +469,8 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
     Exception
         If a callback is provided, but it is not callable.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 
@@ -547,8 +547,8 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
     Exception
         If a callback is provided, but it is not callable.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 
@@ -649,8 +649,8 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
     Exception
         If a callback is provided, but it is not callable.
 
-    Example
-    -------
+    Examples
+    --------
     .. plot::
         :include-source:
 

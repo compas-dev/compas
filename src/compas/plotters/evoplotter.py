@@ -19,8 +19,7 @@ __all__ = [
 
 
 class EvoPlotter(Plotter):
-
-    """ Initialises Evolutionary solver Plotter.
+    """Initialises Evolutionary solver Plotter.
 
     Parameters:
         generations (int): Number of total generations for the evolution.

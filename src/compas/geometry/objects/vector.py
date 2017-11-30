@@ -349,7 +349,7 @@ class Vector(object):
         Parameters:
             n (int, float): The scaling factor.
 
-        Note:
+        Notes:
             This is an alias for self \*= n
         """
         self *= n

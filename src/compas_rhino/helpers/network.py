@@ -126,8 +126,8 @@ def network_draw(network,
     * :func:`network_draw_vertices`
     * :func:`network_draw_edges`
 
-    Example
-    -------
+    Examples
+    --------
     >>>
 
     """
@@ -396,8 +396,8 @@ def network_select_vertices(network, message="Select network vertices."):
     list
         The keys of the selected vertices.
 
-    Example
-    -------
+    Examples
+    --------
     >>>
 
     See Also

@@ -435,8 +435,8 @@ def compile_rui(oclass, opath, rui_config='rui_config.json'):
         The path of the configuration file.
         Defaults to ``'rui_config.json'``
 
-    Example
-    -------
+    Examples
+    --------
     * :download:`fofin_controller.py </../../examples/workshops/acadia2017/fofin_controller.py>`
     * :download:`fofin_config.json </../../examples/workshops/acadia2017/fofin_config.json>`
 

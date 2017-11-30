@@ -55,7 +55,7 @@ def moga(fit_functions,
          fkwargs=None,
          output_path=None):
 
-    """Multi-objective Genetic Algorithm optimisation [deb2001]_.
+    """Multi-objective Genetic Algorithm optimisation.
 
     Parameters
     ----------
@@ -100,8 +100,17 @@ def moga(fit_functions,
     moga : object
         The resulting :class'MOGA' instance.
 
-    Example
-    -------
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Deb K., *Multi-Objective Optimization using Evolutionary Algorithms*,
+           John Wiley & Sons, Chichester, 2001.
+
+    Examples
+    --------
     Zitzler-Deb-Thiele Test problem 3
 
     .. code-block:: python
@@ -191,7 +200,7 @@ def moga(fit_functions,
 
 class MOGA(object):
     """This class contains a binary coded, multiple objective genetic algorithm called
-    NSGA-II (K. Deb). NSGA-II uses the concept of non-domination (Pareto-domination) to
+    NSGA-II [deb2001]_. NSGA-II uses the concept of non-domination (Pareto-domination) to
     classify solutions and optimize as a genetic algorith. NSGA-II also employs a crowding distance
     operator designed to distribute individuals in the population allong the Pareto
     front, avoid crowding in small areas.
@@ -256,11 +265,6 @@ class MOGA(object):
     fkwargs : dict, optional [None]
         Keyword arguments to be fed to the fitness function.
 
-
-    References
-    ----------
-    * Deb, K. (2001), Multi-Objective Optimization using Evolutionary Algorithms,
-    John Wiley & Sons, Chichester.
     """
 
     def __init__(self):
@@ -734,12 +738,12 @@ class MOGA(object):
         """
         self.mating_pool_a = []
         self.mating_pool_b = []
-        for i in range(self.num_pop / 2):
+        for i in range(int(self.num_pop / 2)):
             chrom_a = []
             chrom_b = []
             for j in range(self.num_var):
                 chrom_a += self.combined_pop['binary'][self.mp_individual_indices[i]][j]
-                chrom_b += self.combined_pop['binary'][self.mp_individual_indices[i + (self.num_pop / 2)]][j]
+                chrom_b += self.combined_pop['binary'][self.mp_individual_indices[i + int(self.num_pop / 2)]][j]
             self.mating_pool_a.append(chrom_a)
             self.mating_pool_b.append(chrom_b)
 
@@ -750,7 +754,7 @@ class MOGA(object):
         """
         self.current_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': []}
         self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
-        for j in range(self.num_pop / 2):
+        for j in range(int(self.num_pop / 2)):
             cross = random.randint(1, self.total_bin_dig - 1)
             a = self.mating_pool_a[j]
             b = self.mating_pool_b[j]
@@ -765,7 +769,7 @@ class MOGA(object):
                 variable_b = d[:self.num_bin_dig[i]]
                 del d[:self.num_bin_dig[i]]
                 self.current_pop['binary'][j][i] = variable_a
-                self.current_pop['binary'][j + (self.num_pop / 2)][i] = variable_b
+                self.current_pop['binary'][j + int(self.num_pop / 2)][i] = variable_b
 
     def random_mutation(self):
         """This mutation operator replaces a gene from 0 to 1 or viceversa

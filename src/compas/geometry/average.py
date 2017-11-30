@@ -263,8 +263,8 @@ def center_of_mass_polyhedron(polyhedron):
     tuple
         XYZ coordinates of the center of mass.
 
-    Example
-    -------
+    Examples
+    --------
     >>> from compas.geometry import Polyhedron
     >>> p = Polyhedron.generate(6)
     >>> center_of_mass_polyhedron((p.vertices, p.faces))

@@ -31,38 +31,63 @@ class ViewerError(Exception):
 class Viewer(object):
     """Base class for defining viewers.
 
+    Parameters
+    ----------
+    title : str
+        The title of the viewer window. Defaults to `Viewer`.
+    width : int
+        The width of the viewer window. Defaults to `800`.
+    height : int
+        The height of the viewer window. Defaults to `600`.
+
+    Attributes
+    ----------
+    title : str
+        The title of the viewer window.
+    width : int
+        The width of the viewer window.
+    height : int
+        The height of the viewer window.
+    clear_color : sequence(4)
+        A sequence of 4 floats defining the background color of the scene.
+    grid_on : bool
+        Grid on or off.
+    mouse : Mouse
+        A ``Mouse`` object.
+    camera : Camera
+        A ``Camera`` object.
+    grid : Grid
+        A ``Grid`` object.
+
+    Notes
+    -----
     Extend this class to make a custom viewer. The class has a `setup` function
     that creates a basic window and registers callback for the most common GLUT
-    functions: `glutDisplayFunc`, `glutReshapeFunc`, `glutTimerFunc`,
-    `glutKeyboardFunc`, `glutMouseFunc`, `glutMotionFunc`, `glutIdleFunc`.
+    functions:
+
+        * `glutDisplayFunc`
+        * `glutReshapeFunc`
+        * `glutTimerFunc`
+        * `glutKeyboardFunc`
+        * `glutMouseFunc`
+        * `glutMotionFunc`
+        * `glutIdleFunc`
+
     The callbacks are registered using a two-step mechanism. The registration is
     handled by a method `name_callback` and the implementation by a method
-    `name`. For example: `display_callback` is registered with
-    `glutDisplayFunc`, and `display_callback` calls `display` for the actual
-    implementation. To modify the behaviour of the `display callback`, you
-    should thus redefine `display`.
+    `name`.
 
-    Parameters:
-        title (str): The title of the viewer window. Defaults to `Viewer`.
-        width (int): The width of the viewer window. Defaults to `800`.
-        height (int): The height of the viewer window. Defaults to `600`.
+    For example: `display_callback` is registered with `glutDisplayFunc`, and
+    `display_callback` calls `display` for the actual implementation. To modify
+    the behaviour of the `display callback`, you should thus redefine `display`.
 
-    Attributes:
-        title (str): The title of the viewer window.
-        width (int): The width of the viewer window.
-        height (int): The height of the viewer window.
-        clear_color (sequence(4)): A sequence of 4 floats defining the
-            background color of the scene.
-        grid_on (bool): Grid on or off.
-        mouse (Mouse): A ``Mouse`` object.
-        camera (Camera): A ``Camera`` object.
-        grid (Grid): A ``Grid`` object.
+    Examples
+    --------
+    >>> viewer = Viewer(width=1440, height=900)
+    >>> viewer.title = 'Big window'
+    >>> viewer.setup()
+    >>> viewer.show()
 
-    Examples:
-        >>> viewer = Viewer(width=1440, height=900)
-        >>> viewer.title = 'Big window'
-        >>> viewer.setup()
-        >>> viewer.show()
     """
     def __init__(self, title='Viewer', width=800, height=600, displayfuncs=None, delay_setup=True, **kwargs):
         self._mod         = 0
@@ -265,16 +290,21 @@ class Viewer(object):
         method to customize what the viewer does when it is being reshaped, i.e.
         resized.
 
-        Note:
-            This function is called automatically when the viewer is resized.
-            The parameters `w` and `h` are automatically provided by the caller
-            and correspond to the `live` size of the window. The function is
-            also called when the window is initialized ,i.e. when it is given
-            its initial size.
+        Parameters
+        ----------
+        w : int
+            The new width of the viewer.
+        h : int
+            The new height of the viewer.
 
-        Parameters:
-            w (int): The new width of the viewer.
-            h (int): The new height of the viewer.
+        Notes
+        -----
+        This function is called automatically when the viewer is resized.
+        The parameters `w` and `h` are automatically provided by the caller
+        and correspond to the `live` size of the window. The function is
+        also called when the window is initialized ,i.e. when it is given
+        its initial size.
+
         """
         self.width = w
         self.height = h
