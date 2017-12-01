@@ -37,15 +37,56 @@ def convex_hull_numpy(points):
         Indices of the points on the hull.
         Faces of the hull.
 
-    Warning
-    -------
-    This function requires Numpy ands Scipy.
+    Notes
+    -----
+    The faces of the hull returned by this function do not necessarily have consistent
+    cycle directions. To obtain a mesh with consistent cycle directions, construct
+    a mesh from the returned vertices, this function should be used in combination
+    with :func:`compas.topology.unify_cycles`.
 
     Examples
     --------
     .. code-block:: python
 
-        #
+        import random
+
+        from compas.datastructures import Mesh
+
+        from compas.geometry import distance_point_point
+        from compas.geometry import convex_hull_numpy
+        from compas.topology import unify_cycles
+
+        from compas.viewers import MeshViewer
+
+        radius = 5
+        origin = (0., 0., 0.)
+        count = 0
+        points = []
+
+        while count < 10:
+            x = (random.random() - 0.5) * radius * 2
+            y = (random.random() - 0.5) * radius * 2
+            z = (random.random() - 0.5) * radius * 2
+            pt = x, y, z
+
+            if distance_point_point(origin, pt) <= radius:
+                points.append(pt)
+                count += 1
+
+        vertices, faces = convex_hull_numpy(points)
+
+        i_index = {i: index for index, i in enumerate(vertices)}
+
+        vertices = [points[index] for index in vertices]
+        faces = [[i_index[i] for i in face] for face in faces]
+        faces = unify_cycles(vertices, faces)
+
+        mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+        viewer = MeshViewer(mesh)
+
+        viewer.setup()
+        viewer.show()
 
     """
     points = asarray(points)
@@ -73,9 +114,17 @@ def convex_hull_xy_numpy(points):
 
     Returns
     -------
-    tuple
+    list
         Indices of the points on the hull.
+    list
         Faces of the hull.
+
+    Notes
+    -----
+    The faces of the hull returned by this function do not necessarily have consistent
+    cycle directions. To obtain a mesh with consistent cycle directions, construct
+    a mesh from the returned vertices, this function should be used in combination
+    with :func:`compas.topology.unify_cycles`.
 
     Examples
     --------
@@ -91,9 +140,6 @@ def convex_hull_xy_numpy(points):
 
     points = points[:, :2]
     hull = ConvexHull(points)
-    # temp = zeros((hull.vertices.shape[0], 1))
-    # temp[:, :-1] = points[hull.vertices]
-    # return temp
     return hull.vertices, hull.simplices
 
 
@@ -108,19 +154,19 @@ if __name__ == "__main__":
 
     import random
 
-    from compas.geometry.distance import distance_point_point
+    from compas.geometry import distance_point_point
 
     from compas.datastructures import Mesh
     from compas.viewers import MeshViewer
 
-    from compas.topology import mesh_unify_cycles
+    from compas.topology import unify_cycles
 
     radius = 5
     origin = (0., 0., 0.)
     count = 0
     points = []
 
-    while count < 10:
+    while count < 1000:
         x = (random.random() - 0.5) * radius * 2
         y = (random.random() - 0.5) * radius * 2
         z = (random.random() - 0.5) * radius * 2
@@ -134,14 +180,16 @@ if __name__ == "__main__":
 
     i_index = {i: index for index, i in enumerate(vertices)}
 
-    mesh = Mesh.from_vertices_and_faces(
-        [points[index] for index in vertices],
-        [[i_index[i] for i in face] for face in faces[1:]]
-    )
+    vertices = [points[index] for index in vertices]
+    faces = [[i_index[i] for i in face] for face in faces]
+    faces = unify_cycles(vertices, faces)
 
-    mesh_unify_cycles(mesh)
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
     viewer = MeshViewer(mesh)
+
+    viewer.axes_on = False
+    viewer.grid_on = False
 
     viewer.setup()
     viewer.show()

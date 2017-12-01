@@ -256,6 +256,7 @@ def breadth_first_ordering(adjacency, root):
 
 
 def breadth_first_traverse(adjacency, root, callback=None):
+    """"""
     tovisit  = deque([root])
     visited  = set([root])
 

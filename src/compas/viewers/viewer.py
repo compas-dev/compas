@@ -48,9 +48,18 @@ class Viewer(object):
         The width of the viewer window.
     height : int
         The height of the viewer window.
-    clear_color : sequence(4)
+    near : float
+        Distance of the near clipping plane. Default is `0.1`.
+    far : float
+        Distance of the far clipping plane. Default is `1000.0`.
+    fov : float
+        Field of view. Default is `50.0`.
+    clear_color : 4-tuple of float
         A sequence of 4 floats defining the background color of the scene.
+        Default is `(0.9, 0.9, 0.9, 1.0)`.
     grid_on : bool
+        Grid on or off.
+    axes_on : bool
         Grid on or off.
     mouse : Mouse
         A ``Mouse`` object.
@@ -58,6 +67,8 @@ class Viewer(object):
         A ``Camera`` object.
     grid : Grid
         A ``Grid`` object.
+    displayfuncs : list of callable
+        A list of functions called by the display callback to render the scene.
 
     Notes
     -----

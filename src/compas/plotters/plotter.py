@@ -31,13 +31,6 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['Plotter', ]
 
 
-# https://matplotlib.org/faq/usage_faq.html#what-is-interactive-mode
-# https://matplotlib.org/api/pyplot_summary.html
-# https://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure
-# https://matplotlib.org/api/axes_api.html
-# https://matplotlib.org/api/index.html
-
-
 class Plotter(object):
     """Definition of a plotter object based on matplotlib.
 
@@ -75,7 +68,6 @@ class Plotter(object):
     .. [1] Hunter, J. D., 2007. *Matplotlib: A 2D graphics environment*.
            Computing In Science & Engineering (9) 3, p.90-95.
            Available at: http://ieeexplore.ieee.org/document/4160265/citations.
-
 
     """
     def __init__(self, figsize=(16.0, 12.0), dpi=100.0, interactive=False, tight=False, **kwargs):
