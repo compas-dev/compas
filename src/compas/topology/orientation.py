@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.utilities import pairwise
+from compas.geometry import centroid_points
 from compas.topology import breadth_first_traverse
 
 
@@ -12,12 +14,89 @@ __email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
+    'face_adjacency',
+    'mesh_face_adjacency',
+    'unify_cycles',
     'mesh_unify_cycles',
     'mesh_flip_cycles',
 ]
 
 
-def face_adjacency(mesh):
+def face_adjacency(xyz, faces):
+    """"""
+    points = [centroid_points([xyz[index] for index in face]) for face in faces]
+
+    try:
+        from scipy.spatial import cKDTree
+
+        tree = cKDTree(points)
+        _, closest = tree.query(points, k=10, n_jobs=-1)
+
+    except Exception:
+        try:
+            import Rhino
+
+        except Exception:
+            from compas.geometry import KDTree
+
+            tree = KDTree(points)
+            closest = [tree.nearest_neighbours(point, 10) for point in points]
+            closest = [[index for _, index, _ in nnbrs] for nnbrs in closest]
+
+        else:
+            from Rhino.Geometry import RTree
+            from Rhino.Geometry import Sphere
+            from Rhino.Geometry import Point3d
+
+            tree = RTree()
+            for i, point in enumerate(points):
+                tree.Insert(Point3d(* point), i)
+
+            def callback(sender, e):
+                data = e.Tag
+                data.append(e.Id)
+
+            closest = []
+            for i, point in enumerate(points):
+                sphere = Sphere(Point3d(* point), 2.0)
+                data = []
+                tree.Search(sphere, callback, data)
+                closest.append(data)
+
+    adjacency  = {}
+
+    for face, vertices in enumerate(faces):
+        nbrs  = []
+        found = set()
+
+        nnbrs = set(closest[face])
+
+        for u, v in pairwise(vertices + vertices[0:1]):
+            for nbr in nnbrs:
+
+                if nbr == face:
+                    continue
+                if nbr in found:
+                    continue
+
+                for a, b in pairwise(faces[nbr] + faces[nbr][0:1]):
+                    if v == a and u == b:
+                        nbrs.append(nbr)
+                        found.add(nbr)
+                        break
+
+                for a, b in pairwise(faces[nbr] + faces[nbr][0:1]):
+                    if u == a and v == b:
+                        nbrs.append(nbr)
+                        found.add(nbr)
+                        break
+
+        adjacency[face] = nbrs
+
+    return adjacency
+
+
+def mesh_face_adjacency(mesh):
     """Build a face adjacency dict.
 
     Parameters
@@ -86,7 +165,7 @@ def face_adjacency(mesh):
         index = fkey_index[fkey]
         found = set()
 
-        nnbrs = closest[index]
+        nnbrs = set(closest[index])
 
         for u, v in mesh.face_halfedges(fkey):
             for index in nnbrs:
@@ -114,6 +193,30 @@ def face_adjacency(mesh):
     return adjacency
 
 
+def unify_cycles(vertices, faces, root=0):
+    """"""
+    def unify(node, nbr):
+        # find the common edge
+        for u, v in pairwise(faces[nbr] + faces[nbr][0:1]):
+            if u in faces[node] and v in faces[node]:
+                # node and nbr have edge u-v in common
+                i = faces[node].index(u)
+                j = faces[node].index(v)
+                if i == j - 1 or (j == 0 and u == faces[node][-1]):
+                    # if the traversal of a neighbouring halfedge
+                    # is in the same direction
+                    # flip the neighbour
+                    faces[nbr][:] = faces[nbr][::-1]
+                    return
+
+    adj = face_adjacency(vertices, faces)
+
+    visited = breadth_first_traverse(adj, root, unify)
+
+    assert len(list(visited)) == len(faces), 'Not all faces were visited'
+    return faces
+
+
 def mesh_unify_cycles(mesh, root=None):
     """Unify the cycle directions of all faces.
 
@@ -135,7 +238,7 @@ def mesh_unify_cycles(mesh, root=None):
                 # node and nbr have edge u-v in common
                 i = mesh.face[node].index(u)
                 j = mesh.face[node].index(v)
-                if i == j - 1:
+                if i == j - 1 or (j == 0 and u == mesh.face[node][-1]):
                     # if the traversal of a neighbouring halfedge
                     # is in the same direction
                     # flip the neighbour
@@ -145,7 +248,7 @@ def mesh_unify_cycles(mesh, root=None):
     if root is None:
         root = mesh.get_any_face()
 
-    adj = face_adjacency(mesh)
+    adj = mesh_face_adjacency(mesh)
 
     visited = breadth_first_traverse(adj, root, unify)
 
