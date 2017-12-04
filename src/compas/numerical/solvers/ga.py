@@ -686,7 +686,7 @@ class GA(object):
         generation: int
             The generation number.
         """
-        filename  = 'generation_' + "%05d" % generation + '_population' + ".pop"
+        filename  = 'generation_' + "%05d" % generation + '_population' + ".txt"
         pf_file  = open(self.output_path + (str(filename)), "wb")
         pf_file.write('Generation \n')
         pf_file.write(str(generation) + '\n')

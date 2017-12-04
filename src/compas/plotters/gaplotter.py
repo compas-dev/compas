@@ -107,7 +107,7 @@ class Ga_Plotter(object):
 
     def get_pop_from_pop_file(self):
         file_pop  = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_value': {}, 'pf': {}}
-        filename  = 'generation_' + "%05d" % self.generation + '_population' + ".pop"
+        filename  = 'generation_' + "%05d" % self.generation + '_population' + ".txt"
         filename = self.input_path + filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
