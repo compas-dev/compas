@@ -454,8 +454,8 @@ class GA(object):
         scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
             for i in range(self.num_var):
-                maxbin = (2 ** self.num_bin_dig[i]) - 1
-                scaled_pop[j][i] = decoded_pop[j][i] * (self.boundaries[i][1] - self.boundaries[i][0]) / float((maxbin + self.boundaries[i][0]))
+                maxbin = float((2 ** self.num_bin_dig[i]) - 1)
+                scaled_pop[j][i] = self.boundaries[i][0] + (self.boundaries[i][1] - self.boundaries[i][0]) * decoded_pop[j][i] / maxbin
         return scaled_pop
 
     def tournament_selection(self):
@@ -861,7 +861,7 @@ if __name__ == '__main__':
     fit_function = foo
     fit_type = 'min'
     num_var = 3
-    boundaries = [(0, 1)] * num_var
+    boundaries = [(2, 5)] * num_var
     num_bin_dig  = [4] * num_var
     output_path = os.path.join(compas.TEMP, 'ga_out/')
 
