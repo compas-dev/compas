@@ -171,7 +171,7 @@ class Ga_Plotter(object):
                 min_list.append(min_)
                 max_list.append(max_)
                 avg_list.append(avg_)
-            except:
+            except Exception:
                 if self.generation == 0:
                     raise ValueError('population files not found')
                 self.num_gen = self.generation - 1

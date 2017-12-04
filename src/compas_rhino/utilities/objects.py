@@ -136,7 +136,7 @@ def get_object_attributes_from_name(name, separator=';', assignment=':'):
                 key, value = pair
                 try:
                     attr[eval(key)] = eval(value)
-                except:
+                except Exception:
                     pass
     return attr
 

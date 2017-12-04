@@ -103,21 +103,21 @@ class BlenderMesh(MeshGeometryInterface):
         # User must be in object mode, with vertex selected from edit mode.
         try:
             return mesh.get_vertex_indices()[0]
-        except:
+        except Exception:
             return None
 
     def get_face_index(self):
         # User must be in object mode, with face selected from edit mode.
         try:
             return mesh.get_face_indices()[0]
-        except:
+        except Exception:
             return None
 
     def get_edge_index(self):
         # User must be in object mode, with edge selected from edit mode.
         try:
             return mesh.get_edge_indices()[0]
-        except:
+        except Exception:
             return None
 
     def get_vertex_face_indices(self):

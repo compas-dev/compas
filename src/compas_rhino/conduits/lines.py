@@ -54,7 +54,7 @@ class LinesConduit(Conduit):
                     conduit.redraw()
 
                     time.sleep(0.1)
-            except:
+            except Exception:
                 raise
 
             finally:

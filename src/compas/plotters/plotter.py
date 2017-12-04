@@ -3,11 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import sys
 import shutil
 
 import subprocess
-import matplotlib
 
 from contextlib import contextmanager
 
@@ -411,6 +409,7 @@ class Plotter(object):
         ----------
         lines : list of dict
             List of dictionaries containing the line properties.
+            
 
         Returns
         -------

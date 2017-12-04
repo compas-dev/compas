@@ -98,7 +98,7 @@ def screenshot_current_view(path,
 #                 # attr[name] = value
 #                 # try:
 #                 #     setattr(cls, name, value.__func__)
-#                 # except:
+#                 # except Exception:
 #                 #     setattr(cls, name, value)
 #                 # inspect.ismethoddescriptor
 #                 # inspect.isdatadescriptor
