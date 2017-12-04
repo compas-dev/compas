@@ -386,7 +386,7 @@ class Plotter(object):
             * edgecolor (rgb or hex color, optional): The color of the edge of the cicrle. Default is black.
             * edgewidth (float, optional): The width of the edge of the circle. Default is 1.0.
             * textcolor (rgb or hex color, optional): Color of the text label. Default is black.
-            fontsize  = point.get('fontsize') or 24
+            * fontsize (int, optional): Font size of the text label. Default is 12.
 
         Returns
         -------
