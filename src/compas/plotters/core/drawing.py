@@ -245,7 +245,7 @@ def draw_xpoints_xy(points, axes):
         lwidth    = point.get('edgewidth') or 1.0
         textcolor = point.get('textcolor') or '#000000'
         fontsize  = point.get('fontsize') or 24
-        circles.append(Circle(pos, radius=radius))
+        circles.append(Circle(pos[0:2], radius=radius))
         facecolors.append(color_to_rgb(fcolor, normalize=True))
         edgecolors.append(color_to_rgb(ecolor, normalize=True))
         linewidths.append(lwidth)
@@ -327,7 +327,7 @@ def draw_lines_xy(lines,
         color = [color] * l
     # --------------------------------------------------------------------------
     coll = LineCollection(
-        lines,
+        [(start[0:2], end[0:2]) for start, end in lines],
         linewidths=linewidth,
         colors=color,
         linestyle=linestyle,
@@ -361,7 +361,7 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
         text      = line.get('text', None)
         textcolor = line.get('textcolor') or '#000000'
         fontsize  = line.get('fontsize') or 24
-        fromto.append((sp, ep))
+        fromto.append((sp[0:2], ep[0:2]))
         widths.append(width)
         colors.append(color_to_rgb(color, normalize=True))
         if text:
@@ -449,8 +449,8 @@ def draw_xarrows_xy(lines, axes):
         arrowprops['linewidth'] = line.get('width', 1.0)
         axes.annotate(
             '',
-            xy=ep,
-            xytext=sp,
+            xy=ep[0:2],
+            xytext=sp[0:2],
             arrowprops=arrowprops,
             zorder=ZORDER_LINES,
         )
@@ -529,7 +529,7 @@ def draw_xpolygons_xy(polygons, axes):
         facecolors.append(color_to_rgb(attr.get('facecolor', '#ffffff'), normalize=True))
         edgecolors.append(color_to_rgb(attr.get('edgecolor', '#000000'), normalize=True))
         linewidths.append(attr.get('edgewidth', 1.0))
-        patches.append(Polygon(points))
+        patches.append(Polygon([point[0:2] for point in points]))
         if text:
             c = centroid_points_xy(points)
             axes.text(

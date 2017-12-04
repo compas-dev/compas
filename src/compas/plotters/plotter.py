@@ -339,7 +339,7 @@ class Plotter(object):
         collection : object
             The point collection to update.
         centers : list
-            List of tuples or lists with XY location for the points in the collection.
+            List of tuples or lists with XY(Z) location for the points in the collection.
         radius : float, list
             The radii of the points. If a floar is given it will be used for all points.
 
@@ -349,7 +349,7 @@ class Plotter(object):
         except Exception:
             radius = [radius] * len(centers)
         data = zip(centers, radius)
-        circles = [Circle(c, r) for c, r in data]
+        circles = [Circle(c[0:2], r) for c, r in data]
         collection.set_paths(circles)
 
     def update_linecollection(self, collection, segments):
@@ -360,10 +360,10 @@ class Plotter(object):
         collection : object
             The line collection to update.
         segments : list
-            List of tuples or lists with XY location for the start and end
+            List of tuples or lists with XY(Z) location for the start and end
             points in each line in the collection.
         """
-        collection.set_segments(segments)
+        collection.set_segments([(start[0:2], end[0:2]) for start, end in segments])
 
     def update_polygoncollection(self, collection, polygons):
         pass
@@ -374,13 +374,33 @@ class Plotter(object):
         Parameters
         ----------
 
-        points : list
+        points : list of dict
             List of dictionaries containing the point properties.
+            Each point is represented by a circle with a given radius.
+            The following properties of the circle can be specified in the point dict.
+
+            * pos (list): XY(Z) coordinates
+            * radius (float, optional): the radius of the circle. Default is 0.1.
+            * text (str, optional): the text of the label. Default is None.
+            * facecolor (rgb or hex color, optional): The color of the face of the circle. Default is white.
+            * edgecolor (rgb or hex color, optional): The color of the edge of the cicrle. Default is black.
+            * edgewidth (float, optional): The width of the edge of the circle. Default is 1.0.
+            * textcolor (rgb or hex color, optional): Color of the text label. Default is black.
+            fontsize  = point.get('fontsize') or 24
 
         Returns
         -------
         object
             The matplotlib point collection object.
+
+        Notes
+        -----
+        ...
+
+        Examples
+        --------
+        >>>
+
         """
         return draw_xpoints_xy(points, self.axes)
 
@@ -389,7 +409,7 @@ class Plotter(object):
 
         Parameters
         ----------
-        lines : list
+        lines : list of dict
             List of dictionaries containing the line properties.
 
         Returns
@@ -404,7 +424,7 @@ class Plotter(object):
 
         Parameters
         ----------
-        polygons : list
+        polygons : list of dict
             List of dictionaries containing the polygon properties.
 
         Returns
@@ -419,7 +439,7 @@ class Plotter(object):
 
         Parameters
         ----------
-        arrows : list
+        arrows : list of dict
             List of dictionaries containing the arrow properties.
 
         Returns
@@ -456,8 +476,8 @@ if __name__ == "__main__":
     lines = []
     for u, v in mesh.edges():
         lines.append({
-            'start': mesh.vertex_coordinates(u, 'xy'),
-            'end': mesh.vertex_coordinates(v, 'xy'),
+            'start': mesh.vertex_coordinates(u),
+            'end': mesh.vertex_coordinates(v),
             'width': 1.0
         })
 
@@ -466,8 +486,8 @@ if __name__ == "__main__":
     pcoll = plotter.draw_points(points)
     lcoll = plotter.draw_lines(lines)
 
-    def callback(vertices, k, args):
-        pos = [vertices[key][0:2] for key in mesh.vertex]
+    def callback(k, args):
+        pos = [vertices[key] for key in mesh.vertex]
         plotter.update_pointcollection(pcoll, pos, 0.1)
 
         segments = []
@@ -479,8 +499,8 @@ if __name__ == "__main__":
         plotter.update_linecollection(lcoll, segments)
         plotter.update(pause=0.001)
 
-    vertices = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-    adjacency = {key: mesh.vertex_neighbours(key) for key in mesh.vertices()}
+    vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+    adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
 
     smooth_centroid(vertices,
                     adjacency,
