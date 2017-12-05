@@ -439,6 +439,10 @@ class Plotter(object):
             The full path to the output file.
         images : list
             A list of paths to input files.
+        delay : int, optional
+            The delay between frames in milliseconds. Default is ``10``.
+        loop : int, optional
+            The number of loops. Default is ``0``.
 
         Returns
         -------
@@ -448,6 +452,12 @@ class Plotter(object):
         -------
         This function assumes ImageMagick is installed on your system, and on
         *convert* being on your system path.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            #
 
         """
         command = ['convert', '-delay', '{}'.format(delay), '-loop', '{}'.format(loop), '-layers', 'optimize']
@@ -482,6 +492,10 @@ class Plotter(object):
         -----
         ...
 
+        See Also
+        --------
+        :func:`compas.plotters.core.draw_xpoints_xy`
+
         Examples
         --------
         >>>
@@ -500,11 +514,21 @@ class Plotter(object):
 
             * start (list): XY(Z) coordinates of the start point.
             * end (list): XY(Z) coordinatesof the end point.
+            * width (float, optional): The width of the line. Default is ``1.0``.
+            * color (rgb tuple or hex string, optional): The color of the line. Default is black.
+            * text (str, optional): The text of the label. Default is ``None``.
+            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
 
         Returns
         -------
         object
             The matplotlib line collection object.
+
+        See Also
+        --------
+        :func:`compas.plotters.core.draw_xlines_xy`
+
         """
         return draw_xlines_xy(lines, self.axes)
 
@@ -515,11 +539,25 @@ class Plotter(object):
         ----------
         polygons : list of dict
             List of dictionaries containing the polygon properties.
+            The following properties can be specified in the dict.
+
+            * points (list): XY(Z) coordinates of the polygon vertices.
+            * text (str, optional): The text of the label. Default is ``None``.
+            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
+            * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
+            * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
+            * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
 
         Returns
         -------
         object
             The matplotlib polygon collection object.
+
+        See Also
+        --------
+        :func:`compas.plotters.core.draw_xpolygons_xy`
+
         """
         return draw_xpolygons_xy(polygons, self.axes)
 
@@ -530,11 +568,25 @@ class Plotter(object):
         ----------
         arrows : list of dict
             List of dictionaries containing the arrow properties.
+            The following properties of an arrow can be specified in the dict.
+
+            * start (list): XY(Z) coordinates of the starting point.
+            * end (list): XY(Z) coordinates of the end point.
+            * text (str, optional): The text of the label. Default is ``None``.
+            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+            * fontsize (int, optional): The size of the font of the label text. Default is ```6``.
+            * color (rgb tuple or hex string, optional): Color of the arrow. Default is black.
+            * width (float): Width of the arrow. Default is ``1.0``.
 
         Returns
         -------
         object
             The matplotlib arrow collection object.
+
+        See Also
+        --------
+        :func:`compas.plotters.core.draw_xarrows_xy`
+
         """
         return draw_xarrows_xy(arrows, self.axes)
 
@@ -545,9 +597,9 @@ class Plotter(object):
         ----------
         pause : float
             Ammount of time to pause the plot in seconds.
+
         """
         self.axes.autoscale()
-        # self.figure.canvas.draw_idle()
         plt.pause(pause)
 
     def update_pointcollection(self, collection, centers, radius=1.0):
@@ -559,7 +611,7 @@ class Plotter(object):
             The point collection to update.
         centers : list
             List of tuples or lists with XY(Z) location for the points in the collection.
-        radius : float, list
+        radius : float or list, optional
             The radii of the points. If a floar is given it will be used for all points.
 
         """
@@ -581,11 +633,12 @@ class Plotter(object):
         segments : list
             List of tuples or lists with XY(Z) location for the start and end
             points in each line in the collection.
+
         """
         collection.set_segments([(start[0:2], end[0:2]) for start, end in segments])
 
     def update_polygoncollection(self, collection, polygons):
-        pass
+        raise NotImplementedError
 
 
 # ==============================================================================
