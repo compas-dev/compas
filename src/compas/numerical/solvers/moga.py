@@ -491,8 +491,8 @@ class MOGA(object):
         scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
             for i in range(self.num_var):
-                maxbin = (2 ** self.num_bin_dig[i]) - 1
-                scaled_pop[j][i] = decoded_pop[j][i] * (self.boundaries[i][1] - self.boundaries[i][0]) / float((maxbin + self.boundaries[i][0]))
+                maxbin = float((2 ** self.num_bin_dig[i]) - 1)
+                scaled_pop[j][i] = self.boundaries[i][0] + (self.boundaries[i][1] - self.boundaries[i][0]) * decoded_pop[j][i] / maxbin
         return scaled_pop
 
     def combine_populations(self):
@@ -759,15 +759,11 @@ class MOGA(object):
             a = self.mating_pool_a[j]
             b = self.mating_pool_b[j]
             c = a[:cross] + b[cross:]
-            d = b[:cross] + c[cross:]
+            d = b[:cross] + a[cross:]
 
-            # self.current_pop['binary'][j] = {}
-            # self.current_pop['binary'][j + (self.num_pop / 2)] = {}
             for i in range(self.num_var):
                 variable_a = c[:self.num_bin_dig[i]]
-                del c[:self.num_bin_dig[i]]
                 variable_b = d[:self.num_bin_dig[i]]
-                del d[:self.num_bin_dig[i]]
                 self.current_pop['binary'][j][i] = variable_a
                 self.current_pop['binary'][j + int(self.num_pop / 2)][i] = variable_b
 

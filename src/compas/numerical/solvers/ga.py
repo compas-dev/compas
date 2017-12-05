@@ -312,7 +312,7 @@ class GA(object):
         self.output_path = []
         self.start_from_gen = False
         self.total_bin_dig = 0
-        self.check_diversity = False
+        self.check_diversity = True
 
     def __str__(self):
         """Compile a summary of the GA."""
@@ -573,13 +573,11 @@ class GA(object):
             a = self.mating_pool_a[j]
             b = self.mating_pool_b[j]
             c = a[:cross] + b[cross:]
-            d = b[:cross] + c[cross:]
+            d = b[:cross] + a[cross:]
 
             for i in range(self.num_var):
                 variable_a = c[:self.num_bin_dig[i]]
-                del c[:self.num_bin_dig[i]]
                 variable_b = d[:self.num_bin_dig[i]]
-                del d[:self.num_bin_dig[i]]
                 self.current_pop['binary'][j][i] = variable_a
                 self.current_pop['binary'][j + (int((self.num_pop - self.num_elite) / 2))][i] = variable_b
 
@@ -853,6 +851,14 @@ if __name__ == '__main__':
     import os
     import compas
     from compas.plotters.gaplotter import Ga_Plotter
+    from math import cos
+    from math import pi
+
+    def rastrigin(X):
+        a = 10
+        fit = a * 2 + sum([(x ** 2 - a * cos(2 * pi * x)) for x in X])
+        # print(fit)
+        return fit
 
     def foo(X):
         fit = sum(X)
@@ -860,11 +866,13 @@ if __name__ == '__main__':
 
     fit_function = foo
     fit_type = 'min'
-    num_var = 3
-    boundaries = [(2, 5)] * num_var
-    num_bin_dig  = [16] * num_var
+    num_var = 300
+    # boundaries = [(-5.12, 5.12)] * num_var
+    boundaries = [(0, 5)] * num_var
+
+    num_bin_dig  = [8] * num_var
     output_path = os.path.join(compas.TEMP, 'ga_out/')
-    min_fit = num_var * boundaries[0][0]
+    min_fit = 0.0001  # num_var * boundaries[0][0]
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -874,8 +882,8 @@ if __name__ == '__main__':
              num_var,
              boundaries,
              num_gen=100,
-             num_pop=100,
-             num_elite=10,
+             num_pop=30,
+             num_elite=2,
              num_bin_dig=num_bin_dig,
              output_path=output_path,
              min_fit=min_fit)
