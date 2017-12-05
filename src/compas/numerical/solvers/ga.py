@@ -280,6 +280,10 @@ class GA(object):
     total_bin_dig : int
         The total number of binary digits. It is the sum of the ``GA.num_bin_dig`` of
         all variables.
+    ind_fit_dict : dict
+        This dictionary keeps track of already evaluated solutions to avoid dupplicate
+        fitness function calls.
+
     """
 
     def __init__(self):
@@ -313,6 +317,7 @@ class GA(object):
         self.start_from_gen = False
         self.total_bin_dig = 0
         self.check_diversity = True
+        self.ind_fit_dict = {}
 
     def __str__(self):
         """Compile a summary of the GA."""
@@ -361,7 +366,7 @@ class GA(object):
                 num = self.num_pop - self.num_elite
 
             for i in range(num):
-                self.current_pop['fit_value'][i] = self.fit_function(self.current_pop['scaled'][i], *self.fargs, **self.kwargs)
+                self.current_pop['fit_value'][i] = self.evaluate_fitness(i)
 
             if self.num_pop_init and generation >= self.num_gen_init_pop:
                 self.num_pop = self.num_pop_temp
@@ -388,6 +393,14 @@ class GA(object):
                 self.write_ga_json_file()
                 print(self)
                 break
+
+    def evaluate_fitness(self, index):
+        chromo = ''.join(str(y) for x in self.current_pop['binary'][index] for y in x)
+        fit = self.ind_fit_dict.setdefault(chromo, None)
+        if not fit:
+            fit = self.fit_function(self.current_pop['scaled'][index], *self.fargs, **self.kwargs)
+            self.ind_fit_dict[chromo] = fit
+        return fit
 
     def check_pop_diversity(self):
         seen = []
