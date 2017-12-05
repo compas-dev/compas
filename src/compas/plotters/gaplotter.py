@@ -107,7 +107,7 @@ class Ga_Plotter(object):
 
     def get_pop_from_pop_file(self):
         file_pop  = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_value': {}, 'pf': {}}
-        filename  = 'generation_' + "%05d" % self.generation + '_population' + ".pop"
+        filename  = 'generation_' + "%05d" % self.generation + '_population' + ".txt"
         filename = self.input_path + filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
@@ -237,7 +237,7 @@ class Ga_Plotter(object):
 
 def visualize_evolution(input_path, output_path, make_pdf=True, show_plot=False,
                         start_from_gen=0, conversion_function=None):
-    vis = GA_VIS()
+    vis = Ga_Plotter()
     vis.input_path = input_path
     vis.output_path = output_path
     vis.conversion_function = conversion_function
