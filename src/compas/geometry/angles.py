@@ -166,8 +166,7 @@ def angle_points_xy(a, b, c, deg=False):
     """
     u = subtract_vectors_xy(b, a)
     v = subtract_vectors_xy(c, a)
-    a = angle_vectors_xy(u, v, deg)
-    return a
+    return angle_vectors_xy(u, v, deg)
 
 
 def angles_vectors(u, v, deg=False):

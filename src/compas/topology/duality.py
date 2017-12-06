@@ -72,6 +72,8 @@ def mesh_dual(mesh, cls=None):
     if not cls:
         cls = type(mesh)
 
+    dual = cls()
+
     fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
     outer = mesh.vertices_on_boundary()
     inner = list(set(mesh.vertices()) - set(outer))
@@ -85,10 +87,9 @@ def mesh_dual(mesh, cls=None):
                 vertices[fkey] = fkey_centroid[fkey]
         faces[key] = fkeys
 
-    dual = cls()
-
     for key, (x, y, z) in vertices.items():
         dual.add_vertex(key, x=x, y=y, z=z)
+
     for fkey, vertices in faces.items():
         dual.add_face(vertices, fkey=fkey)
 
@@ -308,6 +309,9 @@ def network_dual(network, cls=None):
         x, y, z = network.face_center(fkey)
         dual.add_vertex(fkey, x=x, y=y, z=z)
 
+    # for fkey, vertices in faces.items():
+    #     dual.add_face(vertices, fkey=fkey)
+
     for u, v in network.edges():
         f1 = network.halfedge[u][v]
         f2 = network.halfedge[v][u]
@@ -468,36 +472,39 @@ def _sort_neighbours(network, ccw=True):
     xyz = {key: network.vertex_coordinates(key) for key in network.vertices()}
     for key in network.vertices():
         nbrs = network.vertex_neighbours(key)
-        if len(nbrs) == 1:
-            sorted_neighbours[key] = nbrs
-            continue
-        ordered = [nbrs[0]]
-        a = xyz[key]
-        for i, nbr in enumerate(nbrs[1:]):
-            c = xyz[nbr]
-            pos = 0
-            b = xyz[ordered[pos]]
-            while not is_ccw_xy(a, b, c):
-                pos += 1
-                if pos > i:
-                    break
-                b = xyz[ordered[pos]]
-            if pos == 0:
-                pos = -1
-                b = xyz[ordered[pos]]
-                while is_ccw_xy(a, b, c):
-                    pos -= 1
-                    if pos < -len(ordered):
-                        break
-                    b = xyz[ordered[pos]]
-                pos += 1
-            ordered.insert(pos, nbr)
-        if not ccw:
-            sorted_neighbours[key] = ordered[::-1]
-        sorted_neighbours[key] = ordered
+        sorted_neighbours[key] = _sort_vertex_neighbours(key, nbrs, xyz, ccw=ccw)
     for key, nbrs in sorted_neighbours.items():
         network.vertex[key]['sorted_neighbours'] = nbrs[::-1]
     return sorted_neighbours
+
+
+def _sort_vertex_neighbours(key, nbrs, xyz, ccw=True):
+    if len(nbrs) == 1:
+        return nbrs
+    ordered = nbrs[0:1]
+    a = xyz[key]
+    for i, nbr in enumerate(nbrs[1:]):
+        c = xyz[nbr]
+        pos = 0
+        b = xyz[ordered[pos]]
+        while not is_ccw_xy(a, b, c):
+            pos += 1
+            if pos > i:
+                break
+            b = xyz[ordered[pos]]
+        if pos == 0:
+            pos = -1
+            b = xyz[ordered[pos]]
+            while is_ccw_xy(a, b, c):
+                pos -= 1
+                if pos < -len(ordered):
+                    break
+                b = xyz[ordered[pos]]
+            pos += 1
+        ordered.insert(pos, nbr)
+    if not ccw:
+        return ordered[::-1]
+    return ordered
 
 
 def _find_edge_face(u, v, network):
@@ -561,9 +568,13 @@ if __name__ == '__main__':
     from numpy import zeros
 
     from compas.datastructures import Mesh
+    from compas.datastructures import FaceNetwork
+
     from compas.topology import mesh_dual
+    from compas.topology import network_dual
     from compas.topology import delaunay_from_points
     from compas.topology import trimesh_remesh
+
     from compas.plotters import MeshPlotter
 
     points = hstack((10.0 * random.random_sample((10, 2)), zeros((10, 1)))).tolist()
@@ -577,6 +588,10 @@ if __name__ == '__main__':
     mesh = Mesh.from_vertices_and_faces(points, faces)
 
     dual = mesh_dual(mesh)
+
+    # network = FaceNetwork.from_vertices_and_faces(points, faces)
+    # network_find_faces(network)
+    # dual = network_dual(network)
 
     lines = []
     for u, v in mesh.edges():

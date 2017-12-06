@@ -7,8 +7,15 @@ from math import sin
 from math import pi
 
 from compas.geometry import angle_vectors_xy
+from compas.geometry import angles_points_xy
 from compas.geometry import is_intersection_segment_segment_xy
 from compas.geometry import is_ccw_xy
+
+from compas.geometry import add_vectors_xy
+from compas.geometry import scale_vector_xy
+from compas.geometry import normalize_vector_xy
+from compas.geometry import centroid_points_xy
+from compas.geometry import length_vector_xy
 
 
 __author__     = 'Tom Van Mele'
@@ -26,6 +33,13 @@ __all__ = [
     'network_is_planar_embedding',
     'network_embed_in_plane',
 ]
+
+
+def angle_points_ccw_xy(a, b, c, deg=False):
+    alpha, beta = angles_points_xy(a, b, c, deg=deg)
+    if is_ccw_xy(a, b, c):
+        return alpha
+    return beta
 
 
 def network_is_crossed(network):
@@ -158,7 +172,7 @@ def network_is_xy(network):
 
     """
     z = None
-    for key in network:
+    for key in network.vertices():
         if z is None:
             z = network.vertex[key].get('z', 0.0)
         else:
@@ -356,16 +370,18 @@ def network_embed_in_plane(network, fix=None, straightline=True):
         p2   = pos[b]
         vec0 = [network.vertex[b][axis] - network.vertex[a][axis] for axis in 'xy']
         vec1 = [pos[b][axis] - pos[a][axis] for axis in (0, 1)]
+
         # rotate
-        a = angle_vectors_xy(vec0, vec1)
+        alpha = angle_vectors_xy(vec0, vec1)
         if is_ccw_xy(p0, p1, p2):
-            a = 2 * pi - a
-        cosa = cos(a)
-        sina = sin(a)
+            alpha = 2 * pi - alpha
+        cosa = cos(alpha)
+        sina = sin(alpha)
         for key in pos:
             x, y = pos[key]
             pos[key][0] = cosa * x - sina * y
             pos[key][1] = sina * x + cosa * y
+
         # scale
         l0 = (vec0[0] ** 2 + vec0[1] ** 2) ** 0.5
         l1 = (vec1[0] ** 2 + vec1[1] ** 2) ** 0.5
@@ -373,17 +389,40 @@ def network_embed_in_plane(network, fix=None, straightline=True):
         for key in pos:
             pos[key][0] *= scale
             pos[key][1] *= scale
+
         # translate
-        t = network.vertex[fix[0]]['x'] - pos[fix[0]][0], network.vertex[fix[0]]['y'] - pos[fix[0]][1]
+        t = network.vertex[a]['x'] - pos[a][0], network.vertex[a]['y'] - pos[a][1]
         for key in pos:
             pos[key][0] += t[0]
             pos[key][1] += t[1]
 
     # update network vertex coordinates
+    pos_initial = {key: network.vertex_coordinates(key, 'xy') for key in network.vertices()}
+
     for key in network.vertices():
         if key in pos:
             network.vertex[key]['x'] = pos[key][0]
             network.vertex[key]['y'] = pos[key][1]
+
+    # aatach leaves correctly
+    for key in network.leaves():
+        nbr = network.vertex_neighbours(key)[0]
+
+        if nbr in fix:
+            continue
+
+        nbrs = network.vertex_neighbours(nbr)
+        vectors = [[pos[n][axis] - pos[nbr][axis] for axis in 0, 1] for n in nbrs if n != key]
+
+        l = length_vector_xy([pos_initial[key][axis] - pos_initial[nbr][axis] for axis in 0, 1])
+        n = normalize_vector_xy(centroid_points_xy(vectors))
+        vector = scale_vector_xy(n, -l)
+
+        x, y, z = add_vectors_xy(pos[nbr], vector)
+
+        network.vertex[key]['x'] = x
+        network.vertex[key]['y'] = y
+        network.vertex[key]['z'] = z
 
     return True
 
