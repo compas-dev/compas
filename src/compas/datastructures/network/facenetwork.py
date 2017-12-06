@@ -208,7 +208,6 @@ class FaceNetwork(FaceHelpers,
     # constructors
     # --------------------------------------------------------------------------
 
-    # add edge support
     @classmethod
     def from_obj(cls, filepath, **kwargs):
         """Initialise a network from the data described in an obj file.
@@ -235,6 +234,44 @@ class FaceNetwork(FaceHelpers,
             network.add_edge(u, v)
         for face in faces:
             network.add_face(face)
+        return network
+
+    @classmethod
+    def from_vertices_and_faces(cls, vertices, faces):
+        """Construct a mesh object from a list of vertices and faces.
+
+        Parameters
+        ----------
+        vertices : list
+            A list of vertices, represented by their XYZ coordinates.
+        faces : list
+            A list of faces.
+            Each face is a list of indices referencing the list of vertex coordinates.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+
+        Examples
+        --------
+        >>> import compas
+        >>> from compas.datastructures import Mesh
+        >>> vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]
+        >>> faces = [[0, 1, 2]]
+        >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+        """
+        network = cls()
+        for x, y, z in iter(vertices):
+            network.add_vertex(x=x, y=y, z=z)
+        for face in iter(faces):
+            keys = []
+            for u, v in pairwise(face + face[0:1]):
+                if not network.has_edge(u, v, directed=False):
+                    u, v = network.add_edge(u, v)
+                keys.append(u)
+            network.add_face(keys)
         return network
 
     # --------------------------------------------------------------------------
@@ -692,6 +729,7 @@ class FaceNetwork(FaceHelpers,
 if __name__ == '__main__':
 
     import compas
+
     from compas.datastructures import FaceNetwork
     from compas.topology import network_find_faces
     from compas.plotters import FaceNetworkPlotter
