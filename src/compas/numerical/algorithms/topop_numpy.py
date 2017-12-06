@@ -2,31 +2,37 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from numpy import abs
-from numpy import array
-from numpy import ceil
-from numpy import dot
-from numpy import hstack
-from numpy import kron
-from numpy import max
-from numpy import maximum
-from numpy import min
-from numpy import minimum
-from numpy import newaxis
-from numpy import ones
-from numpy import ravel
-from numpy import reshape
-from numpy import sqrt
-from numpy import squeeze
-from numpy import sum
-from numpy import tile
-from numpy import vstack
-from numpy import zeros
+try:
+    from numpy import abs
+    from numpy import array
+    from numpy import ceil
+    from numpy import dot
+    from numpy import hstack
+    from numpy import kron
+    from numpy import max
+    from numpy import maximum
+    from numpy import min
+    from numpy import minimum
+    from numpy import newaxis
+    from numpy import ones
+    from numpy import ravel
+    from numpy import reshape
+    from numpy import sqrt
+    from numpy import squeeze
+    from numpy import sum
+    from numpy import tile
+    from numpy import vstack
+    from numpy import zeros
 
-from scipy.sparse import coo_matrix
-from scipy.sparse.linalg import spsolve
+    from scipy.sparse import coo_matrix
+    from scipy.sparse.linalg import spsolve
 
-from matplotlib import pyplot as plt
+    from matplotlib import pyplot as plt
+
+except ImportError:
+    import sys
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
