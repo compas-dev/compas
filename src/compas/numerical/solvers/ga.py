@@ -49,7 +49,7 @@ def ga(fit_function,
        num_gen=100,
        num_pop=100,
        num_elite=10,
-       mutation_probability=0.001,
+       mutation_probability=0.004,
        num_bin_dig=None,
        num_pop_init=None,
        num_gen_init_pop=None,
@@ -283,6 +283,7 @@ class GA(object):
     ind_fit_dict : dict
         This dictionary keeps track of already evaluated solutions to avoid dupplicate
         fitness function calls.
+
     """
 
     def __init__(self):
@@ -315,7 +316,7 @@ class GA(object):
         self.output_path = []
         self.start_from_gen = False
         self.total_bin_dig = 0
-        self.check_diversity = False
+        self.check_diversity = True
         self.ind_fit_dict = {}
 
     def __str__(self):
@@ -354,6 +355,7 @@ class GA(object):
             start_gen_number = 0
 
         for generation in range(start_gen_number, self.num_gen):
+
             self.current_pop['decoded'] = self.decode_binary_pop(self.current_pop['binary'])
             self.current_pop['scaled']  = self.scale_population(self.current_pop['decoded'])
 
@@ -465,8 +467,8 @@ class GA(object):
         scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
             for i in range(self.num_var):
-                maxbin = (2 ** self.num_bin_dig[i]) - 1
-                scaled_pop[j][i] = decoded_pop[j][i] * (self.boundaries[i][1] - self.boundaries[i][0]) / float((maxbin + self.boundaries[i][0]))
+                maxbin = float((2 ** self.num_bin_dig[i]) - 1)
+                scaled_pop[j][i] = self.boundaries[i][0] + (self.boundaries[i][1] - self.boundaries[i][0]) * decoded_pop[j][i] / maxbin
         return scaled_pop
 
     def tournament_selection(self):
@@ -584,13 +586,11 @@ class GA(object):
             a = self.mating_pool_a[j]
             b = self.mating_pool_b[j]
             c = a[:cross] + b[cross:]
-            d = b[:cross] + c[cross:]
+            d = b[:cross] + a[cross:]
 
             for i in range(self.num_var):
                 variable_a = c[:self.num_bin_dig[i]]
-                del c[:self.num_bin_dig[i]]
                 variable_b = d[:self.num_bin_dig[i]]
-                del d[:self.num_bin_dig[i]]
                 self.current_pop['binary'][j][i] = variable_a
                 self.current_pop['binary'][j + (int((self.num_pop - self.num_elite) / 2))][i] = variable_b
 
@@ -697,7 +697,7 @@ class GA(object):
         generation: int
             The generation number.
         """
-        filename  = 'generation_' + "%05d" % generation + '_population' + ".pop"
+        filename  = 'generation_' + "%05d" % generation + '_population' + ".txt"
         pf_file  = open(self.output_path + (str(filename)), "wb")
         pf_file.write('Generation \n')
         pf_file.write(str(generation) + '\n')
@@ -864,6 +864,14 @@ if __name__ == '__main__':
     import os
     import compas
     from compas.plotters.gaplotter import Ga_Plotter
+    from math import cos
+    from math import pi
+
+    def rastrigin(X):
+        a = 10
+        fit = a * 2 + sum([(x ** 2 - a * cos(2 * pi * x)) for x in X])
+        # print(fit)
+        return fit
 
     def foo(X):
         fit = sum(X)
@@ -871,10 +879,13 @@ if __name__ == '__main__':
 
     fit_function = foo
     fit_type = 'min'
-    num_var = 3
-    boundaries = [(0, 1)] * num_var
-    num_bin_dig  = [20] * num_var
+    num_var = 300
+    # boundaries = [(-5.12, 5.12)] * num_var
+    boundaries = [(0, 5)] * num_var
+
+    num_bin_dig  = [8] * num_var
     output_path = os.path.join(compas.TEMP, 'ga_out/')
+    min_fit = 0.0001  # num_var * boundaries[0][0]
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -884,12 +895,12 @@ if __name__ == '__main__':
              num_var,
              boundaries,
              num_gen=100,
-             num_pop=50,
-             num_elite=10,
+             num_pop=30,
+             num_elite=2,
              num_bin_dig=num_bin_dig,
              output_path=output_path,
-             min_fit=0.001)
-
+             min_fit=min_fit)
+    print (ga_.mutation_probability)
     plt = Ga_Plotter()
     plt.input_path = ga_.output_path
     plt.draw_ga_evolution(make_pdf=False, show_plot=True)
