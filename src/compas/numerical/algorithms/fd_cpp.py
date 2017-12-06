@@ -3,11 +3,19 @@ from __future__ import division
 from __future__ import print_function
 
 import os
-import ctypes
-import compas
 
-from compas.interop.core.cpp.xdarray import Array2D
-from compas.interop.core.cpp.xdarray import Array1D
+try:
+    import ctypes
+    import compas
+
+    from compas.interop.core.cpp.xdarray import Array2D
+    from compas.interop.core.cpp.xdarray import Array1D
+
+except ImportError:
+    import sys
+    if 'ironpython' not in sys.version.lower():
+        raise
+
 
 HERE = os.path.dirname(__file__)
 
