@@ -11,7 +11,7 @@ try:
     from compas.interop.core.cpp.xdarray import Array1D
     from compas.interop.core.cpp.xdarray import Array2D
 
-except ImportError:
+except (ImportError, SystemError):
     import sys
     if 'ironpython' not in sys.version.lower():
         raise
