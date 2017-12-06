@@ -39,7 +39,7 @@ def connect_to_server(username, server):
     try:
         client.connect(server, username=username)
         print('\n***** Connected to server {0} with user {1} *****'.format(server, username))
-    except:
+    except Exception:
         print('\n***** Connection failed *****')
     return client
 

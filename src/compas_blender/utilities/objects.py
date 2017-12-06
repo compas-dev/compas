@@ -119,7 +119,7 @@ def get_objects(layer=None, name=None):
     elif name:
         try:
             objects = bpy.data.objects[name]
-        except:
+        except Exception:
             objects = []
     return objects
 
@@ -193,7 +193,7 @@ def get_object_attributes(object):
     name = name_.replace("'", '"')
     try:
         return json.loads(name)
-    except:
+    except Exception:
         print('Error reading object names with JSON')
 
 
@@ -211,7 +211,7 @@ def get_objects_attributes(objects):
         names.append(name.replace("'", '"'))
     try:
         return [json.loads(name) for name in names]
-    except:
+    except Exception:
         print('Error reading object names with JSON')
 
 

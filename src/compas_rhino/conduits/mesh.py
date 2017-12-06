@@ -52,7 +52,7 @@ class MeshConduit(Conduit):
 
             try:
                 smooth_mesh_centroid(mesh, callback=update_conduit)
-            except:
+            except Exception:
                 raise
 
             finally:

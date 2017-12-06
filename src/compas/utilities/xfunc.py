@@ -35,7 +35,7 @@ import importlib
 import json
 try:
     from cStringIO import StringIO
-except:
+except Exception:
     from io import StringIO
 import cProfile
 import pstats
@@ -82,7 +82,7 @@ try:
     stats.sort_stats(1)
     stats.print_stats(20)
 
-except:
+except Exception:
     odict = {}
     odict['error']      = traceback.format_exc()
     odict['data']       = None

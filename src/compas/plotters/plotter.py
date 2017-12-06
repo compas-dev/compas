@@ -3,11 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import sys
 import shutil
 
 import subprocess
-import matplotlib
 
 from contextlib import contextmanager
 
@@ -36,10 +34,18 @@ class Plotter(object):
 
     Parameters
     ----------
-    figsize : tuple, optional [16.0, 12.0]
-        The size of the plot in inches (width, length).
-    dpi : float, optional [100.0]
-        The resolution of the plot.
+    figsize : tuple, optional
+        The size of the plot in inches (width, length). Default is ``(16.0, 12.0)``.
+
+    Other Parameters
+    ----------------
+    dpi : float, optional
+        The resolution of the plot. Default is ``100.0``.
+    tight : bool, optional
+        Produce a plot with limited padding between the plot and the edge of the
+        figure. Default is ``False``.
+    fontsize : int, optional
+        The size of the font used in labels. Default is ``10``.
 
     Attributes
     ----------
@@ -56,8 +62,32 @@ class Plotter(object):
     axes_ylabel : str
         The label on the Y axis of the plot.
     defaults : dict
-        Dictionary containing default attributes for points, edges, lines, text
-        and polygons.
+        Dictionary containing default attributes for points, lines and polygons.
+
+        Default point attributes:
+
+        * 'point.radius'    : 0.1
+        * 'point.facecolor' : '#ffffff'
+        * 'point.edgecolor' : '#000000'
+        * 'point.edgewidth' : 0.5
+        * 'point.textcolor' : '#000000'
+        * 'point.fontsize'  : 10
+
+        Default line attributes:
+
+        * 'line.width'    : 1.0
+        * 'line.color'    : '#000000'
+        * 'line.textcolor': '#000000'
+        * 'line.fontsize' : 10
+
+        Default polygon attributes:
+
+        * 'polygon.facecolor' : '#ffffff'
+        * 'polygon.edgecolor' : '#000000'
+        * 'polygon.edgewidth' : 0.1
+        * 'polygon.textcolor' : '#000000'
+        * 'polygon.fontsize'  : 10
+
 
     Notes
     -----
@@ -69,11 +99,45 @@ class Plotter(object):
            Computing In Science & Engineering (9) 3, p.90-95.
            Available at: http://ieeexplore.ieee.org/document/4160265/citations.
 
+    Examples
+    --------
+    .. plot::
+        :include-source:
+
+        import compas
+
+        from compas.datastructures import Mesh
+        from compas.plotter import Plotter
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+        plotter = Plotter(figsize=(10, 7))
+
+        points = []
+        for key in mesh.vertices():
+            points.append({
+                'pos'      : mesh.vertex_coordinates(key),
+                'radius'   : 0.1,
+                'facecolor': '#ffffff'
+            })
+
+        lines = []
+        for u, v in mesh.edges():
+            lines.append({
+                'start': mesh.vertex_coordinates(u),
+                'end'  : mesh.vertex_coordinates(v),
+                'width': 1.0
+            })
+
+        plotter.draw_points(points)
+        plotter.draw_lines(lines)
+        plotter.show()
+
     """
-    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, interactive=False, tight=False, **kwargs):
+    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, tight=False, **kwargs):
         """Initialises a plotter object"""
-        self._interactive = False
         self._axes = None
+        self.tight = tight
         # use descriptors for these
         # to help the user set these attributes in the right format
         # figure attributes
@@ -88,7 +152,7 @@ class Plotter(object):
         # color
         # size/thickness
         self.defaults = {
-            'point.radius'    : 0.15,
+            'point.radius'    : 0.1,
             'point.facecolor' : '#ffffff',
             'point.edgecolor' : '#000000',
             'point.edgewidth' : 0.5,
@@ -106,37 +170,6 @@ class Plotter(object):
             'polygon.textcolor' : '#000000',
             'polygon.fontsize'  : kwargs.get('fontsize', 10),
         }
-        self.interactive = interactive
-        self.tight = tight
-
-    @property
-    def interactive(self):
-        """Returns a boolean describing of the plot is interactive.
-
-        Returns
-        -------
-        bool
-            True if plot is interactive.
-        """
-        return self._interactive
-
-    @interactive.setter
-    def interactive(self, value):
-        """Sets the interactive plot on or off.
-
-        Parameters
-        ----------
-        value : bool
-            Interactive plot on or off.
-
-        """
-        self._interactive = value
-        # interactive mode seems to be intended for other things
-        # see: https://matplotlib.org/faq/usage_faq.html#what-is-interactive-mode
-        # if value:
-        #     plt.ion()
-        # else:
-        #     plt.ioff()
 
     @property
     def axes(self):
@@ -144,13 +177,21 @@ class Plotter(object):
 
         Returns
         -------
-        object
+        Axes
             The matplotlib axes object.
+
+        Notes
+        -----
+        For more info, see the documentation of the Axes class ([1]_) and the
+        axis and tick API ([2]_).
+
+        References
+        ----------
+        .. [1] https://matplotlib.org/api/axes_api.html
+        .. [2] https://matplotlib.org/api/axis_api.html
 
         """
         if self._axes is None:
-            # customise the use of this function
-            # using attributes of the plotter class
             self._axes = create_axes_xy(
                 figsize=self.figure_size,
                 dpi=self.figure_dpi,
@@ -166,13 +207,24 @@ class Plotter(object):
 
         Returns
         -------
-        object
+        Figure
             The matplotlib figure instance.
+
+        Notes
+        -----
+        For more info, see the figure API ([1]_).
+
+        References
+        ----------
+        .. [1] https://matplotlib.org/2.0.2/api/figure_api.html
+
         """
         return self.axes.get_figure()
 
     @property
     def canvas(self):
+        """Returns the canvas of the figure instance.
+        """
         return self.figure.canvas
 
     @property
@@ -183,6 +235,7 @@ class Plotter(object):
         -------
         str
             The color as a string (hex colors).
+
         """
         return self.figure.get_facecolor()
 
@@ -195,10 +248,9 @@ class Plotter(object):
         value : str, tuple
             The color specififcation for the figure background.
             Colors should be specified in the form of a string (hex colors) or
-            as a tuple of RGB components.
+            as a tuple of normalized RGB components.
 
         """
-
         self.figure.set_facecolor(value)
 
     @property
@@ -226,7 +278,34 @@ class Plotter(object):
         self.figure.canvas.set_window_title(value)
 
     def register_listener(self, listener):
-        """"""
+        """Register a listener for pick events.
+
+        Parameters
+        ----------
+        listener : callable
+            The handler for pick events.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        For more information, see the docs of ``mpl_connect`` ([1]_), and on event
+        handling and picking ([2]_).
+
+        References
+        ----------
+        .. [1] https://matplotlib.org/api/backend_bases_api.html#matplotlib.backend_bases.FigureCanvasBase.mpl_connect
+        .. [2] https://matplotlib.org/users/event_handling.html
+
+        Examples
+        --------
+        .. code-block:: python
+
+            #
+
+        """
         self.figure.canvas.mpl_connect('pick_event', listener)
 
     def clear_collection(self, collection):
@@ -237,26 +316,60 @@ class Plotter(object):
         collection : object
             The matplotlib collection object.
 
+        Notes
+        -----
+        For more info, see [1]_ and [2]_.
+
+        References
+        ----------
+        .. [1] https://matplotlib.org/2.0.2/api/collections_api.html
+        .. [2] https://matplotlib.org/2.0.2/api/collections_api.html#matplotlib.collections.Collection.remove
+
         """
         collection.remove()
 
-    def show(self):
-        """Displays the plot."""
+    def show(self, autoscale=True, tight=False):
+        """Displays the plot.
+
+        """
         self.axes.autoscale()
         if self.tight:
             plt.tight_layout()
         plt.show()
 
-    # def top(self):
-    #     self.figure.canvas.manager.show()
+    def top(self):
+        """Bring the plotting window to the top.
+
+        Warning
+        -------
+        This seems to work only for some back-ends.
+
+        Notes
+        -----
+        For more info, see this SO post [1]_.
+
+        References
+        ----------
+        .. [1] https://stackoverflow.com/questions/20025077/how-do-i-display-a-matplotlib-figure-window-on-top-of-all-other-windows-in-spyde
+
+        """
+        self.figure.canvas.manager.show()
 
     def save(self, filepath, **kwargs):
-        """Saves the plot on a file.
+        """Saves the plot to a file.
 
         Parameters
         ----------
         filepath : str
             Full path of the file.
+
+        Notes
+        -----
+        For an overview of all configuration options, see [1]_.
+
+        References
+        ----------
+        .. [1] https://matplotlib.org/2.0.2/api/pyplot_api.html#matplotlib.pyplot.savefig
 
         """
         self.axes.autoscale()
@@ -264,7 +377,28 @@ class Plotter(object):
 
     @contextmanager
     def gifified(self, func, tempfolder, outfile, pattern='image_{}.png'):
-        """"""
+        """Create a context for making animated gifs using a callback for updating the plot.
+
+        Parameters
+        ----------
+        func : callable
+            The callback function used to update the plot.
+        tempfolder : str
+            The path to a folder for storing temporary image frames.
+        outfile : str
+            Path to the file where the resultshould be saved.
+        pattern : str, optional
+            Pattern for the filename of the intermediate frames.
+            The pattern should contain a replacement placeholder for the number
+            of the frame. Default is ``'image_{}.png'``.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            #
+
+        """
         images = []
 
         def gifify(f):
@@ -305,6 +439,10 @@ class Plotter(object):
             The full path to the output file.
         images : list
             A list of paths to input files.
+        delay : int, optional
+            The delay between frames in milliseconds. Default is ``10``.
+        loop : int, optional
+            The number of loops. Default is ``0``.
 
         Returns
         -------
@@ -315,58 +453,15 @@ class Plotter(object):
         This function assumes ImageMagick is installed on your system, and on
         *convert* being on your system path.
 
+        Examples
+        --------
+        .. code-block:: python
+
+            #
+
         """
         command = ['convert', '-delay', '{}'.format(delay), '-loop', '{}'.format(loop), '-layers', 'optimize']
         subprocess.call(command + images + [filepath])
-
-    def update(self, pause=0.0001):
-        """Updates and pauses the plot.
-
-        Parameters
-        ----------
-        pause : float
-            Ammount of time to pause the plot in seconds.
-        """
-        self.axes.autoscale()
-        # self.figure.canvas.draw_idle()
-        plt.pause(pause)
-
-    def update_pointcollection(self, collection, centers, radius=1.0):
-        """Updates the location and radii of a point collection.
-
-        Parameters
-        ----------
-        collection : object
-            The point collection to update.
-        centers : list
-            List of tuples or lists with XY(Z) location for the points in the collection.
-        radius : float, list
-            The radii of the points. If a floar is given it will be used for all points.
-
-        """
-        try:
-            len(radius)
-        except Exception:
-            radius = [radius] * len(centers)
-        data = zip(centers, radius)
-        circles = [Circle(c[0:2], r) for c, r in data]
-        collection.set_paths(circles)
-
-    def update_linecollection(self, collection, segments):
-        """Updates a line collection.
-
-        Parameters
-        ----------
-        collection : object
-            The line collection to update.
-        segments : list
-            List of tuples or lists with XY(Z) location for the start and end
-            points in each line in the collection.
-        """
-        collection.set_segments([(start[0:2], end[0:2]) for start, end in segments])
-
-    def update_polygoncollection(self, collection, polygons):
-        pass
 
     def draw_points(self, points):
         """Draws points on a 2D plot.
@@ -397,6 +492,10 @@ class Plotter(object):
         -----
         ...
 
+        See Also
+        --------
+        :func:`compas.plotters.core.draw_xpoints_xy`
+
         Examples
         --------
         >>>
@@ -411,11 +510,25 @@ class Plotter(object):
         ----------
         lines : list of dict
             List of dictionaries containing the line properties.
+            The following properties of a line can be specified in the dict.
+
+            * start (list): XY(Z) coordinates of the start point.
+            * end (list): XY(Z) coordinatesof the end point.
+            * width (float, optional): The width of the line. Default is ``1.0``.
+            * color (rgb tuple or hex string, optional): The color of the line. Default is black.
+            * text (str, optional): The text of the label. Default is ``None``.
+            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
 
         Returns
         -------
         object
             The matplotlib line collection object.
+
+        See Also
+        --------
+        :func:`compas.plotters.core.draw_xlines_xy`
+
         """
         return draw_xlines_xy(lines, self.axes)
 
@@ -426,11 +539,25 @@ class Plotter(object):
         ----------
         polygons : list of dict
             List of dictionaries containing the polygon properties.
+            The following properties can be specified in the dict.
+
+            * points (list): XY(Z) coordinates of the polygon vertices.
+            * text (str, optional): The text of the label. Default is ``None``.
+            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
+            * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
+            * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
+            * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
 
         Returns
         -------
         object
             The matplotlib polygon collection object.
+
+        See Also
+        --------
+        :func:`compas.plotters.core.draw_xpolygons_xy`
+
         """
         return draw_xpolygons_xy(polygons, self.axes)
 
@@ -441,13 +568,77 @@ class Plotter(object):
         ----------
         arrows : list of dict
             List of dictionaries containing the arrow properties.
+            The following properties of an arrow can be specified in the dict.
+
+            * start (list): XY(Z) coordinates of the starting point.
+            * end (list): XY(Z) coordinates of the end point.
+            * text (str, optional): The text of the label. Default is ``None``.
+            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+            * fontsize (int, optional): The size of the font of the label text. Default is ```6``.
+            * color (rgb tuple or hex string, optional): Color of the arrow. Default is black.
+            * width (float): Width of the arrow. Default is ``1.0``.
 
         Returns
         -------
         object
             The matplotlib arrow collection object.
+
+        See Also
+        --------
+        :func:`compas.plotters.core.draw_xarrows_xy`
+
         """
         return draw_xarrows_xy(arrows, self.axes)
+
+    def update(self, pause=0.0001):
+        """Updates and pauses the plot.
+
+        Parameters
+        ----------
+        pause : float
+            Ammount of time to pause the plot in seconds.
+
+        """
+        self.axes.autoscale()
+        plt.pause(pause)
+
+    def update_pointcollection(self, collection, centers, radius=1.0):
+        """Updates the location and radii of a point collection.
+
+        Parameters
+        ----------
+        collection : object
+            The point collection to update.
+        centers : list
+            List of tuples or lists with XY(Z) location for the points in the collection.
+        radius : float or list, optional
+            The radii of the points. If a floar is given it will be used for all points.
+
+        """
+        try:
+            len(radius)
+        except Exception:
+            radius = [radius] * len(centers)
+        data = zip(centers, radius)
+        circles = [Circle(c[0:2], r) for c, r in data]
+        collection.set_paths(circles)
+
+    def update_linecollection(self, collection, segments):
+        """Updates a line collection.
+
+        Parameters
+        ----------
+        collection : object
+            The line collection to update.
+        segments : list
+            List of tuples or lists with XY(Z) location for the start and end
+            points in each line in the collection.
+
+        """
+        collection.set_segments([(start[0:2], end[0:2]) for start, end in segments])
+
+    def update_polygoncollection(self, collection, polygons):
+        raise NotImplementedError
 
 
 # ==============================================================================
@@ -468,7 +659,7 @@ if __name__ == "__main__":
     points = []
     for key in mesh.vertices():
         points.append({
-            'pos': mesh.vertex_coordinates(key, 'xy'),
+            'pos': mesh.vertex_coordinates(key),
             'radius': 0.1,
             'facecolor': '#ff0000' if mesh.vertex_degree(key) == 2 else '#ffffff'
         })
@@ -487,8 +678,7 @@ if __name__ == "__main__":
     lcoll = plotter.draw_lines(lines)
 
     def callback(k, args):
-        pos = [vertices[key] for key in mesh.vertex]
-        plotter.update_pointcollection(pcoll, pos, 0.1)
+        plotter.update_pointcollection(pcoll, vertices, 0.1)
 
         segments = []
         for u, v in mesh.edges():

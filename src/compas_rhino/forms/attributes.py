@@ -111,7 +111,7 @@ class AttributesForm(Form):
                     value = row.Cells[i + 1].Value
                     try:
                         self.attributes[key][name] = eval(value)
-                    except:
+                    except Exception:
                         self.attributes[key][name] = value
 
 
@@ -177,7 +177,7 @@ class AttributesForm(Form):
 #                     value = row.Cells[1].Value
 #                     try:
 #                         self.settings[name][key] = eval(value)
-#                     except:
+#                     except Exception:
 #                         self.settings[name][key] = value
 
 # #     def on_key_down(self, sender, e):
