@@ -189,13 +189,14 @@ def _xecute(funcname, basedir, tmpdir, delete_files, mode, callback, callback_ar
 
     # while process.poll() is None:
     while True:
-        if callback:
-            callback(callback_args)
-
         line = process.stdout.readline().strip()
 
         if not line:
             break
+
+        if callback:
+            callback(line, callback_args)
+
         if mode:
             print(line)
 
