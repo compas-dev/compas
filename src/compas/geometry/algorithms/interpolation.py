@@ -24,18 +24,6 @@ def discrete_coons_patch(ab, bc, dc, ad):
     """Creates a coons patch from a set of four or three boundary
     polylines (ab, bc, dc, ad).
 
-    Direction and order of polylines::
-
-        b -----> c
-        ^        ^
-        |        |
-        |        |
-        |        |
-        a -----> d
-
-    One polyline can be None to create a triangular patch
-    (Warning! This will result in duplicate vertices)
-
     Parameters
     ----------
     polylines : sequence
@@ -52,6 +40,18 @@ def discrete_coons_patch(ab, bc, dc, ad):
 
     Notes
     -----
+    Direction and order of polylines::
+
+        b -----> c
+        ^        ^
+        |        |
+        |        |
+        |        |
+        a -----> d
+
+    One polyline can be None to create a triangular patch
+    (Warning! This will result in duplicate vertices)
+
     For more information see [1]_ and [2]_.
 
     References
