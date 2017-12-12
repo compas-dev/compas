@@ -1,7 +1,7 @@
 from abc import ABCMeta
-from abc import abstractmethod
+# from abc import abstractmethod
 
-from compas.utilities.decorators import abstractstatic
+# from compas.utilities.decorators import abstractstatic
 
 
 # rename to DatastructureArtistInterface?
@@ -12,15 +12,15 @@ class ArtistInterface(object):
     # def redraw(self):
     #     pass
 
-    @abstractmethod
-    def clear_layer(self):
-        """Clear the main drawing layer."""
-        pass
+    # @abstractmethod
+    # def clear_layer(self):
+    #     """Clear the main drawing layer."""
+    #     pass
 
-    @abstractmethod
-    def clear(self):
-        """Clear all items drawn by the artist, without clearing the main drawing layer."""
-        pass
+    # @abstractmethod
+    # def clear(self):
+    #     """Clear all items drawn by the artist, without clearing the main drawing layer."""
+    #     pass
 
 
 class ArtistMixinInterface(object):
@@ -30,10 +30,10 @@ class ArtistMixinInterface(object):
 class GeometryInterface(object):
     __metaclass__ = ABCMeta
 
-    @abstractstatic
-    def find(guid):
-        """Find the object using its identifier."""
-        pass
+    # @abstractstatic
+    # def find(guid):
+    #     """Find the object using its identifier."""
+    #     pass
 
 
 class PointGeometryInterface(GeometryInterface):
