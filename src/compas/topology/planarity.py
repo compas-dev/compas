@@ -412,9 +412,9 @@ def network_embed_in_plane(network, fix=None, straightline=True):
             continue
 
         nbrs = network.vertex_neighbours(nbr)
-        vectors = [[pos[n][axis] - pos[nbr][axis] for axis in 0, 1] for n in nbrs if n != key]
+        vectors = [[pos[n][axis] - pos[nbr][axis] for axis in (0, 1)] for n in nbrs if n != key]
 
-        l = length_vector_xy([pos_initial[key][axis] - pos_initial[nbr][axis] for axis in 0, 1])
+        l = length_vector_xy([pos_initial[key][axis] - pos_initial[nbr][axis] for axis in (0, 1)])
         n = normalize_vector_xy(centroid_points_xy(vectors))
         vector = scale_vector_xy(n, -l)
 
@@ -442,15 +442,16 @@ if __name__ == '__main__':
 
     embedding = network.copy()
 
-    fix = (1, 12)
+    fix = (1, 12)  # Python2
+    fix = (6, 9)   # Python3
 
     if network_embed_in_plane(embedding, fix=fix):
 
         plotter = NetworkPlotter(embedding, figsize=(10, 7))
 
         plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
-                              'end': network.vertex_coordinates(v, 'xy'),
-                              'color': '#cccccc'} for u, v in network.edges()])
+                             'end': network.vertex_coordinates(v, 'xy'),
+                             'color': '#cccccc'} for u, v in network.edges()])
 
         plotter.draw_vertices(radius=0.3,
                               text={key: key for key in embedding.vertices()},
