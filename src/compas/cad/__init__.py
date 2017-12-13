@@ -1,5 +1,5 @@
 from abc import ABCMeta
-# from abc import abstractmethod
+from abc import abstractmethod
 
 # from compas.utilities.decorators import abstractstatic
 
@@ -8,19 +8,19 @@ from abc import ABCMeta
 class ArtistInterface(object):
     __metaclass__ = ABCMeta
 
-    # @abstractmethod
-    # def redraw(self):
-    #     pass
+    @abstractmethod
+    def redraw(self):
+        pass
 
-    # @abstractmethod
-    # def clear_layer(self):
-    #     """Clear the main drawing layer."""
-    #     pass
+    @abstractmethod
+    def clear_layer(self):
+        """Clear the main drawing layer."""
+        pass
 
-    # @abstractmethod
-    # def clear(self):
-    #     """Clear all items drawn by the artist, without clearing the main drawing layer."""
-    #     pass
+    @abstractmethod
+    def clear(self):
+        """Clear all items drawn by the artist, without clearing the main drawing layer."""
+        pass
 
 
 class ArtistMixinInterface(object):
@@ -31,9 +31,10 @@ class GeometryInterface(object):
     __metaclass__ = ABCMeta
 
     # @abstractstatic
-    # def find(guid):
-    #     """Find the object using its identifier."""
-    #     pass
+    @abstractmethod
+    def find(guid):
+        """Find the object using its identifier."""
+        pass
 
 
 class PointGeometryInterface(GeometryInterface):
