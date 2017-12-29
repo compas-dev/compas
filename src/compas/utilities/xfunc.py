@@ -5,8 +5,6 @@ from __future__ import division
 import os
 import sys
 import json
-import time
-import inspect
 
 try:
     from subprocess import Popen
@@ -15,8 +13,6 @@ except ImportError:
     if 'ironpython' not in sys.version.lower():
         raise
 
-from functools import wraps
-
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -24,7 +20,7 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['XFunc']
+__all__ = ['XFunc', 'DataEncoder', 'DataDecoder']
 
 
 WRAPPER = """
@@ -33,13 +29,19 @@ import sys
 import importlib
 
 import json
+
 try:
     from cStringIO import StringIO
 except Exception:
     from io import StringIO
+
 import cProfile
 import pstats
 import traceback
+
+from compas.utilities import DataEncoder
+from compas.utilities import DataDecoder
+
 
 basedir  = sys.argv[1]
 funcname = sys.argv[2]
@@ -47,7 +49,7 @@ ipath    = sys.argv[3]
 opath    = sys.argv[4]
 
 with open(ipath, 'r') as fp:
-    idict = json.load(fp)
+    idict = json.load(fp, cls=DataDecoder)
 
 try:
     args   = idict['args']
@@ -66,11 +68,6 @@ try:
         f = getattr(m, fname)
     else:
         raise Exception('Cannot import the function because no module name is specified.')
-        # mname = os.path.splitext(os.path.basename(os.path.abspath(basedir)))[0]
-        # fname = parts[0]
-        # print mname
-        # m = importlib.import_module(mname)
-        # f = getattr(m, fname)
 
     r = f(*args, **kwargs)
 
@@ -86,163 +83,200 @@ except Exception:
     odict = {}
     odict['error']      = traceback.format_exc()
     odict['data']       = None
-    odict['iterations'] = None
     odict['profile']    = None
 
 else:
     odict = {}
     odict['error']      = None
     odict['data']       = r
-    odict['iterations'] = None
     odict['profile']    = stream.getvalue()
 
 with open(opath, 'w+') as fp:
-    json.dump(odict, fp)
+    json.dump(odict, fp, cls=DataEncoder)
+
 """
 
 
-# def xfuncify(tmpdir='.', delete_files=True, mode=1):
-#     def decorator(func):
-#         @wraps(func)
-#         def wrapper(*args, **kwargs):
-#             # print(func.__name__)
-#             # print(func.__module__)
-#             # print(inspect.getmodule(func))
-#             # print(__file__)
-#             # print(os.path.splitext(os.path.basename(__file__)))
-#             modname = os.path.splitext(os.path.basename(__file__))[0]
-#             funcname = modname + '.' + func.__name__
-#             print(funcname)
-#             return _xecute(funcname,
-#                            '.',
-#                            tmpdir,
-#                            delete_files,
-#                            mode,
-#                            *args,
-#                            **kwargs)
-#         return wrapper
-#     return decorator
+# def test_xfunc(numiter=100, pause=0.1, ds=None):
+#     if ds:
+#         print(ds)
+#     for k in range(numiter):
+#         print(k)
+#         time.sleep(pause)
+#     return ds
 
 
-def test_xfunc(numiter=100, pause=0.1):
-    for k in range(numiter):
-        print(k)
-        time.sleep(pause)
-    return 'test_xfunc_finished'
-
-
-def _xecute(funcname, basedir, tmpdir, delete_files, mode, callback, callback_args,
-            *args, **kwargs):
-    """Execute a function with optional positional and named arguments.
-
-    Parameters:
-        funcname (str): The full name of the function.
-        basedir (str):
-            A directory that should be added to the PYTHONPATH such that the function can be found.
-        tmpdir (str):
-            A directory that should be used for storing the IO files.
-        delete_files (bool):
-            Set to ``False`` if the IO files should not be deleted afterwards.
-        mode (int):
-            The printing mode.
-        args (list):
-            Optional.
-            Positional arguments to be passed to the function.
-            Default is ``[]``.
-        kwargs (dict):
-            Optional.
-            Named arguments to be passed to the function.
-            Default is ``{}``.
-
-    """
-
-    if callback:
-        if not callable(callback):
-            callback = None
-
-    if not os.path.isdir(basedir):
-        raise Exception('basedir is not a directory: %s' % basedir)
-
-    if not os.path.isdir(tmpdir):
-        raise Exception('tmpdir is not a directory: %s' % tmpdir)
-
-    if not os.access(tmpdir, os.W_OK):
-        raise Exception('you do not have write access to tmpdir')
-
-    basedir = os.path.abspath(basedir)
-    tmpdir = os.path.abspath(tmpdir)
-
-    ipath = os.path.join(tmpdir, '%s.in' % funcname)
-    opath = os.path.join(tmpdir, '%s.out' % funcname)
-
-    idict = {'args': args, 'kwargs': kwargs}
-
-    with open(ipath, 'w+') as fh:
-        json.dump(idict, fh)
-
-    with open(opath, 'w+') as fh:
-        fh.write('')
-
-    process_args = ['pythonw', '-u', '-c', WRAPPER, basedir, funcname, ipath, opath]
-    print(basedir, funcname, ipath, opath)
-    process = Popen(process_args, stderr=PIPE, stdout=PIPE)
-
-    # while process.poll() is None:
-    while True:
-        line = process.stdout.readline().strip()
-
-        if not line:
-            break
-
-        if callback:
-            callback(line, callback_args)
-
-        if mode:
-            print(line)
-
-    _, stderr = process.communicate()
-
-    if stderr:
-        odict = {'error'     : stderr,
-                 'data'      : None,
-                 'iterations': None,
-                 'profile'   : None}
-    else:
-        with open(opath, 'r') as fh:
-            odict = json.load(fh)
-
-    if delete_files:
+class DataEncoder(json.JSONEncoder):
+    def default(self, o):
+        from compas.datastructures import Datastructure
+        if isinstance(o, Datastructure):
+            return {
+                'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
+                'value': o.to_data()
+            }
         try:
-            os.remove(ipath)
-        except OSError:
-            pass
-        try:
-            os.remove(opath)
-        except OSError:
-            pass
+            import numpy as np
+        except ImportError:
+            return super(DataEncoder, self).default(o)
+        else:
+            if isinstance(o, np.ndarray):
+                return o.tolist()
+        return super(DataEncoder, self).default(o)
 
-    return odict
+
+class DataDecoder(json.JSONDecoder):
+    def __init__(self, *args, **kwargs):
+        super(DataDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)
+
+    def object_hook(self, o):
+        if 'dtype' not in o:
+            return o
+
+        dtype = o['dtype']
+
+        module, attr = dtype.split('/')
+        cls = getattr(__import__(module, fromlist=[attr]), attr)
+        return cls.from_data(o['value'])
 
 
 class XFunc(object):
-    """"""
+    """Wrapper for functions that turns them into externally run processes.
 
-    def __init__(self, funcname=None, basedir='.', tmpdir='.', delete_files=True,
-                 mode=1, callback=None, callback_args=None):
+    Parameters
+    ----------
+    funcname : str
+        The full name of the function.
+    basedir : str, optional
+        A directory that should be added to the PYTHONPATH such that the function can be found.
+        Default is the curent directory.
+    tmpdir : str, optional
+        A directory that should be used for storing the IO files.
+        Default is the current directory.
+    delete_files : bool, optional
+        Set to ``False`` if the IO files should not be deleted afterwards.
+        Default is ``True``.
+    verbose : bool, optional
+        Set to ``False`` if no information about the process should be displayed
+        to the user. Default is ``True``.
+    callback : callable, optional
+        A function to be called eveytime the wrapped function prints output.
+        The first parameter passed to this function is the line printed by the
+        wrapped function. Additional parameters can be defined using `callback_args`.
+        Default is ``None``.
+    callback_args : tuple, optional
+        Additional parameter for the callback function.
+        Default is ``None``.
+
+    Attributes
+    ----------
+    data : object
+        The object returned by the wrapped function.
+        This is ``None`` if something went wrong.
+    profile : str
+        A profile of the call to the wrapped function.
+        This is ``None`` if something went wrong.
+    error : str
+        A traceback of the exception raised during the wrapped function call.
+        This is ``None`` if nothing went wrong.
+
+    Methods
+    -------
+    __call__(*args, **kwargs)
+        Call the wrapped function with the apropriate/related arguments and keyword
+        arguments.
+
+    Notes
+    -----
+    ...
+
+    References
+    ----------
+    ...
+
+    Examples
+    --------
+    `compas.numerical` provides an implementation of the Force Desnity Method that
+    is based on Numpy and Scipy. This implementation is not directly available in
+    Rhino because Numpy and Scipy are not available for IronPython.
+
+    With `compas.utilities.XFunc`, `compas.numerical.fd_numpy` can be easily
+    wrapped in an external process and called as if it would be directly available.
+
+    .. code-block:: python
+
+        import compas
+        import compas_rhino
+
+        from compas_rhino.helpers import MeshArtist
+        from compas.datastructures import Mesh
+        from compas.utilities import XFunc
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+        mesh.update_default_vertex_attributes({'is_fixed': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
+        mesh.update_default_edge_attributes({'q': 1.0})
+
+        for key, attr in mesh.vertices(True):
+            attr['is_fixed'] = mesh.vertex_degree(key) == 2
+
+        key_index = mesh.key_index()
+        vertices  = mesh.get_vertices_attributes('xyz')
+        edges     = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
+        fixed     = [key_index[key] for key in mesh.vertices_where({'is_fixed': True})]
+        q         = mesh.get_edges_attribute('q', 1.0)
+        loads     = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
+
+        xyz, q, f, l, r = XFunc('compas.numerical.fd_numpy')(vertices, edges, fixed, q, loads)
+
+        for key, attr in mesh.vertices(True):
+            attr['x'] = xyz[key][0]
+            attr['y'] = xyz[key][1]
+            attr['z'] = xyz[key][2]
+
+        artist = MeshArtist(mesh)
+        artist.draw_vertices()
+        artist.draw_edges()
+
+    """
+
+    def __init__(self, funcname, basedir='.', tmpdir='.', delete_files=True,
+                 verbose=True, callback=None, callback_args=None, python='pythonw'):
         self._basedir      = None
         self._tmpdir       = None
+        self._callback     = None
+        self._python       = None
         self.funcname      = funcname
         self.basedir       = basedir
         self.tmpdir        = tmpdir
         self.delete_files  = delete_files
-        self.mode          = mode
+        self.verbose       = verbose
         self.callback      = callback
         self.callback_args = callback_args
-        self.python        = 'pythonw'
+        self.python        = python
         self.data          = None
-        self.iterations    = None
         self.profile       = None
         self.error         = None
+
+    def __call__(self, *args, **kwargs):
+        """Make a call to the wrapped function.
+
+        Parameters
+        ----------
+        args : list
+            Positional arguments to be passed to the wrapped function.
+            Default is ``[]``.
+        kwargs : dict
+            Named arguments to be passed to the wrapped function.
+            Default is ``{}``.
+
+        Returns
+        -------
+        object
+            The data returned by the wrapped call.
+            This is ``None`` if something went wrong.
+
+        """
+        return self._xecute(*args, **kwargs)
 
     @property
     def basedir(self):
@@ -266,24 +300,83 @@ class XFunc(object):
             raise Exception('you do not have write access to tmpdir')
         self._tmpdir = os.path.abspath(tmpdir)
 
-    def __call__(self, *args, **kwargs):
-        funcname = self.funcname
-        odict = _xecute(funcname,
+    @property
+    def callback(self):
+        return self._callback
+
+    @callback.setter
+    def callback(self, callback):
+        if callback:
+            if not callable(callback):
+                callback = None
+        self._callback = callback
+
+    @property
+    def python(self):
+        return self._python
+
+    @python.setter
+    def python(self, python):
+        self._python = python
+
+    @property
+    def ipath(self):
+        return os.path.join(self.tmpdir, '%s.in' % self.funcname)
+
+    @property
+    def opath(self):
+        return os.path.join(self.tmpdir, '%s.out' % self.funcname)
+
+    def _xecute(self, *args, **kwargs):
+        """Execute a function with optional positional and named arguments.
+        """
+        idict = {'args': args, 'kwargs': kwargs}
+
+        with open(self.ipath, 'w+') as fh:
+            json.dump(idict, fh, cls=DataEncoder)
+
+        with open(self.opath, 'w+') as fh:
+            fh.write('')
+
+        process_args = [self.python,
+                        '-u',
+                        '-c',
+                        WRAPPER,
                         self.basedir,
-                        self.tmpdir,
-                        self.delete_files,
-                        self.mode,
-                        self.callback,
-                        self.callback_args,
-                        *args,
-                        **kwargs)
+                        self.funcname,
+                        self.ipath,
+                        self.opath]
 
-        self.data       = odict['data']
-        self.profile    = odict['profile']
-        self.iterations = odict['iterations']
-        self.error      = odict['error']
+        process = Popen(process_args, stderr=PIPE, stdout=PIPE)
 
-        return odict
+        while process.poll() is None:
+            line = process.stdout.readline().strip()
+            if self.callback:
+                self.callback(line, self.callback_args)
+            if self.verbose:
+                print(line)
+
+        with open(self.opath, 'r') as fh:
+            odict = json.load(fh, cls=DataDecoder)
+
+            self.data    = odict['data']
+            self.profile = odict['profile']
+            self.error   = odict['error']
+
+        if self.delete_files:
+            try:
+                os.remove(self.ipath)
+            except OSError:
+                pass
+            try:
+                os.remove(self.opath)
+            except OSError:
+                pass
+
+        if self.error:
+            raise Exception(self.error)
+
+        return self.data
 
 
 # ==============================================================================
@@ -292,11 +385,34 @@ class XFunc(object):
 
 if __name__ == '__main__':
 
-    test_xfunc = XFunc('xfunc.test_xfunc', mode=1)
+    import compas
 
-    res = test_xfunc(numiter=10, pause=0.5)
+    from compas.datastructures import Mesh
+    from compas.plotters import MeshPlotter
 
-    print(res['error'])
-    print(res['profile'])
-    print(res['iterations'])
-    print(res['data'])
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    mesh.update_default_vertex_attributes({'is_fixed': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
+    mesh.update_default_edge_attributes({'q': 1.0})
+
+    for key, attr in mesh.vertices(True):
+        attr['is_fixed'] = mesh.vertex_degree(key) == 2
+
+    key_index = mesh.key_index()
+    vertices  = mesh.get_vertices_attributes('xyz')
+    edges     = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
+    fixed     = [key_index[key] for key in mesh.vertices_where({'is_fixed': True})]
+    q         = mesh.get_edges_attribute('q', 1.0)
+    loads     = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
+
+    xyz, q, f, l, r = XFunc('compas.numerical.fd_numpy')(vertices, edges, fixed, q, loads)
+
+    for key, attr in mesh.vertices(True):
+        attr['x'] = xyz[key][0]
+        attr['y'] = xyz[key][1]
+        attr['z'] = xyz[key][2]
+
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
+    plotter.draw_vertices()
+    plotter.draw_edges()
+    plotter.show()
