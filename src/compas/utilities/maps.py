@@ -14,6 +14,27 @@ __all__ = [
 ]
 
 
+class GeometricKey(object):
+
+    __instance = None
+
+    def __new__(cls, precision='3f', tolerance=1e-9, sanitize=True):
+        if GeometricKey.__instance is None:
+            GeometricKey.__instance = object.__new__(cls)
+            GeometricKey.__instance.precision = precision
+            GeometricKey.__instance.tolerance = tolerance
+            GeometricKey.__instance.sanitize = sanitize
+
+        return GeometricKey.__instance
+
+    def __call__(self, xyz):
+        return geometric_key(xyz, self.precision, self.tolerance, self.sanitize)
+
+    @staticmethod
+    def set_precision(precision):
+        GeometricKey.__instance.precision = precision
+
+
 def geometric_key(xyz, precision='3f', tolerance=1e-9, sanitize=True):
     """Convert XYZ coordinates to a string that can be used as a dict key.
 
@@ -92,8 +113,20 @@ if __name__ == "__main__":
 
     from math import pi
 
-    print(geometric_key([pi, pi, pi], '3f'))
-    print(geometric_key([-0.00001, +0.00001, 0.00001], '3f', tolerance=1e-3))
+    gkey1 = GeometricKey(precision='1f')
+    gkey2 = GeometricKey(precision='2f')
+    gkey3 = GeometricKey(precision='3f')
 
-    print(geometric_key((1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774), '3f', tolerance=1e-9))
-    print(geometric_key((-1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774), '3f', tolerance=1e-9))
+    GeometricKey.set_precision('3f')
+
+    # print(geometric_key([pi, pi, pi], '3f'))
+    # print(geometric_key([-0.00001, +0.00001, 0.00001], '3f', tolerance=1e-3))
+
+    # print(geometric_key((1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774), '3f', tolerance=1e-9))
+    # print(geometric_key((-1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774), '3f', tolerance=1e-9))
+
+    print(gkey1([pi, pi, pi]))
+    print(gkey2([-0.00001, +0.00001, 0.00001]))
+
+    print(gkey3((1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774)))
+    print(gkey1((-1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774)))
