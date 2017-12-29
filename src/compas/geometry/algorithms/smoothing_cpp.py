@@ -16,9 +16,6 @@ except (ImportError, SystemError):
     if 'ironpython' not in sys.version.lower():
         raise
 
-
-# from compas.topology import adjacency_from_edges
-
 HERE = os.path.dirname(__file__)
 
 SO = os.path.join(HERE, '_smoothing_cpp', 'smoothing.so')
