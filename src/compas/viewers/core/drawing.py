@@ -154,13 +154,28 @@ def xdraw_polygons(polygons):
         points      = attr['points']
         color_front = attr['color.front']
         color_back  = attr['color.back']
+        color_wires = attr.get('color.wires', (0.0, 0.0, 0.0, 1.0))
         # front faces
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        glColor4f(*color_wires)
+        glBegin(GL_POLYGON)
+        for xyz in points:
+            glVertex3f(*xyz)
+        glEnd()
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glColor4f(*color_front)
         glBegin(GL_POLYGON)
         for xyz in points:
             glVertex3f(*xyz)
         glEnd()
         # back faces
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        glColor4f(*color_wires)
+        glBegin(GL_POLYGON)
+        for xyz in points[::-1]:
+            glVertex3f(*xyz)
+        glEnd()
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glColor4f(*color_back)
         glBegin(GL_POLYGON)
         for xyz in points[::-1]:
