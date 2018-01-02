@@ -139,7 +139,7 @@ def volume_polyhedron(polyhedron):
     """
     V = 0
     for fkey in polyhedron.face:
-        vertices = polyhedron.face_vertices(fkey, ordered=True)
+        vertices = polyhedron.face_vertices(fkey)
         if len(vertices) == 3:
             faces = [vertices]
         else:
