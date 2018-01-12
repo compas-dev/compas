@@ -1,11 +1,13 @@
+import vertexartist
+import edgeartist
+import faceartist
+import pathartist
+import forceartist
+
 from .vertexartist import *
 from .edgeartist import *
 from .faceartist import *
 from .pathartist import *
+from .forceartist import *
 
-from .vertexartist import __all__ as a
-from .edgeartist import __all__ as b
-from .faceartist import __all__ as c
-from .pathartist import __all__ as d
-
-__all__ = a + b + c + d
+__all__ = vertexartist.__all__ + edgeartist.__all__ + faceartist.__all__ + pathartist.__all__ + forceartist.__all__

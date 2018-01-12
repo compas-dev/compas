@@ -107,24 +107,32 @@ with open(opath, 'w+') as fp:
 
 
 class DataEncoder(json.JSONEncoder):
+    """Dump"""
+
     def default(self, o):
         from compas.datastructures import Datastructure
+
         if isinstance(o, Datastructure):
+            print(type(o))
             return {
                 'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
                 'value': o.to_data()
             }
+
         try:
             import numpy as np
         except ImportError:
             return super(DataEncoder, self).default(o)
-        else:
-            if isinstance(o, np.ndarray):
-                return o.tolist()
+
+        if isinstance(o, np.ndarray):
+            return o.tolist()
+
         return super(DataEncoder, self).default(o)
 
 
 class DataDecoder(json.JSONDecoder):
+    """Load"""
+
     def __init__(self, *args, **kwargs):
         super(DataDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)
 
@@ -134,8 +142,11 @@ class DataDecoder(json.JSONDecoder):
 
         dtype = o['dtype']
 
+        # if this doesn't work
+        # raise an Error explaining the required encoding
         module, attr = dtype.split('/')
         cls = getattr(__import__(module, fromlist=[attr]), attr)
+
         return cls.from_data(o['value'])
 
 
@@ -388,7 +399,9 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
+    from compas_rhino.helpers import MeshArtist
+
+    import hilo
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -398,21 +411,10 @@ if __name__ == '__main__':
     for key, attr in mesh.vertices(True):
         attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
-    key_index = mesh.key_index()
-    vertices  = mesh.get_vertices_attributes('xyz')
-    edges     = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
-    fixed     = [key_index[key] for key in mesh.vertices_where({'is_fixed': True})]
-    q         = mesh.get_edges_attribute('q', 1.0)
-    loads     = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
+    mesh = XFunc('hilo.fofin.equilibrium.update_xyz_from_q', tmpdir=hilo.TEMP)(mesh)
 
-    xyz, q, f, l, r = XFunc('compas.numerical.fd_numpy')(vertices, edges, fixed, q, loads)
-
-    for key, attr in mesh.vertices(True):
-        attr['x'] = xyz[key][0]
-        attr['y'] = xyz[key][1]
-        attr['z'] = xyz[key][2]
-
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-    plotter.draw_vertices()
-    plotter.draw_edges()
-    plotter.show()
+    artist = MeshArtist(mesh)
+    artist.clear()
+    artist.draw_vertices()
+    artist.draw_edges()
+    artist.redraw()

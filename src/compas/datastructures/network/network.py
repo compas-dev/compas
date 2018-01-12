@@ -347,6 +347,11 @@ network: {0}
         edges     = [(key_index[u], key_index[v]) for u, v in self.edges()]
         return vertices, edges
 
+    def to_points_and_lines(self):
+        points = [self.vertex_coordinates(key) for key in self.vertices()]
+        lines = [self.edge_coordinates(u, v) for u, v in self.edges()]
+        return points, lines
+
     # --------------------------------------------------------------------------
     # helpers
     # move to mixin
