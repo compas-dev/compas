@@ -48,10 +48,13 @@ class Coeff():
         self.b = 0.5 * (1 + self.a)
 
 
-def dr_numpy_xfunc(network):
+def dr_numpy_xfunc(data):
+    # this makes no sense
+    # the network is not aware of all these attributes
+    # => define a custom network locally that meets the requirements of the algorithm
     from compas.datastructures import Network
 
-    network = Network.from_data(network)
+    network = Network.from_data(data)
 
     vertices = network.get_vertices_attributes(('x', 'y', 'z'))
     edges    = list(network.edges())
