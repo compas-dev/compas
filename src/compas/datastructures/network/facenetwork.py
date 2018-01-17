@@ -428,7 +428,7 @@ class FaceNetwork(FaceHelpers,
 
         fkey = self.halfedge[start][key]
         nbrs = [start]
-        count = 1000
+        count = 10000
 
         while count:
             count -= 1
