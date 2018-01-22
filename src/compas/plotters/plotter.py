@@ -107,7 +107,7 @@ class Plotter(object):
         import compas
 
         from compas.datastructures import Mesh
-        from compas.plotter import Plotter
+        from compas.plotters import Plotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
