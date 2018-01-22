@@ -1,5 +1,5 @@
-import forceplotter
+from .forceplotter import __all__ as a
 
 from .forceplotter import *
 
-__all__ = forceplotter.__all__
+__all__ = a
