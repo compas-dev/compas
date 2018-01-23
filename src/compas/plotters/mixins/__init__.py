@@ -1,5 +1,5 @@
-from .forceplotter import __all__ as a
+from compas.plotters.mixins import forceplotter
 
 from .forceplotter import *
 
-__all__ = a
+__all__ = forceplotter.__all__
