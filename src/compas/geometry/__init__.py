@@ -1,6 +1,4 @@
 """
-.. _compas.geometry:
-
 ********************************************************************************
 geometry
 ********************************************************************************
@@ -11,7 +9,7 @@ This package provides functionality for working with geometry outside
 independent of CAD software.
 
 .. The functions in this package expect input arguments to be structured in a certain way:
-.. 
+..
 .. point
 ..     The xyz coordinates as a sequence of floats.
 .. vector
@@ -37,40 +35,25 @@ independent of CAD software.
 ..     A list of three orthonormal vectors.
 
 
-Algorithms
-==========
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    bestfit_plane
-    bestfit_plane_numpy
-    bestfit_circle_numpy
-    bounding_box
-    bounding_box_xy
-    convex_hull
-    convex_hull_xy
-    convex_hull_numpy
-    convex_hull_xy_numpy
-    discrete_coons_patch
-    flatness
-    mesh_contours_numpy
-    mesh_cull_duplicate_vertices
-    mesh_flatness
-    mesh_isolines_numpy
-    mesh_planarize_faces
-    mesh_planarize_faces_shapeop
-    mesh_smooth_centroid
-    network_parallelise_edges
-    network_smooth_centroid
-    oriented_bounding_box_numpy
-    oriented_bounding_box_xy_numpy
-    planarize_faces
-    scalarfield_contours_numpy
-    smooth_area
-    smooth_centroid
-    smooth_centerofmass
+    Vector
+    Point
+    Line
+    Polyline
+    Polygon
+    Polyhedron
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    KDTree
 
 
 Functions
@@ -133,7 +116,6 @@ Basic
     pointcloud
     pointcloud_xy
 
-
 Distance
 --------
 
@@ -177,7 +159,6 @@ Angles
     angles_vectors
     angles_vectors_xy
 
-
 Average
 -------
 
@@ -195,7 +176,6 @@ Average
     midpoint_point_point
     midpoint_point_point_xy
 
-
 Orientation
 -----------
 
@@ -206,7 +186,6 @@ Orientation
     normal_polygon
     normal_triangle
     normal_triangle_xy
-
 
 Queries
 -------
@@ -243,7 +222,6 @@ Queries
     is_point_in_triangle
     is_point_in_triangle_xy
 
-
 Intersections
 -------------
 
@@ -261,7 +239,6 @@ Intersections
     intersection_segment_segment_xy
     intersection_segment_plane
 
-
 Size
 ----
 
@@ -274,7 +251,6 @@ Size
     area_triangle
     area_triangle_xy
     volume_polyhedron
-
 
 Transformations
 ---------------
@@ -344,25 +320,40 @@ Transformations
     translate_points_xy
 
 
-Classes
-=======
+Algorithms
+==========
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    Vector
-    Point
-    Line
-    Polyline
-    Polygon
-    Polyhedron
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    KDTree
+    bestfit_plane
+    bestfit_plane_numpy
+    bestfit_circle_numpy
+    bounding_box
+    bounding_box_xy
+    convex_hull
+    convex_hull_xy
+    convex_hull_numpy
+    convex_hull_xy_numpy
+    discrete_coons_patch
+    flatness
+    mesh_contours_numpy
+    mesh_cull_duplicate_vertices
+    mesh_flatness
+    mesh_isolines_numpy
+    mesh_planarize_faces
+    mesh_planarize_faces_shapeop
+    mesh_smooth_centroid
+    network_parallelise_edges
+    network_smooth_centroid
+    oriented_bounding_box_numpy
+    oriented_bounding_box_xy_numpy
+    planarize_faces
+    scalarfield_contours_numpy
+    smooth_area
+    smooth_centroid
+    smooth_centerofmass
 
 """
 

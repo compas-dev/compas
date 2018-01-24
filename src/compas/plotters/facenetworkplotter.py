@@ -80,7 +80,7 @@ class FaceNetworkPlotter(NetworkPlotter):
         object
             The matplotlib face collection object.
         """
-        keys = keys or list(self.network.faces())
+        keys = keys or list(self.datastructure.faces())
 
         textdict      = valuedict(keys, text, '')
         facecolordict = valuedict(keys, facecolor, self.defaults['face.facecolor'])
@@ -92,7 +92,7 @@ class FaceNetworkPlotter(NetworkPlotter):
         polygons = []
         for key in keys:
             polygons.append({
-                'points'   : self.network.face_coordinates(key, 'xy'),
+                'points'   : self.datastructure.face_coordinates(key, 'xy'),
                 'text'     : textdict[key],
                 'facecolor': facecolordict[key],
                 'edgecolor': edgecolordict[key],
@@ -113,14 +113,14 @@ class FaceNetworkPlotter(NetworkPlotter):
 if __name__ == "__main__":
 
     import compas
-    from compas.topology import FaceNetwork
+    from compas.datastructures import FaceNetwork
     from compas.topology import network_find_faces
 
     network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
 
     network_find_faces(network, breakpoints=network.leaves())
 
-    plotter = FaceNetworkPlotter(network)
+    plotter = FaceNetworkPlotter(network, figsize=(10, 7))
 
     plotter.draw_vertices()
     plotter.draw_edges()

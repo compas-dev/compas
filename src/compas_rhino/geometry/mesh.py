@@ -148,20 +148,20 @@ class RhinoMesh(MeshGeometryInterface):
     #     mgeo = mobj.Geometry
     #     findices = mgeo.TopologyVertices.ConnectedFaces(vindex)
     #     return findices
-    #
-    # def get_face_vertex_indices(guid):
-    #     findex = get_mesh_face_index(guid)
-    #     if findex is None:
-    #         return
-    #     mobj = sc.doc.Objects.Find(guid)
-    #     mgeo = mobj.Geometry
-    #     tvertices = mgeo.Faces.GetTopologicalVertices(findex)
-    #     vindices = []
-    #     for tvertex in tvertices:
-    #         temp = mgeo.TopologyVertices.MeshVertexIndices(tvertex)
-    #         vindices.append(temp[0])
-    #     return vindices
-    #
+
+    def get_face_vertex_indices(guid):
+        findex = get_mesh_face_index(guid)
+        if findex is None:
+            return
+        mobj = sc.doc.Objects.Find(guid)
+        mgeo = mobj.Geometry
+        tvertices = mgeo.Faces.GetTopologicalVertices(findex)
+        vindices = []
+        for tvertex in tvertices:
+            temp = mgeo.TopologyVertices.MeshVertexIndices(tvertex)
+            vindices.append(temp[0])
+        return vindices
+
     # def get_edge_vertex_indices(guid):
     #     eindex = get_mesh_edge_index(guid)
     #     if eindex is None:

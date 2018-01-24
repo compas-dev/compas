@@ -1,5 +1,4 @@
-""".. _compas.hpc:
-
+"""
 ********************************************************************************
 hpc
 ********************************************************************************
@@ -29,6 +28,41 @@ algorithms
     :nosignatures:
 
     drx_numba
+
+
+core
+====
+
+cuda
+----
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    device_cuda
+
+
+euler
+-----
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    connect_to_euler
+    load_euler_module
+    recieve_file_from_euler
+    send_file_to_euler
+    send_folder_to_euler
+    show_euler_jobs
+    show_euler_quotas
+    show_euler_modules
+    show_euler_module_info
+    show_euler_resources
+    submit_job
+    kill_job
+    sync_folder_to_euler
 
 
 geometry
@@ -100,8 +134,10 @@ average
 """
 from .geometry import *
 from .algorithms import *
+from .core import *
 
 from .geometry import __all__ as a
 from .algorithms import __all__ as b
+from .core import __all__ as c
 
-__all__ = a + b
+__all__ = a + b + c

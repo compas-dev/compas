@@ -218,7 +218,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
     print('\n' + '-' * 50)
     print('Differential Evolution finished : {0:.4g} s'.format(time() - tic))
     print('fopt: {0:.3g}'.format(fopt))
-    print('-' * 50)
+    print('-' * 50 + '\n')
 
     return fopt, list(xopt)
 

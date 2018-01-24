@@ -8,6 +8,7 @@ import compas_rhino
 from compas_rhino.helpers.artists.mixins import VertexArtist
 from compas_rhino.helpers.artists.mixins import EdgeArtist
 from compas_rhino.helpers.artists.mixins import PathArtist
+from compas_rhino.helpers.artists.mixins import ForceArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -26,7 +27,7 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['NetworkArtist']
 
 
-class NetworkArtist(PathArtist, EdgeArtist, VertexArtist, ArtistInterface):
+class NetworkArtist(ForceArtist, PathArtist, EdgeArtist, VertexArtist, ArtistInterface):
     """"""
 
     def __init__(self, network, layer=None):

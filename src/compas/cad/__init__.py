@@ -1,16 +1,16 @@
 from abc import ABCMeta
 from abc import abstractmethod
 
-from compas.utilities.decorators import abstractstatic
+# from compas.utilities.decorators import abstractstatic
 
 
 # rename to DatastructureArtistInterface?
 class ArtistInterface(object):
     __metaclass__ = ABCMeta
 
-    # @abstractmethod
-    # def redraw(self):
-    #     pass
+    @abstractmethod
+    def redraw(self):
+        pass
 
     @abstractmethod
     def clear_layer(self):
@@ -30,7 +30,8 @@ class ArtistMixinInterface(object):
 class GeometryInterface(object):
     __metaclass__ = ABCMeta
 
-    @abstractstatic
+    # @abstractstatic
+    @abstractmethod
     def find(guid):
         """Find the object using its identifier."""
         pass

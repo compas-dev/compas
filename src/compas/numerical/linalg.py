@@ -276,7 +276,7 @@ def rref(A, tol=None):
     -------
     array
         RREF of A.
-    
+
     Notes
     -----
     A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the

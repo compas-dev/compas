@@ -409,7 +409,7 @@ class Mesh(FromToJson,
 
         """
         from compas.topology import network_find_faces
-        from compas.topology import FaceNetwork
+        from compas.datastructures import FaceNetwork
 
         network = FaceNetwork.from_lines(lines, precision=precision)
 
@@ -2536,6 +2536,6 @@ if __name__ == '__main__':
 
     import compas
 
-    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     print(mesh)

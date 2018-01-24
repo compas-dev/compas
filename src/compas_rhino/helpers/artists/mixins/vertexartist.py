@@ -133,7 +133,7 @@ class VertexArtist(object):
         for key, text in iter(textdict.items()):
             labels.append({
                 'pos'  : self.datastructure.vertex_coordinates(key),
-                'name' : self.datastructure.vertex_name(key),
+                'name' : self.datastructure.vertex_label_name(key),
                 'color': colordict[key],
                 'text' : textdict[key],
             })

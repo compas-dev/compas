@@ -8,6 +8,7 @@ from math import pi
 
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
+from OpenGL.GLE import *
 from OpenGL.GL import *
 
 from compas.geometry import normalize_vector
@@ -29,7 +30,9 @@ __all__ = [
     'draw_sphere',
     'xdraw_points',
     'xdraw_lines',
-    'xdraw_polygons'
+    'xdraw_polygons',
+    'xdraw_cylinders',
+    'xdraw_spheres',
 ]
 
 
@@ -69,7 +72,7 @@ def draw_faces(faces, color=None):
         glEnd()
 
 
-def draw_sphere(r=1.):
+def draw_sphere(r=1.0):
     slices = 17
     stacks = 17
     glColor4f(0.8, 0.8, 0.8, 0.5)
@@ -151,13 +154,28 @@ def xdraw_polygons(polygons):
         points      = attr['points']
         color_front = attr['color.front']
         color_back  = attr['color.back']
+        color_wires = attr.get('color.wires', (0.0, 0.0, 0.0, 1.0))
         # front faces
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        glColor4f(*color_wires)
+        glBegin(GL_POLYGON)
+        for xyz in points:
+            glVertex3f(*xyz)
+        glEnd()
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glColor4f(*color_front)
         glBegin(GL_POLYGON)
         for xyz in points:
             glVertex3f(*xyz)
         glEnd()
         # back faces
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        glColor4f(*color_wires)
+        glBegin(GL_POLYGON)
+        for xyz in points[::-1]:
+            glVertex3f(*xyz)
+        glEnd()
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glColor4f(*color_back)
         glBegin(GL_POLYGON)
         for xyz in points[::-1]:
@@ -176,6 +194,22 @@ def xdraw_texts(texts):
         font = GLUT_BITMAP_HELVETICA_12
         for char in text:
             glutBitmapCharacter(font, ord(char))
+
+
+def xdraw_spheres(spheres):
+    for attr in spheres:
+        glPushMatrix()
+        glTranslatef(* attr['pos'])
+        glColor3f(* attr['color'])
+        glutSolidSphere(attr['size'], 24, 24)
+        glPopMatrix()
+
+
+def xdraw_cylinders(cylinders):
+    for attr in cylinders:
+        points = [attr['start'], attr['start'], attr['end'], attr['end']]
+        colors = [attr['color'], attr['color'], attr['color'], attr['color']]
+        glePolyCylinder(points, colors, attr['width'])
 
 
 # ==============================================================================

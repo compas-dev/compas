@@ -28,4 +28,4 @@ from .purging import __all__ as j
 from .smoothing import __all__ as k
 from .smoothing_cpp import __all__ as kk
 
-__all__ = a + aa + b + d + e + ee + f + g + h + i + j + k + kk
+__all__ = a + aa + b + c + d + e + ee + f + g + h + i + j + k + kk

@@ -1,3 +1,5 @@
+from ast import literal_eval
+
 try:
     import System
     import Rhino
@@ -32,6 +34,7 @@ __all__ = [
     'get_object_attributes_from_name',
     'delete_object',
     'delete_objects',
+    'delete_objects_by_name',
     'purge_objects',
     'is_curve_line',
     'is_curve_polyline',
@@ -104,6 +107,11 @@ def delete_objects(guids, purge=True):
         rs.DeleteObjects(guids)
 
 
+def delete_objects_by_name(name, purge=True):
+    guids = get_objects(name)
+    delete_objects(guids, purge=purge)
+
+
 def purge_objects(guids):
     for guid in guids:
         if rs.IsObjectHidden(guid):
@@ -118,27 +126,27 @@ def get_object_names(guids):
 
 
 def get_object_attributes(guids):
-    raise NotImplementedError
+    attrs = []
+    for guid in guids:
+        o = find_object(guid)
+        u = o.Attributes.UserDictionary
+        a = {}
+        if u.Count:
+            for key in u.Keys:
+                a[key] = u.Item[key]
+        attrs.append(a)
+    return attrs
 
 
-# use ast for this
-# ast.literal_eval
-# @see: https://docs.python.org/2/library/ast.html#ast.literal_eval
-def get_object_attributes_from_name(name, separator=';', assignment=':'):
-    attr  = {}
-    if name:
-        name = name.lstrip('{')
-        name = name.rstrip('}')
-        parts = name.split(separator)
-        for part in parts:
-            pair = part.split(assignment)
-            if len(pair) == 2:
-                key, value = pair
-                try:
-                    attr[eval(key)] = eval(value)
-                except Exception:
-                    pass
-    return attr
+def get_object_attributes_from_name(guids):
+    attrs = []
+    for name in get_object_names(guids):
+        try:
+            attr = literal_eval(name)
+        except (ValueError, TypeError):
+            attr = {}
+        attrs.append(attr)
+    return attrs
 
 
 # ==============================================================================
@@ -148,6 +156,7 @@ def get_object_attributes_from_name(name, separator=';', assignment=':'):
 
 def select_point(message='Select a point.'):
     return rs.GetObject(message, filter=rs.filter.point)
+
 
 def select_points(message='Select points.'):
     guids = []

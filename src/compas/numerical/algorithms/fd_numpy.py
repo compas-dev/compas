@@ -24,8 +24,38 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'fd_numpy'
+    'fd_numpy',
+    'network_fd_numpy'
 ]
+
+
+def network_fd_numpy_xfunc(data):
+    from compas.datastructures import Network
+    network = Network.from_data(data)
+    network_fd_numpy(network)
+    return network.to_data()
+
+
+def network_fd_numpy(network):
+    key_index = network.key_index()
+    vertices = network.get_vertices_attributes('xyz')
+    edges = [(key_index[u], key_index[v]) for u, v in network.edges()]
+    fixed = [key_index[key] for key in network.vertices_where({'is_fixed': True})]
+    q = network.get_edges_attribute('q', 1.0)
+    loads = network.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
+    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
+    for key, attr in network.vertices(True):
+        index = key_index[key]
+        attr['x'] = xyz[index][0]
+        attr['y'] = xyz[index][1]
+        attr['z'] = xyz[index][2]
+        attr['rx'] = r[index][0]
+        attr['ry'] = r[index][1]
+        attr['rz'] = r[index][2]
+    for index, (u, v, attr) in enumerate(network.edges(True)):
+        attr['f'] = f[index][0]
+        attr['l'] = l[index][0]
+    return network
 
 
 def fd_numpy(vertices, edges, fixed, q, loads):
@@ -167,46 +197,20 @@ if __name__ == '__main__':
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    lines = []
-    for u, v in mesh.edges():
-        lines.append({
-            'start' : mesh.vertex_coordinates(u, 'xy'),
-            'end'   : mesh.vertex_coordinates(v, 'xy'),
-            'color' : '#cccccc',
-            'width' : 0.5
-        })
-
-    mesh.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
+    mesh.update_default_vertex_attributes({'is_fixed': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
     mesh.update_default_edge_attributes({'q': 1.0})
 
     for key, attr in mesh.vertices(True):
-        attr['is_anchor'] = mesh.vertex_degree(key) == 2
-
-    k_i   = mesh.key_index()
-    xyz   = mesh.get_vertices_attributes(('x', 'y', 'z'))
-    loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))
-    q     = mesh.get_edges_attribute('q')
-    fixed = mesh.vertices_where({'is_anchor': True})
-    fixed = [k_i[k] for k in fixed]
-    edges = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
-
-    xyz, q, f, l, r = fd_numpy(xyz, edges, fixed, q, loads)
-
-    for key, attr in mesh.vertices(True):
-        index = k_i[key]
-        attr['x'] = xyz[index, 0]
-        attr['y'] = xyz[index, 1]
-        attr['z'] = xyz[index, 2]
-
-    for index, (u, v, attr) in enumerate(mesh.edges(True)):
-        attr['f'] = f[index, 0]
+        attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
+    plotter.draw_as_lines(color='#cccccc', width=0.5)
+
+    network_fd_numpy(mesh)
+
     zmax = max(mesh.get_vertices_attribute('z'))
     fmax = max(mesh.get_edges_attribute('f'))
-
-    plotter.draw_lines(lines)
 
     plotter.draw_vertices()
     plotter.draw_faces()

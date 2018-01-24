@@ -499,7 +499,7 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
         color     = line.get('color', '#000000')
         text      = line.get('text', None)
         textcolor = line.get('textcolor') or '#000000'
-        fontsize  = line.get('fontsize') or 24
+        fontsize  = line.get('fontsize') or 6
         fromto.append((sp[0:2], ep[0:2]))
         widths.append(width)
         colors.append(color_to_rgb(color, normalize=True))

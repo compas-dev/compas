@@ -45,6 +45,8 @@ __all__ = [
     'update_attributes',
     'update_named_values',
     'screenshot_current_view',
+    'select_folder',
+    'select_file',
 ]
 
 
@@ -153,8 +155,14 @@ def browse_for_folder(message=None, default=None):
     return rs.BrowseForFolder(folder=default, message=message, title='compas')
 
 
+select_folder = browse_for_folder
+
+
 def browse_for_file(title=None, folder=None, filter=None):
     return rs.OpenFileName(title, filter=filter, folder=folder)
+
+
+select_file = browse_for_file
 
 
 # ==============================================================================

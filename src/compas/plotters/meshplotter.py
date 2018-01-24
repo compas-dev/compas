@@ -209,6 +209,19 @@ class MeshPlotter(Plotter):
             circles.append(Circle(c, r))
         self.vertexcollection.set_paths(circles)
 
+    def draw_as_lines(self, color=None, width=None):
+        # if len(args) > 0:
+        #     return super(MeshPlotter, self).draw_lines(*args, **kwargs)
+        lines = []
+        for u, v in self.mesh.edges():
+            lines.append({
+                'start' : self.mesh.vertex_coordinates(u, 'xy'),
+                'end'   : self.mesh.vertex_coordinates(v, 'xy'),
+                'color' : color,
+                'width' : width,
+            })
+        return super(MeshPlotter, self).draw_lines(lines)
+
     def draw_edges(self,
                    keys=None,
                    width=None,

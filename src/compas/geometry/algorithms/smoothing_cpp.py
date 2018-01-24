@@ -3,13 +3,18 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import ctypes
-from ctypes import *
 
-from compas.interop.core.cpp.xdarray import Array1D
-from compas.interop.core.cpp.xdarray import Array2D
+try:
+    import ctypes
+    from ctypes import *
 
-# from compas.topology import adjacency_from_edges
+    from compas.interop.core.cpp.xdarray import Array1D
+    from compas.interop.core.cpp.xdarray import Array2D
+
+except (ImportError, SystemError):
+    import sys
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 HERE = os.path.dirname(__file__)
 

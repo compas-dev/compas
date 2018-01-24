@@ -17,66 +17,75 @@ __all__ = [
 def network_split_edge(network, u, v, t=0.5, allow_boundary=True):
     """Split and edge by inserting a vertex along its length.
 
-    Parameters:
-        u (str): The key of the first vertex of the edge.
-        v (str): The key of the second vertex of the edge.
-        t (float): The position of the inserted vertex.
-        allow_boundary (bool): Optional. Split boundary edges, if ``True``.
-            Defaults is ``True``.
+    Parameters
+    ----------
+    u : str
+        The key of the first vertex of the edge.
+    v : str
+        The key of the second vertex of the edge.
+    t : float
+        The position of the inserted vertex.
+    allow_boundary : bool, optional
+        If `True`, Split boundary edges.
+        Defaults is `True`.
 
-    Returns:
-        str: The key of the inserted vertex.
+    Returns
+    -------
+    str
+        The key of the inserted vertex.
 
-    Raises:
-        ValueError: If ``t`` is not ``0 <= t <= 1``.
-        Exception: If ``u`` and ``v`` are not neighbours.
+    Raises
+    ------
+    ValueError
+        If `t` is not `0 <= t <= 1`.
+    Exception
+        If `u` and `v` are not neighbours.
 
+    Examples
+    --------
+    .. plot::
+        :include-source:
 
-    Example:
+        import compas
+        from compas.datastructures import FaceNetwork
+        from compas.plotters import FaceNetworkPlotter
+        from compas.topology import network_find_faces
 
-        .. plot::
-            :include-source:
+        network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
 
-            import compas
-            from compas.datastructures import FaceNetwork
-            from compas.plotters import FaceNetworkPlotter
-            from compas.topology import network_find_faces
+        network_find_faces(network, breakpoints=network.leaves())
 
-            network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
+        a = network.split_edge(0, 22)
+        b = network.split_edge(2, 30)
+        c = network.split_edge(17, 21)
+        d = network.split_edge(28, 16)
 
-            network_find_faces(network, breakpoints=network.leaves())
+        lines = []
+        for u, v in network.edges():
+            lines.append({
+                'start': network.vertex_coordinates(u, 'xy'),
+                'end'  : network.vertex_coordinates(v, 'xy'),
+                'arrow': 'end',
+                'width': 4.0,
+                'color': '#00ff00'
+            })
 
-            a = network.split_edge(0, 22)
-            b = network.split_edge(2, 30)
-            c = network.split_edge(17, 21)
-            d = network.split_edge(28, 16)
+        plotter = FaceNetworkPlotter(network)
 
-            lines = []
-            for u, v in network.edges():
-                lines.append({
-                    'start': network.vertex_coordinates(u, 'xy'),
-                    'end'  : network.vertex_coordinates(v, 'xy'),
-                    'arrow': 'end',
-                    'width': 4.0,
-                    'color': '#00ff00'
-                })
+        plotter.draw_lines(lines)
 
-            plotter = FaceNetworkPlotter(network)
+        plotter.draw_vertices(
+            radius=0.2,
+            text={key: key for key in network.vertices()},
+            facecolor={key: '#ff0000' for key in (a, b, c, d)}
+        )
+        plotter.draw_edges()
+        plotter.draw_faces(
+            text={fkey: fkey for fkey in network.faces()},
+            facecolor={fkey: '#eeeeee' for fkey in network.faces()}
+        )
 
-            plotter.draw_lines(lines)
-
-            plotter.draw_vertices(
-                radius=0.2,
-                text={key: key for key in network.vertices()},
-                facecolor={key: '#ff0000' for key in (a, b, c, d)}
-            )
-            plotter.draw_edges()
-            plotter.draw_faces(
-                text={fkey: fkey for fkey in network.faces()},
-                facecolor={fkey: '#eeeeee' for fkey in network.faces()}
-            )
-
-            plotter.show()
+        plotter.show()
 
     """
     if t <= 0.0:
