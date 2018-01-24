@@ -49,7 +49,7 @@ def ga(fit_function,
        num_gen=100,
        num_pop=100,
        num_elite=10,
-       mutation_probability=0.004,
+       mutation_probability=0.01,
        num_bin_dig=None,
        num_pop_init=None,
        num_gen_init_pop=None,
@@ -85,8 +85,7 @@ def ga(fit_function,
     num_elite : int, optional [10]
         The number of individuals in the elite population. Must be an even number.
     mutation_probablity : float, optional [0.001]
-        Float from 0 to 1. If 0 is used, none of the genes in each individuals
-        chromosome will be mutated. If 1 is used, all of them will mutate.
+        Float from 0 to 1. Percentage of genes that will be mutated.
     num_bin_dig : list, optional [None]
         Number of genes used to codify each variable. Must be a ``num_var`` long
         list of intergers. If None is given, each variable will be coded with a
@@ -316,7 +315,7 @@ class GA(object):
         self.output_path = []
         self.start_from_gen = False
         self.total_bin_dig = 0
-        self.check_diversity = True
+        self.check_diversity = False
         self.ind_fit_dict = {}
 
     def __str__(self):
@@ -326,7 +325,7 @@ class GA(object):
         num_gen = self.num_gen
         num_pop = self.num_pop
         num_var = self.num_var
-        best = self.best_individual_index
+        best = self.best_individual_index, self.current_pop['scaled'][self.best_individual_index]
         try:
             fit = self.current_pop['fit_value'][self.best_individual_index]
         except(Exception):
@@ -378,6 +377,13 @@ class GA(object):
             else:
                 self.get_best_fit()
             print('generation ', generation, ' best fit ', self.best_fit, 'min fit', self.min_fit)
+
+            #####################################################################
+            # print ('before')
+            # for i in range(len(self.current_pop['binary'])):
+            #     print (i, self.current_pop['binary'][i], self.current_pop['fit_value'][i])
+            #####################################################################
+
             if self.check_diversity:
                 print('num repeated individuals', self.check_pop_diversity())
             if generation < self.num_gen - 1 and self.min_fit_flag is False:
@@ -387,6 +393,13 @@ class GA(object):
                 self.simple_crossover()  # n-e
                 self.random_mutation()  # n-e
                 self.add_elite_to_current()  # n
+
+                #####################################################################
+                # print ('after')
+                # for i in range(len(self.current_pop['binary'])):
+                #     print (i, self.current_pop['binary'][i], self.current_pop['binary'][i] in self.elite_pop['binary'])
+                # print ()
+                #####################################################################
             else:
                 self.end_gen = generation
                 self.get_best_individual_index()
@@ -477,12 +490,12 @@ class GA(object):
         pop_a = []
         pop_b = []
         indices = range(self.num_pop)
-        for i in range((self.num_pop - self.num_elite)):
-            u, v = random.sample(indices, 2)
-            pop_a.append(u)
-            pop_b.append(v)
-        # pop_a = random.sample(indices,self.num_pop-self.num_elite)
-        # pop_b = random.sample(indices,self.num_pop-self.num_elite)
+        # for i in range((self.num_pop - self.num_elite)):
+        #     u, v = random.sample(indices, 2)
+        #     pop_a.append(u)
+        #     pop_b.append(v)
+        pop_a = random.sample(indices,self.num_pop-self.num_elite)
+        pop_b = random.sample(indices,self.num_pop-self.num_elite)
         self.mp_indices = []
         for i in range(self.num_pop - self.num_elite):
             fit_a = self.current_pop['fit_value'][pop_a[i]]
@@ -497,6 +510,10 @@ class GA(object):
                     self.mp_indices.append(pop_a[i])
                 else:
                     self.mp_indices.append(pop_b[i])
+        # print (pop_a, 'tournament pop_a')
+        # print (pop_b, 'tournament pop_a')
+        # print()
+        # print (self.mp_indices, 'tournament winners')
 
     def select_elite_pop(self, pop, num_elite=None):
         """Saves the elite population in the elite population dictionary
@@ -568,6 +585,8 @@ class GA(object):
         for i in range(int((self.num_pop - self.num_elite) / 2)):
             chrom_a = []
             chrom_b = []
+            # print (i, ' ',self.mp_indices[i], self.mp_indices[i + (int((self.num_pop - self.num_elite) / 2))], '       mp individual ab')
+            # print (i + (int((self.num_pop - self.num_elite) / 2)), ' ', self.mp_indices[i + (int((self.num_pop - self.num_elite) / 2))], self.mp_indices[i], '       mp individual ba')
             for j in range(self.num_var):
                 chrom_a += self.current_pop['binary'][self.mp_indices[i]][j]
                 chrom_b += self.current_pop['binary'][self.mp_indices[i + (int((self.num_pop - self.num_elite) / 2))]][j]
@@ -583,6 +602,7 @@ class GA(object):
         self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(int((self.num_pop - self.num_elite) / 2)):
             cross = random.randint(1, self.total_bin_dig - 1)
+            # print (j, cross, 'crossover point')
             a = self.mating_pool_a[j]
             b = self.mating_pool_b[j]
             c = a[:cross] + b[cross:]
@@ -591,6 +611,8 @@ class GA(object):
             for i in range(self.num_var):
                 variable_a = c[:self.num_bin_dig[i]]
                 variable_b = d[:self.num_bin_dig[i]]
+                del c[:self.num_bin_dig[i]]
+                del d[:self.num_bin_dig[i]]
                 self.current_pop['binary'][j][i] = variable_a
                 self.current_pop['binary'][j + (int((self.num_pop - self.num_elite) / 2))][i] = variable_b
 
@@ -870,22 +892,23 @@ if __name__ == '__main__':
     def rastrigin(X):
         a = 10
         fit = a * 2 + sum([(x ** 2 - a * cos(2 * pi * x)) for x in X])
-        # print(fit)
         return fit
 
     def foo(X):
         fit = sum(X)
+        # print ('fit', fit, X)
         return fit
 
-    fit_function = foo
+    fit_function = rastrigin
+    # fit_function = foo
     fit_type = 'min'
-    num_var = 300
-    # boundaries = [(-5.12, 5.12)] * num_var
-    boundaries = [(0, 5)] * num_var
+    num_var = 2
+    boundaries = [(-5.12, 5.12)] * num_var
+    # boundaries = [(1, 5)] * num_var
 
-    num_bin_dig  = [8] * num_var
+    num_bin_dig  = [40] * num_var
     output_path = os.path.join(compas.TEMP, 'ga_out/')
-    min_fit = 0.0001  # num_var * boundaries[0][0]
+    min_fit = 0.000001  # num_var * boundaries[0][0]
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -895,12 +918,17 @@ if __name__ == '__main__':
              num_var,
              boundaries,
              num_gen=100,
-             num_pop=30,
-             num_elite=2,
+             num_pop=100,
+             num_elite=20,
              num_bin_dig=num_bin_dig,
              output_path=output_path,
-             min_fit=min_fit)
-    print (ga_.mutation_probability)
+             min_fit=min_fit,
+             mutation_probability=0.03)
     plt = Ga_Plotter()
     plt.input_path = ga_.output_path
-    plt.draw_ga_evolution(make_pdf=False, show_plot=True)
+    plt.draw_ga_evolution(make_pdf=True, show_plot=True)
+
+
+
+
+

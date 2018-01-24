@@ -47,7 +47,7 @@ def moga(fit_functions,
          boundaries,
          num_gen=100,
          num_pop=100,
-         mutation_probability=0.001,
+         mutation_probability=0.01,
          num_bin_dig=None,
          start_from_gen=False,
          fit_names=None,
@@ -264,7 +264,9 @@ class MOGA(object):
         Arguments fo be fed to the fitness function.
     fkwargs : dict, optional [None]
         Keyword arguments to be fed to the fitness function.
-
+    ind_fit_dict : dict
+        This dictionary keeps track of already evaluated solutions to avoid dupplicate
+        fitness function calls.
     """
 
     def __init__(self):
@@ -300,6 +302,7 @@ class MOGA(object):
         self.fixed_start_pop = None  # {'binary':{},'decoded':{},'scaled':{}}
         self.fargs = {}
         self.fkwargs = {}
+        self.ind_fit_dict = {}
 
     def __str__(self):
         """Compile a summary of the MOGA."""
@@ -337,19 +340,19 @@ class MOGA(object):
 
             if self.fixed_start_pop:
                 for i in range(self.fixed_start_pop['num_pop']):
-                    print('fixed start individual', i)
-                    print(self.fixed_start_pop['binary'][i])
+                    # print('fixed start individual', i)
+                    # print(self.fixed_start_pop['binary'][i])
                     self.parent_pop['binary'][i] = self.fixed_start_pop['binary'][i]
                     self.parent_pop['decoded'][i] = self.fixed_start_pop['decoded'][i]
-                    print(self.fixed_start_pop['decoded'][i])
+                    # print(self.fixed_start_pop['decoded'][i])
                     self.parent_pop['scaled'][i] = self.fixed_start_pop['scaled'][i]
-                    print(self.fixed_start_pop['scaled'][i])
-                    print('')
+                    # print(self.fixed_start_pop['scaled'][i])
+                    # print('')
             self.parent_pop['fit_values'] = [[[]] * self.num_fit_func for i in range(self.num_pop)]
             for i in range(self.num_pop):
                 for j in range(self.num_fit_func):
                     fit_func = self.fit_functions[j]
-                    self.parent_pop['fit_values'][i][j] = fit_func(self.parent_pop['scaled'][i], self.fkwargs)
+                    self.parent_pop['fit_values'][i][j] = fit_func(self.parent_pop['scaled'][i], **self.fkwargs)
 
         self.current_pop['binary'] = self.generate_random_bin_pop()
 
@@ -362,7 +365,8 @@ class MOGA(object):
             for i in range(self.num_pop):
                 for j in range(self.num_fit_func):
                     fit_func = self.fit_functions[j]
-                    self.current_pop['fit_values'][i][j] = fit_func(self.current_pop['scaled'][i], self.fkwargs)
+                    self.current_pop['fit_values'][i][j] = fit_func(self.current_pop['scaled'][i], **self.fkwargs)
+                    # self.parent_pop['fit_values'][i][j] = self.evaluate_fitness(i, fit_func)
 
             self.combine_populations()
             self.non_dom_sort()
@@ -382,6 +386,14 @@ class MOGA(object):
                 self.random_mutation()
             else:
                 print(self)
+
+    def evaluate_fitness(self, index, fit_func):
+        chromo = ''.join(str(y) for x in self.current_pop['binary'][index] for y in x)
+        fit = self.ind_fit_dict.setdefault(chromo, None)
+        if not fit:
+            fit = fit_func(self.current_pop['scaled'][index], *self.fargs, **self.fkwargs)
+            self.ind_fit_dict[chromo] = fit
+        return fit
 
     def write_out_file(self, generation):
         """This function writes a file containing all of the population data for
@@ -438,15 +450,11 @@ class MOGA(object):
         rendom_bin_pop: dict
             The generated random binary population dictionary.
         """
+
         random_bin_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
-            random_bin_pop[j] = {}
             for i in range(self.num_var):
-                chrom_list = []
-                for u in range(self.num_bin_dig[i]):
-                    chrom_list.append(random.randint(0, 1))
-                random_bin_pop[j][i] = chrom_list
-
+                random_bin_pop[j][i] = [random.randint(0, 1) for u in range(self.num_bin_dig[i])]
         return random_bin_pop
 
     def decode_binary_pop(self, bin_pop):
@@ -488,11 +496,17 @@ class MOGA(object):
         scaled_pop: list
             The scaled ppopulation list.
         """
+        # scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
+        # for j in range(self.num_pop):
+        #     for i in range(self.num_var):
+        #         maxbin = float((2 ** self.num_bin_dig[i]) - 1)
+        #         scaled_pop[j][i] = self.boundaries[i][0] + (self.boundaries[i][1] - self.boundaries[i][0]) * decoded_pop[j][i] / maxbin
+        # return scaled_pop
         scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
             for i in range(self.num_var):
-                maxbin = float((2 ** self.num_bin_dig[i]) - 1)
-                scaled_pop[j][i] = self.boundaries[i][0] + (self.boundaries[i][1] - self.boundaries[i][0]) * decoded_pop[j][i] / maxbin
+                maxbin = (2 ** self.num_bin_dig[i]) - 1
+                scaled_pop[j][i] = decoded_pop[j][i] * (self.boundaries[i][1] - self.boundaries[i][0]) / float((maxbin + self.boundaries[i][0]))
         return scaled_pop
 
     def combine_populations(self):
@@ -600,7 +614,10 @@ class MOGA(object):
 
         for i in range(self.num_fit_func):
             ind_fit_values_list = [fit_val[i] for fit_val in self.combined_pop['fit_values']]
+            # print (ind_fit_values_list)
             delta = max(ind_fit_values_list) - min(ind_fit_values_list)
+            # print (delta)
+            # print()
 
             for k in range(self.num_i_pareto_front):
                 self.pf_values[k] = (self.combined_pop['fit_values'][self.i_pareto_front[k]][i])
@@ -764,6 +781,8 @@ class MOGA(object):
             for i in range(self.num_var):
                 variable_a = c[:self.num_bin_dig[i]]
                 variable_b = d[:self.num_bin_dig[i]]
+                del c[:self.num_bin_dig[i]]
+                del d[:self.num_bin_dig[i]]
                 self.current_pop['binary'][j][i] = variable_a
                 self.current_pop['binary'][j + int(self.num_pop / 2)][i] = variable_b
 
@@ -1051,19 +1070,20 @@ if __name__ == "__main__":
     import math
     from compas.plotters.mogaplotter import MogaPlotter
 
-    def zdt3_f1(X, a):
+    def zdt3_f1(X):
         fit = X[0]
         return fit
 
-    def zdt3_f2(X, a):
+    def zdt3_f2(X):
         n = len(X)
-        totX = 0
-        for i in range(1, n):
-            totX  = totX + X[i]
-        G = 1 + (9 / (n - 1)) * totX
-        H = 1 - math.sqrt(X[0] / G) - ((X[0] / G) * math.sin(10 * math.pi * X[0]))
-        fit = G * H
+        g = 1 + (9. / (n - 1.)) * sum(X[1:])
+        h = 1 - math.sqrt(X[0] / g) - ((X[0] / g) * math.sin(10 * math.pi * X[0]))
+        fit = g * h
         return fit
+
+    # X = [0.8] * 30
+    # X[5] = 0.2
+    # print (zdt3_f2(X))
 
     fit_functions = [zdt3_f1, zdt3_f2]
     fit_types = ['min', 'min']
@@ -1080,7 +1100,8 @@ if __name__ == "__main__":
                  num_var,
                  boundaries,
                  num_gen=100,
-                 num_pop=50,
+                 num_pop=200,
+                 mutation_probability=0.004,
                  num_bin_dig=num_bin_dig,
                  output_path=output_path)
 
@@ -1092,3 +1113,9 @@ if __name__ == "__main__":
     filename += '.json'
     vis.output_path = vis.input_path
     vis.draw_objective_spaces(filename, number=True)
+    print (len(moga_.ind_fit_dict))
+
+
+    # is crowding distance calculation working?
+    # or is the problem simply loss of diversity?
+    # - bug on the crossover was found, did this make a big difference? seems to...
