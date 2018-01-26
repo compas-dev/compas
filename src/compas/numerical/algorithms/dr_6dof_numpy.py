@@ -142,9 +142,9 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
         z_0 = cross(array([vertexu[j] for j in 'xyz']) - array([vertexw[j] for j in 'xyz']), x_0)
         z_0 = z_0 / norm(z_0)
         y_0 = cross(z_0, x_0)
-        
+
         T_0[(i * 3):((i + 1) * 3), 0:3] = transpose(array([x_0, y_0, z_0]))
-        
+
         Ju = array([], dtype = int)
         Jv = array([], dtype = int)
         Iu = where(array(freedof_node) == ui)[0]
@@ -163,7 +163,7 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
             for k in range(len(I[i])):
                 row.append(I[i][j])
                 col.append(I[i][k])
-        
+
     # Define indexing lists for accessing certain degrees of freedom
     counttra = 0
     IDXx, counttra = indexdof(freedof, 0.01, counttra, n)
@@ -180,7 +180,7 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
     IDXrot = sort(concatenate((IDXalpha, IDXbeta, IDXgamma)), 0)
     IDXrot = IDXrot[0:(3 * n - countrot)]
     IDXrot = array([int(round(j)) for j in IDXrot])
-    
+
     ts = 0
     rnorm = tol + 1
 
@@ -191,14 +191,14 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
         data = []
 
         x_ = concatenate((x, [[0.0]]), 0)
-     
+
         for c, uv in enumerate(edges):
             ui, vi = uv
             i = uv_i[(ui, vi)]
             vertexu = network.vertex[ui]
             vertexv = network.vertex[vi]
             vertexw = network.vertex[wi]
-            
+
             # update lengths
             l[i] = network.edge_length(ui, vi)
 
@@ -215,7 +215,7 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
 
             # update element triad
             R_e = element_rotmat(T_u, T_v)
-            
+
             x_e = (array([vertexv[j] for j in 'xyz']) - array([vertexu[j] for j in 'xyz']))
             x_e = x_e / norm(x_e)
             y_e = R_e[:, 1] - dot(R_e[:, 1], x_e) / 2 * (x_e + R_e[:, 0])
@@ -233,7 +233,7 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
             theta_zv = arcsin((dot(y_e, x_v) - dot(y_v, x_e)) / 2)
 
             u_ = transpose(array([[delta, theta_xu, theta_yu, theta_zu, theta_xv, theta_yv, theta_zv]]))
-            
+
             # Beam properties
             edge = network.edge[ui][vi]
             E = edge.get('E', 0)
@@ -248,7 +248,7 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
             Sx = skew(R_e[:, 0])
             Sy = skew(R_e[:, 1])
             Sz = skew(R_e[:, 2])
-            
+
             B = 1 / l[i][0] * (eye(3) - dot(transpose([x_e]), [x_e]))
 
             L1_2 = dot(R_e[:, 1], x_e) / 2 * B + dot(B / 2, dot(transpose([R_e[:, 1]]), [(x_e + R_e[:, 0])]))
@@ -258,14 +258,14 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
             L1_3 = dot(R_e[:, 2], x_e) / 2 * B + dot(B / 2, dot(transpose([R_e[:, 2]]), [(x_e + R_e[:, 0])]))
             L2_3 = Sz / 2 - dot(dot(R_e[:, 2], x_e) / 4, Sx) - dot(Sz / 4, dot(transpose([x_e]), [x_e + R_e[:, 0]]))
             L_3 = concatenate((L1_3, L2_3, -L1_3, L2_3))
-            
+
             Szu = skew(z_u)
             Syu = skew(y_u)
             Sxu = skew(x_u)
             Szv = skew(z_v)
             Syv = skew(y_v)
             Sxv = skew(x_v)
-        
+
             h_1 = concatenate((array([0.0, 0.0, 0.0]), (dot(-Szu, y_e) + dot(Syu, z_e)), array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])))
             h_2 = concatenate((dot(B, z_u), (dot(-Szu, x_e) + dot(Sxu, z_e)), -dot(B, z_u), array([0.0, 0.0, 0.0])))
             h_3 = concatenate((dot(B, y_u), (dot(-Syu, x_e) + dot(Sxu, y_e)), -dot(B, y_u), array([0.0, 0.0, 0.0])))
@@ -279,11 +279,11 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
             t_4 = (dot(L_3, y_v) - dot(L_2, z_v) + h_4) / (2 * cos(theta_xv))
             t_5 = (dot(L_3, x_v) + h_5) / (2 * cos(theta_yv));
             t_6 = (dot(L_2, x_v) + h_6) / (2 * cos(theta_zv));
-            
+
             g = concatenate([-x_e, array([0.0, 0.0, 0.0]), x_e, array([0.0, 0.0, 0.0])])
 
             T = transpose([g, t_1, t_2, t_3, t_4, t_5, t_6])
-            
+
             K_ = 1 / l0[i] * array([[E * A, 0, 0, 0, 0, 0, 0],
                 [0, G * Ix, 0, 0, -G * Ix, 0, 0],
                 [0, 0, 4 * E * Iy, 0, 0, 2 * E * Iy, 0],
@@ -291,7 +291,7 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
                 [0, -G * Ix, 0, 0, G * Ix, 0, 0],
                 [0, 0, 2 * E * Iy, 0, 0, 4 * E * Iy, 0],
                 [0, 0, 0, 2 * E * Iz, 0, 0, 4 * E * Iz]])
-            
+
             f_ = dot(K_, u_)
 
             fe = dot(T, f_)
@@ -305,9 +305,8 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
                 for k in range(len(I[i])):
                     data.append(Ke_e[J[i][j]][J[i][k]])
                     #K[I[i][j]][I[i][k]] = K[I[i][j]][I[i][k]] + Ke_e[J[i][j]][J[i][k]]
-            
-        
-        K = csc_matrix((data,(row,col)), shape = (d, d))
+
+        K = csc_matrix((data, (row, col)), shape=(d, d))
 
         # Update residual forces
         r = p - f
@@ -323,7 +322,7 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
         xold = x
 
         x[IDXtra] = xold[IDXtra] + dx[IDXtra]
-        
+
         Lambdaold = zeros((1, 3))
         dLambda = zeros((1, 3))
         for i in range(len(set(array(freedof_node)[IDXrot]))):
@@ -344,7 +343,7 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
                 x[IDXrot[j]] = Lambdanew[0][freedof_axis[IDXrot[j]] - 3]
 
         # Update X
-        for i in range(len(IDXtra)):       
+        for i in range(len(IDXtra)):
             X[freedof_node[IDXtra[i]]][freedof_axis[IDXtra[i]]] = x[IDXtra[i]]
 
         # Update network
@@ -357,9 +356,10 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
         print(ts)
     return X#, x, x0
 
+
 def free_dof(network):
     """ Collect all free DoF.
-    
+
     Parameters:
         network (obj): Network to be analysed.
 
@@ -371,19 +371,20 @@ def free_dof(network):
     for key in network.vertices():
         i = k_i[key]
         vertex  = network.vertex[key]
-        if vertex.get('dofx', True) == True:
+        if vertex.get('dofx', True):
             freedof.append(i+0.01)
-        if vertex.get('dofy', True) == True:
+        if notvertex.get('dofy', True):
             freedof.append(i+0.02)
-        if vertex.get('dofz', True) == True:
+        if vertex.get('dofz', True):
             freedof.append(i+0.03)
-        if vertex.get('dofalpha', True) == True:
+        if vertex.get('dofalpha', True):
             freedof.append(i+0.04)
-        if vertex.get('dofbeta', True) == True:
+        if vertex.get('dofbeta', True):
             freedof.append(i+0.05)
-        if vertex.get('dofgamma', True) == True:
+        if vertex.get('dofgamma', True):
             freedof.append(i+0.06)
     return freedof
+
 
 def skew(v):
     """ Constructs the skew-symmetric matrix S
@@ -399,11 +400,12 @@ def skew(v):
         [-v[1], v[0], 0.0]])
     return S
 
+
 def beam_triad(k_i, key, x_, IDXalpha, IDXbeta, IDXgamma, T_0):
     """ Construct the current nodal beam triad for vertex 'key'
 
     Parameters:
-        k_i: key from index dictionary 
+        k_i: key from index dictionary
         key: key of vertex
         x_: extended array of displacements
         IDXalpha: list of alpha-dof index
@@ -429,6 +431,7 @@ def beam_triad(k_i, key, x_, IDXalpha, IDXbeta, IDXgamma, T_0):
     T = dot(R, T_0)
     return T
 
+
 def element_rotmat(T_u, T_v):
     """ calculates the 'average nodal rotation matrix' R_e for the calculation of the element triad
 
@@ -440,7 +443,7 @@ def element_rotmat(T_u, T_v):
         array: R_e matrix
     """
     dR = T_v * transpose(T_u)
-            
+
     q_0 = (1 + trace(dR)) ** 0.5 / 2
     q_1 = (dR[2, 1] - dR[1, 2]) / (4 * q_0)
     q_2 = (dR[0, 2] - dR[2, 0]) / (4 * q_0)
@@ -455,12 +458,13 @@ def element_rotmat(T_u, T_v):
         e = q / norm(q)
 
     S = array([[0.0, -e[2], e[1]],
-        [e[2], 0.0, -e[0]],
-        [-e[1], e[0], 0.0]])
-    dRm = eye(3) + sin(mu / 2) * S + (1 - cos(mu / 2)) * dot(S, S);
+               [e[2], 0.0, -e[0]],
+               [-e[1], e[0], 0.0]])
+    dRm = eye(3) + sin(mu / 2) * S + (1 - cos(mu / 2)) * dot(S, S)
 
     R_e = dot(dRm, T_u)
     return R_e
+
 
 def indexdof(freedof, seldof, count, n):
     """ makes list of indices to access seldof degrees of freedom in freedof
@@ -476,13 +480,14 @@ def indexdof(freedof, seldof, count, n):
     """
     IDX = zeros((n, 1))
     for i in range(n):
-        if i + seldof in freedof: 
-            idx = freedof.index(i + seldof) 
+        if i + seldof in freedof:
+            idx = freedof.index(i + seldof)
         else:
             idx = len(freedof)
             count += 1
         IDX[i] = idx
     return IDX, count
+
 
 def quaternion(Lbda):
     """ get the quaternion formulation for a given rotation vector Lbda
@@ -495,11 +500,11 @@ def quaternion(Lbda):
         list: q0
     """
     lbda = norm(Lbda)
-    if lbda == 0.0: L = Lbda
-    else: L = Lbda / lbda
+    L = Lbda if lbda == 0.0 else Lbda / lbda
     q = (sin(lbda / 2) * L)
     q0 = [cos(lbda / 2)]
     return q, q0
+
 
 # ==============================================================================
 # Main
@@ -525,7 +530,7 @@ if __name__ == "__main__":
     network.add_vertex(key = (m + 1), x = 0, y = -R)
 
     network.update_default_vertex_attributes({
-        'dofx': True,    
+        'dofx': True,
         'dofy': True,
         'dofz': True,
         'dofalpha': True,
@@ -536,23 +541,23 @@ if __name__ == "__main__":
         'pz': 0.0,
         'palpha': 0.0,
         'pbeta': 0.0,
-        'pgamma': 0.0,            
+        'pgamma': 0.0,
         })
     network.update_default_edge_attributes({
         'w': int,
-        'E': 10.0 ** 7, 
+        'E': 10.0 ** 7,
         'nu': 0.0,
         'A': 1.0,
         'Ix': 2.25 * 0.5 ** 4,
         'Iy': 1.0 / 12,
         'Iz': 1.0 / 12,
         })
-    network.set_vertices_attributes([0, m + 1], {'dofx': False, 'dofy': False, 'dofz': False, 
+    network.set_vertices_attributes([0, m + 1], {'dofx': False, 'dofy': False, 'dofz': False,
         'dofalpha': False, 'dofbeta': False, 'dofgamma': False,})
     network.set_vertices_attributes([m], {'pz': 600})
 
     network.set_edges_attributes(attr_dict = {'w': (m + 1)})
-    
+
     #viewer = NetworkViewer(network=network, width=1600, height=800)
     #viewer.setup()
     #viewer.show()
