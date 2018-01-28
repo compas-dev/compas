@@ -5,56 +5,508 @@ from __future__ import print_function
 
 from compas.datastructures import Network
 
-import sys
+from compas.hpc import dot_vectors_numba
+from compas.hpc import multiply_matrices_numba
+from compas.hpc import norm_vector_numba
+from compas.hpc import multiply_matrix_vector_numba
 
 from time import time
 
+import sys
+
 try:
-    from numpy import array
-    from numpy import matrix
-    from numpy import cross
-    from numpy import int64
-    from numpy import sin
-    from numpy import cos
+
     from numpy import arctan
     from numpy import arcsin
-    from numpy import sum
-    from numpy import zeros
-    from numpy import transpose
+    from numpy import array
     from numpy import concatenate
-    from numpy import sort
-    from numpy import eye
-    from numpy import trace
+    from numpy import cos
+    from numpy import cross
     from numpy import dot
+    from numpy import eye
+    from numpy import int64
+    from numpy import hstack
+    from numpy import vstack
+    from numpy import round
+    from numpy import newaxis
+    from numpy import sin
+    from numpy import sqrt
+    from numpy import sort
+    from numpy import trace
+    from numpy import zeros
     from numpy import where
-    from numpy import ravel_multi_index
-    from numpy import reshape
     from numpy.linalg import norm
-    from numpy.linalg import solve
+
     from scipy.sparse import csc_matrix
     from scipy.sparse.linalg import spsolve
 
+    from numba import jit
+    from numba import f8
+    from numba import i8
+
 except ImportError:
+
     if 'ironpython' not in sys.version.lower():
         raise
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>', 'Jef Rombouts <jef.rombouts@kuleuven.be>']
+
+__author__    = ['Jef Rombouts <jef.rombouts@kuleuven.be>', 'Andrew Liew <liew@arch.ethz.ch>']
 __copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'dr_6dof_numpy',
+    'dr_6dof_numba',
 ]
 
 
-def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
-    """Run dynamic relaxation analysis, 6 DoF per node.
+def _create_vertex_arrays(network):
+
+    """
+
+    Add comments
+
+    """
+
+    k_i = network.key_index()
+    n = network.number_of_vertices()
+    X = zeros((n, 3))
+    P = zeros((n, 6))
+    freedof = []
+    freedof_node = []
+    freedof_axis = []
+
+    for key, vertex in network.vertex.items():
+        i = k_i[key]
+
+        X[i, :] = network.vertex_coordinates(key=key)
+        for ci, Pi in enumerate(['px', 'py', 'pz', 'palpha', 'pbeta', 'pgamma']):
+            P[i, ci] = vertex.get(Pi, 0)
+
+        for ci, dof in enumerate(['dofx', 'dofy', 'dofz', 'dofalpha', 'dofbeta', 'dofgamma'], 1):  # should remove this 1
+            if vertex.get(dof, True):
+                freedof.append(i + 0.01 * ci)  # we should think of a better dof storage method
+                freedof_node.append(i)
+                freedof_axis.append(ci - 1)  # remove the 1 if changed above
+
+    d = len(freedof)
+    p  = zeros((d, 1))  # might be better to make these 2D
+    x  = zeros((d, 1))
+    v  = zeros((d, 1))
+    x0 = zeros((d, 1))
+
+    for ci, uv in enumerate(zip(freedof_node, freedof_axis)):
+        node, axis = uv
+        p[ci] = P[node, axis]
+        if axis <= 2:
+            x0[ci] = X[node , axis]
+    x = x0 * 1
+    r = p * 1
+
+    return k_i, X, P, n, d, p, x0, x, v, r, freedof_node, freedof_axis, freedof  # remove some
+
+
+def _create_edge_arrays(network, freedof, freedof_node):
+
+    """
+
+    Add comments
+
+    """
+
+    uv_i = network.uv_index()
+    edges = list(network.edges())
+
+    m  = len(edges)
+    l  = zeros((m, 1))
+    l0 = zeros((m, 1))
+    T_0 = zeros((m * 3, 3))
+    E  = zeros(m)
+    A  = zeros(m)
+    G  = zeros(m)
+    nu = zeros(m)
+    Ix = zeros(m)
+    Iy = zeros(m)
+    Iz = zeros(m)
+    Kall = zeros((7, 7, m))
+
+    I = []
+    J = []
+    col = []
+    row = []
+    edgei = []
+
+    for ui, vi in edges:
+
+        i = uv_i[(ui, vi)]
+        edgei.append(i)
+        edge = network.edge[ui][vi]
+        wi = edge.get('w')
+        l0[i] = network.edge_length(ui, vi)
+        l[i] = network.edge_length(ui, vi)
+
+        vertexu = network.vertex[ui]
+        vertexv = network.vertex[vi]
+        vertexw = network.vertex[wi]
+
+        x_0 = (array([vertexv[j] for j in 'xyz']) - array([vertexu[j] for j in 'xyz']))  # should make xyzs first then fetch them here
+        x_0 = x_0 / norm(x_0)
+        z_0 = cross(array([vertexu[j] for j in 'xyz']) - array([vertexw[j] for j in 'xyz']), x_0)  # same as above
+        z_0 = z_0 / norm(z_0)
+        y_0 = cross(z_0, x_0)
+
+        T_0[(i * 3):((i + 1) * 3), 0:3] = array([x_0, y_0, z_0]).transpose()
+
+        Ju = array([], dtype=int)
+        Jv = array([], dtype=int)
+
+        Iu = where(array(freedof_node) == ui)[0]
+        if not len(Iu) == 0:
+            Ju = (array(freedof)[Iu] - ui) * 100 - 1
+            Ju = array([int(round(j)) for j in Ju])
+
+        Iv = where(array(freedof_node) == vi)[0]
+        if not len(Iv) == 0:
+            Jv = (array(freedof)[Iv] - vi) * 100 + 5
+            Jv = array([int(round(j)) for j in Jv])
+
+        I.append(concatenate((Iu, Iv),0))
+        J.append(concatenate((Ju, Jv),0))
+
+        for j in range(len(I[i])):
+            for k in range(len(I[i])):
+                row.append(I[i][j])
+                col.append(I[i][k])
+
+        E[i] = edge.get('E', 0)
+        A[i] = edge.get('A', 0)
+        nu[i] = edge.get('nu', 0)
+        G[i] = E[i] / (2 * (1 + nu[i]))
+        Ix[i] = edge.get('Ix', 0)
+        Iy[i] = edge.get('Iy', 0)
+        Iz[i] = edge.get('Iz', 0)
+
+        EA = E[i] * A[i]
+        GIx = G[i] * Ix[i]
+        EIy = E[i] * Iy[i]
+        EIz = E[i] * Iz[i]
+
+        Kall[:, :, i] = array([
+            [EA, 0, 0, 0, 0, 0, 0],
+            [0, GIx, 0, 0, -GIx, 0, 0],
+            [0, 0, 4 * EIy, 0, 0, 2 * EIy, 0],
+            [0, 0, 0, 4 * EIz, 0, 0, 2 * EIz],
+            [0, -GIx, 0, 0, GIx, 0, 0],
+            [0, 0, 2 * EIy, 0, 0, 4 * EIy, 0],
+            [0, 0, 0, 2 * EIz, 0, 0, 4 * EIz]
+        ])
+
+    return edges, uv_i, l, T_0, l0, I, J, row, col, edgei, E, A, G, Ix, Iy, Iz, Kall
+
+
+def _indexdof(freedof, seldof, count, n):
+
+    """ Makes list of indices to access seldof degrees-of-freedom in freedof.
 
     Parameters
     ----------
-    network : Network
+    freedof : list
+        All unconstrained degrees of freedom.
+    seldof : float
+        Degrees-of-freedom.
+    count : int
+        Counter for number of constrained dof of specific type (translations or rotations).
+    n : int
+        Number of vertices.
+
+    Returns
+    -------
+    array
+        IDX list of indices
+
+    """
+
+    IDX = zeros(n, dtype=int64)
+
+    for i in range(n):
+        if i + seldof in freedof:
+            idx = freedof.index(i + seldof)
+        else:
+            idx = len(freedof)
+            count += 1
+        IDX[i] = idx
+
+    return IDX, count
+
+
+@jit(f8[:, :](f8[:, :], f8[:]), nogil=True, nopython=True)
+def _skew_(S, v):
+
+    """ Modifies the skew-symmetric matrix S in place.
+
+    Parameters
+    ----------
+    S : array
+        Original array to edit.
+    v : array
+        A vector.
+
+    Returns
+    -------
+    array
+        S of v.
+
+    """
+
+    S[0, 1] = -v[2]
+    S[0, 2] =  v[1]
+    S[1, 0] =  v[2]
+    S[1, 2] = -v[0]
+    S[2, 0] = -v[1]
+    S[2, 1] =  v[0]
+
+    return S
+
+
+@jit(f8[:, :](i8, f8[:, :], i8[:], i8[:], i8[:], f8[:, :], f8[:, :]), nogil=True, nopython=True)
+def _beam_triad(i, x_, IDXalpha, IDXbeta, IDXgamma, T_0, Sbt):
+
+    """ Construct the current nodal beam triad for vertex 'key'.
+
+    Parameters
+    ----------
+    i : int
+        Index.
+    x_ : array
+        Extended array of displacements.
+    IDXalpha : list
+        Alpha-dof index.
+    IDXbeta : list
+        Beta-dof index.
+    IDXgamma : list
+        Gamma-dof index.
+    T_0 : array
+        -
+    Sbt : array
+        Pre-made S.
+
+    Returns
+    -------
+    array
+        T matrix
+
+    """
+
+    alpha = x_[IDXalpha[i]][0]
+    beta  = x_[IDXbeta[i]][0]
+    gamma = x_[IDXgamma[i]][0]
+
+    Lbda = array([alpha, beta, gamma])
+    lbda = norm_vector_numba(Lbda)
+
+    if lbda == 0.:
+        R = eye(3)
+    else:
+        lbda_ = Lbda / lbda
+        S = _skew_(Sbt, lbda_)
+        R = eye(3) + sin(lbda) * S + (1. - cos(lbda)) * multiply_matrices_numba(S, S)
+
+    T = multiply_matrices_numba(R, T_0)
+
+    return T
+
+
+@jit(f8[:](f8[:], f8[:], f8[:], f8[:, :], f8[:, :], f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:]),
+     nogil=True, nopython=True)
+def _deformations(x_e, y_e, z_e, R_e, T_u, T_v, x_u, y_u, z_u, x_v, y_v, z_v):
+
+    """
+
+    Add comments
+
+    """
+
+    theta_xu = arcsin((dot_vectors_numba(z_e, y_u) - dot_vectors_numba(z_u, y_e)) / 2)
+    theta_xv = arcsin((dot_vectors_numba(z_e, y_v) - dot_vectors_numba(z_v, y_e)) / 2)
+    theta_yu = arcsin((dot_vectors_numba(z_e, x_u) - dot_vectors_numba(z_u, x_e)) / 2)
+    theta_yv = arcsin((dot_vectors_numba(z_e, x_v) - dot_vectors_numba(z_v, x_e)) / 2)
+    theta_zu = arcsin((dot_vectors_numba(y_e, x_u) - dot_vectors_numba(y_u, x_e)) / 2)
+    theta_zv = arcsin((dot_vectors_numba(y_e, x_v) - dot_vectors_numba(y_v, x_e)) / 2)
+
+    return array([theta_xu, theta_xv, theta_yu, theta_yv, theta_zu, theta_zv])
+
+
+@jit(f8[:, :](f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :],
+     f8[:, :], f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:]), nogil=True, nopython=True)
+def _create_T(eye3, zero3, zero6, zero9, x_e, y_e, z_e, R_e, Sx, Sy, Sz, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, x_u, y_u, z_u, x_v, y_v, z_v, li):
+
+    """
+
+    Add comments
+
+    """
+
+    Sx = _skew_(Sx, R_e[:, 0])
+    Sy = _skew_(Sy, R_e[:, 1])
+    Sz = _skew_(Sz, R_e[:, 2])
+    Szu = _skew_(Szu, z_u)
+    Syu = _skew_(Syu, y_u)
+    Sxu = _skew_(Sxu, x_u)
+    Szv = _skew_(Szv, z_v)
+    Syv = _skew_(Syv, y_v)
+    Sxv = _skew_(Sxv, x_v)
+
+    x_e_t = zeros((3, 1))
+    x_e_t[0, 0] = x_e[0]
+    x_e_t[1, 0] = x_e[1]
+    x_e_t[2, 0] = x_e[2]
+
+    x_e_h = x_e_t.transpose()
+
+    R_e1_t = zeros((3, 1))
+    R_e1_t[0, 0] = R_e[0, 1]
+    R_e1_t[1, 0] = R_e[1, 1]
+    R_e1_t[2, 0] = R_e[2, 1]
+
+    xe_Re0 = zeros((1, 3))
+    xe_Re0[0, 0] = x_e[0] + R_e[0, 0]
+    xe_Re0[0, 1] = x_e[1] + R_e[1, 0]
+    xe_Re0[0, 2] = x_e[2] + R_e[2, 0]
+
+    R_e2_t = zeros((3, 1))
+    R_e2_t[0, 0] = R_e[0, 2]
+    R_e2_t[1, 0] = R_e[1, 2]
+    R_e2_t[2, 0] = R_e[2, 2]
+
+    B = 1. / li[0] * (eye3 - multiply_matrices_numba(x_e_t, x_e_h))
+    XX = multiply_matrices_numba(x_e_t, xe_Re0)
+
+    L1_2 = 0.5 * dot_vectors_numba(R_e[:, 1], x_e) * B + multiply_matrices_numba(0.5 * B, multiply_matrices_numba(R_e1_t, xe_Re0))
+    L1_3 = 0.5 * dot_vectors_numba(R_e[:, 2], x_e) * B + multiply_matrices_numba(0.5 * B, multiply_matrices_numba(R_e2_t, xe_Re0))
+    L2_2 = 0.5 * Sy - 0.25 * dot_vectors_numba(R_e[:, 1], x_e) * Sx - multiply_matrices_numba(0.25 * Sy, XX)
+    L2_3 = 0.5 * Sz - 0.25 * dot_vectors_numba(R_e[:, 2], x_e) * Sx - multiply_matrices_numba(0.25 * Sz, XX)
+
+    L_2 = vstack((L1_2, L2_2, -L1_2, L2_2))
+    L_3 = vstack((L1_3, L2_3, -L1_3, L2_3))
+
+    Bzu = multiply_matrix_vector_numba(B, z_u)
+    Byu = multiply_matrix_vector_numba(B, y_u)
+    Bzv = multiply_matrix_vector_numba(B, z_v)
+    Byv = multiply_matrix_vector_numba(B, y_v)
+
+    h_1 = hstack((zero3, (multiply_matrix_vector_numba(-Szu, y_e) + multiply_matrix_vector_numba(Syu, z_e)), zero6))
+    h_2 = hstack((Bzu, (multiply_matrix_vector_numba(-Szu, x_e) + multiply_matrix_vector_numba(Sxu, z_e)), -Bzu, zero3))
+    h_3 = hstack((Byu, (multiply_matrix_vector_numba(-Syu, x_e) + multiply_matrix_vector_numba(Sxu, y_e)), -Byu, zero3))
+    h_4 = hstack((zero9, (multiply_matrix_vector_numba(-Szv, y_e) + multiply_matrix_vector_numba(Syv, z_e))))
+    h_5 = hstack((Bzv, zero3, -Bzv, (multiply_matrix_vector_numba(-Szv, x_e) + multiply_matrix_vector_numba(Sxv, z_e))))
+    h_6 = hstack((Byv, zero3, -Byv, (multiply_matrix_vector_numba(-Syv, x_e) + multiply_matrix_vector_numba(Sxv, y_e))))
+
+    t_1 = (multiply_matrix_vector_numba(L_3, y_u) - multiply_matrix_vector_numba(L_2, z_u) + h_1) / (2 * cos(theta[0]))
+    t_2 = (multiply_matrix_vector_numba(L_3, x_u) + h_2) / (2 * cos(theta[2]));
+    t_3 = (multiply_matrix_vector_numba(L_2, x_u) + h_3) / (2 * cos(theta[4]));
+    t_4 = (multiply_matrix_vector_numba(L_3, y_v) - multiply_matrix_vector_numba(L_2, z_v) + h_4) / (2 * cos(theta[1]))
+    t_5 = (multiply_matrix_vector_numba(L_3, x_v) + h_5) / (2 * cos(theta[3]));
+    t_6 = (multiply_matrix_vector_numba(L_2, x_v) + h_6) / (2 * cos(theta[5]));
+
+    g = hstack((-x_e, zero3, x_e, zero3))
+
+    T = zeros((12, 7))
+    T[:, 0] = g
+    T[:, 1] = t_1
+    T[:, 2] = t_2
+    T[:, 3] = t_3
+    T[:, 4] = t_4
+    T[:, 5] = t_5
+    T[:, 6] = t_6
+
+    return T
+
+
+@jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True)
+def _element_rotmat(T_u, T_v):
+
+    """ Calculates the 'average nodal rotation matrix' R_e for the calculation of the element triad.
+
+    Parameters
+    ----------
+    T_u : array
+        Beam end triad for vertex u.
+    T_v : array
+        Beam end triad for vertex v.
+
+    Returns
+    -------
+    array
+        R_e matrix.
+
+    """
+
+    dR = T_v * T_u.transpose()
+
+    q_0 = 0.5 * sqrt(1. + trace(dR))
+    q04 = 4. * q_0
+    q_1 = (dR[2, 1] - dR[1, 2]) / q04
+    q_2 = (dR[0, 2] - dR[2, 0]) / q04
+    q_3 = (dR[1, 0] - dR[0, 1]) / q04
+    q = array([q_1, q_2, q_3])
+    normq = norm_vector_numba(q)
+
+    mu = 2. * abs(arctan(normq / q_0))
+    if mu == 0.:
+        e = array([1., 1., 1.])
+    else:
+        e = q / normq
+
+    S = zeros((3, 3))
+    S[0, 1] = -e[2]
+    S[0, 2] =  e[1]
+    S[1, 0] =  e[2]
+    S[1, 2] = -e[0]
+    S[2, 0] = -e[1]
+    S[2, 1] =  e[0]
+
+    dRm = eye(3) + sin(0.5 * mu) * S + (1. - cos(0.5 * mu)) * multiply_matrices_numba(S, S)
+    R_e = multiply_matrices_numba(dRm, T_u)
+
+    return R_e
+
+
+@jit(f8[:](f8[:]), nogil=True, nopython=True)
+def quaternion(Lbda):
+
+    """ Get the quaternion formulation for a given rotation vector Lbda.
+
+    Parameters
+    ----------
+    Lbda : array
+        Rotation vector.
+
+    Returns
+    -------
+    array
+        [q, q0]
+
+    """
+
+    lbda = norm_vector_numba(Lbda)
+    if lbda == 0.:
+        L = Lbda
+    else:
+        L = Lbda / lbda
+    q = sin(0.5 * lbda) * L
+    q0 = cos(0.5 * lbda)
+
+    return array([q[0], q[1], q[2], q0])
+
+
+def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
+
+    """Run dynamic relaxation analysis with 6 DoF per node.
+
+    Parameters
+    ----------
+    network : obj
         Network to analyse.
     dt : float
         Time step.
@@ -68,285 +520,208 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
     Returns
     -------
     X : array
-        List of node coordinares.
+        Node co-ordinates.
     x : array
-        List of positions and orientations of all free DoF.
+        Positions and orientations of all free DoF.
     x0 : array
-        List of initial positions and orientations of all free DoF.
+        Initial positions and orientations of all free DoF.
 
     """
-    # Setup
-    # Vertices
-    k_i = network.key_index()
-    n = network.number_of_vertices()
-    X = zeros((n, 3))
-    P = zeros((n, 6))
 
-    for key in network.vertices():
-        i = k_i[key]
-        vertex  = network.vertex[key]
-        X[i, :] = [vertex[j] for j in 'xyz']
-        P[i, 0] = vertex.get('px', 0)
-        P[i, 1] = vertex.get('py', 0)
-        P[i, 2] = vertex.get('pz', 0)
-        P[i, 3] = vertex.get('palpha', 0)
-        P[i, 4] = vertex.get('pbeta', 0)
-        P[i, 5] = vertex.get('pgamma', 0)
+    k_i, X, P, n, d, p, x0, x, v, r, freedof_node, freedof_axis, freedof = _create_vertex_arrays(network)
 
-    # Degrees of freedom
-    freedof = free_dof(network)
-    d = len(freedof)
-    p = zeros((d, 1))
-    x0 = zeros((d, 1))
-    x = zeros((d, 1))
-    v = zeros((d, 1))
-    freedof_node = []
-    freedof_axis = []
-    for i in range(d):
-        node = int(round(freedof[i], 0))
-        axis = int(round((freedof[i] - node) * 100 - 1, 0))
-        freedof_node.append(node)
-        freedof_axis.append(axis)
-        p[i] = P[node, axis]
-        if axis < 2.5:
-            x0[i] = X[node , axis]
-    x = x0
-    r = p
+    edges, uv_i, l, T_0, l0, I, J, row, col, edgei, E_, A_, G_, Ix_, Iy_, Iz_, Kall = _create_edge_arrays(network, freedof, freedof_node)
 
-    # Edges
-    uv_i = network.uv_index()
-    edges = list(network.edges())
-    m = len(edges)
-    l0 = zeros((m, 1))
-    l = zeros((m, 1))
-    T_0 = zeros((m * 3,3));
-    iK = []
-    jK = []
-    I = []
-    J = []
-    col = []
-    row = []
-    for c, uv in enumerate(edges):
-        ui, vi = uv
-        i = uv_i[(ui, vi)]
-        edge = network.edge[ui][vi]
-        wi = edge.get('w')
-        l0[i] = network.edge_length(ui, vi)
-        l[i] = network.edge_length(ui, vi)
+    # Indexing
 
-        vertexu = network.vertex[ui]
-        vertexv = network.vertex[vi]
-        vertexw = network.vertex[wi]
-        x_0 = (array([vertexv[j] for j in 'xyz']) - array([vertexu[j] for j in 'xyz']))
-        x_0 = x_0 / norm(x_0)
-        z_0 = cross(array([vertexu[j] for j in 'xyz']) - array([vertexw[j] for j in 'xyz']), x_0)
-        z_0 = z_0 / norm(z_0)
-        y_0 = cross(z_0, x_0)
-
-        T_0[(i * 3):((i + 1) * 3), 0:3] = transpose(array([x_0, y_0, z_0]))
-
-        Ju = array([], dtype = int)
-        Jv = array([], dtype = int)
-        Iu = where(array(freedof_node) == ui)[0]
-        if not len(Iu) == 0:
-            Ju = (array(freedof)[Iu] - ui) * 100 - 1
-            Ju = array([int(round(j)) for j in Ju])
-
-        Iv = where(array(freedof_node) == vi)[0]
-        if not len(Iv) == 0:
-            Jv = (array(freedof)[Iv] - vi) * 100 + 5
-            Jv = array([int(round(j)) for j in Jv])
-
-        I.append(concatenate((Iu, Iv),0))
-        J.append(concatenate((Ju, Jv),0))
-        for j in range(len(I[i])):
-            for k in range(len(I[i])):
-                row.append(I[i][j])
-                col.append(I[i][k])
-
-    # Define indexing lists for accessing certain degrees of freedom
     counttra = 0
-    IDXx, counttra = indexdof(freedof, 0.01, counttra, n)
-    IDXy, counttra = indexdof(freedof, 0.02, counttra, n)
-    IDXz, counttra = indexdof(freedof, 0.03, counttra, n)
+    IDXx, counttra = _indexdof(freedof, 0.01, counttra, n)
+    IDXy, counttra = _indexdof(freedof, 0.02, counttra, n)
+    IDXz, counttra = _indexdof(freedof, 0.03, counttra, n)
     IDXtra = sort(concatenate((IDXx, IDXy, IDXz)), 0)
-    IDXtra = IDXtra[0:(3 * n - counttra)]
+    nct = 3 * n - counttra
+    IDXtra = IDXtra[0:nct]
     IDXtra = array([int(round(j)) for j in IDXtra])
 
     countrot = 0
-    IDXalpha, countrot = indexdof(freedof, 0.04, countrot, n)
-    IDXbeta, countrot = indexdof(freedof, 0.05, countrot, n)
-    IDXgamma, countrot = indexdof(freedof, 0.06, countrot, n)
+    IDXalpha, countrot = _indexdof(freedof, 0.04, countrot, n)
+    IDXbeta, countrot = _indexdof(freedof, 0.05, countrot, n)
+    IDXgamma, countrot = _indexdof(freedof, 0.06, countrot, n)
     IDXrot = sort(concatenate((IDXalpha, IDXbeta, IDXgamma)), 0)
-    IDXrot = IDXrot[0:(3 * n - countrot)]
+    nct = 3 * n - countrot
+    IDXrot = IDXrot[0:nct]
     IDXrot = array([int(round(j)) for j in IDXrot])
+
+    # DR-loop
 
     ts = 0
     rnorm = tol + 1
 
-    # DR-loop
-    while ts <= steps and rnorm > tol:
-        f = zeros((d, 1))
-        K = zeros((d, d))
-        data = []
+    f = zeros((d, 1))
+    Szu = zeros((3, 3))
+    Syu = zeros((3, 3))
+    Sxu = zeros((3, 3))
+    Szv = zeros((3, 3))
+    Syv = zeros((3, 3))
+    Sxv = zeros((3, 3))
+    Sz = zeros((3, 3))
+    Sy = zeros((3, 3))
+    Sx = zeros((3, 3))
+    Sbt = zeros((3, 3))
 
+    eye3 = eye(3)
+    zero3 = zeros(3)
+    zero6 = zeros(6)
+    zero9 = zeros(9)
+    Lambdaold = zeros(3)
+    dLambda = zeros(3)
+
+    freedof_node_array = array(freedof_node)
+
+#    K = zeros((d, d))  # isnt currently used, is overwritten later
+
+    while ts <= steps and rnorm > tol:
+
+        f *= 0
+        data = []  # this should be pre-allocated, appending lists later is slow
         x_ = concatenate((x, [[0.0]]), 0)
 
         for c, uv in enumerate(edges):
+
+            i = edgei[c]
             ui, vi = uv
-            i = uv_i[(ui, vi)]
+
+            # Update lengths
+
+            l[i] = network.edge_length(ui, vi)  # need to remove, as this is a pure Python calculation
             vertexu = network.vertex[ui]
             vertexv = network.vertex[vi]
-            vertexw = network.vertex[wi]
+            x_e = (array([vertexv[j] for j in 'xyz']) - array([vertexu[j] for j in 'xyz']))
 
-            # update lengths
-            l[i] = network.edge_length(ui, vi)
+            # Numba ----------------------------------------------------------------------------------------------------
 
-            # update beam end triads
-            T_u = beam_triad(k_i, ui, x_, IDXalpha, IDXbeta, IDXgamma, T_0[(i * 3):((i + 1) * 3), 0:3])
+            # Update triads
+
+            t0t = T_0[(i * 3):((i + 1) * 3), 0:3]
+            T_u = _beam_triad(ui, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
+            T_v = _beam_triad(vi, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
+            R_e = _element_rotmat(T_u, T_v)
+
             x_u = T_u[:, 0]
             y_u = T_u[:, 1]
             z_u = T_u[:, 2]
-
-            T_v = beam_triad(k_i, vi, x_, IDXalpha, IDXbeta, IDXgamma, T_0[(i * 3):((i + 1) * 3), 0:3])
             x_v = T_v[:, 0]
             y_v = T_v[:, 1]
             z_v = T_v[:, 2]
 
-            # update element triad
-            R_e = element_rotmat(T_u, T_v)
-
-            x_e = (array([vertexv[j] for j in 'xyz']) - array([vertexu[j] for j in 'xyz']))
-            x_e = x_e / norm(x_e)
-            y_e = R_e[:, 1] - dot(R_e[:, 1], x_e) / 2 * (x_e + R_e[:, 0])
-            z_e = R_e[:, 2] - dot(R_e[:, 2], x_e) / 2 * (x_e + R_e[:, 0])
-
-            T_e = transpose([x_e, y_e, z_e])
+            x_e /= norm(x_e)
+            y_e = R_e[:, 1] - dot_vectors_numba(R_e[:, 1], x_e) / 2 * (x_e + R_e[:, 0])
+            z_e = R_e[:, 2] - dot_vectors_numba(R_e[:, 2], x_e) / 2 * (x_e + R_e[:, 0])
 
             # Calculate local beam deformations
-            delta = l[i][0] - l0[i][0]
-            theta_xu = arcsin((dot(z_e, y_u) - dot(z_u, y_e)) / 2)
-            theta_xv = arcsin((dot(z_e, y_v) - dot(z_v, y_e)) / 2)
-            theta_yu = arcsin((dot(z_e, x_u) - dot(z_u, x_e)) / 2)
-            theta_yv = arcsin((dot(z_e, x_v) - dot(z_v, x_e)) / 2)
-            theta_zu = arcsin((dot(y_e, x_u) - dot(y_u, x_e)) / 2)
-            theta_zv = arcsin((dot(y_e, x_v) - dot(y_v, x_e)) / 2)
 
-            u_ = transpose(array([[delta, theta_xu, theta_yu, theta_zu, theta_xv, theta_yv, theta_zv]]))
-
-            # Beam properties
-            edge = network.edge[ui][vi]
-            E = edge.get('E', 0)
-            A = edge.get('A', 0)
-            nu = edge.get('nu', 0)
-            G = E / (2 * (1 + nu))
-            Ix = edge.get('Ix', 0)
-            Iy = edge.get('Iy', 0)
-            Iz = edge.get('Iz', 0)
+            theta = _deformations(x_e, y_e, z_e, R_e, T_u, T_v, x_u, y_u, z_u, x_v, y_v, z_v)
 
             # Internal forces
-            Sx = skew(R_e[:, 0])
-            Sy = skew(R_e[:, 1])
-            Sz = skew(R_e[:, 2])
 
-            B = 1 / l[i][0] * (eye(3) - dot(transpose([x_e]), [x_e]))
+            T = _create_T(eye3, zero3, zero6, zero9, x_e, y_e, z_e, R_e, Sx, Sy, Sz, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, x_u, y_u, z_u, x_v, y_v, z_v, l[i])
 
-            L1_2 = dot(R_e[:, 1], x_e) / 2 * B + dot(B / 2, dot(transpose([R_e[:, 1]]), [(x_e + R_e[:, 0])]))
-            L2_2 = Sy / 2 - dot(dot(R_e[:, 1], x_e) / 4, Sx) - dot(Sy / 4, dot(transpose([x_e]), [x_e + R_e[:, 0]]))
-            L_2 = concatenate((L1_2, L2_2, -L1_2, L2_2))
 
-            L1_3 = dot(R_e[:, 2], x_e) / 2 * B + dot(B / 2, dot(transpose([R_e[:, 2]]), [(x_e + R_e[:, 0])]))
-            L2_3 = Sz / 2 - dot(dot(R_e[:, 2], x_e) / 4, Sx) - dot(Sz / 4, dot(transpose([x_e]), [x_e + R_e[:, 0]]))
-            L_3 = concatenate((L1_3, L2_3, -L1_3, L2_3))
+            # ----------------------------------------------------------------------------------------------------------
 
-            Szu = skew(z_u)
-            Syu = skew(y_u)
-            Sxu = skew(x_u)
-            Szv = skew(z_v)
-            Syv = skew(y_v)
-            Sxv = skew(x_v)
 
-            h_1 = concatenate((array([0.0, 0.0, 0.0]), (dot(-Szu, y_e) + dot(Syu, z_e)), array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])))
-            h_2 = concatenate((dot(B, z_u), (dot(-Szu, x_e) + dot(Sxu, z_e)), -dot(B, z_u), array([0.0, 0.0, 0.0])))
-            h_3 = concatenate((dot(B, y_u), (dot(-Syu, x_e) + dot(Sxu, y_e)), -dot(B, y_u), array([0.0, 0.0, 0.0])))
-            h_4 = concatenate((array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]), (dot(-Szv, y_e) + dot(Syv, z_e))))
-            h_5 = concatenate((dot(B, z_v), array([0.0, 0.0, 0.0]), -dot(B, z_v), (dot(-Szv, x_e) + dot(Sxv, z_e))))
-            h_6 = concatenate((dot(B, y_v), array([0.0, 0.0, 0.0]), -dot(B, y_v), (dot(-Syv, x_e) + dot(Sxv, y_e))))
 
-            t_1 = (dot(L_3, y_u) - dot(L_2, z_u) + h_1) / (2 * cos(theta_xu))
-            t_2 = (dot(L_3, x_u) + h_2) / (2 * cos(theta_yu));
-            t_3 = (dot(L_2, x_u) + h_3) / (2 * cos(theta_zu));
-            t_4 = (dot(L_3, y_v) - dot(L_2, z_v) + h_4) / (2 * cos(theta_xv))
-            t_5 = (dot(L_3, x_v) + h_5) / (2 * cos(theta_yv));
-            t_6 = (dot(L_2, x_v) + h_6) / (2 * cos(theta_zv));
 
-            g = concatenate([-x_e, array([0.0, 0.0, 0.0]), x_e, array([0.0, 0.0, 0.0])])
 
-            T = transpose([g, t_1, t_2, t_3, t_4, t_5, t_6])
 
-            K_ = 1 / l0[i] * array([[E * A, 0, 0, 0, 0, 0, 0],
-                [0, G * Ix, 0, 0, -G * Ix, 0, 0],
-                [0, 0, 4 * E * Iy, 0, 0, 2 * E * Iy, 0],
-                [0, 0, 0, 4 * E * Iz, 0, 0, 2 * E * Iz],
-                [0, -G * Ix, 0, 0, G * Ix, 0, 0],
-                [0, 0, 2 * E * Iy, 0, 0, 4 * E * Iy, 0],
-                [0, 0, 0, 2 * E * Iz, 0, 0, 4 * E * Iz]])
 
+
+
+
+            delta = l[i][0] - l0[i][0]
+            u_ = array([[delta, theta[0], theta[2], theta[4], theta[1], theta[3], theta[5]]]).transpose()
+
+            K_ = 1 / l0[i] * Kall[:, :, i]
             f_ = dot(K_, u_)
-
             fe = dot(T, f_)
 
-            f[I[i]] = f[I[i]] + fe[J[i]]
+            f[I[i]] += fe[J[i]]
+
+            # ----------------------------------------------------------------------------------------------------------
 
             # Stiffness matrix
-            Ke_e = dot(dot(T, K_), transpose(T))
+
+            Ke_e = dot(dot(T, K_), T.transpose())
 
             for j in range(len(I[i])):
                 for k in range(len(I[i])):
                     data.append(Ke_e[J[i][j]][J[i][k]])
                     #K[I[i][j]][I[i][k]] = K[I[i][j]][I[i][k]] + Ke_e[J[i][j]][J[i][k]]
 
-        K = csc_matrix((data, (row, col)), shape=(d, d))
+        K = csc_matrix((data, (row, col)), shape=(d, d))  # could dis-assemble and use own Sparse indexing in Numba
 
         # Update residual forces
+
         r = p - f
-        rnorm = dot(transpose(r)[0], transpose(r)[0]) ** 0.5
+        rnorm = dot(r.transpose()[0], r.transpose()[0])**0.5
 
         # Update velocities
-        M = K
-        vold = v
-        v = (1 - xi * dt) / (1 + xi * dt) * vold + transpose([spsolve(M, r)]) / (1 + xi * dt) * dt
+
+        M = 1 * K
+        vold = 1 * v
+        v = (1 - xi * dt) / (1 + xi * dt) * vold + array([spsolve(M, r)]).transpose() / (1 + xi * dt) * dt
+
+        # Numba part 2 -------------------------------------------------------------------------------------------------
 
         # Update coordinates
+
         dx = dt * v
         xold = x
-
         x[IDXtra] = xold[IDXtra] + dx[IDXtra]
 
-        Lambdaold = zeros((1, 3))
-        dLambda = zeros((1, 3))
-        for i in range(len(set(array(freedof_node)[IDXrot]))):
-            for j in where(array(freedof_node)[IDXrot] == list(set(array(freedof_node)[IDXrot]))[i])[0]:
-                Lambdaold[0][freedof_axis[IDXrot[j]] - 3] = xold[IDXrot[j]]
-                dLambda[0][freedof_axis[IDXrot[j]] - 3] = dx[IDXrot[j]]
-            qold, q0old = quaternion(Lambdaold)
-            dq, dq0 = quaternion(dLambda)
-            qnew = q0old * dq + dq0 * qold - cross(qold, dq)
-            q0new = q0old[0] * dq0[0] - dot(qold[0], dq[0])
+        Lambdaold *= 0
+        dLambda *= 0
 
+        FNA = freedof_node_array[IDXrot]
+
+        for i in range(len(set(FNA))):
+
+            for j in where(FNA == list(set(FNA))[i])[0]:
+
+                Lambdaold[freedof_axis[IDXrot[j]] - 3] = xold[IDXrot[j]]
+                dLambda[freedof_axis[IDXrot[j]] - 3] = dx[IDXrot[j]]
+
+            qO = quaternion(Lambdaold)
+            qQ = quaternion(dLambda)
+            qold = qO[:3]
+            q0old = qO[3]
+            dq = qQ[:3]
+            dq0 = qQ[3]
+
+            qnew = q0old * dq + dq0 * qold - cross(qold, dq)
+            q0new = q0old * dq0 - dot(qold, dq)
             lambdanew = 2 * arctan(norm(qnew) / q0new)
-            if norm(qnew) == 0.0: Lnew = qnew
-            else: Lnew = qnew / norm(qnew)
+
+            if norm(qnew) == 0.0:
+                Lnew = qnew
+            else:
+                Lnew = qnew / norm(qnew)
             Lambdanew = lambdanew * Lnew
 
-            for j in where(array(freedof_node)[IDXrot] == list(set(array(freedof_node)[IDXrot]))[i])[0]:
-                x[IDXrot[j]] = Lambdanew[0][freedof_axis[IDXrot[j]] - 3]
+            for j in where(FNA == list(set(FNA))[i])[0]:
+                x[IDXrot[j]] = Lambdanew[freedof_axis[IDXrot[j]] - 3]
 
         # Update X
+
         for i in range(len(IDXtra)):
             X[freedof_node[IDXtra[i]]][freedof_axis[IDXtra[i]]] = x[IDXtra[i]]
 
+#        ---------------------------------------------------------------------------------------------------------------
+
         # Update network
+
+        # lets try to remove this update to only the end and keep an array of co-ordinates till then, use X above?
+
         i_k = network.index_key()
         for i in sorted(list(network.vertices()), key=int):
             xx, yy, zz = X[i, :]
@@ -354,156 +729,8 @@ def dr_6dof_numpy(network, dt = 1.0, xi=1.0, tol=0.001, steps=100):
 
         ts += 1
         print(ts)
+
     return X#, x, x0
-
-
-def free_dof(network):
-    """ Collect all free DoF.
-
-    Parameters:
-        network (obj): Network to be analysed.
-
-    Returns:
-        list: Degrees of Freedom that are not fixed
-    """
-    freedof = []
-    k_i = network.key_index()
-    for key in network.vertices():
-        i = k_i[key]
-        vertex  = network.vertex[key]
-        if vertex.get('dofx', True):
-            freedof.append(i+0.01)
-        if notvertex.get('dofy', True):
-            freedof.append(i+0.02)
-        if vertex.get('dofz', True):
-            freedof.append(i+0.03)
-        if vertex.get('dofalpha', True):
-            freedof.append(i+0.04)
-        if vertex.get('dofbeta', True):
-            freedof.append(i+0.05)
-        if vertex.get('dofgamma', True):
-            freedof.append(i+0.06)
-    return freedof
-
-
-def skew(v):
-    """ Constructs the skew-symmetric matrix S
-
-    Parameters:
-        v: A vector
-
-    Returns:
-        array: S of v
-    """
-    S = array([[0.0, -v[2], v[1]],
-        [v[2], 0.0, -v[0]],
-        [-v[1], v[0], 0.0]])
-    return S
-
-
-def beam_triad(k_i, key, x_, IDXalpha, IDXbeta, IDXgamma, T_0):
-    """ Construct the current nodal beam triad for vertex 'key'
-
-    Parameters:
-        k_i: key from index dictionary
-        key: key of vertex
-        x_: extended array of displacements
-        IDXalpha: list of alpha-dof index
-        IDXbeta: list of beta-dof index
-        IDXgamma: list of gamma-dof index
-
-    Returns:
-        array: T matrix
-    """
-    alpha = x_[int(IDXalpha[k_i[key]])]
-    beta = x_[int(IDXbeta[k_i[key]])]
-    gamma = x_[int(IDXgamma[k_i[key]])]
-
-    Lbda = concatenate((alpha, beta, gamma), 0)
-    lbda = norm(Lbda)
-    if lbda == 0:
-        R = eye(3)
-    else:
-        lbda_ = Lbda / lbda;
-        S = skew(lbda_)
-        R = eye(3) + sin(lbda) * S + (1 - cos(lbda)) * dot(S, S)
-
-    T = dot(R, T_0)
-    return T
-
-
-def element_rotmat(T_u, T_v):
-    """ calculates the 'average nodal rotation matrix' R_e for the calculation of the element triad
-
-    Parameters:
-        T_u: beam end triad for vertex u
-        T_v: beam end triad for vertex v
-
-    Return:
-        array: R_e matrix
-    """
-    dR = T_v * transpose(T_u)
-
-    q_0 = (1 + trace(dR)) ** 0.5 / 2
-    q_1 = (dR[2, 1] - dR[1, 2]) / (4 * q_0)
-    q_2 = (dR[0, 2] - dR[2, 0]) / (4 * q_0)
-    q_3 = (dR[1, 0] - dR[0, 1]) / (4 * q_0)
-
-    q = array([q_1, q_2, q_3])
-
-    mu = 2 * abs(arctan(norm(q) / q_0))
-    if mu == 0:
-        e = array([1, 1, 1])
-    else:
-        e = q / norm(q)
-
-    S = array([[0.0, -e[2], e[1]],
-               [e[2], 0.0, -e[0]],
-               [-e[1], e[0], 0.0]])
-    dRm = eye(3) + sin(mu / 2) * S + (1 - cos(mu / 2)) * dot(S, S)
-
-    R_e = dot(dRm, T_u)
-    return R_e
-
-
-def indexdof(freedof, seldof, count, n):
-    """ makes list of indices to access seldof degrees of freedom in freedof
-
-    Parameters:
-        freedof: list of all unconstrained degrees of freedom
-        seldof (float): degrees of freedom
-        count: counter for number of constrained dof of specific type (translations or rotations)
-        n: number of vertices
-
-    Return:
-        array: IDX list of indices
-    """
-    IDX = zeros((n, 1))
-    for i in range(n):
-        if i + seldof in freedof:
-            idx = freedof.index(i + seldof)
-        else:
-            idx = len(freedof)
-            count += 1
-        IDX[i] = idx
-    return IDX, count
-
-
-def quaternion(Lbda):
-    """ get the quaternion formulation for a given rotation vector Lbda
-
-    Parameters:
-        Lbda: rotation vector
-
-    Return:
-        array: q
-        list: q0
-    """
-    lbda = norm(Lbda)
-    L = Lbda if lbda == 0.0 else Lbda / lbda
-    q = (sin(lbda / 2) * L)
-    q0 = [cos(lbda / 2)]
-    return q, q0
 
 
 # ==============================================================================
@@ -513,36 +740,25 @@ def quaternion(Lbda):
 if __name__ == "__main__":
 
     from compas.viewers import NetworkViewer
-    #from compas.plotters import NetworkPlotter
 
-    R = 100
-    alphatot = 3.14159265359 / 4
+    from numpy import cos
+    from numpy import pi
+    from numpy import sin
+
     m = 80
+    R = 100
+    at = 0.25 * pi
 
     network = Network()
     for i in range(m + 1):
-        alpha = i * alphatot / m
-        x = R * sin(alpha)
-        y = -R + R * cos(alpha)
+        a = i * at / m
+        x = R * sin(a)
+        y = -R + R * cos(a)
         network.add_vertex(key=i, x=x, y=y)
         if i < m:
             network.add_edge(key=i, u=i, v=i+1)
-    network.add_vertex(key = (m + 1), x = 0, y = -R)
+    network.add_vertex(key=(m + 1), x=0, y=-R)
 
-    network.update_default_vertex_attributes({
-        'dofx': True,
-        'dofy': True,
-        'dofz': True,
-        'dofalpha': True,
-        'dofbeta': True,
-        'dofgamma': True,
-        'px': 0.0,
-        'py': 0.0,
-        'pz': 0.0,
-        'palpha': 0.0,
-        'pbeta': 0.0,
-        'pgamma': 0.0,
-        })
     network.update_default_edge_attributes({
         'w': int,
         'E': 10.0 ** 7,
@@ -551,41 +767,34 @@ if __name__ == "__main__":
         'Ix': 2.25 * 0.5 ** 4,
         'Iy': 1.0 / 12,
         'Iz': 1.0 / 12,
-        })
-    network.set_vertices_attributes([0, m + 1], {'dofx': False, 'dofy': False, 'dofz': False,
-        'dofalpha': False, 'dofbeta': False, 'dofgamma': False,})
+    })
+
+    bcs = {
+        'dofx': False,
+        'dofy': False,
+        'dofz': False,
+        'dofalpha': False,
+        'dofbeta': False,
+        'dofgamma': False,
+    }
+
+    network.set_vertices_attributes(keys=[0, m + 1], attr_dict=bcs)
     network.set_vertices_attributes([m], {'pz': 600})
+    network.set_edges_attributes(attr_dict={'w': (m + 1)})
 
-    network.set_edges_attributes(attr_dict = {'w': (m + 1)})
-
-    #viewer = NetworkViewer(network=network, width=1600, height=800)
-    #viewer.setup()
-    #viewer.show()
-
-    #plotter = NetworkPlotter(network, figsize=(10, 7))
-
-    lines = []
-    for u, v in network.edges():
-        lines.append({
-            'start': network.vertex_coordinates(u, 'xy'),
-            'end'  : network.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
-            'width': 1.0})
-
-    #plotter.draw_lines(lines)
+    X = dr_6dof_numba(network=network, dt=1.0, xi=1., tol=0.001, steps=50)  # pre-build
 
     tic = time()
-    X = dr_6dof_numpy(network, dt = 1. , xi = 1. , tol=0.001, steps=50)
-    toc = time() - tic
-    print(toc)
+    X = dr_6dof_numba(network=network, dt=1.0, xi=1., tol=0.001, steps=50)
     print(X)
+    print(time() - tic)
 
-    for i in network.vertices():
-        x, y, z = X[i, :]
-        network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
+    # original 4.68940768e+01  -1.55587273e+01   5.36048072e+01 in 2.16 s
 
-    #plotter.draw_vertices(radius=0.005, facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
-    #plotter.draw_edges()
-    #plotter.show()
+#    for i in network.vertices():
+#        x, y, z = X[i, :]
+#        network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
 
-    #viewer.show()
+#    viewer = NetworkViewer(network=network, width=1600, height=800)
+#    viewer.setup()
+#    viewer.show()
