@@ -6,9 +6,11 @@ from __future__ import print_function
 from compas.datastructures import Network
 
 from compas.hpc import dot_vectors_numba
+from compas.hpc import cross_vectors_numba
 from compas.hpc import multiply_matrices_numba
 from compas.hpc import norm_vector_numba
 from compas.hpc import multiply_matrix_vector_numba
+from compas.hpc import length_vector_numba
 
 from time import time
 
@@ -24,11 +26,11 @@ try:
     from numpy import cross
     from numpy import dot
     from numpy import eye
+    from numpy import float64
     from numpy import int64
     from numpy import hstack
     from numpy import vstack
     from numpy import round
-    from numpy import newaxis
     from numpy import sin
     from numpy import sqrt
     from numpy import sort
@@ -100,7 +102,7 @@ def _create_vertex_arrays(network):
         node, axis = uv
         p[ci] = P[node, axis]
         if axis <= 2:
-            x0[ci] = X[node , axis]
+            x0[ci] = X[node, axis]
     x = x0 * 1
     r = p * 1
 
@@ -171,8 +173,8 @@ def _create_edge_arrays(network, freedof, freedof_node):
             Jv = (array(freedof)[Iv] - vi) * 100 + 5
             Jv = array([int(round(j)) for j in Jv])
 
-        I.append(concatenate((Iu, Iv),0))
-        J.append(concatenate((Ju, Jv),0))
+        I.append(concatenate((Iu, Iv), 0))
+        J.append(concatenate((Ju, Jv), 0))
 
         for j in range(len(I[i])):
             for k in range(len(I[i])):
@@ -403,11 +405,11 @@ def _create_T(eye3, zero3, zero6, zero9, x_e, y_e, z_e, R_e, Sx, Sy, Sz, Sxu, Sy
     h_6 = hstack((Byv, zero3, -Byv, (multiply_matrix_vector_numba(-Syv, x_e) + multiply_matrix_vector_numba(Sxv, y_e))))
 
     t_1 = (multiply_matrix_vector_numba(L_3, y_u) - multiply_matrix_vector_numba(L_2, z_u) + h_1) / (2 * cos(theta[0]))
-    t_2 = (multiply_matrix_vector_numba(L_3, x_u) + h_2) / (2 * cos(theta[2]));
-    t_3 = (multiply_matrix_vector_numba(L_2, x_u) + h_3) / (2 * cos(theta[4]));
+    t_2 = (multiply_matrix_vector_numba(L_3, x_u) + h_2) / (2 * cos(theta[2]))
+    t_3 = (multiply_matrix_vector_numba(L_2, x_u) + h_3) / (2 * cos(theta[4]))
     t_4 = (multiply_matrix_vector_numba(L_3, y_v) - multiply_matrix_vector_numba(L_2, z_v) + h_4) / (2 * cos(theta[1]))
-    t_5 = (multiply_matrix_vector_numba(L_3, x_v) + h_5) / (2 * cos(theta[3]));
-    t_6 = (multiply_matrix_vector_numba(L_2, x_v) + h_6) / (2 * cos(theta[5]));
+    t_5 = (multiply_matrix_vector_numba(L_3, x_v) + h_5) / (2 * cos(theta[3]))
+    t_6 = (multiply_matrix_vector_numba(L_2, x_v) + h_6) / (2 * cos(theta[5]))
 
     g = hstack((-x_e, zero3, x_e, zero3))
 
@@ -500,6 +502,75 @@ def quaternion(Lbda):
     return array([q[0], q[1], q[2], q0])
 
 
+def _data(li, l0i, theta, Kall, T, f, Ii, Ji, i, data):
+
+    """
+
+    Add comments
+
+    """
+
+    delta = li - l0i
+    u_ = array([[delta, theta[0], theta[2], theta[4], theta[1], theta[3], theta[5]]]).transpose()
+    K_ = 1. / l0i * Kall[:, :, i]
+    f_ = dot(K_, u_)
+    fe = dot(T, f_)
+    f[Ii] += fe[Ji]
+
+    Ke_e = multiply_matrices_numba(multiply_matrices_numba(T, K_), T.transpose())
+
+    for j in range(len(Ii)):
+        for k in range(len(Ii)):
+            data.append(Ke_e[Ji[j]][Ji[k]])
+            #K[I[i][j]][I[i][k]] = K[I[i][j]][I[i][k]] + Ke_e[J[i][j]][J[i][k]]
+
+    return f, data
+
+
+# @jit(f8[:, :](f8[:, :], f8[:, :], f8, i8[:], f8[:], f8[:], i8[:], i8[:], i8[:], i8[:], i8[:], i8[:, :]),
+     # nogil=True, nopython=True)
+def _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_axis_array, IDXrot, FNA, setFNA, ind):
+
+    dx = dt * v
+    xold = x
+    x[IDXtra] = xold[IDXtra] + dx[IDXtra]
+
+    Lambdaold *= 0.
+    dLambda *= 0.
+
+    for i in range(len(setFNA)):
+
+        for jj in range(3):  # is this always len 3?
+            j = ind[i, jj]
+            index = freedof_axis_array[IDXrot[j]]
+            Lambdaold[index - 3] = xold[IDXrot[j]][0]
+            dLambda[index - 3] = dx[IDXrot[j]][0]
+
+        qO = quaternion(Lambdaold)
+        qQ = quaternion(dLambda)
+        qold = qO[:3]
+        q0old = qO[3]
+        dq = qQ[:3]
+        dq0 = qQ[3]
+
+        qnew = q0old * dq + dq0 * qold - cross_vectors_numba(qold, dq)
+        q0new = q0old * dq0 - dot_vectors_numba(qold, dq)
+        lambdanew = 2 * arctan(norm_vector_numba(qnew) / q0new)
+
+        if norm(qnew) == 0.0:
+            Lnew = qnew
+        else:
+            Lnew = qnew / norm_vector_numba(qnew)
+        Lambdanew = lambdanew * Lnew
+
+        value = setFNA[i]
+        for j in range(len(FNA)):
+            if FNA[j] == value:
+                x[IDXrot[j]] = Lambdanew[freedof_axis_array[IDXrot[j]] - 3]
+
+    return x
+
+
 def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
 
     """Run dynamic relaxation analysis with 6 DoF per node.
@@ -573,10 +644,17 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
     zero3 = zeros(3)
     zero6 = zeros(6)
     zero9 = zeros(9)
-    Lambdaold = zeros(3)
-    dLambda = zeros(3)
+    Lambdaold = zeros(3, dtype=float64)
+    dLambda = zeros(3, dtype=float64)
 
     freedof_node_array = array(freedof_node)
+    freedof_axis_array = array(freedof_axis)
+    FNA = freedof_node_array[IDXrot]
+    setFNA = array(list(set(FNA)))
+
+    ind = zeros((len(setFNA), 3), dtype=int)
+    for i, value in enumerate(setFNA):
+        ind[i, :] = where(FNA == value)[0]
 
 #    K = zeros((d, d))  # isnt currently used, is overwritten later
 
@@ -593,12 +671,10 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
 
             # Update lengths
 
-            l[i] = network.edge_length(ui, vi)  # need to remove, as this is a pure Python calculation
-            vertexu = network.vertex[ui]
-            vertexv = network.vertex[vi]
-            x_e = (array([vertexv[j] for j in 'xyz']) - array([vertexu[j] for j in 'xyz']))
-
-            # Numba ----------------------------------------------------------------------------------------------------
+            vertexu = k_i[ui]
+            vertexv = k_i[vi]
+            x_e = (X[vertexv, :] - X[vertexu, :])
+            l[i] = length_vector_numba(x_e)
 
             # Update triads
 
@@ -626,37 +702,7 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
 
             T = _create_T(eye3, zero3, zero6, zero9, x_e, y_e, z_e, R_e, Sx, Sy, Sz, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, x_u, y_u, z_u, x_v, y_v, z_v, l[i])
 
-
-            # ----------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-            delta = l[i][0] - l0[i][0]
-            u_ = array([[delta, theta[0], theta[2], theta[4], theta[1], theta[3], theta[5]]]).transpose()
-
-            K_ = 1 / l0[i] * Kall[:, :, i]
-            f_ = dot(K_, u_)
-            fe = dot(T, f_)
-
-            f[I[i]] += fe[J[i]]
-
-            # ----------------------------------------------------------------------------------------------------------
-
-            # Stiffness matrix
-
-            Ke_e = dot(dot(T, K_), T.transpose())
-
-            for j in range(len(I[i])):
-                for k in range(len(I[i])):
-                    data.append(Ke_e[J[i][j]][J[i][k]])
-                    #K[I[i][j]][I[i][k]] = K[I[i][j]][I[i][k]] + Ke_e[J[i][j]][J[i][k]]
+            f, data = _data(l[i][0], l0[i][0], theta, Kall, T, f, I[i], J[i], i, data)
 
         K = csc_matrix((data, (row, col)), shape=(d, d))  # could dis-assemble and use own Sparse indexing in Numba
 
@@ -671,64 +717,21 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
         vold = 1 * v
         v = (1 - xi * dt) / (1 + xi * dt) * vold + array([spsolve(M, r)]).transpose() / (1 + xi * dt) * dt
 
-        # Numba part 2 -------------------------------------------------------------------------------------------------
-
-        # Update coordinates
-
-        dx = dt * v
-        xold = x
-        x[IDXtra] = xold[IDXtra] + dx[IDXtra]
-
-        Lambdaold *= 0
-        dLambda *= 0
-
-        FNA = freedof_node_array[IDXrot]
-
-        for i in range(len(set(FNA))):
-
-            for j in where(FNA == list(set(FNA))[i])[0]:
-
-                Lambdaold[freedof_axis[IDXrot[j]] - 3] = xold[IDXrot[j]]
-                dLambda[freedof_axis[IDXrot[j]] - 3] = dx[IDXrot[j]]
-
-            qO = quaternion(Lambdaold)
-            qQ = quaternion(dLambda)
-            qold = qO[:3]
-            q0old = qO[3]
-            dq = qQ[:3]
-            dq0 = qQ[3]
-
-            qnew = q0old * dq + dq0 * qold - cross(qold, dq)
-            q0new = q0old * dq0 - dot(qold, dq)
-            lambdanew = 2 * arctan(norm(qnew) / q0new)
-
-            if norm(qnew) == 0.0:
-                Lnew = qnew
-            else:
-                Lnew = qnew / norm(qnew)
-            Lambdanew = lambdanew * Lnew
-
-            for j in where(FNA == list(set(FNA))[i])[0]:
-                x[IDXrot[j]] = Lambdanew[freedof_axis[IDXrot[j]] - 3]
-
-        # Update X
+        x = _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_axis_array, IDXrot, FNA, setFNA, ind)
 
         for i in range(len(IDXtra)):
-            X[freedof_node[IDXtra[i]]][freedof_axis[IDXtra[i]]] = x[IDXtra[i]]
-
-#        ---------------------------------------------------------------------------------------------------------------
-
-        # Update network
-
-        # lets try to remove this update to only the end and keep an array of co-ordinates till then, use X above?
-
-        i_k = network.index_key()
-        for i in sorted(list(network.vertices()), key=int):
-            xx, yy, zz = X[i, :]
-            network.set_vertex_attributes(i_k[i], {'x': xx, 'y': yy, 'z': zz})
+            X[freedof_node[IDXtra[i]]][freedof_axis[IDXtra[i]]] = x[IDXtra[i]][0]
 
         ts += 1
-        print(ts)
+
+        # print(ts)
+
+    # Update network
+
+    i_k = network.index_key()
+    for i in sorted(list(network.vertices()), key=int):
+        xx, yy, zz = X[i, :]
+        network.set_vertex_attributes(i_k[i], {'x': xx, 'y': yy, 'z': zz})
 
     return X#, x, x0
 
@@ -782,19 +785,15 @@ if __name__ == "__main__":
     network.set_vertices_attributes([m], {'pz': 600})
     network.set_edges_attributes(attr_dict={'w': (m + 1)})
 
-    X = dr_6dof_numba(network=network, dt=1.0, xi=1., tol=0.001, steps=50)  # pre-build
-
     tic = time()
     X = dr_6dof_numba(network=network, dt=1.0, xi=1., tol=0.001, steps=50)
-    print(X)
+    print(X[-2, :])
     print(time() - tic)
 
-    # original 4.68940768e+01  -1.55587273e+01   5.36048072e+01 in 2.16 s
+    # for i in network.vertices():
+    #     x, y, z = X[i, :]
+    #     network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
 
-#    for i in network.vertices():
-#        x, y, z = X[i, :]
-#        network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
-
-#    viewer = NetworkViewer(network=network, width=1600, height=800)
-#    viewer.setup()
-#    viewer.show()
+    # viewer = NetworkViewer(network=network, width=1600, height=800)
+    # viewer.setup()
+    # viewer.show()
