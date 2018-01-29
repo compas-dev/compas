@@ -494,8 +494,8 @@ class Mesh(FromToJson,
 
         """
         from compas.topology import delaunay_from_points
-
-        return delaunay_from_points(cls, points, boundary=boundary, holes=holes)
+        faces = delaunay_from_points(points, boundary=boundary, holes=holes)
+        return Mesh.from_vertices_and_faces(points, faces)
 
     # --------------------------------------------------------------------------
     # converters
@@ -2542,7 +2542,8 @@ if __name__ == '__main__':
 
     lines = [(obj.parser.vertices[u], obj.parser.vertices[v]) for u, v in obj.parser.lines]
 
-    mesh = Mesh.from_lines(lines, delete_boundary_face=False)
+    # mesh = Mesh.from_lines(lines, delete_boundary_face=False)
+    mesh = Mesh.from_points(obj.parser.vertices)
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
     plotter.draw_vertices()
