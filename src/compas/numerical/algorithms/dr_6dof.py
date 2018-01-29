@@ -5,12 +5,12 @@ from __future__ import print_function
 
 from compas.datastructures import Network
 
-from compas.hpc import dot_vectors_numba
 from compas.hpc import cross_vectors_numba
-from compas.hpc import multiply_matrices_numba
-from compas.hpc import norm_vector_numba
-from compas.hpc import multiply_matrix_vector_numba
+from compas.hpc import dot_vectors_numba
 from compas.hpc import length_vector_numba
+from compas.hpc import multiply_matrices_numba
+from compas.hpc import multiply_matrix_vector_numba
+from compas.hpc import norm_vector_numba
 
 from time import time
 
@@ -86,9 +86,9 @@ def _create_vertex_arrays(network):
         for ci, Pi in enumerate(['px', 'py', 'pz', 'palpha', 'pbeta', 'pgamma']):
             P[i, ci] = vertex.get(Pi, 0)
 
-        for ci, dof in enumerate(['dofx', 'dofy', 'dofz', 'dofalpha', 'dofbeta', 'dofgamma'], 1):  # should remove this 1
+        for ci, dof in enumerate(['dofx', 'dofy', 'dofz', 'dofalpha', 'dofbeta', 'dofgamma'], 1):
             if vertex.get(dof, True):
-                freedof.append(i + 0.01 * ci)  # we should think of a better dof storage method
+                freedof.append(i + 0.01 * ci)  # we should think of a better dof storage method boolean array
                 freedof_node.append(i)
                 freedof_axis.append(ci - 1)  # remove the 1 if changed above
 
@@ -475,7 +475,7 @@ def _element_rotmat(T_u, T_v):
 
 
 @jit(f8[:](f8[:]), nogil=True, nopython=True)
-def quaternion(Lbda):
+def _quaternion(Lbda):
 
     """ Get the quaternion formulation for a given rotation vector Lbda.
 
@@ -513,8 +513,8 @@ def _data(li, l0i, theta, Kall, T, f, Ii, Ji, i, data):
     delta = li - l0i
     u_ = array([[delta, theta[0], theta[2], theta[4], theta[1], theta[3], theta[5]]]).transpose()
     K_ = 1. / l0i * Kall[:, :, i]
-    f_ = dot(K_, u_)
-    fe = dot(T, f_)
+    f_ = multiply_matrices_numba(K_, u_)
+    fe = multiply_matrices_numba(T, f_)
     f[Ii] += fe[Ji]
 
     Ke_e = multiply_matrices_numba(multiply_matrices_numba(T, K_), T.transpose())
@@ -546,8 +546,8 @@ def _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_ax
             Lambdaold[index - 3] = xold[IDXrot[j]][0]
             dLambda[index - 3] = dx[IDXrot[j]][0]
 
-        qO = quaternion(Lambdaold)
-        qQ = quaternion(dLambda)
+        qO = _quaternion(Lambdaold)
+        qQ = _quaternion(dLambda)
         qold = qO[:3]
         q0old = qO[3]
         dq = qQ[:3]
@@ -661,7 +661,7 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
     while ts <= steps and rnorm > tol:
 
         f *= 0
-        data = []  # this should be pre-allocated, appending lists later is slow
+        data = []
         x_ = concatenate((x, [[0.0]]), 0)
 
         for c, uv in enumerate(edges):
