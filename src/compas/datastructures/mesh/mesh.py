@@ -5,8 +5,8 @@ from __future__ import division
 from copy import deepcopy
 from ast import literal_eval
 
-from compas.files.obj import OBJ
-from compas.files.ply import PLYreader
+from compas.files import OBJ
+from compas.files import PLYreader
 
 from compas.utilities import pairwise
 from compas.utilities import window
@@ -2535,7 +2535,19 @@ Mesh.swap_edge_tri = trimesh_swap_edge.__get__(None, Mesh)
 if __name__ == '__main__':
 
     import compas
+    from compas.files import OBJ
+    from compas.plotters import MeshPlotter
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    obj = OBJ(compas.get('lines.obj'))
+
+    lines = [(obj.parser.vertices[u], obj.parser.vertices[v]) for u, v in obj.parser.lines]
+
+    mesh = Mesh.from_lines(lines, delete_boundary_face=False)
+
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
+    plotter.draw_vertices()
+    plotter.draw_faces()
+    plotter.draw_edges()
+    plotter.show()
 
     print(mesh)
