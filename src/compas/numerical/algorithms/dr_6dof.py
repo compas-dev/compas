@@ -501,7 +501,7 @@ def _quaternion(Lbda):
 
     return array([q[0], q[1], q[2], q0])
 
-
+# Could be a good test Numba function for you to do
 def _data(li, l0i, theta, Kall, T, f, Ii, Ji, i, data):
 
     """
@@ -527,8 +527,8 @@ def _data(li, l0i, theta, Kall, T, f, Ii, Ji, i, data):
     return f, data
 
 
-# @jit(f8[:, :](f8[:, :], f8[:, :], f8, i8[:], f8[:], f8[:], i8[:], i8[:], i8[:], i8[:], i8[:], i8[:, :]),
-     # nogil=True, nopython=True)
+@jit(f8[:, :](f8[:, :], f8[:, :], f8, i8[:], f8[:], f8[:], i8[:], i8[:], i8[:], i8[:], i8[:], i8[:, :]),
+     nogil=True, nopython=True)
 def _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_axis_array, IDXrot, FNA, setFNA, ind):
 
     dx = dt * v
