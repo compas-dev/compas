@@ -612,7 +612,7 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
     IDXtra = sort(concatenate((IDXx, IDXy, IDXz)), 0)
     nct = 3 * n - counttra
     IDXtra = IDXtra[0:nct]
-    IDXtra = array([int(round(j)) for j in IDXtra])
+    IDXtra = array([int(round(j)) for j in IDXtra], dtype=int64)
 
     countrot = 0
     IDXalpha, countrot = _indexdof(freedof, 0.04, countrot, n)
@@ -621,7 +621,7 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
     IDXrot = sort(concatenate((IDXalpha, IDXbeta, IDXgamma)), 0)
     nct = 3 * n - countrot
     IDXrot = IDXrot[0:nct]
-    IDXrot = array([int(round(j)) for j in IDXrot])
+    IDXrot = array([int(round(j)) for j in IDXrot], dtype=int64)
 
     # DR-loop
 
@@ -647,12 +647,12 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
     Lambdaold = zeros(3, dtype=float64)
     dLambda = zeros(3, dtype=float64)
 
-    freedof_node_array = array(freedof_node)
-    freedof_axis_array = array(freedof_axis)
+    freedof_node_array = array(freedof_node, dtype=int64)
+    freedof_axis_array = array(freedof_axis, dtype=int64)
     FNA = freedof_node_array[IDXrot]
-    setFNA = array(list(set(FNA)))
+    setFNA = array(list(set(FNA)), dtype=int64)
 
-    ind = zeros((len(setFNA), 3), dtype=int)
+    ind = zeros((len(setFNA), 3), dtype=int64)
     for i, value in enumerate(setFNA):
         ind[i, :] = where(FNA == value)[0]
 
