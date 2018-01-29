@@ -257,11 +257,11 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     .. code-block:: python
 
-        from compas.datastructures.mesh import Mesh
+        from compas.datastructures import Mesh
 
         from compas.topology import mesh_subdivide_catmullclark
         from compas.geometry import Polyhedron
-        from compas.plotters import SubdMeshViewer
+        from compas.viewers import SubdMeshViewer
 
         cube = Polyhedron.generate(6)
 
@@ -592,27 +592,25 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
 if __name__ == "__main__":
 
-    from functools import partial
-
-    import compas
-
     from compas.datastructures import Mesh
-    from compas.topology import mesh_subdivide
 
-    from compas.plotters import MeshPlotter
+    from compas.topology import mesh_subdivide_catmullclark
+    from compas.geometry import Polyhedron
     from compas.viewers import SubdMeshViewer
 
-    subdivide = partial(mesh_subdivide, scheme='doosabin')
+    cube = Polyhedron.generate(6)
 
-    mesh = Mesh.from_polyhedron(6)
+    mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
 
-    viewer = SubdMeshViewer(mesh, subdfunc=subdivide, width=600, height=600)
+    viewer = SubdMeshViewer(mesh, subdfunc=mesh_subdivide_catmullclark, width=1440, height=900)
 
     viewer.axes_on = False
     viewer.grid_on = False
 
-    for i in range(10):
-        viewer.camera.zoom_in()
+    for _ in range(10):
+       viewer.camera.zoom_in()
+
+    viewer.subdivide(k=4)
 
     viewer.setup()
     viewer.show()
