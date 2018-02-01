@@ -440,6 +440,8 @@ def network_find_faces(network, breakpoints=None):
 
     v = _find_first_neighbour(u, network)
 
+    print(u, v)
+
     _find_edge_face(u, v, network)
 
     for u, v in network.edges():
@@ -458,7 +460,9 @@ def _find_first_neighbour(key, network):
     nbrs = list(network.halfedge[key].keys())
     if len(nbrs) == 1:
         return nbrs[0]
-    vu = [-1, -1, 0]
+    # this is a bit fragile
+    # it assumes quite a few things
+    vu = [-1, -0.5, 0]
     for nbr in nbrs:
         w = [network.vertex[nbr][_] for _ in 'xyz']
         v = [network.vertex[key][_] for _ in 'xyz']

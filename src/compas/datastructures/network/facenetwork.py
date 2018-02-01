@@ -364,6 +364,40 @@ class FaceNetwork(FaceHelpers,
 
         return fkey
 
+    def delete_face(self, fkey):
+        """Delete a face from the mesh object.
+
+        Parameters
+        ----------
+        fkey : hashable
+            The identifier of the face.
+
+        Examples
+        --------
+        .. plot::
+            :include-source:
+
+            import compas
+            from compas.datastructures import Mesh
+            from compas.plotters import MeshPlotter
+
+            mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+            mesh.delete_face(12)
+
+            plotter = MeshPlotter(mesh)
+            plotter.draw_vertices()
+            plotter.draw_faces()
+            plotter.show()
+
+        """
+        for u, v in self.face_halfedges(fkey):
+            self.halfedge[u][v] = None
+            if self.halfedge[v][u] is None:
+                del self.halfedge[u][v]
+                del self.halfedge[v][u]
+        del self.face[fkey]
+
     # --------------------------------------------------------------------------
     # info
     # --------------------------------------------------------------------------
