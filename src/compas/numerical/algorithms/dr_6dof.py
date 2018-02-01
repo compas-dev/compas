@@ -24,6 +24,7 @@ try:
     from numpy import concatenate
     from numpy import cos
     from numpy import cross
+    from numpy import diag
     from numpy import dot
     from numpy import eye
     from numpy import float64
@@ -34,6 +35,7 @@ try:
     from numpy import sin
     from numpy import sqrt
     from numpy import sort
+    from numpy import tan
     from numpy import trace
     from numpy import zeros
     from numpy import where
@@ -45,6 +47,7 @@ try:
     from numba import jit
     from numba import f8
     from numba import i8
+    from numba.types import Tuple
 
 except ImportError:
 
@@ -61,6 +64,171 @@ __email__     = 'liew@arch.ethz.ch'
 __all__ = [
     'dr_6dof_numba',
 ]
+
+
+def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
+
+    """Run dynamic relaxation analysis with 6 DoF per node.
+
+    Parameters
+    ----------
+    network : obj
+        Network to analyse.
+    dt : float
+        Time step.
+    xi : float
+        Damping ratio.
+    tol : float
+        Tolerance value.
+    steps : int
+        Maximum number of steps.
+
+    Returns
+    -------
+    X : array
+        Node co-ordinates.
+    x : array
+        Positions and orientations of all free DoF.
+    x0 : array
+        Initial positions and orientations of all free DoF.
+
+    """
+
+    k_i, X, P, n, d, p, x0, x, v, r, freedof_node, freedof_axis, freedof = _create_vertex_arrays(network)
+
+    edges, uv_i, l, T_0, l0, I, J, row, col, edgei, E_, A_, G_, Ix_, Iy_, Iz_, Kall = _create_edge_arrays(network, freedof, freedof_node)
+
+    # Indexing
+
+    counttra = 0
+    IDXx, counttra = _indexdof(freedof, 0.01, counttra, n)
+    IDXy, counttra = _indexdof(freedof, 0.02, counttra, n)
+    IDXz, counttra = _indexdof(freedof, 0.03, counttra, n)
+    IDXtra = sort(concatenate((IDXx, IDXy, IDXz)), 0)
+    nct = 3 * n - counttra
+    IDXtra = IDXtra[0:nct]
+    IDXtra = array([int(round(j)) for j in IDXtra], dtype=int64)
+
+    countrot = 0
+    IDXalpha, countrot = _indexdof(freedof, 0.04, countrot, n)
+    IDXbeta, countrot = _indexdof(freedof, 0.05, countrot, n)
+    IDXgamma, countrot = _indexdof(freedof, 0.06, countrot, n)
+    IDXrot = sort(concatenate((IDXalpha, IDXbeta, IDXgamma)), 0)
+    nct = 3 * n - countrot
+    IDXrot = IDXrot[0:nct]
+    IDXrot = array([int(round(j)) for j in IDXrot], dtype=int64)
+
+    # DR-loop
+
+    ts = 0
+    rnorm = tol + 1
+
+    f = zeros((d, 1))
+    Szu = zeros((3, 3))
+    Syu = zeros((3, 3))
+    Sxu = zeros((3, 3))
+    Szv = zeros((3, 3))
+    Syv = zeros((3, 3))
+    Sxv = zeros((3, 3))
+    Sz = zeros((3, 3))
+    Sy = zeros((3, 3))
+    Sx = zeros((3, 3))
+    Sbt = zeros((3, 3))
+
+    eye3 = eye(3)
+    zero3 = zeros(3)
+    zero6 = zeros(6)
+    zero9 = zeros(9)
+    Lambdaold = zeros(3, dtype=float64)
+    dLambda = zeros(3, dtype=float64)
+
+    freedof_node_array = array(freedof_node, dtype=int64)
+    freedof_axis_array = array(freedof_axis, dtype=int64)
+    FNA = freedof_node_array[IDXrot]
+    setFNA = array(list(set(FNA)), dtype=int64)
+
+    ind = zeros((len(setFNA), 3), dtype=int64)
+    for i, value in enumerate(setFNA):
+        ind[i, :] = where(FNA == value)[0]
+
+#    K = zeros((d, d))  # isnt currently used, is overwritten later
+
+    while ts <= steps and rnorm > tol:
+
+        f *= 0
+        data = []
+        x_ = concatenate((x, [[0.0]]), 0)
+
+        for c, uv in enumerate(edges):
+
+            i = edgei[c]
+            ui, vi = uv
+
+            # Update lengths
+
+            vertexu = k_i[ui]
+            vertexv = k_i[vi]
+            x_e = (X[vertexv, :] - X[vertexu, :])
+            l[i] = length_vector_numba(x_e)
+
+            # Update triads
+
+            t0t = T_0[(i * 3):((i + 1) * 3), 0:3]
+            T_u = _beam_triad(ui, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
+            T_v = _beam_triad(vi, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
+            R_e = _element_rotmat(T_u, T_v)
+
+            x_u = T_u[:, 0]
+            y_u = T_u[:, 1]
+            z_u = T_u[:, 2]
+            x_v = T_v[:, 0]
+            y_v = T_v[:, 1]
+            z_v = T_v[:, 2]
+
+            x_e /= norm(x_e)
+            y_e = R_e[:, 1] - dot_vectors_numba(R_e[:, 1], x_e) / 2 * (x_e + R_e[:, 0])
+            z_e = R_e[:, 2] - dot_vectors_numba(R_e[:, 2], x_e) / 2 * (x_e + R_e[:, 0])
+
+            # Calculate local beam deformations
+
+            theta = _deformations(x_e, y_e, z_e, R_e, T_u, T_v, x_u, y_u, z_u, x_v, y_v, z_v)
+
+            # Internal forces
+
+            T = _create_T(eye3, zero3, zero6, zero9, x_e, y_e, z_e, R_e, Sx, Sy, Sz, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, x_u, y_u, z_u, x_v, y_v, z_v, l[i])
+
+            f, data = _data(l[i][0], l0[i][0], theta, Kall, T, f, I[i], J[i], i, data)
+
+        K = csc_matrix((data, (row, col)), shape=(d, d))  # could dis-assemble and use own Sparse indexing in Numba
+
+        # Update residual forces
+
+        r = p - f
+        rnorm = dot(r.transpose()[0], r.transpose()[0])**0.5
+
+        # Update velocities
+
+        M = 1 * K
+        vold = 1 * v
+        v = (1 - xi * dt) / (1 + xi * dt) * vold + array([spsolve(M, r)]).transpose() / (1 + xi * dt) * dt
+
+        x = _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_axis_array, IDXrot, FNA, setFNA, ind)
+
+        for i in range(len(IDXtra)):
+            X[freedof_node[IDXtra[i]]][freedof_axis[IDXtra[i]]] = x[IDXtra[i]][0]
+
+        ts += 1
+
+        # print(ts)
+
+    # Update network
+
+    i_k = network.index_key()
+    for i in sorted(list(network.vertices()), key=int):
+        xx, yy, zz = X[i, :]
+        network.set_vertex_attributes(i_k[i], {'x': xx, 'y': yy, 'z': zz})
+
+    return X#, x, x0
 
 
 def _create_vertex_arrays(network):
@@ -571,169 +739,7 @@ def _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_ax
     return x
 
 
-def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
 
-    """Run dynamic relaxation analysis with 6 DoF per node.
-
-    Parameters
-    ----------
-    network : obj
-        Network to analyse.
-    dt : float
-        Time step.
-    xi : float
-        Damping ratio.
-    tol : float
-        Tolerance value.
-    steps : int
-        Maximum number of steps.
-
-    Returns
-    -------
-    X : array
-        Node co-ordinates.
-    x : array
-        Positions and orientations of all free DoF.
-    x0 : array
-        Initial positions and orientations of all free DoF.
-
-    """
-
-    k_i, X, P, n, d, p, x0, x, v, r, freedof_node, freedof_axis, freedof = _create_vertex_arrays(network)
-
-    edges, uv_i, l, T_0, l0, I, J, row, col, edgei, E_, A_, G_, Ix_, Iy_, Iz_, Kall = _create_edge_arrays(network, freedof, freedof_node)
-
-    # Indexing
-
-    counttra = 0
-    IDXx, counttra = _indexdof(freedof, 0.01, counttra, n)
-    IDXy, counttra = _indexdof(freedof, 0.02, counttra, n)
-    IDXz, counttra = _indexdof(freedof, 0.03, counttra, n)
-    IDXtra = sort(concatenate((IDXx, IDXy, IDXz)), 0)
-    nct = 3 * n - counttra
-    IDXtra = IDXtra[0:nct]
-    IDXtra = array([int(round(j)) for j in IDXtra], dtype=int64)
-
-    countrot = 0
-    IDXalpha, countrot = _indexdof(freedof, 0.04, countrot, n)
-    IDXbeta, countrot = _indexdof(freedof, 0.05, countrot, n)
-    IDXgamma, countrot = _indexdof(freedof, 0.06, countrot, n)
-    IDXrot = sort(concatenate((IDXalpha, IDXbeta, IDXgamma)), 0)
-    nct = 3 * n - countrot
-    IDXrot = IDXrot[0:nct]
-    IDXrot = array([int(round(j)) for j in IDXrot], dtype=int64)
-
-    # DR-loop
-
-    ts = 0
-    rnorm = tol + 1
-
-    f = zeros((d, 1))
-    Szu = zeros((3, 3))
-    Syu = zeros((3, 3))
-    Sxu = zeros((3, 3))
-    Szv = zeros((3, 3))
-    Syv = zeros((3, 3))
-    Sxv = zeros((3, 3))
-    Sz = zeros((3, 3))
-    Sy = zeros((3, 3))
-    Sx = zeros((3, 3))
-    Sbt = zeros((3, 3))
-
-    eye3 = eye(3)
-    zero3 = zeros(3)
-    zero6 = zeros(6)
-    zero9 = zeros(9)
-    Lambdaold = zeros(3, dtype=float64)
-    dLambda = zeros(3, dtype=float64)
-
-    freedof_node_array = array(freedof_node, dtype=int64)
-    freedof_axis_array = array(freedof_axis, dtype=int64)
-    FNA = freedof_node_array[IDXrot]
-    setFNA = array(list(set(FNA)), dtype=int64)
-
-    ind = zeros((len(setFNA), 3), dtype=int64)
-    for i, value in enumerate(setFNA):
-        ind[i, :] = where(FNA == value)[0]
-
-#    K = zeros((d, d))  # isnt currently used, is overwritten later
-
-    while ts <= steps and rnorm > tol:
-
-        f *= 0
-        data = []
-        x_ = concatenate((x, [[0.0]]), 0)
-
-        for c, uv in enumerate(edges):
-
-            i = edgei[c]
-            ui, vi = uv
-
-            # Update lengths
-
-            vertexu = k_i[ui]
-            vertexv = k_i[vi]
-            x_e = (X[vertexv, :] - X[vertexu, :])
-            l[i] = length_vector_numba(x_e)
-
-            # Update triads
-
-            t0t = T_0[(i * 3):((i + 1) * 3), 0:3]
-            T_u = _beam_triad(ui, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
-            T_v = _beam_triad(vi, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
-            R_e = _element_rotmat(T_u, T_v)
-
-            x_u = T_u[:, 0]
-            y_u = T_u[:, 1]
-            z_u = T_u[:, 2]
-            x_v = T_v[:, 0]
-            y_v = T_v[:, 1]
-            z_v = T_v[:, 2]
-
-            x_e /= norm(x_e)
-            y_e = R_e[:, 1] - dot_vectors_numba(R_e[:, 1], x_e) / 2 * (x_e + R_e[:, 0])
-            z_e = R_e[:, 2] - dot_vectors_numba(R_e[:, 2], x_e) / 2 * (x_e + R_e[:, 0])
-
-            # Calculate local beam deformations
-
-            theta = _deformations(x_e, y_e, z_e, R_e, T_u, T_v, x_u, y_u, z_u, x_v, y_v, z_v)
-
-            # Internal forces
-
-            T = _create_T(eye3, zero3, zero6, zero9, x_e, y_e, z_e, R_e, Sx, Sy, Sz, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, x_u, y_u, z_u, x_v, y_v, z_v, l[i])
-
-            f, data = _data(l[i][0], l0[i][0], theta, Kall, T, f, I[i], J[i], i, data)
-
-        K = csc_matrix((data, (row, col)), shape=(d, d))  # could dis-assemble and use own Sparse indexing in Numba
-
-        # Update residual forces
-
-        r = p - f
-        rnorm = dot(r.transpose()[0], r.transpose()[0])**0.5
-
-        # Update velocities
-
-        M = 1 * K
-        vold = 1 * v
-        v = (1 - xi * dt) / (1 + xi * dt) * vold + array([spsolve(M, r)]).transpose() / (1 + xi * dt) * dt
-
-        x = _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_axis_array, IDXrot, FNA, setFNA, ind)
-
-        for i in range(len(IDXtra)):
-            X[freedof_node[IDXtra[i]]][freedof_axis[IDXtra[i]]] = x[IDXtra[i]][0]
-
-        ts += 1
-
-        # print(ts)
-
-    # Update network
-
-    i_k = network.index_key()
-    for i in sorted(list(network.vertices()), key=int):
-        xx, yy, zz = X[i, :]
-        network.set_vertex_attributes(i_k[i], {'x': xx, 'y': yy, 'z': zz})
-
-    return X#, x, x0
 
 
 # ==============================================================================
