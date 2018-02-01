@@ -82,6 +82,7 @@ class FaceArtist(object):
             return guids
         guid = rs.JoinMeshes(guids, delete_input=True)
         rs.ObjectLayer(guid, self.layer)
+        rs.ObjectName(guid, '{}.mesh'.format(self.datastructure.name))
         return guid
 
     def draw_facelabels(self, text=None, color=None):
