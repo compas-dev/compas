@@ -376,7 +376,7 @@ class Mesh(FromToJson,
         return mesh
 
     @classmethod
-    def from_lines(cls, lines, delete_boundary_face=True, precision='3f'):
+    def from_lines(cls, lines, delete_boundary_face=False, precision='3f'):
         """Construct a mesh object from a list of lines described by start and end point coordinates.
 
         Parameters
@@ -415,13 +415,14 @@ class Mesh(FromToJson,
 
         network_find_faces(network, breakpoints=network.leaves())
 
+        if delete_boundary_face:
+            print(network.face_vertices(0))
+            network.delete_face(0)
+
         key_index = network.key_index()
         vertices = [network.vertex_coordinates(key) for key in network.vertices()]
         faces = [[key_index[key] for key in network.face_vertices(fkey)] for fkey in network.faces()]
         mesh = cls.from_vertices_and_faces(vertices, faces)
-
-        if delete_boundary_face:
-            mesh.delete_face(0)
 
         return mesh
 
@@ -2538,16 +2539,18 @@ if __name__ == '__main__':
     from compas.files import OBJ
     from compas.plotters import MeshPlotter
 
-    obj = OBJ(compas.get('lines.obj'))
+    obj = OBJ(compas.get('lines_noleaves.obj'))
 
     lines = [(obj.parser.vertices[u], obj.parser.vertices[v]) for u, v in obj.parser.lines]
 
-    # mesh = Mesh.from_lines(lines, delete_boundary_face=False)
-    mesh = Mesh.from_points(obj.parser.vertices)
+    mesh = Mesh.from_lines(lines, delete_boundary_face=True)
+    # mesh = Mesh.from_points(obj.parser.vertices)
+
+    print(mesh.face_vertices(0))
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
-    plotter.draw_vertices()
-    plotter.draw_faces()
+    plotter.draw_vertices(text={key: str(key) for key in mesh.vertices()})
+    plotter.draw_faces(text={fkey: str(fkey) for fkey in mesh.faces()})
     plotter.draw_edges()
     plotter.show()
 
