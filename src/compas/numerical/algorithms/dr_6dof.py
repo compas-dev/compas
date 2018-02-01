@@ -6,11 +6,13 @@ from __future__ import print_function
 from compas.datastructures import Network
 
 from compas.hpc import cross_vectors_numba
-from compas.hpc import dot_vectors_numba
+from compas.hpc import dot_vectors_numba as vdotv
 from compas.hpc import length_vector_numba
-from compas.hpc import multiply_matrices_numba
-from compas.hpc import multiply_matrix_vector_numba
+from compas.hpc import multiply_matrices_numba as mdotm
+from compas.hpc import multiply_matrix_vector_numba as mdotv
 from compas.hpc import norm_vector_numba
+
+from copy import copy
 
 from time import time
 
@@ -66,9 +68,9 @@ __all__ = [
 ]
 
 
-def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
+def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False):
 
-    """Run dynamic relaxation analysis with 6 DoF per node.
+    """ Run dynamic relaxation analysis with 6 DoF per node.
 
     Parameters
     ----------
@@ -82,6 +84,8 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
         Tolerance value.
     steps : int
         Maximum number of steps.
+    geomstiff : bool
+        Include geometric stiffness.
 
     Returns
     -------
@@ -94,64 +98,81 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
 
     """
 
-    k_i, X, P, n, d, p, x0, x, v, r, freedof_node, freedof_axis, freedof = _create_vertex_arrays(network)
+    # Create arrays
 
-    edges, uv_i, l, T_0, l0, I, J, row, col, edgei, E_, A_, G_, Ix_, Iy_, Iz_, Kall = _create_edge_arrays(network, freedof, freedof_node)
+    k_i, i_k, X, n, d, p, x0, x, v, r, fdof_node, fdof_axis, fdof = _create_vertex_arrays(network)
+    edges, l, T0, l0, I, J, row, col, edgei, Kall, data = _create_edge_arrays(network, fdof, fdof_node)
 
     # Indexing
 
-    counttra = 0
-    IDXx, counttra = _indexdof(freedof, 0.01, counttra, n)
-    IDXy, counttra = _indexdof(freedof, 0.02, counttra, n)
-    IDXz, counttra = _indexdof(freedof, 0.03, counttra, n)
+    ca = 0
+    IDXx, ca = _indexdof(fdof, 0.01, ca, n)
+    IDXy, ca = _indexdof(fdof, 0.02, ca, n)
+    IDXz, ca = _indexdof(fdof, 0.03, ca, n)
     IDXtra = sort(concatenate((IDXx, IDXy, IDXz)), 0)
-    nct = 3 * n - counttra
+    nct = 3 * n - ca
     IDXtra = IDXtra[0:nct]
     IDXtra = array([int(round(j)) for j in IDXtra], dtype=int64)
 
-    countrot = 0
-    IDXalpha, countrot = _indexdof(freedof, 0.04, countrot, n)
-    IDXbeta, countrot = _indexdof(freedof, 0.05, countrot, n)
-    IDXgamma, countrot = _indexdof(freedof, 0.06, countrot, n)
+    cr = 0
+    IDXalpha, cr = _indexdof(fdof, 0.04, cr, n)
+    IDXbeta, cr = _indexdof(fdof, 0.05, cr, n)
+    IDXgamma, cr = _indexdof(fdof, 0.06, cr, n)
     IDXrot = sort(concatenate((IDXalpha, IDXbeta, IDXgamma)), 0)
-    nct = 3 * n - countrot
+    nct = 3 * n - cr
     IDXrot = IDXrot[0:nct]
     IDXrot = array([int(round(j)) for j in IDXrot], dtype=int64)
 
-    # DR-loop
+    # Initialise
+
+    f     = zeros((d, 1))
+    Szu   = zeros((3, 3))
+    Syu   = zeros((3, 3))
+    Sxu   = zeros((3, 3))
+    Szv   = zeros((3, 3))
+    Syv   = zeros((3, 3))
+    Sxv   = zeros((3, 3))
+    Sr2   = zeros((3, 3))
+    Sr1   = zeros((3, 3))
+    Sr0   = zeros((3, 3))
+    Sbt   = zeros((3, 3))
+    Sx    = zeros((3, 3))
+    Szuzv = zeros((3, 3))
+    Syvyu = zeros((3, 3))
+    K     = zeros((d, d))
+
+    eye3   = eye(3)
+    zero3  = zeros(3)
+    zero6  = zeros(6)
+    zero9  = zeros(9)
+    zero33 = zeros((3, 3))
+
+    Lambdaold = zeros(3, dtype=float64)
+    dLambda   = zeros(3, dtype=float64)
+
+    fdof_node = array(fdof_node, dtype=int64)
+    fdof_axis = array(fdof_axis, dtype=int64)
+    fdof_rot  = fdof_node[IDXrot]
+    fdof_rot_ = array(list(set(fdof_rot)), dtype=int64)
+
+    ind = zeros((len(fdof_rot_), 3), dtype=int64)
+    for i, value in enumerate(fdof_rot_):
+        ind[i, :] = where(fdof_rot == value)[0]
+
+
+
+
+
+
+
+
+
+
+
+    # Main loop
 
     ts = 0
     rnorm = tol + 1
-
-    f = zeros((d, 1))
-    Szu = zeros((3, 3))
-    Syu = zeros((3, 3))
-    Sxu = zeros((3, 3))
-    Szv = zeros((3, 3))
-    Syv = zeros((3, 3))
-    Sxv = zeros((3, 3))
-    Sz = zeros((3, 3))
-    Sy = zeros((3, 3))
-    Sx = zeros((3, 3))
-    Sbt = zeros((3, 3))
-
-    eye3 = eye(3)
-    zero3 = zeros(3)
-    zero6 = zeros(6)
-    zero9 = zeros(9)
-    Lambdaold = zeros(3, dtype=float64)
-    dLambda = zeros(3, dtype=float64)
-
-    freedof_node_array = array(freedof_node, dtype=int64)
-    freedof_axis_array = array(freedof_axis, dtype=int64)
-    FNA = freedof_node_array[IDXrot]
-    setFNA = array(list(set(FNA)), dtype=int64)
-
-    ind = zeros((len(setFNA), 3), dtype=int64)
-    for i, value in enumerate(setFNA):
-        ind[i, :] = where(FNA == value)[0]
-
-#    K = zeros((d, d))  # isnt currently used, is overwritten later
 
     while ts <= steps and rnorm > tol:
 
@@ -168,34 +189,29 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
 
             vertexu = k_i[ui]
             vertexv = k_i[vi]
-            x_e = (X[vertexv, :] - X[vertexu, :])
-            l[i] = length_vector_numba(x_e)
+            xe = (X[vertexv, :] - X[vertexu, :])
+            l[i] = length_vector_numba(xe)
 
             # Update triads
 
-            t0t = T_0[(i * 3):((i + 1) * 3), 0:3]
-            T_u = _beam_triad(ui, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
-            T_v = _beam_triad(vi, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
-            R_e = _element_rotmat(T_u, T_v)
+            t0t = T0[(i * 3):((i + 1) * 3), 0:3]
+            Tu = _beam_triad(ui, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
+            Tv = _beam_triad(vi, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
+            Re = _element_rotmat(Tu, Tv)
 
-            x_u = T_u[:, 0]
-            y_u = T_u[:, 1]
-            z_u = T_u[:, 2]
-            x_v = T_v[:, 0]
-            y_v = T_v[:, 1]
-            z_v = T_v[:, 2]
-
-            x_e /= norm(x_e)
-            y_e = R_e[:, 1] - dot_vectors_numba(R_e[:, 1], x_e) / 2 * (x_e + R_e[:, 0])
-            z_e = R_e[:, 2] - dot_vectors_numba(R_e[:, 2], x_e) / 2 * (x_e + R_e[:, 0])
+            xu, yu, zu = Tu[:, 0], Tu[:, 1], Tu[:, 2]
+            xv, yv, zv = Tv[:, 0], Tv[:, 1], Tv[:, 2]
+            xe /= norm(xe)
+            ye = Re[:, 1] - vdotv(Re[:, 1], xe) / 2 * (xe + Re[:, 0])
+            ze = Re[:, 2] - vdotv(Re[:, 2], xe) / 2 * (xe + Re[:, 0])
 
             # Calculate local beam deformations
 
-            theta = _deformations(x_e, y_e, z_e, R_e, T_u, T_v, x_u, y_u, z_u, x_v, y_v, z_v)
+            theta = _deformations(xe, ye, ze, xu, yu, zu, xv, yv, zv)
 
             # Internal forces
 
-            T = _create_T(eye3, zero3, zero6, zero9, x_e, y_e, z_e, R_e, Sx, Sy, Sz, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, x_u, y_u, z_u, x_v, y_v, z_v, l[i])
+            T = _create_T(eye3, zero3, zero6, zero9, xe, ye, ze, Re, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, xu, yu, zu, xv, yv, zv, l[i])
 
             f, data = _data(l[i][0], l0[i][0], theta, Kall, T, f, I[i], J[i], i, data)
 
@@ -212,10 +228,10 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
         vold = 1 * v
         v = (1 - xi * dt) / (1 + xi * dt) * vold + array([spsolve(M, r)]).transpose() / (1 + xi * dt) * dt
 
-        x = _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_axis_array, IDXrot, FNA, setFNA, ind)
+        x = _update(x, v, dt, IDXtra, Lambdaold, dLambda, fdof_node, fdof_axis, IDXrot, fdof_rot, fdof_rot_, ind)
 
         for i in range(len(IDXtra)):
-            X[freedof_node[IDXtra[i]]][freedof_axis[IDXtra[i]]] = x[IDXtra[i]][0]
+            X[fdof_node[IDXtra[i]]][fdof_axis[IDXtra[i]]] = x[IDXtra[i]][0]
 
         ts += 1
 
@@ -223,7 +239,6 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
 
     # Update network
 
-    i_k = network.index_key()
     for i in sorted(list(network.vertices()), key=int):
         xx, yy, zz = X[i, :]
         network.set_vertex_attributes(i_k[i], {'x': xx, 'y': yy, 'z': zz})
@@ -233,72 +248,131 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100):
 
 def _create_vertex_arrays(network):
 
-    """
+    """ Initialise force, position, and velocity vectors
 
-    Add comments
+    Parameters
+    ----------
+    network : obj
+        Network to analyse.
+
+    Returns
+    -------
+    dic
+        Key to index dictionary.
+    dic
+       Index to key dictionary.
+    array
+        Nodal co-ordinates.
+    int
+        Number of nodes.
+    int
+        Number of free degrees-of-freedom.
+    array
+        Loads on every free degree-of-freedom.
+    array
+        Initial values for the coordinates/rotation components describing nodal positions and orientations.
+    array
+        Position array.
+    array
+        Velocity array.
+    array
+        Residual force array.
+    list
+        Indexing list with node numbers for all fdof.
+    list
+        Indexing list with axis numbers for all fdof.
+    list
+        List containing all degrees of freedom as [node].0[axis].
 
     """
 
     k_i = network.key_index()
+    i_k = network.index_key()
     n = network.number_of_vertices()
+
+    fdof = []
+    fdof_node = []
+    fdof_axis = []
     X = zeros((n, 3))
     P = zeros((n, 6))
-    freedof = []
-    freedof_node = []
-    freedof_axis = []
 
     for key, vertex in network.vertex.items():
         i = k_i[key]
-
         X[i, :] = network.vertex_coordinates(key=key)
+
         for ci, Pi in enumerate(['px', 'py', 'pz', 'palpha', 'pbeta', 'pgamma']):
             P[i, ci] = vertex.get(Pi, 0)
 
         for ci, dof in enumerate(['dofx', 'dofy', 'dofz', 'dofalpha', 'dofbeta', 'dofgamma'], 1):
             if vertex.get(dof, True):
-                freedof.append(i + 0.01 * ci)  # we should think of a better dof storage method boolean array
-                freedof_node.append(i)
-                freedof_axis.append(ci - 1)  # remove the 1 if changed above
+                fdof.append(i + 0.01 * ci)
+                fdof_node.append(i)
+                fdof_axis.append(ci - 1)
 
-    d = len(freedof)
-    p  = zeros((d, 1))  # might be better to make these 2D
-    x  = zeros((d, 1))
+    d = len(fdof)
+    p  = zeros((d, 1))
     v  = zeros((d, 1))
     x0 = zeros((d, 1))
 
-    for ci, uv in enumerate(zip(freedof_node, freedof_axis)):
+    for ci, uv in enumerate(zip(fdof_node, fdof_axis)):
         node, axis = uv
         p[ci] = P[node, axis]
         if axis <= 2:
             x0[ci] = X[node, axis]
-    x = x0 * 1
-    r = p * 1
 
-    return k_i, X, P, n, d, p, x0, x, v, r, freedof_node, freedof_axis, freedof  # remove some
+    x = copy(x0)
+    r = copy(p)
+
+    return k_i, i_k, X, n, d, p, x0, x, v, r, fdof_node, fdof_axis, fdof
 
 
-def _create_edge_arrays(network, freedof, freedof_node):
+def _create_edge_arrays(network, fdof, fdof_node):
 
-    """
+    """ Initialise local element stiffness matrices, co-ordinate systems, and other edge-related arrays
 
-    Add comments
+    Parameters
+    ----------
+    network : obj
+        Network to analyse.
+    fdof : list
+        Degrees-of-freedom.
+    fdof_node : list
+        Nodes corresponding to fdof
 
-    """
+    Returns
+    -------
+    list
+        All edges in the network.
+    list
+        Edge lengths.
+    list
+        Initial local coordinate system for each edge.
+    list
+        Initial edge lengths.
+    list
+        Indices for accessing f.
+    list
+        Indices for accessing f_.
+    list
+        Row indices for sparse assembly of K.
+    list
+        Column indices for sparse assembly of K.
+    list
+        Initial data for sparse assembly of K.
+    list
+        Edge indices.
+    matrix
+        3D matrix of local element siffness matrices.
+
+     """
 
     uv_i = network.uv_index()
     edges = list(network.edges())
-
     m  = len(edges)
+
     l  = zeros((m, 1))
     l0 = zeros((m, 1))
-    T_0 = zeros((m * 3, 3))
-    E  = zeros(m)
-    A  = zeros(m)
-    G  = zeros(m)
-    nu = zeros(m)
-    Ix = zeros(m)
-    Iy = zeros(m)
-    Iz = zeros(m)
+    T0 = zeros((m * 3, 3))
     Kall = zeros((7, 7, m))
 
     I = []
@@ -314,31 +388,25 @@ def _create_edge_arrays(network, freedof, freedof_node):
         edge = network.edge[ui][vi]
         wi = edge.get('w')
         l0[i] = network.edge_length(ui, vi)
-        l[i] = network.edge_length(ui, vi)
+        l[i] = copy(l0[i])
 
-        vertexu = network.vertex[ui]
-        vertexv = network.vertex[vi]
-        vertexw = network.vertex[wi]
-
-        x_0 = (array([vertexv[j] for j in 'xyz']) - array([vertexu[j] for j in 'xyz']))  # should make xyzs first then fetch them here
-        x_0 = x_0 / norm(x_0)
-        z_0 = cross(array([vertexu[j] for j in 'xyz']) - array([vertexw[j] for j in 'xyz']), x_0)  # same as above
-        z_0 = z_0 / norm(z_0)
-        y_0 = cross(z_0, x_0)
-
-        T_0[(i * 3):((i + 1) * 3), 0:3] = array([x_0, y_0, z_0]).transpose()
+        x0 = array(network.vertex_coordinates(vi)) - array(network.vertex_coordinates(ui))
+        x0 /= norm(x0)
+        z0 = cross(array(network.vertex_coordinates(ui)) - array(network.vertex_coordinates(wi)), x0)
+        z0 /= norm(z0)
+        y0 = cross(z0, x0)
+        T0[i * 3:(i + 1) * 3, 0:3] = array([x0, y0, z0]).transpose()
 
         Ju = array([], dtype=int)
-        Jv = array([], dtype=int)
-
-        Iu = where(array(freedof_node) == ui)[0]
-        if not len(Iu) == 0:
-            Ju = (array(freedof)[Iu] - ui) * 100 - 1
+        Iu = where(array(fdof_node) == ui)[0]
+        if len(Iu):
+            Ju = (array(fdof)[Iu] - ui) * 100 - 1
             Ju = array([int(round(j)) for j in Ju])
 
-        Iv = where(array(freedof_node) == vi)[0]
-        if not len(Iv) == 0:
-            Jv = (array(freedof)[Iv] - vi) * 100 + 5
+        Jv = array([], dtype=int)
+        Iv = where(array(fdof_node) == vi)[0]
+        if len(Iv):
+            Jv = (array(fdof)[Iv] - vi) * 100 + 5
             Jv = array([int(round(j)) for j in Jv])
 
         I.append(concatenate((Iu, Iv), 0))
@@ -349,40 +417,40 @@ def _create_edge_arrays(network, freedof, freedof_node):
                 row.append(I[i][j])
                 col.append(I[i][k])
 
-        E[i] = edge.get('E', 0)
-        A[i] = edge.get('A', 0)
-        nu[i] = edge.get('nu', 0)
-        G[i] = E[i] / (2 * (1 + nu[i]))
-        Ix[i] = edge.get('Ix', 0)
-        Iy[i] = edge.get('Iy', 0)
-        Iz[i] = edge.get('Iz', 0)
-
-        EA = E[i] * A[i]
-        GIx = G[i] * Ix[i]
-        EIy = E[i] * Iy[i]
-        EIz = E[i] * Iz[i]
+        E  = edge.get('E', 0)
+        A  = edge.get('A', 0)
+        nu = edge.get('nu', 0)
+        Ix = edge.get('Ix', 0)
+        Iy = edge.get('Iy', 0)
+        Iz = edge.get('Iz', 0)
+        G  = E / (2. * (1. + nu))
+        EA  = E * A
+        GIx = G * Ix
+        EIy = E * Iy
+        EIz = E * Iz
 
         Kall[:, :, i] = array([
-            [EA, 0, 0, 0, 0, 0, 0],
-            [0, GIx, 0, 0, -GIx, 0, 0],
-            [0, 0, 4 * EIy, 0, 0, 2 * EIy, 0],
-            [0, 0, 0, 4 * EIz, 0, 0, 2 * EIz],
-            [0, -GIx, 0, 0, GIx, 0, 0],
-            [0, 0, 2 * EIy, 0, 0, 4 * EIy, 0],
-            [0, 0, 0, 2 * EIz, 0, 0, 4 * EIz]
-        ])
+            [EA, 0,   0,    0,    0,   0,    0   ],
+            [0, GIx,  0,    0,  -GIx,  0,    0   ],
+            [0,  0,  4*EIy, 0,    0,  2*EIy, 0   ],
+            [0,  0,   0,   4*EIz, 0,   0,   2*EIz],
+            [0, -GIx, 0,    0,    GIx, 0,    0   ],
+            [0,  0,  2*EIy, 0,    0,  4*EIy, 0   ],
+            [0,  0,   0,   2*EIz, 0,   0,   4*EIz]])
 
-    return edges, uv_i, l, T_0, l0, I, J, row, col, edgei, E, A, G, Ix, Iy, Iz, Kall
+    data = zeros(len(row))
+
+    return edges, l, T0, l0, I, J, row, col, edgei, Kall, data
 
 
-def _indexdof(freedof, seldof, count, n):
+def _indexdof(fdof, seldof, count, n):
 
-    """ Makes list of indices to access seldof degrees-of-freedom in freedof.
+    """ Makes list of indices to access seldof degrees-of-freedom in fdof.
 
     Parameters
     ----------
-    freedof : list
-        All unconstrained degrees of freedom.
+    fdof : list
+        All unconstrained degrees-of-freedom.
     seldof : float
         Degrees-of-freedom.
     count : int
@@ -393,17 +461,19 @@ def _indexdof(freedof, seldof, count, n):
     Returns
     -------
     array
-        IDX list of indices
+        List of indices.
+    int
+        Counter.
 
     """
 
     IDX = zeros(n, dtype=int64)
 
     for i in range(n):
-        if i + seldof in freedof:
-            idx = freedof.index(i + seldof)
+        if i + seldof in fdof:
+            idx = fdof.index(i + seldof)
         else:
-            idx = len(freedof)
+            idx = len(fdof)
             count += 1
         IDX[i] = idx
 
@@ -418,7 +488,7 @@ def _skew_(S, v):
     Parameters
     ----------
     S : array
-        Original array to edit.
+        Original skew array to edit.
     v : array
         A vector.
 
@@ -440,7 +510,7 @@ def _skew_(S, v):
 
 
 @jit(f8[:, :](i8, f8[:, :], i8[:], i8[:], i8[:], f8[:, :], f8[:, :]), nogil=True, nopython=True)
-def _beam_triad(i, x_, IDXalpha, IDXbeta, IDXgamma, T_0, Sbt):
+def _beam_triad(i, x_, IDXalpha, IDXbeta, IDXgamma, T0, Sbt):
 
     """ Construct the current nodal beam triad for vertex 'key'.
 
@@ -450,13 +520,13 @@ def _beam_triad(i, x_, IDXalpha, IDXbeta, IDXgamma, T_0, Sbt):
         Index.
     x_ : array
         Extended array of displacements.
-    IDXalpha : list
+    IDXalpha : array
         Alpha-dof index.
-    IDXbeta : list
+    IDXbeta : array
         Beta-dof index.
-    IDXgamma : list
+    IDXgamma : array
         Gamma-dof index.
-    T_0 : array
+    T0 : array
         -
     Sbt : array
         Pre-made S.
@@ -464,14 +534,13 @@ def _beam_triad(i, x_, IDXalpha, IDXbeta, IDXgamma, T_0, Sbt):
     Returns
     -------
     array
-        T matrix
+        T matrix.
 
     """
 
     alpha = x_[IDXalpha[i]][0]
     beta  = x_[IDXbeta[i]][0]
     gamma = x_[IDXgamma[i]][0]
-
     Lbda = array([alpha, beta, gamma])
     lbda = norm_vector_numba(Lbda)
 
@@ -480,36 +549,60 @@ def _beam_triad(i, x_, IDXalpha, IDXbeta, IDXgamma, T_0, Sbt):
     else:
         lbda_ = Lbda / lbda
         S = _skew_(Sbt, lbda_)
-        R = eye(3) + sin(lbda) * S + (1. - cos(lbda)) * multiply_matrices_numba(S, S)
+        R = eye(3) + sin(lbda) * S + (1. - cos(lbda)) * mdotm(S, S)
 
-    T = multiply_matrices_numba(R, T_0)
+    T = mdotm(R, T0)
 
     return T
 
 
-@jit(f8[:](f8[:], f8[:], f8[:], f8[:, :], f8[:, :], f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:]),
+@jit(f8[:](f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:]),
      nogil=True, nopython=True)
-def _deformations(x_e, y_e, z_e, R_e, T_u, T_v, x_u, y_u, z_u, x_v, y_v, z_v):
+def _deformations(xe, ye, ze, xu, yu, zu, xv, yv, zv):
 
-    """
+    """ Calculate local element deformations.
 
-    Add comments
+     Parameters
+     ----------
+     xe : array
+         Edge x-direction.
+     ye : array
+         Edge y-direction.
+     ze : array
+         Edge z-direction.
+     xu : array
+         Vertex u x-direction.
+     yu : array
+         Vertex u y-direction.
+     zu : array
+         Vertex u z-direction.
+     xv : array
+         Vertex v x-direction.
+     yv : array
+         Vertex v y-direction.
+     zv : array
+         Vertex v z-direction.
 
-    """
+     Returns
+     -------
+     array
+         Thetas
 
-    theta_xu = arcsin((dot_vectors_numba(z_e, y_u) - dot_vectors_numba(z_u, y_e)) / 2)
-    theta_xv = arcsin((dot_vectors_numba(z_e, y_v) - dot_vectors_numba(z_v, y_e)) / 2)
-    theta_yu = arcsin((dot_vectors_numba(z_e, x_u) - dot_vectors_numba(z_u, x_e)) / 2)
-    theta_yv = arcsin((dot_vectors_numba(z_e, x_v) - dot_vectors_numba(z_v, x_e)) / 2)
-    theta_zu = arcsin((dot_vectors_numba(y_e, x_u) - dot_vectors_numba(y_u, x_e)) / 2)
-    theta_zv = arcsin((dot_vectors_numba(y_e, x_v) - dot_vectors_numba(y_v, x_e)) / 2)
+     """
+
+    theta_xu = arcsin(0.5 * (vdotv(ze, yu) - vdotv(zu, ye)))
+    theta_xv = arcsin(0.5 * (vdotv(ze, yv) - vdotv(zv, ye)))
+    theta_yu = arcsin(0.5 * (vdotv(ze, xu) - vdotv(zu, xe)))
+    theta_yv = arcsin(0.5 * (vdotv(ze, xv) - vdotv(zv, xe)))
+    theta_zu = arcsin(0.5 * (vdotv(ye, xu) - vdotv(yu, xe)))
+    theta_zv = arcsin(0.5 * (vdotv(ye, xv) - vdotv(yv, xe)))
 
     return array([theta_xu, theta_xv, theta_yu, theta_yv, theta_zu, theta_zv])
 
 
-@jit(f8[:, :](f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :],
-     f8[:, :], f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:]), nogil=True, nopython=True)
-def _create_T(eye3, zero3, zero6, zero9, x_e, y_e, z_e, R_e, Sx, Sy, Sz, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, x_u, y_u, z_u, x_v, y_v, z_v, li):
+@jit(f8[:, :](f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :],
+     f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:]), nogil=True, nopython=True)
+def _create_T(eye3, zero3, zero6, zero9, xe, ye, ze, Re, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, xu, yu, zu, xv, yv, zv, li):
 
     """
 
@@ -517,112 +610,90 @@ def _create_T(eye3, zero3, zero6, zero9, x_e, y_e, z_e, R_e, Sx, Sy, Sz, Sxu, Sy
 
     """
 
-    Sx = _skew_(Sx, R_e[:, 0])
-    Sy = _skew_(Sy, R_e[:, 1])
-    Sz = _skew_(Sz, R_e[:, 2])
-    Szu = _skew_(Szu, z_u)
-    Syu = _skew_(Syu, y_u)
-    Sxu = _skew_(Sxu, x_u)
-    Szv = _skew_(Szv, z_v)
-    Syv = _skew_(Syv, y_v)
-    Sxv = _skew_(Sxv, x_v)
+    Sr0 = _skew_(Sr0, Re[:, 0])
+    Sr1 = _skew_(Sr1, Re[:, 1])
+    Sr2 = _skew_(Sr2, Re[:, 2])
+    Szu = _skew_(Szu, zu)
+    Syu = _skew_(Syu, yu)
+    Sxu = _skew_(Sxu, xu)
+    Szv = _skew_(Szv, zv)
+    Syv = _skew_(Syv, yv)
+    Sxv = _skew_(Sxv, xv)
 
-    x_e_t = zeros((3, 1))
-    x_e_t[0, 0] = x_e[0]
-    x_e_t[1, 0] = x_e[1]
-    x_e_t[2, 0] = x_e[2]
+    xe_t  = zeros((3, 1))
+    Re1_t = zeros((3, 1))
+    xe_Re = zeros((1, 3))
+    Re2_t = zeros((3, 1))
+    xe_t[:, 0]  = xe
+    Re1_t[:, 0] = Re[:, 1]
+    Re2_t[:, 0] = Re[:, 2]
+    xe_Re[0, :] = xe + Re[:, 0]
 
-    x_e_h = x_e_t.transpose()
+    B = 1. / li[0] * (eye3 - mdotm(xe_t, xe_t.transpose()))
+    k = mdotm(xe_t, xe_Re)
+    Re1xe = vdotv(Re[:, 1], xe)
+    Re2xe = vdotv(Re[:, 2], xe)
 
-    R_e1_t = zeros((3, 1))
-    R_e1_t[0, 0] = R_e[0, 1]
-    R_e1_t[1, 0] = R_e[1, 1]
-    R_e1_t[2, 0] = R_e[2, 1]
-
-    xe_Re0 = zeros((1, 3))
-    xe_Re0[0, 0] = x_e[0] + R_e[0, 0]
-    xe_Re0[0, 1] = x_e[1] + R_e[1, 0]
-    xe_Re0[0, 2] = x_e[2] + R_e[2, 0]
-
-    R_e2_t = zeros((3, 1))
-    R_e2_t[0, 0] = R_e[0, 2]
-    R_e2_t[1, 0] = R_e[1, 2]
-    R_e2_t[2, 0] = R_e[2, 2]
-
-    B = 1. / li[0] * (eye3 - multiply_matrices_numba(x_e_t, x_e_h))
-    XX = multiply_matrices_numba(x_e_t, xe_Re0)
-
-    L1_2 = 0.5 * dot_vectors_numba(R_e[:, 1], x_e) * B + multiply_matrices_numba(0.5 * B, multiply_matrices_numba(R_e1_t, xe_Re0))
-    L1_3 = 0.5 * dot_vectors_numba(R_e[:, 2], x_e) * B + multiply_matrices_numba(0.5 * B, multiply_matrices_numba(R_e2_t, xe_Re0))
-    L2_2 = 0.5 * Sy - 0.25 * dot_vectors_numba(R_e[:, 1], x_e) * Sx - multiply_matrices_numba(0.25 * Sy, XX)
-    L2_3 = 0.5 * Sz - 0.25 * dot_vectors_numba(R_e[:, 2], x_e) * Sx - multiply_matrices_numba(0.25 * Sz, XX)
-
+    L1_2 = 0.5 * Re1xe * B + mdotm(0.5 * B, mdotm(Re1_t, xe_Re))
+    L1_3 = 0.5 * Re2xe * B + mdotm(0.5 * B, mdotm(Re2_t, xe_Re))
+    L2_2 = 0.5 * Sr1 - 0.25 * Re1xe * Sr0 - mdotm(0.25 * Sr1, k)
+    L2_3 = 0.5 * Sr2 - 0.25 * Re2xe * Sr0 - mdotm(0.25 * Sr2, k)
     L_2 = vstack((L1_2, L2_2, -L1_2, L2_2))
     L_3 = vstack((L1_3, L2_3, -L1_3, L2_3))
 
-    Bzu = multiply_matrix_vector_numba(B, z_u)
-    Byu = multiply_matrix_vector_numba(B, y_u)
-    Bzv = multiply_matrix_vector_numba(B, z_v)
-    Byv = multiply_matrix_vector_numba(B, y_v)
+    Bzu = mdotv(B, zu)
+    Byu = mdotv(B, yu)
+    Bzv = mdotv(B, zv)
+    Byv = mdotv(B, yv)
 
-    h_1 = hstack((zero3, (multiply_matrix_vector_numba(-Szu, y_e) + multiply_matrix_vector_numba(Syu, z_e)), zero6))
-    h_2 = hstack((Bzu, (multiply_matrix_vector_numba(-Szu, x_e) + multiply_matrix_vector_numba(Sxu, z_e)), -Bzu, zero3))
-    h_3 = hstack((Byu, (multiply_matrix_vector_numba(-Syu, x_e) + multiply_matrix_vector_numba(Sxu, y_e)), -Byu, zero3))
-    h_4 = hstack((zero9, (multiply_matrix_vector_numba(-Szv, y_e) + multiply_matrix_vector_numba(Syv, z_e))))
-    h_5 = hstack((Bzv, zero3, -Bzv, (multiply_matrix_vector_numba(-Szv, x_e) + multiply_matrix_vector_numba(Sxv, z_e))))
-    h_6 = hstack((Byv, zero3, -Byv, (multiply_matrix_vector_numba(-Syv, x_e) + multiply_matrix_vector_numba(Sxv, y_e))))
-
-    t_1 = (multiply_matrix_vector_numba(L_3, y_u) - multiply_matrix_vector_numba(L_2, z_u) + h_1) / (2 * cos(theta[0]))
-    t_2 = (multiply_matrix_vector_numba(L_3, x_u) + h_2) / (2 * cos(theta[2]))
-    t_3 = (multiply_matrix_vector_numba(L_2, x_u) + h_3) / (2 * cos(theta[4]))
-    t_4 = (multiply_matrix_vector_numba(L_3, y_v) - multiply_matrix_vector_numba(L_2, z_v) + h_4) / (2 * cos(theta[1]))
-    t_5 = (multiply_matrix_vector_numba(L_3, x_v) + h_5) / (2 * cos(theta[3]))
-    t_6 = (multiply_matrix_vector_numba(L_2, x_v) + h_6) / (2 * cos(theta[5]))
-
-    g = hstack((-x_e, zero3, x_e, zero3))
+    h1 = hstack((zero3, (mdotv(-Szu, ye) + mdotv(Syu, ze)), zero6))
+    h2 = hstack((Bzu, (mdotv(-Szu, xe) + mdotv(Sxu, ze)), -Bzu, zero3))
+    h3 = hstack((Byu, (mdotv(-Syu, xe) + mdotv(Sxu, ye)), -Byu, zero3))
+    h4 = hstack((zero9, (mdotv(-Szv, ye) + mdotv(Syv, ze))))
+    h5 = hstack((Bzv, zero3, -Bzv, (mdotv(-Szv, xe) + mdotv(Sxv, ze))))
+    h6 = hstack((Byv, zero3, -Byv, (mdotv(-Syv, xe) + mdotv(Sxv, ye))))
 
     T = zeros((12, 7))
-    T[:, 0] = g
-    T[:, 1] = t_1
-    T[:, 2] = t_2
-    T[:, 3] = t_3
-    T[:, 4] = t_4
-    T[:, 5] = t_5
-    T[:, 6] = t_6
+    T[:, 0] = hstack((-xe, zero3, xe, zero3))
+    T[:, 1] = (mdotv(L_3, yu) - mdotv(L_2, zu) + h1) / (2 * cos(theta[0]))
+    T[:, 2] = (mdotv(L_3, xu) + h2) / (2 * cos(theta[2]))
+    T[:, 3] = (mdotv(L_2, xu) + h3) / (2 * cos(theta[4]))
+    T[:, 4] = (mdotv(L_3, yv) - mdotv(L_2, zv) + h4) / (2 * cos(theta[1]))
+    T[:, 5] = (mdotv(L_3, xv) + h5) / (2 * cos(theta[3]))
+    T[:, 6] = (mdotv(L_2, xv) + h6) / (2 * cos(theta[5]))
 
     return T
 
 
 @jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True)
-def _element_rotmat(T_u, T_v):
+def _element_rotmat(Tu, Tv):
 
-    """ Calculates the 'average nodal rotation matrix' R_e for the calculation of the element triad.
+    """ Calculates the 'average nodal rotation matrix' Re for the calculation of the element triad.
 
     Parameters
     ----------
-    T_u : array
+    Tu : array
         Beam end triad for vertex u.
-    T_v : array
+    Tv : array
         Beam end triad for vertex v.
 
     Returns
     -------
     array
-        R_e matrix.
+        Re matrix.
 
     """
 
-    dR = T_v * T_u.transpose()
-
-    q_0 = 0.5 * sqrt(1. + trace(dR))
-    q04 = 4. * q_0
-    q_1 = (dR[2, 1] - dR[1, 2]) / q04
-    q_2 = (dR[0, 2] - dR[2, 0]) / q04
-    q_3 = (dR[1, 0] - dR[0, 1]) / q04
-    q = array([q_1, q_2, q_3])
+    dR = mdotm(Tv, Tu.transpose())
+    q0 = 0.5 * sqrt(1. + trace(dR))
+    q04 = 4. * q0
+    q1 = (dR[2, 1] - dR[1, 2]) / q04
+    q2 = (dR[0, 2] - dR[2, 0]) / q04
+    q3 = (dR[1, 0] - dR[0, 1]) / q04
+    q = array([q1, q2, q3])
     normq = norm_vector_numba(q)
 
-    mu = 2. * abs(arctan(normq / q_0))
+    mu = 2. * abs(arctan(normq / q0))
     if mu == 0.:
         e = array([1., 1., 1.])
     else:
@@ -636,10 +707,10 @@ def _element_rotmat(T_u, T_v):
     S[2, 0] = -e[1]
     S[2, 1] =  e[0]
 
-    dRm = eye(3) + sin(0.5 * mu) * S + (1. - cos(0.5 * mu)) * multiply_matrices_numba(S, S)
-    R_e = multiply_matrices_numba(dRm, T_u)
+    dRm = eye(3) + sin(0.5 * mu) * S + (1. - cos(0.5 * mu)) * mdotm(S, S)
+    Re = mdotm(dRm, Tu)
 
-    return R_e
+    return Re
 
 
 @jit(f8[:](f8[:]), nogil=True, nopython=True)
@@ -669,7 +740,19 @@ def _quaternion(Lbda):
 
     return array([q[0], q[1], q[2], q0])
 
-# Could be a good test Numba function for you to do
+
+
+
+
+
+
+
+
+
+
+
+
+
 def _data(li, l0i, theta, Kall, T, f, Ii, Ji, i, data):
 
     """
@@ -681,11 +764,11 @@ def _data(li, l0i, theta, Kall, T, f, Ii, Ji, i, data):
     delta = li - l0i
     u_ = array([[delta, theta[0], theta[2], theta[4], theta[1], theta[3], theta[5]]]).transpose()
     K_ = 1. / l0i * Kall[:, :, i]
-    f_ = multiply_matrices_numba(K_, u_)
-    fe = multiply_matrices_numba(T, f_)
+    f_ = mdotm(K_, u_)
+    fe = mdotm(T, f_)
     f[Ii] += fe[Ji]
 
-    Ke_e = multiply_matrices_numba(multiply_matrices_numba(T, K_), T.transpose())
+    Ke_e = mdotm(mdotm(T, K_), T.transpose())
 
     for j in range(len(Ii)):
         for k in range(len(Ii)):
@@ -697,7 +780,7 @@ def _data(li, l0i, theta, Kall, T, f, Ii, Ji, i, data):
 
 @jit(f8[:, :](f8[:, :], f8[:, :], f8, i8[:], f8[:], f8[:], i8[:], i8[:], i8[:], i8[:], i8[:], i8[:, :]),
      nogil=True, nopython=True)
-def _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_axis_array, IDXrot, FNA, setFNA, ind):
+def _update(x, v, dt, IDXtra, Lambdaold, dLambda, fdof_node, fdof_axis, IDXrot, fdof_rot, fdof_rot_, ind):
 
     dx = dt * v
     xold = x
@@ -706,11 +789,11 @@ def _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_ax
     Lambdaold *= 0.
     dLambda *= 0.
 
-    for i in range(len(setFNA)):
+    for i in range(len(fdof_rot_)):
 
         for jj in range(3):  # is this always len 3?
             j = ind[i, jj]
-            index = freedof_axis_array[IDXrot[j]]
+            index = fdof_axis[IDXrot[j]]
             Lambdaold[index - 3] = xold[IDXrot[j]][0]
             dLambda[index - 3] = dx[IDXrot[j]][0]
 
@@ -722,7 +805,7 @@ def _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_ax
         dq0 = qQ[3]
 
         qnew = q0old * dq + dq0 * qold - cross_vectors_numba(qold, dq)
-        q0new = q0old * dq0 - dot_vectors_numba(qold, dq)
+        q0new = q0old * dq0 - vdotv(qold, dq)
         lambdanew = 2 * arctan(norm_vector_numba(qnew) / q0new)
 
         if norm(qnew) == 0.0:
@@ -731,10 +814,10 @@ def _update(x, v, dt, IDXtra, Lambdaold, dLambda, freedof_node_array, freedof_ax
             Lnew = qnew / norm_vector_numba(qnew)
         Lambdanew = lambdanew * Lnew
 
-        value = setFNA[i]
-        for j in range(len(FNA)):
-            if FNA[j] == value:
-                x[IDXrot[j]] = Lambdanew[freedof_axis_array[IDXrot[j]] - 3]
+        value = fdof_rot_[i]
+        for j in range(len(fdof_rot)):
+            if fdof_rot[j] == value:
+                x[IDXrot[j]] = Lambdanew[fdof_axis[IDXrot[j]] - 3]
 
     return x
 
