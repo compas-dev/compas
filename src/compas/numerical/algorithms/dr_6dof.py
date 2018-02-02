@@ -68,7 +68,7 @@ __all__ = [
 ]
 
 
-def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False):
+def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=0):
 
     """ Run dynamic relaxation analysis with 6 DoF per node.
 
@@ -84,8 +84,8 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False
         Tolerance value.
     steps : int
         Maximum number of steps.
-    geomstiff : bool
-        Include geometric stiffness.
+    geomstiff : int
+        Include geometric stiffness 1 or 0.
 
     Returns
     -------
@@ -101,7 +101,7 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False
     # Create arrays
 
     k_i, i_k, X, n, d, p, x0, x, v, r, fdof_node, fdof_axis, fdof = _create_vertex_arrays(network)
-    edges, l, T0, l0, I, J, row, col, edgei, Kall, data = _create_edge_arrays(network, fdof, fdof_node)
+    edges, l, T0, l0, I, J, row, col, edgei, Kall, data, u_, v_, kiu_, kiv_, m = _create_edge_arrays(network, fdof, fdof_node, k_i)
 
     # Indexing
 
@@ -146,6 +146,7 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False
     zero6  = zeros(6)
     zero9  = zeros(9)
     zero33 = zeros((3, 3))
+    zero123 = zeros((12, 3))
 
     Lambdaold = zeros(3, dtype=float64)
     dLambda   = zeros(3, dtype=float64)
@@ -164,71 +165,36 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False
     ts = 0
     rnorm = tol + 1
 
+    # from scipy.sparse.linalg import spsolve  # 0.38
+    # from scipy.sparse.linalg import factorized  # 0.38
+    # from scipy.sparse.linalg import bicg  # 6.49
+    # from scipy.sparse.linalg import bicgstab  # 7.36
+    # from scipy.sparse.linalg import cg  # 3.20
+    # from scipy.sparse.linalg import cgs  # 0.93
+    # from scipy.sparse.linalg import gmres  # crashed
+    # from scipy.sparse.linalg import lgmres  # crashed
+    # from scipy.sparse.linalg import qmr  # 8.20
+    # from scipy.sparse.linalg import lsqr  # 5.56
+    # from scipy.sparse.linalg import lsmr  # 3.47
+
     while ts <= steps and rnorm > tol:
 
         f *= 0
         count = 0
+
         x_ = concatenate((x, [[0.0]]), 0)
 
-        # WRAP THIS WHOLE LOOP INTO A NUMBA FUNCTION -------------------------------------------------------------------
-
-        for c, uv in enumerate(edges):  # edges turn into a m x 2 array, with ui and vi as the column data
-
-            i = edgei[c]
-            ui, vi = uv
-
-            # Update lengths
-
-            xe = (X[k_i[vi], :] - X[k_i[ui], :])  # make array for k_i for both ui and vi
-            l[i] = length_vector_numba(xe)
-
-            # Update triads
-
-            t0t = T0[(i * 3):((i + 1) * 3), 0:3]
-            Tu = _beam_triad(ui, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
-            Tv = _beam_triad(vi, x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
-            Re = _element_rotmat(Tu, Tv)
-
-            xu, yu, zu = Tu[:, 0], Tu[:, 1], Tu[:, 2]
-            xv, yv, zv = Tv[:, 0], Tv[:, 1], Tv[:, 2]
-            xe /= norm(xe)
-            ye = Re[:, 1] - vdotv(Re[:, 1], xe) / 2 * (xe + Re[:, 0])
-            ze = Re[:, 2] - vdotv(Re[:, 2], xe) / 2 * (xe + Re[:, 0])
-
-            # Calculate local beam deformations
-
-            theta = _deformations(xe, ye, ze, xu, yu, zu, xv, yv, zv)
-
-            # Internal forces and stiffness matrix
-
-            T = _create_T(eye3, zero3, zero6, zero9, xe, ye, ze, Re, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv,
-                          theta, xu, yu, zu, xv, yv, zv, l[i])
-
-            K_ = 1. / l0[i][0] * Kall[:, :, i]
-            Ke_e = mdotm(mdotm(T, K_), T.transpose())
-            Ke_g = 0
-            if geomstiff:
-                pass
-#                 Ke_g = _geometric_stiffmatrix(zero3_3, zero12_3, f_, B, L_2, L_3, theta, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, Sx, Szuzv, Syvyu, T, R_e, array([x_e]).transpose(), T_u, T_v, l[i][0])
-            Ke = Ke_e + Ke_g
-
-            f = _element_forces(l[i][0], l0[i][0], theta, T, f, I[i], J[i], i, K_)
-
-            data, count = _data(Ke, I[i], J[i], data, count)
-
-        # --------------------------------------------------------------------------------------------------------------
+        data, f = _wrapper(T0, u_, v_, IDXalpha, IDXbeta, IDXgamma, x_, Sbt, eye3, zero3, zero6, zero9, kiv_, kiu_,
+                           Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, l0, Kall, I, J, data, count, geomstiff, f, X,
+                           l, m, zero33, zero123, Sx, Szuzv, Syvyu)
 
         K = csc_matrix((data, (row, col)), shape=(d, d))
-
-        # Update residual forces
-
         r = p - f
         rnorm = mdotm(r.transpose(), r)**0.5
 
-        # Update displacements and velocities
-
         ds = xi * dt
-        v = (1 - ds) / (1 + ds) * v + array([spsolve(K, r)]).transpose() / (1 + ds) * dt  # find an alternative to spsolve
+        sol = spsolve(K, r)
+        v = (1 - ds) / (1 + ds) * v + array([sol]).transpose() / (1 + ds) * dt  # find an alternative to spsolve
         x = _update(x, v, dt, IDXtra, Lambdaold, dLambda, fdof_node, fdof_axis, IDXrot, fdof_rot, fdof_rot_, ind)
 
         for i in range(len(IDXtra)):
@@ -241,7 +207,7 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False
     for i in network.vertices():
         network.set_vertex_attributes(i_k[i], {'x': X[i, 0], 'y': X[i, 1], 'z': X[i, 2]})
 
-    return X#, x, x0
+    return X, x, x0
 
 
 def _create_vertex_arrays(network):
@@ -324,7 +290,7 @@ def _create_vertex_arrays(network):
     return k_i, i_k, X, n, d, p, x0, x, v, r, fdof_node, fdof_axis, fdof
 
 
-def _create_edge_arrays(network, fdof, fdof_node):
+def _create_edge_arrays(network, fdof, fdof_node, k_i):
 
     """ Initialise local element stiffness matrices, co-ordinate systems, and other edge-related arrays
 
@@ -370,6 +336,10 @@ def _create_edge_arrays(network, fdof, fdof_node):
 
     l  = zeros((m, 1))
     l0 = zeros((m, 1))
+    u_ = zeros(m, dtype=int64)
+    v_ = zeros(m, dtype=int64)
+    kiu_ = zeros(m, dtype=int64)
+    kiv_ = zeros(m, dtype=int64)
     T0 = zeros((m * 3, 3))
     Kall = zeros((7, 7, m))
 
@@ -382,6 +352,10 @@ def _create_edge_arrays(network, fdof, fdof_node):
     for ui, vi in edges:
 
         i = uv_i[(ui, vi)]
+        u_[i] = ui
+        v_[i] = vi
+        kiu_[i] = k_i[ui]
+        kiv_[i] = k_i[vi]
         edgei.append(i)
         edge = network.edge[ui][vi]
         wi = edge.get('w')
@@ -438,7 +412,7 @@ def _create_edge_arrays(network, fdof, fdof_node):
 
     data = zeros(len(row))
 
-    return edges, l, T0, l0, I, J, row, col, edgei, Kall, data
+    return edges, l, T0, l0, I, J, row, col, edgei, Kall, data, u_, v_, kiu_, kiv_, m
 
 
 def _indexdof(fdof, seldof, count, n):
@@ -598,8 +572,9 @@ def _deformations(xe, ye, ze, xu, yu, zu, xv, yv, zv):
     return array([theta_xu, theta_xv, theta_yu, theta_yv, theta_zu, theta_zv])
 
 
-@jit(f8[:, :](f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :],
-     f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:]), nogil=True, nopython=True)
+@jit(Tuple((f8[:, :], f8[:, :], f8[:, :], f8[:, :]))(f8[:, :], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:], f8[:, :],
+     f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:], f8[:], f8[:],
+     f8[:], f8[:], f8[:], f8[:], f8[:]), nogil=True, nopython=True)
 def _create_T(eye3, zero3, zero6, zero9, xe, ye, ze, Re, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, xu, yu, zu, xv, yv, zv, li):
 
     """
@@ -636,8 +611,9 @@ def _create_T(eye3, zero3, zero6, zero9, xe, ye, ze, Re, Sr0, Sr1, Sr2, Sxu, Syu
     L1_3 = 0.5 * Re2xe * B + mdotm(0.5 * B, mdotm(Re2_t, xe_Re))
     L2_2 = 0.5 * Sr1 - 0.25 * Re1xe * Sr0 - mdotm(0.25 * Sr1, k)
     L2_3 = 0.5 * Sr2 - 0.25 * Re2xe * Sr0 - mdotm(0.25 * Sr2, k)
-    L_2 = vstack((L1_2, L2_2, -L1_2, L2_2))
-    L_3 = vstack((L1_3, L2_3, -L1_3, L2_3))
+    L2 = vstack((L1_2, L2_2, -L1_2, L2_2))
+    L3 = vstack((L1_3, L2_3, -L1_3, L2_3))
+    # print(L2.shape, L3.shape)
 
     Bzu = mdotv(B, zu)
     Byu = mdotv(B, yu)
@@ -653,14 +629,14 @@ def _create_T(eye3, zero3, zero6, zero9, xe, ye, ze, Re, Sr0, Sr1, Sr2, Sxu, Syu
 
     T = zeros((12, 7))
     T[:, 0] = hstack((-xe, zero3, xe, zero3))
-    T[:, 1] = (mdotv(L_3, yu) - mdotv(L_2, zu) + h1) / (2 * cos(theta[0]))
-    T[:, 2] = (mdotv(L_3, xu) + h2) / (2 * cos(theta[2]))
-    T[:, 3] = (mdotv(L_2, xu) + h3) / (2 * cos(theta[4]))
-    T[:, 4] = (mdotv(L_3, yv) - mdotv(L_2, zv) + h4) / (2 * cos(theta[1]))
-    T[:, 5] = (mdotv(L_3, xv) + h5) / (2 * cos(theta[3]))
-    T[:, 6] = (mdotv(L_2, xv) + h6) / (2 * cos(theta[5]))
+    T[:, 1] = (mdotv(L3, yu) - mdotv(L2, zu) + h1) / (2 * cos(theta[0]))
+    T[:, 2] = (mdotv(L3, xu) + h2) / (2 * cos(theta[2]))
+    T[:, 3] = (mdotv(L2, xu) + h3) / (2 * cos(theta[4]))
+    T[:, 4] = (mdotv(L3, yv) - mdotv(L2, zv) + h4) / (2 * cos(theta[1]))
+    T[:, 5] = (mdotv(L3, xv) + h5) / (2 * cos(theta[3]))
+    T[:, 6] = (mdotv(L2, xv) + h6) / (2 * cos(theta[5]))
 
-    return T
+    return T, L2, L3, B
 
 
 @jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True)
@@ -739,7 +715,8 @@ def _quaternion(Lbda):
     return array([q[0], q[1], q[2], q0])
 
 
-@jit(f8[:, :](f8, f8, f8[:], f8[:, :], f8[:, :], i8[:], i8[:], i8, f8[:, :]), nogil=True, nopython=True)
+@jit(Tuple((f8[:, :], f8[:, :]))(f8, f8, f8[:], f8[:, :], f8[:, :], i8[:], i8[:], i8, f8[:, :]),
+     nogil=True, nopython=True)
 def _element_forces(li, l0i, theta, T, f, Ii, Ji, i, K_):
 
     """ Calculate element forces and element elastic stiffness matrix.
@@ -783,17 +760,31 @@ def _element_forces(li, l0i, theta, T, f, Ii, Ji, i, K_):
     fe = mdotm(T, f_)
     f[Ii] += fe[Ji]
 
-    return f
+    return f, f_
 
 
-@jit(Tuple((f8[:], i8))(f8[:, :], i8[:], i8[:], f8[:], i8), nogil=True, nopython=True)
-def _data(Ke, Ii, Ji, data, count):
+@jit(Tuple((f8[:], i8))(i8[:], i8[:], f8[:], i8, f8[:, :], f8[:, :], i8, i8, f8[:, :], f8[:, :], f8[:, :], f8[:, :],
+     f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :],
+     f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:], f8[:], f8[:, :], f8[:, :], f8[:, :], f8[:, :]),
+     nogil=True, nopython=True)
+def _data(Ii, Ji, data, count, l0, T, geomstiff, i, K_, zero33, zero123, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv,
+          Sx, Szuzv, Syvyu, L2, L3, Tu, Tv, theta, xe, Re, B, l, f_):
 
     """
 
     Add comments
 
     """
+
+    Ke_e = mdotm(mdotm(T, K_), T.transpose())
+    Ke_g = 0
+    if geomstiff:
+        xet  = zeros((3, 1))
+        xet[:, 0]  = xe
+        Ke_g = _geometric_stiffmatrix(zero33, zero123, f_, B, L2, L3, theta, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv,
+            Szv, Sx, Szuzv, Syvyu, T, Re, xet, Tu, Tv, l[i][0])
+        Ke_g = 0
+    Ke = Ke_e + Ke_g
 
     for j in range(len(Ii)):
         for k in range(len(Ii)):
@@ -847,6 +838,46 @@ def _update(x, v, dt, IDXtra, Lambdaold, dLambda, fdof_node, fdof_axis, IDXrot, 
                 x[IDXrot[j]] = Lambdanew[fdof_axis[IDXrot[j]] - 3]
 
     return x
+
+
+# @jit(Tuple((f8[:], f8[:, :]))(f8[:, :], i8[:], i8[:], i8[:], i8[:], i8[:], f8[:, :], f8[:, :], f8[:, :], f8[:], f8[:],
+     # f8[:], i8[:], i8[:], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :],
+     # f8[:, :], f8[:, :, :], i8[:], i8[:], f8[:], i8, i8, f8[:, :], f8[:, :], f8[:, :], i8), nogil=True, nopython=True)
+
+# this cant be jitted until I and J can be defined
+
+def _wrapper(T0, u_, v_, IDXalpha, IDXbeta, IDXgamma, x_, Sbt, eye3, zero3, zero6, zero9, kiv_, kiu_, Sr0, Sr1, Sr2,
+             Sxu, Syu, Szu, Sxv, Syv, Szv, l0, Kall, I, J, data, count, geomstiff, f, X, l, m, zero33, zero123,
+             Sx, Szuzv, Syvyu):
+
+    for i in range(m):
+
+        xe = (X[kiv_[i], :] - X[kiu_[i], :])
+        l[i] = length_vector_numba(xe)
+
+        t0t = T0[(i * 3):((i + 1) * 3), 0:3]
+        Tu = _beam_triad(u_[i], x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
+        Tv = _beam_triad(v_[i], x_, IDXalpha, IDXbeta, IDXgamma, t0t, Sbt)
+        Re = _element_rotmat(Tu, Tv)
+
+        xu, yu, zu = Tu[:, 0], Tu[:, 1], Tu[:, 2]
+        xv, yv, zv = Tv[:, 0], Tv[:, 1], Tv[:, 2]
+        xe /= norm(xe)
+        ye = Re[:, 1] - vdotv(Re[:, 1], xe) / 2 * (xe + Re[:, 0])
+        ze = Re[:, 2] - vdotv(Re[:, 2], xe) / 2 * (xe + Re[:, 0])
+
+        theta = _deformations(xe, ye, ze, xu, yu, zu, xv, yv, zv)
+
+        T, L2, L3, B = _create_T(eye3, zero3, zero6, zero9, xe, ye, ze, Re, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv,
+                                 Szv, theta, xu, yu, zu, xv, yv, zv, l[i])
+
+        K_ = 1. / l0[i][0] * Kall[:, :, i]
+
+        f, f_ = _element_forces(l[i][0], l0[i][0], theta, T, f, I[i], J[i], i, K_)
+
+        data, count = _data(I[i], J[i], data, count, l0, T, geomstiff, i, K_, zero33, zero123, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, Sx, Szuzv, Syvyu, L2, L3, Tu, Tv, theta, xe, Re, B, l, f_)
+
+    return data, f
 
 
 # @jit(f8[:, :](f8[:, :], f8[:, :], f8[:, :], f8, f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :]),
@@ -904,134 +935,129 @@ def _update(x, v, dt, IDXtra, Lambdaold, dLambda, fdof_node, fdof_axis, IDXrot, 
 #     return K_g2
 
 
-# @jit(f8[:, :](f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :],
-#      f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8),
-#      nogil=True, nopython=True)
-# def _geometric_stiffmatrix(zero3_3, zero12_3, f_, B, L_2, L_3, theta, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, Sx, Szuzv, Syvyu, T, R_e, xe, T_u, T_v, li):
+@jit(f8(f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:], f8[:, :], f8[:, :], f8[:, :], f8[:, :],
+        f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :],
+        f8[:, :], f8[:, :], f8), nogil=True, nopython=True)
+def _geometric_stiffmatrix(zeros33, zero123, f_, B, L2, L3, theta, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, Sx,                       Szuzv, Syvyu, T, Re, xe, Tu, Tv, li):
 
-#     xu = zeros((3, 1))
-#     yu = zeros((3, 1))
-#     zu = zeros((3, 1))
-#     xv = zeros((3, 1))
-#     yv = zeros((3, 1))
-#     zv = zeros((3, 1))
-#     r0 = zeros((3, 1))
-#     r1 = zeros((3, 1))
-#     r2 = zeros((3, 1))
-#     xu[:, 0] = T_u[:, 0]
-#     yu[:, 0] = T_u[:, 1]
-#     zu[:, 0] = T_u[:, 2]
-#     xv[:, 0] = T_v[:, 0]
-#     yv[:, 0] = T_v[:, 1]
-#     zv[:, 0] = T_v[:, 2]
-#     r0[:, 0] = R_e[:, 0]
-#     r1[:, 0] = R_e[:, 1]
-#     r2[:, 0] = R_e[:, 2]
-#     zuzv = (zu - zv)
-#     yvyu = (yv - yu)
+    xu, yu, zu = zeros((3, 1)), zeros((3, 1)), zeros((3, 1))
+    xv, yv, zv = zeros((3, 1)), zeros((3, 1)), zeros((3, 1))
+    r0, r1, r2 = zeros((3, 1)), zeros((3, 1)), zeros((3, 1))
+    xu[:, 0], yu[:, 0], zu[:, 0] = Tu[:, 0], Tu[:, 1], Tu[:, 2]
+    xv[:, 0], yv[:, 0], zv[:, 0] = Tv[:, 0], Tv[:, 1], Tv[:, 2]
+    r0[:, 0], r1[:, 0], r2[:, 0] = Re[:, 0], Re[:, 1], Re[:, 2]
+    zuzv = zu - zv
+    yvyu = yv - yu
 
-#     M = [f_[1][0] / (2 * cos(theta[0])), f_[2][0] / (2 * cos(theta[2])), f_[3][0] / (2 * cos(theta[4])), f_[4][0] / (2 * cos(theta[1])), f_[5][0] / (2 * cos(theta[3])), f_[6][0] / (2 * cos(theta[5]))]
+    M0 = f_[1][0] / (2 * cos(theta[0]))
+    M1 = f_[2][0] / (2 * cos(theta[2]))
+    M2 = f_[3][0] / (2 * cos(theta[4]))
+    M3 = f_[4][0] / (2 * cos(theta[1]))
+    M4 = f_[5][0] / (2 * cos(theta[3]))
+    M5 = f_[6][0] / (2 * cos(theta[5]))
 
-#     K12 = zero3_3
-#     K14 = zero3_3
-#     K21 = zero3_3
-#     K22 = zero3_3
-#     K23 = zero3_3
-#     K24 = zero3_3
-#     K32 = zero3_3
-#     K34 = zero3_3
-#     K41 = zero3_3
-#     K42 = zero3_3
-#     K43 = zero3_3
-#     K44 = zero3_3
+    # K12 = zeros33
+    # K14 = zeros33
+    # K21 = zeros33
+    # K22 = zeros33
+    # K23 = zeros33
+    # K24 = zeros33
+    # K32 = zeros33
+    # K34 = zeros33
+    # K41 = zeros33
+    # K42 = zeros33
+    # K43 = zeros33
+    # K44 = zeros33
 
-#     K11 = f_[0] * B
-#     K33 = K11
-#     K13 = -K11
-#     K31 = -K11
+    # K11 = f_[0] * B
+    # K33 = K11
+    # K13 = -K11
+    # K31 = -K11
 
-#     K_g1 = vstack((hstack((K11, K12, K13, K14)), hstack((K21, K22, K23, K24)), hstack((K31, K32, K33, K34)), hstack((K41, K42, K43, K44))))
+    # K_g1 = vstack((hstack((K11, K12, K13, K14)), hstack((K21, K22, K23, K24)), hstack((K31, K32, K33, K34)), hstack((K41, K42, K43, K44))))
 
-#     K1 = zero12_3
-#     K3 = zero12_3
-#     K2 = multiply_matrices_numba(-L_2, (M[3] * Szu + M[2] * Sxu)) + multiply_matrices_numba(L_3, (M[3] * Syu - M[1] * Sxu))
-#     K4 = multiply_matrices_numba(L_2, (M[3] * Szv - M[5] * Sxv)) - multiply_matrices_numba(L_3, (M[3] * Syv + M[4] * Sxv))
+    # K1 = zero123
+    # K3 = zero123
+    # K2 = multiply_matrices_numba(-L2, (M[3] * Szu + M[2] * Sxu)) + multiply_matrices_numba(L3, (M[3] * Syu - M[1] * Sxu))
+    # K4 = multiply_matrices_numba(L2, (M[3] * Szv - M[5] * Sxv)) - multiply_matrices_numba(L3, (M[3] * Syv + M[4] * Sxv))
 
-#     K_g3 = hstack((K1, K2, K3, K4))
+    # K_g3 = hstack((K1, K2, K3, K4))
 
-#     K11 = 0 * K11
-#     K13 = 0 * K13
-#     K31 = 0 * K31
-#     K33 = 0 * K33
+    # K11 = 0 * K11
+    # K13 = 0 * K13
+    # K31 = 0 * K31
+    # K33 = 0 * K33
 
-#     K22 = M[3] * (multiply_matrices_numba(Sr1, Szu) - multiply_matrices_numba(Sr2, Syu)) + M[2] * (multiply_matrices_numba(-Sr0, Syu) + multiply_matrices_numba(Sr1, Sxu)) + M[1] * (multiply_matrices_numba(-Sr0, Szu) + multiply_matrices_numba(Sr2, Sxu))
+    # K22 = M[3] * (multiply_matrices_numba(Sr1, Szu) - multiply_matrices_numba(Sr2, Syu)) + M[2] * (multiply_matrices_numba(-Sr0, Syu) + multiply_matrices_numba(Sr1, Sxu)) + M[1] * (multiply_matrices_numba(-Sr0, Szu) + multiply_matrices_numba(Sr2, Sxu))
 
-#     K44 = -M[3] * (multiply_matrices_numba(Sr1, Szv) - multiply_matrices_numba(Sr2, Syv)) + M[5] * (multiply_matrices_numba(-Sr0, Syv) + multiply_matrices_numba(Sr1, Sxv)) + M[4] * (multiply_matrices_numba(-Sr0, Szv) + multiply_matrices_numba(Sr2, Sxv))
+    # K44 = -M[3] * (multiply_matrices_numba(Sr1, Szv) - multiply_matrices_numba(Sr2, Syv)) + M[5] * (multiply_matrices_numba(-Sr0, Syv) + multiply_matrices_numba(Sr1, Sxv)) + M[4] * (multiply_matrices_numba(-Sr0, Szv) + multiply_matrices_numba(Sr2, Sxv))
 
-#     K_g4 = vstack((hstack((K11, K12, K13, K14)), hstack((K21, K22, K23, K24)), hstack((K31, K32, K33, K34)), hstack((K41, K42, K43, K44))))
+    # K_g4 = vstack((hstack((K11, K12, K13, K14)), hstack((K21, K22, K23, K24)), hstack((K31, K32, K33, K34)), hstack((K41, K42, K43, K44))))
 
-#     K22 = 0 * K22
-#     K44 = 0 * K44
+    # K22 = 0 * K22
+    # K44 = 0 * K44
 
-#     K12 = -(M[2] * multiply_matrices_numba(B, Syu) + M[1] * multiply_matrices_numba(B, Szu))
-#     K32 = -K12
-#     K21 = K12.transpose()
-#     K23 = -K12.transpose()
+    # K12 = -(M[2] * multiply_matrices_numba(B, Syu) + M[1] * multiply_matrices_numba(B, Szu))
+    # K32 = -K12
+    # K21 = K12.transpose()
+    # K23 = -K12.transpose()
 
-#     K14 = -(M[5] * multiply_matrices_numba(B, Syv) + M[4] * multiply_matrices_numba(B, Szv))
-#     K34 = -K14
-#     K41 = K14.transpose()
-#     K43 = -K14.transpose()
+    # K14 = -(M[5] * multiply_matrices_numba(B, Syv) + M[4] * multiply_matrices_numba(B, Szv))
+    # K34 = -K14
+    # K41 = K14.transpose()
+    # K43 = -K14.transpose()
 
-#     k = 1 / li * (M[2] * yu + M[1] * zu + M[5] * yv + M[4] * zv)
-#     K11 = multiply_matrices_numba(multiply_matrices_numba(B, k), xe.transpose()) + multiply_matrices_numba(multiply_matrices_numba(xe, k.transpose()), B) + (multiply_matrices_numba(xe.transpose(), k) * B)
-#     K33 = K11
-#     K13 = -K11
-#     K31 = -K11
+    # k = 1 / li * (M[2] * yu + M[1] * zu + M[5] * yv + M[4] * zv)
+    # K11 = multiply_matrices_numba(multiply_matrices_numba(B, k), xe.transpose()) + multiply_matrices_numba(multiply_matrices_numba(xe, k.transpose()), B) + (multiply_matrices_numba(xe.transpose(), k) * B)
+    # K33 = K11
+    # K13 = -K11
+    # K31 = -K11
 
-#     K_g5 = vstack((hstack((K11, K12, K13, K14)), hstack((K21, K22, K23, K24)), hstack((K31, K32, K33, K34)), hstack((K41, K42, K43, K44))))
+    # K_g5 = vstack((hstack((K11, K12, K13, K14)), hstack((K21, K22, K23, K24)), hstack((K31, K32, K33, K34)), hstack((K41, K42, K43, K44))))
 
-#     Df = zeros((6, 6))
-#     Df[0, 0] = f_[1][0] * tan(theta[0])
-#     Df[1, 1] = f_[2][0] * tan(theta[2])
-#     Df[2, 2] = f_[3][0] * tan(theta[4])
-#     Df[3, 3] = f_[4][0] * tan(theta[1])
-#     Df[4, 4] = f_[5][0] * tan(theta[3])
-#     Df[5, 5] = f_[6][0] * tan(theta[5])
-#     K_g6 = multiply_matrices_numba(multiply_matrices_numba(T[:, 1:7], Df), T[:, 1:7].transpose())
+    # Df = zeros((6, 6))
+    # Df[0, 0] = f_[1][0] * tan(theta[0])
+    # Df[1, 1] = f_[2][0] * tan(theta[2])
+    # Df[2, 2] = f_[3][0] * tan(theta[4])
+    # Df[3, 3] = f_[4][0] * tan(theta[1])
+    # Df[4, 4] = f_[5][0] * tan(theta[3])
+    # Df[5, 5] = f_[6][0] * tan(theta[5])
+    # K_g6 = multiply_matrices_numba(multiply_matrices_numba(T[:, 1:7], Df), T[:, 1:7].transpose())
 
-#     Sx = _skew_(Sx, xe.transpose()[0])
-#     Szuzv = _skew_(Szuzv, zuzv.transpose()[0])
-#     Syvyu = _skew_(Syvyu, yvyu.transpose()[0])
+    # Sx = _skew_(Sx, xe.transpose()[0])
+    # Szuzv = _skew_(Szuzv, zuzv.transpose()[0])
+    # Syvyu = _skew_(Syvyu, yvyu.transpose()[0])
 
-#     r1T_B = multiply_matrices_numba(r1.transpose(), B)
-#     r2T_B = multiply_matrices_numba(r2.transpose(), B)
-#     r1T_xe = multiply_matrices_numba(r1.transpose(), xe)
-#     r2T_xe = multiply_matrices_numba(r2.transpose(), xe)
-#     B_r1 = multiply_matrices_numba(B, r1)
-#     B_r2 = multiply_matrices_numba(B, r2)
-#     B_r1_xeT = multiply_matrices_numba(B_r1, xe.transpose())
-#     B_r2_xeT = multiply_matrices_numba(B_r2, xe.transpose())
-#     r1T_xe = multiply_matrices_numba(r1.transpose(), xe) / (2 * li)
-#     r2T_xe = multiply_matrices_numba(r2.transpose(), xe) / (2 * li)
-#     xeT_Sr1 = multiply_matrices_numba(xe.transpose(), Sr1)
-#     xeT_Sr2 = multiply_matrices_numba(xe.transpose(), Sr2)
-#     B_Sr1 = multiply_matrices_numba(B, Sr1)
-#     B_Sr2 = multiply_matrices_numba(B, Sr2)
-#     Sr1_xe = multiply_matrices_numba(Sr1, xe)
-#     Sr2_xe = multiply_matrices_numba(Sr2, xe)
-#     Sx_Sr1 = multiply_matrices_numba(Sx, Sr1)
-#     Sx_Sr2 = multiply_matrices_numba(Sx, Sr2)
+    # r1T_B = multiply_matrices_numba(r1.transpose(), B)
+    # r2T_B = multiply_matrices_numba(r2.transpose(), B)
+    # r1T_xe = multiply_matrices_numba(r1.transpose(), xe)
+    # r2T_xe = multiply_matrices_numba(r2.transpose(), xe)
+    # B_r1 = multiply_matrices_numba(B, r1)
+    # B_r2 = multiply_matrices_numba(B, r2)
+    # B_r1_xeT = multiply_matrices_numba(B_r1, xe.transpose())
+    # B_r2_xeT = multiply_matrices_numba(B_r2, xe.transpose())
+    # r1T_xe = multiply_matrices_numba(r1.transpose(), xe) / (2 * li)
+    # r2T_xe = multiply_matrices_numba(r2.transpose(), xe) / (2 * li)
+    # xeT_Sr1 = multiply_matrices_numba(xe.transpose(), Sr1)
+    # xeT_Sr2 = multiply_matrices_numba(xe.transpose(), Sr2)
+    # B_Sr1 = multiply_matrices_numba(B, Sr1)
+    # B_Sr2 = multiply_matrices_numba(B, Sr2)
+    # Sr1_xe = multiply_matrices_numba(Sr1, xe)
+    # Sr2_xe = multiply_matrices_numba(Sr2, xe)
+    # Sx_Sr1 = multiply_matrices_numba(Sx, Sr1)
+    # Sx_Sr2 = multiply_matrices_numba(Sx, Sr2)
 
-#     K_g21 = K_g2(r1, zuzv, B, li, xe, r0, Sr0, Sx, Sr1, Szuzv, r1T_B, r1T_xe, B_r1, B_r1_xeT, xeT_Sr1, B_Sr1, Sr1_xe, Sx_Sr1)
-#     K_g22 = K_g2(r2, yvyu, B, li, xe, r0, Sr0, Sx, Sr2, Syvyu, r2T_B, r2T_xe, B_r2, B_r2_xeT, xeT_Sr2, B_Sr2, Sr2_xe, Sx_Sr2)
-#     K_g23 = K_g2(r1, xu, B, li, xe, r0, Sr0, Sx, Sr1, Sxu, r1T_B, r1T_xe, B_r1, B_r1_xeT, xeT_Sr1, B_Sr1, Sr1_xe, Sx_Sr1)
-#     K_g24 = K_g2(r2, xu, B, li, xe, r0, Sr0, Sx, Sr2, Sxu, r2T_B, r2T_xe, B_r2, B_r2_xeT, xeT_Sr2, B_Sr2, Sr2_xe, Sx_Sr2)
-#     K_g25 = K_g2(r1, xv, B, li, xe, r0, Sr0, Sx, Sr1, Sxv, r1T_B, r1T_xe, B_r1, B_r1_xeT, xeT_Sr1, B_Sr1, Sr1_xe, Sx_Sr1)
-#     K_g26 = K_g2(r2, xv, B, li, xe, r0, Sr0, Sx, Sr2, Sxv, r2T_B, r2T_xe, B_r2, B_r2_xeT, xeT_Sr2, B_Sr2, Sr2_xe, Sx_Sr2)
+    # K_g21 = K_g2(r1, zuzv, B, li, xe, r0, Sr0, Sx, Sr1, Szuzv, r1T_B, r1T_xe, B_r1, B_r1_xeT, xeT_Sr1, B_Sr1, Sr1_xe, Sx_Sr1)
+    # K_g22 = K_g2(r2, yvyu, B, li, xe, r0, Sr0, Sx, Sr2, Syvyu, r2T_B, r2T_xe, B_r2, B_r2_xeT, xeT_Sr2, B_Sr2, Sr2_xe, Sx_Sr2)
+    # K_g23 = K_g2(r1, xu, B, li, xe, r0, Sr0, Sx, Sr1, Sxu, r1T_B, r1T_xe, B_r1, B_r1_xeT, xeT_Sr1, B_Sr1, Sr1_xe, Sx_Sr1)
+    # K_g24 = K_g2(r2, xu, B, li, xe, r0, Sr0, Sx, Sr2, Sxu, r2T_B, r2T_xe, B_r2, B_r2_xeT, xeT_Sr2, B_Sr2, Sr2_xe, Sx_Sr2)
+    # K_g25 = K_g2(r1, xv, B, li, xe, r0, Sr0, Sx, Sr1, Sxv, r1T_B, r1T_xe, B_r1, B_r1_xeT, xeT_Sr1, B_Sr1, Sr1_xe, Sx_Sr1)
+    # K_g26 = K_g2(r2, xv, B, li, xe, r0, Sr0, Sx, Sr2, Sxv, r2T_B, r2T_xe, B_r2, B_r2_xeT, xeT_Sr2, B_Sr2, Sr2_xe, Sx_Sr2)
 
-#     Ke_g = (K_g1 + K_g6 + M[3] * (K_g21 + K_g22) + M[2] * K_g23 + M[1] * K_g24 + M[5] * K_g25 + M[4] * K_g26 + K_g3 + K_g3.transpose() + K_g4 + K_g5)
-#     return Ke_g
+    # Ke_g = (K_g1 + K_g6 + M[3] * (K_g21 + K_g22) + M[2] * K_g23 + M[1] * K_g24 + M[5] * K_g25 + M[4] * K_g26 + K_g3 + K_g3.transpose() + K_g4 + K_g5)
+
+    # return Ke_g
+    return 0.
 
 
 # ==============================================================================
@@ -1039,8 +1065,6 @@ def _update(x, v, dt, IDXtra, Lambdaold, dLambda, fdof_node, fdof_axis, IDXrot, 
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    from compas.viewers import NetworkViewer
 
     from numpy import cos
     from numpy import pi
@@ -1084,7 +1108,7 @@ if __name__ == "__main__":
     network.set_edges_attributes(attr_dict={'w': (m + 1)})
 
     tic = time()
-    X = dr_6dof_numba(network=network, dt=1.0, xi=1., tol=0.001, steps=50)
+    X, x, x0 = dr_6dof_numba(network=network, dt=1.0, xi=1., tol=0.001, steps=50, geomstiff=1)
     print(X[-2, :])
     print(time() - tic)
 
