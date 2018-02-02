@@ -159,16 +159,6 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False
     for i, value in enumerate(fdof_rot_):
         ind[i, :] = where(fdof_rot == value)[0]
 
-
-
-
-
-
-
-
-
-
-
     # Main loop
 
     ts = 0
@@ -177,19 +167,19 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False
     while ts <= steps and rnorm > tol:
 
         f *= 0
-        data = []
+        count = 0
         x_ = concatenate((x, [[0.0]]), 0)
 
-        for c, uv in enumerate(edges):
+        # WRAP THIS WHOLE LOOP INTO A NUMBA FUNCTION -------------------------------------------------------------------
+
+        for c, uv in enumerate(edges):  # edges turn into a m x 2 array, with ui and vi as the column data
 
             i = edgei[c]
             ui, vi = uv
 
             # Update lengths
 
-            vertexu = k_i[ui]
-            vertexv = k_i[vi]
-            xe = (X[vertexv, :] - X[vertexu, :])
+            xe = (X[k_i[vi], :] - X[k_i[ui], :])  # make array for k_i for both ui and vi
             l[i] = length_vector_numba(xe)
 
             # Update triads
@@ -209,25 +199,36 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False
 
             theta = _deformations(xe, ye, ze, xu, yu, zu, xv, yv, zv)
 
-            # Internal forces
+            # Internal forces and stiffness matrix
 
-            T = _create_T(eye3, zero3, zero6, zero9, xe, ye, ze, Re, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, theta, xu, yu, zu, xv, yv, zv, l[i])
+            T = _create_T(eye3, zero3, zero6, zero9, xe, ye, ze, Re, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv,
+                          theta, xu, yu, zu, xv, yv, zv, l[i])
 
-            f, data = _data(l[i][0], l0[i][0], theta, Kall, T, f, I[i], J[i], i, data)
+            K_ = 1. / l0[i][0] * Kall[:, :, i]
+            Ke_e = mdotm(mdotm(T, K_), T.transpose())
+            Ke_g = 0
+            if geomstiff:
+                pass
+#                 Ke_g = _geometric_stiffmatrix(zero3_3, zero12_3, f_, B, L_2, L_3, theta, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, Sx, Szuzv, Syvyu, T, R_e, array([x_e]).transpose(), T_u, T_v, l[i][0])
+            Ke = Ke_e + Ke_g
 
-        K = csc_matrix((data, (row, col)), shape=(d, d))  # could dis-assemble and use own Sparse indexing in Numba
+            f = _element_forces(l[i][0], l0[i][0], theta, T, f, I[i], J[i], i, K_)
+
+            data, count = _data(Ke, I[i], J[i], data, count)
+
+        # --------------------------------------------------------------------------------------------------------------
+
+        K = csc_matrix((data, (row, col)), shape=(d, d))
 
         # Update residual forces
 
         r = p - f
-        rnorm = dot(r.transpose()[0], r.transpose()[0])**0.5
+        rnorm = mdotm(r.transpose(), r)**0.5
 
-        # Update velocities
+        # Update displacements and velocities
 
-        M = 1 * K
-        vold = 1 * v
-        v = (1 - xi * dt) / (1 + xi * dt) * vold + array([spsolve(M, r)]).transpose() / (1 + xi * dt) * dt
-
+        ds = xi * dt
+        v = (1 - ds) / (1 + ds) * v + array([spsolve(K, r)]).transpose() / (1 + ds) * dt  # find an alternative to spsolve
         x = _update(x, v, dt, IDXtra, Lambdaold, dLambda, fdof_node, fdof_axis, IDXrot, fdof_rot, fdof_rot_, ind)
 
         for i in range(len(IDXtra)):
@@ -235,13 +236,10 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=False
 
         ts += 1
 
-        # print(ts)
-
     # Update network
 
-    for i in sorted(list(network.vertices()), key=int):
-        xx, yy, zz = X[i, :]
-        network.set_vertex_attributes(i_k[i], {'x': xx, 'y': yy, 'z': zz})
+    for i in network.vertices():
+        network.set_vertex_attributes(i_k[i], {'x': X[i, 0], 'y': X[i, 1], 'z': X[i, 2]})
 
     return X#, x, x0
 
@@ -401,13 +399,13 @@ def _create_edge_arrays(network, fdof, fdof_node):
         Iu = where(array(fdof_node) == ui)[0]
         if len(Iu):
             Ju = (array(fdof)[Iu] - ui) * 100 - 1
-            Ju = array([int(round(j)) for j in Ju])
+            Ju = array([int(round(j)) for j in Ju], dtype=int64)
 
         Jv = array([], dtype=int)
         Iv = where(array(fdof_node) == vi)[0]
         if len(Iv):
             Jv = (array(fdof)[Iv] - vi) * 100 + 5
-            Jv = array([int(round(j)) for j in Jv])
+            Jv = array([int(round(j)) for j in Jv], dtype=int64)
 
         I.append(concatenate((Iu, Iv), 0))
         J.append(concatenate((Ju, Jv), 0))
@@ -741,19 +739,55 @@ def _quaternion(Lbda):
     return array([q[0], q[1], q[2], q0])
 
 
+@jit(f8[:, :](f8, f8, f8[:], f8[:, :], f8[:, :], i8[:], i8[:], i8, f8[:, :]), nogil=True, nopython=True)
+def _element_forces(li, l0i, theta, T, f, Ii, Ji, i, K_):
+
+    """ Calculate element forces and element elastic stiffness matrix.
+
+    Parameters
+    ----------
+    li : float
+        Edge length.
+    l0i: float
+        Initial edge length.
+    theta : array
+        Array of thetas.
+    T : array
+        Transformation matrix.
+    f : array
+        Forces array.
+    Ji : -
+        -
+    i: int
+        Edge index.
+    K_ : array
+        -
+
+    Returns
+    -------
+
+    tbc
+
+    """
+
+    u_ = zeros((7, 1))
+    u_[0, 0] = li - l0i
+    u_[1, 0] = theta[0]
+    u_[2, 0] = theta[2]
+    u_[3, 0] = theta[4]
+    u_[4, 0] = theta[1]
+    u_[5, 0] = theta[3]
+    u_[6, 0] = theta[5]
+
+    f_ = mdotm(K_, u_)
+    fe = mdotm(T, f_)
+    f[Ii] += fe[Ji]
+
+    return f
 
 
-
-
-
-
-
-
-
-
-
-
-def _data(li, l0i, theta, Kall, T, f, Ii, Ji, i, data):
+@jit(Tuple((f8[:], i8))(f8[:, :], i8[:], i8[:], f8[:], i8), nogil=True, nopython=True)
+def _data(Ke, Ii, Ji, data, count):
 
     """
 
@@ -761,37 +795,33 @@ def _data(li, l0i, theta, Kall, T, f, Ii, Ji, i, data):
 
     """
 
-    delta = li - l0i
-    u_ = array([[delta, theta[0], theta[2], theta[4], theta[1], theta[3], theta[5]]]).transpose()
-    K_ = 1. / l0i * Kall[:, :, i]
-    f_ = mdotm(K_, u_)
-    fe = mdotm(T, f_)
-    f[Ii] += fe[Ji]
-
-    Ke_e = mdotm(mdotm(T, K_), T.transpose())
-
     for j in range(len(Ii)):
         for k in range(len(Ii)):
-            data.append(Ke_e[Ji[j]][Ji[k]])
-            #K[I[i][j]][I[i][k]] = K[I[i][j]][I[i][k]] + Ke_e[J[i][j]][J[i][k]]
+            data[count] = (Ke[Ji[j]][Ji[k]])
+            count += 1
 
-    return f, data
+    return data, count
 
 
-@jit(f8[:, :](f8[:, :], f8[:, :], f8, i8[:], f8[:], f8[:], i8[:], i8[:], i8[:], i8[:], i8[:], i8[:, :]),
-     nogil=True, nopython=True)
+# this function still feels messy to me, could be reworked
+@jit(f8[:, :](f8[:, :], f8[:, :], f8, i8[:], f8[:], f8[:], i8[:], i8[:], i8[:], i8[:], i8[:], i8[:, :]), nogil=True, nopython=True)
 def _update(x, v, dt, IDXtra, Lambdaold, dLambda, fdof_node, fdof_axis, IDXrot, fdof_rot, fdof_rot_, ind):
+
+    """
+
+    Add comments
+
+    """
 
     dx = dt * v
     xold = x
     x[IDXtra] = xold[IDXtra] + dx[IDXtra]
-
     Lambdaold *= 0.
     dLambda *= 0.
 
     for i in range(len(fdof_rot_)):
 
-        for jj in range(3):  # is this always len 3?
+        for jj in range(3):
             j = ind[i, jj]
             index = fdof_axis[IDXrot[j]]
             Lambdaold[index - 3] = xold[IDXrot[j]][0]
@@ -799,16 +829,13 @@ def _update(x, v, dt, IDXtra, Lambdaold, dLambda, fdof_node, fdof_axis, IDXrot, 
 
         qO = _quaternion(Lambdaold)
         qQ = _quaternion(dLambda)
-        qold = qO[:3]
-        q0old = qO[3]
-        dq = qQ[:3]
-        dq0 = qQ[3]
-
+        qold, q0old = qO[:3], qO[3]
+        dq, dq0 = qQ[:3], qQ[3]
         qnew = q0old * dq + dq0 * qold - cross_vectors_numba(qold, dq)
         q0new = q0old * dq0 - vdotv(qold, dq)
         lambdanew = 2 * arctan(norm_vector_numba(qnew) / q0new)
 
-        if norm(qnew) == 0.0:
+        if norm(qnew) == 0.:
             Lnew = qnew
         else:
             Lnew = qnew / norm_vector_numba(qnew)
@@ -822,7 +849,189 @@ def _update(x, v, dt, IDXtra, Lambdaold, dLambda, fdof_node, fdof_axis, IDXrot, 
     return x
 
 
+# @jit(f8[:, :](f8[:, :], f8[:, :], f8[:, :], f8, f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :]),
+#      nogil=True, nopython=True)
+# def K_g2(r_i, o, B, l, x, r_0, Sr0, Sx, Sri, So, riT_B, riT_xe, B_ri, B_ri_xeT, xeT_Sri, B_Sri, Sri_xe, Sx_Sri):
+#     """ Calculate K_g2 for the geometric stiffness matrix
 
+#     Parameters
+#     ----------
+#         ri:
+#             y- or z- Direction of the element rotation vector R_e.
+#         o:
+#             Vector.
+#         B:
+#             Matrix B.
+#         l:
+#             Length of the element.
+#         x:
+#             Vector in element x-direction.
+#         r_0:
+#             x-Direction of the element rotation vector R_e.
+
+#     Returns
+#     -------
+#         matrix
+#             K_g2.
+
+#     """
+#     B_o = multiply_matrices_numba(B, o)
+#     oT_xr0 = multiply_matrices_numba(o.transpose(), (x + r_0))
+#     U = -1 / 2 * multiply_matrices_numba(B_o, riT_B) + (riT_xe / (2 * l)) * multiply_matrices_numba(B_o, x.transpose()) + (oT_xr0 / (2 * l)) * B_ri_xeT
+
+#     K11 = U + U.transpose() + riT_xe * (2 * multiply_matrices_numba(x.transpose(), o) + multiply_matrices_numba(o.transpose(), r_0)) * B
+#     K33 = K11
+#     K13 = -K11
+#     K31 = -K11
+
+#     K12 = (multiply_matrices_numba(-B_o, xeT_Sri) - multiply_matrices_numba(B_ri, multiply_matrices_numba(o.transpose(), Sr0)) - oT_xr0 * B_Sri) / 4
+#     K14 = K12
+#     K32 = -K12
+#     K34 = -K12
+#     K21 = K12.transpose()
+#     K41 = K12.transpose()
+#     K23 = -K12.transpose()
+#     K43 = -K12.transpose()
+
+#     K22 = ((-riT_xe * multiply_matrices_numba(So, Sr0) + multiply_matrices_numba(multiply_matrices_numba(Sr0, o), xeT_Sri) +
+#             multiply_matrices_numba(Sri_xe, multiply_matrices_numba(o.transpose(), Sr0)) - multiply_matrices_numba(x.transpose() +
+#             r_0.transpose(), o) * Sx_Sri + 2 * multiply_matrices_numba(So, Sri)) / 8)
+#     K24 = K22
+#     K42 = K22
+#     K44 = K22
+
+#     K_g2 = vstack((hstack((K11, K12, K13, K14)), hstack((K21, K22, K23, K24)), hstack((K31, K32, K33, K34)), hstack((K41, K42, K43, K44))))
+#     return K_g2
+
+
+# @jit(f8[:, :](f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :],
+#      f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8[:, :], f8),
+#      nogil=True, nopython=True)
+# def _geometric_stiffmatrix(zero3_3, zero12_3, f_, B, L_2, L_3, theta, Sr0, Sr1, Sr2, Sxu, Syu, Szu, Sxv, Syv, Szv, Sx, Szuzv, Syvyu, T, R_e, xe, T_u, T_v, li):
+
+#     xu = zeros((3, 1))
+#     yu = zeros((3, 1))
+#     zu = zeros((3, 1))
+#     xv = zeros((3, 1))
+#     yv = zeros((3, 1))
+#     zv = zeros((3, 1))
+#     r0 = zeros((3, 1))
+#     r1 = zeros((3, 1))
+#     r2 = zeros((3, 1))
+#     xu[:, 0] = T_u[:, 0]
+#     yu[:, 0] = T_u[:, 1]
+#     zu[:, 0] = T_u[:, 2]
+#     xv[:, 0] = T_v[:, 0]
+#     yv[:, 0] = T_v[:, 1]
+#     zv[:, 0] = T_v[:, 2]
+#     r0[:, 0] = R_e[:, 0]
+#     r1[:, 0] = R_e[:, 1]
+#     r2[:, 0] = R_e[:, 2]
+#     zuzv = (zu - zv)
+#     yvyu = (yv - yu)
+
+#     M = [f_[1][0] / (2 * cos(theta[0])), f_[2][0] / (2 * cos(theta[2])), f_[3][0] / (2 * cos(theta[4])), f_[4][0] / (2 * cos(theta[1])), f_[5][0] / (2 * cos(theta[3])), f_[6][0] / (2 * cos(theta[5]))]
+
+#     K12 = zero3_3
+#     K14 = zero3_3
+#     K21 = zero3_3
+#     K22 = zero3_3
+#     K23 = zero3_3
+#     K24 = zero3_3
+#     K32 = zero3_3
+#     K34 = zero3_3
+#     K41 = zero3_3
+#     K42 = zero3_3
+#     K43 = zero3_3
+#     K44 = zero3_3
+
+#     K11 = f_[0] * B
+#     K33 = K11
+#     K13 = -K11
+#     K31 = -K11
+
+#     K_g1 = vstack((hstack((K11, K12, K13, K14)), hstack((K21, K22, K23, K24)), hstack((K31, K32, K33, K34)), hstack((K41, K42, K43, K44))))
+
+#     K1 = zero12_3
+#     K3 = zero12_3
+#     K2 = multiply_matrices_numba(-L_2, (M[3] * Szu + M[2] * Sxu)) + multiply_matrices_numba(L_3, (M[3] * Syu - M[1] * Sxu))
+#     K4 = multiply_matrices_numba(L_2, (M[3] * Szv - M[5] * Sxv)) - multiply_matrices_numba(L_3, (M[3] * Syv + M[4] * Sxv))
+
+#     K_g3 = hstack((K1, K2, K3, K4))
+
+#     K11 = 0 * K11
+#     K13 = 0 * K13
+#     K31 = 0 * K31
+#     K33 = 0 * K33
+
+#     K22 = M[3] * (multiply_matrices_numba(Sr1, Szu) - multiply_matrices_numba(Sr2, Syu)) + M[2] * (multiply_matrices_numba(-Sr0, Syu) + multiply_matrices_numba(Sr1, Sxu)) + M[1] * (multiply_matrices_numba(-Sr0, Szu) + multiply_matrices_numba(Sr2, Sxu))
+
+#     K44 = -M[3] * (multiply_matrices_numba(Sr1, Szv) - multiply_matrices_numba(Sr2, Syv)) + M[5] * (multiply_matrices_numba(-Sr0, Syv) + multiply_matrices_numba(Sr1, Sxv)) + M[4] * (multiply_matrices_numba(-Sr0, Szv) + multiply_matrices_numba(Sr2, Sxv))
+
+#     K_g4 = vstack((hstack((K11, K12, K13, K14)), hstack((K21, K22, K23, K24)), hstack((K31, K32, K33, K34)), hstack((K41, K42, K43, K44))))
+
+#     K22 = 0 * K22
+#     K44 = 0 * K44
+
+#     K12 = -(M[2] * multiply_matrices_numba(B, Syu) + M[1] * multiply_matrices_numba(B, Szu))
+#     K32 = -K12
+#     K21 = K12.transpose()
+#     K23 = -K12.transpose()
+
+#     K14 = -(M[5] * multiply_matrices_numba(B, Syv) + M[4] * multiply_matrices_numba(B, Szv))
+#     K34 = -K14
+#     K41 = K14.transpose()
+#     K43 = -K14.transpose()
+
+#     k = 1 / li * (M[2] * yu + M[1] * zu + M[5] * yv + M[4] * zv)
+#     K11 = multiply_matrices_numba(multiply_matrices_numba(B, k), xe.transpose()) + multiply_matrices_numba(multiply_matrices_numba(xe, k.transpose()), B) + (multiply_matrices_numba(xe.transpose(), k) * B)
+#     K33 = K11
+#     K13 = -K11
+#     K31 = -K11
+
+#     K_g5 = vstack((hstack((K11, K12, K13, K14)), hstack((K21, K22, K23, K24)), hstack((K31, K32, K33, K34)), hstack((K41, K42, K43, K44))))
+
+#     Df = zeros((6, 6))
+#     Df[0, 0] = f_[1][0] * tan(theta[0])
+#     Df[1, 1] = f_[2][0] * tan(theta[2])
+#     Df[2, 2] = f_[3][0] * tan(theta[4])
+#     Df[3, 3] = f_[4][0] * tan(theta[1])
+#     Df[4, 4] = f_[5][0] * tan(theta[3])
+#     Df[5, 5] = f_[6][0] * tan(theta[5])
+#     K_g6 = multiply_matrices_numba(multiply_matrices_numba(T[:, 1:7], Df), T[:, 1:7].transpose())
+
+#     Sx = _skew_(Sx, xe.transpose()[0])
+#     Szuzv = _skew_(Szuzv, zuzv.transpose()[0])
+#     Syvyu = _skew_(Syvyu, yvyu.transpose()[0])
+
+#     r1T_B = multiply_matrices_numba(r1.transpose(), B)
+#     r2T_B = multiply_matrices_numba(r2.transpose(), B)
+#     r1T_xe = multiply_matrices_numba(r1.transpose(), xe)
+#     r2T_xe = multiply_matrices_numba(r2.transpose(), xe)
+#     B_r1 = multiply_matrices_numba(B, r1)
+#     B_r2 = multiply_matrices_numba(B, r2)
+#     B_r1_xeT = multiply_matrices_numba(B_r1, xe.transpose())
+#     B_r2_xeT = multiply_matrices_numba(B_r2, xe.transpose())
+#     r1T_xe = multiply_matrices_numba(r1.transpose(), xe) / (2 * li)
+#     r2T_xe = multiply_matrices_numba(r2.transpose(), xe) / (2 * li)
+#     xeT_Sr1 = multiply_matrices_numba(xe.transpose(), Sr1)
+#     xeT_Sr2 = multiply_matrices_numba(xe.transpose(), Sr2)
+#     B_Sr1 = multiply_matrices_numba(B, Sr1)
+#     B_Sr2 = multiply_matrices_numba(B, Sr2)
+#     Sr1_xe = multiply_matrices_numba(Sr1, xe)
+#     Sr2_xe = multiply_matrices_numba(Sr2, xe)
+#     Sx_Sr1 = multiply_matrices_numba(Sx, Sr1)
+#     Sx_Sr2 = multiply_matrices_numba(Sx, Sr2)
+
+#     K_g21 = K_g2(r1, zuzv, B, li, xe, r0, Sr0, Sx, Sr1, Szuzv, r1T_B, r1T_xe, B_r1, B_r1_xeT, xeT_Sr1, B_Sr1, Sr1_xe, Sx_Sr1)
+#     K_g22 = K_g2(r2, yvyu, B, li, xe, r0, Sr0, Sx, Sr2, Syvyu, r2T_B, r2T_xe, B_r2, B_r2_xeT, xeT_Sr2, B_Sr2, Sr2_xe, Sx_Sr2)
+#     K_g23 = K_g2(r1, xu, B, li, xe, r0, Sr0, Sx, Sr1, Sxu, r1T_B, r1T_xe, B_r1, B_r1_xeT, xeT_Sr1, B_Sr1, Sr1_xe, Sx_Sr1)
+#     K_g24 = K_g2(r2, xu, B, li, xe, r0, Sr0, Sx, Sr2, Sxu, r2T_B, r2T_xe, B_r2, B_r2_xeT, xeT_Sr2, B_Sr2, Sr2_xe, Sx_Sr2)
+#     K_g25 = K_g2(r1, xv, B, li, xe, r0, Sr0, Sx, Sr1, Sxv, r1T_B, r1T_xe, B_r1, B_r1_xeT, xeT_Sr1, B_Sr1, Sr1_xe, Sx_Sr1)
+#     K_g26 = K_g2(r2, xv, B, li, xe, r0, Sr0, Sx, Sr2, Sxv, r2T_B, r2T_xe, B_r2, B_r2_xeT, xeT_Sr2, B_Sr2, Sr2_xe, Sx_Sr2)
+
+#     Ke_g = (K_g1 + K_g6 + M[3] * (K_g21 + K_g22) + M[2] * K_g23 + M[1] * K_g24 + M[5] * K_g25 + M[4] * K_g26 + K_g3 + K_g3.transpose() + K_g4 + K_g5)
+#     return Ke_g
 
 
 # ==============================================================================
@@ -879,10 +1088,125 @@ if __name__ == "__main__":
     print(X[-2, :])
     print(time() - tic)
 
-    # for i in network.vertices():
-    #     x, y, z = X[i, :]
-    #     network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
 
-    # viewer = NetworkViewer(network=network, width=1600, height=800)
-    # viewer.setup()
-    # viewer.show()
+# # ==============================================================================
+# # Main
+# # ==============================================================================
+
+# if __name__ == "__main__":
+
+#     from compas.viewers import NetworkViewer
+
+#     from numpy import cos
+#     from numpy import pi
+#     from numpy import sin
+
+#     m = 80
+#     R = 100
+#     at = 0.25 * pi
+
+#     network = Network()
+#     for i in range(m + 1):
+#         a = i * at / m
+#         x = R * sin(a)
+#         y = -R + R * cos(a)
+#         network.add_vertex(key=i, x=x, y=y)
+#         if i < m:
+#             network.add_edge(key=i, u=i, v=i+1)
+#     network.add_vertex(key=(m + 1), x=0, y=-R)
+
+#     network.update_default_edge_attributes({
+#         'w': int,
+#         'E': 10.0 ** 7,
+#         'nu': 0.0,
+#         'A': 1.0,
+#         'Ix': 2.25 * 0.5 ** 4,
+#         'Iy': 1.0 / 12,
+#         'Iz': 1.0 / 12,
+#     })
+
+#     bcs = {
+#         'dofx': False,
+#         'dofy': False,
+#         'dofz': False,
+#         'dofalpha': False,
+#         'dofbeta': False,
+#         'dofgamma': False,
+#     }
+
+#     network.set_vertices_attributes(keys=[0, m + 1], attr_dict=bcs)
+#     network.set_vertices_attributes([m], {'pz': 600})
+#     network.set_edges_attributes(attr_dict={'w': (m + 1)})
+
+#     tic = time()
+#     X = dr_6dof_numba(network=network, dt=1.0, xi=1., tol=0.001, steps=100, geomstiff=False)
+#     print(X[-2, :])
+#     print(time() - tic)
+
+#     for i in network.vertices():
+#         x, y, z = X[i, :]
+#         network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
+
+#     viewer = NetworkViewer(network=network, width=1600, height=800)
+#     viewer.setup()
+#     viewer.show()
+#     """
+#     m = 20
+#     span = 10
+
+#     network = Network()
+#     countm = 0
+#     countn = 0
+#     for i in range(m + 1):
+#         for j in range(m + 1):
+#             x = span / m * j - span / 2
+#             y = span / m * i - span / 2
+#             network.add_vertex(key=countn, x=x, y=y)
+#             if j < m:
+#                 network.add_edge(key=countm, u=countn, v=countn+1)
+#                 countm += 1
+#             if i < m:
+#                 network.add_edge(key=countm, u=countn, v=countn+m+1)
+#                 countm += 1
+#             countn += 1
+
+#     network.add_vertex(key=countn, x=0, z=-span ** 2)
+
+#     network.update_default_edge_attributes({
+#         'w': int,
+#         'E': 30.0 * 10 ** 9,
+#         'nu': 0.0,
+#         'A': 7.0416 * 10 ** -4,
+#         'Ix': 7.9522 * 10 ** -8,
+#         'Iy': 3.9761 * 10 ** -8,
+#         'Iz': 3.9761 * 10 ** -8,
+#     })
+#     bcs = {
+#         'dofx': False,
+#         'dofy': False,
+#         'dofz': False,
+#         'dofalpha': False,
+#         'dofbeta': False,
+#         'dofgamma': False,
+#     }
+
+#     network.set_vertices_attributes(keys=[countn], attr_dict=bcs)
+#     network.set_vertices_attributes(keys=[0, m, m * (m+1), (m+1)*(m+1) - 1], attr_dict={'dofz': False})
+#     network.set_vertices_attributes(keys=[m/2, m * (m+1) + m/2], attr_dict={'dofx': False})
+#     network.set_vertices_attributes(keys=[(m / 2) * (m + 1), (m / 2 + 1) * (m + 1) - 1], attr_dict={'dofy': False})
+#     network.set_vertices_attributes(attr_dict={'pz': 25})
+#     network.set_edges_attributes(attr_dict={'w': countn})
+
+#     tic = time()
+#     X = dr_6dof_numba(network=network, dt=1.0, xi=1., tol=0.001, steps=100, geomstiff=False)
+#     print(X[int((m / 2) * m), :])
+#     print(time() - tic)
+
+#     for i in network.vertices():
+#         x, y, z = X[i, :]
+#         network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
+
+#     viewer = NetworkViewer(network=network, width=1600, height=800)
+#     viewer.setup()
+#     viewer.show()
+#     """
