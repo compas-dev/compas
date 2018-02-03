@@ -214,6 +214,10 @@ def global_coords_numpy(o, uvw, rst):
 # ==============================================================================
 
 
+def transformation_matrix(entries, rtype='list'):
+    pass
+
+
 def translation_matrix(direction, rtype='list'):
     """Creates a translation matrix to translate vectors.
 
