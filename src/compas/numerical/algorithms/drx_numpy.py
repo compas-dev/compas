@@ -234,7 +234,7 @@ def drx_solver(tol, steps, factor, C, Ct, X, ks, l0, f0, ind_c, ind_t, P, S, B, 
             if (ts % refresh == 0) or (res < tol):
                 print('Step:{0} Residual:{1:.3g}'.format(ts, res))
                 if callback:
-                    callback(ts, X, **kwargs)
+                    callback(X, **kwargs)
         ts += 1
     return X, f, l
 
