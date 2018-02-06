@@ -164,7 +164,8 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
         if fopt < limit:
             break
 
-        print('Generation: {0}  fopt: {1:.5g}'.format(ts, fopt))
+        if ts % 10 == 0:
+            print('Generation: {0}  fopt: {1:.5g}'.format(ts, fopt))
 
         # Save generation
 
