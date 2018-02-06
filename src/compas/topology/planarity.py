@@ -172,7 +172,7 @@ def network_is_xy(network):
 
     """
     z = None
-    for key in network.vertices():
+    for key in network:
         if z is None:
             z = network.vertex[key].get('z', 0.0)
         else:
