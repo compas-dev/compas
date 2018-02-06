@@ -23,6 +23,7 @@ try:
     from numpy import arctan
     from numpy import arcsin
     from numpy import array
+    from numpy import asarray
     from numpy import concatenate
     from numpy import cos
     from numpy import cross
@@ -190,7 +191,7 @@ def dr_6dof_numba(network, dt=1.0, xi=1.0, tol=0.001, steps=100, geomstiff=0):
 
     # Update network
 
-    for i in network.vertices():
+    for i in range(n):
         network.set_vertex_attributes(i_k[i], {'x': X[i, 0], 'y': X[i, 1], 'z': X[i, 2]})
 
     return X, x, x0
@@ -367,8 +368,8 @@ def _create_edge_arrays(network, fdof, fdof_node, k_i):
             Jv = (array(fdof)[Iv] - vi) * 100 + 5
             Jv = array([int(round(j)) for j in Jv], dtype=int64)
 
-        I.append(concatenate((Iu, Iv), 0))
-        J.append(concatenate((Ju, Jv), 0))
+        I.append(asarray(concatenate((Iu, Iv), 0), dtype=int64))
+        J.append(asarray(concatenate((Ju, Jv), 0), dtype=int64))
 
         for j in range(len(I[i])):
             for k in range(len(I[i])):
@@ -1079,7 +1080,7 @@ if __name__ == "__main__":
     from numpy import pi
     from numpy import sin
 
-    m = 80
+    m = 8
     R = 100
     at = 0.25 * pi
 
@@ -1090,11 +1091,10 @@ if __name__ == "__main__":
         y = -R + R * cos(a)
         network.add_vertex(key=i, x=x, y=y)
         if i < m:
-            network.add_edge(key=i, u=i, v=i+1)
+            network.add_edge(u=i, v=i+1)
     network.add_vertex(key=(m + 1), x=0, y=-R)
 
     network.update_default_edge_attributes({
-        'w': int,
         'E': 10.0 ** 7,
         'nu': 0.0,
         'A': 1.0,
@@ -1118,7 +1118,7 @@ if __name__ == "__main__":
 
     tic = time()
     X, x, x0 = dr_6dof_numba(network=network, dt=1.0, xi=1., tol=0.001, steps=50, geomstiff=0)
-    print(X[-2, :])
+    print(X)
     print(time() - tic)
 
 
