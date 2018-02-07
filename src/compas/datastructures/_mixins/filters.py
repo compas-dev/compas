@@ -34,23 +34,44 @@ class VertexFilter(object):
             The next vertex and its attributes, if ``data=True``.
 
         """
-        # turn this inside out
         for key, attr in self.vertices(True):
             is_match = True
+
             for name, value in conditions.items():
-                if name not in attr:
-                    is_match = False
-                    break
-                if isinstance(value, (tuple, list)):
-                    minval, maxval = value
-                    if attr[name] < minval or attr[name] > maxval:
-                        is_match = False
-                        break
+                method = getattr(self, name, None)
+
+                if callable(method):
+                    val = method(key)
+
+                    if isinstance(value, (tuple, list)):
+                        minval, maxval = value
+
+                        if val < minval or val > maxval:
+                            is_match = False
+                            break
+                    else:
+                        if value != val:
+                            is_match = False
+                            break
+
                 else:
-                    if value != attr[name]:
+                    if name not in attr:
                         is_match = False
                         break
+
+                    if isinstance(value, (tuple, list)):
+                        minval, maxval = value
+
+                        if attr[name] < minval or attr[name] > maxval:
+                            is_match = False
+                            break
+                    else:
+                        if value != attr[name]:
+                            is_match = False
+                            break
+
             if is_match:
+
                 if data:
                     yield key, attr
                 else:
