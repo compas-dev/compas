@@ -7,15 +7,8 @@ from math import sin
 from math import pi
 
 from compas.geometry import angle_vectors_xy
-from compas.geometry import angles_points_xy
 from compas.geometry import is_intersection_segment_segment_xy
 from compas.geometry import is_ccw_xy
-
-from compas.geometry import add_vectors_xy
-from compas.geometry import scale_vector_xy
-from compas.geometry import normalize_vector_xy
-from compas.geometry import centroid_points_xy
-from compas.geometry import length_vector_xy
 
 
 __author__     = 'Tom Van Mele'
@@ -33,13 +26,6 @@ __all__ = [
     'network_is_planar_embedding',
     'network_embed_in_plane',
 ]
-
-
-def angle_points_ccw_xy(a, b, c, deg=False):
-    alpha, beta = angles_points_xy(a, b, c, deg=deg)
-    if is_ccw_xy(a, b, c):
-        return alpha
-    return beta
 
 
 def network_is_crossed(network):
@@ -108,19 +94,7 @@ def network_count_crossings(network):
     This algorithm assumes that the network lies in the XY plane.
 
     """
-    count = 0
-    for u1, v1 in network.edges():
-        for u2, v2 in network.edges():
-            if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
-                continue
-            else:
-                a = network.vertex[u1]['x'], network.vertex[u1]['y']
-                b = network.vertex[v1]['x'], network.vertex[v1]['y']
-                c = network.vertex[u2]['x'], network.vertex[u2]['y']
-                d = network.vertex[v2]['x'], network.vertex[v2]['y']
-                if is_intersection_segment_segment_xy((a, b), (c, d)):
-                    count += 1
-    return count
+    return len(network_find_crossings(network))
 
 
 def network_find_crossings(network):
@@ -141,19 +115,23 @@ def network_find_crossings(network):
     This algorithm assumes that the network lies in the XY plane.
 
     """
-    crossings = []
+    crossings = set()
     for u1, v1 in network.edges():
         for u2, v2 in network.edges():
             if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
                 continue
             else:
+                if ((u1, v1), (u2, v2)) in crossings:
+                    continue
+                if ((u2, v2), (u1, v1)) in crossings:
+                    continue
                 a = network.vertex_coordinates(u1, 'xy')
                 b = network.vertex_coordinates(v1, 'xy')
                 c = network.vertex_coordinates(u2, 'xy')
                 d = network.vertex_coordinates(v2, 'xy')
                 if is_intersection_segment_segment_xy((a, b), (c, d)):
-                    crossings.append(((u1, v1), (u2, v2)))
-    return crossings
+                    crossings.add(((u1, v1), (u2, v2)))
+    return list(crossings)
 
 
 def network_is_xy(network):
@@ -370,18 +348,16 @@ def network_embed_in_plane(network, fix=None, straightline=True):
         p2   = pos[b]
         vec0 = [network.vertex[b][axis] - network.vertex[a][axis] for axis in 'xy']
         vec1 = [pos[b][axis] - pos[a][axis] for axis in (0, 1)]
-
         # rotate
-        alpha = angle_vectors_xy(vec0, vec1)
+        a = angle_vectors_xy(vec0, vec1)
         if is_ccw_xy(p0, p1, p2):
-            alpha = 2 * pi - alpha
-        cosa = cos(alpha)
-        sina = sin(alpha)
+            a = 2 * pi - a
+        cosa = cos(a)
+        sina = sin(a)
         for key in pos:
             x, y = pos[key]
             pos[key][0] = cosa * x - sina * y
             pos[key][1] = sina * x + cosa * y
-
         # scale
         l0 = (vec0[0] ** 2 + vec0[1] ** 2) ** 0.5
         l1 = (vec1[0] ** 2 + vec1[1] ** 2) ** 0.5
@@ -389,40 +365,17 @@ def network_embed_in_plane(network, fix=None, straightline=True):
         for key in pos:
             pos[key][0] *= scale
             pos[key][1] *= scale
-
         # translate
-        t = network.vertex[a]['x'] - pos[a][0], network.vertex[a]['y'] - pos[a][1]
+        t = network.vertex[fix[0]]['x'] - pos[fix[0]][0], network.vertex[fix[0]]['y'] - pos[fix[0]][1]
         for key in pos:
             pos[key][0] += t[0]
             pos[key][1] += t[1]
 
     # update network vertex coordinates
-    pos_initial = {key: network.vertex_coordinates(key, 'xy') for key in network.vertices()}
-
     for key in network.vertices():
         if key in pos:
             network.vertex[key]['x'] = pos[key][0]
             network.vertex[key]['y'] = pos[key][1]
-
-    # aatach leaves correctly
-    for key in network.leaves():
-        nbr = network.vertex_neighbours(key)[0]
-
-        if nbr in fix:
-            continue
-
-        nbrs = network.vertex_neighbours(nbr)
-        vectors = [[pos[n][axis] - pos[nbr][axis] for axis in (0, 1)] for n in nbrs if n != key]
-
-        l = length_vector_xy([pos_initial[key][axis] - pos_initial[nbr][axis] for axis in (0, 1)])
-        n = normalize_vector_xy(centroid_points_xy(vectors))
-        vector = scale_vector_xy(n, -l)
-
-        x, y, z = add_vectors_xy(pos[nbr], vector)
-
-        network.vertex[key]['x'] = x
-        network.vertex[key]['y'] = y
-        network.vertex[key]['z'] = z
 
     return True
 
@@ -440,23 +393,39 @@ if __name__ == '__main__':
 
     network = Network.from_obj(compas.get_data('fink.obj'))
 
-    embedding = network.copy()
+    crossings = network_find_crossings(network)
 
-    fix = (1, 12)  # Python2
-    fix = (6, 9)   # Python3
+    print(network_count_crossings(network))
+    print(crossings)
+    print(len(crossings))
 
-    if network_embed_in_plane(embedding, fix=fix):
+    ecolor = {}
+    for e1, e2 in crossings:
+        ecolor[e1] = '#ff0000'
+        ecolor[e2] = '#ff0000'
 
-        plotter = NetworkPlotter(embedding, figsize=(10, 7))
+    plotter = NetworkPlotter(network, figsize=(10, 7))
 
-        plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
-                             'end': network.vertex_coordinates(v, 'xy'),
-                             'color': '#cccccc'} for u, v in network.edges()])
+    plotter.draw_vertices()
+    plotter.draw_edges(color=ecolor)
+    plotter.show()
 
-        plotter.draw_vertices(radius=0.3,
-                              text={key: key for key in embedding.vertices()},
-                              facecolor={key: '#ff0000' for key in fix})
+    # embedding = network.copy()
 
-        plotter.draw_edges()
+    # fix = (1, 12)
 
-        plotter.show()
+    # if network_embed_in_plane(embedding, fix=fix):
+
+    #     plotter = NetworkPlotter(embedding, figsize=(10, 7))
+
+    #     plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
+    #                           'end': network.vertex_coordinates(v, 'xy'),
+    #                           'color': '#cccccc'} for u, v in network.edges()])
+
+    #     plotter.draw_vertices(radius=0.3,
+    #                           text={key: key for key in embedding.vertices()},
+    #                           facecolor={key: '#ff0000' for key in fix})
+
+    #     plotter.draw_edges()
+
+    #     plotter.show()
