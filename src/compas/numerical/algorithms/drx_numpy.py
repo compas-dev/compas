@@ -438,7 +438,7 @@ if __name__ == "__main__":
 
     from numpy import linspace
 
-    def plot_iterations(k, X, radius=0.005):
+    def plot_iterations(X, radius=0.005):
 
         for i in network.vertices():
             x, y, z = X[i, :]
