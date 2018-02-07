@@ -39,8 +39,6 @@ try:
     from numpy import where
     from numpy.linalg import norm
 
-    from numpy import diag
-
     from scipy.sparse import csc_matrix
     from scipy.sparse.linalg import spsolve
 
