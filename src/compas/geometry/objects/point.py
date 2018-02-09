@@ -151,6 +151,8 @@ class Point(object):
     # ==========================================================================
 
     def __getitem__(self, key):
+        if isinstance(key, slice):
+            return [self[i] for i in range(*key.indices(len(self)))]
         i = key % 3
         if i == 0:
             return self.x
