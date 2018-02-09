@@ -229,14 +229,25 @@ class Polygon(object):
 
 if __name__ == '__main__':
 
+    from compas.plotters import Plotter
+
     polygon = Polygon([[1, 1, 0], [0, 1, 0], [0, 0, 0], [1, 0, 0]])
 
-    print(polygon.centroid)
-    print(polygon.center)
-    print(polygon.area)
-    print(polygon.length)
-    print(polygon.normal)
-    print(polygon.frame)
+    for point in polygon.points:
+        print(point[0:2])
 
-    print(polygon.is_convex)
-    print(polygon.is_coplanar)
+    plotter = Plotter(figsize=(10, 7))
+    plotter.draw_polygons([{'points': polygon.points}])
+    plotter.show()
+
+    # print(polygon.points)
+
+    # print(polygon.centroid)
+    # print(polygon.center)
+    # print(polygon.area)
+    # print(polygon.length)
+    # print(polygon.normal)
+    # print(polygon.frame)
+
+    # print(polygon.is_convex)
+    # print(polygon.is_coplanar)
