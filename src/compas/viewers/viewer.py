@@ -129,7 +129,7 @@ class Viewer(object):
         glutInitWindowSize(self.width, self.height)
         glutInitWindowPosition(int((glutGet(GLUT_SCREEN_WIDTH) - self.width) * 0.5),
                                int((glutGet(GLUT_SCREEN_HEIGHT) - self.height) * 0.5))
-        glutCreateWindow(self.title)
+        glutCreateWindow(str.encode(self.title))
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glClearColor(*self.clear_color)
         # callback registration
