@@ -46,7 +46,7 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
 
     Parameters
     ----------
-    network : Network
+    network : obj
         Network to analyse.
     factor : float
         Convergence factor.
