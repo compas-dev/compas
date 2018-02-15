@@ -59,7 +59,8 @@ def ga(fit_function,
        fargs=None,
        fkwargs=None,
        output_path=None,
-       input_path=None):
+       input_path=None,
+       print_refresh=1):
 
     """Genetic Algorithm optimisation.
 
@@ -111,6 +112,8 @@ def ga(fit_function,
         Path for the optimization result files.
     input_path : str, optional [None]
         Path to the fitness function file.
+    print_refresh : int
+        Print current generation summary every ``print_refresh`` generations.
 
     Returns
     -------
@@ -204,6 +207,7 @@ def ga(fit_function,
     ga_.fit_function         = fit_function
     ga_.output_path          = output_path or ''
     ga_.input_path           = input_path or ''
+    ga_.print_refresh        = print_refresh
     ga_.ga_optimise()
     return ga_
 
@@ -317,6 +321,7 @@ class GA(object):
         self.total_bin_dig = 0
         self.check_diversity = False
         self.ind_fit_dict = {}
+        self.print_refresh = 1
 
     def __str__(self):
         """Compile a summary of the GA."""
@@ -376,7 +381,8 @@ class GA(object):
                 self.update_min_fit_flag()
             else:
                 self.get_best_fit()
-            print('generation ', generation, ' best fit ', self.best_fit, 'min fit', self.min_fit)
+            if generation % self.print_refresh == 0:
+                print('generation ', generation, ' best fit ', self.best_fit, 'min fit', self.min_fit)
 
             #####################################################################
             # print ('before')
@@ -564,9 +570,9 @@ class GA(object):
         """
         l_ = []
         if reverse:
-            x = str('-inf')
+            x = float('-inf')
         else:
-            x = str('inf')
+            x = float('inf')
         for i in l:
             if i in l_:
                 l_.append(x)
@@ -720,7 +726,7 @@ class GA(object):
             The generation number.
         """
         filename  = 'generation_' + "%05d" % generation + '_population' + ".txt"
-        pf_file  = open(self.output_path + (str(filename)), "wb")
+        pf_file  = open(self.output_path + (str(filename)), "w")
         pf_file.write('Generation \n')
         pf_file.write(str(generation) + '\n')
         pf_file.write('\n')
@@ -796,7 +802,7 @@ class GA(object):
         """
         data = self.make_ga_input_data()
         filename = self.fit_name + '.json'
-        with open(self.output_path + filename, 'wb+') as fh:
+        with open(self.output_path + filename, 'w') as fh:
             json.dump(data, fh)
 
     def update_min_fit_flag(self):

@@ -24,6 +24,8 @@ except ImportError:
     if 'ironpython' not in sys.version.lower():
         raise
 
+from compas.plotters.evoplotter import EvoPlotter
+
 from time import time
 
 import json
@@ -40,8 +42,13 @@ __all__ = [
 ]
 
 
+def callback(ts, f, evoplotter):
+    evoplotter.update_points(generation=ts, values=f)
+    evoplotter.update_lines(generation=ts, values=f)
+
+
 def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vectored=False, F=0.8, CR=0.9, polish=False,
-               args=(), callback=None, **kwargs):
+               args=(), plot=False, fmax=0, **kwargs):
     """Call the Differential Evolution solver.
 
     Parameters
@@ -68,8 +75,10 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
         Polish the final result with L-BFGS-B.
     args : seq
         Sequence of optional arguments to pass to fn.
-    callback : obj
-        Callback function for each generation.
+    plot : bool
+        Plot with EvoPlotter or not.
+    fmax : float
+        Maximum f for y-axis plot.
 
     Returns
     -------
@@ -123,12 +132,17 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
     ts = 0
     print('\nGeneration: {0}  fopt: {1:.5g}'.format(ts, fopt))
 
+    if plot:
+        if not fmax:
+            fmax = fopt
+        evoplotter = EvoPlotter(generations=generations, fmax=fmax, xaxis_div=25, yaxis_div=10, pointsize=0.1)
+
     # Start evolution
 
     while ts < generations + 1:
 
-        if callback:
-            callback(ts, f, **kwargs)
+        if plot:
+            callback(ts, f, evoplotter)
 
         for i in range(population):
             inds = candidates[i, choice(population - 1, 3, replace=False)]
@@ -195,7 +209,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
 
     if polish:
         opt = fmin_l_bfgs_b(fn, xopt, args=args, approx_grad=1, bounds=bounds, iprint=1, pgtol=10**(-6), factr=10000,
-                            maxfun=10**5, maxiter=10**5, maxls=100)
+                            maxfun=10**5, maxiter=10**5, maxls=200)
         xopt = opt[0]
         fopt = opt[1]
 
@@ -230,8 +244,6 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
 
 if __name__ == "__main__":
 
-    from compas.plotters.evoplotter import EvoPlotter
-
     def fn(u, *args):
         # Booth's function, fopt=0, uopt=(1, 3)
         x = u[0]
@@ -239,11 +251,5 @@ if __name__ == "__main__":
         z = (x + 2 * y - 7)**2 + (2 * x + y - 5)**2
         return z
 
-    def callback(ts, f, evoplotter):
-        evoplotter.update_points(generation=ts, values=f)
-        evoplotter.update_lines(generation=ts, values=f)
-
-    evoplotter = EvoPlotter(generations=50, fmax=30, xaxis_div=25, yaxis_div=10, pointsize=0.1)
-
     bounds = [(-10, 10), (-15, 15)]
-    devo_numpy(fn, bounds, population=20, generations=50, polish=False, callback=callback, evoplotter=evoplotter)
+    devo_numpy(fn, bounds, population=20, generations=50, polish=False, plot=True)

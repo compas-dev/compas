@@ -119,7 +119,7 @@ class EvoPlotter(Plotter):
         for i in range(self.yaxis_div + 1):
             y = i * ystep
             ticks.append({'start': [0, y], 'end': [-ticksize, y], 'width': 0.5 * linewidth})
-            labels.append({'pos': [-2 * ticksize, y], 'text': str(y), 'fontsize': fontsize})
+            labels.append({'pos': [-2 * ticksize, y], 'text': '{0:.2f}'.format(y), 'fontsize': fontsize})
         labels.append({'pos': [-5 * ticksize, (ymax - ymin) * 0.5], 'text': 'f', 'fontsize': 1.5 * fontsize})
 
         draw_xlines_xy(lines=ticks, axes=self.axes)
