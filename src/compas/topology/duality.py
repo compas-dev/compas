@@ -455,20 +455,45 @@ def network_find_faces(network, breakpoints=None):
     return network.face
 
 
+# def _find_first_neighbour(key, network):
+#     angles = []
+#     nbrs = list(network.halfedge[key].keys())
+#     if len(nbrs) == 1:
+#         return nbrs[0]
+#     # this is a bit fragile
+#     # it assumes quite a few things
+#     vu = [-1, -0.5, 0]
+#     for nbr in nbrs:
+#         w = [network.vertex[nbr][_] for _ in 'xyz']
+#         v = [network.vertex[key][_] for _ in 'xyz']
+#         vw = [w[0] - v[0], w[1] - v[1], 0]
+#         angles.append(angle_vectors(vu, vw))
+#     return nbrs[angles.index(min(angles))]
+
+
 def _find_first_neighbour(key, network):
-    angles = []
     nbrs = list(network.halfedge[key].keys())
     if len(nbrs) == 1:
         return nbrs[0]
-    # this is a bit fragile
-    # it assumes quite a few things
-    vu = [-1, -0.5, 0]
+    vu = [-1.0, -1.0, 0.0]
+    a = network.vertex_coordinates(key, 'xyz')
+    b = [a[0] + vu[0], a[1] + vu[1], 0]
+    cw = []
+    for nbr in nbrs:
+        c = network.vertex_coordinates(nbr, 'xyz')
+        if not is_ccw_xy(a, b, c, True):
+            cw.append(nbr)
+    if cw:
+        nbrs = cw
+    angles = []
+    v = [network.vertex[key][_] for _ in 'xyz']
     for nbr in nbrs:
         w = [network.vertex[nbr][_] for _ in 'xyz']
-        v = [network.vertex[key][_] for _ in 'xyz']
         vw = [w[0] - v[0], w[1] - v[1], 0]
         angles.append(angle_vectors(vu, vw))
-    return nbrs[angles.index(min(angles))]
+    if cw:
+        return nbrs[angles.index(min(angles))]
+    return nbrs[angles.index(max(angles))]
 
 
 def _sort_neighbours(network, ccw=True):
