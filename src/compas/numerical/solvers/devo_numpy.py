@@ -48,7 +48,7 @@ def callback(ts, f, evoplotter):
 
 
 def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vectored=False, F=0.8, CR=0.9, polish=False,
-               args=(), plot=False, fmax=0, **kwargs):
+               args=(), plot=False, fmax=0, printout=True, **kwargs):
     """Call the Differential Evolution solver.
 
     Parameters
@@ -79,6 +79,8 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
         Plot with EvoPlotter or not.
     fmax : float
         Maximum f for y-axis plot.
+    printout : bool
+        Print out to screen.
 
     Returns
     -------
@@ -96,9 +98,10 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
 
     # Heading
 
-    print('\n' + '-' * 50)
-    print('Differential Evolution started')
-    print('-' * 50)
+    if printout:
+        print('\n' + '-' * 50)
+        print('Differential Evolution started')
+        print('-' * 50)
 
     # Setup bounds
 
@@ -130,7 +133,8 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
     cc = zeros((k, population))
 
     ts = 0
-    print('\nGeneration: {0}  fopt: {1:.5g}'.format(ts, fopt))
+    if printout:
+        print('\nGeneration: {0}  fopt: {1:.5g}'.format(ts, fopt))
 
     if plot:
         if not fmax:
@@ -178,8 +182,9 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
         if fopt < limit:
             break
 
-        if ts % 10 == 0:
-            print('Generation: {0}  fopt: {1:.5g}'.format(ts, fopt))
+        if printout:
+            if ts % 10 == 0:
+            	print('Generation: {0}  fopt: {1:.5g}'.format(ts, fopt))
 
         # Save generation
 
@@ -230,10 +235,11 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
 
     # Summary
 
-    print('\n' + '-' * 50)
-    print('Differential Evolution finished : {0:.4g} s'.format(time() - tic))
-    print('fopt: {0:.3g}'.format(fopt))
-    print('-' * 50 + '\n')
+    if printout:
+        print('\n' + '-' * 50)
+        print('Differential Evolution finished : {0:.4g} s'.format(time() - tic))
+        print('fopt: {0:.3g}'.format(fopt))
+        print('-' * 50)
 
     return fopt, list(xopt)
 
