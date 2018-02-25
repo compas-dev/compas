@@ -549,7 +549,7 @@ class Mesh(FromToJson,
 
         """
         vertices = [self.vertex_coordinates(key) for key in self.vertices()]
-        faces = [self.face_vertices(fkey, ordered=True) for fkey in self.faces()]
+        faces = [self.face_vertices(fkey) for fkey in self.faces()]
         return vertices, faces
 
     # --------------------------------------------------------------------------
@@ -2547,6 +2547,7 @@ if __name__ == '__main__':
     # mesh = Mesh.from_points(obj.parser.vertices)
 
     print(mesh.face_vertices(0))
+    print(mesh.to_vertices_and_faces())
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
     plotter.draw_vertices(text={key: str(key) for key in mesh.vertices()})
