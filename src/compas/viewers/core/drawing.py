@@ -33,6 +33,7 @@ __all__ = [
     'xdraw_polygons',
     'xdraw_cylinders',
     'xdraw_spheres',
+    'xdraw_texts',
 ]
 
 
