@@ -2,262 +2,109 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import os
-import compas
+from PySide.QtGui import QMainWindow
+from PySide.QtCore import Qt
 
-from compas.geometry import centroid_points
+from OpenGL.GL import *
+from OpenGL.GLU import *
+from OpenGL.GLUT import *
 
-from compas.viewers.viewer import Viewer
+from compas.viewers.core import Camera
+from compas.viewers.core import Mouse
+from compas.viewers.core import Grid
+from compas.viewers.core import Axes
+from compas.viewers.core import GLView
 
-from compas.viewers.core.drawing import xdraw_polygons
-from compas.viewers.core.drawing import xdraw_lines
-from compas.viewers.core.drawing import xdraw_points
+from compas.viewers.core.app import App
+from compas.viewers.core.controller import Controller
 
 
-__author__     = 'Tom Van Mele'
+__author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT'
+__license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = [
-    'MeshViewer',
-    'SubdMeshViewer',
-    'MultiMeshViewer'
-]
+__all__ = ['MeshViewer', ]
 
 
-class MeshViewer(Viewer):
+class Front(Controller):
     """"""
 
-    def __init__(self, mesh, width=1440, height=900):
-        super(MeshViewer, self).__init__(width=width, height=height)
-        self.mesh = mesh
-        self.center()
+    def __init__(self):
+        pass
 
-    # --------------------------------------------------------------------------
-    # helpers (temp)
-    # --------------------------------------------------------------------------
+    def from_obj(self):
+        print('from obj')
 
-    def center(self):
-        xyz = [self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()]
-        cx, cy, cz = centroid_points(xyz)
-        for key, attr in self.mesh.vertices(True):
-            attr['x'] -= cx
-            attr['y'] -= cy
+    def zoom_extents(self):
+        print('zoom extents')
 
-    # change this to a more flexible system
-    # that provides similar possibilities as the network plotter
-    def display(self):
-        polygons = []
-        for fkey in self.mesh.faces():
-            points = self.mesh.face_coordinates(fkey)
-            color_front = self.mesh.get_face_attribute(fkey, 'color', (0.8, 0.8, 0.8, 1.0))
-            color_back  = (0.2, 0.2, 0.2, 1.0)
-            polygons.append({'points': points,
-                             'color.front': color_front,
-                             'color.back' : color_back})
+    def zoom_in(self):
+        print('zoom in')
 
-        lines = []
-        for u, v in self.mesh.edges():
-            lines.append({'start': self.mesh.vertex_coordinates(u),
-                          'end'  : self.mesh.vertex_coordinates(v),
-                          'color': (0.1, 0.1, 0.1),
-                          'width': 1.})
+    def zoom_out(self):
+        print('zoom out')
 
-        points = []
-        for key in self.mesh.vertices():
-            points.append({'pos'   : self.mesh.vertex_coordinates(key),
-                           'color' : (0.4, 0.4, 0.4),
-                           'size'  : 5.0})
 
-        # normals = []
-        # for fkey in self.mesh.faces():
-        #     n  = self.mesh.face_normal(fkey, unitized=True)
-        #     sp = self.mesh.face_centroid(fkey)
-        #     ep = [sp[axis] + n[axis] for axis in (0, 1, 2)]
-        #     normals.append({
-        #         'start' : sp,
-        #         'end'   : ep,
-        #         'color' : (0.0, 1.0, 0.0),
-        #         'width' : 2.0
-        #     })
+class View(GLView):
+    """"""
 
-        xdraw_polygons(polygons)
-        xdraw_lines(lines)
-        xdraw_points(points)
-        # xdraw_lines(normals)
+    def __init__(self):
+        super(View, self).__init__()
 
-    def keypress(self, key, x, y):
-        """
-        Assign mesh functionality to keys.
-
-        The following keys have a mesh function assigned to them:
-            * u: unify cycle directions
-            * f: flip cycle directions
-            * s: subdivide using quad subdivision
-        """
-        if key == 'u':
-            self.mesh.unify_cycles()
-            return
-        if key == 'f':
-            self.mesh.flip_cycles()
-            return
-        if key == 's':
-            self.mesh.subdivide('quad')
-            return
-        if key == 'c':
-            self.screenshot(os.path.join(compas.TEMP, 'screenshot.jpg'))
-            return
-
-    def special(self, key, x, y):
-        """
-        Assign mesh functionality to function keys.
-        """
+    def paint(self):
         pass
 
 
-class SubdMeshViewer(Viewer):
-    """Viewer for subdivision meshes.
-
-    Parameters
-    ----------
-    mesh : Mesh
-        The *control* mesh object.
-    subdfunc :callable
-        The subdivision algorithm/scheme.
-    width : int
-        Optional. Width of the viewport. Default is ``1440``.
-    height : int
-        Optional. Height of the viewport. Default is ``900``.
-
-    Warning
-    -------
-    Not properly tested on meshes with a boundary.
-
-    Example
-    -------
-    .. code-block:: python
-
-        from functools import partial
-
-        from compas.datastructures import Mesh
-        from compas.topology import mesh_subdivide
-        from compas.viewers import SubdMeshViewer
-
-        subdivide = partial(mesh_subdivide, scheme='doosabin')
-
-        mesh = Mesh.from_polyhedron(6)
-
-        viewer = SubdMeshViewer(mesh, subdfunc=subdivide, width=600, height=600)
-
-        viewer.axes_on = False
-        viewer.grid_on = False
-
-        for i in range(10):
-            viewer.camera.zoom_in()
-
-        viewer.setup()
-        viewer.show()
-
-    """
-
-    def __init__(self, mesh, subdfunc, width=1440, height=900):
-        super(SubdMeshViewer, self).__init__(width=width, height=height)
-        self.mesh = mesh
-        self.subdfunc = subdfunc
-        self.subd = None
-
-    def display(self):
-        xyz = {key: self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()}
-
-        lines = []
-        for u, v in self.mesh.wireframe():
-            lines.append({'start' : xyz[u],
-                          'end'   : xyz[v],
-                          'color' : (0.1, 0.1, 0.1),
-                          'width' : 1.})
-
-        points = []
-        for key in self.mesh.vertices():
-            points.append({'pos'   : xyz[key],
-                           'color' : (0.0, 1.0, 0.0),
-                           'size'  : 10.0})
-
-        xdraw_lines(lines)
-        xdraw_points(points)
-
-        if self.subd:
-            xyz   = {key: self.subd.vertex_coordinates(key) for key in self.subd.vertices()}
-            front = (0.7, 0.7, 0.7, 1.0)
-            back  = (0.2, 0.2, 0.2, 1.0)
-
-            poly  = []
-            for fkey in self.subd.faces():
-                poly.append({'points': self.subd.face_coordinates(fkey),
-                             'color.front': front,
-                             'color.back' : back})
-
-            lines = []
-            for u, v in self.subd.wireframe():
-                lines.append({'start': xyz[u],
-                              'end'  : xyz[v],
-                              'color': (0.1, 0.1, 0.1),
-                              'width': 1.})
-
-            xdraw_polygons(poly)
-            xdraw_lines(lines)
-
-    def keypress(self, key, x, y):
-        key = key.decode("utf-8")
-        if key == '1':
-            self.subd = self.subdfunc(self.mesh, k=1)
-        if key == '2':
-            self.subd = self.subdfunc(self.mesh, k=2)
-        if key == '3':
-            self.subd = self.subdfunc(self.mesh, k=3)
-        if key == '4':
-            self.subd = self.subdfunc(self.mesh, k=4)
-        if key == '5':
-            self.subd = self.subdfunc(self.mesh, k=5)
-        if key == 'c':
-            self.screenshot(os.path.join(compas.TEMP, 'screenshot.jpg'))
-
-    def subdivide(self, k=1):
-        self.subd = self.subdfunc(self.mesh, k=k)
-
-
-class MultiMeshViewer(Viewer):
+class MeshViewer(App):
     """"""
 
-    def __init__(self, meshes, colors, width=1440, height=900):
-        super(MultiMeshViewer, self).__init__(width=width, height=height)
-        self.meshes = meshes
-        self.colors = colors
+    def __init__(self, width=1440, height=900):
+        super(MeshViewer, self).__init__()
+        self.controller = Front()
+        self.setup(width, height)
+        self.init()
+        self.show()
 
-    def display(self):
-        for i in range(len(self.meshes)):
-            mesh = self.meshes[i]
+    def show(self):
+        self.statusbar.showMessage('Ready')
+        self.main.show()
+        self.main.raise_()
+        self.start()
 
-            polygons = []
-            for fkey in mesh.faces():
-                color_front = self.colors[i]
-                color_back  = (0.2, 0.2, 0.2, 1.0)
-                polygons.append({'points': mesh.face_coordinates(fkey),
-                                 'color.front': color_front,
-                                 'color.back': color_back})
+    def setup(self, w, h):
+        self.main = QMainWindow()
+        self.main.setFixedSize(w, h)
+        self.main.setGeometry(0, 0, w, h)
+        self.view = View()
+        self.main.setCentralWidget(self.view)
+        self.menubar = self.main.menuBar()
+        self.statusbar = self.main.statusBar()
+        self.toolbar = self.main.addToolBar('Tools')
+        self.toolbar.setMovable(False)
 
-            lines = []
-            for u, v in mesh.wireframe():
-                lines.append({'start': mesh.vertex_coordinates(u),
-                              'end': mesh.vertex_coordinates(v),
-                              'color': (0.1, 0.1, 0.1),
-                              'width': 1.})
+    def init(self):
+        self.init_menubar()
+        self.init_toolbar()
+        self.init_sidepanel_left()
+        self.init_sidepanel_right()
 
-            xdraw_polygons(polygons)
-            xdraw_lines(lines)
+    def init_menubar(self):
+        model_menu = self.menubar.addMenu('&Model')
+        view_menu = self.menubar.addMenu('&View')
+        help_menu = self.menubar.addMenu('&Help')
+        model_menu.addAction('&From OBJ', self.controller.from_obj)
 
-    def keypress(self, key, x, y):
+    def init_toolbar(self):
+        self.toolbar.addAction('zoom extents', self.controller.zoom_extents)
+        self.toolbar.addAction('zoom in', self.controller.zoom_in)
+        self.toolbar.addAction('zoom out', self.controller.zoom_out)
+
+    def init_sidepanel_left(self):
+        pass
+
+    def init_sidepanel_right(self):
         pass
 
 
@@ -267,22 +114,4 @@ class MultiMeshViewer(Viewer):
 
 if __name__ == '__main__':
 
-    from functools import partial
-
-    from compas.datastructures import Mesh
-    from compas.topology import mesh_subdivide
-
-    subdivide = partial(mesh_subdivide, scheme='doosabin')
-
-    mesh = Mesh.from_polyhedron(6)
-
-    viewer = SubdMeshViewer(mesh, subdfunc=subdivide, width=600, height=600)
-
-    viewer.axes_on = False
-    viewer.grid_on = False
-
-    for i in range(10):
-        viewer.camera.zoom_in()
-
-    viewer.setup()
-    viewer.show()
+    viewer = MeshViewer()

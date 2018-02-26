@@ -18,6 +18,7 @@ __all__ = ['Camera', ]
 
 class Camera(object):
     """"""
+
     def __init__(self, view):
         self.view = view
         self.fov = 60.0

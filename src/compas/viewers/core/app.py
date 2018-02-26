@@ -2,7 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from PySide.QtCore import QPoint
+import sys
+
+from PySide.QtGui import QApplication
 
 
 __author__    = ['Tom Van Mele', ]
@@ -11,22 +13,18 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = ['Mouse', ]
+__all__ = ['App', ]
 
 
-class Mouse(object):
+class App(QApplication):
     """"""
 
-    def __init__(self, view):
-        self.view  = view
-        self.pos = QPoint()
-        self.last_pos = QPoint()
+    def __init__(self):
+        QApplication.__init__(self, sys.argv)
+        self.setApplicationName("Viewer app")
 
-    def dx(self):
-        return self.pos.x() - self.last_pos.x()
-
-    def dy(self):
-        return self.pos.y() - self.last_pos.y()
+    def start(self):
+        sys.exit(self.exec_())
 
 
 # ==============================================================================
