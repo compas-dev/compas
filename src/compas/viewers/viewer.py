@@ -2,8 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from PySide.QtGui import QMainWindow
-from PySide.QtCore import Qt
+try:
+    import PySide2
+except ImportError:
+    from PySide import QtCore
+    from PySide import QtGui
+    import PySide.QtGui as QtWidgets
+else:
+    from PySide2 import QtCore
+    from PySide2 import QtGui
+    from PySide2 import QtWidgets
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -14,9 +22,8 @@ from compas.viewers.core import Mouse
 from compas.viewers.core import Grid
 from compas.viewers.core import Axes
 from compas.viewers.core import GLView
-
-from compas.viewers.core.app import App
-from compas.viewers.core.controller import Controller
+from compas.viewers.core import Controller
+from compas.viewers.core import App
 
 
 __author__     = ['Tom Van Mele', ]
@@ -65,7 +72,7 @@ class Viewer(App):
         self.start()
 
     def setup(self, w, h):
-        self.main = QMainWindow()
+        self.main = QtWidgets.QMainWindow()
         self.main.setFixedSize(w, h)
         self.main.setGeometry(0, 0, w, h)
         self.view = View()

@@ -2,11 +2,21 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from PySide.QtCore import Qt
-
-from PySide.QtGui import QColor
-
-from PySide.QtOpenGL import QGLWidget
+try:
+    import PySide2
+except ImportError:
+    from PySide import QtCore
+    from PySide import QtGui
+    from PySide import QtOpenGL
+    import PySide.QtGui as QtWidgets
+    from PySide.QtOpenGL import QGLWidget as QOpenGLWidget
+else:
+    from PySide2 import QtCore
+    from PySide2 import QtGui
+    from PySide2 import QtOpenGL
+    from PySide2 import QtWidgets
+    # from PySide2.QtWidgets import QOpenGLWidget
+    from PySide2.QtOpenGL import QGLWidget as QOpenGLWidget
 
 from OpenGL.GL import *
 from OpenGL.GLUT import *
@@ -25,14 +35,14 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['GLView', ]
 
 
-class GLView(QGLWidget):
+class GLView(QOpenGLWidget):
     """"""
 
     def __init__(self, parent=None):
-        QGLWidget.__init__(self, parent=parent)
+        QOpenGLWidget.__init__(self, parent=parent)
         self.camera = Camera(self)
         self.mouse = Mouse(self)
-        self.clear_color = QColor.fromRgb(255, 255, 255)
+        self.clear_color = QtGui.QColor.fromRgb(255, 255, 255)
 
     # ==========================================================================
     # inititlisation
@@ -98,11 +108,11 @@ class GLView(QGLWidget):
     def mouseMoveEvent(self, event):
         if self.underMouse():
             self.mouse.pos = event.pos()
-            if event.buttons() & Qt.LeftButton:
+            if event.buttons() & QtCore.Qt.LeftButton:
                 self.camera.rotate()
                 self.mouse.last_pos = event.pos()
                 self.update()
-            elif event.buttons() & Qt.RightButton:
+            elif event.buttons() & QtCore.Qt.RightButton:
                 self.camera.translate()
                 self.mouse.last_pos = event.pos()
                 self.update()

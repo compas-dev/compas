@@ -4,7 +4,16 @@ from __future__ import division
 
 import sys
 
-from PySide.QtGui import QApplication
+try:
+    import PySide2
+except ImportError:
+    from PySide import QtCore
+    from PySide import QtGui
+    import PySide.QtGui as QtWidgets
+else:
+    from PySide2 import QtCore
+    from PySide2 import QtGui
+    from PySide2 import QtWidgets
 
 
 __author__    = ['Tom Van Mele', ]
@@ -16,11 +25,11 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['App', ]
 
 
-class App(QApplication):
+class App(QtWidgets.QApplication):
     """"""
 
     def __init__(self):
-        QApplication.__init__(self, sys.argv)
+        QtWidgets.QApplication.__init__(self, sys.argv)
         self.setApplicationName("Viewer app")
 
     def start(self):

@@ -2,8 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from PySide.QtGui import QMainWindow
-from PySide.QtCore import Qt
+try:
+    import PySide2
+except ImportError:
+    from PySide import QtCore
+    from PySide import QtGui
+else:
+    from PySide2 import QtCore
+    from PySide2 import QtGui
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -74,7 +80,7 @@ class MeshViewer(App):
         self.start()
 
     def setup(self, w, h):
-        self.main = QMainWindow()
+        self.main = QtGui.QMainWindow()
         self.main.setFixedSize(w, h)
         self.main.setGeometry(0, 0, w, h)
         self.view = View()

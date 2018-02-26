@@ -2,13 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from PySide.QtGui import QPushButton
-from PySide.QtGui import QColorDialog
-from PySide.QtGui import QColor
-
-from PySide.QtCore import Qt
-from PySide.QtCore import Signal
-from PySide.QtCore import QRect
+try:
+    import PySide2
+except ImportError:
+    from PySide import QtCore
+    from PySide import QtGui
+    import PySide.QtGui as QtWidgets
+else:
+    from PySide2 import QtCore
+    from PySide2 import QtGui
+    from PySide2 import QtWidgets
 
 
 __author__    = ['Tom Van Mele', ]
@@ -20,11 +23,11 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['QColorButton', ]
 
 
-class QColorButton(QPushButton):
+class QColorButton(QtWidgets.QPushButton):
     """Custom Qt Widget to show a chosen color.
     """
 
-    colorChanged = Signal(str)
+    colorChanged = QtCore.Signal(str)
 
     def __init__(self, color=None, size=None, **kwargs):
         super(QColorButton, self).__init__(**kwargs)
@@ -48,15 +51,12 @@ class QColorButton(QPushButton):
     def onColorPicker(self):
         """Show color-picker dialog to select color.
         """
-        color = QColorDialog.getColor(initial=QColor(self._color))
-        # print(color.value())
-        # print(color.name())
-        # print(color.isValid())
+        color = QtWidgets.QColorDialog.getColor(initial=QtGui.QColor(self._color))
         if color.isValid():
             self.setColor(color.name())
 
     # def mousePressEvent(self, e):
-    #     # if e.button() == Qt.RightButton:
+    #     # if e.button() == QtCore.Qt.RightButton:
     #     #     self.setColor(None)
     #     return super(QColorButton, self).mousePressEvent(e)
 
