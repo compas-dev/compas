@@ -29,6 +29,9 @@ __all__ = [
 
 class SubdMesh(Mesh):
 
+    def vertex_coordinates(self, key):
+        return self.vertex[key]
+
     def add_vertex(self, x, y, z):
         key = self._max_int_key = self._max_int_key + 1
 
@@ -37,7 +40,7 @@ class SubdMesh(Mesh):
             self.halfedge[key] = {}
             self.edge[key] = {}
 
-        self.vertex[key] = {'x': x, 'y': y, 'z': z}
+        self.vertex[key] = x, y, z
 
         return key
 
@@ -441,7 +444,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
     fixed = set(fixed)
 
-    cls = type(mesh)
+    # cls = type(mesh)
 
     for _ in range(k):
         old_xyz      = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
@@ -453,6 +456,8 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
         for fkey in mesh.faces():
             vertices = mesh.face_vertices(fkey)
             n = len(vertices)
+
+            face = []
 
             for i in range(n):
                 old = vertices[i]
@@ -472,10 +477,15 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
                     cz += alpha * z
 
                 # fkey_old_new[fkey][old] = subd.add_vertex(x=cx, y=cy, z=cz)
-                fkey_old_new[fkey][old] = subd.add_vertex(cx, cy, cz)
+                new = subd.add_vertex(cx, cy, cz)
+                fkey_old_new[fkey][old] = new
 
-        for fkey in mesh.faces():
-            subd.add_face([fkey_old_new[fkey][key] for key in mesh.face_vertices(fkey)])
+                face.append(new)
+
+            subd.add_face(face)
+
+        # for fkey in mesh.faces():
+        #     subd.add_face([fkey_old_new[fkey][key] for key in mesh.face_vertices(fkey)])
 
         boundary = set(mesh.vertices_on_boundary())
 
@@ -621,6 +631,8 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
 if __name__ == "__main__":
 
+    import compas
+
     from compas.datastructures import Mesh
     from compas.utilities import print_profile
 
@@ -630,6 +642,8 @@ if __name__ == "__main__":
     subd = subdivide(mesh, k=6)
 
     print(subd)
+
+    subd.to_json(compas.DATA + '/' + 'doosabin.json')
 
     # viewer = SubdMeshViewer(mesh, subdfunc=mesh_subdivide_catmullclark, width=1440, height=900)
 
