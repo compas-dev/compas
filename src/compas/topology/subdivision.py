@@ -29,8 +29,8 @@ __all__ = [
 
 class SubdMesh(Mesh):
 
-    def vertex_coordinates(self, key):
-        return self.vertex[key]
+    # def vertex_coordinates(self, key):
+    #     return self.vertex[key]
 
     def add_vertex(self, x, y, z):
         key = self._max_int_key = self._max_int_key + 1
@@ -40,7 +40,7 @@ class SubdMesh(Mesh):
             self.halfedge[key] = {}
             self.edge[key] = {}
 
-        self.vertex[key] = x, y, z
+        self.vertex[key] = dict(x=x, y=y, z=z)
 
         return key
 
@@ -643,7 +643,7 @@ if __name__ == "__main__":
 
     print(subd)
 
-    subd.to_json(compas.DATA + '/' + 'doosabin.json')
+    subd.to_json(compas.TEMP + '/' + 'doosabin.json')
 
     # viewer = SubdMeshViewer(mesh, subdfunc=mesh_subdivide_catmullclark, width=1440, height=900)
 
