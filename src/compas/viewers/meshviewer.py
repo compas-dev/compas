@@ -141,6 +141,8 @@ class View(GLView):
     def settings(self):
         return self.controller.settings
 
+    # don't compute any of this here
+    # precompute whenever there are changes
     def paint(self):
         mesh = self.mesh
         if not mesh:
@@ -160,26 +162,26 @@ class View(GLView):
                               'color.front' : front,
                               'color.back'  : back})
             xdraw_polygons(faces)
-        if settings['edges.on']:
-            lines = []
-            color = hex_to_rgb(settings['edges.color'], normalize=True)
-            width = settings['edges.width']
-            for u, v in mesh.edges():
-                lines.append({'start' : key_xyz[u],
-                              'end'   : key_xyz[v],
-                              'color' : color,
-                              'width' : width})
-            xdraw_cylinders(lines)
-        if settings['vertices.on']:
-            points = []
-            color = hex_to_rgb(settings['vertices.color'], normalize=True)
-            size = settings['vertices.size']
-            for key in mesh.vertices():
-                pos = key_xyz[key]
-                points.append({'pos'   : pos,
-                               'color' : color,
-                               'size'  : size})
-            xdraw_spheres(points)
+        # if settings['edges.on']:
+        #     lines = []
+        #     color = hex_to_rgb(settings['edges.color'], normalize=True)
+        #     width = settings['edges.width']
+        #     for u, v in mesh.edges():
+        #         lines.append({'start' : key_xyz[u],
+        #                       'end'   : key_xyz[v],
+        #                       'color' : color,
+        #                       'width' : width})
+        #     xdraw_cylinders(lines)
+        # if settings['vertices.on']:
+        #     points = []
+        #     color = hex_to_rgb(settings['vertices.color'], normalize=True)
+        #     size = settings['vertices.size']
+        #     for key in mesh.vertices():
+        #         pos = key_xyz[key]
+        #         points.append({'pos'   : pos,
+        #                        'color' : color,
+        #                        'size'  : size})
+        #     xdraw_spheres(points)
 
 
 class MeshViewer(App):
