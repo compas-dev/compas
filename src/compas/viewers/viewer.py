@@ -7,11 +7,16 @@ try:
 except ImportError:
     from PySide import QtCore
     from PySide import QtGui
+    from PySide import QtOpenGL
     import PySide.QtGui as QtWidgets
+    from PySide.QtOpenGL import QGLWidget as QOpenGLWidget
 else:
     from PySide2 import QtCore
     from PySide2 import QtGui
+    from PySide2 import QtOpenGL
     from PySide2 import QtWidgets
+    # from PySide2.QtWidgets import QOpenGLWidget
+    from PySide2.QtOpenGL import QGLWidget as QOpenGLWidget
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -51,13 +56,17 @@ class Front(Controller):
         return self.app.view
 
     def test(self):
-        print('test')
+        self.opengl_info()
 
     def opengl_info(self):
         if self.view:
+            print(glGetString(GL_VENDOR))
+            print(glGetString(GL_RENDERER))
             print(glGetString(GL_VERSION))
             print(glGetString(GL_SHADING_LANGUAGE_VERSION))
-            extensions = glGetString(GL_EXTENSIONS).split(' ')
+            print(self.view.format().majorVersion())
+            print(self.view.context().format().majorVersion())
+            extensions = str(glGetString(GL_EXTENSIONS)).split(' ')
             for name in extensions:
                 print(name)
 
@@ -67,8 +76,8 @@ class View(GLView):
 
     # same as above
 
-    def __init__(self, controller):
-        super(View, self).__init__()
+    def __init__(self, controller, gl_format):
+        super(View, self).__init__(gl_format)
         self.controller = controller
 
     @property
@@ -99,7 +108,18 @@ class Viewer(App):
         self.main = QtWidgets.QMainWindow()
         self.main.setFixedSize(w, h)
         self.main.setGeometry(0, 0, w, h)
-        self.view = View(self.controller)
+
+        gl_format = QtOpenGL.QGLFormat()
+        gl_format.setVersion(2, 1)
+        gl_format.setProfile(QtOpenGL.QGLFormat.CoreProfile)
+        gl_format.setSampleBuffers(True)
+        gl_format.setDefaultFormat(gl_format)
+
+        self.view = View(self.controller, gl_format)
+
+        self.view.context().setFormat(gl_format)
+        self.view.context().create()
+
         self.main.setCentralWidget(self.view)
         self.menubar = self.main.menuBar()
         self.statusbar = self.main.statusBar()

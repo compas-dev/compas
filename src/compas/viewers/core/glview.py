@@ -38,16 +38,11 @@ __all__ = ['GLView', ]
 class GLView(QOpenGLWidget):
     """"""
 
-    def __init__(self, parent=None):
-        gl_format = QtOpenGL.QGLFormat()
-        gl_format.setVersion(3, 0)
-        gl_format.setProfile(QtOpenGL.QGLFormat.CoreProfile)
-        gl_format.setSampleBuffers(True)
-        gl_format.setDefaultFormat(gl_format)
-        super(GLView, self).__init__(gl_format, parent=parent)
-        self.context().setFormat(gl_format)
-        self.context().create()
-
+    def __init__(self, gl_format=None, parent=None):
+        if gl_format:
+            super(GLView, self).__init__(gl_format, parent=parent)
+        else:
+            super(GLView, self).__init__(parent=parent)
         self.camera = Camera(self)
         self.mouse = Mouse(self)
         self.clear_color = QtGui.QColor.fromRgb(255, 255, 255)

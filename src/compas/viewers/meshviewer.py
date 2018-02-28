@@ -104,8 +104,25 @@ class Front(Controller):
         if filename:
             self.mesh = Mesh.from_obj(filename)
             center_mesh(self.mesh)
-            # create triangle/quad strip
             # create display list
+            if self.view.faces:
+                glDeleteLists(self.view.faces, 1)
+            self.view.faces = glGenLists(1)
+            glNewList(self.view.faces, GL_COMPILE)
+            settings = self.settings
+            key_xyz = {key: self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()}
+            if settings['faces.on']:
+                faces = []
+                r, g, b = hex_to_rgb(settings['faces.color:front'], normalize=True)
+                front = r, g, b, 1.0
+                r, g, b = hex_to_rgb(settings['faces.color:back'], normalize=True)
+                back = r, g, b, 1.0
+                for fkey in self.mesh.faces():
+                    faces.append({'points'      : [key_xyz[key] for key in self.mesh.face_vertices(fkey)],
+                                  'color.front' : front,
+                                  'color.back'  : back})
+            xdraw_polygons(faces)
+            glEndList()
             self.view.update()
 
     def from_json(self):
@@ -113,6 +130,25 @@ class Front(Controller):
         if filename:
             self.mesh = Mesh.from_json(filename)
             center_mesh(self.mesh)
+            # create display list
+            if self.view.faces:
+                glDeleteLists(self.view.faces, 1)
+            self.view.faces = glGenLists(1)
+            glNewList(self.view.faces, GL_COMPILE)
+            settings = self.settings
+            key_xyz = {key: self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()}
+            if settings['faces.on']:
+                faces = []
+                r, g, b = hex_to_rgb(settings['faces.color:front'], normalize=True)
+                front = r, g, b, 1.0
+                r, g, b = hex_to_rgb(settings['faces.color:back'], normalize=True)
+                back = r, g, b, 1.0
+                for fkey in self.mesh.faces():
+                    faces.append({'points'      : [key_xyz[key] for key in self.mesh.face_vertices(fkey)],
+                                  'color.front' : front,
+                                  'color.back'  : back})
+            xdraw_polygons(faces)
+            glEndList()
             self.view.update()
 
     def from_polyhedron(self):
@@ -134,6 +170,12 @@ class View(GLView):
     def __init__(self, controller):
         super(View, self).__init__()
         self.controller = controller
+        self.faces = None
+
+    def __del__(self):
+        self.makeCurrent()
+        if self.faces:
+            glDeleteLists(self.faces, 1)
 
     @property
     def mesh(self):
@@ -146,24 +188,26 @@ class View(GLView):
     # don't compute any of this here
     # precompute whenever there are changes
     def paint(self):
-        mesh = self.mesh
-        if not mesh:
-            return
-        settings = self.settings
-        if not self.settings:
-            return
-        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-        if settings['faces.on']:
-            faces = []
-            r, g, b = hex_to_rgb(settings['faces.color:front'], normalize=True)
-            front = r, g, b, 1.0
-            r, g, b = hex_to_rgb(settings['faces.color:back'], normalize=True)
-            back = r, g, b, 1.0
-            for fkey in mesh.faces():
-                faces.append({'points'      : mesh.face_coordinates(fkey),
-                              'color.front' : front,
-                              'color.back'  : back})
-            xdraw_polygons(faces)
+        if self.faces:
+            glCallList(self.faces)
+        # mesh = self.mesh
+        # if not mesh:
+        #     return
+        # settings = self.settings
+        # if not self.settings:
+        #     return
+        # key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+        # if settings['faces.on']:
+        #     faces = []
+        #     r, g, b = hex_to_rgb(settings['faces.color:front'], normalize=True)
+        #     front = r, g, b, 1.0
+        #     r, g, b = hex_to_rgb(settings['faces.color:back'], normalize=True)
+        #     back = r, g, b, 1.0
+        #     for fkey in mesh.faces():
+        #         faces.append({'points'      : mesh.face_coordinates(fkey),
+        #                       'color.front' : front,
+        #                       'color.back'  : back})
+        #     xdraw_polygons(faces)
         # if settings['edges.on']:
         #     lines = []
         #     color = hex_to_rgb(settings['edges.color'], normalize=True)
