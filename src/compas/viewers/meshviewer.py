@@ -104,6 +104,8 @@ class Front(Controller):
         if filename:
             self.mesh = Mesh.from_obj(filename)
             center_mesh(self.mesh)
+            # create triangle/quad strip
+            # create display list
             self.view.update()
 
     def from_json(self):
