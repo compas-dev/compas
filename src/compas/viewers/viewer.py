@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from functools import partial
-
 try:
     import PySide2
 except ImportError:
@@ -106,72 +104,10 @@ class Viewer(App):
         super(Viewer, self).__init__()
         self.config = config
         self.controller = Front(self)
+        self.view = View(self.controller)
         self.setup(width, height)
         self.init()
-        self.show()
 
-    def show(self):
-        self.statusbar.showMessage('Ready')
-        self.main.show()
-        self.main.raise_()
-        self.start()
-
-    def setup(self, w, h):
-        self.main = QtWidgets.QMainWindow()
-        self.main.setFixedSize(w, h)
-        self.main.setGeometry(0, 0, w, h)
-
-        self.view = View(self.controller)
-
-        self.main.setCentralWidget(self.view)
-        self.menubar = self.main.menuBar()
-        self.statusbar = self.main.statusBar()
-        self.toolbar = self.main.addToolBar('Tools')
-        self.toolbar.setMovable(False)
-
-    def init(self):
-        self.init_menubar()
-        self.init_toolbar()
-        self.init_sidepanel_left()
-        self.init_sidepanel_right()
-
-    def init_menubar(self):
-        def make_menu(menu, parent):
-            for item in menu:
-                mtype = item.get('type', None)
-                if mtype == 'separator':
-                    parent.addSeparator()
-                    continue
-                if mtype == 'menu':
-                    newmenu = parent.addMenu(item['text'])
-                    items = item.get('items')
-                    if items:
-                        make_menu(items, newmenu)
-                    continue
-                action = parent.addAction(item['text'])
-                handler = item.get('action', None)
-                if handler:
-                    if hasattr(self.controller, handler):
-                        handler = getattr(self.controller, handler)
-                        args = item.get('args', [])
-                        kwargs = item.get('kwargs', {})
-                        if args or kwargs:
-                            handler = partial(handler, *args, **kwargs)
-                        action.triggered.connect(handler)
-        if not self.config:
-            return
-        if 'menubar' not in self.config:
-            return
-        make_menu(self.config['menubar'], self.menubar)
-
-    def init_toolbar(self):
-        pass
-
-    def init_sidepanel_left(self):
-        pass
-
-    def init_sidepanel_right(self):
-        pass
 
 
 # ==============================================================================
@@ -184,9 +120,8 @@ if __name__ == '__main__':
         'menubar': [
             {
                 'type'  : 'menu',
-                'text'  : '&Viewer',
+                'text'  : '&Settings',
                 'items' : [
-                    {'text' : '&Info', 'action' : None},
                     {
                         'type'  : 'menu',
                         'text'  : '&OpenGL',
@@ -225,4 +160,4 @@ if __name__ == '__main__':
         ]
     }
 
-    viewer = Viewer(config, 800, 600)
+    viewer = Viewer(config, 800, 600).show()
