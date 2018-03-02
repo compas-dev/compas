@@ -32,17 +32,15 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = ['GLView', ]
+__all__ = ['GLWidget', ]
 
 
-class GLView(QOpenGLWidget):
+class GLWidget(QOpenGLWidget):
     """"""
 
-    def __init__(self, gl_format=None, parent=None):
-        if gl_format:
-            super(GLView, self).__init__(gl_format, parent=parent)
-        else:
-            super(GLView, self).__init__(parent=parent)
+    def __init__(self, parent=None):
+        super(GLWidget, self).__init__(parent=parent)
+        # add these to the controller?
         self.camera = Camera(self)
         self.mouse = Mouse(self)
         self.clear_color = QtGui.QColor.fromRgb(255, 255, 255)
@@ -90,7 +88,7 @@ class GLView(QOpenGLWidget):
         self.camera.focus()
         self.paint()
         glPopAttrib()
-        glutSwapBuffers()
+        # glutSwapBuffers()
 
     def paint(self):
         raise NotImplementedError
@@ -136,7 +134,7 @@ class GLView(QOpenGLWidget):
     # ==========================================================================
 
     def keyPressEvent(self, event):
-        super(GLView, self).keyPressEvent(event)
+        super(GLWidget, self).keyPressEvent(event)
         key = event.key()
         self.keyPressAction(key)
         self.update()

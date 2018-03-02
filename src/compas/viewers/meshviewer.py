@@ -36,7 +36,7 @@ from compas.viewers.core import Camera
 from compas.viewers.core import Mouse
 from compas.viewers.core import Grid
 from compas.viewers.core import Axes
-from compas.viewers.core import GLView
+from compas.viewers.core import GLWidget
 from compas.viewers.core import App
 from compas.viewers.core import Controller
 
@@ -99,30 +99,48 @@ class Front(Controller):
     def view(self):
         return self.app.view
 
+    def _make_lists(self):
+        if self.view.faces:
+            glDeleteLists(self.view.faces, 1)
+        if self.view.edges:
+            glDeleteLists(self.view.edges, 1)
+        if self.view.vertices:
+            glDeleteLists(self.view.vertices, 1)
+        key_xyz = {key: self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()}
+        # faces list
+        faces = []
+        front = hex_to_rgb(self.settings['faces.color:front'], normalize=True)
+        front = list(front) + [1.0]
+        back  = hex_to_rgb(self.settings['faces.color:back'], normalize=True)
+        back  = list(back) + [1.0]
+        for fkey in self.mesh.faces():
+            faces.append({'points'      : [key_xyz[key] for key in self.mesh.face_vertices(fkey)],
+                          'color.front' : front,
+                          'color.back'  : back})
+        self.view.faces = glGenLists(1)
+        glNewList(self.view.faces, GL_COMPILE)
+        xdraw_polygons(faces)
+        glEndList()
+        # edges list
+        lines = []
+        color = hex_to_rgb(self.settings['edges.color'], normalize=True)
+        width = self.settings['edges.width']
+        for u, v in self.mesh.edges():
+            lines.append({'start' : key_xyz[u],
+                          'end'   : key_xyz[v],
+                          'color' : color,
+                          'width' : width})
+        self.view.edges = glGenLists(1)
+        glNewList(self.view.edges, GL_COMPILE)
+        xdraw_cylinders(lines)
+        glEndList()
+
     def from_obj(self):
         filename, _ = get_obj_file()
         if filename:
             self.mesh = Mesh.from_obj(filename)
             center_mesh(self.mesh)
-            # create display list
-            if self.view.faces:
-                glDeleteLists(self.view.faces, 1)
-            self.view.faces = glGenLists(1)
-            glNewList(self.view.faces, GL_COMPILE)
-            settings = self.settings
-            key_xyz = {key: self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()}
-            if settings['faces.on']:
-                faces = []
-                r, g, b = hex_to_rgb(settings['faces.color:front'], normalize=True)
-                front = r, g, b, 1.0
-                r, g, b = hex_to_rgb(settings['faces.color:back'], normalize=True)
-                back = r, g, b, 1.0
-                for fkey in self.mesh.faces():
-                    faces.append({'points'      : [key_xyz[key] for key in self.mesh.face_vertices(fkey)],
-                                  'color.front' : front,
-                                  'color.back'  : back})
-            xdraw_polygons(faces)
-            glEndList()
+            self._make_lists()
             self.view.update()
 
     def from_json(self):
@@ -130,25 +148,7 @@ class Front(Controller):
         if filename:
             self.mesh = Mesh.from_json(filename)
             center_mesh(self.mesh)
-            # create display list
-            if self.view.faces:
-                glDeleteLists(self.view.faces, 1)
-            self.view.faces = glGenLists(1)
-            glNewList(self.view.faces, GL_COMPILE)
-            settings = self.settings
-            key_xyz = {key: self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()}
-            if settings['faces.on']:
-                faces = []
-                r, g, b = hex_to_rgb(settings['faces.color:front'], normalize=True)
-                front = r, g, b, 1.0
-                r, g, b = hex_to_rgb(settings['faces.color:back'], normalize=True)
-                back = r, g, b, 1.0
-                for fkey in self.mesh.faces():
-                    faces.append({'points'      : [key_xyz[key] for key in self.mesh.face_vertices(fkey)],
-                                  'color.front' : front,
-                                  'color.back'  : back})
-            xdraw_polygons(faces)
-            glEndList()
+            self._make_lists()
             self.view.update()
 
     def from_polyhedron(self):
@@ -164,18 +164,24 @@ class Front(Controller):
         print('zoom out')
 
 
-class View(GLView):
+class View(GLWidget):
     """"""
 
     def __init__(self, controller):
         super(View, self).__init__()
         self.controller = controller
         self.faces = None
+        self.edges = None
+        self.vertices = None
 
     def __del__(self):
         self.makeCurrent()
         if self.faces:
             glDeleteLists(self.faces, 1)
+        if self.edges:
+            glDeleteLists(self.edges, 1)
+        if self.vertices:
+            glDeleteLists(self.vertices, 1)
 
     @property
     def mesh(self):
@@ -188,36 +194,12 @@ class View(GLView):
     # don't compute any of this here
     # precompute whenever there are changes
     def paint(self):
-        if self.faces:
-            glCallList(self.faces)
-        # mesh = self.mesh
-        # if not mesh:
-        #     return
-        # settings = self.settings
-        # if not self.settings:
-        #     return
-        # key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-        # if settings['faces.on']:
-        #     faces = []
-        #     r, g, b = hex_to_rgb(settings['faces.color:front'], normalize=True)
-        #     front = r, g, b, 1.0
-        #     r, g, b = hex_to_rgb(settings['faces.color:back'], normalize=True)
-        #     back = r, g, b, 1.0
-        #     for fkey in mesh.faces():
-        #         faces.append({'points'      : mesh.face_coordinates(fkey),
-        #                       'color.front' : front,
-        #                       'color.back'  : back})
-        #     xdraw_polygons(faces)
-        # if settings['edges.on']:
-        #     lines = []
-        #     color = hex_to_rgb(settings['edges.color'], normalize=True)
-        #     width = settings['edges.width']
-        #     for u, v in mesh.edges():
-        #         lines.append({'start' : key_xyz[u],
-        #                       'end'   : key_xyz[v],
-        #                       'color' : color,
-        #                       'width' : width})
-        #     xdraw_cylinders(lines)
+        if self.settings['faces.on']:
+            if self.faces:
+                glCallList(self.faces)
+        if self.settings['edges.on']:
+            if self.edges:
+                glCallList(self.edges)
         # if settings['vertices.on']:
         #     points = []
         #     color = hex_to_rgb(settings['vertices.color'], normalize=True)
@@ -270,6 +252,9 @@ class MeshViewer(App):
         window_menu = self.menubar.addMenu('&Window')
         help_menu   = self.menubar.addMenu('&Help')
         # mesh actions
+        # => file menu
+        # open file
+        # save file
         mesh_menu.addAction('&From OBJ', self.controller.from_obj)
         mesh_menu.addAction('&From JSON', self.controller.from_json)
         mesh_menu.addAction('&From Polyhedron', self.controller.from_polyhedron)
