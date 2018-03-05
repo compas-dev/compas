@@ -33,6 +33,7 @@ __all__ = [
     'xdraw_polygons',
     'xdraw_cylinders',
     'xdraw_spheres',
+    'xdraw_texts',
 ]
 
 
@@ -191,7 +192,7 @@ def xdraw_texts(texts):
         shift = attr['shift']
         glColor4f(color[0], color[1], color[2], color[3])
         glRasterPos3f(pos[0] + shift[0], pos[1] + shift[1], pos[2] + shift[2])
-        font = GLUT_BITMAP_HELVETICA_12
+        font = GLUT_BITMAP_HELVETICA_18
         for char in text:
             glutBitmapCharacter(font, ord(char))
 
