@@ -276,11 +276,13 @@ class EulerSSH(SSH):
 if __name__ == '__main__':
 
     euler_ssh = EulerSSH(username='liewa')
-    euler_ssh.sync_folder(local_folder='/al/compas/', remote_folder='compas/')
-    euler_ssh.sync_folder(local_folder='/al/compas_ags/', remote_folder='compas_ags/')
+    # euler_ssh.sync_folder(local_folder='/al/compas/', remote_folder='compas/')
+    # euler_ssh.sync_folder(local_folder='/al/compas_ags/', remote_folder='compas_ags/')
     # euler_ssh.load_module(module='new gcc/4.8.2 python/3.6.1')
     # euler_ssh.server_command(command='export OMP_NUM_THREADS=24')
     # euler_ssh.submit_job(command='python /cluster/home/liewa/compas_ags/src/compas_ags/ags/loadpath3.py',
                          # time='20', output='output.txt', mem=256, cpus=4)
     # euler_ssh.show_jobs(type='user', job=58152512)
+    euler_ssh.receive_file(remote_file='/cluster/home/liewa/compas_ags/data/loadpath/fan.json',
+                           local_file='/al/compas_ags/data/loadpath/fan.json')
     euler_ssh.close()
