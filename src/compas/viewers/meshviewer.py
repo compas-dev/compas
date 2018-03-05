@@ -55,6 +55,8 @@ get_json_file = partial(
     filter='JSON files (*.json)'
 )
 
+hex_to_rgb = partial(hex_to_rgb, normalize=True)
+
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -74,44 +76,51 @@ def center_mesh(mesh):
 
 
 class Front(Controller):
-    """"""
+
+    settings = {}
+    settings['vertices.size'] = 0.01
+    settings['edges.width'] = 0.01
+    settings['vertices.color'] = '#000000'
+    settings['edges.color'] = '#666666'
+    settings['faces.color:front'] = '#eeeeee'
+    settings['faces.color:back'] = '#eeeeee'
+    settings['vertices.on'] = True
+    settings['edges.on'] = True
+    settings['faces.on'] = True
+    settings['vertices.labels.on'] = False
+    settings['edges.labels.on'] = False
+    settings['faces.labels.on'] = False
+    settings['vertices.normals.on'] = False
+    settings['faces.normals.on'] = False
 
     def __init__(self, app):
-        self.app = app
+        super(Front, self).__init__(app)
         self.mesh = None
-        self.settings = {}
-        self.settings['vertices.size'] = 0.01
-        self.settings['edges.width'] = 0.01
-        self.settings['vertices.color'] = '#000000'
-        self.settings['edges.color'] = '#666666'
-        self.settings['faces.color:front'] = '#eeeeee'
-        self.settings['faces.color:back'] = '#eeeeee'
-        self.settings['vertices.on'] = True
-        self.settings['edges.on'] = True
-        self.settings['faces.on'] = True
-        self.settings['vertices_labels.on'] = False
-        self.settings['edges_labels.on'] = False
-        self.settings['faces_labels.on'] = False
-        self.settings['vertices_normals.on'] = False
-        self.settings['faces_normals.on'] = False
 
     @property
     def view(self):
         return self.app.view
 
-    def _make_lists(self):
+    def _clear_lists(self):
         if self.view.faces:
             glDeleteLists(self.view.faces, 1)
         if self.view.edges:
             glDeleteLists(self.view.edges, 1)
         if self.view.vertices:
             glDeleteLists(self.view.vertices, 1)
+
+    def _make_lists(self):
+        self._clear_lists()
         key_xyz = {key: self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()}
-        # faces list
+        self._make_faces_list(key_xyz)
+        self._make_edges_list(key_xyz)
+        self._make_vertices_list(key_xyz)
+
+    def _make_faces_list(self, key_xyz):
         faces = []
-        front = hex_to_rgb(self.settings['faces.color:front'], normalize=True)
+        front = hex_to_rgb(self.settings['faces.color:front'])
         front = list(front) + [1.0]
-        back  = hex_to_rgb(self.settings['faces.color:back'], normalize=True)
+        back  = hex_to_rgb(self.settings['faces.color:back'])
         back  = list(back) + [1.0]
         for fkey in self.mesh.faces():
             faces.append({'points'      : [key_xyz[key] for key in self.mesh.face_vertices(fkey)],
@@ -121,9 +130,10 @@ class Front(Controller):
         glNewList(self.view.faces, GL_COMPILE)
         xdraw_polygons(faces)
         glEndList()
-        # edges list
+
+    def _make_edges_list(self, key_xyz):
         lines = []
-        color = hex_to_rgb(self.settings['edges.color'], normalize=True)
+        color = hex_to_rgb(self.settings['edges.color'])
         width = self.settings['edges.width']
         for u, v in self.mesh.edges():
             lines.append({'start' : key_xyz[u],
@@ -133,6 +143,19 @@ class Front(Controller):
         self.view.edges = glGenLists(1)
         glNewList(self.view.edges, GL_COMPILE)
         xdraw_cylinders(lines)
+        glEndList()
+
+    def _make_vertices_list(self, key_xyz):
+        points = []
+        color = hex_to_rgb(self.settings['vertices.color'])
+        size = self.settings['vertices.size']
+        for key in self.mesh.vertices():
+            points.append({'pos'   : key_xyz[key],
+                           'color' : color,
+                           'size'  : size})
+        self.view.vertices = glGenLists(1)
+        glNewList(self.view.vertices, GL_COMPILE)
+        xdraw_spheres(points)
         glEndList()
 
     def from_obj(self):
@@ -163,6 +186,14 @@ class Front(Controller):
     def zoom_out(self):
         print('zoom out')
 
+    def slide_size_vertices(self, value):
+        self.settings['vertices.size'] = value
+        self.view.update()
+
+    def edit_size_vertices(self, value):
+        self.settings['vertices.size'] = value
+        self.view.update()
+
 
 class View(GLWidget):
     """"""
@@ -191,8 +222,6 @@ class View(GLWidget):
     def settings(self):
         return self.controller.settings
 
-    # don't compute any of this here
-    # precompute whenever there are changes
     def paint(self):
         if self.settings['faces.on']:
             if self.faces:
@@ -200,79 +229,21 @@ class View(GLWidget):
         if self.settings['edges.on']:
             if self.edges:
                 glCallList(self.edges)
-        # if settings['vertices.on']:
-        #     points = []
-        #     color = hex_to_rgb(settings['vertices.color'], normalize=True)
-        #     size = settings['vertices.size']
-        #     for key in mesh.vertices():
-        #         pos = key_xyz[key]
-        #         points.append({'pos'   : pos,
-        #                        'color' : color,
-        #                        'size'  : size})
-        #     xdraw_spheres(points)
+        if self.settings['vertices.on']:
+            if self.vertices:
+                glCallList(self.vertices)
 
 
 class MeshViewer(App):
     """"""
 
-    def __init__(self, width=1440, height=900):
+    def __init__(self, config, width=1440, height=900):
         super(MeshViewer, self).__init__()
+        self.config = config
         self.controller = Front(self)
+        self.view = View(self.controller)
         self.setup(width, height)
         self.init()
-        self.show()
-
-    def show(self):
-        self.statusbar.showMessage('Ready')
-        self.main.show()
-        self.main.raise_()
-        self.start()
-
-    def setup(self, w, h):
-        self.main = QtWidgets.QMainWindow()
-        self.main.setFixedSize(w, h)
-        self.main.setGeometry(0, 0, w, h)
-        self.view = View(self.controller)
-        self.main.setCentralWidget(self.view)
-        self.menubar = self.main.menuBar()
-        self.statusbar = self.main.statusBar()
-        # self.toolbar = self.main.addToolBar('Tools')
-        # self.toolbar.setMovable(False)
-
-    def init(self):
-        self.init_menubar()
-        # self.init_toolbar()
-        # self.init_sidepanel_left()
-        # self.init_sidepanel_right()
-
-    def init_menubar(self):
-        mesh_menu   = self.menubar.addMenu('&Mesh')
-        tools_menu  = self.menubar.addMenu('&Tools')
-        view_menu   = self.menubar.addMenu('&View')
-        window_menu = self.menubar.addMenu('&Window')
-        help_menu   = self.menubar.addMenu('&Help')
-        # mesh actions
-        # => file menu
-        # open file
-        # save file
-        mesh_menu.addAction('&From OBJ', self.controller.from_obj)
-        mesh_menu.addAction('&From JSON', self.controller.from_json)
-        mesh_menu.addAction('&From Polyhedron', self.controller.from_polyhedron)
-        # view actions
-        view_menu.addAction('&Show Grid')
-        view_menu.addAction('&Show Axes')
-        view_menu.addSeparator()
-
-    # def init_toolbar(self):
-    #     self.toolbar.addAction('zoom extents', self.controller.zoom_extents)
-    #     self.toolbar.addAction('zoom in', self.controller.zoom_in)
-    #     self.toolbar.addAction('zoom out', self.controller.zoom_out)
-
-    # def init_sidepanel_left(self):
-    #     pass
-
-    # def init_sidepanel_right(self):
-    #     pass
 
 
 # ==============================================================================
@@ -281,4 +252,160 @@ class MeshViewer(App):
 
 if __name__ == '__main__':
 
-    viewer = MeshViewer()
+    config = {
+        'menubar': [
+            {
+                'type'  : 'menu',
+                'text'  : '&File',
+                'items' : [
+                    {'text' : '&New', 'action' : None},
+                    {'text' : '&Open', 'action' : None},
+                    {'type' : 'separator'},
+                    {'text' : '&Save', 'action' : None},
+                    {'text' : '&Save As', 'action' : None}
+                ]
+            },
+            {
+                'type'  : 'menu',
+                'text'  : '&Edit',
+                'items' : []
+            },
+            {
+                'type'  : 'menu',
+                'text'  : '&View',
+                'items' : [
+                    {'text' : '&Pan', 'action': None},
+                    {'text' : '&Rotate', 'action': None},
+                    {
+                        'type'  : 'menu',
+                        'text'  : '&Zoom',
+                        'items' : []
+                    },
+                    {'type' : 'separator'},
+                    {
+                        'type'  : 'menu',
+                        'text'  : '&Set View',
+                        'items' : []
+                    },
+                    {
+                        'type'  : 'menu',
+                        'text'  : '&Camera',
+                        'items' : []
+                    },
+                    {
+                        'type'  : 'menu',
+                        'text'  : '&Grid',
+                        'items' : []
+                    },
+                    {
+                        'type'  : 'menu',
+                        'text'  : '&Axes',
+                        'items' : []
+                    },
+                    {'type' : 'separator'},
+                    {'text' : '&Capture Image', 'action': None},
+                    {'text' : '&Capture Video', 'action': None},
+                    {'type' : 'separator'}
+                ]
+            },
+            {
+                'type'  : 'menu',
+                'text'  : '&Tools',
+                'items' : []
+            },
+            {
+                'type'  : 'menu',
+                'text'  : '&Mesh',
+                'items' : [
+                    {'text' : 'From .obj', 'action': 'from_obj'}
+                ]
+            },
+            {
+                'type'  : 'menu',
+                'text'  : '&OpenGL',
+                'items' : [
+                    {'text' : '&Version Info', 'action': 'opengl_version_info'},
+                    {'text' : '&Extensions', 'action': 'opengl_extensions'},
+                    {'type' : 'separator'},
+                    {'text' : '&Set Version 2.1', 'action': 'opengl_set_version', 'args': [(2, 1), ]},
+                    {'text' : '&Set Version 3.3', 'action': 'opengl_set_version', 'args': [(3, 3), ]},
+                    {'text' : '&Set Version 4.1', 'action': 'opengl_set_version', 'args': [(4, 1), ]}
+                ]
+            },
+            {
+                'type'  : 'menu',
+                'text'  : '&Window',
+                'items' : []
+            },
+            {
+                'type'  : 'menu',
+                'text'  : '&Help',
+                'items' : []
+            }
+        ],
+        # 'toolbar': [
+        #     {'text': '&Zoom Extents', 'action': 'zoom_extents'},
+        #     {'text': '&Zoom In', 'action': 'zoom_in'},
+        #     {'text': '&Zoom Out', 'action': 'zoom_out'},
+        # ],
+        'sidebar': [
+            {
+                'type'  : 'group',
+                'text'  : 'Visibility',
+                'items' : [
+                    {
+                        'type'  : 'group',
+                        'text'  : None,
+                        'items' : [
+                            {'type' : 'checkbox', 'text' : 'vertices', 'action' : 'toggle_vertices', 'state' : True, },
+                            {'type' : 'checkbox', 'text' : 'edges', 'action' : None, 'state' : True, },
+                            {'type' : 'checkbox', 'text' : 'faces', 'action' : None, 'state' : True, },
+                        ]
+                    },
+                    {
+                        'type'  : 'group',
+                        'text'  : None,
+                        'items' : [
+                            {'type' : 'checkbox', 'text' : 'label vertices', 'action' : None, 'state' : True, },
+                            {'type' : 'checkbox', 'text' : 'label edges', 'action' : None, 'state' : True, },
+                            {'type' : 'checkbox', 'text' : 'label faces', 'action' : None, 'state' : True, },
+                        ]
+                    }
+                ]
+            },
+            {
+                'type' : 'group',
+                'text' : 'Appearance',
+                'items': [
+                    {
+                        'type' : 'group',
+                        'text' : None,
+                        'items': [
+                            {'type': 'colorbutton', 'text': 'color vertices', 'value': '#000000', 'action': None, },
+                            {'type': 'colorbutton', 'text': 'color edges', 'value': '#000000', 'action': None, },
+                            {'type': 'colorbutton', 'text': 'color faces', 'value': '#000000', 'action': None, },
+                        ]
+                    },
+                    {
+                        'type' : 'group',
+                        'text' : None,
+                        'items': [
+                            {
+                                'type'   : 'slider',
+                                'text'   : 'size vertices',
+                                'value'  : 0.01,
+                                'minval' : 1,
+                                'maxval' : 100,
+                                'step'   : 1,
+                                'scale'  : 0.01,
+                                'slide'  : 'slide_size_vertices',
+                                'edit'   : 'edit_size_vertices',
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+    viewer = MeshViewer(config).show()

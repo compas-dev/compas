@@ -20,6 +20,7 @@
 # )
 
 from setuptools import setup
+from setuptools import Extension
 from setuptools import find_packages
 
 from codecs import open
@@ -63,4 +64,9 @@ setup(
     python_requires='>=2.7',
     # py_modules=[],
     # entry_points={},
+    ext_modules=[
+        Extension(
+            'compas.geometry.'
+        )
+    ]
 )

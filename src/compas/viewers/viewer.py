@@ -7,16 +7,11 @@ try:
 except ImportError:
     from PySide import QtCore
     from PySide import QtGui
-    from PySide import QtOpenGL
     import PySide.QtGui as QtWidgets
-    from PySide.QtOpenGL import QGLWidget as QOpenGLWidget
 else:
     from PySide2 import QtCore
     from PySide2 import QtGui
-    from PySide2 import QtOpenGL
     from PySide2 import QtWidgets
-    # from PySide2.QtWidgets import QOpenGLWidget
-    from PySide2.QtOpenGL import QGLWidget as QOpenGLWidget
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -43,47 +38,11 @@ __all__ = ['Viewer', ]
 class Front(Controller):
     """"""
 
-    # make settings a class variable
-    # handle all other init stuff on the Controller level
-
-    def __init__(self, app):
-        super(Front, self).__init__()
-        self.app = app
-        self.settings = {}
-
-    @property
-    def view(self):
-        return self.app.view
-
-    def opengl_version_info(self):
-        print(glGetString(GL_VENDOR))
-        print(glGetString(GL_RENDERER))
-        print(glGetString(GL_VERSION))
-        print(glGetString(GL_SHADING_LANGUAGE_VERSION))
-        print(self.view.format().majorVersion())
-        print(self.view.context().format().majorVersion())
-
-    def opengl_extensions(self):
-        extensions = str(glGetString(GL_EXTENSIONS)).split(' ')
-        for name in extensions:
-            print(name)
-
-    def opengl_set_version(self, version):
-        major, minor = version
-        gl_format = QtOpenGL.QGLFormat()
-        gl_format.setVersion(major, minor)
-        gl_format.setProfile(QtOpenGL.QGLFormat.CoreProfile)
-        gl_format.setSampleBuffers(True)
-        gl_format.setDefaultFormat(gl_format)
-        self.view.context().setFormat(gl_format)
-        self.view.context().create()
-        self.view.glInit()
+    settings = {}
 
 
 class View(GLWidget):
     """"""
-
-    # same as above
 
     def __init__(self, controller):
         super(View, self).__init__()
@@ -109,7 +68,6 @@ class Viewer(App):
         self.init()
 
 
-
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -118,24 +76,6 @@ if __name__ == '__main__':
 
     config = {
         'menubar': [
-            {
-                'type'  : 'menu',
-                'text'  : '&Settings',
-                'items' : [
-                    {
-                        'type'  : 'menu',
-                        'text'  : '&OpenGL',
-                        'items' : [
-                            {'text' : '&Version Info', 'action': 'opengl_version_info'},
-                            {'text' : '&Extensions', 'action': 'opengl_extensions'},
-                            {'type' : 'separator'},
-                            {'text' : '&Set Version 2.1', 'action': 'opengl_set_version', 'args': [(2, 1), ]},
-                            {'text' : '&Set Version 3.3', 'action': 'opengl_set_version', 'args': [(3, 3), ]},
-                            {'text' : '&Set Version 4.1', 'action': 'opengl_set_version', 'args': [(4, 1), ]}
-                        ]
-                    }
-                ]
-            },
             {
                 'type'  : 'menu',
                 'text'  : '&File',
@@ -149,7 +89,67 @@ if __name__ == '__main__':
             },
             {
                 'type'  : 'menu',
+                'text'  : '&Edit',
+                'items' : []
+            },
+            {
+                'type'  : 'menu',
                 'text'  : '&View',
+                'items' : [
+                    {'text' : '&Pan', 'action': None},
+                    {'text' : '&Rotate', 'action': None},
+                    {
+                        'type'  : 'menu',
+                        'text'  : '&Zoom',
+                        'items' : []
+                    },
+                    {'type' : 'separator'},
+                    {
+                        'type'  : 'menu',
+                        'text'  : '&Set View',
+                        'items' : []
+                    },
+                    {
+                        'type'  : 'menu',
+                        'text'  : '&Camera',
+                        'items' : []
+                    },
+                    {
+                        'type'  : 'menu',
+                        'text'  : '&Grid',
+                        'items' : []
+                    },
+                    {
+                        'type'  : 'menu',
+                        'text'  : '&Axes',
+                        'items' : []
+                    },
+                    {'type' : 'separator'},
+                    {'text' : '&Capture Image', 'action': None},
+                    {'text' : '&Capture Video', 'action': None},
+                    {'type' : 'separator'}
+                ]
+            },
+            {
+                'type'  : 'menu',
+                'text'  : '&Tools',
+                'items' : []
+            },
+            {
+                'type'  : 'menu',
+                'text'  : '&OpenGL',
+                'items' : [
+                    {'text' : '&Version Info', 'action': 'opengl_version_info'},
+                    {'text' : '&Extensions', 'action': 'opengl_extensions'},
+                    {'type' : 'separator'},
+                    {'text' : '&Set Version 2.1', 'action': 'opengl_set_version', 'args': [(2, 1), ]},
+                    {'text' : '&Set Version 3.3', 'action': 'opengl_set_version', 'args': [(3, 3), ]},
+                    {'text' : '&Set Version 4.1', 'action': 'opengl_set_version', 'args': [(4, 1), ]}
+                ]
+            },
+            {
+                'type'  : 'menu',
+                'text'  : '&Window',
                 'items' : []
             },
             {
@@ -157,7 +157,11 @@ if __name__ == '__main__':
                 'text'  : '&Help',
                 'items' : []
             }
+        ],
+        'toolbar': [
+        ],
+        'sidebar': [
         ]
     }
 
-    viewer = Viewer(config, 800, 600).show()
+    viewer = Viewer(config).show()

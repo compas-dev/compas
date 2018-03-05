@@ -17,6 +17,9 @@ else:
     from PySide2 import QtGui
     from PySide2 import QtWidgets
 
+from compas.viewers.core import ColorButton
+from compas.viewers.core import Slider
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
@@ -34,8 +37,21 @@ class App(QtWidgets.QApplication):
         QtWidgets.QApplication.__init__(self, sys.argv)
         self.setApplicationName("Viewer app")
 
-    def start(self):
-        sys.exit(self.exec_())
+    def setup(self, w, h):
+        self.main = QtWidgets.QMainWindow()
+        self.main.setFixedSize(w, h)
+        self.main.setGeometry(0, 0, w, h)
+        self.main.setCentralWidget(self.view)
+        self.statusbar = self.main.statusBar()
+
+    def init(self):
+        if self.config:
+            if 'menubar' in self.config:
+                self.init_menubar()
+            if 'toolbar' in self.config:
+                self.init_toolbar()
+            if 'sidebar' in self.config:
+                self.init_sidebar()
 
     def show(self):
         self.statusbar.showMessage('Ready')
@@ -43,25 +59,8 @@ class App(QtWidgets.QApplication):
         self.main.raise_()
         self.start()
 
-    def setup(self, w, h):
-        self.main = QtWidgets.QMainWindow()
-        self.main.setFixedSize(w, h)
-        self.main.setGeometry(0, 0, w, h)
-        self.main.setCentralWidget(self.view)
-
-    def init(self):
-        self.init_statusbar()
-        if not self.config:
-            return
-        if 'menubar' in self.config:
-            self.init_menubar()
-        if 'toolbar' in self.config:
-            self.init_toolbar()
-        if 'panel' in self.config:
-            self.init_panel()
-
-    def init_statusbar(self):
-        self.statusbar = self.main.statusBar()
+    def start(self):
+        sys.exit(self.exec_())
 
     def init_menubar(self):
         def make_menu(menu, parent):
@@ -93,8 +92,76 @@ class App(QtWidgets.QApplication):
         self.toolbar = self.main.addToolBar('Tools')
         self.toolbar.setMovable(False)
 
-    def init_panel(self):
-        raise NotImplementedError
+    def init_sidebar(self):
+        def make_items(items, parent):
+            for item in items:
+                itype = item.get('type', None)
+                if itype == 'group':
+                    make_group(item, parent)
+                    continue
+                if itype == 'checkbox':
+                    make_checkbox(item, parent)
+                    continue
+                if itype == 'slider':
+                    make_slider(item, parent)
+                    continue
+                if itype == 'button':
+                    make_slider(item, parent)
+                    continue
+                if itype == 'colorbutton':
+                    make_colorbutton(item, parent)
+                    continue
+
+        def make_group(item, parent):
+            group = QtWidgets.QGroupBox(item.get('text', None))
+            box = QtWidgets.QVBoxLayout()
+            group.setLayout(box)
+            make_items(item.get('items'), box)
+            parent.addWidget(group)
+
+        def make_slider(item, parent):
+            slider = Slider(item['text'],
+                            item['value'],
+                            item['minval'],
+                            item['maxval'],
+                            item['step'],
+                            item['scale'],
+                            getattr(self.controller, item['slide']),
+                            getattr(self.controller, item['edit']))
+            parent.addLayout(slider.layout)
+
+        def make_checkbox(item, parent):
+            checkbox = QtWidgets.QCheckBox(item['text'])
+            checkbox.setCheckState(QtCore.Qt.Checked if item['state'] else QtCore.Qt.Unchecked)
+            if item['action']:
+                checkbox.stateChanged.connect(item['action'])
+            parent.addWidget(checkbox)
+
+        def make_button(item, parent):
+            pass
+
+        def make_colorbutton(item, parent):
+            button = ColorButton(item['text'],
+                                 color=item['value'],
+                                 size=item.get('size'),
+                                 action=item.get('action'))
+            parent.addLayout(button.layout)
+
+        self.sidebar = QtWidgets.QDockWidget('Sidebar')
+        self.sidebar.setAllowedAreas(QtCore.Qt.LeftDockWidgetArea)
+        self.sidebar.setFeatures(QtWidgets.QDockWidget.NoDockWidgetFeatures)
+        self.sidebar.setFixedWidth(240)
+        self.main.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.sidebar)
+
+        widget = QtWidgets.QWidget()
+        layout = QtWidgets.QVBoxLayout()
+        widget.setLayout(layout)
+
+        self.sidebar.setWidget(widget)
+
+        make_items(self.config['sidebar'], layout)
+
+        layout.addStretch()
 
 
 # ==============================================================================
