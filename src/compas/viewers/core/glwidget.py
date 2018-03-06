@@ -40,10 +40,34 @@ class GLWidget(QOpenGLWidget):
 
     def __init__(self, parent=None):
         super(GLWidget, self).__init__(parent=parent)
-        # add these to the controller?
         self.camera = Camera(self)
         self.mouse = Mouse(self)
         self.clear_color = QtGui.QColor.fromRgb(255, 255, 255)
+        self.display_lists = []
+        self.buffers = []
+
+    def __del__(self):
+        self.makeCurrent()
+        for dl in self.display_lists:
+            glDeleteLists(dl, 1)
+
+    def make_vertex_buffer(self, data, dynamic=True):
+        d = len(data)
+        b = glGenBuffers(1)
+        cdata = (ctypes.c_float * d)(* data)
+        usage = GL_DYNAMIC_DRAW if dynamic else GL_STATIC_DRAW
+        glBindBuffer(GL_ARRAY_BUFFER, b)
+        glBufferData(GL_ARRAY_BUFFER, 4 * d, cdata, usage)
+        return b
+
+    def make_element_buffer(self, indices, dynamic=True):
+        i = len(indices)
+        b = glGenBuffers(1)
+        cindices = (ctypes.c_uint * i)(* indices)
+        usage = GL_DYNAMIC_DRAW if dynamic else GL_STATIC_DRAW
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, b)
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * i, cindices, usage)
+        return b
 
     # ==========================================================================
     # inititlisation
@@ -84,11 +108,13 @@ class GLWidget(QOpenGLWidget):
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glPushAttrib(GL_POLYGON_BIT)
+
         self.camera.aim()
         self.camera.focus()
         self.paint()
+
         glPopAttrib()
-        # glutSwapBuffers()
+        glutSwapBuffers()
 
     def paint(self):
         raise NotImplementedError

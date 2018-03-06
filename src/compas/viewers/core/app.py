@@ -134,7 +134,7 @@ class App(QtWidgets.QApplication):
             checkbox = QtWidgets.QCheckBox(item['text'])
             checkbox.setCheckState(QtCore.Qt.Checked if item['state'] else QtCore.Qt.Unchecked)
             if item['action']:
-                checkbox.stateChanged.connect(item['action'])
+                checkbox.stateChanged.connect(getattr(self.controller, item['action']))
             parent.addWidget(checkbox)
 
         def make_button(item, parent):

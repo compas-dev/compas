@@ -38,6 +38,121 @@ __all__ = [
 
 
 # ==============================================================================
+# arrays
+# ------
+# http://www.songho.ca/opengl/gl_vertexarray.html
+# https://gist.github.com/ousttrue/c4ae334fc1505cdf4cd7
+# ==============================================================================
+
+
+def draw_arrays(vertices, arrays):
+    glEnableClientState(GL_VERTEX_ARRAY)
+    glEnableClientState(GL_COLOR_ARRAY)
+
+    # vertex coordinates flattened
+    glVertexPointer(3, GL_FLOAT, 0, vertices)
+
+    for primitive, indices, colors, flag_on in arrays:
+        # primitive => GL_POINTS, GL_LINES, GL_TRIANGLES, GL_QUADS
+        # colors => RGB colors flattened
+        # indices => element vertex indices flattened
+        # flag_on => True or False
+        if not flag_on:
+            continue
+
+        glColorPointer(3, GL_FLOAT, 0, colors)
+        glDrawElements(primitive, len(indices), GL_UNSIGNED_INT, indices)
+
+    glDisableClientState(GL_COLOR_ARRAY)
+    glDisableClientState(GL_VERTEX_ARRAY)
+
+
+def draw_triangle_array(vertices, indices, colors):
+    glEnableClientState(GL_VERTEX_ARRAY)
+    glEnableClientState(GL_COLOR_ARRAY)
+    glVertexPointer(3, GL_FLOAT, 0, vertices)
+    glColorPointer(3, GL_FLOAT, 0, colors)
+    glDrawElements(GL_TRIANGLES, len(indices), GL_UNSIGNED_INT, indices)
+    glDisableClientState(GL_COLOR_ARRAY)
+    glDisableClientState(GL_VERTEX_ARRAY)
+
+
+def draw_line_array(vertices, indices, colors):
+    glEnableClientState(GL_VERTEX_ARRAY)
+    glEnableClientState(GL_COLOR_ARRAY)
+    glVertexPointer(3, GL_FLOAT, 0, vertices)
+    glColorPointer(3, GL_FLOAT, 0, colors)
+    glDrawElements(GL_LINES, len(indices), GL_UNSIGNED_INT, indices)
+    glDisableClientState(GL_COLOR_ARRAY)
+    glDisableClientState(GL_VERTEX_ARRAY)
+
+
+# ==============================================================================
+# buffers
+# -------
+# http://www.songho.ca/opengl/gl_vbo.html
+# https://gist.github.com/ousttrue/c4ae334fc1505cdf4cd7
+# ==============================================================================
+
+
+# ==============================================================================
+# display lists
+# -------------
+# http://www.songho.ca/opengl/gl_displaylist.html
+# ==============================================================================
+
+
+# def _make_lists(self):
+#     self._clear_lists()
+#     key_xyz = {key: self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()}
+#     self._make_faces_list(key_xyz)
+#     self._make_edges_list(key_xyz)
+#     self._make_vertices_list(key_xyz)
+
+# def _make_faces_list(self, key_xyz):
+#     faces = []
+#     front = hex_to_rgb(self.settings['faces.color:front'])
+#     front = list(front) + [1.0]
+#     back  = hex_to_rgb(self.settings['faces.color:back'])
+#     back  = list(back) + [1.0]
+#     for fkey in self.mesh.faces():
+#         faces.append({'points'      : [key_xyz[key] for key in self.mesh.face_vertices(fkey)],
+#                       'color.front' : front,
+#                       'color.back'  : back})
+#     self.view.faces = glGenLists(1)
+#     glNewList(self.view.faces, GL_COMPILE)
+#     xdraw_polygons(faces)
+#     glEndList()
+
+# def _make_edges_list(self, key_xyz):
+#     lines = []
+#     color = hex_to_rgb(self.settings['edges.color'])
+#     width = self.settings['edges.width']
+#     for u, v in self.mesh.edges():
+#         lines.append({'start' : key_xyz[u],
+#                       'end'   : key_xyz[v],
+#                       'color' : color,
+#                       'width' : width})
+#     self.view.edges = glGenLists(1)
+#     glNewList(self.view.edges, GL_COMPILE)
+#     xdraw_cylinders(lines)
+#     glEndList()
+
+# def _make_vertices_list(self, key_xyz):
+#     points = []
+#     color = hex_to_rgb(self.settings['vertices.color'])
+#     size = self.settings['vertices.size']
+#     for key in self.mesh.vertices():
+#         points.append({'pos'   : key_xyz[key],
+#                        'color' : color,
+#                        'size'  : size})
+#     self.view.vertices = glGenLists(1)
+#     glNewList(self.view.vertices, GL_COMPILE)
+#     xdraw_spheres(points)
+#     glEndList()
+
+
+# ==============================================================================
 # draw
 # ==============================================================================
 

@@ -2,7 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+# import ctypes
+
 from functools import partial
+
+from numpy import array
 
 try:
     import PySide2
@@ -24,6 +28,9 @@ import compas
 from compas.datastructures import Mesh
 from compas.geometry import centroid_points
 from compas.utilities import hex_to_rgb
+from compas.utilities import flatten
+
+from compas.topology import mesh_quads_to_triangles
 
 from compas.viewers.core import xdraw_polygons
 from compas.viewers.core import xdraw_lines
@@ -101,77 +108,22 @@ class Front(Controller):
     def view(self):
         return self.app.view
 
-    def _clear_lists(self):
-        if self.view.faces:
-            glDeleteLists(self.view.faces, 1)
-        if self.view.edges:
-            glDeleteLists(self.view.edges, 1)
-        if self.view.vertices:
-            glDeleteLists(self.view.vertices, 1)
-
-    def _make_lists(self):
-        self._clear_lists()
-        key_xyz = {key: self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()}
-        self._make_faces_list(key_xyz)
-        self._make_edges_list(key_xyz)
-        self._make_vertices_list(key_xyz)
-
-    def _make_faces_list(self, key_xyz):
-        faces = []
-        front = hex_to_rgb(self.settings['faces.color:front'])
-        front = list(front) + [1.0]
-        back  = hex_to_rgb(self.settings['faces.color:back'])
-        back  = list(back) + [1.0]
-        for fkey in self.mesh.faces():
-            faces.append({'points'      : [key_xyz[key] for key in self.mesh.face_vertices(fkey)],
-                          'color.front' : front,
-                          'color.back'  : back})
-        self.view.faces = glGenLists(1)
-        glNewList(self.view.faces, GL_COMPILE)
-        xdraw_polygons(faces)
-        glEndList()
-
-    def _make_edges_list(self, key_xyz):
-        lines = []
-        color = hex_to_rgb(self.settings['edges.color'])
-        width = self.settings['edges.width']
-        for u, v in self.mesh.edges():
-            lines.append({'start' : key_xyz[u],
-                          'end'   : key_xyz[v],
-                          'color' : color,
-                          'width' : width})
-        self.view.edges = glGenLists(1)
-        glNewList(self.view.edges, GL_COMPILE)
-        xdraw_cylinders(lines)
-        glEndList()
-
-    def _make_vertices_list(self, key_xyz):
-        points = []
-        color = hex_to_rgb(self.settings['vertices.color'])
-        size = self.settings['vertices.size']
-        for key in self.mesh.vertices():
-            points.append({'pos'   : key_xyz[key],
-                           'color' : color,
-                           'size'  : size})
-        self.view.vertices = glGenLists(1)
-        glNewList(self.view.vertices, GL_COMPILE)
-        xdraw_spheres(points)
-        glEndList()
-
     def from_obj(self):
         filename, _ = get_obj_file()
         if filename:
             self.mesh = Mesh.from_obj(filename)
+            mesh_quads_to_triangles(self.mesh)
             center_mesh(self.mesh)
-            self._make_lists()
+            self.view.make_buffers()
             self.view.update()
 
     def from_json(self):
         filename, _ = get_json_file()
         if filename:
             self.mesh = Mesh.from_json(filename)
+            mesh_quads_to_triangles(self.mesh)
             center_mesh(self.mesh)
-            self._make_lists()
+            self.view.make_buffers()
             self.view.update()
 
     def from_polyhedron(self):
@@ -194,6 +146,14 @@ class Front(Controller):
         self.settings['vertices.size'] = value
         self.view.update()
 
+    def toggle_faces(self, state):
+        self.settings['faces.on'] = state == QtCore.Qt.Checked
+        self.view.update()
+
+    def toggle_edges(self, state):
+        self.settings['edges.on'] = state == QtCore.Qt.Checked
+        self.view.update()
+
 
 class View(GLWidget):
     """"""
@@ -201,18 +161,10 @@ class View(GLWidget):
     def __init__(self, controller):
         super(View, self).__init__()
         self.controller = controller
-        self.faces = None
-        self.edges = None
-        self.vertices = None
-
-    def __del__(self):
-        self.makeCurrent()
-        if self.faces:
-            glDeleteLists(self.faces, 1)
-        if self.edges:
-            glDeleteLists(self.edges, 1)
-        if self.vertices:
-            glDeleteLists(self.vertices, 1)
+        self.n = 0
+        self.v = 0
+        self.e = 0
+        self.f = 0
 
     @property
     def mesh(self):
@@ -223,15 +175,77 @@ class View(GLWidget):
         return self.controller.settings
 
     def paint(self):
+        for dl in self.display_lists:
+            glCallList(dl)
+
+        self.draw_buffers()
+
+    def draw_buffers(self):
+        if not self.buffers:
+            return
+
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glEnableClientState(GL_COLOR_ARRAY)
+
+        glBindBuffer(GL_ARRAY_BUFFER, self.buffers['xyz'])
+        glVertexPointer(3, GL_FLOAT, 0, None)
+
         if self.settings['faces.on']:
-            if self.faces:
-                glCallList(self.faces)
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:front'])
+            glColorPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:front'])
+            glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
+
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:back'])
+            glColorPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:back'])
+            glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
+
         if self.settings['edges.on']:
-            if self.edges:
-                glCallList(self.edges)
+            glLineWidth(self.settings['edges.width'])
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['edges.color'])
+            glColorPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['edges'])
+            glDrawElements(GL_LINES, self.e, GL_UNSIGNED_INT, None)
+
         if self.settings['vertices.on']:
-            if self.vertices:
-                glCallList(self.vertices)
+            pass
+
+        glDisableClientState(GL_COLOR_ARRAY)
+        glDisableClientState(GL_VERTEX_ARRAY)
+
+    def make_buffers(self):
+        xyz = list(flatten(self.mesh.get_vertices_attributes('xyz')))
+        vertices = list(self.mesh.vertices())
+        edges = list(flatten(self.mesh.edges()))
+        faces_front = list(flatten(self.mesh.face_vertices(fkey) for fkey in self.mesh.faces()))
+        faces_back = list(flatten(self.mesh.face_vertices(fkey)[::-1] for fkey in self.mesh.faces()))
+        vertices_color = list(flatten(hex_to_rgb(self.settings['vertices.color']) for key in self.mesh.vertices()))
+        edges_color = list(flatten(hex_to_rgb(self.settings['edges.color']) for key in self.mesh.vertices()))
+        faces_color_front = list(flatten(hex_to_rgb(self.settings['faces.color:front']) for key in self.mesh.vertices()))
+        faces_color_back = list(flatten(hex_to_rgb(self.settings['faces.color:back']) for key in self.mesh.vertices()))
+
+        self.buffers = {
+            'xyz'              : self.make_vertex_buffer(xyz, dynamic=False),
+            'vertices'         : self.make_element_buffer(vertices, dynamic=False),
+            'edges'            : self.make_element_buffer(edges, dynamic=False),
+            'faces:front'      : self.make_element_buffer(faces_front, dynamic=False),
+            'faces:back'       : self.make_element_buffer(faces_back, dynamic=False),
+            'vertices.color'   : self.make_vertex_buffer(vertices_color),
+            'edges.color'      : self.make_vertex_buffer(edges_color),
+            'faces.color:front': self.make_vertex_buffer(faces_color_front),
+            'faces.color:back' : self.make_vertex_buffer(faces_color_back),
+        }
+        self.n = len(xyz)
+        self.v = len(vertices)
+        self.e = len(edges)
+        self.f = len(faces_front)
+
+    def update_vertex_buffer(self):
+        pass
+
+    def update_element_buffer(self):
+        pass
 
 
 class MeshViewer(App):
@@ -310,15 +324,16 @@ if __name__ == '__main__':
             },
             {
                 'type'  : 'menu',
-                'text'  : '&Tools',
-                'items' : []
+                'text'  : '&Mesh',
+                'items' : [
+                    {'text' : 'From .obj', 'action': 'from_obj'},
+                    {'text' : 'From .json', 'action': 'from_json'}
+                ]
             },
             {
                 'type'  : 'menu',
-                'text'  : '&Mesh',
-                'items' : [
-                    {'text' : 'From .obj', 'action': 'from_obj'}
-                ]
+                'text'  : '&Tools',
+                'items' : []
             },
             {
                 'type'  : 'menu',
@@ -357,9 +372,9 @@ if __name__ == '__main__':
                         'type'  : 'group',
                         'text'  : None,
                         'items' : [
-                            {'type' : 'checkbox', 'text' : 'vertices', 'action' : 'toggle_vertices', 'state' : True, },
-                            {'type' : 'checkbox', 'text' : 'edges', 'action' : None, 'state' : True, },
-                            {'type' : 'checkbox', 'text' : 'faces', 'action' : None, 'state' : True, },
+                            {'type' : 'checkbox', 'text' : 'vertices', 'action' : None, 'state' : True, },
+                            {'type' : 'checkbox', 'text' : 'edges', 'action' : 'toggle_edges', 'state' : True, },
+                            {'type' : 'checkbox', 'text' : 'faces', 'action' : 'toggle_faces', 'state' : True, },
                         ]
                     },
                     {
