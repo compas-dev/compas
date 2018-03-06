@@ -28,6 +28,7 @@ from compas.utilities import flatten
 
 from compas.topology import mesh_quads_to_triangles
 from compas.topology import mesh_flip_cycles
+from compas.topology import mesh_subdivide
 
 from compas.viewers.core import Camera
 from compas.viewers.core import Mouse
@@ -251,14 +252,13 @@ class Front(Controller):
             attr['y'] -= cy
 
     # ==========================================================================
-    # callbacks
+    # constructors
     # ==========================================================================
 
     def from_obj(self):
         filename, _ = get_obj_file()
         if filename:
             self.mesh = Mesh.from_obj(filename)
-            mesh_quads_to_triangles(self.mesh)
             self.center_mesh()
             self.view.make_buffers()
             self.view.update()
@@ -267,17 +267,19 @@ class Front(Controller):
         filename, _ = get_json_file()
         if filename:
             self.mesh = Mesh.from_json(filename)
-            # mesh_quads_to_triangles(self.mesh)
             self.center_mesh()
             self.view.make_buffers()
             self.view.update()
 
     def from_polyhedron(self, f):
         self.mesh = Mesh.from_polyhedron(f)
-        # mesh_quads_to_triangles(self.mesh)
         self.center_mesh()
         self.view.make_buffers()
         self.view.update()
+
+    # ==========================================================================
+    # view
+    # ==========================================================================
 
     def zoom_extents(self):
         print('zoom extents')
@@ -287,6 +289,10 @@ class Front(Controller):
 
     def zoom_out(self):
         print('zoom out')
+
+    # ==========================================================================
+    # appearance
+    # ==========================================================================
 
     def slide_size_vertices(self, value):
         self.settings['vertices.size:value'] = value
@@ -304,6 +310,10 @@ class Front(Controller):
         self.settings['edges.width:value'] = value
         self.view.update()
 
+    # ==========================================================================
+    # visibility
+    # ==========================================================================
+
     def toggle_faces(self, state):
         self.settings['faces.on'] = state == QtCore.Qt.Checked
         self.view.update()
@@ -318,6 +328,10 @@ class Front(Controller):
 
     def toggle_normals(self, state):
         pass
+
+    # ==========================================================================
+    # color
+    # ==========================================================================
 
     def change_vertices_color(self, color):
         self.settings['vertices.color'] = color
@@ -343,10 +357,19 @@ class Front(Controller):
         self.view.update()
         self.app.main.activateWindow()
 
+    # ==========================================================================
+    # tools
+    # ==========================================================================
+
     def flip_normals(self):
         mesh_flip_cycles(self.mesh)
         self.view.update_element_buffer('faces:front', self.view.faces_front)
         self.view.update_element_buffer('faces:back', self.view.faces_back)
+        self.view.update()
+
+    def subdivide(self, scheme, k):
+        self.mesh = mesh_subdivide(self.mesh, scheme=scheme, k=k)
+        self.view.make_buffers()
         self.view.update()
 
 
@@ -400,12 +423,12 @@ if __name__ == '__main__':
                 'type'  : 'menu',
                 'text'  : '&Mesh',
                 'items' : [
-                    {'text' : 'From .obj', 'action': 'from_obj'},
-                    {'text' : 'From .json', 'action': 'from_json'},
+                    {'text' : 'Load .obj', 'action': 'from_obj'},
+                    {'text' : 'Load .json', 'action': 'from_json'},
                     {'type' : 'separator'},
                     {
                         'type' : 'menu',
-                        'text' : 'From Polyhedron',
+                        'text' : 'Polyhedrons',
                         'items': [
                             {'text': 'Tetrahedron', 'action': 'from_polyhedron', 'args': [4]},
                             {'text': 'Hexahedron', 'action': 'from_polyhedron', 'args': [6]},
@@ -420,7 +443,15 @@ if __name__ == '__main__':
                 'type'  : 'menu',
                 'text'  : '&Tools',
                 'items' : [
-                    {'text': 'Flip Normals', 'action': 'flip_normals'}
+                    {'text': 'Flip Normals', 'action': 'flip_normals'},
+                    {'type': 'separator'},
+                    {
+                        'type'  : 'menu',
+                        'text'  : 'Subdivision',
+                        'items' : [
+                            {'text': 'Catmull-Clark', 'action': 'subdivide', 'args': ['catmullclark', 1]}
+                        ]
+                    }
                 ]
             },
             {
