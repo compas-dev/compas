@@ -51,6 +51,10 @@ class GLWidget(QOpenGLWidget):
         for dl in self.display_lists:
             glDeleteLists(dl, 1)
 
+    # ==========================================================================
+    # buffers
+    # ==========================================================================
+
     def make_vertex_buffer(self, data, dynamic=True):
         d = len(data)
         b = glGenBuffers(1)

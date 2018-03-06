@@ -2,11 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# import ctypes
-
 from functools import partial
-
-from numpy import array
 
 try:
     import PySide2
@@ -32,17 +28,11 @@ from compas.utilities import flatten
 
 from compas.topology import mesh_quads_to_triangles
 
-from compas.viewers.core import xdraw_polygons
-from compas.viewers.core import xdraw_lines
-from compas.viewers.core import xdraw_points
-from compas.viewers.core import xdraw_texts
-from compas.viewers.core import xdraw_cylinders
-from compas.viewers.core import xdraw_spheres
-
 from compas.viewers.core import Camera
 from compas.viewers.core import Mouse
 from compas.viewers.core import Grid
 from compas.viewers.core import Axes
+
 from compas.viewers.core import GLWidget
 from compas.viewers.core import App
 from compas.viewers.core import Controller
@@ -74,19 +64,31 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = ['MeshViewer', ]
 
 
-def center_mesh(mesh):
-    xyz = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    cx, cy, cz = centroid_points(xyz)
-    for key, attr in mesh.vertices(True):
-        attr['x'] -= cx
-        attr['y'] -= cy
+class MeshViewer(App):
+    """"""
+
+    def __init__(self, config, width=1440, height=900):
+        super(MeshViewer, self).__init__()
+        self.config = config
+        self.controller = Front(self)
+        self.view = View(self.controller)
+        self.setup(width, height)
+        self.init()
 
 
 class Front(Controller):
 
     settings = {}
-    settings['vertices.size'] = 0.01
-    settings['edges.width'] = 0.01
+    settings['vertices.size:value'] = 1.0
+    settings['vertices.size:minval'] = 1
+    settings['vertices.size:maxval'] = 100
+    settings['vertices.size:step'] = 1
+    settings['vertices.size:scale'] = 0.1
+    settings['edges.width:value'] = 1.0
+    settings['edges.width:minval'] = 1
+    settings['edges.width:maxval'] = 10
+    settings['edges.width:step'] = 1
+    settings['edges.width:scale'] = 1.0
     settings['vertices.color'] = '#000000'
     settings['edges.color'] = '#666666'
     settings['faces.color:front'] = '#eeeeee'
@@ -108,12 +110,19 @@ class Front(Controller):
     def view(self):
         return self.app.view
 
+    def center_mesh(self):
+        xyz = [self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()]
+        cx, cy, cz = centroid_points(xyz)
+        for key, attr in self.mesh.vertices(True):
+            attr['x'] -= cx
+            attr['y'] -= cy
+
     def from_obj(self):
         filename, _ = get_obj_file()
         if filename:
             self.mesh = Mesh.from_obj(filename)
             mesh_quads_to_triangles(self.mesh)
-            center_mesh(self.mesh)
+            self.center_mesh()
             self.view.make_buffers()
             self.view.update()
 
@@ -122,7 +131,7 @@ class Front(Controller):
         if filename:
             self.mesh = Mesh.from_json(filename)
             mesh_quads_to_triangles(self.mesh)
-            center_mesh(self.mesh)
+            self.center_mesh()
             self.view.make_buffers()
             self.view.update()
 
@@ -139,11 +148,19 @@ class Front(Controller):
         print('zoom out')
 
     def slide_size_vertices(self, value):
-        self.settings['vertices.size'] = value
+        self.settings['vertices.size:value'] = value
         self.view.update()
 
     def edit_size_vertices(self, value):
-        self.settings['vertices.size'] = value
+        self.settings['vertices.size:value'] = value
+        self.view.update()
+
+    def slide_width_edges(self, value):
+        self.settings['edges.width:value'] = value
+        self.view.update()
+
+    def edit_width_edges(self, value):
+        self.settings['edges.width:value'] = value
         self.view.update()
 
     def toggle_faces(self, state):
@@ -152,6 +169,10 @@ class Front(Controller):
 
     def toggle_edges(self, state):
         self.settings['edges.on'] = state == QtCore.Qt.Checked
+        self.view.update()
+
+    def toggle_vertices(self, state):
+        self.settings['vertices.on'] = state == QtCore.Qt.Checked
         self.view.update()
 
 
@@ -180,40 +201,6 @@ class View(GLWidget):
 
         self.draw_buffers()
 
-    def draw_buffers(self):
-        if not self.buffers:
-            return
-
-        glEnableClientState(GL_VERTEX_ARRAY)
-        glEnableClientState(GL_COLOR_ARRAY)
-
-        glBindBuffer(GL_ARRAY_BUFFER, self.buffers['xyz'])
-        glVertexPointer(3, GL_FLOAT, 0, None)
-
-        if self.settings['faces.on']:
-            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:front'])
-            glColorPointer(3, GL_FLOAT, 0, None)
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:front'])
-            glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
-
-            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:back'])
-            glColorPointer(3, GL_FLOAT, 0, None)
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:back'])
-            glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
-
-        if self.settings['edges.on']:
-            glLineWidth(self.settings['edges.width'])
-            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['edges.color'])
-            glColorPointer(3, GL_FLOAT, 0, None)
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['edges'])
-            glDrawElements(GL_LINES, self.e, GL_UNSIGNED_INT, None)
-
-        if self.settings['vertices.on']:
-            pass
-
-        glDisableClientState(GL_COLOR_ARRAY)
-        glDisableClientState(GL_VERTEX_ARRAY)
-
     def make_buffers(self):
         xyz = list(flatten(self.mesh.get_vertices_attributes('xyz')))
         vertices = list(self.mesh.vertices())
@@ -241,23 +228,49 @@ class View(GLWidget):
         self.e = len(edges)
         self.f = len(faces_front)
 
-    def update_vertex_buffer(self):
+    def update_vertex_buffer(self, name, data):
         pass
 
     def update_element_buffer(self):
         pass
 
+    def draw_buffers(self):
+        if not self.buffers:
+            return
 
-class MeshViewer(App):
-    """"""
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glEnableClientState(GL_COLOR_ARRAY)
 
-    def __init__(self, config, width=1440, height=900):
-        super(MeshViewer, self).__init__()
-        self.config = config
-        self.controller = Front(self)
-        self.view = View(self.controller)
-        self.setup(width, height)
-        self.init()
+        glBindBuffer(GL_ARRAY_BUFFER, self.buffers['xyz'])
+        glVertexPointer(3, GL_FLOAT, 0, None)
+
+        if self.settings['faces.on']:
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:front'])
+            glColorPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:front'])
+            glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
+
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:back'])
+            glColorPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:back'])
+            glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
+
+        if self.settings['edges.on']:
+            glLineWidth(self.settings['edges.width:value'])
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['vertices.color'])
+            glColorPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['edges'])
+            glDrawElements(GL_LINES, self.e, GL_UNSIGNED_INT, None)
+
+        if self.settings['vertices.on']:
+            glPointSize(self.settings['vertices.size:value'])
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['vertices.color'])
+            glColorPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['vertices'])
+            glDrawElements(GL_POINTS, self.v, GL_UNSIGNED_INT, None)
+
+        glDisableClientState(GL_COLOR_ARRAY)
+        glDisableClientState(GL_VERTEX_ARRAY)
 
 
 # ==============================================================================
@@ -268,22 +281,6 @@ if __name__ == '__main__':
 
     config = {
         'menubar': [
-            {
-                'type'  : 'menu',
-                'text'  : '&File',
-                'items' : [
-                    {'text' : '&New', 'action' : None},
-                    {'text' : '&Open', 'action' : None},
-                    {'type' : 'separator'},
-                    {'text' : '&Save', 'action' : None},
-                    {'text' : '&Save As', 'action' : None}
-                ]
-            },
-            {
-                'type'  : 'menu',
-                'text'  : '&Edit',
-                'items' : []
-            },
             {
                 'type'  : 'menu',
                 'text'  : '&View',
@@ -327,13 +324,17 @@ if __name__ == '__main__':
                 'text'  : '&Mesh',
                 'items' : [
                     {'text' : 'From .obj', 'action': 'from_obj'},
-                    {'text' : 'From .json', 'action': 'from_json'}
+                    {'text' : 'From .json', 'action': 'from_json'},
+                    {'type' : 'separator'},
+                    {'text' : 'From Polyhedron', 'action': 'from_polyhedron'},
+                    {'type' : 'separator'},
                 ]
             },
             {
                 'type'  : 'menu',
                 'text'  : '&Tools',
-                'items' : []
+                'items' : [
+                ]
             },
             {
                 'type'  : 'menu',
@@ -372,20 +373,20 @@ if __name__ == '__main__':
                         'type'  : 'group',
                         'text'  : None,
                         'items' : [
-                            {'type' : 'checkbox', 'text' : 'vertices', 'action' : None, 'state' : True, },
+                            {'type' : 'checkbox', 'text' : 'vertices', 'action' : 'toggle_vertices', 'state' : True, },
                             {'type' : 'checkbox', 'text' : 'edges', 'action' : 'toggle_edges', 'state' : True, },
                             {'type' : 'checkbox', 'text' : 'faces', 'action' : 'toggle_faces', 'state' : True, },
                         ]
                     },
-                    {
-                        'type'  : 'group',
-                        'text'  : None,
-                        'items' : [
-                            {'type' : 'checkbox', 'text' : 'label vertices', 'action' : None, 'state' : True, },
-                            {'type' : 'checkbox', 'text' : 'label edges', 'action' : None, 'state' : True, },
-                            {'type' : 'checkbox', 'text' : 'label faces', 'action' : None, 'state' : True, },
-                        ]
-                    }
+                    # {
+                    #     'type'  : 'group',
+                    #     'text'  : None,
+                    #     'items' : [
+                    #         {'type' : 'checkbox', 'text' : 'label vertices', 'action' : None, 'state' : True, },
+                    #         {'type' : 'checkbox', 'text' : 'label edges', 'action' : None, 'state' : True, },
+                    #         {'type' : 'checkbox', 'text' : 'label faces', 'action' : None, 'state' : True, },
+                    #     ]
+                    # }
                 ]
             },
             {
@@ -408,13 +409,24 @@ if __name__ == '__main__':
                             {
                                 'type'   : 'slider',
                                 'text'   : 'size vertices',
-                                'value'  : 0.01,
-                                'minval' : 1,
-                                'maxval' : 100,
-                                'step'   : 1,
-                                'scale'  : 0.01,
+                                'value'  : Front.settings['vertices.size:value'],
+                                'minval' : Front.settings['vertices.size:minval'],
+                                'maxval' : Front.settings['vertices.size:maxval'],
+                                'step'   : Front.settings['vertices.size:step'],
+                                'scale'  : Front.settings['vertices.size:scale'],
                                 'slide'  : 'slide_size_vertices',
                                 'edit'   : 'edit_size_vertices',
+                            },
+                            {
+                                'type'   : 'slider',
+                                'text'   : 'width edges',
+                                'value'  : Front.settings['edges.width:value'],
+                                'minval' : Front.settings['edges.width:minval'],
+                                'maxval' : Front.settings['edges.width:maxval'],
+                                'step'   : Front.settings['edges.width:step'],
+                                'scale'  : Front.settings['edges.width:scale'],
+                                'slide'  : 'slide_width_edges',
+                                'edit'   : 'edit_width_edges',
                             }
                         ]
                     }
