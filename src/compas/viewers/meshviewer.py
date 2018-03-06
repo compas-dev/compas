@@ -27,6 +27,7 @@ from compas.utilities import hex_to_rgb
 from compas.utilities import flatten
 
 from compas.topology import mesh_quads_to_triangles
+from compas.topology import mesh_flip_cycles
 
 from compas.viewers.core import Camera
 from compas.viewers.core import Mouse
@@ -76,134 +77,6 @@ class MeshViewer(App):
         self.init()
 
 
-class Front(Controller):
-
-    settings = {}
-    settings['vertices.size:value'] = 1.0
-    settings['vertices.size:minval'] = 1
-    settings['vertices.size:maxval'] = 100
-    settings['vertices.size:step'] = 1
-    settings['vertices.size:scale'] = 0.1
-    settings['edges.width:value'] = 1.0
-    settings['edges.width:minval'] = 1
-    settings['edges.width:maxval'] = 10
-    settings['edges.width:step'] = 1
-    settings['edges.width:scale'] = 1.0
-    settings['vertices.color'] = '#000000'
-    settings['edges.color'] = '#666666'
-    settings['faces.color:front'] = '#eeeeee'
-    settings['faces.color:back'] = '#eeeeee'
-    settings['vertices.on'] = True
-    settings['edges.on'] = True
-    settings['faces.on'] = True
-    settings['vertices.labels.on'] = False
-    settings['edges.labels.on'] = False
-    settings['faces.labels.on'] = False
-    settings['vertices.normals.on'] = False
-    settings['faces.normals.on'] = False
-
-    def __init__(self, app):
-        super(Front, self).__init__(app)
-        self.mesh = None
-
-    @property
-    def view(self):
-        return self.app.view
-
-    def center_mesh(self):
-        xyz = [self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()]
-        cx, cy, cz = centroid_points(xyz)
-        for key, attr in self.mesh.vertices(True):
-            attr['x'] -= cx
-            attr['y'] -= cy
-
-    def from_obj(self):
-        filename, _ = get_obj_file()
-        if filename:
-            self.mesh = Mesh.from_obj(filename)
-            mesh_quads_to_triangles(self.mesh)
-            self.center_mesh()
-            self.view.make_buffers()
-            self.view.update()
-
-    def from_json(self):
-        filename, _ = get_json_file()
-        if filename:
-            self.mesh = Mesh.from_json(filename)
-            mesh_quads_to_triangles(self.mesh)
-            self.center_mesh()
-            self.view.make_buffers()
-            self.view.update()
-
-    def from_polyhedron(self, f):
-        self.mesh = Mesh.from_polyhedron(f)
-        mesh_quads_to_triangles(self.mesh)
-        self.center_mesh()
-        self.view.make_buffers()
-        self.view.update()
-
-    def zoom_extents(self):
-        print('zoom extents')
-
-    def zoom_in(self):
-        print('zoom in')
-
-    def zoom_out(self):
-        print('zoom out')
-
-    def slide_size_vertices(self, value):
-        self.settings['vertices.size:value'] = value
-        self.view.update()
-
-    def edit_size_vertices(self, value):
-        self.settings['vertices.size:value'] = value
-        self.view.update()
-
-    def slide_width_edges(self, value):
-        self.settings['edges.width:value'] = value
-        self.view.update()
-
-    def edit_width_edges(self, value):
-        self.settings['edges.width:value'] = value
-        self.view.update()
-
-    def toggle_faces(self, state):
-        self.settings['faces.on'] = state == QtCore.Qt.Checked
-        self.view.update()
-
-    def toggle_edges(self, state):
-        self.settings['edges.on'] = state == QtCore.Qt.Checked
-        self.view.update()
-
-    def toggle_vertices(self, state):
-        self.settings['vertices.on'] = state == QtCore.Qt.Checked
-        self.view.update()
-
-    def change_vertices_color(self, color):
-        self.settings['vertices.color'] = color
-        self.view.update_vertex_buffer('vertices.color', self.view.vertices_color)
-        self.view.update()
-        self.app.main.activateWindow()
-
-    def change_edges_color(self, color):
-        self.settings['edges.color'] = color
-        self.view.update_vertex_buffer('edges.color', self.view.edges_color)
-        self.view.update()
-        self.app.main.activateWindow()
-
-    def change_faces_color_front(self, color):
-        self.settings['faces.color:front'] = color
-        self.view.update_vertex_buffer('faces.color:front', self.view.faces_color_front)
-        self.view.update()
-        self.app.main.activateWindow()
-
-    def change_faces_color_back(self, color):
-        self.settings['faces.color:back'] = color
-        self.view.update_vertex_buffer('faces.color:back', self.view.faces_color_back)
-        self.view.update()
-        self.app.main.activateWindow()
-
-
 class View(GLWidget):
     """"""
 
@@ -219,6 +92,8 @@ class View(GLWidget):
     def mesh(self):
         return self.controller.mesh
 
+    # move these to local custom class of mesh?
+
     @property
     def xyz(self):
         return list(flatten(self.mesh.get_vertices_attributes('xyz')))
@@ -232,12 +107,26 @@ class View(GLWidget):
         return list(flatten(self.mesh.edges()))
 
     @property
+    def faces(self):
+        faces = []
+        for fkey in self.mesh.faces():
+            vertices = self.mesh.face_vertices(fkey)
+            if len(vertices) == 4:
+                a, b, c, d = vertices
+                faces.append([a, b, c])
+                faces.append([c, d, a])
+                continue
+            if len(vertices) == 3:
+                faces.append(vertices)
+        return faces
+
+    @property
     def faces_front(self):
-        return list(flatten(self.mesh.face_vertices(fkey) for fkey in self.mesh.faces()))
+        return list(flatten(self.faces))
 
     @property
     def faces_back(self):
-        return list(flatten(self.mesh.face_vertices(fkey)[::-1] for fkey in self.mesh.faces()))
+        return list(flatten(face[::-1] for face in self.faces))
 
     @property
     def vertices_color(self):
@@ -282,12 +171,6 @@ class View(GLWidget):
         self.e = len(self.edges)
         self.f = len(self.faces_front)
 
-    def update_vertex_buffer(self, name, data):
-        self.buffers[name] = self.make_vertex_buffer(data, dynamic=True)
-
-    def update_element_buffer(self):
-        pass
-
     def draw_buffers(self):
         if not self.buffers:
             return
@@ -324,6 +207,147 @@ class View(GLWidget):
 
         glDisableClientState(GL_COLOR_ARRAY)
         glDisableClientState(GL_VERTEX_ARRAY)
+
+
+class Front(Controller):
+
+    settings = {}
+    settings['vertices.size:value'] = 1.0
+    settings['vertices.size:minval'] = 1
+    settings['vertices.size:maxval'] = 100
+    settings['vertices.size:step'] = 1
+    settings['vertices.size:scale'] = 0.1
+    settings['edges.width:value'] = 1.0
+    settings['edges.width:minval'] = 1
+    settings['edges.width:maxval'] = 100
+    settings['edges.width:step'] = 1
+    settings['edges.width:scale'] = 0.1
+    settings['vertices.color'] = '#0092d2'
+    settings['edges.color'] = '#666666'
+    settings['faces.color:front'] = '#eeeeee'
+    settings['faces.color:back'] = '#ff5e99'
+    settings['vertices.on'] = True
+    settings['edges.on'] = True
+    settings['faces.on'] = True
+    settings['vertices.labels.on'] = False
+    settings['edges.labels.on'] = False
+    settings['faces.labels.on'] = False
+    settings['vertices.normals.on'] = False
+    settings['faces.normals.on'] = False
+
+    def __init__(self, app):
+        super(Front, self).__init__(app)
+        self.mesh = None
+
+    @property
+    def view(self):
+        return self.app.view
+
+    def center_mesh(self):
+        xyz = [self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()]
+        cx, cy, cz = centroid_points(xyz)
+        for key, attr in self.mesh.vertices(True):
+            attr['x'] -= cx
+            attr['y'] -= cy
+
+    # ==========================================================================
+    # callbacks
+    # ==========================================================================
+
+    def from_obj(self):
+        filename, _ = get_obj_file()
+        if filename:
+            self.mesh = Mesh.from_obj(filename)
+            mesh_quads_to_triangles(self.mesh)
+            self.center_mesh()
+            self.view.make_buffers()
+            self.view.update()
+
+    def from_json(self):
+        filename, _ = get_json_file()
+        if filename:
+            self.mesh = Mesh.from_json(filename)
+            # mesh_quads_to_triangles(self.mesh)
+            self.center_mesh()
+            self.view.make_buffers()
+            self.view.update()
+
+    def from_polyhedron(self, f):
+        self.mesh = Mesh.from_polyhedron(f)
+        # mesh_quads_to_triangles(self.mesh)
+        self.center_mesh()
+        self.view.make_buffers()
+        self.view.update()
+
+    def zoom_extents(self):
+        print('zoom extents')
+
+    def zoom_in(self):
+        print('zoom in')
+
+    def zoom_out(self):
+        print('zoom out')
+
+    def slide_size_vertices(self, value):
+        self.settings['vertices.size:value'] = value
+        self.view.update()
+
+    def edit_size_vertices(self, value):
+        self.settings['vertices.size:value'] = value
+        self.view.update()
+
+    def slide_width_edges(self, value):
+        self.settings['edges.width:value'] = value
+        self.view.update()
+
+    def edit_width_edges(self, value):
+        self.settings['edges.width:value'] = value
+        self.view.update()
+
+    def toggle_faces(self, state):
+        self.settings['faces.on'] = state == QtCore.Qt.Checked
+        self.view.update()
+
+    def toggle_edges(self, state):
+        self.settings['edges.on'] = state == QtCore.Qt.Checked
+        self.view.update()
+
+    def toggle_vertices(self, state):
+        self.settings['vertices.on'] = state == QtCore.Qt.Checked
+        self.view.update()
+
+    def toggle_normals(self, state):
+        pass
+
+    def change_vertices_color(self, color):
+        self.settings['vertices.color'] = color
+        self.view.update_vertex_buffer('vertices.color', self.view.vertices_color)
+        self.view.update()
+        self.app.main.activateWindow()
+
+    def change_edges_color(self, color):
+        self.settings['edges.color'] = color
+        self.view.update_vertex_buffer('edges.color', self.view.edges_color)
+        self.view.update()
+        self.app.main.activateWindow()
+
+    def change_faces_color_front(self, color):
+        self.settings['faces.color:front'] = color
+        self.view.update_vertex_buffer('faces.color:front', self.view.faces_color_front)
+        self.view.update()
+        self.app.main.activateWindow()
+
+    def change_faces_color_back(self, color):
+        self.settings['faces.color:back'] = color
+        self.view.update_vertex_buffer('faces.color:back', self.view.faces_color_back)
+        self.view.update()
+        self.app.main.activateWindow()
+
+    def flip_normals(self):
+        mesh_flip_cycles(self.mesh)
+        self.view.update_element_buffer('faces:front', self.view.faces_front)
+        self.view.update_element_buffer('faces:back', self.view.faces_back)
+        self.view.update()
 
 
 # ==============================================================================
@@ -396,6 +420,7 @@ if __name__ == '__main__':
                 'type'  : 'menu',
                 'text'  : '&Tools',
                 'items' : [
+                    {'text': 'Flip Normals', 'action': 'flip_normals'}
                 ]
             },
             {
@@ -440,13 +465,20 @@ if __name__ == '__main__':
                             {'type' : 'checkbox', 'text' : 'faces', 'action' : 'toggle_faces', 'state' : True, },
                         ]
                     },
+                    {
+                        'type'  : 'group',
+                        'text'  : None,
+                        'items' : [
+                            {'type' : 'checkbox', 'text' : 'normals', 'action' : 'toggle_normals', 'state' : False, },
+                        ]
+                    },
                     # {
                     #     'type'  : 'group',
                     #     'text'  : None,
                     #     'items' : [
-                    #         {'type' : 'checkbox', 'text' : 'label vertices', 'action' : None, 'state' : True, },
-                    #         {'type' : 'checkbox', 'text' : 'label edges', 'action' : None, 'state' : True, },
-                    #         {'type' : 'checkbox', 'text' : 'label faces', 'action' : None, 'state' : True, },
+                    #         {'type' : 'checkbox', 'text' : 'label vertices', 'action' : None, 'state' : False, },
+                    #         {'type' : 'checkbox', 'text' : 'label edges', 'action' : None, 'state' : False, },
+                    #         {'type' : 'checkbox', 'text' : 'label faces', 'action' : None, 'state' : False, },
                     #     ]
                     # }
                 ]

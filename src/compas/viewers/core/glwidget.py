@@ -73,6 +73,12 @@ class GLWidget(QOpenGLWidget):
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * i, cindices, usage)
         return b
 
+    def update_vertex_buffer(self, name, data):
+        self.buffers[name] = self.make_vertex_buffer(data, dynamic=True)
+
+    def update_element_buffer(self, name, indices):
+        self.buffers[name] = self.make_element_buffer(indices, dynamic=False)
+
     # ==========================================================================
     # inititlisation
     # ==========================================================================
