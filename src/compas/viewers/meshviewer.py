@@ -57,6 +57,10 @@ get_json_file = partial(
 hex_to_rgb = partial(hex_to_rgb, normalize=True)
 
 
+def flist(items):
+    return list(flatten(items))
+
+
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -93,61 +97,69 @@ class View(GLWidget):
     def mesh(self):
         return self.controller.mesh
 
-    # move these to local custom class of mesh?
-
     @property
-    def xyz(self):
-        return list(flatten(self.mesh.get_vertices_attributes('xyz')))
+    def settings(self):
+        return self.controller.settings
 
-    @property
-    def vertices(self):
-        return list(self.mesh.vertices())
-
-    @property
-    def edges(self):
-        return list(flatten(self.mesh.edges()))
+    # ==========================================================================
+    # arrays
+    # ==========================================================================
 
     @property
     def faces(self):
         faces = []
         for fkey in self.mesh.faces():
             vertices = self.mesh.face_vertices(fkey)
+            if len(vertices) == 3:
+                faces.append(vertices)
+                continue
             if len(vertices) == 4:
                 a, b, c, d = vertices
                 faces.append([a, b, c])
                 faces.append([c, d, a])
                 continue
-            if len(vertices) == 3:
-                faces.append(vertices)
+            raise NotImplementedError
         return faces
 
     @property
-    def faces_front(self):
-        return list(flatten(self.faces))
+    def array_xyz(self):
+        return flist(self.mesh.get_vertices_attributes('xyz'))
 
     @property
-    def faces_back(self):
-        return list(flatten(face[::-1] for face in self.faces))
+    def array_vertices(self):
+        return list(self.mesh.vertices())
 
     @property
-    def vertices_color(self):
-        return list(flatten(hex_to_rgb(self.settings['vertices.color']) for key in self.mesh.vertices()))
+    def array_edges(self):
+        return flist(self.mesh.edges())
 
     @property
-    def edges_color(self):
-        return list(flatten(hex_to_rgb(self.settings['edges.color']) for key in self.mesh.vertices()))
+    def array_faces_front(self):
+        return flist(self.faces)
 
     @property
-    def faces_color_front(self):
-        return list(flatten(hex_to_rgb(self.settings['faces.color:front']) for key in self.mesh.vertices()))
+    def array_faces_back(self):
+        return flist(face[::-1] for face in self.faces)
 
     @property
-    def faces_color_back(self):
-        return list(flatten(hex_to_rgb(self.settings['faces.color:back']) for key in self.mesh.vertices()))
+    def array_vertices_color(self):
+        return flist(hex_to_rgb(self.settings['vertices.color']) for key in self.mesh.vertices())
 
     @property
-    def settings(self):
-        return self.controller.settings
+    def array_edges_color(self):
+        return flist(hex_to_rgb(self.settings['edges.color']) for key in self.mesh.vertices())
+
+    @property
+    def array_faces_color_front(self):
+        return flist(hex_to_rgb(self.settings['faces.color:front']) for key in self.mesh.vertices())
+
+    @property
+    def array_faces_color_back(self):
+        return flist(hex_to_rgb(self.settings['faces.color:back']) for key in self.mesh.vertices())
+
+    # ==========================================================================
+    # painting
+    # ==========================================================================
 
     def paint(self):
         for dl in self.display_lists:
@@ -157,20 +169,20 @@ class View(GLWidget):
 
     def make_buffers(self):
         self.buffers = {
-            'xyz'              : self.make_vertex_buffer(self.xyz, dynamic=False),
-            'vertices'         : self.make_element_buffer(self.vertices, dynamic=False),
-            'edges'            : self.make_element_buffer(self.edges, dynamic=False),
-            'faces:front'      : self.make_element_buffer(self.faces_front, dynamic=False),
-            'faces:back'       : self.make_element_buffer(self.faces_back, dynamic=False),
-            'vertices.color'   : self.make_vertex_buffer(self.vertices_color),
-            'edges.color'      : self.make_vertex_buffer(self.edges_color),
-            'faces.color:front': self.make_vertex_buffer(self.faces_color_front),
-            'faces.color:back' : self.make_vertex_buffer(self.faces_color_back),
+            'xyz'              : self.make_vertex_buffer(self.array_xyz),
+            'vertices'         : self.make_index_buffer(self.array_vertices),
+            'edges'            : self.make_index_buffer(self.array_edges),
+            'faces:front'      : self.make_index_buffer(self.array_faces_front),
+            'faces:back'       : self.make_index_buffer(self.array_faces_back),
+            'vertices.color'   : self.make_vertex_buffer(self.array_vertices_color, dynamic=True),
+            'edges.color'      : self.make_vertex_buffer(self.array_edges_color, dynamic=True),
+            'faces.color:front': self.make_vertex_buffer(self.array_faces_color_front, dynamic=True),
+            'faces.color:back' : self.make_vertex_buffer(self.array_faces_color_back, dynamic=True),
         }
-        self.n = len(self.xyz)
-        self.v = len(self.vertices)
-        self.e = len(self.edges)
-        self.f = len(self.faces_front)
+        self.n = len(self.array_xyz)
+        self.v = len(self.array_vertices)
+        self.e = len(self.array_edges)
+        self.f = len(self.array_faces_front)
 
     def draw_buffers(self):
         if not self.buffers:
@@ -185,24 +197,31 @@ class View(GLWidget):
         if self.settings['faces.on']:
             glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:front'])
             glColorPointer(3, GL_FLOAT, 0, None)
+
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:front'])
             glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
+
             glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:back'])
             glColorPointer(3, GL_FLOAT, 0, None)
+
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:back'])
             glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
 
         if self.settings['edges.on']:
             glLineWidth(self.settings['edges.width:value'])
+
             glBindBuffer(GL_ARRAY_BUFFER, self.buffers['edges.color'])
             glColorPointer(3, GL_FLOAT, 0, None)
+
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['edges'])
             glDrawElements(GL_LINES, self.e, GL_UNSIGNED_INT, None)
 
         if self.settings['vertices.on']:
             glPointSize(self.settings['vertices.size:value'])
+
             glBindBuffer(GL_ARRAY_BUFFER, self.buffers['vertices.color'])
             glColorPointer(3, GL_FLOAT, 0, None)
+
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['vertices'])
             glDrawElements(GL_POINTS, self.v, GL_UNSIGNED_INT, None)
 
@@ -218,23 +237,34 @@ class Front(Controller):
     settings['vertices.size:maxval'] = 100
     settings['vertices.size:step'] = 1
     settings['vertices.size:scale'] = 0.1
+
     settings['edges.width:value'] = 1.0
     settings['edges.width:minval'] = 1
     settings['edges.width:maxval'] = 100
     settings['edges.width:step'] = 1
     settings['edges.width:scale'] = 0.1
+
+    settings['normals.scale:value'] = 1.0
+    settings['normals.scale:minval'] = 1
+    settings['normals.scale:maxval'] = 100
+    settings['normals.scale:step'] = 1
+    settings['normals.scale:scale'] = 0.1
+
     settings['vertices.color'] = '#0092d2'
     settings['edges.color'] = '#666666'
     settings['faces.color:front'] = '#eeeeee'
     settings['faces.color:back'] = '#ff5e99'
+    settings['normals.color'] = '#0092d2'
+
     settings['vertices.on'] = True
     settings['edges.on'] = True
     settings['faces.on'] = True
+
+    settings['normals.on'] = False
+
     settings['vertices.labels.on'] = False
     settings['edges.labels.on'] = False
     settings['faces.labels.on'] = False
-    settings['vertices.normals.on'] = False
-    settings['faces.normals.on'] = False
 
     def __init__(self, app):
         super(Front, self).__init__(app)
@@ -310,6 +340,14 @@ class Front(Controller):
         self.settings['edges.width:value'] = value
         self.view.update()
 
+    def slide_scale_normals(self, value):
+        self.settings['normals.scale:value'] = value
+        self.view.update()
+
+    def edit_scale_normals(self, value):
+        self.settings['normals.scale:value'] = value
+        self.view.update()
+
     # ==========================================================================
     # visibility
     # ==========================================================================
@@ -327,7 +365,8 @@ class Front(Controller):
         self.view.update()
 
     def toggle_normals(self, state):
-        pass
+        self.settings['normals.on'] = state == QtCore.Qt.Checked
+        self.view.update()
 
     # ==========================================================================
     # color
@@ -335,25 +374,31 @@ class Front(Controller):
 
     def change_vertices_color(self, color):
         self.settings['vertices.color'] = color
-        self.view.update_vertex_buffer('vertices.color', self.view.vertices_color)
+        self.view.update_vertex_buffer('vertices.color', self.view.array_vertices_color)
         self.view.update()
         self.app.main.activateWindow()
 
     def change_edges_color(self, color):
         self.settings['edges.color'] = color
-        self.view.update_vertex_buffer('edges.color', self.view.edges_color)
+        self.view.update_vertex_buffer('edges.color', self.view.array_edges_color)
         self.view.update()
         self.app.main.activateWindow()
 
     def change_faces_color_front(self, color):
         self.settings['faces.color:front'] = color
-        self.view.update_vertex_buffer('faces.color:front', self.view.faces_color_front)
+        self.view.update_vertex_buffer('faces.color:front', self.view.array_faces_color_front)
         self.view.update()
         self.app.main.activateWindow()
 
     def change_faces_color_back(self, color):
         self.settings['faces.color:back'] = color
-        self.view.update_vertex_buffer('faces.color:back', self.view.faces_color_back)
+        self.view.update_vertex_buffer('faces.color:back', self.view.array_faces_color_back)
+        self.view.update()
+        self.app.main.activateWindow()
+
+    def change_normals_color(self, color):
+        self.settings['normals.color'] = color
+        self.view.update_vertex_buffer('normals.color', self.view.array_normals_color)
         self.view.update()
         self.app.main.activateWindow()
 
@@ -361,10 +406,13 @@ class Front(Controller):
     # tools
     # ==========================================================================
 
+    # open dialog or panel for additional options
+    # set options and apply
+
     def flip_normals(self):
         mesh_flip_cycles(self.mesh)
-        self.view.update_element_buffer('faces:front', self.view.faces_front)
-        self.view.update_element_buffer('faces:back', self.view.faces_back)
+        self.view.update_index_buffer('faces:front', self.view.array_faces_front)
+        self.view.update_index_buffer('faces:back', self.view.array_faces_back)
         self.view.update()
 
     def subdivide(self, scheme, k):
@@ -423,8 +471,8 @@ if __name__ == '__main__':
                 'type'  : 'menu',
                 'text'  : '&Mesh',
                 'items' : [
-                    {'text' : 'Load .obj', 'action': 'from_obj'},
-                    {'text' : 'Load .json', 'action': 'from_json'},
+                    {'text' : 'Load OBJ', 'action': 'from_obj'},
+                    {'text' : 'Load JSON', 'action': 'from_json'},
                     {'type' : 'separator'},
                     {
                         'type' : 'menu',

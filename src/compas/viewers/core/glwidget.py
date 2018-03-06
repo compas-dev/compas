@@ -55,7 +55,7 @@ class GLWidget(QOpenGLWidget):
     # buffers
     # ==========================================================================
 
-    def make_vertex_buffer(self, data, dynamic=True):
+    def make_vertex_buffer(self, data, dynamic=False):
         d = len(data)
         b = glGenBuffers(1)
         cdata = (ctypes.c_float * d)(* data)
@@ -64,7 +64,7 @@ class GLWidget(QOpenGLWidget):
         glBufferData(GL_ARRAY_BUFFER, 4 * d, cdata, usage)
         return b
 
-    def make_element_buffer(self, indices, dynamic=True):
+    def make_index_buffer(self, indices, dynamic=False):
         i = len(indices)
         b = glGenBuffers(1)
         cindices = (ctypes.c_uint * i)(* indices)
@@ -76,8 +76,8 @@ class GLWidget(QOpenGLWidget):
     def update_vertex_buffer(self, name, data):
         self.buffers[name] = self.make_vertex_buffer(data, dynamic=True)
 
-    def update_element_buffer(self, name, indices):
-        self.buffers[name] = self.make_element_buffer(indices, dynamic=False)
+    def update_index_buffer(self, name, indices):
+        self.buffers[name] = self.make_index_buffer(indices, dynamic=True)
 
     # ==========================================================================
     # inititlisation

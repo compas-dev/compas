@@ -47,6 +47,12 @@ class Camera(object):
     def zoom(self, steps=1):
         self.tz -= steps * self.tz * self.dt
 
+    def zoom_extents(self):
+        pass
+
+    def set_view(self):
+        pass
+
     def rotate(self):
         dx = self.view.mouse.dx()
         dy = self.view.mouse.dy()
