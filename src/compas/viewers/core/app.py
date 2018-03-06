@@ -144,7 +144,7 @@ class App(QtWidgets.QApplication):
             button = ColorButton(item['text'],
                                  color=item['value'],
                                  size=item.get('size'),
-                                 action=item.get('action'))
+                                 action=getattr(self.controller, item.get('action')))
             parent.addLayout(button.layout)
 
         self.sidebar = QtWidgets.QDockWidget('Sidebar')

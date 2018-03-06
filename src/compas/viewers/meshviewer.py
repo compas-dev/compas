@@ -135,8 +135,12 @@ class Front(Controller):
             self.view.make_buffers()
             self.view.update()
 
-    def from_polyhedron(self):
-        print('from polyhedron')
+    def from_polyhedron(self, f):
+        self.mesh = Mesh.from_polyhedron(f)
+        mesh_quads_to_triangles(self.mesh)
+        self.center_mesh()
+        self.view.make_buffers()
+        self.view.update()
 
     def zoom_extents(self):
         print('zoom extents')
@@ -175,6 +179,30 @@ class Front(Controller):
         self.settings['vertices.on'] = state == QtCore.Qt.Checked
         self.view.update()
 
+    def change_vertices_color(self, color):
+        self.settings['vertices.color'] = color
+        self.view.update_vertex_buffer('vertices.color', self.view.vertices_color)
+        self.view.update()
+        self.app.main.activateWindow()
+
+    def change_edges_color(self, color):
+        self.settings['edges.color'] = color
+        self.view.update_vertex_buffer('edges.color', self.view.edges_color)
+        self.view.update()
+        self.app.main.activateWindow()
+
+    def change_faces_color_front(self, color):
+        self.settings['faces.color:front'] = color
+        self.view.update_vertex_buffer('faces.color:front', self.view.faces_color_front)
+        self.view.update()
+        self.app.main.activateWindow()
+
+    def change_faces_color_back(self, color):
+        self.settings['faces.color:back'] = color
+        self.view.update_vertex_buffer('faces.color:back', self.view.faces_color_back)
+        self.view.update()
+        self.app.main.activateWindow()
+
 
 class View(GLWidget):
     """"""
@@ -192,6 +220,42 @@ class View(GLWidget):
         return self.controller.mesh
 
     @property
+    def xyz(self):
+        return list(flatten(self.mesh.get_vertices_attributes('xyz')))
+
+    @property
+    def vertices(self):
+        return list(self.mesh.vertices())
+
+    @property
+    def edges(self):
+        return list(flatten(self.mesh.edges()))
+
+    @property
+    def faces_front(self):
+        return list(flatten(self.mesh.face_vertices(fkey) for fkey in self.mesh.faces()))
+
+    @property
+    def faces_back(self):
+        return list(flatten(self.mesh.face_vertices(fkey)[::-1] for fkey in self.mesh.faces()))
+
+    @property
+    def vertices_color(self):
+        return list(flatten(hex_to_rgb(self.settings['vertices.color']) for key in self.mesh.vertices()))
+
+    @property
+    def edges_color(self):
+        return list(flatten(hex_to_rgb(self.settings['edges.color']) for key in self.mesh.vertices()))
+
+    @property
+    def faces_color_front(self):
+        return list(flatten(hex_to_rgb(self.settings['faces.color:front']) for key in self.mesh.vertices()))
+
+    @property
+    def faces_color_back(self):
+        return list(flatten(hex_to_rgb(self.settings['faces.color:back']) for key in self.mesh.vertices()))
+
+    @property
     def settings(self):
         return self.controller.settings
 
@@ -202,34 +266,24 @@ class View(GLWidget):
         self.draw_buffers()
 
     def make_buffers(self):
-        xyz = list(flatten(self.mesh.get_vertices_attributes('xyz')))
-        vertices = list(self.mesh.vertices())
-        edges = list(flatten(self.mesh.edges()))
-        faces_front = list(flatten(self.mesh.face_vertices(fkey) for fkey in self.mesh.faces()))
-        faces_back = list(flatten(self.mesh.face_vertices(fkey)[::-1] for fkey in self.mesh.faces()))
-        vertices_color = list(flatten(hex_to_rgb(self.settings['vertices.color']) for key in self.mesh.vertices()))
-        edges_color = list(flatten(hex_to_rgb(self.settings['edges.color']) for key in self.mesh.vertices()))
-        faces_color_front = list(flatten(hex_to_rgb(self.settings['faces.color:front']) for key in self.mesh.vertices()))
-        faces_color_back = list(flatten(hex_to_rgb(self.settings['faces.color:back']) for key in self.mesh.vertices()))
-
         self.buffers = {
-            'xyz'              : self.make_vertex_buffer(xyz, dynamic=False),
-            'vertices'         : self.make_element_buffer(vertices, dynamic=False),
-            'edges'            : self.make_element_buffer(edges, dynamic=False),
-            'faces:front'      : self.make_element_buffer(faces_front, dynamic=False),
-            'faces:back'       : self.make_element_buffer(faces_back, dynamic=False),
-            'vertices.color'   : self.make_vertex_buffer(vertices_color),
-            'edges.color'      : self.make_vertex_buffer(edges_color),
-            'faces.color:front': self.make_vertex_buffer(faces_color_front),
-            'faces.color:back' : self.make_vertex_buffer(faces_color_back),
+            'xyz'              : self.make_vertex_buffer(self.xyz, dynamic=False),
+            'vertices'         : self.make_element_buffer(self.vertices, dynamic=False),
+            'edges'            : self.make_element_buffer(self.edges, dynamic=False),
+            'faces:front'      : self.make_element_buffer(self.faces_front, dynamic=False),
+            'faces:back'       : self.make_element_buffer(self.faces_back, dynamic=False),
+            'vertices.color'   : self.make_vertex_buffer(self.vertices_color),
+            'edges.color'      : self.make_vertex_buffer(self.edges_color),
+            'faces.color:front': self.make_vertex_buffer(self.faces_color_front),
+            'faces.color:back' : self.make_vertex_buffer(self.faces_color_back),
         }
-        self.n = len(xyz)
-        self.v = len(vertices)
-        self.e = len(edges)
-        self.f = len(faces_front)
+        self.n = len(self.xyz)
+        self.v = len(self.vertices)
+        self.e = len(self.edges)
+        self.f = len(self.faces_front)
 
     def update_vertex_buffer(self, name, data):
-        pass
+        self.buffers[name] = self.make_vertex_buffer(data, dynamic=True)
 
     def update_element_buffer(self):
         pass
@@ -249,7 +303,6 @@ class View(GLWidget):
             glColorPointer(3, GL_FLOAT, 0, None)
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:front'])
             glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
-
             glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:back'])
             glColorPointer(3, GL_FLOAT, 0, None)
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:back'])
@@ -257,7 +310,7 @@ class View(GLWidget):
 
         if self.settings['edges.on']:
             glLineWidth(self.settings['edges.width:value'])
-            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['vertices.color'])
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['edges.color'])
             glColorPointer(3, GL_FLOAT, 0, None)
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['edges'])
             glDrawElements(GL_LINES, self.e, GL_UNSIGNED_INT, None)
@@ -326,7 +379,16 @@ if __name__ == '__main__':
                     {'text' : 'From .obj', 'action': 'from_obj'},
                     {'text' : 'From .json', 'action': 'from_json'},
                     {'type' : 'separator'},
-                    {'text' : 'From Polyhedron', 'action': 'from_polyhedron'},
+                    {
+                        'type' : 'menu',
+                        'text' : 'From Polyhedron',
+                        'items': [
+                            {'text': 'Tetrahedron', 'action': 'from_polyhedron', 'args': [4]},
+                            {'text': 'Hexahedron', 'action': 'from_polyhedron', 'args': [6]},
+                            {'text': 'Octahedron', 'action': 'from_polyhedron', 'args': [8]},
+                            {'text': 'Dodecahedron', 'action': 'from_polyhedron', 'args': [12]},
+                        ]
+                    },
                     {'type' : 'separator'},
                 ]
             },
@@ -397,9 +459,30 @@ if __name__ == '__main__':
                         'type' : 'group',
                         'text' : None,
                         'items': [
-                            {'type': 'colorbutton', 'text': 'color vertices', 'value': '#000000', 'action': None, },
-                            {'type': 'colorbutton', 'text': 'color edges', 'value': '#000000', 'action': None, },
-                            {'type': 'colorbutton', 'text': 'color faces', 'value': '#000000', 'action': None, },
+                            {
+                                'type'  : 'colorbutton',
+                                'text'  : 'color vertices',
+                                'value' : Front.settings['vertices.color'],
+                                'action': 'change_vertices_color',
+                            },
+                            {
+                                'type'  : 'colorbutton',
+                                'text'  : 'color edges',
+                                'value' : Front.settings['edges.color'],
+                                'action': 'change_edges_color',
+                            },
+                            {
+                                'type'  : 'colorbutton',
+                                'text'  : 'color faces (front)',
+                                'value' : Front.settings['faces.color:front'],
+                                'action': 'change_faces_color_front',
+                            },
+                            {
+                                'type'  : 'colorbutton',
+                                'text'  : 'color faces (back)',
+                                'value' : Front.settings['faces.color:back'],
+                                'action': 'change_faces_color_back',
+                            },
                         ]
                     },
                     {
