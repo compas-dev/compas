@@ -170,7 +170,14 @@ QToolBar {
         def make_group(item, parent):
             group = QtWidgets.QGroupBox(item.get('text', None))
             box = QtWidgets.QVBoxLayout()
+            # box.setSpacing(0)
+            box.setContentsMargins(0, 0, 0, 0)
             group.setLayout(box)
+#             group.setStyleSheet("""
+# background: none;
+# border: none;
+# border-bottom: 2px solid #ffffff;
+# """)
             make_items(item.get('items'), box)
             parent.addWidget(group)
 
@@ -211,6 +218,7 @@ QToolBar {
 
         widget = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
         widget.setLayout(layout)
 
         self.sidebar.setWidget(widget)
