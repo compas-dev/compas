@@ -33,15 +33,12 @@ class ColorButton(object):
         self.layout = QtWidgets.QHBoxLayout()
         self.button = QColorButton(color=color, size=size)
         if action:
-            self.button.colorChanged.connect(action)
+            self.button.color_changed.connect(action)
         self.label = QtWidgets.QLabel()
         self.label.setText(text)
         self.layout.addWidget(self.button)
         self.layout.addWidget(self.label)
         self.layout.addStretch()
-
-    def setParent(self, parent):
-        self.button._parent = parent
 
 
 # ==============================================================================

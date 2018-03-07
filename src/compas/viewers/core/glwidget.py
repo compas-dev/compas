@@ -46,6 +46,7 @@ class GLWidget(QOpenGLWidget):
     def __init__(self, parent=None):
         super(GLWidget, self).__init__(parent=parent)
         self._current_view = GLWidget.VIEW_PERSPECTIVE
+
         self.camera = Camera(self)
         self.mouse = Mouse(self)
         self.clear_color = QtGui.QColor.fromRgb(255, 255, 255)
@@ -113,6 +114,7 @@ class GLWidget(QOpenGLWidget):
         glEnable(GL_BLEND)
         glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
+        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
         self.camera.aim()
         self.camera.focus()
 
@@ -157,8 +159,9 @@ class GLWidget(QOpenGLWidget):
     # ==========================================================================
 
     def mouseMoveEvent(self, event):
-        if self.underMouse():
+        if self.isActiveWindow() and self.underMouse():
             self.mouse.pos = event.pos()
+
             if event.buttons() & QtCore.Qt.LeftButton:
                 self.camera.rotate()
                 self.mouse.last_pos = event.pos()
@@ -169,11 +172,11 @@ class GLWidget(QOpenGLWidget):
                 self.update()
 
     def mousePressEvent(self, event):
-        if self.underMouse():
+        if self.isActiveWindow() and self.underMouse():
             self.mouse.last_pos = event.pos()
 
     def wheelEvent(self, event):
-        if self.underMouse():
+        if self.isActiveWindow() and self.underMouse():
             degrees = event.delta() / 8
             steps = degrees / 15
             self.camera.zoom(steps)

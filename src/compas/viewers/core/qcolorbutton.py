@@ -27,34 +27,34 @@ class QColorButton(QtWidgets.QPushButton):
     """Custom Qt Widget to show a chosen color.
     """
 
-    colorChanged = QtCore.Signal(str)
+    color_changed = QtCore.Signal(str)
 
     def __init__(self, color=None, size=None, **kwargs):
         super(QColorButton, self).__init__(**kwargs)
 
-        self._parent = None
         self._color = color
         self._size = size
+
         self.setFixedSize(self._size[0], self._size[1])
         self.setFlat(False)
         self.setStyleSheet("border: none; background-color: %s;" % self._color)
-        self.pressed.connect(self.onColorPicker)
+        self.pressed.connect(self.pick_color)
 
-    def setColor(self, color):
+    def set_color(self, color):
         if color != self._color:
             self._color = color
-            self.colorChanged.emit(color)
+            self.color_changed.emit(color)
         self.setStyleSheet("border: none; background-color: %s;" % self._color)
 
     def color(self):
         return self._color
 
-    def onColorPicker(self):
+    def pick_color(self):
         """Show color-picker dialog to select color.
         """
-        color = QtWidgets.QColorDialog.getColor(initial=QtGui.QColor(self._color), parent=self._parent)
+        color = QtWidgets.QColorDialog.getColor(initial=QtGui.QColor(self._color))
         if color.isValid():
-            self.setColor(color.name())
+            self.set_color(color.name())
 
     # def mousePressEvent(self, e):
     #     # if e.button() == QtCore.Qt.RightButton:

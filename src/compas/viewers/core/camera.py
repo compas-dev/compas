@@ -88,6 +88,7 @@ class Camera(object):
         self.rz += self.dr * dx
 
     def translate(self):
+        """"""
         dx = self.view.mouse.dx()
         dy = self.view.mouse.dy()
         self.tx += self.dt * dx
