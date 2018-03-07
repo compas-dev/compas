@@ -539,7 +539,7 @@ if __name__ == '__main__':
                 'text'  : 'OpenGL',
                 'items' : [
                     {'text' : 'Version Info', 'action': 'opengl_version_info'},
-                    {'text' : 'Extensions', 'action': 'opengl_extensions'},
+                    # {'text' : 'Extensions', 'action': 'opengl_extensions'},
                     {'type' : 'separator'},
                     {
                         'type'  : 'radio',

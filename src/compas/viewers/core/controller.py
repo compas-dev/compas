@@ -46,13 +46,17 @@ class Controller(object):
         box.setText(text)
         box.show()
 
+    def log(self, text):
+        self.app.console.appendPlainText(text)
+
     def opengl_version_info(self):
-        print(glGetString(GL_VENDOR))
-        print(glGetString(GL_RENDERER))
-        print(glGetString(GL_VERSION))
-        print(glGetString(GL_SHADING_LANGUAGE_VERSION))
-        print(self.view.format().majorVersion())
-        print(self.view.context().format().majorVersion())
+        text = [
+            "Vendor: {}".format(glGetString(GL_VENDOR)),
+            "Renderer: {}".format(glGetString(GL_RENDERER)),
+            "GL Version: {}".format(glGetString(GL_VERSION)),
+            "GLSL Version: {}".format(glGetString(GL_SHADING_LANGUAGE_VERSION)),
+        ]
+        self.message('\n'.join([str(line) for line in text]))
 
     def opengl_extensions(self):
         extensions = str(glGetString(GL_EXTENSIONS)).split(' ')

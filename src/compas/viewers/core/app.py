@@ -39,6 +39,11 @@ class App(QtWidgets.QApplication):
     def __init__(self):
         QtWidgets.QApplication.__init__(self, sys.argv)
         self.setApplicationName("Viewer app")
+#         self.setStyleSheet("""
+# QVBoxLayout {
+#     padding: 4px;
+# }
+# """)
 
     def setup(self, w, h):
         self.main = QtWidgets.QMainWindow()
@@ -46,6 +51,8 @@ class App(QtWidgets.QApplication):
         self.main.setGeometry(0, 0, w, h)
         self.main.setCentralWidget(self.view)
         self.statusbar = self.main.statusBar()
+        self.console = QtWidgets.QDockWidget()
+        self.console
 
     def init(self):
         if self.config:
@@ -55,6 +62,7 @@ class App(QtWidgets.QApplication):
                 self.init_toolbar()
             if 'sidebar' in self.config:
                 self.init_sidebar()
+        self.init_console()
 
     def show(self):
         self.statusbar.showMessage('Ready')
@@ -113,6 +121,12 @@ class App(QtWidgets.QApplication):
     def init_toolbar(self):
         self.toolbar = self.main.addToolBar('Tools')
         self.toolbar.setMovable(False)
+        self.toolbar.setStyleSheet("""
+QToolBar {
+    padding: 8px;
+}
+""")
+        self.toolbar.setIconSize(QtCore.QSize(24, 24))
         for item in self.config['toolbar']:
             itype = item.get('type', None)
             if itype == 'separator':
@@ -204,6 +218,33 @@ class App(QtWidgets.QApplication):
         make_items(self.config['sidebar'], layout)
 
         layout.addStretch()
+
+    def init_console(self):
+        dock = QtWidgets.QDockWidget('Console')
+        dock.setAllowedAreas(QtCore.Qt.BottomDockWidgetArea)
+        dock.setFeatures(QtWidgets.QDockWidget.NoDockWidgetFeatures)
+        # dock.setMaximumHeight(320)
+        # dock.setMinimumHeight(32)
+        # dock.setHeight(32)
+        dock.setFixedHeight(128)
+        dock.setTitleBarWidget(QtWidgets.QWidget())
+
+        self.main.addDockWidget(QtCore.Qt.BottomDockWidgetArea, dock)
+
+        self.console = QtWidgets.QPlainTextEdit()
+        self.console.setReadOnly(True)
+        self.console.setStyleSheet("""
+QPlainTextEdit {
+    background-color: #222222;
+    color: #eeeeee;
+    border-top: 8px solid #cccccc;
+}
+""")
+
+        for i in range(20):
+            self.console.appendPlainText('Stuff man, stuff...')
+
+        dock.setWidget(self.console)
 
 
 # ==============================================================================
