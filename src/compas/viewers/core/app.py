@@ -30,6 +30,9 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['App', ]
 
 
+# menubar, sidebar, toolbar as separate classes!
+
+
 class App(QtWidgets.QApplication):
     """"""
 
@@ -62,6 +65,8 @@ class App(QtWidgets.QApplication):
     def start(self):
         sys.exit(self.exec_())
 
+    # this can be a lot simpler
+    # see, for example, init_toolbar
     def init_menubar(self):
         def make_menu(menu, parent):
             for item in menu:
@@ -74,6 +79,23 @@ class App(QtWidgets.QApplication):
                     items = item.get('items')
                     if items:
                         make_menu(items, newmenu)
+                    continue
+                if mtype == 'radio':
+                    radio = QtWidgets.QActionGroup(self.main, exclusive=True)
+                    for item in item['items']:
+                        action = parent.addAction(item['text'])
+                        action.setCheckable(True)
+                        action.setChecked(item['checked'])
+                        handler = item.get('action', None)
+                        if handler:
+                            if hasattr(self.controller, handler):
+                                handler = getattr(self.controller, handler)
+                                args = item.get('args', [])
+                                kwargs = item.get('kwargs', {})
+                                if args or kwargs:
+                                    handler = partial(handler, *args, **kwargs)
+                                action.triggered.connect(handler)
+                        radio.addAction(action)
                     continue
                 action = parent.addAction(item['text'])
                 handler = item.get('action', None)
@@ -91,6 +113,25 @@ class App(QtWidgets.QApplication):
     def init_toolbar(self):
         self.toolbar = self.main.addToolBar('Tools')
         self.toolbar.setMovable(False)
+        for item in self.config['toolbar']:
+            itype = item.get('type', None)
+            if itype == 'separator':
+                self.toolbar.addSeparator()
+                continue
+            text = item['text']
+            if 'image' in item:
+                icon = QtWidgets.QIcon(item['image'])
+                if item['action']:
+                    action = getattr(self.controller, item['action'])
+                    self.toolbar.addAction(icon, text, action)
+                else:
+                    self.toolbar.addAction(icon, text)
+            else:
+                if item['action']:
+                    action = getattr(self.controller, item['action'])
+                    self.toolbar.addAction(text, action)
+                else:
+                    self.toolbar.addAction(text)
 
     def init_sidebar(self):
         def make_items(items, parent):
@@ -145,12 +186,14 @@ class App(QtWidgets.QApplication):
                                  color=item['value'],
                                  size=item.get('size'),
                                  action=getattr(self.controller, item.get('action')))
+            button.setParent(self.sidebar)
             parent.addLayout(button.layout)
 
         self.sidebar = QtWidgets.QDockWidget('Sidebar')
         self.sidebar.setAllowedAreas(QtCore.Qt.LeftDockWidgetArea)
         self.sidebar.setFeatures(QtWidgets.QDockWidget.NoDockWidgetFeatures)
         self.sidebar.setFixedWidth(240)
+        self.sidebar.setTitleBarWidget(QtWidgets.QWidget())
         self.main.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.sidebar)
 
         widget = QtWidgets.QWidget()

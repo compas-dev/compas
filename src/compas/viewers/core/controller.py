@@ -41,6 +41,11 @@ class Controller(object):
     def view(self):
         return self.app.view
 
+    def message(self, text):
+        box = QtWidgets.QMessageBox(parent=self.app.main)
+        box.setText(text)
+        box.show()
+
     def opengl_version_info(self):
         print(glGetString(GL_VENDOR))
         print(glGetString(GL_RENDERER))

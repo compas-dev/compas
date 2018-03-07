@@ -38,8 +38,14 @@ __all__ = ['GLWidget', ]
 class GLWidget(QOpenGLWidget):
     """"""
 
+    VIEW_PERSPECTIVE = 1
+    VIEW_FRONT = 2
+    VIEW_LEFT = 3
+    VIEW_TOP = 4
+
     def __init__(self, parent=None):
         super(GLWidget, self).__init__(parent=parent)
+        self._current_view = GLWidget.VIEW_PERSPECTIVE
         self.camera = Camera(self)
         self.mouse = Mouse(self)
         self.clear_color = QtGui.QColor.fromRgb(255, 255, 255)
@@ -50,6 +56,14 @@ class GLWidget(QOpenGLWidget):
         self.makeCurrent()
         for dl in self.display_lists:
             glDeleteLists(dl, 1)
+
+    @property
+    def current(self):
+        return self._current_view
+
+    @current.setter
+    def current(self, value):
+        self._current_view = value
 
     # ==========================================================================
     # buffers

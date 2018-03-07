@@ -32,6 +32,7 @@ class QColorButton(QtWidgets.QPushButton):
     def __init__(self, color=None, size=None, **kwargs):
         super(QColorButton, self).__init__(**kwargs)
 
+        self._parent = None
         self._color = color
         self._size = size
         self.setFixedSize(self._size[0], self._size[1])
@@ -51,7 +52,7 @@ class QColorButton(QtWidgets.QPushButton):
     def onColorPicker(self):
         """Show color-picker dialog to select color.
         """
-        color = QtWidgets.QColorDialog.getColor(initial=QtGui.QColor(self._color))
+        color = QtWidgets.QColorDialog.getColor(initial=QtGui.QColor(self._color), parent=self._parent)
         if color.isValid():
             self.setColor(color.name())
 

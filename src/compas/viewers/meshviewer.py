@@ -274,6 +274,8 @@ class Front(Controller):
     def view(self):
         return self.app.view
 
+    # centering the mesh should be handled
+    # by storing a base translation vector for the camera
     def center_mesh(self):
         xyz = [self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()]
         cx, cy, cz = centroid_points(xyz)
@@ -301,6 +303,12 @@ class Front(Controller):
             self.view.make_buffers()
             self.view.update()
 
+    def to_obj(self):
+        self.message('Export to OBJ is under construction...')
+
+    def to_json(self):
+        self.message('Export to JSON is under construction...')
+
     def from_polyhedron(self, f):
         self.mesh = Mesh.from_polyhedron(f)
         self.center_mesh()
@@ -312,13 +320,19 @@ class Front(Controller):
     # ==========================================================================
 
     def zoom_extents(self):
-        print('zoom extents')
+        self.message('Zoom Extents is under construction...')
 
     def zoom_in(self):
-        print('zoom in')
+        self.view.camera.zoom_in()
+        self.view.update()
 
     def zoom_out(self):
-        print('zoom out')
+        self.view.camera.zoom_out()
+        self.view.update()
+
+    def set_view(self, view):
+        self.view.current = view
+        self.view.update()
 
     # ==========================================================================
     # appearance
@@ -431,48 +445,66 @@ if __name__ == '__main__':
         'menubar': [
             {
                 'type'  : 'menu',
-                'text'  : '&View',
+                'text'  : 'View',
                 'items' : [
-                    {'text' : '&Pan', 'action': None},
-                    {'text' : '&Rotate', 'action': None},
+                    {'text' : 'Pan', 'action': None},
+                    {'text' : 'Rotate', 'action': None},
                     {
                         'type'  : 'menu',
-                        'text'  : '&Zoom',
-                        'items' : []
+                        'text'  : 'Zoom',
+                        'items' : [
+                            {'text' : 'Zoom In', 'action': 'zoom_in'},
+                            {'text' : 'Zoom Out', 'action': 'zoom_out'},
+                            {'type' : 'separator'},
+                            {'text' : 'Zoom Extents', 'action': 'zoom_extents'},
+                        ]
                     },
                     {'type' : 'separator'},
                     {
                         'type'  : 'menu',
-                        'text'  : '&Set View',
+                        'text'  : 'Set View',
+                        'items' : [
+                            {
+                                'type'  : 'radio',
+                                'items' : [
+                                    {'text' : 'Perspective', 'action': 'set_view', 'args': [View.VIEW_PERSPECTIVE, ], 'checked': True},
+                                    {'text' : 'Front', 'action': 'set_view', 'args': [View.VIEW_FRONT, ], 'checked': False},
+                                    {'text' : 'Left', 'action': 'set_view', 'args': [View.VIEW_LEFT, ], 'checked': False},
+                                    {'text' : 'Top', 'action': 'set_view', 'args': [View.VIEW_TOP, ], 'checked': False},
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        'type'  : 'menu',
+                        'text'  : 'Camera',
                         'items' : []
                     },
                     {
                         'type'  : 'menu',
-                        'text'  : '&Camera',
+                        'text'  : 'Grid',
                         'items' : []
                     },
                     {
                         'type'  : 'menu',
-                        'text'  : '&Grid',
-                        'items' : []
-                    },
-                    {
-                        'type'  : 'menu',
-                        'text'  : '&Axes',
+                        'text'  : 'Axes',
                         'items' : []
                     },
                     {'type' : 'separator'},
-                    {'text' : '&Capture Image', 'action': None},
-                    {'text' : '&Capture Video', 'action': None},
+                    {'text' : 'Capture Image', 'action': None},
+                    {'text' : 'Capture Video', 'action': None},
                     {'type' : 'separator'}
                 ]
             },
             {
                 'type'  : 'menu',
-                'text'  : '&Mesh',
+                'text'  : 'Mesh',
                 'items' : [
-                    {'text' : 'Load OBJ', 'action': 'from_obj'},
-                    {'text' : 'Load JSON', 'action': 'from_json'},
+                    {'text' : 'From OBJ', 'action': 'from_obj'},
+                    {'text' : 'From JSON', 'action': 'from_json'},
+                    {'type' : 'separator'},
+                    {'text' : 'To OBJ', 'action': 'to_obj'},
+                    {'text' : 'To JSON', 'action': 'to_json'},
                     {'type' : 'separator'},
                     {
                         'type' : 'menu',
@@ -489,7 +521,7 @@ if __name__ == '__main__':
             },
             {
                 'type'  : 'menu',
-                'text'  : '&Tools',
+                'text'  : 'Tools',
                 'items' : [
                     {'text': 'Flip Normals', 'action': 'flip_normals'},
                     {'type': 'separator'},
@@ -504,36 +536,41 @@ if __name__ == '__main__':
             },
             {
                 'type'  : 'menu',
-                'text'  : '&OpenGL',
+                'text'  : 'OpenGL',
                 'items' : [
-                    {'text' : '&Version Info', 'action': 'opengl_version_info'},
-                    {'text' : '&Extensions', 'action': 'opengl_extensions'},
+                    {'text' : 'Version Info', 'action': 'opengl_version_info'},
+                    {'text' : 'Extensions', 'action': 'opengl_extensions'},
                     {'type' : 'separator'},
-                    {'text' : '&Set Version 2.1', 'action': 'opengl_set_version', 'args': [(2, 1), ]},
-                    {'text' : '&Set Version 3.3', 'action': 'opengl_set_version', 'args': [(3, 3), ]},
-                    {'text' : '&Set Version 4.1', 'action': 'opengl_set_version', 'args': [(4, 1), ]}
+                    {
+                        'type'  : 'radio',
+                        'items' : [
+                            {'text' : 'Version 2.1', 'action': 'opengl_set_version', 'args': [(2, 1), ], 'checked': True},
+                            {'text' : 'Version 3.3', 'action': 'opengl_set_version', 'args': [(3, 3), ], 'checked': False},
+                            {'text' : 'Version 4.1', 'action': 'opengl_set_version', 'args': [(4, 1), ], 'checked': False}
+                        ]
+                    },
                 ]
             },
             {
                 'type'  : 'menu',
-                'text'  : '&Window',
+                'text'  : 'Window',
                 'items' : []
             },
             {
                 'type'  : 'menu',
-                'text'  : '&Help',
+                'text'  : 'Help',
                 'items' : []
             }
         ],
-        # 'toolbar': [
-        #     {'text': '&Zoom Extents', 'action': 'zoom_extents'},
-        #     {'text': '&Zoom In', 'action': 'zoom_in'},
-        #     {'text': '&Zoom Out', 'action': 'zoom_out'},
-        # ],
+        'toolbar': [
+            {'text': 'Zoom Extents', 'action': 'zoom_extents', 'image': 'icons/zoom/icons8-zoom-to-extents-50.png'},
+            {'text': 'Zoom In', 'action': 'zoom_in', 'image': 'icons/zoom/icons8-zoom-in-50.png'},
+            {'text': 'Zoom Out', 'action': 'zoom_out', 'image': 'icons/zoom/icons8-zoom-out-50.png'},
+        ],
         'sidebar': [
             {
                 'type'  : 'group',
-                'text'  : 'Visibility',
+                'text'  : None,
                 'items' : [
                     {
                         'type'  : 'group',
@@ -564,7 +601,7 @@ if __name__ == '__main__':
             },
             {
                 'type' : 'group',
-                'text' : 'Appearance',
+                'text' : None,
                 'items': [
                     {
                         'type' : 'group',

@@ -40,6 +40,9 @@ class ColorButton(object):
         self.layout.addWidget(self.label)
         self.layout.addStretch()
 
+    def setParent(self, parent):
+        self.button._parent = parent
+
 
 # ==============================================================================
 # Main
