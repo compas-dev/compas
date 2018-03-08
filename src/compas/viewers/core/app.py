@@ -174,17 +174,18 @@ class App(QtWidgets.QApplication):
 
     def add_action(self, item, parent):
         text = item['text']
-        if hasattr(self.controller, item['action']):
-            action = getattr(self.controller, item['action'])
-            args = item.get('args', None) or []
-            kwargs = item.get('kwargs', None) or {}
+        if item['action']:
+            if hasattr(self.controller, item['action']):
+                action = getattr(self.controller, item['action'])
+                args = item.get('args', None) or []
+                kwargs = item.get('kwargs', None) or {}
+                if 'image' in item:
+                    icon = QtWidgets.QIcon(item['image'])
+                    return parent.addAction(icon, text, partial(action, *args, **kwargs))
+                return parent.addAction(text, partial(action, *args, **kwargs))
             if 'image' in item:
                 icon = QtWidgets.QIcon(item['image'])
-                return parent.addAction(icon, text, partial(action, *args, **kwargs))
-            return parent.addAction(text, partial(action, *args, **kwargs))
-        if 'image' in item:
-            icon = QtWidgets.QIcon(item['image'])
-            return parent.addAction(icon, text)
+                return parent.addAction(icon, text)
         return parent.addAction(text)
 
     def add_group(self, item, parent):
