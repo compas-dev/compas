@@ -73,9 +73,8 @@ __all__ = ['MeshViewer', ]
 class MeshViewer(App):
     """"""
 
-    def __init__(self, config, width=1440, height=900):
-        super(MeshViewer, self).__init__()
-        self.config = config
+    def __init__(self, config, style, width=1440, height=900):
+        super(MeshViewer, self).__init__(config, style)
         self.controller = Front(self)
         self.view = View(self.controller)
         self.setup(width, height)
@@ -334,6 +333,12 @@ class Front(Controller):
         self.view.current = view
         self.view.update()
 
+    def capture_image(self):
+        self.message('Capture Image is under construction...')
+
+    def capture_video(self):
+        self.message('Capture Video is under construction...')
+
     # ==========================================================================
     # appearance
     # ==========================================================================
@@ -447,19 +452,6 @@ if __name__ == '__main__':
                 'type'  : 'menu',
                 'text'  : 'View',
                 'items' : [
-                    {'text' : 'Pan', 'action': None},
-                    {'text' : 'Rotate', 'action': None},
-                    {
-                        'type'  : 'menu',
-                        'text'  : 'Zoom',
-                        'items' : [
-                            {'text' : 'Zoom In', 'action': 'zoom_in'},
-                            {'text' : 'Zoom Out', 'action': 'zoom_out'},
-                            {'type' : 'separator'},
-                            {'text' : 'Zoom Extents', 'action': 'zoom_extents'},
-                        ]
-                    },
-                    {'type' : 'separator'},
                     {
                         'type'  : 'menu',
                         'text'  : 'Set View',
@@ -491,8 +483,8 @@ if __name__ == '__main__':
                         'items' : []
                     },
                     {'type' : 'separator'},
-                    {'text' : 'Capture Image', 'action': None},
-                    {'text' : 'Capture Video', 'action': None},
+                    {'text' : 'Capture Image', 'action': 'capture_image'},
+                    {'text' : 'Capture Video', 'action': 'capture_video'},
                     {'type' : 'separator'}
                 ]
             },
@@ -539,7 +531,6 @@ if __name__ == '__main__':
                 'text'  : 'OpenGL',
                 'items' : [
                     {'text' : 'Version Info', 'action': 'opengl_version_info'},
-                    # {'text' : 'Extensions', 'action': 'opengl_extensions'},
                     {'type' : 'separator'},
                     {
                         'type'  : 'radio',
@@ -588,15 +579,6 @@ if __name__ == '__main__':
                             {'type' : 'checkbox', 'text' : 'normals', 'action' : 'toggle_normals', 'state' : False, },
                         ]
                     },
-                    # {
-                    #     'type'  : 'group',
-                    #     'text'  : None,
-                    #     'items' : [
-                    #         {'type' : 'checkbox', 'text' : 'label vertices', 'action' : None, 'state' : False, },
-                    #         {'type' : 'checkbox', 'text' : 'label edges', 'action' : None, 'state' : False, },
-                    #         {'type' : 'checkbox', 'text' : 'label faces', 'action' : None, 'state' : False, },
-                    #     ]
-                    # }
                 ]
             },
             {
@@ -666,4 +648,29 @@ if __name__ == '__main__':
         ]
     }
 
-    viewer = MeshViewer(config).show()
+    style = """
+QMainWindow {}
+
+QMenuBar {}
+
+QToolBar#Tools {
+    padding: 4px;
+}
+
+QDockWidget#Sidebar {}
+
+QDockWidget#Console {}
+
+QDockWidget#Console QPlainTextEdit {
+    background-color: #222222;
+    color: #eeeeee;
+    border-top: 8px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    padding-left: 4px;
+}
+
+"""
+
+    viewer = MeshViewer(config, style).show()
