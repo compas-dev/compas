@@ -123,7 +123,7 @@ class App(QtWidgets.QApplication):
         self.toolbar.setMovable(False)
         self.toolbar.setStyleSheet("""
 QToolBar {
-    padding: 8px;
+    padding: 4px;
 }
 """)
         self.toolbar.setIconSize(QtCore.QSize(24, 24))
@@ -171,12 +171,12 @@ QToolBar {
             group = QtWidgets.QGroupBox(item.get('text', None))
             box = QtWidgets.QVBoxLayout()
             # box.setSpacing(0)
-            box.setContentsMargins(0, 0, 0, 0)
+            box.setContentsMargins(0, 4, 0, 4)
             group.setLayout(box)
 #             group.setStyleSheet("""
 # background: none;
 # border: none;
-# border-bottom: 2px solid #ffffff;
+# border-bottom: 1px solid #ffffff;
 # """)
             make_items(item.get('items'), box)
             parent.addWidget(group)
@@ -218,7 +218,7 @@ QToolBar {
 
         widget = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(4, 8, 4, 8)
         widget.setLayout(layout)
 
         self.sidebar.setWidget(widget)
@@ -246,10 +246,14 @@ QPlainTextEdit {
     background-color: #222222;
     color: #eeeeee;
     border-top: 8px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    padding-left: 4px;
 }
 """)
 
-        for i in range(20):
+        for i in range(1):
             self.console.appendPlainText('Stuff man, stuff...')
 
         dock.setWidget(self.console)
