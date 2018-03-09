@@ -46,8 +46,23 @@ class Controller(object):
         box.setText(text)
         box.show()
 
+    def debug(self, source, mtype, mid, severity, length, raw, user):
+        text = [
+            "OpenGL Debug Info",
+            "================="
+            "source: {}".format(source),
+            "message type: {}".format(mtype),
+            "message id: {}".format(mid),
+            "severity: {}".format(severity),
+            "user: {}".format(user),
+            "",
+            "{}".format(raw[:length])
+        ]
+        self.log("\n".join(text))
+
     def log(self, text):
-        self.app.console.appendPlainText(text)
+        # self.app.console.findChild(QtWidgets.QPlainTextEdit).appendPlainText(text)
+        self.app.console.widget().appendPlainText(text)
 
     def opengl_version_info(self):
         text = [
@@ -69,7 +84,7 @@ class Controller(object):
         gl_format.setVersion(major, minor)
         gl_format.setProfile(QtOpenGL.QGLFormat.CoreProfile)
         gl_format.setSampleBuffers(True)
-        gl_format.setDefaultFormat(gl_format)
+        # gl_format.setDefaultFormat(gl_format)
         self.view.context().setFormat(gl_format)
         self.view.context().create()
         self.view.glInit()

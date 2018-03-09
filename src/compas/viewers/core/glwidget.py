@@ -35,6 +35,9 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['GLWidget', ]
 
 
+# http://docs.gl/gl4/glDebugMessageCallback
+
+
 class GLWidget(QOpenGLWidget):
     """"""
 
@@ -45,6 +48,7 @@ class GLWidget(QOpenGLWidget):
 
     def __init__(self, parent=None):
         super(GLWidget, self).__init__(parent=parent)
+
         self._current_view = GLWidget.VIEW_PERSPECTIVE
 
         self.camera = Camera(self)
@@ -65,6 +69,9 @@ class GLWidget(QOpenGLWidget):
     @current.setter
     def current(self, value):
         self._current_view = value
+
+    def get_error(self):
+        return glGetError()
 
     # ==========================================================================
     # buffers
@@ -100,11 +107,14 @@ class GLWidget(QOpenGLWidget):
 
     def initializeGL(self):
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+
         self.qglClearColor(self.clear_color)
+
         glCullFace(GL_BACK)
         glShadeModel(GL_SMOOTH)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         glPolygonOffset(1.0, 1.0)
+
         glEnable(GL_POLYGON_OFFSET_FILL)
         glEnable(GL_CULL_FACE)
         glEnable(GL_POINT_SMOOTH)
@@ -112,9 +122,11 @@ class GLWidget(QOpenGLWidget):
         glEnable(GL_POLYGON_SMOOTH)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_BLEND)
+
         glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
+
         self.camera.aim()
         self.camera.focus()
 
@@ -140,7 +152,7 @@ class GLWidget(QOpenGLWidget):
         self.paint()
 
         glPopAttrib()
-        glutSwapBuffers()
+        # glutSwapBuffers()
 
     def paint(self):
         raise NotImplementedError
@@ -148,6 +160,12 @@ class GLWidget(QOpenGLWidget):
     # ==========================================================================
     # resize callback
     # ==========================================================================
+
+    def resizeEvent(self, event):
+        # super(GLWidget, self).resizeEvent(event)
+        w = event.size().width()
+        h = event.size().height()
+        glViewport(0, 0, w, h)
 
     def resizeGl(self, w, h):
         glViewport(0, 0, w, h)
