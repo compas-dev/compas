@@ -59,8 +59,8 @@ class View(GLWidget):
 class Viewer(App):
     """"""
 
-    def __init__(self, config, width=1440, height=900):
-        super(Viewer, self).__init__()
+    def __init__(self, config, width=1440, height=900, style=None):
+        super(Viewer, self).__init__(config, style)
         self.config = config
         self.controller = Front(self)
         self.view = View(self.controller)

@@ -127,6 +127,8 @@ class GLWidget(QOpenGLWidget):
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
 
+        # glutInit()
+
         self.camera.aim()
         self.camera.focus()
 
