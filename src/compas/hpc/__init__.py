@@ -41,6 +41,7 @@ cuda
     :nosignatures:
 
     device_cuda
+    cuda_give
 
 
 euler
@@ -120,6 +121,7 @@ average
 
 
 """
+
 from .geometry import *
 from .algorithms import *
 from .core import *

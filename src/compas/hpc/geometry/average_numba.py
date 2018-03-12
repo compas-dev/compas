@@ -1,3 +1,4 @@
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -23,7 +24,7 @@ from numpy import array
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'liew@arch.ethz.ch'
 
@@ -41,7 +42,8 @@ __all__ = [
 
 @jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=True)
 def centroid_points_numba(u):
-    """Compute the centroid of a set of points.
+
+    """ Compute the centroid of a set of points.
 
     Parameters
     ----------
@@ -52,7 +54,9 @@ def centroid_points_numba(u):
     -------
     array
         Centroid of the points.
+
     """
+
     m = u.shape[0]
     f = 1 / m
     return scale_vector_numba(sum_vectors_numba(u, axis=0), factor=f)
@@ -60,7 +64,8 @@ def centroid_points_numba(u):
 
 @jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=True)
 def centroid_points_xy_numba(u):
-    """Compute the centroid of a set of points lying in the XY plane.
+
+    """ Compute the centroid of a set of points lying in the XY plane.
 
     Parameters
     ----------
@@ -71,14 +76,17 @@ def centroid_points_xy_numba(u):
     -------
     array
         Centroid of the points (Z = 0.0).
+
     """
+
     u[:, 2] = 0
     return centroid_points_numba(u)
 
 
 @jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=True)
 def midpoint_point_point_numba(u, v):
-    """Compute the midpoint of two points.
+
+    """ Compute the midpoint of two points.
 
     Parameters
     ----------
@@ -91,13 +99,16 @@ def midpoint_point_point_numba(u, v):
     -------
     array
         XYZ coordinates of the midpoint.
+
     """
+
     return scale_vector_numba(add_vectors_numba(u, v), factor=0.5)
 
 
 @jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=True)
 def midpoint_point_point_xy_numba(u, v):
-    """Compute the midpoint of two points lying in the XY-plane.
+
+    """ Compute the midpoint of two points lying in the XY-plane.
 
     Parameters
     ----------
@@ -110,13 +121,16 @@ def midpoint_point_point_xy_numba(u, v):
     -------
     array
         XYZ (Z = 0.0) coordinates of the midpoint.
+
     """
+
     return scale_vector_xy_numba(add_vectors_xy_numba(u, v), factor=0.5)
 
 
 @jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False)
 def center_of_mass_polyline_numba(polyline):
-    """Compute the center of mass of polyline edges defined as an array of points.
+
+    """ Compute the center of mass of polyline edges defined as an array of points.
 
     Parameters
     ----------
@@ -127,7 +141,9 @@ def center_of_mass_polyline_numba(polyline):
     -------
     array
         The XYZ coordinates of the center of mass.
+
     """
+
     L = 0
     cx = 0
     cy = 0
@@ -149,7 +165,8 @@ def center_of_mass_polyline_numba(polyline):
 
 @jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False)
 def center_of_mass_polyline_xy_numba(polyline):
-    """Compute the center of mass of polyline edges in the XY plane, defined as an array of points.
+
+    """ Compute the center of mass of polyline edges in the XY plane, defined as an array of points.
 
     Parameters
     ----------
@@ -160,7 +177,9 @@ def center_of_mass_polyline_xy_numba(polyline):
     -------
     array
         The XY(Z) coordinates of the center of mass.
+
     """
+
     L = 0
     cx = 0
     cy = 0
@@ -180,7 +199,8 @@ def center_of_mass_polyline_xy_numba(polyline):
 
 @jit(f8[:](f8[:, :], i8[:, :]), nogil=True, nopython=True, parallel=False)  # Needs checking
 def center_of_mass_polyhedron_numba(vertices, faces):
-    """Compute the center of mass of the edges of a polyhedron.
+
+    """ Compute the center of mass of the edges of a polyhedron.
 
     Parameters
     ----------
@@ -193,7 +213,9 @@ def center_of_mass_polyhedron_numba(vertices, faces):
     ------
     array
         The XYZ coordinates of the polyhedron edges' centre of mass.
+
     """
+
     m = faces.shape[0]
     V = 0.
     x  = 0.

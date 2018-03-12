@@ -1,37 +1,8 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
 
-from numpy import array
-from numpy import float32
-from numpy import float64
-from numpy import complex64
-
-try:
-    import pycuda
-    import pycuda.autoinit
     import pycuda.curandom
     import pycuda.gpuarray
-except ImportError as e:
-    pass
-
-try:
-    import skcuda
-    import skcuda.autoinit
-    import skcuda.linalg
-except ImportError as e:
-    pass
 
 
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
-
-
-__all__ = [
-    'cuda_diag',
-    'cuda_eye',
     'cuda_get',
     'cuda_give',
     'cuda_ones',
@@ -41,56 +12,12 @@ __all__ = [
     'cuda_flatten',
     'cuda_tile',
     'cuda_zeros',
-]
 
 
-def cuda_diag(a):
-    """ Construct or extract GPUArray diagonal.
-
-    Notes:
-        If a is 1D, a GPUArray is constructed, if 2D, the diagonal is extracted.
-
-    Parameters:
-        a (gpu): GPUArray (1D or 2D).
-
-    Returns:
-        gpu: GPUArray with inserted diagonal, or vector of diagonal.
-
-    Examples:
-        >>> a = cuda_diag(cuda_give([1, 2, 3]))
-        array([[ 1.,  0.,  0.],
-               [ 0.,  2.,  0.],
-               [ 0.,  0.,  3.]])
-        >>> b = cuda_diag(a)
-        array([ 1.,  2.,  3.])
-        >>> type(b)
-        <class 'pycuda.gpuarray.GPUArray'>
-    """
-    return skcuda.linalg.diag(a)
 
 
-def cuda_eye(n, bit=64):
-    """ Create GPUArray identity matrix (ones on diagonal) of size (n x n).
 
-    Parameters:
-        n (int): Size of identity matrix (n x n).
-        bit (int): 32 or 64 for corresponding float precision.
 
-    Returns:
-        gpu: Identity matrix (n x n) as GPUArray.
-
-    Examples:
-        >>> a = cuda_eye(3)
-        array([[ 1.,  0.,  0.],
-               [ 0.,  1.,  0.],
-               [ 0.,  0.,  1.]])
-        >>> type(a)
-        <class 'pycuda.gpuarray.GPUArray'>
-    """
-    if bit == 32:
-        return skcuda.linalg.eye(n, dtype=float32)
-    elif bit == 64:
-        return skcuda.linalg.eye(n, dtype=float64)
 
 
 def cuda_flatten(a):
@@ -130,43 +57,7 @@ def cuda_get(a):
     return a.get()
 
 
-def cuda_give(a, bit=64, type='real'):
-    """ Give a list or an array to GPU memory.
 
-    Parameters:
-        a (array, list): Data to send to the GPU memory.
-        bit (int): 32 or 64 for corresponding float precision.
-        type (str): 'real' or 'complex'.
-
-    Returns:
-        gpu: GPUArray of input array.
-
-    Creates and sends an array of float32 or float64 dtype from RAM to GPU
-    memory.
-
-    Examples:
-        >>> a = cuda_give([[1, 2, 3], [4, 5, 6]], bit=64)
-        array([[ 1.,  2.,  3.],
-               [ 4.,  5.,  6.]])
-        >>> type(a)
-        <class 'pycuda.gpuarray.GPUArray'>
-        >>> a.shape
-        (2, 3)
-        >>> a.dtype
-        dtype('float64')
-        >>> a.reshape((1, 6))
-        array([[ 1.,  2.,  3.,  4.,  5.,  6.]])
-    """
-    if type == 'real':
-        if bit == 32:
-            return pycuda.gpuarray.to_gpu(array(a).astype(float32))
-        elif bit == 64:
-            return pycuda.gpuarray.to_gpu(array(a).astype(float64))
-    elif type == 'complex':
-        if bit == 32:
-            print('Complex numbers in 32 bit are not supported')
-        elif bit == 64:
-            return pycuda.gpuarray.to_gpu(array(a).astype(complex64))
 
 
 def cuda_imag(a):
@@ -353,8 +244,7 @@ if __name__ == "__main__":
     c = cuda_random((2, 2), bit=64)
     d = cuda_real(cuda_give([1 + 2.j, 2 - 4.j], type='complex'))
     e = cuda_zeros((3, 2), bit=64)
-    f = cuda_eye(3)
-    g = cuda_diag(cuda_give([1, 2, 3]))
+
     h = cuda_tile(cuda_give([[1, 2], [3, 4]]), (2, 2))
     i = cuda_squeeze(cuda_give([[1], [2]]))
     j = cuda_imag(cuda_give([1 + 2.j, 2 - 4.j], bit=64, type='complex'))

@@ -1,3 +1,4 @@
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -37,22 +38,33 @@ __all__ = [
 
 
 def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
+
     """ Run Numba accelerated dynamic relaxation analysis.
 
     Parameters
     ----------
-        network (obj): Network to analyse.
-        factor (float): Convergence factor.
-        tol (float): Tolerance value.
-        steps (int): Maximum number of steps.
-        summary (int): Print summary at end.
-        update (bool): Update the co-ordinates of the Network.
+    network : obj
+        Network to analyse.
+    factor : float
+        Convergence factor.
+    tol : float
+        Tolerance value.
+    steps : int
+        Maximum number of steps.
+    summary : int
+        Print summary at end.
+    update : bool
+        Update the co-ordinates of the Network.
 
     Returns
     -------
-        array: Vertex co-ordinates.
-        array: Edge forces.
-        array: Edge lengths.
+    array
+        Vertex co-ordinates.
+    array
+        Edge forces.
+    array
+        Edge lengths.
+
     """
 
     # Setup
@@ -124,40 +136,69 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 @jit(nogil=True, nopython=True, parallel=False)
 def drx_solver(tol, steps, factor, u, v, X, ks, l0, f0, ind_c, ind_t, rows, cols, vals, P, S, B, M, summary,
                inds, indi, indf, EIx, EIy, beams):
+
     """ Numba accelerated dynamic relaxation solver.
 
     Parameters
     ----------
-        tol (float): Tolerance limit.
-        steps (int): Maximum number of steps.
-        factor (float): Convergence factor.
-        u (array): Network edges' start points.
-        v (array): Network edges' end points.
-        X (array): Nodal co-ordinates.
-        ks (array): Initial edge axial stiffnesses.
-        l0 (array) Initial edge lengths.
-        f0 (array): Initial edge forces.
-        ind_c (array): Indices of compression only edges.
-        ind_t (array): Indices of tension only edges.
-        rows (array): Edge adjacencies (rows).
-        cols (array): Edge adjacencies (columns).
-        vals (array): Edge adjacencies (values).
-        P (array): Nodal loads Px, Py, Pz.
-        S (array): Shear forces Sx, Sy, Sz.
-        B (array): Constraint conditions.
-        M (array): Mass matrix.
-        summary (int): Print summary 1 or 0.
-        inds (array): Indices of beam element start nodes.
-        indi (array): Indices of beam element intermediate nodes.
-        indf (array): Indices of beam element finish nodes beams.
-        EIx (array): Nodal EIx flexural stiffnesses.
-        EIy (array): Nodal EIy flexural stiffnesses.
-        beams (int): Beam analysis on: 1 or off: 0.
+    tol : float
+        Tolerance limit.
+    steps : int
+        Maximum number of steps.
+    factor : float
+        Convergence factor.
+    u : array
+        Network edges' start points.
+    v : array
+        Network edges' end points.
+    X : array
+        Nodal co-ordinates.
+    ks : array
+        Initial edge axial stiffnesses.
+    l0 : array
+        Initial edge lengths.
+    f0 : array
+        Initial edge forces.
+    ind_c : array
+        Indices of compression only edges.
+    ind_t : array
+        Indices of tension only edges.
+    rows : array
+        Edge adjacencies (rows).
+    cols : array
+        Edge adjacencies (columns).
+    vals : array
+        Edge adjacencies (values).
+    P : array
+        Nodal loads Px, Py, Pz.
+    S : array
+        Shear forces Sx, Sy, Sz.
+    B : array
+        Constraint conditions.
+    M : array
+        Mass matrix.
+    summary : int
+        Print summary 1 or 0.
+    inds : array
+        Indices of beam element start nodes.
+    indi : array
+        Indices of beam element intermediate nodes.
+    indf : array
+        Indices of beam element finish nodes beams.
+    EIx : array
+        Nodal EIx flexural stiffnesses.
+    EIy : array
+        Nodal EIy flexural stiffnesses.
+    beams : int
+        Beam analysis on: 1 or off: 0.
 
     Returns
     -------
-        array: Updated nodal co-ordinates.
+    array
+        Updated nodal co-ordinates.
+
     """
+
     m   = len(u)
     n   = X.shape[0]
     nv  = len(vals)
