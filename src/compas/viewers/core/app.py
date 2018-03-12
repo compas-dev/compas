@@ -30,28 +30,43 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['App', ]
 
 
+class MainWindow(QtWidgets.QMainWindow):
+
+    def sizeHint(self):
+        return QtCore.QSize(1440, 900)
+
+
 class App(QtWidgets.QApplication):
     """"""
 
-    def __init__(self, config, style):
+    def __init__(self, config=None, style=None):
         QtWidgets.QApplication.__init__(self, sys.argv)
         self.config = config or {}
-        self.style = style or """"""
-        self.setApplicationName("Viewer app")
-        self.setStyleSheet(self.style)
+        if style:
+            self.setStyleSheet(style)
 
-    def setup(self, w, h):
-        self.main = QtWidgets.QMainWindow()
-        self.main.setFixedSize(w, h)
-        self.main.setGeometry(0, 50, w, h)
+    def setup(self):
+        self.main = MainWindow()
+        self.main.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.main.setCentralWidget(self.view)
+        self.centre()
+
+    def centre(self):
+        w = 1440
+        h = 900
+        self.main.resize(w, h)
+        desktop = self.desktop()
+        rect = desktop.availableGeometry()
+        x = 0.5 * (rect.width() - w)
+        y = 0.5 * (rect.height() - h)
+        self.main.setGeometry(x, y, w, h)
 
     def init(self):
         self.init_menubar()
         self.init_toolbar()
         self.init_sidebar()
-        self.init_statusbar()
         self.init_console()
+        self.init_statusbar()
 
     def show(self):
         self.main.show()
@@ -60,6 +75,10 @@ class App(QtWidgets.QApplication):
 
     def start(self):
         sys.exit(self.exec_())
+
+    # ==========================================================================
+    # init
+    # ==========================================================================
 
     def init_statusbar(self):
         self.statusbar = self.main.statusBar()

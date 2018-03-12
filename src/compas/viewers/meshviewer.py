@@ -26,18 +26,27 @@ from compas.geometry import centroid_points
 from compas.utilities import hex_to_rgb
 from compas.utilities import flatten
 
-from compas.topology import mesh_quads_to_triangles
+# from compas.topology import mesh_quads_to_triangles
 from compas.topology import mesh_flip_cycles
 from compas.topology import mesh_subdivide
 
-from compas.viewers.core import Camera
-from compas.viewers.core import Mouse
-from compas.viewers.core import Grid
-from compas.viewers.core import Axes
+# from compas.viewers.core import Camera
+# from compas.viewers.core import Mouse
+# from compas.viewers.core import Grid
+# from compas.viewers.core import Axes
 
 from compas.viewers.core import GLWidget
 from compas.viewers.core import App
 from compas.viewers.core import Controller
+
+
+__author__     = ['Tom Van Mele', ]
+__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'vanmelet@ethz.ch'
+
+
+__all__ = ['MeshViewer', ]
 
 
 get_obj_file = partial(
@@ -61,23 +70,15 @@ def flist(items):
     return list(flatten(items))
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['MeshViewer', ]
-
-
 class MeshViewer(App):
     """"""
 
-    def __init__(self, config, style, width=1440, height=900):
+    def __init__(self, config, style):
         super(MeshViewer, self).__init__(config, style)
+        # setting the MVC components should be done explicitly
         self.controller = Front(self)
         self.view = View(self.controller)
-        self.setup(width, height)
+        self.setup()
         self.init()
 
 
@@ -333,6 +334,9 @@ class Front(Controller):
         self.view.current = view
         self.view.update()
 
+    def update_camera_settings(self):
+        self.log('Updating the camera settings.')
+
     def capture_image(self):
         self.message('Capture Image is under construction...')
 
@@ -459,29 +463,36 @@ if __name__ == '__main__':
                             {
                                 'type'  : 'radio',
                                 'items' : [
-                                    {'text' : 'Perspective', 'action': 'set_view', 'args': [View.VIEW_PERSPECTIVE, ], 'checked': True},
-                                    {'text' : 'Front', 'action': 'set_view', 'args': [View.VIEW_FRONT, ], 'checked': False},
-                                    {'text' : 'Left', 'action': 'set_view', 'args': [View.VIEW_LEFT, ], 'checked': False},
-                                    {'text' : 'Top', 'action': 'set_view', 'args': [View.VIEW_TOP, ], 'checked': False},
+                                    {
+                                        'text'    : 'Perspective',
+                                        'action'  : 'set_view',
+                                        'args'    : [View.VIEW_PERSPECTIVE, ],
+                                        'checked' : True
+                                    },
+                                    {
+                                        'text'    : 'Front',
+                                        'action'  : 'set_view',
+                                        'args'    : [View.VIEW_FRONT, ],
+                                        'checked' : False
+                                    },
+                                    {
+                                        'text'    : 'Left',
+                                        'action'  : 'set_view',
+                                        'args'    : [View.VIEW_LEFT, ],
+                                        'checked' : False
+                                    },
+                                    {
+                                        'text'    : 'Top',
+                                        'action'  : 'set_view',
+                                        'args'    : [View.VIEW_TOP, ],
+                                        'checked' : False
+                                    },
                                 ]
                             }
                         ]
                     },
-                    {
-                        'type'  : 'menu',
-                        'text'  : 'Camera',
-                        'items' : []
-                    },
-                    {
-                        'type'  : 'menu',
-                        'text'  : 'Grid',
-                        'items' : []
-                    },
-                    {
-                        'type'  : 'menu',
-                        'text'  : 'Axes',
-                        'items' : []
-                    },
+                    {'type' : 'separator'},
+                    {'text' : 'Camera', 'action': 'update_camera_settings'},
                     {'type' : 'separator'},
                     {'text' : 'Capture Image', 'action': 'capture_image'},
                     {'text' : 'Capture Video', 'action': 'capture_video'},
@@ -535,9 +546,24 @@ if __name__ == '__main__':
                     {
                         'type'  : 'radio',
                         'items' : [
-                            {'text' : 'Version 2.1', 'action': 'opengl_set_version', 'args': [(2, 1), ], 'checked': True},
-                            {'text' : 'Version 3.3', 'action': 'opengl_set_version', 'args': [(3, 3), ], 'checked': False},
-                            {'text' : 'Version 4.1', 'action': 'opengl_set_version', 'args': [(4, 1), ], 'checked': False}
+                            {
+                                'text'    : 'Version 2.1',
+                                'action'  : 'opengl_set_version',
+                                'args'    : [(2, 1), ],
+                                'checked' : True
+                            },
+                            {
+                                'text'    : 'Version 3.3',
+                                'action'  : 'opengl_set_version',
+                                'args'    : [(3, 3), ],
+                                'checked' : False
+                            },
+                            {
+                                'text'    : 'Version 4.1',
+                                'action'  : 'opengl_set_version',
+                                'args'    : [(4, 1), ],
+                                'checked' : False
+                            }
                         ]
                     },
                 ]
@@ -670,7 +696,6 @@ QDockWidget#Console QPlainTextEdit {
     border-bottom: 1px solid #cccccc;
     padding-left: 4px;
 }
-
 """
 
     viewer = MeshViewer(config, style).show()
