@@ -220,17 +220,23 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     return x
 
 
+def topop3d_numpy():
+    pass
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    loads = {
-        '40-200': [0, -1]}
+    # loads = {
+    #     '40-200': [0, -1]}
 
-    supports = {
-        '0-0': [1, 1],
-        '0-400': [0, 1]}
+    # supports = {
+    #     '0-0': [1, 1],
+    #     '0-400': [0, 1]}
 
-    x = topop2d_numpy(nelx=400, nely=40, loads=loads, supports=supports, volfrac=0.5)
+    # x = topop2d_numpy(nelx=400, nely=40, loads=loads, supports=supports, volfrac=0.5)
+
+    topop3d_numpy()
