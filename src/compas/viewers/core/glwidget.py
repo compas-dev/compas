@@ -53,11 +53,6 @@ class GLWidget(QOpenGLWidget):
         self.display_lists = []
         self.buffers = []
 
-    def __del__(self):
-        self.makeCurrent()
-        for dl in self.display_lists:
-            glDeleteLists(dl, 1)
-
     @property
     def current(self):
         return self._current_view
@@ -115,7 +110,6 @@ class GLWidget(QOpenGLWidget):
         glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
-        # glutInit()
         self.camera.aim()
         self.camera.focus()
 
@@ -141,7 +135,6 @@ class GLWidget(QOpenGLWidget):
         self.paint()
 
         glPopAttrib()
-        glutSwapBuffers()
 
     def paint(self):
         raise NotImplementedError

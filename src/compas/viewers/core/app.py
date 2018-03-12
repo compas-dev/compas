@@ -43,7 +43,7 @@ class App(QtWidgets.QApplication):
     def setup(self, w, h):
         self.main = QtWidgets.QMainWindow()
         self.main.setFixedSize(w, h)
-        self.main.setGeometry(0, 0, w, h)
+        self.main.setGeometry(0, 50, w, h)
         self.main.setCentralWidget(self.view)
 
     def init(self):
@@ -180,11 +180,11 @@ class App(QtWidgets.QApplication):
                 args = item.get('args', None) or []
                 kwargs = item.get('kwargs', None) or {}
                 if 'image' in item:
-                    icon = QtWidgets.QIcon(item['image'])
+                    icon = QtGui.QIcon(item['image'])
                     return parent.addAction(icon, text, partial(action, *args, **kwargs))
                 return parent.addAction(text, partial(action, *args, **kwargs))
             if 'image' in item:
-                icon = QtWidgets.QIcon(item['image'])
+                icon = QtGui.QIcon(item['image'])
                 return parent.addAction(icon, text)
         return parent.addAction(text)
 

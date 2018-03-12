@@ -26,7 +26,7 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['Slider', ]
 
 
-class Validator(QtWidgets.QValidator):
+class Validator(QtGui.QValidator):
     def __init__(self, minval, maxval):
         super(Validator, self).__init__()
         self.minval = int(minval)
