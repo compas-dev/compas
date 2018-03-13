@@ -41,7 +41,10 @@ cuda
     :nosignatures:
 
     device_cuda
-    cuda_give
+    give_cuda
+    get_cuda
+    ones_cuda
+    zeros_cuda
 
 
 euler

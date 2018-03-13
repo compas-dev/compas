@@ -13,6 +13,13 @@ try:
 except ImportError as e:
     pass
 
+try:
+    import skcuda
+    import skcuda.autoinit
+    import skcuda.misc
+except ImportError as e:
+    pass
+
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
@@ -22,7 +29,10 @@ __email__     = 'liew@arch.ethz.ch'
 
 __all__ = [
     'device_cuda',
-    'cuda_give',
+    'give_cuda',
+    'get_cuda',
+    'ones_cuda',
+    'zeros_cuda',
 ]
 
 
@@ -40,7 +50,7 @@ def device_cuda():
 
     Examples
     --------
-    >>> cuda_device()
+    >>> device_cuda()
     Device: GeForce GTX 1060 6GB
     Compute Capability: 6.1
     Total Memory: 6291 MB
@@ -64,7 +74,7 @@ def device_cuda():
         print('%s: %s' % (att, value))
 
 
-def cuda_give(a, type='real'):
+def give_cuda(a, type='real'):
 
     """ Give a list or an array to GPU memory.
 
@@ -82,7 +92,7 @@ def cuda_give(a, type='real'):
 
     Examples
     --------
-    >>> a = cuda_give([[1., 2., 3.], [4., 5., 6.]])
+    >>> a = give_cuda([[1., 2., 3.], [4., 5., 6.]])
     array([[ 1.,  2.,  3.],
            [ 4.,  5.,  6.]])
 
@@ -106,6 +116,92 @@ def cuda_give(a, type='real'):
         return pycuda.gpuarray.to_gpu(array(a).astype(complex64))
 
 
+def get_cuda(a):
+
+    """ Get back GPUArray from GPU memory as NumPy array.
+
+    Parameters
+    ----------
+    a : gpuarray
+        Data on the GPU memory to retrieve.
+
+    Returns
+    -------
+    array
+        The GPUArray returned to RAM as NumPy array.
+
+    Examples
+    --------
+    >>> a = give_cuda([1, 2, 3])
+    >>> b = get_cuda(a)
+    array([ 1.,  2.,  3.])
+
+    >>> type(b)
+    <class 'numpy.ndarray'>
+
+    """
+
+    return a.get()
+
+
+def ones_cuda(shape):
+
+    """ Create GPUArray of ones directly on GPU memory.
+
+    Parameters
+    ----------
+    shape : tuple
+        Dimensions of the GPUArray.
+
+    Returns
+    -------
+    gpuarray
+        GPUArray of ones.
+
+    Examples
+    --------
+    >>> a = ones_cuda((3, 2))
+    array([[ 1.,  1.],
+           [ 1.,  1.],
+           [ 1.,  1.]])
+
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
+
+    """
+
+    return skcuda.misc.ones(shape, float64)
+
+
+def zeros_cuda(shape):
+
+    """ Create GPUArray of zeros directly on GPU memory.
+
+    Parameters
+    ----------
+    shape : tuple
+        Dimensions of the GPUArray.
+
+    Returns
+    -------
+    gpuarray
+        GPUArray of zeros.
+
+    Examples
+    --------
+    >>> a = zeros_cuda((3, 2))
+    array([[ 0.,  0.],
+           [ 0.,  0.],
+           [ 0.,  0.]])
+
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
+
+    """
+
+    return pycuda.gpuarray.zeros(shape, dtype='float64')
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -113,4 +209,7 @@ def cuda_give(a, type='real'):
 if __name__ == "__main__":
 
     device_cuda()
-    a = cuda_give([[1., 2., 3.], [4., 5., 6.]])
+    a = give_cuda([[1., 2., 3.], [4., 5., 6.]])
+    b = get_cuda(a)
+    c = ones_cuda((3, 3))
+    d = zeros_cuda((3, 3))

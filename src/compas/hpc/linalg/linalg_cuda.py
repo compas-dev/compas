@@ -52,7 +52,7 @@ def diag_cuda(a):
 
     Examples
     --------
-    >>> a = diag_cuda(cuda_give([1, 2, 3]))
+    >>> a = diag_cuda(give_cuda([1, 2, 3]))
     array([[ 1.,  0.,  0.],
            [ 0.,  2.,  0.],
            [ 0.,  0.,  3.]])
@@ -103,7 +103,7 @@ def eye_cuda(n):
 
 if __name__ == "__main__":
 
-    from compas.hpc.core.cuda import cuda_give
+    from compas.hpc.core.cuda import give_cuda
 
-    print(diag_cuda(cuda_give([1., 2., 3.])))
+    print(diag_cuda(give_cuda([1., 2., 3.])))
     print(eye_cuda(3))
