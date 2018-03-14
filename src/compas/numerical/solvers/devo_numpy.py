@@ -26,7 +26,8 @@ except ImportError:
 try:
     from compas.plotters.evoplotter import EvoPlotter
 except ImportError:
-    raise
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 from time import time
 
