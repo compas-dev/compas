@@ -45,6 +45,8 @@ cuda
     get_cuda
     ones_cuda
     zeros_cuda
+    rand_cuda
+    tile_cuda
 
 
 euler

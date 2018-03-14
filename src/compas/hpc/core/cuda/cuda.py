@@ -10,6 +10,7 @@ from numpy import complex64
 try:
     import pycuda
     import pycuda.autoinit
+    import pycuda.curandom
 except ImportError as e:
     pass
 
@@ -33,7 +34,37 @@ __all__ = [
     'get_cuda',
     'ones_cuda',
     'zeros_cuda',
+    'rand_cuda',
+    'tile_cuda',
 ]
+
+
+def rand_cuda(shape):
+
+    """ Create random values in the range [0, 1] as GPUArray.
+
+    Parameters
+    ----------
+    shape : tuple
+        Size of the random array.
+
+    Returns
+    -------
+    gpuarray
+        Random floats from 0 to 1 in GPUArray.
+
+    Examples
+    --------
+    >>> a = rand_cuda((2, 2))
+    array([[ 0.80916596,  0.82687163],
+           [ 0.03921388,  0.44197764]])
+
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
+
+    """
+
+    return pycuda.curandom.rand(shape, float64)
 
 
 def device_cuda():
@@ -202,6 +233,51 @@ def zeros_cuda(shape):
     return pycuda.gpuarray.zeros(shape, dtype='float64')
 
 
+def tile_cuda(a, shape):
+
+    """ Horizontally and vertically tile a GPUArray.
+
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray to tile.
+    shape : tuple
+        Number of vertical and horizontal tiles.
+
+    Returns
+    -------
+    gpuarray
+        Tiled GPUArray.
+
+    Notes
+    -----
+    - A temporary function, to be made into a kernal.
+
+    Examples
+    --------
+    >>> a = tile_cuda(give_cuda([[1, 2], [3, 4]]), (2, 2))
+    array([[ 1.,  2.,  1.,  2.],
+           [ 3.,  4.,  3.,  4.],
+           [ 1.,  2.,  1.,  2.],
+           [ 3.,  4.,  3.,  4.]])
+
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
+
+    """
+    m, n = a.shape
+
+    b = zeros_cuda((m * shape[0], n))
+    for i in range(shape[0]):
+        b[i * m:i * m + m, :] = a
+
+    c = zeros_cuda((m * shape[0], n * shape[1]))
+    for i in range(shape[1]):
+        c[:, i * n:i * n + n] = b
+
+    return c
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -213,3 +289,5 @@ if __name__ == "__main__":
     b = get_cuda(a)
     c = ones_cuda((3, 3))
     d = zeros_cuda((3, 3))
+    e = rand_cuda((2, 2))
+    f = tile_cuda(give_cuda([[1, 2], [3, 4]]), (2, 2))
