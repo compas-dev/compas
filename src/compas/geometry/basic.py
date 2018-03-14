@@ -351,7 +351,10 @@ def normalize_vector(vector):
     >>>
 
     """
-    return scale_vector(vector, 1.0 / length_vector(vector))
+    l = length_vector(vector)
+    if not l:
+        return vector
+    return [vector[0] / l, vector[1] / l, vector[2] / l]
 
 
 def normalize_vector_xy(vector):
