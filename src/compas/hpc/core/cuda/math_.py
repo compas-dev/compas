@@ -27,12 +27,12 @@ __all__ = [
     'abs_cuda',
     'argmax_cuda',
     'argmin_cuda',
-#     'cuda_acos',
-#     'cuda_asin',
-#     'cuda_atan',
-#     'cuda_ceil',
-#     'cuda_cos',
-#     'cuda_cosh',
+    'acos_cuda',
+    'asin_cuda',
+    'atan_cuda',
+    'ceil_cuda',
+    'cos_cuda',
+    'cosh_cuda',
 #     'cuda_exp',
 #     'cuda_floor',
 #     'cuda_log',
@@ -135,112 +135,166 @@ def argmin_cuda(a, axis):
     return skcuda.misc.argmin(a, axis, keepdims=True)
 
 
-# def cuda_acos(a):
-#     """ Trigonometric arccosine of GPUArray elements.
+def acos_cuda(a):
 
-#     Parameters:
-#         a (gpuarray): GPUArray with elements to be operated on.
+    """ Trigonometric arccosine of GPUArray elements.
 
-#     Returns:
-#         gpuarray: acos(GPUArray)
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
 
-#     Examples:
-#         >>> a = cuda_acos(give_cuda([0.5, 1]))
-#         array([ 1.04719755,  0.])
-#         >>> type(a)
-#         <class 'pycuda.gpuarray.GPUArray'>
-#     """
-#     return pycuda.cumath.acos(a)
+    Returns
+    -------
+    gpuarray
+        acos(GPUArray)
 
+    Examples
+    --------
+    >>> a = acos_cuda(give_cuda([0.5, 1]))
+    array([ 1.04719755,  0.])
 
-# def cuda_asin(a):
-#     """ Trigonometric arcsine of GPUArray elements.
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
 
-#     Parameters:
-#         a (gpuarray): GPUArray with elements to be operated on.
+    """
 
-#     Returns:
-#         gpuarray: asin(GPUArray)
-
-#     Examples:
-#         >>> a = cuda_asin(give_cuda([0.5, 1]))
-#         array([ 0.52359878,  1.57079633])
-#         >>> type(a)
-#         <class 'pycuda.gpuarray.GPUArray'>
-#     """
-#     return pycuda.cumath.asin(a)
+    return pycuda.cumath.acos(a)
 
 
-# def cuda_atan(a):
-#     """ Trigonometric arctangent of GPUArray elements.
+def asin_cuda(a):
 
-#     Parameters:
-#         a (gpuarray): GPUArray with elements to be operated on.
+    """ Trigonometric arcsine of GPUArray elements.
 
-#     Returns:
-#         gpuarray: atan(GPUArray)
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
 
-#     Examples:
-#         >>> a = cuda_atan(give_cuda([0.5, 1]))
-#         array([ 0.46364761,  0.78539816])
-#         >>> type(a)
-#         <class 'pycuda.gpuarray.GPUArray'>
-#     """
-#     return pycuda.cumath.atan(a)
+    Returns
+    -------
+    gpuarray
+        asin(GPUArray)
 
+    Examples
+    --------
+    >>> a = asin_cuda(give_cuda([0.5, 1]))
+    array([ 0.52359878,  1.57079633])
 
-# def cuda_ceil(a):
-#     """ Ceiling of GPUArray elements.
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
 
-#     Parameters:
-#         a (gpuarray): GPUArray with elements to be operated on.
+    """
 
-#     Returns:
-#         gpuarray: ceil(GPUArray)
-
-#     Examples:
-#         >>> a = cuda_ceil(give_cuda([0.5, 0.1, 1.9]))
-#         array([ 1.,  1.,  2.])
-#         >>> type(a)
-#         <class 'pycuda.gpuarray.GPUArray'>
-#     """
-#     return pycuda.cumath.ceil(a)
+    return pycuda.cumath.asin(a)
 
 
-# def cuda_cos(a):
-#     """ Trigonometric cosine of GPUArray elements.
+def atan_cuda(a):
 
-#     Parameters:
-#         a (gpuarray): GPUArray with elements to be operated on.
+    """ Trigonometric arctangent of GPUArray elements.
 
-#     Returns:
-#         gpuarray: cos(GPUArray)
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
 
-#     Examples:
-#         >>> a = cuda_cos(give_cuda([0, pi / 4]))
-#         array([ 1.,  0.70710678])
-#         >>> type(a)
-#         <class 'pycuda.gpuarray.GPUArray'>
-#     """
-#     return pycuda.cumath.cos(a)
+    Returns
+    -------
+    gpuarray
+        atan(GPUArray)
+
+    Examples
+    --------
+    >>> a = atan_cuda(give_cuda([0.5, 1]))
+    array([ 0.46364761,  0.78539816])
+
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
+
+    """
+
+    return pycuda.cumath.atan(a)
 
 
-# def cuda_cosh(a):
-#     """ Hyperbolic cosine of GPUArray elements.
+def ceil_cuda(a):
 
-#     Parameters:
-#         a (gpuarray): GPUArray with elements to be operated on.
+    """ Ceiling of GPUArray elements.
 
-#     Returns:
-#         gpuarray: cosh(GPUArray)
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
 
-#     Examples:
-#         >>> a = cuda_cosh(give_cuda([0, pi / 4]))
-#         array([ 1.,  1.32460909])
-#         >>> type(a)
-#         <class 'pycuda.gpuarray.GPUArray'>
-#     """
-#     return pycuda.cumath.cosh(a)
+    Returns
+    -------
+    gpuarray
+        ceil(GPUArray)
+
+    Examples
+    --------
+    >>> a = ceil_cuda(give_cuda([0.5, 0.1, 1.9]))
+    array([ 1.,  1.,  2.])
+
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
+
+    """
+
+    return pycuda.cumath.ceil(a)
+
+
+def cos_cuda(a):
+
+    """ Trigonometric cosine of GPUArray elements.
+
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
+
+    Returns
+    -------
+    gpuarray
+        cos(GPUArray)
+
+    Examples
+    --------
+    >>> a = cos_cuda(give_cuda([0, pi/4]))
+    array([ 1.,  0.70710678])
+
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
+
+    """
+
+    return pycuda.cumath.cos(a)
+
+
+def cosh_cuda(a):
+
+    """ Hyperbolic cosine of GPUArray elements.
+
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
+
+    Returns
+    -------
+    gpuarray
+        cosh(GPUArray)
+
+    Examples
+    --------
+    >>> a = cosh_cuda(give_cuda([0, pi/4]))
+    array([ 1.,  1.32460909])
+
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
+
+    """
+
+    return pycuda.cumath.cosh(a)
 
 
 # def cuda_exp(a):
@@ -491,6 +545,14 @@ if __name__ == "__main__":
 
     from compas.hpc import give_cuda
 
+    from numpy import pi
+
     a = abs_cuda(give_cuda([-0.1, -1.7]))
     b = argmax_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
     c = argmin_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
+    d = acos_cuda(give_cuda([0.5, 1]))
+    e = asin_cuda(give_cuda([0.5, 1]))
+    f = atan_cuda(give_cuda([0.5, 1]))
+    g = ceil_cuda(give_cuda([0.5, 0.1, 1.9]))
+    h = cos_cuda(give_cuda([0, pi/4]))
+    i = cosh_cuda(give_cuda([0, pi/4]))
