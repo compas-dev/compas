@@ -329,6 +329,7 @@ def inverse(M):
         (:obj:`list` of :obj:`list` of :obj:`float`): The inverted matrix.
 
     Example:
+        >>> from compas.geometry import Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = matrix_from_frame(f)
         >>> I = multiply_matrices(T * inverse(T))
@@ -387,10 +388,11 @@ def matrix_from_frame(frame):
     """Computes a change of basis transformation from world XY to the frame.
 
     Args:
-        frame (:class:`Frame`): a frame describing the targeted Cartesian
+        frame (:class:`compas.geometry.Frame`): a frame describing the targeted Cartesian
             coordinate system
 
     Example:
+        >>> from compas.geometry import Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = matrix_from_frame(f)
     """
@@ -823,6 +825,7 @@ def basis_vectors_from_matrix(R):
         ValueError: If rotation matrix is invalid.
 
     Example:
+        >>> from compas.geometry import Frame
         >>> f = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> R = matrix_from_frame(f)
         >>> xaxis, yaxis = basis_vectors_from_matrix(R)

@@ -53,6 +53,19 @@ Classes
     :toctree: generated/
     :nosignatures:
 
+    Frame
+    Transformation
+    Rotation
+    Translation
+    Scale
+    Reflection
+    Projection
+    Shear
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     KDTree
 
 
