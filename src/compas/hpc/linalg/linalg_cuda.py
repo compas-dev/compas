@@ -29,6 +29,7 @@ __email__     = 'liew@arch.ethz.ch'
 
 __all__ = [
     'diag_cuda',
+    'eye_cuda',
 ]
 
 
@@ -105,5 +106,5 @@ if __name__ == "__main__":
 
     from compas.hpc.core.cuda import give_cuda
 
-    print(diag_cuda(give_cuda([1., 2., 3.])))
-    print(eye_cuda(3))
+    a = diag_cuda(give_cuda([1., 2., 3.]))
+    b = eye_cuda(3)
