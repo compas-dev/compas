@@ -3,8 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 import math
-from math import sqrt
-from math import atan2
 
 from copy import deepcopy
 
