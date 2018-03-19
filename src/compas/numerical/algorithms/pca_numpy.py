@@ -58,7 +58,7 @@ def pca_numpy(data):
 
         import matplotlib.pyplot as plt
 
-        from compas.geometry import rotation_matrix
+        from compas.geometry import matrix_from_axis_and_angle
         from compas.geometry import transform_numpy
 
         from compas.plotters import Axes3D
@@ -74,10 +74,10 @@ def pca_numpy(data):
         data[:, 2] *= 4.0
 
         a = 3.14159 * 30.0 / 180
-        Ry = rotation_matrix(a, [0, 1.0, 0.0], rtype='array')
+        Ry = matrix_from_axis_and_angle([0, 1.0, 0.0], a, rtype='array')
 
         a = -3.14159 * 45.0 / 180
-        Rz = rotation_matrix(a, [0, 0, 1.0], rtype='array')
+        Rz = matrix_from_axis_and_angle([0, 0, 1.0], a, rtype='array')
 
         R = Rz.dot(Ry)
 
@@ -156,7 +156,7 @@ if __name__ == "__main__":
 
     import matplotlib.pyplot as plt
 
-    from compas.geometry import rotation_matrix
+    from compas.geometry import matrix_from_axis_and_angle
     from compas.geometry import transform_numpy
 
     from compas.plotters import Axes3D
@@ -170,10 +170,10 @@ if __name__ == "__main__":
     data[:, 2] *= 4.0
 
     a = 3.14159 * 30.0 / 180
-    Ry = rotation_matrix(a, [0, 1.0, 0.0], rtype='array')
+    Ry = matrix_from_axis_and_angle([0, 1.0, 0.0], a, rtype='array')
 
     a = -3.14159 * 45.0 / 180
-    Rz = rotation_matrix(a, [0, 0, 1.0], rtype='array')
+    Rz = matrix_from_axis_and_angle([0, 0, 1.0], a, rtype='array')
 
     R = Rz.dot(Ry)
 

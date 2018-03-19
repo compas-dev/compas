@@ -278,11 +278,31 @@ Transformations
     :toctree: generated/
     :nosignatures:
 
-    projection_matrix
-    rotation_matrix
-    scale_matrix
-    shear_matrix
-    translation_matrix
+    determinant
+    inverse
+    identity_matrix
+    matrix_from_frame
+    matrix_from_euler_angles
+    euler_angles_from_matrix
+    matrix_from_axis_and_angle
+    matrix_from_axis_angle_vector
+    axis_and_angle_from_matrix
+    axis_angle_vector_from_matrix
+    matrix_from_quaternion
+    quaternion_from_matrix
+    matrix_from_basis_vectors
+    basis_vectors_from_matrix
+    matrix_from_translation
+    translation_from_matrix
+    matrix_from_orthogonal_projection
+    matrix_from_parallel_projection
+    matrix_from_perspective_projection
+    matrix_from_perspective_entries
+    matrix_from_shear_entries
+    matrix_from_shear
+    matrix_from_scale_factors
+    compose_matrix
+    decompose_matrix
 
 .. autosummary::
     :toctree: generated/
