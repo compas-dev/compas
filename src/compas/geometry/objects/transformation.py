@@ -50,6 +50,7 @@ from compas.geometry.transformations import matrix_from_shear
 from compas.geometry.transformations import matrix_from_scale_factors
 from compas.geometry.transformations import compose_matrix
 from compas.geometry.transformations import decompose_matrix
+from compas.geometry.transformations import transform
 
 from compas.geometry.transformations import allclose
 
@@ -278,10 +279,7 @@ class Transformation(object):
             (:obj:`list` of :obj:`list` of :obj:`float`): The transformed \
                 points.
         """
-        P = homogenize(points)
-        Pt = transpose_matrix(P)
-        Pt_ = multiply_matrices(self.matrix, Pt)
-        return map(list, zip(*Pt_[:3]))  # cutoff 1 and transpose again
+        return transform(points, T.matrix)
 
     @property
     def list(self):
