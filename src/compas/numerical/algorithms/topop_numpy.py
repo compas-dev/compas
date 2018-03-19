@@ -368,7 +368,22 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
         hstack([K3.transpose(), K6, K5.transpose(), K2.transpose()]),
         hstack([K4, K3, K2, K1.transpose()])])
 
-    print(KE[:, -1])
+    # Indexing
+
+    nodegrd = reshape(range(ny * nx), (ny, nx), order='F')
+    nodeids = reshape(nodegrd[:-1, :-1], (nely * nelx, 1), order='F')
+    nodeidz = array(range(0, nelz * ny * nx, ny * nx))
+    nodeids = tile(nodeids, nodeidz.shape) + tile(nodeidz, nodeids.shape)
+
+    eVec = (3 * nodeids.ravel(order='F') + 1)[:, newaxis]
+    m1 = 3 * nely + array([3, 4, 5, 0, 1, 2])[newaxis, :]
+    m2 = hstack([array([[0, 1, 2]]), m1, array([[-3, -2, -1]])])
+    edof = tile(eVec, (1, 24)) + tile(hstack([m2, 3 * ny * nx + m2]), (ne, 1))
+    iK = reshape(kron(edof, ones((24, 1))).transpose(), (24 * 24 * ne, 1), order='F')
+    jK = reshape(kron(edof, ones((1, 24))).transpose(), (24 * 24 * ne, 1), order='F')
+
+    print(jK)
+    print(jK.shape)
 
     return
 
