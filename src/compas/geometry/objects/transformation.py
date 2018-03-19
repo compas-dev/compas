@@ -51,7 +51,7 @@ from compas.geometry.transformations import matrix_from_scale_factors
 from compas.geometry.transformations import compose_matrix
 from compas.geometry.transformations import decompose_matrix
 
-from compas_fab.fab.utilities.numbers import allclose
+from compas.geometry.transformations import allclose
 
 __author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
 __license__ = 'MIT License'
@@ -667,7 +667,7 @@ class Projection(Transformation):
         """
         M = matrix_from_orthogonal_projection(point, normal)
         return cls(M)
-    
+
     @classmethod
     def parallel(cls, point, normal, direction):
         """Returns an parallel ``Projection`` to project onto a plane defined \
@@ -770,7 +770,7 @@ class Shear(Transformation):
 
 if __name__ == "__main__":
 
-    from compas_fab.fab.geometry.frame import Frame
+    from compas.geometry.objects.frame import Frame
     f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     T = Transformation.from_frame(f1)
     f2 = Frame.from_transformation(T)
@@ -884,4 +884,3 @@ if __name__ == "__main__":
     S = Shear(angle, direction, point, normal)
     print(S)
     S = Shear.from_entries([1, 2, 3])
-
