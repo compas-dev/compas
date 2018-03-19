@@ -92,9 +92,9 @@ def get_objects(name=None, color=None, layer=None):
 
 def delete_object(guid, purge=True):
     if purge:
-        purge_object(guid)
+        purge_objects([guid])
     else:
-        rs.DeleteObject(guid)
+        delete_objects([guid], purge)
 
 
 def delete_objects(guids, purge=True):
