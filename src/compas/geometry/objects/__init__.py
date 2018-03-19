@@ -3,7 +3,8 @@ from .point import Point
 
 from .line import Line
 #from .plane import Plane
-#from .frame import Frame
+from .frame import Frame
+from .transformation import Transformation, Rotation, Translation, Scale, Reflection, Projection, Shear
 
 from .polyline import Polyline
 from .polygon import Polygon
@@ -19,7 +20,8 @@ from .kdtree import KDTree
 
 __all__ = [
     'Vector', 'Point',
-    'Line', 
+    'Line',
+    'Frame', 'Transformation', 'Rotation', 'Translation', 'Scale', 'Reflection', 'Projection', 'Shear',
     'Polyline', 'Polygon', 'Polyhedron',
     'KDTree'
 ]
