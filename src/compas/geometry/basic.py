@@ -940,7 +940,7 @@ def transpose_matrix(M):
         The result matrix.
 
     """
-    return zip(*M)
+    return list(map(list, zip(*M)))
 
 
 def multiply_matrices(A, B):
