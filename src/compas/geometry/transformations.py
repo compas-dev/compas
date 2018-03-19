@@ -57,8 +57,6 @@ __all__ = [
     'local_coords_numpy',
     'global_coords_numpy',
 
-    'rotation_matrix',
-        
     'determinant',
     'inverse',
     'identity_matrix',
@@ -139,7 +137,7 @@ _NEXT_SPEC = [1, 2, 0, 1]
 # TODO: move somewhere else
 def allclose(l1, l2, tol = 1e-05):
     """Returns True if two lists are element-wise equal within a tolerance.
-    
+
     The function is similar to NumPy's *allclose* function.
     """
     for a, b in zip(l1, l2):
@@ -267,61 +265,6 @@ def global_coords_numpy(o, uvw, rst):
 # ==============================================================================
 # xforms
 # ==============================================================================
-
-
-
-def rotation_matrix(angle, direction, point=None, rtype='list'):
-    """Creates a rotation matrix for rotating vectors around an axis.
-
-    Parameters:
-        angle (float): Angle in radians to rotate by.
-        direction (list): The x, y and z components of the rotation axis.
-
-    Returns:
-        list: The (3 x 3) rotation matrix.
-
-    Notes:
-        Rotates a vector around a given axis (the axis will be unitised), the
-        rotation is based on the right hand rule, i.e. anti-clockwise when the axis
-        of rotation points towards the observer.
-
-    Examples:
-        >>> R = rotation_matrix(angle=pi/2, direction=[0, 0, 1])
-        [[  6.12-17  -1.00+00   0.00+00]
-         [  1.00+00   6.12-17   0.00+00]
-         [  0.00+00   0.00+00   1.00+00]]
-
-    """
-    # To perform a rotation around an arbitrary line (i.e. an axis not through
-    # the origin) an origin other than (0, 0, 0) may be provided for the
-    # direction vector. Note that the returned 'rotation matrix' is then
-    # composed of three translations and a rotation: Tp-1 Txy-1 Tz-1 R Tz Txy Tp
-    # l = sum(direction[i] ** 2 for i in range(3)) ** 0.5
-    # u = [direction[i] / l for i in range(3)]
-    x, y, z = normalize_vector(direction)
-    c = math.cos(angle)
-    t = 1 - c
-    s = math.sin(angle)
-    R = [
-        [t * x * x + c    , t * x * y - s * z, t * x * z + s * y, 0.0],
-        [t * x * y + s * z, t * y * y + c    , t * y * z - s * x, 0.0],
-        [t * x * z - s * y, t * y * z + s * x, t * z * z + c    , 0.0],
-        [0.0              , 0.0              , 0.0              , 1.0]
-    ]
-
-    if point:
-        U = matrix_from_translation([-p for p in point])
-        V = matrix_from_translation(point)
-        B = multiply_matrices(R, U)
-        R = multiply_matrices(V, B)
-
-    if rtype == 'list':
-        return R
-    if rtype == 'array':
-        from numpy import asarray
-        return asarray(R)
-
-    raise NotImplementedError
 
 
 def determinant(M, check=True):
@@ -897,7 +840,7 @@ def matrix_from_translation(translation, rtype='list'):
     """Returns a 4x4 translation matrix in row-major order.
 
     Args:
-        translation (:obj:`list` of :obj:`float`): The x, y and z components 
+        translation (:obj:`list` of :obj:`float`): The x, y and z components
             of the translation.
 
     Example:
