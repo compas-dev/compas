@@ -43,6 +43,7 @@ from compas.geometry.transformations import basis_vectors_from_matrix
 from compas.geometry.transformations import matrix_from_translation
 from compas.geometry.transformations import translation_from_matrix
 from compas.geometry.transformations import matrix_from_orthogonal_projection
+from compas.geometry.transformations import matrix_from_parallel_projection
 from compas.geometry.transformations import matrix_from_perspective_projection
 from compas.geometry.transformations import matrix_from_perspective_entries
 from compas.geometry.transformations import matrix_from_shear_entries
@@ -670,7 +671,7 @@ class Projection(Transformation):
         Example:
             >>> point = [0, 0, 0]
             >>> normal = [0, 0, 1]
-            >>> P = Projection.ortogonal(point, normal)
+            >>> P = Projection.orthogonal(point, normal)
         """
         M = matrix_from_orthogonal_projection(point, normal)
         return cls(M)
@@ -688,10 +689,10 @@ class Projection(Transformation):
         Example:
             >>> point = [0, 0, 0]
             >>> normal = [0, 0, 1]
-            >>> direction = [1, 1, 0]
+            >>> direction = [1, 1, 1]
             >>> P = Projection.parallel(point, normal, direction)
         """
-        M = matrix_from_parallel_projection(point, normal)
+        M = matrix_from_parallel_projection(point, normal, direction)
         return cls(M)
 
     @classmethod
@@ -710,7 +711,7 @@ class Projection(Transformation):
             >>> perspective = [1, 1, 0]
             >>> P = Projection.perspective(point, normal, perspective)
         """
-        M = matrix_from_perspective_projection(point, normal)
+        M = matrix_from_perspective_projection(point, normal, perspective)
         return cls(M)
 
     @classmethod

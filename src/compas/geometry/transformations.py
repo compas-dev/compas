@@ -879,16 +879,16 @@ def matrix_from_orthogonal_projection(point, normal):
     Example:
         >>> point = [0, 0, 0]
         >>> normal = [0, 0, 1]
-        >>> P = Projection.ortogonal(point, normal)
+        >>> P = matrix_from_orthogonal_projection(point, normal)
     """
     T = identity_matrix(4)
     normal = normalize_vector(normal)
 
     for j in range(3):
         for i in range(3):
-            T[i, j] -= normal[i] * normal[j]  # outer_product
+            T[i][j] -= normal[i] * normal[j]  # outer_product
 
-    T[0, 3], T[1, 3], T[2, 3] = scale_vector(
+    T[0][3], T[1][3], T[2][3] = scale_vector(
         normal, dot_vectors(point, normal))
     return T
 
@@ -905,7 +905,7 @@ def matrix_from_parallel_projection(point, normal, direction):
         >>> point = [0, 0, 0]
         >>> normal = [0, 0, 1]
         >>> direction = [1, 1, 0]
-        >>> P = Projection.parallel(point, normal, direction)
+        >>> P = matrix_from_parallel_projection(point, normal, direction)
     """
     T = identity_matrix(4)
     normal = normalize_vector(normal)
@@ -913,9 +913,9 @@ def matrix_from_parallel_projection(point, normal, direction):
     scale = dot_vectors(direction, normal)
     for j in range(3):
         for i in range(3):
-            T[i, j] -= direction[i] * normal[j] / scale
+            T[i][j] -= direction[i] * normal[j] / scale
 
-    T[0, 3], T[1, 3], T[2, 3] = scale_vector(
+    T[0][3], T[1][3], T[2][3] = scale_vector(
         direction, dot_vectors(point, normal) / scale)
     return T
 
@@ -932,23 +932,23 @@ def matrix_from_perspective_projection(point, normal, perspective):
         >>> point = [0, 0, 0]
         >>> normal = [0, 0, 1]
         >>> perspective = [1, 1, 0]
-        >>> P = Projection.perspective(point, normal, perspective)
+        >>> P = matrix_from_perspective_projection(point, normal, perspective)
     """
     T = identity_matrix(4)
     normal = normalize_vector(normal)
 
-    T[0, 0] = T[1, 1] = T[2, 2] = dot_vectors(
+    T[0][0] = T[1][1] = T[2][2] = dot_vectors(
         subtract_vectors(perspective, point), normal)
 
     for j in range(3):
         for i in range(3):
-            T[i, j] -= perspective[i] * normal[j]
+            T[i][j] -= perspective[i] * normal[j]
 
-    T[0, 3], T[1, 3], T[2, 3] = scale_vector(
+    T[0][3], T[1][3], T[2][3] = scale_vector(
         perspective, dot_vectors(point, normal))
     for i in range(3):
-        T[3, i] -= normal[i]
-    T[3, 3] = dot_vectors(perspective, normal)
+        T[3][i] -= normal[i]
+    T[3][3] = dot_vectors(perspective, normal)
     return T
 
 def matrix_from_perspective_entries(perspective):
