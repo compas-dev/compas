@@ -1,3 +1,4 @@
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -11,6 +12,7 @@ try:
     from numpy import kron
     from numpy import max
     from numpy import maximum
+    from numpy import meshgrid
     from numpy import min
     from numpy import minimum
     from numpy import newaxis
@@ -36,18 +38,20 @@ except ImportError:
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'topop2d_numpy'
+    'topop2d_numpy',
+    'topop3d_numpy',
 ]
 
 
 def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
-    """ Topology optimisation in 2D using NumPy and SciPy [andreassen2011]_.
+
+    """ Topology optimisation in 2D using NumPy and SciPy.
 
     Parameters
     ----------
@@ -71,7 +75,12 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     array
         Density array.
 
+    Notes
+    -----
+    - Based on the MATLAB code of  [andreassen2011]_.
+
     """
+
     nx = nelx + 1
     ny = nely + 1
     nn = nx * ny
@@ -109,7 +118,7 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     for support, B in supports.items():
         ib, jb = [int(i) for i in support.split('-')]
         Bx, By = B
-        node = int(jb * (nely + 1) + ib)
+        node = int(jb * ny + ib)
         if Bx:
             fixed.append(2 * node)
         if By:
@@ -124,7 +133,7 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     for load, P in loads.items():
         ip, jp = [int(i) for i in load.split('-')]
         Px, Py = P
-        node = int(jp * (nely + 1) + ip)
+        node = int(jp * ny + ip)
         data.extend([Px, Py])
         rows.extend([2 * node, 2 * node + 1])
         cols.extend([0, 0])
@@ -136,19 +145,19 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     iH = zeros(ne * (2 * (int(ceil(rmin)) - 1) + 1)**2)
     jH = zeros(iH.shape)
     sH = zeros(iH.shape)
-
     k = 0
+
     for i1 in range(nelx):
+        max_i = int(max([i1 - (ceil(rmin) - 1), 0]))
+        min_i = int(min([i1 + (ceil(rmin) - 1), nelx - 1]))
+
         for j1 in range(nely):
+            max_j = int(max([j1 - (ceil(rmin) - 1), 0]))
+            min_j = int(min([j1 + (ceil(rmin) - 1), nely - 1]))
 
             e1 = i1 * nely + j1
-            max_i = int(max([i1 - (ceil(rmin) - 1), 0]))
-            min_i = int(min([i1 + (ceil(rmin) - 1), nelx - 1]))
 
             for i2 in range(max_i, min_i + 1):
-                max_j = int(max([j1 - (ceil(rmin) - 1), 0]))
-                min_j = int(min([j1 + (ceil(rmin) - 1), nely - 1]))
-
                 for j2 in range(max_j, min_j + 1):
                     k += 1
                     e2 = i2 * nely + j2
@@ -220,17 +229,230 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     return x
 
 
+def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=1.5):
+
+    """ Topology optimisation in 3D using NumPy and SciPy.
+
+    Parameters
+    ----------
+    nelx : int
+        Number of elements in x.
+    nely : int
+        Number of elements in y.
+    nelz : int
+        Number of elements in z.
+    loads : dict
+        {'i-j-k': [Px, Py, Pz]}.
+    supports : dict
+        {'i-j-k': [Bx, By, Bz]} 1=fixed, 0=free.
+    volfrac : float
+        Volume fraction.
+    penal : float
+        Penalisation power.
+    rmin : float
+        Filter radius.
+
+    Returns
+    -------
+    array
+        Density array.
+
+    Notes
+    -----
+    - Based on the MATLAB code of CITE.
+
+    """
+
+    maxloop = 200
+    tolx = 0.01
+    displayflag = 0
+    E0 = 1
+    Emin = 1e-9
+    nu = 0.3
+
+    nx = nelx + 1
+    ny = nely + 1
+    nz = nelz + 1
+    nn = nx * ny * nz
+    ne = nelx * nely * nelz
+    ndof = nn * 3
+
+    # Supports
+
+    U = zeros((ndof, 1))
+    fixed = []
+    for support, B in supports.items():
+        ib, jb, kb = [int(i) for i in support.split('-')]
+        Bx, By, Bz = B
+        node = int(kb * nx * ny + ib * ny + (ny - jb)) - 1
+        dofx = 3 * node + 0
+        dofy = 3 * node + 1
+        dofz = 3 * node + 2
+        if Bx:
+            fixed.append(dofx)
+        if By:
+            fixed.append(dofy)
+        if Bz:
+            fixed.append(dofz)
+    free = list(set(range(ndof)) - set(fixed))
+
+    # Loads
+
+    data = []
+    rows = []
+    cols = []
+    for load, P in loads.items():
+        ip, jp, kp = [int(i) for i in load.split('-')]
+        Px, Py, Pz = P
+        node = int(kp * nx * ny + ip * ny + (ny - jp)) - 1
+        dofx = 3 * node + 0
+        dofy = 3 * node + 1
+        dofz = 3 * node + 2
+        data.extend([Px, Py, Pz])
+        rows.extend([dofx, dofy, dofz])
+        cols.extend([0, 0, 0])
+    F = coo_matrix((data, (rows, cols)), shape=(ndof, 1))
+    Find = F.tocsr()[free]
+
+    # Stiffness matrix
+
+    A = array([[32, 6, -8, 6, -6, 4, 3, -6, -10, 3, -3, -3, -4, -8],
+               [-48, 0, 0, -24, 24, 0, 0, 0, 12, -12, 0, 12, 12, 12]])
+    k = (1. / 144) * dot(A.transpose(), array([[1], [nu]])).ravel()
+
+    K1 = array([[k[0], k[1], k[1], k[2], k[4], k[4]],
+                [k[1], k[0], k[1], k[3], k[5], k[6]],
+                [k[1], k[1], k[0], k[3], k[6], k[5]],
+                [k[2], k[3], k[3], k[0], k[7], k[7]],
+                [k[4], k[5], k[6], k[7], k[0], k[1]],
+                [k[4], k[6], k[5], k[7], k[1], k[0]]])
+
+    K2 = array([[k[8],  k[7], k[11], k[5],  k[3], k[6]],
+                [k[7],  k[8], k[11], k[4],  k[2], k[4]],
+                [k[9],  k[9], k[12], k[6],  k[3], k[5]],
+                [k[5],  k[4], k[10], k[8],  k[1], k[9]],
+                [k[3],  k[2], k[4],  k[1],  k[8], k[11]],
+                [k[10], k[3], k[5],  k[11], k[9], k[12]]])
+
+    K3 = array([[k[5],  k[6],  k[3], k[8],  k[11], k[7]],
+                [k[6],  k[5],  k[3], k[9],  k[12], k[9]],
+                [k[4],  k[4],  k[2], k[7],  k[11], k[8]],
+                [k[8],  k[9],  k[1], k[5],  k[10], k[4]],
+                [k[11], k[12], k[9], k[10], k[5],  k[3]],
+                [k[1],  k[11], k[8], k[3],  k[4],  k[2]]])
+
+    K4 = array([[k[13], k[10], k[10], k[12], k[9],  k[9]],
+                [k[10], k[13], k[10], k[11], k[8],  k[7]],
+                [k[10], k[10], k[13], k[11], k[7],  k[8]],
+                [k[12], k[11], k[11], k[13], k[6],  k[6]],
+                [k[9],  k[8],  k[7],  k[6],  k[13], k[10]],
+                [k[9],  k[7],  k[8],  k[6],  k[10], k[13]]])
+
+    K5 = array([[k[0], k[1],  k[7],  k[2], k[4],  k[3]],
+                [k[1], k[0],  k[7],  k[3], k[5],  k[10]],
+                [k[7], k[7],  k[0],  k[4], k[10], k[5]],
+                [k[2], k[3],  k[4],  k[0], k[7],  k[1]],
+                [k[4], k[5],  k[10], k[7], k[0],  k[7]],
+                [k[3], k[10], k[5],  k[1], k[7],  k[0]]])
+
+    K6 = array([[k[13], k[10], k[6],  k[12], k[9],  k[11]],
+                [k[10], k[13], k[6],  k[11], k[8],  k[1]],
+                [k[6],  k[6],  k[13], k[9],  k[1],  k[8]],
+                [k[12], k[11], k[9],  k[13], k[6],  k[10]],
+                [k[9],  k[8],  k[1],  k[6],  k[13], k[6]],
+                [k[11], k[1],  k[8],  k[10], k[6],  k[13]]])
+
+    KE = 1. / ((nu + 1) * (1 - 2 * nu)) * vstack([
+        hstack([K1, K2, K3, K4]),
+        hstack([K2.transpose(), K5, K6, K3.transpose()]),
+        hstack([K3.transpose(), K6, K5.transpose(), K2.transpose()]),
+        hstack([K4, K3, K2, K1.transpose()])])
+
+    # Indexing
+
+    nodegrd = reshape(range(ny * nx), (ny, nx), order='F')
+    nodeids = reshape(nodegrd[:-1, :-1], (nely * nelx, 1), order='F')
+    nodeidz = array(range(0, nelz * ny * nx, ny * nx))
+    nodeids = tile(nodeids, nodeidz.shape) + tile(nodeidz, nodeids.shape)
+
+    eVec = (3 * nodeids.ravel(order='F') + 1)[:, newaxis]
+    m1 = 3 * nely + array([3, 4, 5, 0, 1, 2])[newaxis, :]
+    m2 = hstack([array([[0, 1, 2]]), m1, array([[-3, -2, -1]])])
+    edof = tile(eVec, (1, 24)) + tile(hstack([m2, 3 * ny * nx + m2]), (ne, 1))
+    iK = reshape(kron(edof, ones((24, 1))).transpose(), (24 * 24 * ne, 1), order='F')
+    jK = reshape(kron(edof, ones((1, 24))).transpose(), (24 * 24 * ne, 1), order='F')
+
+    # Filter
+
+    iH = ones(int(ne * (3 * (ceil(rmin) - 1) + 1)**2))
+    jH = ones(iH.shape)
+    sH = zeros(iH.shape)
+
+    k = 0
+
+    for k1 in range(nelz):
+        max_k = int(max([k1 - (ceil(rmin) - 1), 0]))
+        min_k = int(min([k1 + (ceil(rmin) - 1), nelz - 1]))
+
+        for i1 in range(nelx):
+            max_i = int(max([i1 - (ceil(rmin) - 1), 0]))
+            min_i = int(min([i1 + (ceil(rmin) - 1), nelx - 1]))
+
+            for j1 in range(nely):
+                max_j = int(max([j1 - (ceil(rmin) - 1), 0]))
+                min_j = int(min([j1 + (ceil(rmin) - 1), nely - 1]))
+
+                e1 = k1 * nelx * nely + i1 * nely + j1
+
+                for k2 in range(max_k, min_k + 1):
+                    for i2 in range(max_i, min_i + 1):
+                        for j2 in range(max_j, min_j + 1):
+                            k += 1
+                            e2 = k2 * nelx * nely + i2 * nely + j2
+                            e3 = max([0, rmin - sqrt((i1 - i2)**2 + (j1 - j2)**2 + (k1 - k2)**2)])
+
+                            try:
+                                iH[k] = e1
+                                jH[k] = e2
+                                sH[k] = e3
+                            except:  # bug in original code, iH doesnt start as correct size
+                                iH = hstack([iH, array([e1])])
+                                jH = hstack([jH, array([e2])])
+                                sH = hstack([sH, array([e3])])
+
+    H = coo_matrix((sH, (iH, jH)))
+    Hs = sum(H.toarray(), 1)
+
+    print(Hs)
+    print(Hs.shape)
+
+    return
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
+    # loads = {
+    #     '40-200': [0, -1]}
+
+    # supports = {
+    #     '0-0': [1, 1],
+    #     '0-400': [0, 1]}
+
+    # x = topop2d_numpy(nelx=400, nely=40, loads=loads, supports=supports, volfrac=0.5)
+
     loads = {
-        '40-200': [0, -1]}
+        '20-0-0': [0, -1, 0],
+        '20-0-1': [0, -1, 0],
+        '20-0-2': [0, -1, 0],
+    }
 
-    supports = {
-        '0-0': [1, 1],
-        '0-400': [0, 1]}
+    supports = {}
+    for j in range(11):
+        for k in range(3):
+            supports['{0}-{1}-{2}'.format(0, j, k)] = [1, 1, 1]
 
-    x = topop2d_numpy(nelx=400, nely=40, loads=loads, supports=supports, volfrac=0.5)
+    topop3d_numpy(nelx=20, nely=10, nelz=2, loads=loads, supports=supports)

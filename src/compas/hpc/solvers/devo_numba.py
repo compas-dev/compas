@@ -1,3 +1,4 @@
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -16,7 +17,7 @@ from numpy.random import choice
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'liew@arch.ethz.ch'
 
@@ -40,17 +41,27 @@ def _fn(u, args):
 
 @jit((f8[:, :], i8, i8), nogil=True, nopython=True, parallel=False)
 def devo_numba(bounds, population, generations):
+
     """ Call the Numba accelerated Differential Evolution solver.
 
-    Parameters:
-        bounds (array): Lower and upper bounds for each DoF.
-        population (int): Number of agents in the population.
-        generations (int): Number of cross-over cycles/steps to perform.
-        F (float): Differential evolution parameter.
-        CR (float): Differential evolution cross-over ratio parameter.
+    Parameters
+    ----------
+    bounds : array
+        Lower and upper bounds for each DoF.
+    population : int
+        Number of agents in the population.
+    generations : int
+        Number of cross-over cycles/steps to perform.
+    F : float
+        Differential evolution parameter.
+    CR : float
+        Differential evolution cross-over ratio parameter.
 
-    Returns:
-        array: Values that give the optimum (minimised) function.
+    Returns
+    -------
+    array
+        Values that give the optimum (minimised) function.
+
     """
 
     # Heading

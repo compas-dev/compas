@@ -82,7 +82,7 @@ class EulerSSH(SSH):
 
         Parameters
         ----------
-        module str
+        module : str
             Module to inspect.
 
         Returns
@@ -99,7 +99,7 @@ class EulerSSH(SSH):
 
         Parameters
         ----------
-        module str
+        module : str
             Module to load.
 
         Returns

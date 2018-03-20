@@ -41,6 +41,42 @@ cuda
     :nosignatures:
 
     device_cuda
+    give_cuda
+    get_cuda
+    ones_cuda
+    zeros_cuda
+    rand_cuda
+    tile_cuda
+
+math_
+-----
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    abs_cuda
+    argmax_cuda
+    argmin_cuda
+    acos_cuda
+    asin_cuda
+    atan_cuda
+    ceil_cuda
+    cos_cuda
+    cosh_cuda
+    exp_cuda
+    floor_cuda
+    log_cuda
+    log10_cuda
+    max_cuda
+    min_cuda
+    mean_cuda
+    sin_cuda
+    sinh_cuda
+    sqrt_cuda
+    sum_cuda
+    tan_cuda
+    tanh_cuda
 
 
 euler
@@ -120,6 +156,7 @@ average
 
 
 """
+
 from .geometry import *
 from .algorithms import *
 from .core import *
