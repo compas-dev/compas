@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from compas_rhino.conduits import Conduit
 from compas_rhino.ui.mouse import Mouse
 
@@ -35,7 +39,7 @@ class MeshVertexInspector(Conduit):
         textcolor      = textcolor or (0, 0, 0)
         self.dotcolor  = FromArgb(*dotcolor)
         self.textcolor = FromArgb(*textcolor)
-        self.mouse     = Mouse()
+        self.mouse     = Mouse(self)
 
     def enable(self):
         self.mouse.Enabled = True
@@ -68,4 +72,26 @@ class MeshVertexInspector(Conduit):
 
 if __name__ == "__main__":
 
-    pass
+    import compas
+    import compas_rhino
+    from compas.datastructures import Mesh
+    from compas_rhino.helpers import MeshArtist
+
+
+    class Mouse(compas_rhino.ui.Mouse):
+
+        def OnMouseDown(self, e):
+            self.parent.disable()
+
+
+    mesh = Mesh.from_obj(compas.get('hypar.obj'))
+
+    artist = MeshArtist(mesh, layer='Inspector')
+    artist.clear_layer()
+    artist.draw_faces()
+    artist.draw_edges()
+    artist.draw_vertices()
+    artist.redraw()
+
+    inspector = MeshVertexInspector(mesh)
+    inspector.enable()

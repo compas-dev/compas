@@ -22,8 +22,9 @@ __all__ = ['Mouse', ]
 
 class Mouse(MouseCallback):
     """"""
-    def __init__(self):
+    def __init__(self, parent=None):
         super(Mouse, self).__init__()
+        self.parent = parent
         self.x  = None  # x-coordinate of 2D point in the viewport
         self.y  = None  # y-coordinate of 2D point in the viewport
         self.p1 = None  # start of the frustum line in world coordinates

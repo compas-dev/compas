@@ -1380,8 +1380,10 @@ class Mesh(FromToJson,
 
         """
         edges = set()
+
         for fkey in self.faces():
             for u, v in self.face_halfedges(fkey):
+
                 if (u, v) in edges or (v, u) in edges:
                     continue
 
