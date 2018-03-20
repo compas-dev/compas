@@ -132,8 +132,6 @@ class Frame():
             True
         """
         xaxis, yaxis = transformation.basis_vectors
-        print("xaxis", xaxis)
-        print("yaxis", yaxis)
         point = transformation.translation
         return cls(point, xaxis, yaxis)
 
@@ -296,8 +294,7 @@ class Frame():
             >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.from_frame(f1)
             >>> f2 = Frame.worldXY()
-            >>> f2.transform(T)
-            >>> f1 == f2
+            >>> f1 == f2.transform(T)
             True
         """
 
