@@ -287,7 +287,7 @@ class Transformation(object):
             (:obj:`list` of :obj:`list` of :obj:`float`): The transformed \
                 points.
         """
-        return transform(points, T.matrix)
+        return transform(points, self.matrix)
 
     @property
     def list(self):
