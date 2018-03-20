@@ -191,7 +191,8 @@ def homogenize(vectors, w=1.0):
     Examples
     --------
     >>> vectors = [[1.0, 0.0, 0.0]]
-    >>> homogenise_vectors(vectors)
+    >>> homogenize(vectors)
+    [[1.0, 0.0, 0.0, 1.0]]
 
     """
     return [[x / w, y / w, z / w, w] for x, y, z in vectors]
@@ -332,7 +333,16 @@ def inverse(M):
         >>> from compas.geometry import Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = matrix_from_frame(f)
-        >>> I = multiply_matrices(T * inverse(T))
+        >>> I = multiply_matrices(T, inverse(T))
+        >>> I2 = identity_matrix(4)
+        >>> allclose(I[0], I2[0])
+        True
+        >>> allclose(I[1], I2[1])
+        True
+        >>> allclose(I[2], I2[2])
+        True
+        >>> allclose(I[3], I2[3])
+        True
     """
 
     detM = determinant(M)  # raises ValueError if matrix is not squared
@@ -426,7 +436,7 @@ def matrix_from_euler_angles(euler_angles, static=True, axes='xyz'):
         >>> ea1 = 1.4, 0.5, 2.3
         >>> args = True, 'xyz'
         >>> R = matrix_from_euler_angles(ea1, *args)
-        >>> ea2 = euler_angles_from_matrix(*args)
+        >>> ea2 = euler_angles_from_matrix(R, *args)
         >>> allclose(ea1, ea2)
         True
     """
@@ -499,7 +509,7 @@ def euler_angles_from_matrix(M, static=True, axes='xyz'):
         >>> ea1 = 1.4, 0.5, 2.3
         >>> args = True, 'xyz'
         >>> R = matrix_from_euler_angles(ea1, *args)
-        >>> ea2 = euler_angles_from_matrix(*args)
+        >>> ea2 = euler_angles_from_matrix(R, *args)
         >>> allclose(ea1, ea2)
         True
     """
@@ -721,7 +731,7 @@ def matrix_from_quaternion(quaternion):
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> R = matrix_from_quaternion(q1)
         >>> q2 = quaternion_from_matrix(R)
-        >>> allclose(q1, q2)
+        >>> allclose(q1, q2, tol=1e-03)
         True
     """
     q = quaternion
@@ -755,9 +765,9 @@ def quaternion_from_matrix(M):
 
     Example:
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
-        >>> R = matrix_from_quaternion(q)
+        >>> R = matrix_from_quaternion(q1)
         >>> q2 = quaternion_from_matrix(R)
-        >>> allclose(q1, q2)
+        >>> allclose(q1, q2, tol=1e-03)
         True
     """
 
@@ -904,7 +914,7 @@ def matrix_from_parallel_projection(point, normal, direction):
     Example:
         >>> point = [0, 0, 0]
         >>> normal = [0, 0, 1]
-        >>> direction = [1, 1, 0]
+        >>> direction = [1, 1, 1]
         >>> P = matrix_from_parallel_projection(point, normal, direction)
     """
     T = identity_matrix(4)
