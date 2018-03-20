@@ -241,7 +241,7 @@ class GA(object):
         "min" for minimization and "max" for maximization.
     input_path: str
         Path to the fitness function file.
-    kwargs : dict
+    fkwargs : dict
         This dictionary will be passed as a keyword argument to all fitness functions.
         It can be used to pass required data, objects, that are not related to the
         optimmization variables but are required to run the fitness function.
@@ -292,7 +292,7 @@ class GA(object):
     def __init__(self):
         """ Initializes the GA object."""
 
-        self.kwargs = {}
+        self.fkwargs = {}
         self.fargs = {}
         self.best_fit = None
         self.best_individual_index = None
@@ -417,7 +417,7 @@ class GA(object):
         chromo = ''.join(str(y) for x in self.current_pop['binary'][index] for y in x)
         fit = self.ind_fit_dict.setdefault(chromo, None)
         if not fit:
-            fit = self.fit_function(self.current_pop['scaled'][index], *self.fargs, **self.kwargs)
+            fit = self.fit_function(self.current_pop['scaled'][index], *self.fargs, **self.fkwargs)
             self.ind_fit_dict[chromo] = fit
         return fit
 

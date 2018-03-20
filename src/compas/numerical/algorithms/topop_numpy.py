@@ -145,19 +145,19 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     iH = zeros(ne * (2 * (int(ceil(rmin)) - 1) + 1)**2)
     jH = zeros(iH.shape)
     sH = zeros(iH.shape)
-
     k = 0
+
     for i1 in range(nelx):
+        max_i = int(max([i1 - (ceil(rmin) - 1), 0]))
+        min_i = int(min([i1 + (ceil(rmin) - 1), nelx - 1]))
+
         for j1 in range(nely):
+            max_j = int(max([j1 - (ceil(rmin) - 1), 0]))
+            min_j = int(min([j1 + (ceil(rmin) - 1), nely - 1]))
 
             e1 = i1 * nely + j1
-            max_i = int(max([i1 - (ceil(rmin) - 1), 0]))
-            min_i = int(min([i1 + (ceil(rmin) - 1), nelx - 1]))
 
             for i2 in range(max_i, min_i + 1):
-                max_j = int(max([j1 - (ceil(rmin) - 1), 0]))
-                min_j = int(min([j1 + (ceil(rmin) - 1), nely - 1]))
-
                 for j2 in range(max_j, min_j + 1):
                     k += 1
                     e2 = i2 * nely + j2
@@ -382,8 +382,49 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
     iK = reshape(kron(edof, ones((24, 1))).transpose(), (24 * 24 * ne, 1), order='F')
     jK = reshape(kron(edof, ones((1, 24))).transpose(), (24 * 24 * ne, 1), order='F')
 
-    print(jK)
-    print(jK.shape)
+    # Filter
+
+    iH = ones(int(ne * (3 * (ceil(rmin) - 1) + 1)**2))
+    jH = ones(iH.shape)
+    sH = zeros(iH.shape)
+
+    k = 0
+
+    for k1 in range(nelz):
+        max_k = int(max([k1 - (ceil(rmin) - 1), 0]))
+        min_k = int(min([k1 + (ceil(rmin) - 1), nelz - 1]))
+
+        for i1 in range(nelx):
+            max_i = int(max([i1 - (ceil(rmin) - 1), 0]))
+            min_i = int(min([i1 + (ceil(rmin) - 1), nelx - 1]))
+
+            for j1 in range(nely):
+                max_j = int(max([j1 - (ceil(rmin) - 1), 0]))
+                min_j = int(min([j1 + (ceil(rmin) - 1), nely - 1]))
+
+                e1 = k1 * nelx * nely + i1 * nely + j1
+
+                for k2 in range(max_k, min_k + 1):
+                    for i2 in range(max_i, min_i + 1):
+                        for j2 in range(max_j, min_j + 1):
+                            k += 1
+                            e2 = k2 * nelx * nely + i2 * nely + j2
+                            e3 = max([0, rmin - sqrt((i1 - i2)**2 + (j1 - j2)**2 + (k1 - k2)**2)])
+
+                            try:
+                                iH[k] = e1
+                                jH[k] = e2
+                                sH[k] = e3
+                            except:  # bug in original code, iH doesnt start as correct size
+                                iH = hstack([iH, array([e1])])
+                                jH = hstack([jH, array([e2])])
+                                sH = hstack([sH, array([e3])])
+
+    H = coo_matrix((sH, (iH, jH)))
+    Hs = sum(H.toarray(), 1)
+
+    print(Hs)
+    print(Hs.shape)
 
     return
 
