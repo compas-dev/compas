@@ -91,7 +91,10 @@ class Transformation(object):
         >>> Tinv = T.inverse()
     """
 
-    def __init__(self, matrix=identity_matrix(4)):
+    def __init__(self, matrix=None):
+        if not matrix:
+            matrix = identity_matrix(4)
+
         self.matrix = matrix
 
     @classmethod
