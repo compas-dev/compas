@@ -7,13 +7,16 @@ try:
     import scriptcontext as sc
 
     find_object = sc.doc.Objects.Find
-    purge_object = sc.doc.Objects.Purge
 
 except ImportError:
     import platform
     if platform.python_implementation() == 'IronPython':
         raise
 
+try:
+    purge_object = sc.doc.Objects.Purge
+except AttributeError:
+    purge_object = None
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
@@ -68,7 +71,8 @@ def delete_objects_on_layer(name, include_hidden=True, include_children=False, p
             obj = find_object(guid)
             if not obj:
                 continue
-            purge_object(obj.RuntimeSerialNumber)
+            if purge_object:
+                purge_object(obj.RuntimeSerialNumber)
         rs.EnableRedraw(True)
 
 
@@ -138,7 +142,8 @@ def clear_layer(name, include_hidden=True, include_children=True, purge=True):
             obj = find_object(guid)
             if not obj:
                 continue
-            purge_object(obj.RuntimeSerialNumber)
+            if purge_object:
+                purge_object(obj.RuntimeSerialNumber)
     rs.EnableRedraw(True)
 
 
@@ -156,7 +161,8 @@ def clear_layers(layers, include_children=True, include_hidden=True):
         obj = find_object(guid)
         if not obj:
             continue
-        purge_object(obj.RuntimeSerialNumber)
+        if purge_object:
+            purge_object(obj.RuntimeSerialNumber)
     rs.EnableRedraw(True)
 
 
