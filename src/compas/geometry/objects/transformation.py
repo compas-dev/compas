@@ -72,17 +72,20 @@ __all__ = [
 class Transformation(object):
     """The ``Transformation`` represents a 4x4 transformation matrix.
 
-    It is the base class for transformations like ``Rotation``,
-    ``Translation``, ``Scale``, ``Reflection``, ``Projection`` and ``Shear``.
+    It is the base class for transformations like :class:`Rotation`,
+    :class:`Translation`, :class:`Scale`, :class:`Reflection`,
+    :class:`Projection` and :class:`Shear`.
+
+
     The class allows to concatenate Transformations by multiplication, to
     calculate the inverse transformation and to decompose a transformation into
     its components of rotation, translation, scale, shear, and perspective.
     The matrix follows the row-major order, such that translation components
-    x, y, z are in the right column of the matrix, i.e. M[0][3], M[1][3],
-    M[2][3] = x, y, z
+    x, y, z are in the right column of the matrix, i.e. ``M[0][3], M[1][3],
+    M[2][3] = x, y, z``.
 
     Attributes:
-        matrix (:obj:`list` of :obj:`list` of :obj:`float`)
+        matrix (:obj:`list` of :obj:`list` of :obj:`float`): Square matrix.
 
     Examples:
         >>> from compas.geometry import Frame
