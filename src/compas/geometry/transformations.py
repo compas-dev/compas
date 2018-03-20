@@ -638,8 +638,8 @@ def matrix_from_axis_angle_vector(axis_angle_vector, point=[0, 0, 0]):
     Example:
         >>> aav1 = [-0.043, -0.254, 0.617]
         >>> R = matrix_from_axis_angle_vector(aav1)
-        >>> aav2 = axis_and_angle_from_matrix(R)
-        >>> allclose(aav1, aav2)
+        >>> a2, av2 = axis_and_angle_from_matrix(R)
+        >>> allclose(aav1, a2)
         True
     """
     axis = list(axis_angle_vector)
