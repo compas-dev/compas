@@ -626,24 +626,25 @@ class Reflection(Transformation):
     Example:
         >>> point = [1, 1, 1]
         >>> normal = [0, 0, 1]
-        >>> R = Reflection(point, normal)
+        >>> R1 = Reflection(point, normal)
+        >>> R2 = Transformation.from_matrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
+        >>> R1 == R2
+        True
 
     """
 
     def __init__(self, point, normal):
-
-        reflection = self()
+        super(Reflection, self).__init__()
 
         normal = normalize_vector((list(normal)))
 
         for i in range(3):
             for j in range(3):
-                reflection.matrix[i][j] -= 2.0 * normal[i] * normal[j]
+                self.matrix[i][j] -= 2.0 * normal[i] * normal[j]
 
         for i in range(3):
-            reflection.matrix[i][3] = 2 * dot_vectors(point, normal) *\
+            self.matrix[i][3] = 2 * dot_vectors(point, normal) *\
                 normal[i]
-        return reflection
 
     @classmethod
     def from_frame(cls, frame):
