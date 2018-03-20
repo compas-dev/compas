@@ -84,10 +84,11 @@ class Transformation(object):
         matrix (:obj:`list` of :obj:`list` of :obj:`float`)
 
     Examples:
+        >>> from compas.geometry import Frame
         >>> T = Transformation()
         >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(f1)
-        >>> Sc, Sh, R, T, P = T.decompose()
+        >>> Sc, Sh, R, Tl, P = T.decompose()
         >>> Tinv = T.inverse()
     """
 
@@ -143,6 +144,7 @@ class Transformation(object):
                 coordinate system
 
         Example:
+            >>> from compas.geometry import Frame
             >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.from_frame(f1)
             >>> f2 = Frame.from_transformation(T)
@@ -168,11 +170,11 @@ class Transformation(object):
                 Cartesian coordinate system
 
         Example:
+            >>> from compas.geometry import Frame
             >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
             >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.from_frame_to_frame(f1, f2)
-            >>> f1.transform(T)
-            >>> f1 == f2
+            >>> f1 == f1.transform(T)
             True
         """
         T1 = matrix_from_frame(frame_from)
@@ -184,6 +186,7 @@ class Transformation(object):
         """Returns the inverse transformation.
 
         Example:
+            >>> from compas.geometry import Frame
             >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.from_frame(f)
             >>> I = Transformation() # identity matrix
@@ -251,6 +254,7 @@ class Transformation(object):
             point (:obj:`list` of :obj:`float`)
 
         Example:
+            >>> from compas.geometry import Frame
             >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.from_frame(f)
             >>> q = T.transform_point([0,0,0])
@@ -273,6 +277,7 @@ class Transformation(object):
                 points.
 
         Example:
+            >>> from compas.geometry import Frame
             >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.from_frame(f1)
             >>> pts = [[1.0, 1.0, 1.0], [1.68, 1.68, 1.27], [0.33, 1.73, 0.85]]
@@ -353,6 +358,7 @@ class Rotation(Transformation):
     representations, Euler angles, quaternion and basis vectors.
 
     Example:
+        >>> from compas.geometry import Frame
         >>> f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> R = Rotation.from_frame(f1)
         >>> args = False, 'xyz'
@@ -362,8 +368,7 @@ class Rotation(Transformation):
         >>> Ry = Rotation.from_axis_and_angle(yaxis, beta)
         >>> Rz = Rotation.from_axis_and_angle(zaxis, gamma)
         >>> f2 = Frame.worldXY()
-        >>> f2.transform(Rx * Ry * Rz)
-        >>> f1 == f2
+        >>> f1 == f2.transform(Rx * Ry * Rz)
         True
 
     """
