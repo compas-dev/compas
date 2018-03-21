@@ -30,6 +30,7 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = [
     'get_objects',
     'get_object_names',
+    'get_object_name',
     'get_object_attributes',
     'get_object_attributes_from_name',
     'delete_object',
@@ -123,6 +124,10 @@ def purge_objects(guids):
 
 def get_object_names(guids):
     return [rs.ObjectName(guid) for guid in guids]
+
+
+def get_object_name(guid):
+    return rs.ObjectName(guid)
 
 
 def get_object_attributes(guids):
