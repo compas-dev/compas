@@ -50,6 +50,7 @@ def ga(fit_function,
        num_pop=100,
        num_elite=10,
        mutation_probability=0.01,
+       n_cross=1,
        num_bin_dig=None,
        num_pop_init=None,
        num_gen_init_pop=None,
@@ -87,6 +88,8 @@ def ga(fit_function,
         The number of individuals in the elite population. Must be an even number.
     mutation_probablity : float, optional [0.001]
         Float from 0 to 1. Percentage of genes that will be mutated.
+    n_cross: int, optional [1]
+        Number of crossover points used in the crossover operator.
     num_bin_dig : list, optional [None]
         Number of genes used to codify each variable. Must be a ``num_var`` long
         list of intergers. If None is given, each variable will be coded with a
@@ -196,6 +199,7 @@ def ga(fit_function,
     ga_.num_elite            = num_elite
     ga_.num_var              = num_var
     ga_.mutation_probability = mutation_probability
+    ga_.ncross               = n_cross
     ga_.start_from_gen       = start_from_gen
     ga_.min_fit              = min_fit
     ga_.boundaries           = boundaries
@@ -308,6 +312,7 @@ class GA(object):
         self.min_fit = None
         self.min_fit_flag = False
         self.mutation_probability = 0
+        self.n_cross = 1
         self.num_bin_dig = 0
         self.num_elite = 0
         self.num_gen = 0
@@ -396,7 +401,7 @@ class GA(object):
                 self.elite_pop = self.select_elite_pop(self.current_pop)
                 self.tournament_selection()  # n-e
                 self.create_mating_pool()  # n-e
-                self.simple_crossover()  # n-e
+                self.npoint_crossover()  # n-e
                 self.random_mutation()  # n-e
                 self.add_elite_to_current()  # n
 
@@ -622,6 +627,28 @@ class GA(object):
                 self.current_pop['binary'][j][i] = variable_a
                 self.current_pop['binary'][j + (int((self.num_pop - self.num_elite) / 2))][i] = variable_b
 
+    def npoint_crossover(self):
+        """Performs the n-point crossover operator. Individuals in ``GA.mating_pool_a`` are
+        combined with individuals in ``GA.mating_pool_b`` using ne, randomly selected
+        crossover points.
+        """
+        self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
+        self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
+        for j in range(int((self.num_pop - self.num_elite) / 2)):
+            a = self.mating_pool_a[j]
+            b = self.mating_pool_b[j]
+            cross_list = sorted(random.sample(range(1, self.total_bin_dig - 1), self.n_cross))
+            for cross in cross_list:
+                c = a[:cross] + b[cross:]
+                d = b[:cross] + a[cross:]
+                a = d
+                b = c
+            for i in range(self.num_var):
+                variable_a = a[:self.num_bin_dig[i]]
+                variable_b = b[:self.num_bin_dig[i]]
+                self.current_pop['binary'][j][i] = variable_a
+                self.current_pop['binary'][j + (int((self.num_pop - self.num_elite) / 2))][i] = variable_b
+
     def random_mutation(self):
         """This mutation operator replaces a gene from 0 to 1 or viceversa
         with a probability of ``GA.mutation_probability``.
@@ -649,9 +676,8 @@ class GA(object):
         binary_pop: dict
             The binary population dictionary.
         """
-        binary_pop = {}
+        binary_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for i in range(self.num_pop):
-            binary_pop[i] = {}
             for j in range(self.num_var):
                 bin_list = []
                 temp_bin = bin(decoded_pop[i][j])[2:]
@@ -843,14 +869,14 @@ class GA(object):
         """
         # file_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': [],
         #              'pf': []}
-        filename  = 'generation_' + "%05d" % gen + '_population' + ".pop"
+        filename  = 'generation_' + "%05d" % gen + '_population' + ".txt"
         filename = self.input_path + filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
         pf_file.close()
-
-        file_pop  = {'scaled': [[[]] * self.num_var for i in range(self.num_pop)]}
-        file_pop  = {'fit_value': [[[]] * self.num_var for i in range(self.num_pop)]}
+        file_pop = {}
+        file_pop['scaled'] = [[[]] * self.num_var for i in range(self.num_pop)]
+        file_pop['fit_value'] = [[[]] * self.num_var for i in range(self.num_pop)]
 
         for i in range(self.num_pop):
             line_scaled = lines[i + 7]
@@ -929,7 +955,8 @@ if __name__ == '__main__':
              num_bin_dig=num_bin_dig,
              output_path=output_path,
              min_fit=min_fit,
-             mutation_probability=0.03)
+             mutation_probability=0.03,
+             n_cross=2)
     plt = Ga_Plotter()
     plt.input_path = ga_.output_path
     plt.draw_ga_evolution(make_pdf=True, show_plot=True)
