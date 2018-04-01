@@ -51,6 +51,7 @@ def mesh_split_edge(self, u, v, t=0.5, allow_boundary=False):
     # don't split if edge is on boundary
     fkey_uv = self.halfedge[u][v]
     fkey_vu = self.halfedge[v][u]
+
     if not allow_boundary:
         if fkey_uv is None or fkey_vu is None:
             return

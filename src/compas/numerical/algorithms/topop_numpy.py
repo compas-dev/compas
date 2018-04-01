@@ -8,13 +8,15 @@ try:
     from numpy import array
     from numpy import ceil
     from numpy import dot
+    from numpy import empty
     from numpy import hstack
     from numpy import kron
     from numpy import max
     from numpy import maximum
-    from numpy import meshgrid
     from numpy import min
     from numpy import minimum
+    from numpy import isnan
+    from numpy import mgrid
     from numpy import newaxis
     from numpy import ones
     from numpy import ravel
@@ -30,6 +32,7 @@ try:
     from scipy.sparse.linalg import spsolve
 
     from matplotlib import pyplot as plt
+    from mpl_toolkits.mplot3d import Axes3D
 
 except ImportError:
     import sys
@@ -192,7 +195,7 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
         Kind = (K.tocsc()[:, free]).tocsr()[free, :]
         U[free] = spsolve(Kind, Find)[:, newaxis]
 
-        # Objective functions
+        # Objective function
 
         ce = reshape(sum(dot(squeeze(U[edof]), Ke) * squeeze(U[edof]), 1), (nely, nelx), order='F')
         c = sum(sum((Emin + xP**penal * (E - Emin)) * ce))
@@ -221,15 +224,13 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
         x = xn * 1.
         plt.imshow(1 - x, cmap='gray', origin='lower')
         plt.pause(0.001)
-
         iteration += 1
-
         print('Iteration: {0}  Compliance: {1:.4g}'.format(iteration, c))
 
     return x
 
 
-def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=1.5):
+def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=1.5, iterations=100):
 
     """ Topology optimisation in 3D using NumPy and SciPy.
 
@@ -251,6 +252,8 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
         Penalisation power.
     rmin : float
         Filter radius.
+    iterations : int
+        Max number of iterations.
 
     Returns
     -------
@@ -263,10 +266,8 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
 
     """
 
-    maxloop = 200
     tolx = 0.01
-    displayflag = 0
-    E0 = 1
+    E = 1
     Emin = 1e-9
     nu = 0.3
 
@@ -362,11 +363,12 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
                 [k[9],  k[8],  k[1],  k[6],  k[13], k[6]],
                 [k[11], k[1],  k[8],  k[10], k[6],  k[13]]])
 
-    KE = 1. / ((nu + 1) * (1 - 2 * nu)) * vstack([
+    Ke = 1. / ((nu + 1) * (1 - 2 * nu)) * vstack([
         hstack([K1, K2, K3, K4]),
         hstack([K2.transpose(), K5, K6, K3.transpose()]),
         hstack([K3.transpose(), K6, K5.transpose(), K2.transpose()]),
         hstack([K4, K3, K2, K1.transpose()])])
+    Ker = ravel(Ke, order='F')[:, newaxis]
 
     # Indexing
 
@@ -378,9 +380,9 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
     eVec = (3 * nodeids.ravel(order='F') + 1)[:, newaxis]
     m1 = 3 * nely + array([3, 4, 5, 0, 1, 2])[newaxis, :]
     m2 = hstack([array([[0, 1, 2]]), m1, array([[-3, -2, -1]])])
-    edof = tile(eVec, (1, 24)) + tile(hstack([m2, 3 * ny * nx + m2]), (ne, 1))
-    iK = reshape(kron(edof, ones((24, 1))).transpose(), (24 * 24 * ne, 1), order='F')
-    jK = reshape(kron(edof, ones((1, 24))).transpose(), (24 * 24 * ne, 1), order='F')
+    edof = tile(eVec, (1, 24)) + tile(hstack([m2, 3 * ny * nx + m2]), (ne, 1)) + 2
+    iK = reshape(kron(edof, ones((24, 1))).transpose(), (24 * 24 * ne), order='F')
+    jK = reshape(kron(edof, ones((1, 24))).transpose(), (24 * 24 * ne), order='F')
 
     # Filter
 
@@ -423,10 +425,79 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
     H = coo_matrix((sH, (iH, jH)))
     Hs = sum(H.toarray(), 1)
 
-    print(Hs)
-    print(Hs.shape)
+    # Main loop
 
-    return
+    iteration = 0
+    change = 1
+    move = 0.2
+    x = tile(volfrac, (nely, nelx, nelz))
+    xP = x * 1.
+
+    while (change > tolx) and (iteration < iterations):
+
+        # FE
+
+        xrav = ravel(xP, order='F').transpose()
+        sK = reshape(Ker * (Emin + xrav**penal * (E - Emin)), (24 * 24 * ne), order='F')
+        K = coo_matrix((sK, (iK, jK))).tocsr()
+        Kind = (K.tocsc()[:, free]).tocsr()[free, :]
+        U[free] = spsolve(Kind, Find)[:, newaxis]
+
+        # Objective function
+
+        ce = reshape(sum(dot(squeeze(U[edof]), Ke) * squeeze(U[edof]), 1), (nely, nelx, nelz), order='F')
+        c = sum(sum(sum((Emin + xP**penal * (E - Emin)) * ce)))
+        dc = -penal * (E - Emin) * xP**(penal - 1) * ce
+        dv = ones((nely, nelx, nelz))
+        dc = reshape(dot(H.toarray(), (ravel(dc, order='F') / Hs)[:, newaxis]), (nely, nelx, nelz), order='F')
+        dv = reshape(dot(H.toarray(), (ravel(dv, order='F') / Hs)[:, newaxis]), (nely, nelx, nelz), order='F')
+
+        # Lagrange mulipliers
+
+        l1 = 0
+        l2 = 10**9
+        while (l2 - l1) / (l1 + l2) > 0.001:
+            lmid = 0.5 * (l2 + l1)
+            sdv = sqrt(-dc / dv / lmid)
+            min1 = minimum(x + move, x * sdv)
+            xn = maximum(0, maximum(x - move, minimum(1, min1)))
+            xP = xn * 1.
+            if sum(xP) > volfrac * ne:
+                l1 = lmid
+            else:
+                l2 = lmid
+        change = max(abs(xn - x))
+
+        # Update
+
+        x = xn * 1.
+        iteration += 1
+        print('Iteration: {0}  Compliance: {1:.4g}'.format(iteration, c))
+
+    x[isnan(x)] = 0
+
+    # Plot
+
+    colours = empty(x.shape, dtype=object)
+    colours[:, :, :] = '#3333FFEE'
+
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    ax.set_aspect('equal')
+    ax.set(xlabel='$y$', ylabel='$z$', zlabel='$x$')
+    ax.voxels(x, facecolors=colours, edgecolor='k')
+    ax.view_init(-60, 170)
+
+    mran = 0.5 * array([nx, ny, nz]).max() * mgrid[-1:2:2, -1:2:2, -1:2:2]
+    Xb = mran[0].flatten() + 0.5 * nx
+    Yb = mran[1].flatten() + 0.5 * ny
+    Zb = mran[2].flatten() + 0.5 * nz
+    for xb, yb, zb in zip(Xb, Yb, Zb):
+        ax.plot([xb], [yb], [zb], 'k')
+
+    plt.show()
+
+    return x
 
 
 # ==============================================================================
@@ -434,6 +505,8 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
 # ==============================================================================
 
 if __name__ == "__main__":
+
+    # 2D
 
     # loads = {
     #     '40-200': [0, -1]}
@@ -444,15 +517,19 @@ if __name__ == "__main__":
 
     # x = topop2d_numpy(nelx=400, nely=40, loads=loads, supports=supports, volfrac=0.5)
 
+    # 3D
+
+    nx = 30
+    ny = 10
+    nz = 2
+
     loads = {
-        '20-0-0': [0, -1, 0],
-        '20-0-1': [0, -1, 0],
-        '20-0-2': [0, -1, 0],
+        '{0}-{1}-{2}'.format(nx, 0, int(nz / 2)): [0, -1, 0],
     }
 
     supports = {}
-    for j in range(11):
-        for k in range(3):
+    for k in range(nz + 1):
+        for j in range(ny + 1):
             supports['{0}-{1}-{2}'.format(0, j, k)] = [1, 1, 1]
 
-    topop3d_numpy(nelx=20, nely=10, nelz=2, loads=loads, supports=supports)
+    x = topop3d_numpy(nelx=nx, nely=ny, nelz=nz, loads=loads, supports=supports, iterations=100, volfrac=0.1)
