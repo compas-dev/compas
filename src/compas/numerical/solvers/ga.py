@@ -917,7 +917,7 @@ if __name__ == '__main__':
 
     import os
     import compas
-    from compas.plotters.gaplotter import Ga_Plotter
+    from compas.plotters.gaplotter import visualize_evolution
     from math import cos
     from math import pi
 
@@ -957,11 +957,5 @@ if __name__ == '__main__':
              min_fit=min_fit,
              mutation_probability=0.03,
              n_cross=2)
-    plt = Ga_Plotter()
-    plt.input_path = ga_.output_path
-    plt.draw_ga_evolution(make_pdf=True, show_plot=True)
 
-
-
-
-
+    visualize_evolution(ga_.output_path)
