@@ -444,7 +444,7 @@ class Vector(object):
 
 if __name__ == '__main__':
 
-    from compas.geometry import rotation_matrix
+    from compas.geometry import matrix_from_axis_and_angle
 
     u = Vector(1.0, 0.0, 0.0)
     v = Vector(0.0, 1.0, 0.0)
@@ -460,7 +460,7 @@ if __name__ == '__main__':
 
     print(u)
 
-    R = rotation_matrix(- pi / 2, [0.0, 0.0, 1.0])
+    R = matrix_from_axis_and_angle([0.0, 0.0, 1.0], - pi / 2)
     u.transform(R)
 
     print(u)

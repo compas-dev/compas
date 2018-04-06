@@ -64,7 +64,7 @@ def oriented_bounding_box_numpy(points):
         from compas.plotters import Cloud3D
         from compas.plotters import Box
         from compas.plotters import create_axes_3d
-        from compas.geometry import rotation_matrix
+        from compas.geometry import matrix_from_axis_and_angle
         from compas.geometry import transform
         from compas.geometry import oriented_bounding_box_numpy
 
@@ -100,7 +100,7 @@ def oriented_bounding_box_numpy(points):
                 cloud[:, 2] *= 6.0
                 cloud[:, 2] += 3.0
 
-            R = rotation_matrix(a, d)
+            R = matrix_from_axis_and_angle(d, a)
             cloud[:] = transform(cloud, R)
 
             clouds.append(cloud.tolist())
