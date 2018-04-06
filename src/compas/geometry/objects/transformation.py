@@ -55,9 +55,11 @@ from compas.geometry.transformations import transform
 
 from compas.geometry.transformations import allclose
 
+
 __author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
 __license__ = 'MIT License'
 __email__ = 'rust@arch.ethz.ch'
+
 
 __all__ = [
     'Transformation',
@@ -68,6 +70,7 @@ __all__ = [
     'Projection',
     'Shear'
 ]
+
 
 class Transformation(object):
     """The ``Transformation`` represents a 4x4 transformation matrix.
@@ -342,21 +345,16 @@ class Transformation(object):
             raise TypeError("Wrong input type.")
 
     def __repr__(self):
-        s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10)
-                                   for n in self.matrix[0]])
-        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10)
-                                    for n in self.matrix[1]])
-        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10)
-                                    for n in self.matrix[2]])
-        s += " [%s]]" % ",".join([("%.4f" % n).rjust(10)
-                                  for n in self.matrix[3]])
+        s  = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[1]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[2]])
+        s += " [%s]]" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[3]])
         s += "\n"
         return s
 
 
 class Rotation(Transformation):
-    """The ``Rotation`` represents a 4x4 rotation matrix and is based on \
-        ``Transformation``.
+    """``Rotation`` extends ``Transformation`` to represent a 4x4 rotation matrix.
 
     The class contains methods for converting rotation matrices to axis-angle
     representations, Euler angles, quaternion and basis vectors.
@@ -544,8 +542,8 @@ class Rotation(Transformation):
         """Returns the axis-angle vector of the ``Rotation``.
 
         Returns:
-            (:obj:`list` of :obj:`float`): Three numbers that represent the \
-                axis of rotation and angle of rotation through the vector's \
+            (:obj:`list` of :obj:`float`): Three numbers that represent the
+                axis of rotation and angle of rotation through the vector's
                 magnitude.
 
         Example:
@@ -559,8 +557,8 @@ class Rotation(Transformation):
         return scale_vector(axis, angle)
 
     def euler_angles(self, static=True, axes='xyz'):
-        """Returns Euler angles from the ``Rotation`` according to specified \
-            axis sequence and rotation type.
+        """Returns Euler angles from the ``Rotation`` according to specified
+        axis sequence and rotation type.
 
         Args:
             static(:obj:`bool`, optional): If true the rotations are applied to
@@ -621,7 +619,7 @@ class Scale(Transformation):
 
 class Reflection(Transformation):
     """Creates a ``Reflection`` that mirrors points at a plane, defined by
-        point and normal vector.
+    point and normal vector.
 
     Args:
         point (:obj:`list` of :obj:`float`): The point of the mirror plane.
@@ -664,8 +662,8 @@ class Projection(Transformation):
 
     @classmethod
     def orthogonal(cls, point, normal):
-        """Returns an orthogonal ``Projection`` to project onto a plane \
-            defined by point and normal.
+        """Returns an orthogonal ``Projection`` to project onto a plane
+        defined by point and normal.
 
         Args:
             point(:obj:`list` of :obj:`float`)
@@ -681,8 +679,8 @@ class Projection(Transformation):
 
     @classmethod
     def parallel(cls, point, normal, direction):
-        """Returns an parallel ``Projection`` to project onto a plane defined \
-            by point, normal and direction.
+        """Returns an parallel ``Projection`` to project onto a plane defined
+        by point, normal and direction.
 
         Args:
             point(:obj:`list` of :obj:`float`)
@@ -700,8 +698,8 @@ class Projection(Transformation):
 
     @classmethod
     def perspective(cls, point, normal, perspective):
-        """Returns an perspective ``Projection`` to project onto a plane \
-            defined by point, normal and perspective.
+        """Returns an perspective ``Projection`` to project onto a plane
+        defined by point, normal and perspective.
 
         Args:
             point(:obj:`list` of :obj:`float`)
@@ -719,8 +717,8 @@ class Projection(Transformation):
 
     @classmethod
     def from_entries(cls, perspective_entries):
-        """Constructs a perspective transformation by the perspective entries \
-            of a matrix.
+        """Constructs a perspective transformation by the perspective entries
+        of a matrix.
 
         Args:
             perspective_entries(:obj:`list` of :obj:`float`): The 4 perspective
@@ -731,8 +729,8 @@ class Projection(Transformation):
 
 
 class Shear(Transformation):
-    """Constructs a ``Shear`` transformation by an angle along the \
-        direction vector on the shear plane (defined by point and normal).
+    """Constructs a ``Shear`` transformation by an angle along the
+    direction vector on the shear plane (defined by point and normal).
 
     A point P is transformed by the shear matrix into P" such that
     the vector P-P" is parallel to the direction vector and its extent is
@@ -778,6 +776,10 @@ class Shear(Transformation):
         M = matrix_from_shear_entries(shear_entries)
         return cls.from_matrix(M)
 
+
+# ==============================================================================
+# Main
+# ==============================================================================
 
 if __name__ == "__main__":
 
