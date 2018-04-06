@@ -631,29 +631,31 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
 if __name__ == "__main__":
 
+    from functools import partial
+
     import compas
 
     from compas.datastructures import Mesh
     from compas.utilities import print_profile
+    from compas.viewers import SubdMeshViewer
 
     subdivide = print_profile(mesh_subdivide_doosabin)
 
     mesh = Mesh.from_polyhedron(6)
-    subd = subdivide(mesh, k=6)
 
-    print(subd)
+    fixed = [mesh.get_any_vertex()]
 
-    subd.to_json(compas.TEMP + '/' + 'doosabin.json')
+    subdivide = partial(mesh_subdivide_doosabin, fixed=fixed)
 
-    # viewer = SubdMeshViewer(mesh, subdfunc=mesh_subdivide_catmullclark, width=1440, height=900)
+    viewer = SubdMeshViewer(mesh, subdfunc=subdivide, width=1440, height=900)
 
-    # viewer.axes_on = False
-    # viewer.grid_on = False
+    viewer.axes_on = False
+    viewer.grid_on = False
 
-    # for _ in range(10):
-    #    viewer.camera.zoom_in()
+    for _ in range(10):
+       viewer.camera.zoom_in()
 
-    # viewer.subdivide(k=4)
+    viewer.subdivide(k=2)
 
-    # viewer.setup()
-    # viewer.show()
+    viewer.setup()
+    viewer.show()
