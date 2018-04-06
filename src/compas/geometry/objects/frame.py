@@ -25,7 +25,7 @@ __license__ = 'MIT License'
 __email__ = 'rust@arch.ethz.ch'
 
 
-class Frame():
+class Frame(object):
     """The ``Frame`` consists of a point and and two orthonormal base vectors.
 
     It represents a plane in three dimensions with a defined origin and
@@ -257,15 +257,15 @@ class Frame():
     def euler_angles(self, static=True, axes='xyz'):
         """Returns the Euler angles from the rotation given by the frame.
 
-         Args:
-            static(:obj:`bool`, optional): If true the rotations are applied \
+        Args:
+            static(:obj:`bool`, optional): If true the rotations are applied
                 to a static frame. If not, to a rotational. Defaults to True.
 
-            axes(:obj:`str`, optional): A 3 character string specifying the \
+            axes(:obj:`str`, optional): A 3 character string specifying the
                 order of the axes. Defaults to 'xyz'.
 
         Returns:
-            (:obj:`list` of :obj:`float`): Three numbers that represent the \
+            (:obj:`list` of :obj:`float`): Three numbers that represent the
                 angles of rotations about the defined axes.
 
         Example:
@@ -326,6 +326,10 @@ class Frame():
                     return False
         return True
 
+
+# ==============================================================================
+# Main
+# ==============================================================================
 
 if __name__ == '__main__':
 
