@@ -207,7 +207,8 @@ def update_settings(settings, message='', title='Update settings'):
     values = [str(settings[name]) for name in names]
     values = ShowPropertyListBox(message, title, names, values)
     if values:
-        for name, value in list(zip(names, values)):
+        values = list(values)
+        for name, value in zip(names, values):
             try:
                 settings[name] = ast.literal_eval(value)
             except (TypeError, ValueError, SyntaxError):
@@ -220,8 +221,19 @@ def update_attributes(names, values, message='', title='Update attributes'):
     return ShowPropertyListBox(message, title, names, values)
 
 
-def update_named_values(names, values, message='', title='Update named values'):
-    return ShowPropertyListBox(message, title, names, values)
+def update_named_values(names, values, message='', title='Update named values', evaluate=False):
+    values = ShowPropertyListBox(message, title, names, values)
+    if evaluate:
+        if values:
+            values = list(values)
+            for i in range(len(values)):
+                value = values[i]
+                try:
+                    value = ast.literal_eval(value)
+                except (TypeError, ValueError, SyntaxError):
+                    pass
+                values[i] = value
+    return values
 
 
 # ==============================================================================
