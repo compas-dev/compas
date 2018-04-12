@@ -1,8 +1,8 @@
-import vertexartist
-import edgeartist
-import faceartist
-import pathartist
-import forceartist
+from . import vertexartist
+from . import edgeartist
+from . import faceartist
+from . import pathartist
+from . import forceartist
 
 from .vertexartist import *
 from .edgeartist import *
