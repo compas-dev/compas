@@ -25,7 +25,7 @@ class FaceSelector(object):
 
     @staticmethod
     def select_face(self, message="Select a face."):
-        guid = rs.GetObjects(message, preselect=True, filter=rs.filter.mesh | rs.filter.textdot)
+        guid = rs.GetObject(message, preselect=True, filter=rs.filter.mesh | rs.filter.textdot)
         if guid:
             prefix = self.attributes['name']
             name = rs.ObjectName(guid).split('.')
