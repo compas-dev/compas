@@ -302,8 +302,6 @@ def network_find_faces(network, breakpoints=None):
 
     v = _find_first_neighbour(u, network)
 
-    print(u, v)
-
     _find_edge_face(u, v, network)
 
     for u, v in network.edges():
