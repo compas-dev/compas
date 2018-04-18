@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-# from numpy import array
+from numpy import array
 # from numpy import float64
 # from numpy import complex64
 
@@ -146,7 +146,7 @@ def give_cuda(a):
 
     """
 
-    return cuda.to_device(A)
+    return cuda.to_device(array(a))
 
 
 def get_cuda(a):

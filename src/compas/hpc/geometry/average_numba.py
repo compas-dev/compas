@@ -18,7 +18,6 @@ from compas.hpc.geometry import sum_vectors_numba
 from numba import f8
 from numba import i8
 from numba import jit
-from numba import range
 
 from numpy import array
 
