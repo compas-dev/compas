@@ -1,0 +1,377 @@
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+try:
+    from vtk import vtkActor2D
+    from vtk import vtkActor
+    from vtk import vtkAxesActor
+    from vtk import vtkCellArray
+    from vtk import vtkCamera
+    from vtk import vtkGlyph3DMapper
+    from vtk import vtkIdList
+    from vtk import vtkInteractorStyleTrackballCamera
+    # from vtk import vtkLabeledDataMapper
+    from vtk import vtkLine
+    from vtk import vtkPolyData
+    from vtk import vtkPolyDataMapper
+    from vtk import vtkPoints
+    # from vtk import vtkProperty
+    # from vtk import vtkPropPicker
+    from vtk import vtkRenderer
+    from vtk import vtkRenderWindow
+    from vtk import vtkRenderWindowInteractor
+    from vtk import vtkSliderRepresentation2D
+    from vtk import vtkSliderWidget
+    from vtk import vtkSphereSource
+    from vtk import vtkUnsignedCharArray
+    import vtk
+except ImportError:
+    pass
+
+
+__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'liew@arch.ethz.ch'
+
+
+__all__ = [
+    'VtkViewer',
+]
+
+
+class VtkViewer(object):
+
+    def __init__(self, name='VTK Viewer', width=1000, height=700, data={}):
+
+        # Note: vertex indices currently need to be given as a series of keys starting from 0.
+
+        self.settings = {
+            'draw_axes':     True,
+            'draw_vertices': True,
+            'draw_edges':    True,
+            'draw_faces':    True,
+            'vertex_size':   0.05,
+            'edge_width':    2,
+        }
+
+        self.data = data
+        self.setup(width=width, height=height, name=name)
+
+    def camera(self):
+
+        self.camera = camera = vtkCamera()
+        camera.SetViewUp(0, 0, 1)
+        camera.Azimuth(30)
+        camera.Elevation(30)
+        camera.SetPosition(10, -10, 10)
+        camera.SetFocalPoint(0, 0, 0)
+
+    def setup(self, width, height, name):
+
+        self.camera()
+
+        self.renderer = renderer = vtkRenderer()
+        renderer.SetBackground(1.0, 1.0, 1.0)
+        renderer.SetBackground2(0.8, 0.8, 0.8)
+        renderer.GradientBackgroundOn()
+        renderer.SetActiveCamera(self.camera)
+        renderer.ResetCamera()
+        renderer.ResetCameraClippingRange()
+
+        self.window = window = vtkRenderWindow()
+        window.SetSize(width, height)
+        window.SetWindowName(name)
+        window.AddRenderer(renderer)
+
+        self.interactor = interactor = vtkRenderWindowInteractor()
+        interactor.SetInteractorStyle(InteractorStyle())
+        interactor.SetRenderWindow(window)
+
+    def draw_axes(self):
+
+        axes = vtkAxesActor()
+        axes.AxisLabelsOff()
+        self.renderer.AddActor(axes)
+
+    def draw_vertices(self):
+
+        self.vertex = vertex = vtkSphereSource()
+        vertex.SetRadius(self.settings['vertex_size'])
+        vertex.SetPhiResolution(15)
+        vertex.SetThetaResolution(15)
+
+        m1 = vtkGlyph3DMapper()
+        m1.SetInputData(self.poly)
+        m1.SetSourceConnection(vertex.GetOutputPort())
+        m1.ScalingOff()
+        m1.ScalarVisibilityOff()
+
+        a1 = vtkActor()
+        a1.SetMapper(m1)
+        a1.GetProperty().SetDiffuseColor(0.4, 0.4, 1.0)
+        a1.GetProperty().SetDiffuse(.8)
+        self.renderer.AddActor(a1)
+
+        if self.data.get('fixed', None):
+
+            self.support = support = vtkSphereSource()
+            support.SetRadius(self.settings['vertex_size'] * 1.5)
+            support.SetPhiResolution(15)
+            support.SetThetaResolution(15)
+
+            m2 = vtkGlyph3DMapper()
+            m2.SetInputData(self.bcs)
+            m2.SetSourceConnection(support.GetOutputPort())
+            m2.ScalingOff()
+            m2.ScalarVisibilityOff()
+
+            a2 = vtkActor()
+            a2.SetMapper(m2)
+            a2.GetProperty().SetDiffuseColor(1.0, 0.5, 0.0)
+            a2.GetProperty().SetDiffuse(.8)
+            self.renderer.AddActor(a2)
+
+        else:
+            self.support = None
+
+    def draw_edges(self):
+
+        if self.data.get('edges', None):
+            edges = vtkCellArray()
+            for edge in self.data['edges']:
+                line = vtkLine()
+                line.GetPointIds().SetId(0, edge['u'])
+                line.GetPointIds().SetId(1, edge['v'])
+                edges.InsertNextCell(line)
+                color = edge.get('color', [255, 100, 100])
+                try:
+                    self.colors.InsertNextTypedTuple(color)
+                except:
+                    self.colors.InsertNextTupleValue(color)
+            self.poly.SetLines(edges)
+
+    def draw_faces(self):
+
+        if self.data.get('faces', None):
+            faces = vtkCellArray()
+            for fkey, face in self.data['faces'].items():
+                vil = vtkIdList()
+                for pt in face['vertices']:
+                    vil.InsertNextId(pt)
+                faces.InsertNextCell(vil)
+                color = face.get('color', [150, 255, 150])
+                try:
+                    self.colors.InsertNextTypedTuple(color)
+                except:
+                    self.colors.InsertNextTupleValue(color)
+            self.poly.SetPolys(faces)
+
+    def draw(self):
+
+        self.poly = vtkPolyData()
+        self.bcs = vtkPolyData()
+        self.vertices = vtkPoints()
+        self.bc_pts = vtkPoints()
+        self.colors = vtkUnsignedCharArray()
+        self.colors.SetNumberOfComponents(3)
+
+        for key, vertex in self.data['vertices'].items():
+            self.vertices.InsertNextPoint(vertex)
+        self.poly.SetPoints(self.vertices)
+
+        if self.data.get('fixed', None):
+            for key in self.data['fixed']:
+                self.bc_pts.InsertNextPoint(self.data['vertices'][key])
+            self.bcs.SetPoints(self.bc_pts)
+
+        if self.settings['draw_axes']:
+            self.draw_axes()
+
+        if self.settings['draw_vertices']:
+            self.draw_vertices()
+
+        if self.settings['draw_edges']:
+            self.draw_edges()
+
+        if self.settings['draw_faces']:
+            self.draw_faces()
+
+        # Actor
+
+        self.poly.GetCellData().SetScalars(self.colors)
+        mapper = vtkPolyDataMapper()
+        mapper.SetInputData(self.poly)
+
+        self.actor = actor = vtkActor()
+        actor.SetMapper(mapper)
+        actor.GetProperty().SetLineWidth(self.settings['edge_width'])
+        actor.GetProperty().EdgeVisibilityOn()
+        actor.GetProperty().SetEdgeColor([0, 0.5, 0])
+        actor.GetProperty().SetOpacity(0.9)
+        actor.GetProperty().SetInterpolationToGouraud()
+        self.renderer.AddActor(actor)
+
+    def gui(self):
+
+        w = 0.005
+        h = 0.015
+        l = 0.015
+        y = 0.90
+        a = 0.01
+        b = 0.10
+
+        vertex_size = self.settings['vertex_size']
+        edge_width  = self.settings['edge_width']
+
+        if self.settings['draw_vertices']:
+            self.slider_vertex = self.slider(w, h, l, [a, y], [b, y], 0.0, 0.2, vertex_size, 'Vertex size')
+            self.slider_vertex.AddObserver(vtk.vtkCommand.InteractionEvent, VertexSizeCallback(self.vertex, self.support))
+            y -= 0.12
+
+        if self.settings['draw_edges']:
+            self.slider_edge = self.slider(w, h, l, [a, y], [b, y], 0.01, 20.0, edge_width, 'Edge width')
+            self.slider_edge.AddObserver(vtk.vtkCommand.InteractionEvent, EdgeWidthCallback(self.actor))
+            y -= 0.12
+
+        self.slider_opacity = self.slider(w, h, l, [a, y], [b, y], 0.0, 1.0, 0.9, 'Opacity')
+        self.slider_opacity.AddObserver(vtk.vtkCommand.InteractionEvent, OpacityCallback(self.actor))
+        y -= 0.12
+
+    def start(self):
+
+        self.draw()
+        self.gui()
+        self.interactor.Initialize()
+        self.interactor.Start()
+
+    def slider(self, width, height, label, posy, posx, minimum, maximum, value, text):
+
+        slider = vtkSliderRepresentation2D()
+        slider.SetMinimumValue(minimum)
+        slider.SetMaximumValue(maximum)
+        slider.SetValue(value)
+        slider.SetTitleText(text)
+        slider.GetPoint1Coordinate().SetCoordinateSystemToNormalizedDisplay()
+        slider.GetPoint2Coordinate().SetCoordinateSystemToNormalizedDisplay()
+        slider.GetPoint1Coordinate().SetValue(posy[0], posy[1])
+        slider.GetPoint2Coordinate().SetValue(posx[0], posx[1])
+        slider.SetTubeWidth(width)
+        slider.SetTitleHeight(height)
+        slider.SetLabelHeight(label)
+
+        sliderwidget = vtkSliderWidget()
+        sliderwidget.SetInteractor(self.interactor)
+        sliderwidget.SetRepresentation(slider)
+        sliderwidget.SetAnimationModeToAnimate()
+        sliderwidget.EnabledOn()
+
+        return sliderwidget
+
+
+class InteractorStyle(vtkInteractorStyleTrackballCamera):
+
+    def __init__(self, parent=None):
+        self.AddObserver('LeftButtonPressEvent', self.leftButtonPressEvent)
+        self.AddObserver('LeftButtonReleaseEvent', self.leftButtonReleaseEvent)
+        self.AddObserver('MiddleButtonPressEvent', self.middleButtonPressEvent)
+        self.AddObserver('MiddleButtonReleaseEvent', self.middleButtonReleaseEvent)
+        self.AddObserver('RightButtonPressEvent', self.rightButtonPressEvent)
+        self.AddObserver('RightButtonReleaseEvent', self.rightButtonReleaseEvent)
+
+    def leftButtonPressEvent(self, obj, event):
+        self.OnLeftButtonDown()
+        return
+
+    def leftButtonReleaseEvent(self, obj, event):
+        self.OnLeftButtonUp()
+        return
+
+    def middleButtonPressEvent(self, obj, event):
+        self.OnMiddleButtonDown()
+        return
+
+    def middleButtonReleaseEvent(self, obj, event):
+        self.OnMiddleButtonUp()
+        return
+
+    def rightButtonPressEvent(self, obj, event):
+        self.OnRightButtonDown()
+        return
+
+    def rightButtonReleaseEvent(self, obj, event):
+        self.OnRightButtonUp()
+        return
+
+
+class VertexSizeCallback():
+
+    def __init__(self, vertex, support):
+        self.vertex = vertex
+        self.support = support
+
+    def __call__(self, caller, ev):
+        value = caller.GetRepresentation().GetValue()
+        self.vertex.SetRadius(value)
+        if self.support:
+            self.support.SetRadius(value * 1.5)
+
+
+class EdgeWidthCallback():
+
+    def __init__(self, actor):
+        self.actor = actor
+
+    def __call__(self, caller, ev):
+        value = caller.GetRepresentation().GetValue()
+        self.actor.GetProperty().SetLineWidth(value)
+
+
+class OpacityCallback():
+
+    def __init__(self, actor):
+        self.actor = actor
+
+    def __call__(self, caller, ev):
+        value = caller.GetRepresentation().GetValue()
+        self.actor.GetProperty().SetOpacity(value)
+
+
+# ==============================================================================
+# Debugging
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    data = {
+        'vertices': {
+            0: [-3, -3, 0],
+            1: [+3, -3, 0],
+            2: [+3, +3, 0],
+            3: [-3, +3, 0],
+            4: [-3, -3, 2],
+            5: [+3, -3, 2],
+            6: [+3, +3, 2],
+            7: [-3, +3, 2],
+        },
+        'edges': [
+            {'u': 0, 'v': 4, 'color': [0, 0, 0]},
+            {'u': 1, 'v': 5, 'color': [0, 0, 255]},
+            {'u': 2, 'v': 6, 'color': [0, 255, 0]},
+            {'u': 3, 'v': 7}
+        ],
+        'faces': {
+            0: {'vertices': [4, 5, 6], 'color': [250, 150, 150]},
+            1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
+        },
+        'fixed': [0, 1],
+    }
+
+    viewer = VtkViewer(data=data)
+    viewer.settings['draw_axes'] = 1
+    viewer.settings['draw_vertices'] = 1
+    viewer.settings['draw_edges'] = 1
+    viewer.settings['draw_faces'] = 1
+    viewer.start()

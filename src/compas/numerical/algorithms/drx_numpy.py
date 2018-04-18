@@ -1,8 +1,7 @@
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-
-import sys
 
 try:
     from numpy import arccos
@@ -16,8 +15,8 @@ try:
     from numpy import sum
     from numpy import tile
     from numpy import zeros
-
 except ImportError:
+    import sys
     if 'ironpython' not in sys.version.lower():
         raise
 
@@ -31,7 +30,7 @@ from time import time
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
+__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'liew@arch.ethz.ch'
 
@@ -42,6 +41,7 @@ __all__ = [
 
 
 def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False, callback=None, **kwargs):
+
     """Run dynamic relaxation analysis.
 
     Parameters
@@ -75,35 +75,42 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
     .. plot::
         :include-source:
 
-        import compas
         from compas.datastructures import Network
-        from compas.plotters import NetworkPlotter
         from compas.numerical import drx_numpy
-        from compas.utilities import i_to_rgb
+        from compas.plotters import NetworkPlotter
 
         from numpy import linspace
+        from numpy import sign
 
-        L0 = 1
-        L = 1.5
+        # Input
+
+        L = 2.5
         n = 40
         EI = 0.2
-        pins = [0, 5, 20, n - 5]
 
         # Network
 
-        vertices = [[i, i, 0] for i in list(linspace(0, L0, n))]
+        vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
+        for i in range(n):
+            if vertices[i][1] < 0.5:
+                vertices[i][0] = sign(vertices[i][0]) * vertices[i][1]
+        vertices[0][0] += 0.2
+        vertices[-1][0] -= 0.2
         edges = [[i, i + 1] for i in range(n - 1)]
 
         network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-        network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, -2, 0], 'EIx': EI, 'EIy': EI})
+        network.update_default_vertex_attributes({'is_fixed': False, 'P': [0, 0, 0], 'EIx': EI, 'EIy': EI})
         network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
-        network.set_vertices_attributes(pins, {'B': [0, 0, 0], 'is_fixed': True})
+        network.set_vertices_attributes(network.leaves(), {'B': [0, 0, 0], 'is_fixed': True})
         network.beams = {'beam': {'nodes': list(range(n))}}
+
+        # Solver
+
+        drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=1)
 
         # Plotter
 
-        plotter = NetworkPlotter(network)
-
+        plotter = NetworkPlotter(network, figsize=(10, 7))
         lines = []
         for u, v in network.edges():
             lines.append({
@@ -111,18 +118,10 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
                 'end'  : network.vertex_coordinates(v, 'xy'),
                 'color': '#cccccc',
                 'width': 1.0})
-
         plotter.draw_lines(lines)
 
-        # Solver
-
-        drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=True)
-
-        # Result
-
-        plotter.draw_vertices(radius=0.005, facecolor={key: '#ff0000' for key in pins})
+        plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in network.vertices_where({'is_fixed': True})})
         plotter.draw_edges()
-
         plotter.show()
 
     See Also
@@ -130,84 +129,121 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
     *
 
     """
+
     # Setup
 
     tic1 = time()
+
     X, B, P, Pn, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, ks = _create_arrays(network)
     try:
         inds, indi, indf, EIx, EIy = _beam_data(network)
-        beams = network.beams
+        beams = 1
     except AttributeError:
         beams = inds = indi = indf = EIx = EIy = None
+
     toc1 = time() - tic1
 
     # Solver
 
     tic2 = time()
+
     X, f, l = drx_solver(tol, steps, factor, C, Ct, X, ks, l0, f0, ind_c, ind_t, P, S, B, M, V, refresh, beams,
                          inds, indi, indf, EIx, EIy, callback, **kwargs)
+
     toc2 = time() - tic2
 
     # Summary
 
     if refresh:
         print('\n\nNumPy-SciPy DR -------------------')
-        print('Setup time: {0:.3g}s'.format(toc1))
-        print('Solver time: {0:.3g}s'.format(toc2))
+        print('Setup time: {0:.3f} s'.format(toc1))
+        print('Solver time: {0:.3f} s'.format(toc2))
         print('----------------------------------')
 
     # Update
 
     if update:
 
-        i_k = network.index_key()
-        for i in sorted(list(network.vertices()), key=int):
-            x, y, z = X[i, :]
-            network.set_vertex_attributes(i_k[i], {'x': x, 'y': y, 'z': z})
+        k_i = network.key_index()
+        for key in network.vertices():
+            x, y, z = X[k_i[key], :]
+            network.set_vertex_attributes(key, {'x': x, 'y': y, 'z': z})
 
         uv_i = network.uv_index()
-        for edge in network.edges():
-            i = uv_i[edge]
-            network.set_edge_attribute(edge, 'f', float(f[i]))
+        for uv in network.edges():
+            i = uv_i[uv]
+            network.set_edge_attribute(uv, 'f', float(f[i]))
 
     return X, f, l
 
 
 def drx_solver(tol, steps, factor, C, Ct, X, ks, l0, f0, ind_c, ind_t, P, S, B, M, V, refresh, beams, inds, indi,
                indf, EIx, EIy, callback, **kwargs):
+
     """ NumPy and SciPy dynamic relaxation solver.
 
-    Parameters:
-        tol (float): Tolerance limit.
-        steps (int): Maximum number of steps.
-        factor (float): Convergence factor.
-        C (array): Connectivity matrix.
-        Ct (array): Transposed connectivity matrix.
-        X (array): Nodal co-ordinates.
-        ks (array): Initial edge axial stiffnesses.
-        l0 (array): Initial edge lengths.
-        f0 (array): Initial edge forces.
-        ind_c (list): Indices of compression only edges.
-        ind_t (list): Indices of tension only edges.
-        P (array): Nodal loads Px, Py, Pz.
-        S (array): Shear forces Sx, Sy, Sz.
-        B (array): Constraint conditions.
-        M (array): Mass matrix.
-        V (array): Nodal velocities Vx, Vy, Vz.
-        refresh (int): Update progress every n steps.
-        beams (bool): Dictionary of beam information.
-        inds (list): Indices of beam element start nodes.
-        indi (list): Indices of beam element intermediate nodes.
-        indf (list): Indices of beam element finish nodes beams.
-        EIx (array): Nodal EIx flexural stiffnesses.
-        EIy (array): Nodal EIy flexural stiffnesses.
-        callback (obj): Callback function.
+    Parameters
+    ----------
+    tol : float
+        Tolerance limit.
+    steps : int
+        Maximum number of steps.
+    factor : float
+        Convergence factor.
+    C : array
+        Connectivity matrix.
+    Ct : array
+        Transposed connectivity matrix.
+    X : array
+        Nodal co-ordinates.
+    ks : array
+        Initial edge axial stiffnesses.
+    l0 : array
+        Initial edge lengths.
+    f0 : array
+        Initial edge forces.
+    ind_c : list
+        Indices of compression only edges.
+    ind_t : list
+        Indices of tension only edges.
+    P : array
+        Nodal loads Px, Py, Pz.
+    S : array
+        Shear forces Sx, Sy, Sz.
+    B : array
+        Constraint conditions Bx, By, Bz.
+    M : array
+        Mass matrix.
+    V : array
+        Nodal velocities Vx, Vy, Vz.
+    refresh : int
+        Update progress every n steps.
+    beams : bool
+        Beam data flag.
+    inds : list
+        Indices of beam element start nodes.
+    indi : list
+        Indices of beam element intermediate nodes.
+    indf : list
+        Indices of beam element finish nodes beams.
+    EIx : array
+        Nodal EIx flexural stiffnesses.
+    EIy : array
+        Nodal EIy flexural stiffnesses.
+    callback : obj
+        Callback function.
 
-    Returns:
-        array: Updated nodal co-ordinates.
-        array: Updated forces.
-        array: Updated lengths.
+    Returns
+    -------
+    array
+        Updated nodal co-ordinates.
+    array
+        Updated forces.
+    array
+        Updated lengths.
+
     """
+
     res = 1000 * tol
     ts, Uo = 0, 0
     M = factor * tile(M, (1, 3))
@@ -232,29 +268,40 @@ def drx_solver(tol, steps, factor, C, Ct, X, ks, l0, f0, ind_c, ind_t, P, S, B, 
         X += V
         if refresh:
             if (ts % refresh == 0) or (res < tol):
-                print('Step:{0} Residual:{1:.3g}'.format(ts, res))
+                print('Step:{0} Residual:{1:.3f}'.format(ts, res))
                 if callback:
                     callback(X, **kwargs)
         ts += 1
+
     return X, f, l
 
 
 def _beam_data(network):
+
     """ Create data for beam element calculations.
 
-    Parameters:
-        network (obj): Network to be analysed.
+    Parameters
+    ----------
+    network : obj
+        Network to be analysed.
 
-    Returns:
-        list: Indices of beam element start nodes.
-        list: Indices of beam element intermediate nodes.
-        list: Indices of beam element finish nodes beams.
-        array: Nodal EIx flexural stiffnesses of all beams.
-        array: Nodal EIy flexural stiffnesses of all beams.
+    Returns
+    -------
+    list
+        Indices of beam element start nodes.
+    list
+        Indices of beam element intermediate nodes.
+    list
+        Indices of beam element finish nodes beams.
+    array
+        Nodal EIx flexural stiffnesses of all beams.
+    array
+        Nodal EIy flexural stiffnesses of all beams.
+
     """
-    beams = network.beams
+
     inds, indi, indf, EIx, EIy = [], [], [], [], []
-    for _, beam in beams.items():
+    for beam in network.beams.values():
         nodes = beam['nodes']
         inds.extend(nodes[:-2])
         indi.extend(nodes[1:-1])
@@ -263,24 +310,38 @@ def _beam_data(network):
         EIy.extend([network.vertex[i]['EIy'] for i in nodes[1:-1]])
     EIx = array(EIx)[:, newaxis]
     EIy = array(EIy)[:, newaxis]
+
     return inds, indi, indf, EIx, EIy
 
 
 def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
+
     """ Generate the beam nodal shear forces Sx, Sy and Sz.
 
-    Parameters:
-        S (array): Nodal shear force array.
-        X (array): Co-ordinates of nodes.
-        inds (list): Indices of beam element start nodes.
-        indi (list): Indices of beam element intermediate nodes.
-        indf (list): Indices of beam element finish nodes beams.
-        EIx (array): Nodal EIx flexural stiffnesses.
-        EIy (array): Nodal EIy flexural stiffnesses.
+    Parameters
+    ----------
+    S : array
+        Nodal shear force array Sx, Sy, Sz.
+    X : array
+        Co-ordinates of nodes x, y, z.
+    inds : list
+        Indices of beam element start nodes.
+    indi : list
+        Indices of beam element intermediate nodes.
+    indf : list
+        Indices of beam element finish nodes beams.
+    EIx : array
+        Nodal EIx flexural stiffnesses.
+    EIy : array
+        Nodal EIy flexural stiffnesses.
 
-    Returns:
-        array: Updated beam nodal shears.
+    Returns
+    -------
+    array
+        Updated beam nodal shears.
+
     """
+
     S *= 0
     Xs = X[inds, :]
     Xi = X[indi, :]
@@ -327,30 +388,53 @@ def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
 
 
 def _create_arrays(network):
-    """ Create arrays for dynamic relaxation solver.
 
-    Parameters:
-        network (obj): Network to analyse.
+    """ Create arrays for dynamic relaxation solvers.
 
-    Returns:
-        array: Nodal co-ordinates x, y, z.
-        array: Constraint conditions Bx, By, Bz.
-        array: Nodal loads Px, Py, Pz.
-        array: Resultant nodal loads.
-        array: Shear force components Sx, Sy, Sz.
-        array: Nodal velocities Vx, Vy, Vz.
-        array: Edge Young's moduli.
-        array: Edge areas.
-        array: Connectivity matrix.
-        array: Transposed connectivity matrix.
-        array: Edge initial forces.
-        array: Edge initial lengths.
-        list: Compression only edges indices.
-        list: Tension only edges indices.
-        array: Network edges' start points.
-        array: Network edges' end points.
-        array: Mass matrix.
-        array: Edge axial stiffnesses.
+    Parameters
+    ----------
+    network : obj
+        Network to analyse.
+
+    Returns
+    -------
+    array
+        Nodal co-ordinates x, y, z.
+    array
+        Constraint conditions Bx, By, Bz.
+    array
+        Nodal loads Px, Py, Pz.
+    array
+        Resultant nodal loads.
+    array
+        Shear force components Sx, Sy, Sz.
+    array
+        Nodal velocities Vx, Vy, Vz.
+    array
+        Edge Young's moduli.
+    array
+        Edge areas.
+    array
+        Connectivity matrix.
+    array
+        Transposed connectivity matrix.
+    array
+        Edge initial forces.
+    array
+        Edge initial lengths.
+    list
+        Compression only edges indices.
+    list
+        Tension only edges indices.
+    array
+        Network edges' start points.
+    array
+        Network edges' end points.
+    array
+        Mass matrix.
+    array
+        Edge axial stiffnesses.
+
     """
 
     # Vertices
@@ -362,9 +446,8 @@ def _create_arrays(network):
     S = zeros((n, 3))
     V = zeros((n, 3))
     k_i = network.key_index()
-    for key in network.vertices():
+    for key, vertex in network.vertex.items():
         i = k_i[key]
-        vertex  = network.vertex[key]
         B[i, :] = vertex.get('B', [1, 1, 1])
         P[i, :] = vertex.get('P', [0, 0, 0])
         X[i, :] = [vertex[j] for j in 'xyz']
@@ -373,8 +456,7 @@ def _create_arrays(network):
     # Edges
 
     uv_i = network.uv_index()
-    edges = list(network.edges())
-    m  = len(edges)
+    m  = network.number_of_edges()
     u  = zeros(m, dtype=int64)
     v  = zeros(m, dtype=int64)
     E  = zeros((m, 1))
@@ -384,16 +466,15 @@ def _create_arrays(network):
     ind_c = []
     ind_t = []
 
-    for c, uv in enumerate(edges):
-        ui, vi = uv
+    for ui, vi in network.edges():
         i = uv_i[(ui, vi)]
         edge  = network.edge[ui][vi]
         E[i]  = edge.get('E', 0)
         A[i]  = edge.get('A', 0)
         l0[i] = edge.get('l0', network.edge_length(ui, vi))
         s0[i] = edge.get('s0', 0)
-        u[c]  = k_i[ui]
-        v[c]  = k_i[vi]
+        u[i]  = k_i[ui]
+        v[i]  = k_i[vi]
         ct = edge.get('ct', None)
         if ct == 'c':
             ind_c.append(i)
@@ -417,9 +498,9 @@ def _create_arrays(network):
 
     # Arrays
 
-    C = connectivity_matrix([[k_i[ui], k_i[vi]] for ui, vi in edges], 'csr')
+    C  = connectivity_matrix([[k_i[ui], k_i[vi]] for ui, vi in network.edges()], 'csr')
     Ct = C.transpose()
-    M = mass_matrix(Ct=Ct, ks=ks, q=q0, c=1, tiled=False)
+    M  = mass_matrix(Ct=Ct, ks=ks, q=q0, c=1, tiled=False)
 
     return X, B, P, Pn, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, ks
 
@@ -437,16 +518,16 @@ if __name__ == "__main__":
     from compas.utilities import i_to_rgb
 
     from numpy import linspace
+    from numpy import sign
 
-    def plot_iterations(X, radius=0.005):
 
-        for i in network.vertices():
-            x, y, z = X[i, :]
-            network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
-
-        plotter.update_vertices(radius)
+    def callback(X, k_i):
+        for key in network.vertices():
+            x, y, z = X[k_i[key], :]
+            network.set_vertex_attributes(key, {'x': x, 'y': y, 'z': z})
         plotter.update_edges()
         plotter.update(pause=0.01)
+
 
     # ==========================================================================
     # Example 1
@@ -457,12 +538,11 @@ if __name__ == "__main__":
     # network = Network.from_obj(compas.get('lines.obj'))
     # network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
     # network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
-    # network.set_vertices_attributes(network.leaves(), {'B': [0, 0, 0], 'is_fixed': True})
+    # network.set_vertices_attributes(network.leaves(), {'is_fixed': True, 'B': [0, 0, 0]})
 
     # # Plotter
 
     # plotter = NetworkPlotter(network, figsize=(10, 7))
-
     # lines = []
     # for u, v in network.edges():
     #     lines.append({
@@ -476,16 +556,14 @@ if __name__ == "__main__":
 
     # # Solver
 
-    # X, f, l = drx_numpy(network=network, tol=0.001, refresh=2, update=True, callback=plot_iterations, radius=0.1)
+    # drx_numpy(network=network, tol=0.001, refresh=1, update=True, callback=callback, k_i=network.key_index())
+    # fmax = max(network.get_edges_attribute('f'))
 
     # # Forces
-
-    # fmax = max(network.get_edges_attribute('f'))
 
     # plotter.draw_edges(
     #     color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
     #     width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
-
     # plotter.update()
     # plotter.show()
 
@@ -494,44 +572,49 @@ if __name__ == "__main__":
     # Example 2
     # ==========================================================================
 
-    # Input
+    # # Input
 
-    L0 = 1
-    L = 1.5
-    n = 40
-    EI = 0.2
-    pins = [0, 5, 20, n - 5]
+    # L = 2.5
+    # n = 40
+    # EI = 0.2
 
-    # Network
+    # # Network
 
-    vertices = [[i, i, 0] for i in list(linspace(0, L0, n))]
-    edges = [[i, i + 1] for i in range(n - 1)]
+    # vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
+    # for i in range(n):
+    #     if vertices[i][1] < 0.5:
+    #         vertices[i][0] = sign(vertices[i][0]) * vertices[i][1]
+    # vertices[0][0] += 0.1
+    # vertices[-1][0] -= 0.1
+    # edges = [[i, i + 1] for i in range(n - 1)]
 
-    network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, -2, 0], 'EIx': EI, 'EIy': EI})
-    network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
-    network.set_vertices_attributes(pins, {'B': [0, 0, 0], 'is_fixed': True})
-    network.beams = {'beam': {'nodes': list(range(n))}}
+    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    # network.update_default_vertex_attributes({'is_fixed': False, 'P': [0, 0, 0], 'EIx': EI, 'EIy': EI})
+    # network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+    # network.set_vertices_attributes(network.leaves(), {'B': [0, 0, 0], 'is_fixed': True})
+    # network.beams = {'beam': {'nodes': list(range(n))}}
 
-    # Plotter
+    # # Plotter
 
-    plotter = NetworkPlotter(network, figsize=(10, 7))
+    # plotter = NetworkPlotter(network, figsize=(10, 7))
+    # lines = []
+    # for u, v in network.edges():
+    #     lines.append({
+    #         'start': network.vertex_coordinates(u, 'xy'),
+    #         'end'  : network.vertex_coordinates(v, 'xy'),
+    #         'color': '#cccccc',
+    #         'width': 1.0})
+    # plotter.draw_lines(lines)
 
-    lines = []
-    for u, v in network.edges():
-        lines.append({
-            'start': network.vertex_coordinates(u, 'xy'),
-            'end'  : network.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
-            'width': 1.0})
+    # plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in network.vertices_where({'is_fixed': True})})
+    # plotter.draw_edges()
 
-    plotter.draw_lines(lines)
+    # # Solver
 
-    plotter.draw_vertices(radius=0.005, facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
-    plotter.draw_edges()
+    # drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=1, callback=callback, k_i=network.key_index())
 
-    # Solver
+    # plotter.show()
 
-    drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=True, callback=plot_iterations)
-
-    plotter.show()
+    # ==========================================================================
+    # Example 3
+    # ==========================================================================
