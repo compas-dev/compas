@@ -139,7 +139,7 @@ class Viewer(object):
         glutKeyboardFunc(self._keypress_callback)
         glutMouseFunc(self._mouseclick_callback)
         glutMotionFunc(self._mousemotion_callback)
-        glutPassiveMotionFunc(self._passivemousemotion_callback)
+        # glutPassiveMotionFunc(self._passivemousemotion_callback)
         glutIdleFunc(self._idle_callback)
         glutSpecialFunc(self._special_callback)
         # settings
@@ -289,8 +289,8 @@ class Viewer(object):
         elif self.mouse.buttons[2]:
             self.right_mousemotion(x, y)
 
-    def _passivemousemotion_callback(self, x, y):
-        self.mousemotion(x, y)
+    # def _passivemousemotion_callback(self, x, y):
+    #     self.mousemotion(x, y)
 
     # ==========================================================================
     # Callback implementations
