@@ -8,6 +8,8 @@ try:
 except ImportError as e:
     pass
 
+import cmath
+
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
@@ -23,8 +25,8 @@ __all__ = [
 #     'asin_cuda',
 #     'atan_cuda',
 #     'ceil_cuda',
-#     'cos_cuda',
-#     'cosh_cuda',
+    # 'cos_cuda',
+    # 'cosh_cuda',
 #     'exp_cuda',
 #     'floor_cuda',
 #     'log_cuda',
@@ -235,7 +237,7 @@ __all__ = [
 
 #     return pycuda.cumath.ceil(a)
 
-
+# @cuda.jit
 # def cos_cuda(a):
 
 #     """ Trigonometric cosine of GPUArray elements.
@@ -255,14 +257,12 @@ __all__ = [
 #     >>> a = cos_cuda(give_cuda([0, pi/4]))
 #     array([ 1.,  0.70710678])
 
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
-
 #     """
 
-#     return pycuda.cumath.cos(a)
+#     return cmath.cos(a)
 
 
+# @cuda.jit
 # def cosh_cuda(a):
 
 #     """ Hyperbolic cosine of GPUArray elements.
@@ -282,12 +282,9 @@ __all__ = [
 #     >>> a = cosh_cuda(give_cuda([0, pi/4]))
 #     array([ 1.,  1.32460909])
 
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
-
 #     """
 
-#     return pycuda.cumath.cosh(a)
+#     return cmath.cosh(a)
 
 
 # def exp_cuda(a):
@@ -660,16 +657,16 @@ if __name__ == "__main__":
     from compas.hpc import give_cuda
     from compas.hpc import get_cuda
 
-#     from numpy import pi
+    from numpy import pi
 
-#     a = abs_cuda(give_cuda([-0.1, -1.7]))
+    # a = abs_cuda(give_cuda([-0.1, -1.7]))
 #     b = argmax_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
 #     c = argmin_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
 #     d = acos_cuda(give_cuda([0.5, 1]))
 #     e = asin_cuda(give_cuda([0.5, 1]))
 #     f = atan_cuda(give_cuda([0.5, 1]))
 #     g = ceil_cuda(give_cuda([0.5, 0.1, 1.9]))
-#     h = cos_cuda(give_cuda([0, pi / 4]))
+    # a = cos_cuda(give_cuda([0, pi / 4]))
 #     i = cosh_cuda(give_cuda([0, pi / 4]))
 #     j = exp_cuda(give_cuda([0, 1]))
 #     h = floor_cuda(give_cuda([0.5, 0.1, 1.9]))
@@ -684,3 +681,5 @@ if __name__ == "__main__":
 #     q = sum_cuda(give_cuda([[1, 2], [3, 4]]), axis=0)
 #     r = tan_cuda(give_cuda([0, pi / 4]))
 #     s = tanh_cuda(give_cuda([0, pi / 4]))
+
+    # print(a)
