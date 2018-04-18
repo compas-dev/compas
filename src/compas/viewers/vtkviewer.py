@@ -30,6 +30,8 @@ try:
 except ImportError:
     pass
 
+import sys
+
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
@@ -57,8 +59,22 @@ class VtkViewer(object):
             'edge_width':    2,
         }
 
+        def execute(self):
+            pass
+
+        self.execute = execute
         self.data = data
         self.setup(width=width, height=height, name=name)
+
+    def keypress(self, obj, event):
+
+        key = obj.GetKeySym()
+
+        if key == 's':
+            self.execute(self)
+
+        elif key == 'q':
+            sys.exit()
 
     def camera(self):
 
@@ -89,6 +105,7 @@ class VtkViewer(object):
         self.interactor = interactor = vtkRenderWindowInteractor()
         interactor.SetInteractorStyle(InteractorStyle())
         interactor.SetRenderWindow(window)
+        interactor.AddObserver('KeyPressEvent', self.keypress)
 
     def draw_axes(self):
 
@@ -210,7 +227,7 @@ class VtkViewer(object):
         actor.GetProperty().SetLineWidth(self.settings['edge_width'])
         actor.GetProperty().EdgeVisibilityOn()
         actor.GetProperty().SetEdgeColor([0, 0.5, 0])
-        actor.GetProperty().SetOpacity(0.9)
+        actor.GetProperty().SetOpacity(1.0)
         actor.GetProperty().SetInterpolationToGouraud()
         self.renderer.AddActor(actor)
 
@@ -236,7 +253,7 @@ class VtkViewer(object):
             self.slider_edge.AddObserver(vtk.vtkCommand.InteractionEvent, EdgeWidthCallback(self.actor))
             y -= 0.12
 
-        self.slider_opacity = self.slider(w, h, l, [a, y], [b, y], 0.0, 1.0, 0.9, 'Opacity')
+        self.slider_opacity = self.slider(w, h, l, [a, y], [b, y], 0.0, 1.0, 1.0, 'Opacity')
         self.slider_opacity.AddObserver(vtk.vtkCommand.InteractionEvent, OpacityCallback(self.actor))
         y -= 0.12
 
@@ -245,6 +262,7 @@ class VtkViewer(object):
         self.draw()
         self.gui()
         self.interactor.Initialize()
+        self.window.Render()
         self.interactor.Start()
 
     def slider(self, width, height, label, posy, posx, minimum, maximum, value, text):
@@ -274,34 +292,34 @@ class VtkViewer(object):
 class InteractorStyle(vtkInteractorStyleTrackballCamera):
 
     def __init__(self, parent=None):
-        self.AddObserver('LeftButtonPressEvent', self.leftButtonPressEvent)
-        self.AddObserver('LeftButtonReleaseEvent', self.leftButtonReleaseEvent)
-        self.AddObserver('MiddleButtonPressEvent', self.middleButtonPressEvent)
-        self.AddObserver('MiddleButtonReleaseEvent', self.middleButtonReleaseEvent)
-        self.AddObserver('RightButtonPressEvent', self.rightButtonPressEvent)
-        self.AddObserver('RightButtonReleaseEvent', self.rightButtonReleaseEvent)
+        self.AddObserver('LeftButtonPressEvent', self.LeftButtonPressEvent)
+        self.AddObserver('LeftButtonReleaseEvent', self.LeftButtonReleaseEvent)
+        self.AddObserver('MiddleButtonPressEvent', self.MiddleButtonPressEvent)
+        self.AddObserver('MiddleButtonReleaseEvent', self.MiddleButtonReleaseEvent)
+        self.AddObserver('RightButtonPressEvent', self.RightButtonPressEvent)
+        self.AddObserver('RightButtonReleaseEvent', self.RightButtonReleaseEvent)
 
-    def leftButtonPressEvent(self, obj, event):
+    def LeftButtonPressEvent(self, obj, event):
         self.OnLeftButtonDown()
         return
 
-    def leftButtonReleaseEvent(self, obj, event):
+    def LeftButtonReleaseEvent(self, obj, event):
         self.OnLeftButtonUp()
         return
 
-    def middleButtonPressEvent(self, obj, event):
+    def MiddleButtonPressEvent(self, obj, event):
         self.OnMiddleButtonDown()
         return
 
-    def middleButtonReleaseEvent(self, obj, event):
+    def MiddleButtonReleaseEvent(self, obj, event):
         self.OnMiddleButtonUp()
         return
 
-    def rightButtonPressEvent(self, obj, event):
+    def RightButtonPressEvent(self, obj, event):
         self.OnRightButtonDown()
         return
 
-    def rightButtonReleaseEvent(self, obj, event):
+    def RightButtonReleaseEvent(self, obj, event):
         self.OnRightButtonUp()
         return
 

@@ -511,22 +511,22 @@ def _create_arrays(network):
 
 if __name__ == "__main__":
 
-    import compas
+    # import compas
 
-    from compas.datastructures import Network
-    from compas.plotters import NetworkPlotter
-    from compas.utilities import i_to_rgb
+    # from compas.datastructures import Network
+    # from compas.plotters import NetworkPlotter
+    # from compas.utilities import i_to_rgb
 
-    from numpy import linspace
-    from numpy import sign
+    # from numpy import linspace
+    # from numpy import sign
 
 
-    def callback(X, k_i):
-        for key in network.vertices():
-            x, y, z = X[k_i[key], :]
-            network.set_vertex_attributes(key, {'x': x, 'y': y, 'z': z})
-        plotter.update_edges()
-        plotter.update(pause=0.01)
+    # def callback(X, k_i):
+    #     for key in network.vertices():
+    #         x, y, z = X[k_i[key], :]
+    #         network.set_vertex_attributes(key, {'x': x, 'y': y, 'z': z})
+    #     plotter.update_edges()
+    #     plotter.update(pause=0.01)
 
 
     # ==========================================================================
@@ -618,3 +618,49 @@ if __name__ == "__main__":
     # ==========================================================================
     # Example 3
     # ==========================================================================
+
+    from compas.datastructures import Mesh
+    from compas.viewers import VtkViewer
+
+
+    m = 100
+    x = y = [(i / m - 0.5) * 7 for i in range(m + 1)]
+    vertices = [[xi, yi, 0] for yi in y for xi in x]
+    faces = [[(j + 0) * (m + 1) + i + 0, (j + 0) * (m + 1) + i + 1,
+              (j + 1) * (m + 1) + i + 1, (j + 1) * (m + 1) + i + 0]
+             for i in range(m) for j in range(m)]
+    mesh = Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)
+
+    pz = 1000 / mesh.number_of_vertices()
+    sides = [i for i in mesh.vertices() if mesh.vertex_degree(i) <= 3]
+    mesh.update_default_vertex_attributes({'P': [0, 0, pz]})
+    mesh.update_default_edge_attributes({'E': 7, 'A': 1, 'ct': 't'})
+    mesh.set_vertices_attributes(sides, {'B': [0, 0, 0]})
+
+    data = {}
+    data['vertices'] = {i: mesh.vertex_coordinates(i) for i in mesh.vertices()}
+    data['edges']    = [{'u': u, 'v': v} for u, v in mesh.edges()]
+    data['faces']    = {i: {'vertices': j} for i, j in mesh.face.items()}
+
+
+    def callback(X, self):
+        for i in range(X.shape[0]):
+            self.vertices.SetPoint(i, X[i, :])
+            self.vertices.Modified()
+        self.window.Render()
+
+
+    def execute(self):
+        X, f, l = drx_numpy(network=mesh, tol=0.01, update=True, refresh=1, callback=callback, self=self)
+
+
+    print('Press key S to start')
+
+    viewer = VtkViewer(data=data)
+    viewer.execute = execute
+    viewer.settings['draw_vertices'] = 0
+    viewer.settings['draw_edges'] = 1
+    viewer.settings['draw_faces'] = 1
+    viewer.settings['vertex_size'] = 0.02
+    viewer.settings['edge_width'] = 0.01
+    viewer.start()

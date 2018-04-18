@@ -86,8 +86,8 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
         EIy  = EIy.ravel()
         beams = 1
     except AttributeError:
-        inds, indi, indf = array([0])
-        EIx, EIy = array([0.])
+        inds = indi = indf = array([0])
+        EIx = EIy = array([0.])
         beams = 0
 
     # Arrays
@@ -338,24 +338,25 @@ def drx_solver(tol, steps, summary, u, v, X, f0, l0, ks, ind_c, ind_t, B, P, S, 
 
 if __name__ == "__main__":
 
+    # ==========================================================================
+    # Example 1
+    # ==========================================================================
+
     from compas.datastructures import Mesh
-    from compas.topology import mesh_subdivide_quad
     from compas.viewers import VtkViewer
 
-    from time import time
-
-    m = 30
-    x = y = [(i / m - 0.5) * 5 for i in range(m + 1)]
+    m = 150
+    x = y = [(i / m - 0.5) * 7 for i in range(m + 1)]
     vertices = [[xi, yi, 0] for yi in y for xi in x]
     faces = [[(j + 0) * (m + 1) + i + 0, (j + 0) * (m + 1) + i + 1,
               (j + 1) * (m + 1) + i + 1, (j + 1) * (m + 1) + i + 0]
              for i in range(m) for j in range(m)]
     mesh = Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)
 
-    pz = 1000 / mesh.number_of_vertices()
+    pz = 1500 / mesh.number_of_vertices()
     sides = [i for i in mesh.vertices() if mesh.vertex_degree(i) <= 3]
     mesh.update_default_vertex_attributes({'P': [0, 0, pz]})
-    mesh.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
+    mesh.update_default_edge_attributes({'E': 5, 'A': 1, 'ct': 't'})
     mesh.set_vertices_attributes(sides, {'B': [0, 0, 0]})
 
     tic = time()
@@ -363,13 +364,76 @@ if __name__ == "__main__":
 
     data = {}
     data['vertices'] = {i: mesh.vertex_coordinates(i) for i in mesh.vertices()}
-    data['edges']    = [{'start': u, 'end': v} for u, v in mesh.edges()]
+    data['edges']    = [{'u': u, 'v': v} for u, v in mesh.edges()]
     data['faces']    = {i: {'vertices': j} for i, j in mesh.face.items()}
 
     viewer = VtkViewer(data=data)
     viewer.settings['draw_vertices'] = 0
     viewer.settings['draw_edges'] = 1
-    viewer.settings['draw_faces'] = 0
-    viewer.settings['vertex_size'] = 0.02
+    viewer.settings['draw_faces'] = 1
     viewer.settings['edge_width'] = 0.02
     viewer.start()
+
+    # ==========================================================================
+    # Example 2
+    # ==========================================================================
+
+    # import compas
+
+    # from compas.datastructures import Network
+    # from compas.plotters import NetworkPlotter
+    # from compas.utilities import i_to_rgb
+
+    # from numpy import linspace
+    # from numpy import sign
+
+
+    # def callback(X, k_i):
+    #     for key in network.vertices():
+    #         x, y, z = X[k_i[key], :]
+    #         network.set_vertex_attributes(key, {'x': x, 'y': y, 'z': z})
+    #     plotter.update_edges()
+    #     plotter.update(pause=0.01)
+
+    # # Input
+
+    # L = 2.5
+    # n = 40
+    # EI = 0.2
+
+    # # Network
+
+    # vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
+    # for i in range(n):
+    #     if vertices[i][1] < 0.5:
+    #         vertices[i][0] = sign(vertices[i][0]) * vertices[i][1]
+    # vertices[0][0] += 0.1
+    # vertices[-1][0] -= 0.1
+    # edges = [[i, i + 1] for i in range(n - 1)]
+
+    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    # network.update_default_vertex_attributes({'is_fixed': False, 'P': [0, 0, 0], 'EIx': EI, 'EIy': EI})
+    # network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+    # network.set_vertices_attributes(network.leaves(), {'B': [0, 0, 0], 'is_fixed': True})
+    # network.beams = {'beam': {'nodes': list(range(n))}}
+
+    # # Plotter
+
+    # plotter = NetworkPlotter(network, figsize=(10, 7))
+    # lines = []
+    # for u, v in network.edges():
+    #     lines.append({
+    #         'start': network.vertex_coordinates(u, 'xy'),
+    #         'end'  : network.vertex_coordinates(v, 'xy'),
+    #         'color': '#cccccc',
+    #         'width': 1.0})
+    # plotter.draw_lines(lines)
+
+    # plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in network.vertices_where({'is_fixed': True})})
+    # plotter.draw_edges()
+
+    # # Solver
+
+    # drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=1, callback=callback, k_i=network.key_index())
+
+    # plotter.show()
