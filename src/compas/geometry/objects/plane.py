@@ -90,17 +90,17 @@ class Plane(object):
     # ==========================================================================
 
     def __getitem__(self, key):
-        if i == 0:
+        if key == 0:
             return self.point
-        if i == 1:
+        if key == 1:
             return self.normal
         raise KeyError
 
     def __setitem__(self, key, value):
-        if i == 0:
+        if key == 0:
             self.point = value
             return
-        if i == 1:
+        if key == 1:
             self.normal = value
             return
         raise KeyError
@@ -127,7 +127,6 @@ class Plane(object):
     # ==========================================================================
     # transformations
     # ==========================================================================
-
 
 
 # ==============================================================================
