@@ -44,5 +44,15 @@ class RhinoGeometry(object):
         if otype == rs.filter.curve:
             return RhinoCurve(guid)
 
+    @property
+    def name(self):
+        value = self.object.Name
+        return value
+
+    @name.setter
+    def name(self, value):
+        self.attributes.Name = value
+        self.object.CommitChanges()
+
 
 __all__ = ['RhinoPoint', 'RhinoCurve', 'RhinoMesh', 'RhinoSurface', ]
