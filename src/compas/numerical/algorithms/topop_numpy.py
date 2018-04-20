@@ -16,6 +16,7 @@ try:
     from numpy import min
     from numpy import minimum
     from numpy import isnan
+    from numpy import meshgrid
     from numpy import mgrid
     from numpy import newaxis
     from numpy import ones
@@ -26,6 +27,7 @@ try:
     from numpy import sum
     from numpy import tile
     from numpy import vstack
+    from numpy import where
     from numpy import zeros
 
     from scipy.sparse import coo_matrix
@@ -33,6 +35,8 @@ try:
 
     from matplotlib import pyplot as plt
     from mpl_toolkits.mplot3d import Axes3D
+
+    from compas.viewers import VtkViewer
 
 except ImportError:
     import sys
@@ -119,7 +123,7 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     U = zeros((ndof, 1))
     fixed = []
     for support, B in supports.items():
-        ib, jb = [int(i) for i in support.split('-')]
+        jb, ib = [int(i) for i in support.split('-')]
         Bx, By = B
         node = int(jb * ny + ib)
         if Bx:
@@ -134,7 +138,7 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     rows = []
     cols = []
     for load, P in loads.items():
-        ip, jp = [int(i) for i in load.split('-')]
+        jp, ip = [int(i) for i in load.split('-')]
         Px, Py = P
         node = int(jp * ny + ip)
         data.extend([Px, Py])
@@ -173,6 +177,7 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
 
     # Set-up plot
 
+    plt.figure(figsize=(12, 8))
     plt.axis([0, nelx, 0, nely])
     plt.ion()
 
@@ -230,7 +235,8 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     return x
 
 
-def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=1.5, iterations=100):
+def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=1.5, iterations=100,
+                  callback=None, **kwargs):
 
     """ Topology optimisation in 3D using NumPy and SciPy.
 
@@ -474,28 +480,10 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
         iteration += 1
         print('Iteration: {0}  Compliance: {1:.4g}'.format(iteration, c))
 
-    x[isnan(x)] = 0
+        x[isnan(x)] = 0
 
-    # Plot
-
-    colours = empty(x.shape, dtype=object)
-    colours[:, :, :] = '#3333FFEE'
-
-    fig = plt.figure()
-    ax = fig.gca(projection='3d')
-    ax.set_aspect('equal')
-    ax.set(xlabel='$y$', ylabel='$z$', zlabel='$x$')
-    ax.voxels(x, facecolors=colours, edgecolor='k')
-    ax.view_init(-60, 170)
-
-    mran = 0.5 * array([nx, ny, nz]).max() * mgrid[-1:2:2, -1:2:2, -1:2:2]
-    Xb = mran[0].flatten() + 0.5 * nx
-    Yb = mran[1].flatten() + 0.5 * ny
-    Zb = mran[2].flatten() + 0.5 * nz
-    for xb, yb, zb in zip(Xb, Yb, Zb):
-        ax.plot([xb], [yb], [zb], 'k')
-
-    plt.show()
+        if callback:
+            callback(x, **kwargs)
 
     return x
 
@@ -506,22 +494,43 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
 
 if __name__ == "__main__":
 
-    # 2D
+    # 2D Eg1
 
     # loads = {
-    #     '40-200': [0, -1]}
+    #     '200-40': [0, -1],
+    # }
 
     # supports = {
     #     '0-0': [1, 1],
-    #     '0-400': [0, 1]}
+    #     '400-0': [0, 1],
+    # }
 
     # x = topop2d_numpy(nelx=400, nely=40, loads=loads, supports=supports, volfrac=0.5)
 
-    # 3D
+    # 2D Eg2
 
-    nx = 30
-    ny = 10
-    nz = 2
+    # loads = {
+    #     '0-50': [1, 0],
+    #     '0-100': [1, 0],
+    #     '0-150': [1, 0],
+    #     '0-200': [1, 0],
+    # }
+
+    # supports = {
+    #     '0-0': [1, 1],
+    #     '50-0': [1, 1],
+    #     '100-0': [1, 1],
+    # }
+
+    # x = topop2d_numpy(nelx=100, nely=200, loads=loads, supports=supports, volfrac=0.3)
+
+    # 3D Eg1
+
+    import vtk
+
+    nx = 100
+    ny = 20
+    nz = 1
 
     loads = {
         '{0}-{1}-{2}'.format(nx, 0, int(nz / 2)): [0, -1, 0],
@@ -532,4 +541,35 @@ if __name__ == "__main__":
         for j in range(ny + 1):
             supports['{0}-{1}-{2}'.format(0, j, k)] = [1, 1, 1]
 
-    x = topop3d_numpy(nelx=nx, nely=ny, nelz=nz, loads=loads, supports=supports, iterations=100, volfrac=0.1)
+    data = {
+        'blocks': {
+            'size': 1,
+            'locations': [[0, 0, 0]],
+        }
+    }
+
+
+    def callback(x, self):
+        indj, indi, indk = where(x >= 0.95)
+        indj = ny - indj
+        locations = zip(indi, indj, indk)
+        self.locations = vtk.vtkPoints()
+        for c, xyz in enumerate(locations):
+            self.locations.InsertNextPoint(xyz)
+            self.locations.Modified()
+        self.blocks.SetPoints(self.locations)
+        self.window.Render()
+
+
+    def execute(self):
+        topop3d_numpy(nelx=nx, nely=ny, nelz=nz, loads=loads, supports=supports, iterations=200, volfrac=0.5,
+                      callback=callback, self=self)
+
+
+    viewer = VtkViewer(data=data)
+    viewer.execute = execute
+    viewer.settings['camera_pos'] = [0.5 * nx, 0, 2 * max([nx, ny])]
+    viewer.settings['camera_focus'] = [0.5 * nx, 0.5 * ny, 0.5 * nz]
+    viewer.settings['camera_azi'] = 0
+    # viewer.settings['camera_ele'] = 10
+    viewer.start()
