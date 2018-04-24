@@ -64,25 +64,21 @@ class VtkViewer(object):
             'camera_azi':    30,
             'camera_ele':    0,
         }
-
-        def execute(self):
-            pass
-
-        self.execute = execute
+        self.keycallbacks = {}
         self.data = data
         self.name = name
         self.height = height
         self.width = width
+        self.setup(width=self.width, height=self.height, name=self.name)
 
     def keypress(self, obj, event):
 
         key = obj.GetKeySym()
-
-        if key == 's':
-            self.execute(self)
-
-        elif key == 'q':
-            sys.exit()
+        try:
+            func = self.keycallbacks[key]
+            func(self)
+        except:
+            print('No callback for keypress {0}'.format(key))
 
     def camera(self):
 
@@ -303,7 +299,6 @@ class VtkViewer(object):
 
     def start(self):
 
-        self.setup(width=self.width, height=self.height, name=self.name)
         self.draw()
         self.gui()
         self.interactor.Initialize()
@@ -410,6 +405,11 @@ class OpacityCallback():
 
 if __name__ == "__main__":
 
+
+    def func(self):
+        print('Callback')
+
+
     data = {
         'vertices': {
             0: [-3, -3, 0],
@@ -444,4 +444,5 @@ if __name__ == "__main__":
     viewer.settings['draw_edges'] = 1
     viewer.settings['draw_faces'] = 1
     viewer.settings['draw_blocks'] = 1
+    viewer.keycallbacks['s'] = func
     viewer.start()

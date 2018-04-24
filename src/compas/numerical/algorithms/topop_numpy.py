@@ -528,18 +528,35 @@ if __name__ == "__main__":
 
     import vtk
 
-    nx = 100
-    ny = 20
-    nz = 1
+    # nx = 150
+    # ny = 30
+    # nz = 1
+
+    # loads = {
+    #     '{0}-{1}-{2}'.format(nx, 0, int(nz / 2)): [0, -1, 0],
+    # }
+
+    # supports = {}
+    # for k in range(nz + 1):
+    #     for j in range(ny + 1):
+    #         supports['{0}-{1}-{2}'.format(0, j, k)] = [1, 1, 1]
+
+    nx = 30
+    ny = 15
+    nz = 30
 
     loads = {
-        '{0}-{1}-{2}'.format(nx, 0, int(nz / 2)): [0, -1, 0],
+        '{0}-{1}-{2}'.format(1 * int(nx / 4), ny, 1 * int(nz / 4)): [0, -1, 0],
+        '{0}-{1}-{2}'.format(3 * int(nx / 4), ny, 1 * int(nz / 4)): [0, -1, 0],
+        '{0}-{1}-{2}'.format(1 * int(nx / 4), ny, 3 * int(nz / 4)): [0, -1, 0],
+        '{0}-{1}-{2}'.format(3 * int(nx / 4), ny, 3 * int(nz / 4)): [0, -1, 0],
     }
 
     supports = {}
-    for k in range(nz + 1):
-        for j in range(ny + 1):
-            supports['{0}-{1}-{2}'.format(0, j, k)] = [1, 1, 1]
+    supports['{0}-{1}-{2}'.format(0, 0, 0)] = [0, 1, 0]
+    supports['{0}-{1}-{2}'.format(nx, 0, 0)] = [0, 1, 0]
+    supports['{0}-{1}-{2}'.format(nx, 0, nz)] = [0, 1, 0]
+    supports['{0}-{1}-{2}'.format(0, 0, nz)] = [0, 1, 0]
 
     data = {
         'blocks': {
@@ -562,12 +579,13 @@ if __name__ == "__main__":
 
 
     def execute(self):
+        print('TopOp started')
         topop3d_numpy(nelx=nx, nely=ny, nelz=nz, loads=loads, supports=supports, iterations=200, volfrac=0.5,
                       callback=callback, self=self)
 
 
     viewer = VtkViewer(data=data)
-    viewer.execute = execute
+    viewer.keycallbacks['s'] = execute
     viewer.settings['camera_pos'] = [0.5 * nx, 0, 2 * max([nx, ny])]
     viewer.settings['camera_focus'] = [0.5 * nx, 0.5 * ny, 0.5 * nz]
     viewer.settings['camera_azi'] = 0

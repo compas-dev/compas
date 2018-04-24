@@ -615,6 +615,7 @@ if __name__ == "__main__":
 
     # plotter.show()
 
+
     # ==========================================================================
     # Example 3
     # ==========================================================================
@@ -650,17 +651,16 @@ if __name__ == "__main__":
         self.window.Render()
 
 
-    def execute(self):
+    def func(self):
         X, f, l = drx_numpy(network=mesh, tol=0.01, update=True, refresh=1, callback=callback, self=self)
-
 
     print('Press key S to start')
 
     viewer = VtkViewer(data=data)
-    viewer.execute = execute
     viewer.settings['draw_vertices'] = 0
     viewer.settings['draw_edges'] = 1
     viewer.settings['draw_faces'] = 1
     viewer.settings['vertex_size'] = 0.02
     viewer.settings['edge_width'] = 0.01
+    viewer.keycallbacks['s'] = func
     viewer.start()
