@@ -45,11 +45,22 @@ class VtkVoxels(object):
 
     def __init__(self, data, name='VTK Voxels', width=1000, height=700):
 
+        self.keycallbacks = {}
         self.data = data
         self.size = data.shape
         self.name = name
         self.height = height
         self.width = width
+        self.setup(width=self.width, height=self.height, name=self.name)
+
+    def keypress(self, obj, event):
+
+        key = obj.GetKeySym()
+        try:
+            func = self.keycallbacks[key]
+            func(self)
+        except:
+            print('No callback for keypress {0}'.format(key))
 
     def draw_axes(self):
 
@@ -88,6 +99,7 @@ class VtkVoxels(object):
         self.interactor = interactor = vtkRenderWindowInteractor()
         interactor.SetInteractorStyle(InteractorStyle())
         interactor.SetRenderWindow(window)
+        interactor.AddObserver('KeyPressEvent', self.keypress)
 
     def draw(self):
 
@@ -151,7 +163,6 @@ class VtkVoxels(object):
 
     def start(self):
 
-        self.setup(width=self.width, height=self.height, name=self.name)
         self.draw()
         self.gui()
         self.interactor.Initialize()
