@@ -29,6 +29,7 @@ Classes
 from .core import *
 from .viewer import *
 from .vtkviewer import *
+from .vtkvoxels import *
 from .networkviewer import *
 from .meshviewer import *
 from .volmeshviewer import *
@@ -38,5 +39,6 @@ from .viewer import __all__ as b
 from .networkviewer import __all__ as c
 from .meshviewer import __all__ as d
 from .volmeshviewer import __all__ as e
+from .vtkvoxels import __all__ as f
 
-__all__ = a + b + c + d + e
+__all__ = a + b + c + d + e + f
