@@ -25,6 +25,7 @@ except ImportError:
 try:
     from numpy import asarray
     from numpy import max
+    from numpy import min
     from numpy import uint8
 except ImportError:
     pass
@@ -106,7 +107,11 @@ class VtkVoxels(object):
         self.draw_axes()
 
         u = self.data
-        u /= max(u)
+        minu = min(u)
+        maxu = max(u)
+        maxa = max([abs(minu), abs(maxu)])
+        u /= (2 * maxa)
+        u += 0.5
         u *= 255
         nx, ny, nz = self.size
         U = asarray(u, dtype=uint8)
@@ -120,15 +125,16 @@ class VtkVoxels(object):
         img.SetWholeExtent(0, nz - 1, 0, ny - 1, 0, nx - 1)
 
         self.opacity = opacity = vtkPiecewiseFunction()
-        opacity.AddPoint(0, 0.0)
+        opacity.AddPoint(0, 0.2)
         opacity.AddPoint(255, 0.2)
 
         self.cbar = cbar = vtkColorTransferFunction()
         cbar.AddRGBPoint(0.0, 0.0, 0.0, 1.0)
-        cbar.AddRGBPoint(50.0, 0.0, 0.0, 1.0)
-        cbar.AddRGBPoint(100.0, 0.0, 1.0, 1.0)
-        cbar.AddRGBPoint(150.0, 0.0, 1.0, 0.0)
-        cbar.AddRGBPoint(200.0, 1.0, 1.0, 0.0)
+        cbar.AddRGBPoint(42.0, 0.0, 0.5, 1.0)
+        cbar.AddRGBPoint(84.0, 0.0, 1.0, 0.5)
+        cbar.AddRGBPoint(128.0, 0.0, 1.0, 0.0)
+        cbar.AddRGBPoint(168.0, 0.5, 1.0, 0.0)
+        cbar.AddRGBPoint(212.0, 1.0, 0.5, 0.0)
         cbar.AddRGBPoint(255.0, 1.0, 0.0, 0.0)
 
         self.volprop = volprop = vtkVolumeProperty()
@@ -153,7 +159,7 @@ class VtkVoxels(object):
         a = 0.01
         b = 0.10
 
-        self.slider_opacity = self.slider(w, h, l, [a, y], [b, y], 0.0, 254, 0, 'Opacity')
+        self.slider_opacity = self.slider(w, h, l, [a, y], [b, y], 0.0, 125, 0, 'Opacity')
         self.slider_opacity.AddObserver(vtk.vtkCommand.InteractionEvent, OpacityCallback(self.opacity, self.volprop))
         y -= 0.12
 
@@ -237,7 +243,12 @@ class OpacityCallback():
     def __call__(self, caller, ev):
         value = caller.GetRepresentation().GetValue()
         self.opacity = opacity = vtkPiecewiseFunction()
-        opacity.AddPoint(value, 0.0)
+        opacity.AddPoint(0, 0.2)
+        if value:
+            opacity.AddPoint(128 - value, 0.0)
+            opacity.AddPoint(128 + value, 0.0)
+        else:
+            opacity.AddPoint(128, 0.2)
         opacity.AddPoint(255, 0.2)
         self.volprop.SetScalarOpacity(opacity)
 
@@ -264,7 +275,7 @@ if __name__ == "__main__":
     from numpy import linspace
     from numpy import meshgrid
 
-    r = linspace(0, 10, 50)
+    r = linspace(-10, 10, 50)
     x, y, z = meshgrid(r, r, r)
     data = x + y + z
 
