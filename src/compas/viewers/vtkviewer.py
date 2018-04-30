@@ -4,7 +4,6 @@ from __future__ import division
 from __future__ import print_function
 
 try:
-    from vtk import vtkActor2D
     from vtk import vtkActor
     from vtk import vtkAxesActor
     from vtk import vtkCellArray
@@ -13,13 +12,10 @@ try:
     from vtk import vtkGlyph3DMapper
     from vtk import vtkIdList
     from vtk import vtkInteractorStyleTrackballCamera
-    # from vtk import vtkLabeledDataMapper
     from vtk import vtkLine
     from vtk import vtkPolyData
     from vtk import vtkPolyDataMapper
     from vtk import vtkPoints
-    # from vtk import vtkProperty
-    # from vtk import vtkPropPicker
     from vtk import vtkRenderer
     from vtk import vtkRenderWindow
     from vtk import vtkRenderWindowInteractor
@@ -30,8 +26,6 @@ try:
     import vtk
 except ImportError:
     pass
-
-import sys
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']

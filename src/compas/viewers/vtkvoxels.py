@@ -275,7 +275,7 @@ if __name__ == "__main__":
     from numpy import linspace
     from numpy import meshgrid
 
-    r = linspace(-10, 10, 50)
+    r = linspace(-10, 10, 200)
     x, y, z = meshgrid(r, r, r)
     data = x + y + z
 
