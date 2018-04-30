@@ -7,13 +7,16 @@ try:
     import scriptcontext as sc
 
     find_object = sc.doc.Objects.Find
-    purge_object = sc.doc.Objects.Purge
 
 except ImportError:
     import platform
     if platform.python_implementation() == 'IronPython':
         raise
 
+try:
+    purge_object = sc.doc.Objects.Purge
+except AttributeError:
+    purge_object = None
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
@@ -92,14 +95,14 @@ def get_objects(name=None, color=None, layer=None):
 
 
 def delete_object(guid, purge=True):
-    if purge:
+    if purge and purge_object:
         purge_objects([guid])
     else:
         delete_objects([guid], purge)
 
 
 def delete_objects(guids, purge=True):
-    if purge:
+    if purge and purge_object:
         purge_objects(guids)
     else:
         for guid in guids:
@@ -114,6 +117,8 @@ def delete_objects_by_name(name, purge=True):
 
 
 def purge_objects(guids):
+    if not purge_object:
+        raise RuntimeError('Cannot purge outside Rhino script context')
     for guid in guids:
         if rs.IsObjectHidden(guid):
             rs.ShowObject(guid)

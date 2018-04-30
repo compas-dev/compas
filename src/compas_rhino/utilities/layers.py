@@ -7,13 +7,16 @@ try:
     import scriptcontext as sc
 
     find_object = sc.doc.Objects.Find
-    purge_object = sc.doc.Objects.Purge
 
 except ImportError:
     import platform
     if platform.python_implementation() == 'IronPython':
         raise
 
+try:
+    purge_object = sc.doc.Objects.Purge
+except AttributeError:
+    purge_object = None
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
@@ -60,9 +63,7 @@ def find_objects_on_layer(name, include_hidden=True, include_children=True):
 
 def delete_objects_on_layer(name, include_hidden=True, include_children=False, purge=True):
     guids = find_objects_on_layer(name, include_hidden, include_children)
-    if not purge:
-        rs.DeleteObjects(guids)
-    else:
+    if purge and purge_object:
         rs.EnableRedraw(False)
         for guid in guids:
             obj = find_object(guid)
@@ -70,6 +71,8 @@ def delete_objects_on_layer(name, include_hidden=True, include_children=False, p
                 continue
             purge_object(obj.RuntimeSerialNumber)
         rs.EnableRedraw(True)
+    else:
+        rs.DeleteObjects(guids)
 
 
 # ==============================================================================
@@ -131,14 +134,14 @@ def clear_layer(name, include_hidden=True, include_children=True, purge=True):
         return
     guids = find_objects_on_layer(name, include_hidden, include_children)
     rs.EnableRedraw(False)
-    if not purge:
-        rs.DeleteObjects(guids)
-    else:
+    if purge and purge_object:
         for guid in guids:
             obj = find_object(guid)
             if not obj:
                 continue
             purge_object(obj.RuntimeSerialNumber)
+    else:
+        rs.DeleteObjects(guids)
     rs.EnableRedraw(True)
 
 
@@ -156,7 +159,8 @@ def clear_layers(layers, include_children=True, include_hidden=True):
         obj = find_object(guid)
         if not obj:
             continue
-        purge_object(obj.RuntimeSerialNumber)
+        if purge_object:
+            purge_object(obj.RuntimeSerialNumber)
     rs.EnableRedraw(True)
 
 
