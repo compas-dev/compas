@@ -63,17 +63,16 @@ def find_objects_on_layer(name, include_hidden=True, include_children=True):
 
 def delete_objects_on_layer(name, include_hidden=True, include_children=False, purge=True):
     guids = find_objects_on_layer(name, include_hidden, include_children)
-    if not purge:
-        rs.DeleteObjects(guids)
-    else:
+    if purge and purge_object:
         rs.EnableRedraw(False)
         for guid in guids:
             obj = find_object(guid)
             if not obj:
                 continue
-            if purge_object:
-                purge_object(obj.RuntimeSerialNumber)
+            purge_object(obj.RuntimeSerialNumber)
         rs.EnableRedraw(True)
+    else:
+        rs.DeleteObjects(guids)
 
 
 # ==============================================================================
@@ -135,15 +134,14 @@ def clear_layer(name, include_hidden=True, include_children=True, purge=True):
         return
     guids = find_objects_on_layer(name, include_hidden, include_children)
     rs.EnableRedraw(False)
-    if not purge:
-        rs.DeleteObjects(guids)
-    else:
+    if purge and purge_object:
         for guid in guids:
             obj = find_object(guid)
             if not obj:
                 continue
-            if purge_object:
-                purge_object(obj.RuntimeSerialNumber)
+            purge_object(obj.RuntimeSerialNumber)
+    else:
+        rs.DeleteObjects(guids)
     rs.EnableRedraw(True)
 
 
