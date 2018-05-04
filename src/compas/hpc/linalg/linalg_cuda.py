@@ -1,39 +1,39 @@
 
-# from __future__ import absolute_import
-# from __future__ import division
-# from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
-# from numpy import array
-# from numpy import float64
-# from numpy import complex64
+try:
+    from numpy import array
+    from numpy import diag
+    from numpy import eye
+    from numpy import float64
+    from numpy import complex64
 
-# try:
-#     import pycuda
-#     import pycuda.autoinit
-# except ImportError as e:
-#     pass
+    from compas.hpc import give_cuda
+except ImportError as e:
+    pass
 
-# try:
-#     import skcuda
-#     import skcuda.autoinit
-#     import skcuda.linalg
-# except ImportError as e:
-#     pass
-
-
-# __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-# __copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
-# __license__   = 'MIT License'
-# __email__     = 'liew@arch.ethz.ch'
+try:
+    import pycuda
+    import pycuda.autoinit
+except ImportError as e:
+    pass
 
 
-# __all__ = [
-#     'diag_cuda',
+__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'liew@arch.ethz.ch'
+
+
+__all__ = [
+    'diag_cuda',
 #     'det_cuda',
-#     'dot_cuda',
+    # 'dot_cuda',
 #     'eig_cuda',
-#     'eye_cuda',
-# ]
+    'eye_cuda',
+]
 
 
 # def det_cuda(a):
@@ -64,26 +64,36 @@
 #     return skcuda.linalg.det(a)
 
 
-# # def cuda_dot(a, b):
-# #     """ Matrix multiplication of two GPUArrays.
+# def dot_cuda(a, b):
 
-# #     Parameters:
-# #         a (gpuarray): GPUArray matrix 1 (m x n).
-# #         b (gpuarray): GPUArray matrix 2 (n x o).
+#     """ Matrix multiplication of two GPUArrays.
 
-# #     Returns:
-# #         gpuarray: [c] = [a][b] of size (m x o)
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray matrix 1 (m x n).
+#     b : gpuarray
+#         GPUArray matrix 2 (n x o).
 
-# #     Examples:
-# #         >>> a = give_cuda([[0, 1], [2, 3]])
-# #         >>> b = give_cuda([[0, 1], [1, 0]])
-# #         >>> c = cuda_dot(a, b)
-# #         array([[ 1.,  0.],
-# #                [ 3.,  2.]])
-# #         >>> type(c)
-# #         <class 'pycuda.gpuarray.GPUArray'>
-# #     """
-# #     return skcuda.linalg.dot(a, b)
+#     Returns
+#     -------
+#     gpuarray
+#         [c] = [a][b] of size (m x o)
+
+#     Examples
+#     --------
+#     >>> a = give_cuda([[0, 1], [2, 3]])
+#     >>> b = give_cuda([[0, 1], [1, 0]])
+#     >>> c = dot_cuda(a, b)
+#     array([[ 1.,  0.],
+#            [ 3.,  2.]])
+
+#     >>> type(c)
+#     <class 'pycuda.gpuarray.GPUArray'>
+
+#     """
+
+#     return pycuda.gpuarray.dot(a, b)
 
 
 # # def cuda_eig(a):
@@ -105,85 +115,62 @@
 # #     return vr, w
 
 
-# def diag_cuda(a):
+def diag_cuda(a):
 
-#     """ Construct or extract GPUArray diagonal.
+    """ Construct GPUArray diagonal.
 
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray (1D or 2D).
+    Parameters
+    ----------
+    a : array, list
+        Elements along diagonal.
 
-#     Returns
-#     -------
-#     gpuarray
-#         GPUArray with inserted diagonal, or vector of diagonal.
+    Returns
+    -------
+    gpuarray
+        GPUArray with inserted diagonal.
 
-#     Notes
-#     -----
-#     - If input is 1D, a GPUArray is constructed, if 2D, the diagonal is extracted.
+    Examples
+    --------
+    >>> a = diag_cuda([1, 2, 3])
+    array([[ 1.,  0.,  0.],
+           [ 0.,  2.,  0.],
+           [ 0.,  0.,  3.]])
 
-#     Examples
-#     --------
-#     >>> a = diag_cuda(give_cuda([1, 2, 3]))
-#     array([[ 1.,  0.,  0.],
-#            [ 0.,  2.,  0.],
-#            [ 0.,  0.,  3.]])
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
 
-#     >>> b = diag_cuda(a)
-#     array([ 1.,  2.,  3.])
+    """
 
-#     >>> type(b)
-#     <class 'pycuda.gpuarray.GPUArray'>
-
-#     """
-
-#     return skcuda.linalg.diag(a)
+    return give_cuda(diag(a))
 
 
-# def eye_cuda(n):
+def eye_cuda(n):
 
-#     """ Create GPUArray identity matrix (ones on diagonal) of size (n x n).
+    """ Create GPUArray identity matrix (ones on diagonal) of size (n x n).
 
-#     Parameters
-#     ----------
-#     n : int
-#         Size of identity matrix (n x n).
+    Parameters
+    ----------
+    n : int
+        Size of identity matrix (n x n).
 
-#     Returns
-#     -------
-#     gpuarray
-#         Identity matrix (n x n) as GPUArray.
+    Returns
+    -------
+    gpuarray
+        Identity matrix (n x n) as GPUArray.
 
-#     Examples
-#     --------
-#     >>> a = eye_cuda(3)
-#     array([[ 1.,  0.,  0.],
-#            [ 0.,  1.,  0.],
-#            [ 0.,  0.,  1.]])
+    Examples
+    --------
+    >>> a = eye_cuda(3)
+    array([[ 1.,  0.,  0.],
+           [ 0.,  1.,  0.],
+           [ 0.,  0.,  1.]])
 
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
 
-#     """
+    """
 
-#     return skcuda.linalg.eye(n, dtype=float64)
-
-
-# # ==============================================================================
-# # Main
-# # ==============================================================================
-
-# if __name__ == "__main__":
-
-#     from compas.hpc.core.cuda import give_cuda
-
-#     a = diag_cuda(give_cuda([1., 2., 3.]))
-#     b = eye_cuda(3)
-#     c = det_cuda(give_cuda([[5, -2, 1], [0, 3, -1], [2, 0, 7]]))
-
-#     print(c)
-
+    return give_cuda(eye(n, dtype=float64))
 
 
 # # from numpy import float64
@@ -191,18 +178,6 @@
 
 # # from compas.hpc.cuda.math_ import cuda_sqrt
 # # from compas.hpc.cuda.math_ import cuda_sum
-
-# # try:
-# #     import pycuda
-# #     import pycuda.autoinit
-# # except ImportError as e:
-# #     pass
-
-# # try:
-# #     import skcuda
-# #     import skcuda.linalg
-# # except ImportError as e:
-# #     pass
 
 
 # # __all__ = [
@@ -276,9 +251,6 @@
 # #     grid = (int(ceil(m / bsize)), 1)
 # #     cross_product(a, b, c, block=(bsize, 3, 1), grid=grid)
 # #     return c
-
-
-
 
 
 # # def cuda_hermitian(a):
@@ -418,9 +390,28 @@
 # #     """
 # #     return skcuda.linalg.transpose(a)
 
+# ==============================================================================
+# Main
+# ==============================================================================
 
-# #     a = cuda_transpose(cuda_give([[0, 1], [2, 3]]))
-# #     b = cuda_trace(cuda_give([[0, 1], [2, 3]]))
+if __name__ == "__main__":
+
+    # a = diag_cuda([1., 2., 3.])
+    a = eye_cuda(3)
+#     c = det_cuda(give_cuda([[5, -2, 1], [0, 3, -1], [2, 0, 7]]))
+
+    print(a)
+
+    # from compas.hpc import give_cuda
+
+    # a = give_cuda([[0, 1], [2, 3]])
+    # b = give_cuda([[0, 1], [1, 0]])
+    # c = dot_cuda(a, b)
+
+    # print(c)
+
+    # a = cuda_transpose(cuda_give([[0, 1], [2, 3]]))
+    # b = cuda_trace(cuda_give([[0, 1], [2, 3]]))
 # #     c = cuda_pinv(cuda_give([[1, 3, -1], [2, 0, 3]]))
 # #     d = cuda_normrow(cuda_give([[1, 2], [3, 4]]))
 # #     e = cuda_inv(cuda_give([[4, 7], [2, 6]]))

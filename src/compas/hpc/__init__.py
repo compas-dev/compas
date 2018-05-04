@@ -40,6 +40,13 @@ cuda
     :toctree: generated/
     :nosignatures:
 
+    rand_cuda
+    device_cuda
+    give_cuda
+    get_cuda
+    ones_cuda
+    zeros_cuda
+    tile_cuda
 
 
 math_

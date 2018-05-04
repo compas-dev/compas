@@ -34,7 +34,6 @@ try:
     from Rhino.DocObjects.ObjectPlotWeightSource import PlotWeightFromObject
 
     find_object = sc.doc.Objects.Find
-    find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
     add_point = sc.doc.Objects.AddPoint
     add_line = sc.doc.Objects.AddLine
     add_dot = sc.doc.Objects.AddTextDot
@@ -49,6 +48,11 @@ except ImportError:
     import platform
     if platform.python_implementation() == 'IronPython':
         raise
+
+try:
+    find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
+except SystemError:
+    find_layer_by_fullpath = None
 
 
 __author__     = ['Tom Van Mele', ]
@@ -161,7 +165,7 @@ def xdraw_points(points):
             attr.ColorSource = ColorFromObject
         else:
             attr.ColorSource = ColorFromLayer
-        if layer:
+        if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
                 attr.LayerIndex = index
@@ -201,7 +205,7 @@ def xdraw_lines(lines):
             attr.ObjectDecoration = EndArrowhead
         if arrow == 'start':
             attr.ObjectDecoration = StartArrowhead
-        if layer:
+        if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
                 attr.LayerIndex = index
@@ -245,7 +249,7 @@ def xdraw_geodesics(geodesics):
             attr.ObjectDecoration = EndArrowhead
         if arrow == 'start':
             attr.ObjectDecoration = StartArrowhead
-        if layer:
+        if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
                 attr.LayerIndex = index
@@ -285,7 +289,7 @@ def xdraw_polylines(polylines):
             attr.ObjectDecoration = EndArrowhead
         if arrow == 'start':
             attr.ObjectDecoration = StartArrowhead
-        if layer:
+        if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
                 attr.LayerIndex = index
@@ -338,7 +342,7 @@ def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0
             attr.ColorSource = ColorFromObject
         else:
             attr.ColorSource = ColorFromLayer
-        if layer:
+        if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
                 attr.LayerIndex = index
@@ -384,7 +388,7 @@ def xdraw_cylinders(cylinders, cap=False):
             attr.ColorSource = ColorFromObject
         else:
             attr.ColorSource = ColorFromLayer
-        if layer:
+        if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
                 attr.LayerIndex = index
@@ -426,7 +430,7 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
                 attr.ColorSource = ColorFromObject
             else:
                 attr.ColorSource = ColorFromLayer
-            if layer:
+            if layer and find_layer_by_fullpath:
                 index = find_layer_by_fullpath(layer, True)
                 if index >= 0:
                     attr.LayerIndex = index
@@ -472,7 +476,7 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
 #             attr.ColorSource = ColorFromObject
 #         else:
 #             attr.ColorSource = ColorFromLayer
-#         if layer:
+#         if layer and find_layer_by_fullpath:
 #             index = find_layer_by_fullpath(layer, True)
 #             if index >= 0:
 #                 attr.LayerIndex = index
@@ -505,7 +509,7 @@ def xdraw_spheres(spheres):
             attr.ColorSource = ColorFromObject
         else:
             attr.ColorSource = ColorFromLayer
-        if layer:
+        if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
                 attr.LayerIndex = index

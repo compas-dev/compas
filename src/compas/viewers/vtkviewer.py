@@ -4,21 +4,18 @@ from __future__ import division
 from __future__ import print_function
 
 try:
-    from vtk import vtkActor2D
     from vtk import vtkActor
     from vtk import vtkAxesActor
     from vtk import vtkCellArray
     from vtk import vtkCamera
+    from vtk import vtkCubeSource
     from vtk import vtkGlyph3DMapper
     from vtk import vtkIdList
     from vtk import vtkInteractorStyleTrackballCamera
-    # from vtk import vtkLabeledDataMapper
     from vtk import vtkLine
     from vtk import vtkPolyData
     from vtk import vtkPolyDataMapper
     from vtk import vtkPoints
-    # from vtk import vtkProperty
-    # from vtk import vtkPropPicker
     from vtk import vtkRenderer
     from vtk import vtkRenderWindow
     from vtk import vtkRenderWindowInteractor
@@ -29,8 +26,6 @@ try:
     import vtk
 except ImportError:
     pass
-
-import sys
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
@@ -55,35 +50,41 @@ class VtkViewer(object):
             'draw_vertices': True,
             'draw_edges':    True,
             'draw_faces':    True,
+            'draw_blocks':   True,
             'vertex_size':   0.05,
             'edge_width':    2,
+            'camera_pos':    [10, -1, 10],
+            'camera_focus':  [0, 0, 0],
+            'camera_azi':    30,
+            'camera_ele':    0,
         }
-
-        def execute(self):
-            pass
-
-        self.execute = execute
+        self.keycallbacks = {}
         self.data = data
-        self.setup(width=width, height=height, name=name)
+        self.name = name
+        self.height = height
+        self.width = width
+        self.setup(width=self.width, height=self.height, name=self.name)
 
     def keypress(self, obj, event):
 
         key = obj.GetKeySym()
-
-        if key == 's':
-            self.execute(self)
-
-        elif key == 'q':
-            sys.exit()
+        try:
+            func = self.keycallbacks[key]
+            func(self)
+        except:
+            print('No callback for keypress {0}'.format(key))
 
     def camera(self):
 
+        x, y, z = self.settings['camera_pos']
+        u, v, w = self.settings['camera_focus']
+
         self.camera = camera = vtkCamera()
         camera.SetViewUp(0, 0, 1)
-        camera.Azimuth(30)
-        camera.Elevation(30)
-        camera.SetPosition(10, -10, 10)
-        camera.SetFocalPoint(0, 0, 0)
+        camera.SetPosition(x, y, z)
+        camera.SetFocalPoint(u, v, w)
+        camera.Azimuth(self.settings['camera_azi'])
+        camera.Elevation(self.settings['camera_ele'])
 
     def setup(self, width, height, name):
 
@@ -186,18 +187,48 @@ class VtkViewer(object):
                     self.colors.InsertNextTupleValue(color)
             self.poly.SetPolys(faces)
 
+    def draw_blocks(self):
+
+        if self.data.get('blocks', None):
+            size = self.data['blocks'].get('size', None)
+            locations = self.data['blocks'].get('locations', None)
+            for xyz in locations:
+                self.locations.InsertNextPoint(xyz)
+            self.blocks.SetPoints(self.locations)
+
+            self.block = block = vtkCubeSource()
+            block.SetXLength(size)
+            block.SetYLength(size)
+            block.SetZLength(size)
+
+            mapper = vtkGlyph3DMapper()
+            mapper.SetInputData(self.blocks)
+            mapper.SetSourceConnection(block.GetOutputPort())
+
+            self.block_actor = actor = vtkActor()
+            actor.SetMapper(mapper)
+            actor.GetProperty().SetDiffuseColor(0.7, 0.7, 1.0)
+            actor.GetProperty().SetDiffuse(.8)
+            actor.GetProperty().EdgeVisibilityOn()
+            self.renderer.AddActor(actor)
+        else:
+            self.block_actor = None
+
     def draw(self):
 
         self.poly = vtkPolyData()
+        self.blocks = vtkPolyData()
         self.bcs = vtkPolyData()
         self.vertices = vtkPoints()
+        self.locations = vtkPoints()
         self.bc_pts = vtkPoints()
         self.colors = vtkUnsignedCharArray()
         self.colors.SetNumberOfComponents(3)
 
-        for key, vertex in self.data['vertices'].items():
-            self.vertices.InsertNextPoint(vertex)
-        self.poly.SetPoints(self.vertices)
+        if self.data.get('vertices', None):
+            for key, vertex in self.data['vertices'].items():
+                self.vertices.InsertNextPoint(vertex)
+            self.poly.SetPoints(self.vertices)
 
         if self.data.get('fixed', None):
             for key in self.data['fixed']:
@@ -215,6 +246,9 @@ class VtkViewer(object):
 
         if self.settings['draw_faces']:
             self.draw_faces()
+
+        if self.settings['draw_blocks']:
+            self.draw_blocks()
 
         # Actor
 
@@ -254,7 +288,7 @@ class VtkViewer(object):
             y -= 0.12
 
         self.slider_opacity = self.slider(w, h, l, [a, y], [b, y], 0.0, 1.0, 1.0, 'Opacity')
-        self.slider_opacity.AddObserver(vtk.vtkCommand.InteractionEvent, OpacityCallback(self.actor))
+        self.slider_opacity.AddObserver(vtk.vtkCommand.InteractionEvent, OpacityCallback(self.actor, self.block_actor))
         y -= 0.12
 
     def start(self):
@@ -349,12 +383,14 @@ class EdgeWidthCallback():
 
 class OpacityCallback():
 
-    def __init__(self, actor):
+    def __init__(self, actor, block_actor):
         self.actor = actor
+        self.block_actor = block_actor
 
     def __call__(self, caller, ev):
         value = caller.GetRepresentation().GetValue()
         self.actor.GetProperty().SetOpacity(value)
+        self.block_actor.GetProperty().SetOpacity(value)
 
 
 # ==============================================================================
@@ -362,6 +398,11 @@ class OpacityCallback():
 # ==============================================================================
 
 if __name__ == "__main__":
+
+
+    def func(self):
+        print('Callback')
+
 
     data = {
         'vertices': {
@@ -385,6 +426,10 @@ if __name__ == "__main__":
             1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
         },
         'fixed': [0, 1],
+        'blocks': {
+            'size': 1,
+            'locations': [[0, 0, 3], [0, 0, 4]],
+        }
     }
 
     viewer = VtkViewer(data=data)
@@ -392,4 +437,6 @@ if __name__ == "__main__":
     viewer.settings['draw_vertices'] = 1
     viewer.settings['draw_edges'] = 1
     viewer.settings['draw_faces'] = 1
+    viewer.settings['draw_blocks'] = 1
+    viewer.keycallbacks['s'] = func
     viewer.start()
