@@ -31,11 +31,14 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, ArtistInterface):
     def __init__(self, mesh, layer=None):
         self.datastructure = mesh
         self.layer = layer
-        self.defaults = {
-            'color.vertex' : (0, 0, 0),
-            'color.face'   : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
-        }
+
+    @property
+    def layer(self):
+        return self.datastructure.attributes.get('layer')
+
+    @layer.setter
+    def layer(self, value):
+        self.datastructure.attributes['layer'] = value
 
     def redraw(self, timeout=None):
         """Redraw the Rhino view."""
@@ -72,9 +75,9 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
 
-    artist = MeshArtist(mesh, layer='MeshArtist')
+    artist = MeshArtist(mesh)
 
-    artist.clear_layer()
+    artist.clear()
 
     artist.draw_vertices()
     artist.redraw(0.0)

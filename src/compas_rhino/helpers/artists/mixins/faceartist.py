@@ -66,7 +66,7 @@ class FaceArtist(object):
         fkeys = fkeys or list(self.datastructure.faces())
         colordict = color_to_colordict(color,
                                        fkeys,
-                                       default=self.defaults['color.face'],
+                                       default=self.datastructure.attributes.get('color.face'),
                                        colorformat='rgb',
                                        normalize=False)
         faces = []
@@ -75,6 +75,7 @@ class FaceArtist(object):
                 'points': self.datastructure.face_coordinates(fkey),
                 'name'  : self.datastructure.face_name(fkey),
                 'color' : colordict[fkey],
+                'layer' : self.datastructure.get_face_attribute(fkey, 'layer', None)
             })
 
         guids = compas_rhino.xdraw_faces(faces, layer=self.layer, clear=False, redraw=False)
@@ -107,17 +108,18 @@ class FaceArtist(object):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.defaults['color.face'],
+                                       default=self.datastructure.attributes.get('color.face'),
                                        colorformat='rgb',
                                        normalize=False)
 
         labels = []
         for key, text in iter(textdict.items()):
             labels.append({
-                'pos'  : self.datastructure.face_center(key),
-                'name' : self.datastructure.face_name(key),
-                'color': colordict[key],
-                'text' : textdict[key],
+                'pos'   : self.datastructure.face_center(key),
+                'name'  : self.datastructure.face_name(key),
+                'color' : colordict[key],
+                'text'  : textdict[key],
+                'layer' : self.datastructure.get_face_attribute(key, 'layer', None)
             })
         return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
 

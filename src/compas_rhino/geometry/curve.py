@@ -4,7 +4,8 @@ from __future__ import division
 
 import compas_rhino
 
-from compas.cad import CurveGeometryInterface
+# from compas.cad import CurveGeometryInterface
+from compas_rhino.geometry import RhinoGeometry
 
 try:
     import Rhino
@@ -30,7 +31,7 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = ['RhinoCurve', ]
 
 
-class RhinoCurve(CurveGeometryInterface):
+class RhinoCurve(RhinoGeometry):
     """"""
 
     def __init__(self, guid):

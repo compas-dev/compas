@@ -26,11 +26,6 @@ except ImportError:
     if 'ironpython' in sys.version.lower():
         raise
 
-from .point import RhinoPoint
-from .curve import RhinoCurve
-from .mesh import RhinoMesh
-from .surface import RhinoSurface
-
 
 class RhinoGeometry(object):
 
@@ -53,6 +48,12 @@ class RhinoGeometry(object):
     def name(self, value):
         self.attributes.Name = value
         self.object.CommitChanges()
+
+
+from .point import RhinoPoint
+from .curve import RhinoCurve
+from .mesh import RhinoMesh
+from .surface import RhinoSurface
 
 
 __all__ = ['RhinoPoint', 'RhinoCurve', 'RhinoMesh', 'RhinoSurface', ]

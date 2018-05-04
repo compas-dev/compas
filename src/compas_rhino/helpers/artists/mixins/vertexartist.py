@@ -75,15 +75,16 @@ class VertexArtist(object):
         keys = keys or list(self.datastructure.vertices())
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.defaults['color.vertex'],
+                                       default=self.datastructure.attributes.get('color.vertex'),
                                        colorformat='rgb',
                                        normalize=False)
         points = []
         for key in keys:
             points.append({
-                'pos'  : self.datastructure.vertex_coordinates(key),
-                'name' : self.datastructure.vertex_name(key),
-                'color': colordict[key]
+                'pos'   : self.datastructure.vertex_coordinates(key),
+                'name'  : self.datastructure.vertex_name(key),
+                'color' : colordict[key],
+                'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
         return compas_rhino.xdraw_points(points, layer=self.layer, clear=False, redraw=False)
 
@@ -125,7 +126,7 @@ class VertexArtist(object):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.defaults['color.vertex'],
+                                       default=self.datastructure.attributes.get('color.vertex'),
                                        colorformat='rgb',
                                        normalize=False)
         labels = []
@@ -136,6 +137,7 @@ class VertexArtist(object):
                 'name' : self.datastructure.vertex_label_name(key),
                 'color': colordict[key],
                 'text' : textdict[key],
+                'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
 
         return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)

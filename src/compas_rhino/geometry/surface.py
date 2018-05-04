@@ -1,4 +1,10 @@
-from compas.cad import SurfaceGeometryInterface
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+# from compas.cad import SurfaceGeometryInterface
+from compas_rhino.geometry import RhinoGeometry
+
 from compas.geometry import subtract_vectors
 
 try:
@@ -24,7 +30,7 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = ['RhinoSurface', ]
 
 
-class RhinoSurface(SurfaceGeometryInterface):
+class RhinoSurface(RhinoGeometry):
     """"""
 
     def __init__(self, guid=None):

@@ -75,7 +75,7 @@ class EdgeArtist(object):
         keys = keys or list(self.datastructure.edges())
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.defaults['color.edge'],
+                                       default=self.datastructure.attributes.get('color.edge'),
                                        colorformat='rgb',
                                        normalize=False)
         lines = []
@@ -84,7 +84,8 @@ class EdgeArtist(object):
                 'start': self.datastructure.vertex_coordinates(u),
                 'end'  : self.datastructure.vertex_coordinates(v),
                 'color': colordict[(u, v)],
-                'name' : self.datastructure.edge_name(u, v)
+                'name' : self.datastructure.edge_name(u, v),
+                'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
         return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
@@ -126,7 +127,7 @@ class EdgeArtist(object):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.defaults['color.edge'],
+                                       default=self.datastructure.attributes.get('color.edge'),
                                        colorformat='rgb',
                                        normalize=False)
         labels = []
@@ -137,6 +138,7 @@ class EdgeArtist(object):
                 'name' : self.datastructure.edge_name(u, v),
                 'color': colordict[(u, v)],
                 'text' : textdict[(u, v)],
+                'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
 
         return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)

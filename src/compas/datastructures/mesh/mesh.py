@@ -218,6 +218,7 @@ class Mesh(FromToJson,
                 'dfa'         : self.default_face_attributes,
                 'vertex'      : {},
                 'edge'        : {},
+                'edgedata'    : {},
                 'face'        : {},
                 'facedata'    : {},
                 'max_int_key' : self._max_int_key,
@@ -235,13 +236,17 @@ class Mesh(FromToJson,
             rfkey = repr(fkey)
             data['facedata'][rfkey] = self.facedata[fkey]
 
-        for u in self.edge:
-            ru = repr(u)
-            data['edge'][ru] = {}
+        for uv in self.edgedata:
+            ruv = repr(uv)
+            data['edgedata'][ruv] = self.edgedata[uv]
 
-            for v in self.edge[u]:
-                rv = repr(v)
-                data['edge'][ru][rv] = self.edge[u][v]
+        # for u in self.edge:
+        #     ru = repr(u)
+        #     data['edge'][ru] = {}
+
+        #     for v in self.edge[u]:
+        #         rv = repr(v)
+        #         data['edge'][ru][rv] = self.edge[u][v]
 
         return data
 
@@ -256,6 +261,7 @@ class Mesh(FromToJson,
         face         = data.get('face') or {}
         facedata     = data.get('facedata') or {}
         edge         = data.get('edge') or {}
+        edgedata     = data.get('edgedata') or {}
         max_int_key  = data.get('max_int_key', -1)
         max_int_fkey = data.get('max_int_fkey', -1)
 
@@ -274,24 +280,27 @@ class Mesh(FromToJson,
         # add the faces
         for fkey, vertices in iter(face.items()):
             attr = facedata.get(fkey) or {}
-            # vertices = map(literal_eval, vertices)
-            # vertices = list(map(literal_eval, vertices))
             vertices = [literal_eval(k) for k in vertices]
             fkey = literal_eval(fkey)
             self.add_face(vertices, fkey=fkey, attr_dict=attr)
 
-        # add the edges
-        # todo: replace by method call
-        for u, nbrs in iter(edge.items()):
-            nbrs = nbrs or {}
-            u = literal_eval(u)
-            self.edge[u] = {}
+        # # add the edges
+        # # todo: replace by method call
+        # for u, nbrs in iter(edge.items()):
+        #     nbrs = nbrs or {}
+        #     u = literal_eval(u)
+        #     self.edge[u] = {}
 
-            for v, attr in iter(nbrs.items()):
-                attr = attr or {}
-                v = literal_eval(v)
+        #     for v, attr in iter(nbrs.items()):
+        #         attr = attr or {}
+        #         v = literal_eval(v)
 
-                self.add_edge(u, v, attr_dict=attr)
+        #         self.add_edge(u, v, attr_dict=attr)
+
+        for uv, attr in iter(edgedata.items()):
+            attr = attr or {}
+            uv = literal_eval(uv)
+            self.edgedata[uv] = attr
 
         # set the counts
         self._max_int_key = max_int_key
@@ -418,7 +427,6 @@ class Mesh(FromToJson,
         network_find_faces(network, breakpoints=network.leaves())
 
         if delete_boundary_face:
-            print(network.face_vertices(0))
             network.delete_face(0)
 
         key_index = network.key_index()
@@ -635,11 +643,13 @@ class Mesh(FromToJson,
         """Clear all the mesh data."""
         del self.vertex
         del self.edge
+        del self.edgedata
         del self.halfedge
         del self.face
         del self.facedata
         self.vertex   = {}
         self.edge     = {}
+        self.edgedata = {}
         self.halfedge = {}
         self.face     = {}
         self.facedata = {}

@@ -29,6 +29,8 @@ __email__      = 'vanmelet@ethz.ch'
 
 __all__ = [
     'get_objects',
+    'get_object_layers',
+    'get_object_types',
     'get_object_names',
     'get_object_name',
     'get_object_attributes',
@@ -80,7 +82,7 @@ __all__ = [
 # ==============================================================================
 
 
-def get_objects(name=None, color=None, layer=None):
+def get_objects(name=None, color=None, layer=None, type=None):
     guids = rs.AllObjects()
     if name:
         guids = list(set(guids) & set(rs.ObjectsByName(name)))
@@ -88,6 +90,8 @@ def get_objects(name=None, color=None, layer=None):
         guids = list(set(guids) & set(rs.ObjectsByColor(color)))
     if layer:
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+    if type:
+        guids = list(set(guids) & set(rs))
     return guids
 
 
@@ -120,6 +124,14 @@ def purge_objects(guids):
         o = find_object(guid)
         purge_object(o.RuntimeSerialNumber)
     sc.doc.Views.Redraw()
+
+
+def get_object_layers(guids):
+    return [rs.ObjectLayer(guid) for guid in guids]
+
+
+def get_object_types(guids):
+    return [rs.ObjectType(guid) for guid in guids]
 
 
 def get_object_names(guids):
