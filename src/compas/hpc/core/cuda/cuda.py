@@ -12,7 +12,7 @@ try:
     import pycuda
     import pycuda.autoinit
     import pycuda.curandom
-except ImportError as e:
+except:
     pass
 
 

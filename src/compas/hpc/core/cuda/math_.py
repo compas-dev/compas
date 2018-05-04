@@ -7,7 +7,7 @@ try:
     import pycuda
     import pycuda.autoinit
     import pycuda.cumath
-except ImportError as e:
+except:
     pass
 
 
@@ -752,9 +752,35 @@ if __name__ == "__main__":
     # m = mean_cuda(give_cuda([[1, 2], [3, 4]]), axis=0)
     # a = sin_cuda(give_cuda([0, pi / 4]))
     # a = sinh_cuda(give_cuda([0, pi / 4]))
-    a = sqrt_cuda(give_cuda([4, 9]))
+    # a = sqrt_cuda(give_cuda([4, 9]))
     # a = sum_cuda(give_cuda([[1, 2], [3, 4]]), axis=None)
     # a = tan_cuda(give_cuda([0, pi / 4]))
     # a = tanh_cuda(give_cuda([0, pi / 4]))
 
-    print(a)
+    # print(a)
+
+    from pycuda.compiler import SourceModule
+    import pycuda.driver as cuda
+    from numpy import array
+    from numpy import empty_like
+
+    mod = SourceModule("""
+    __global__ void doublify(float *a)
+    {
+    int idx = threadIdx.x + threadIdx.y*4;
+    a[idx] *= 2;
+    }
+    """)
+
+    a = array([[1, 2], [3, 4]])
+    a_ = cuda.mem_alloc(a.nbytes)
+    cuda.memcpy_htod(a_, a)
+    print(a_)
+
+    func = mod.get_function("doublify")
+    func(a_, block=(4, 4, 1))
+
+    b = empty_like(a)
+    cuda.memcpy_dtoh(b, a_)
+
+    print(b)
