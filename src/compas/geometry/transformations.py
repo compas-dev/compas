@@ -1303,7 +1303,7 @@ def rotate_points(points, axis, angle, origin=None):
 
     """
     # rotation matrix
-    R = matrix_from_axis_and_angle(angle, axis, origin)
+    R = matrix_from_axis_and_angle(axis, angle, origin)
     # apply rotation
     points = transform(points, R)
     return points
