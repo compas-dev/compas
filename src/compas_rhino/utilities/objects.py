@@ -13,10 +13,12 @@ except ImportError:
     if platform.python_implementation() == 'IronPython':
         raise
 
-try:
-    purge_object = sc.doc.Objects.Purge
-except AttributeError:
-    purge_object = None
+else:
+    try:
+        purge_object = sc.doc.Objects.Purge
+    except AttributeError:
+        purge_object = None
+
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'

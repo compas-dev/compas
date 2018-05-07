@@ -49,10 +49,11 @@ except ImportError:
     if platform.python_implementation() == 'IronPython':
         raise
 
-try:
-    find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
-except SystemError:
-    find_layer_by_fullpath = None
+else:
+    try:
+        find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
+    except SystemError:
+        find_layer_by_fullpath = None
 
 
 __author__     = ['Tom Van Mele', ]
