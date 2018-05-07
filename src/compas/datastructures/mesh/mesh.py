@@ -274,9 +274,7 @@ class Mesh(FromToJson,
         # add the faces
         for fkey, vertices in iter(face.items()):
             attr = facedata.get(fkey) or {}
-            # vertices = map(literal_eval, vertices)
-            # vertices = list(map(literal_eval, vertices))
-            vertices = [literal_eval(k) for k in vertices]
+            vertices = map(literal_eval, vertices)
             fkey = literal_eval(fkey)
             self.add_face(vertices, fkey=fkey, attr_dict=attr)
 
