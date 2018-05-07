@@ -23,7 +23,7 @@ from compas.geometry.basic import multiply_matrices
 from compas.geometry.basic import transpose_matrix
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import norm_vector
-
+from compas.geometry.basic import allclose
 
 from compas.geometry.angles import angle_vectors
 from compas.geometry.average import centroid_points
@@ -116,11 +116,9 @@ __all__ = [
 ]
 
 
-# epsilon for testing whether a number is close to zero
 _EPS = 1e-16
+"""epsilon for testing whether a number is close to zero"""
 
-# used for Euler angles: to map rotation type and axes to tuples of inner
-# axis, parity, repetition, frame
 _SPEC2TUPLE = {
     'sxyz': (0, 0, 0, 0), 'sxyx': (0, 0, 1, 0), 'sxzy': (0, 1, 0, 0),
     'sxzx': (0, 1, 1, 0), 'syzx': (1, 0, 0, 0), 'syzy': (1, 0, 1, 0),
@@ -130,20 +128,9 @@ _SPEC2TUPLE = {
     'rxzx': (0, 1, 1, 1), 'rxzy': (1, 0, 0, 1), 'ryzy': (1, 0, 1, 1),
     'rzxy': (1, 1, 0, 1), 'ryxy': (1, 1, 1, 1), 'ryxz': (2, 0, 0, 1),
     'rzxz': (2, 0, 1, 1), 'rxyz': (2, 1, 0, 1), 'rzyz': (2, 1, 1, 1)}
+"""used for Euler angles: to map rotation type and axes to tuples of inner axis, parity, repetition, frame"""
 
 _NEXT_SPEC = [1, 2, 0, 1]
-
-
-# TODO: move somewhere else
-def allclose(l1, l2, tol = 1e-05):
-    """Returns True if two lists are element-wise equal within a tolerance.
-
-    The function is similar to NumPy's *allclose* function.
-    """
-    for a, b in zip(l1, l2):
-        if math.fabs(a - b) > tol:
-            return False
-    return True
 
 
 def transform(points, T):
@@ -878,6 +865,7 @@ def translation_from_matrix(M):
     """
     return [M[0][3], M[1][3], M[2][3]]
 
+
 def matrix_from_orthogonal_projection(point, normal):
     """Returns an orthogonal projection matrix to project onto a plane \
         defined by point and normal.
@@ -901,6 +889,7 @@ def matrix_from_orthogonal_projection(point, normal):
     T[0][3], T[1][3], T[2][3] = scale_vector(
         normal, dot_vectors(point, normal))
     return T
+
 
 def matrix_from_parallel_projection(point, normal, direction):
     """Returns an parallel projection matrix to project onto a plane defined \
@@ -928,6 +917,7 @@ def matrix_from_parallel_projection(point, normal, direction):
     T[0][3], T[1][3], T[2][3] = scale_vector(
         direction, dot_vectors(point, normal) / scale)
     return T
+
 
 def matrix_from_perspective_projection(point, normal, perspective):
     """Returns an perspective projection matrix to project onto a plane \
@@ -960,6 +950,7 @@ def matrix_from_perspective_projection(point, normal, perspective):
         T[3][i] -= normal[i]
     T[3][3] = dot_vectors(perspective, normal)
     return T
+
 
 def matrix_from_perspective_entries(perspective):
     """Returns a matrix from perspective entries.
@@ -1236,7 +1227,6 @@ def compose_matrix(scale=None, shear=None, angles=None,
         for j in range(4):
             M[i][j] /= M[3][3]
     return M
-
 
 
 # ==============================================================================

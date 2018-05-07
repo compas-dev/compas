@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import sqrt
+from math import fabs
 from random import sample
 
 
@@ -13,6 +14,7 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
+    'allclose',
     'add_vectors',
     'add_vectors_xy',
     'sum_vectors',
@@ -59,6 +61,17 @@ __all__ = [
     'pointcloud',
     'pointcloud_xy'
 ]
+
+
+def allclose(l1, l2, tol=1e-05):
+    """Returns True if two lists are element-wise equal within a tolerance.
+
+    The function is similar to NumPy's *allclose* function.
+    """
+    for a, b in zip(l1, l2):
+        if fabs(a - b) > tol:
+            return False
+    return True
 
 
 # ==============================================================================
