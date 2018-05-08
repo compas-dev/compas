@@ -829,6 +829,7 @@ class Mesh(FromToJson,
 
         return fkey
 
+    # to be updated
     def add_edge(self, u, v, attr_dict=None, **kwattr):
         """Add an edge to the mesh object.
 
@@ -1073,6 +1074,7 @@ class Mesh(FromToJson,
                     del self.vertex[u]
                     del self.halfedge[u]
 
+    # to be updated
     def cull_edges(self):
         """Remove all unused edges from the mesh object."""
         for u, v in list(self.edges()):
@@ -1314,6 +1316,7 @@ class Mesh(FromToJson,
             else:
                 yield fkey
 
+    # to be removed
     def halfedges(self):
         """Iterate ove the halfedges of the mesh.
 
@@ -1339,6 +1342,7 @@ class Mesh(FromToJson,
 
                 yield u, v
 
+    # to be updated
     def edges(self, data=False):
         """Iterate over the edges of the mesh.
 
@@ -1430,6 +1434,7 @@ class Mesh(FromToJson,
                     else:
                         yield u, v
 
+    # to be removed/updated
     def wireframe(self):
         """Iterate over the halfedges of the mesh.
 
@@ -1445,13 +1450,13 @@ class Mesh(FromToJson,
     # special accessors
     # --------------------------------------------------------------------------
 
-    def indexed_edges(self):
-        key_index = self.key_index()
-        return [(key_index[u], key_index[v]) for u, v in self.edges()]
+    # def indexed_edges(self):
+    #     key_index = self.key_index()
+    #     return [(key_index[u], key_index[v]) for u, v in self.edges()]
 
-    def indexed_face_vertices(self):
-        key_index = self.key_index()
-        return [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
+    # def indexed_face_vertices(self):
+    #     key_index = self.key_index()
+    #     return [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
 
     # --------------------------------------------------------------------------
     # vertex topology
