@@ -135,6 +135,7 @@ class Mesh(FromToJson,
         self.halfedge = {}
         self.face = {}
         self.facedata = {}
+        self.edgedata = {}
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
