@@ -135,7 +135,7 @@ class EdgeArtist(object):
         for (u, v), text in iter(textdict.items()):
             labels.append({
                 'pos'  : self.datastructure.edge_midpoint(u, v),
-                'name' : self.datastructure.edge_name(u, v),
+                'name' : self.datastructure.edge_label_name(u, v),
                 'color': colordict[(u, v)],
                 'text' : textdict[(u, v)],
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
