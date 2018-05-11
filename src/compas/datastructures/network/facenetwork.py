@@ -745,15 +745,25 @@ class FaceNetwork(FaceHelpers,
 
     def faces_on_boundary(self):
         """Return the faces on the boundary."""
-        faces = {}
-        for key, nbrs in iter(self.halfedge.items()):
-            for nbr, fkey in iter(nbrs.items()):
-                if fkey is None:
-                    faces[self.halfedge[nbr][key]] = 1
-        return faces.keys()
+        boundary = []
+        for fkey in self.faces():
+            vertices = self.face_vertices(fkey)
+            for u, v in pairwise(vertices + vertices[0:1]):
+                if not self.has_edge(u, v, directed=False):
+                    boundary.append(fkey)
+                    break
+        return boundary
 
     def edges_on_boundary(self):
-        return [(u, v) for u, v in self.edges() if self.is_edge_naked(u, v)]
+        edges = []
+        for fkey in self.faces_on_boundary():
+            vertices = self.face_vertices(fkey)
+            for u, v in pairwise(vertices + vertices[0:1]):
+                if self.has_edge(u, v):
+                    edges.append((u, v))
+                elif self.has_edge(v, u):
+                    edges.append((v, u))
+        return edges
 
 
 # ==============================================================================
@@ -768,7 +778,7 @@ if __name__ == '__main__':
     from compas.topology import network_find_faces
     from compas.plotters import FaceNetworkPlotter
 
-    network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
+    network = FaceNetwork.from_obj(compas.get('lines.obj'))
 
     network_find_faces(network, breakpoints=network.leaves())
 
@@ -782,7 +792,7 @@ if __name__ == '__main__':
         text={key: key for key in network.vertices()}
     )
 
-    plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee')
-    plotter.draw_edges()
+    plotter.draw_faces(text={key: str(key) for key in network.faces()}, facecolor='#eeeeee', edgecolor='#eeeeee')
+    plotter.draw_edges(color={uv: '#ff0000' for uv in network.edges_on_boundary()})
 
     plotter.show()

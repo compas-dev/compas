@@ -657,8 +657,7 @@ network: {0}
     def has_edge(self, u, v, directed=True):
         if directed:
             return u in self.edge and v in self.edge[u]
-        else:
-            return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])
+        return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])
 
     def edge_connected_edges(self, u, v):
         edges = []
