@@ -48,6 +48,18 @@ cuda
     zeros_cuda
     tile_cuda
 
+opencl
+------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    give_cl
+    get_cl
+    ones_cl
+    zeros_cl
+
 
 math_
 -----

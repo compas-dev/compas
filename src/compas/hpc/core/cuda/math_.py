@@ -765,11 +765,13 @@ if __name__ == "__main__":
     from numpy import empty_like
 
     mod = SourceModule("""
+
     __global__ void doublify(float *a)
-    {
-    int idx = threadIdx.x + threadIdx.y*4;
-    a[idx] *= 2;
-    }
+        {
+            int idx = threadIdx.x + threadIdx.y*4;
+
+            a[idx] *= 2;
+        }
     """)
 
     a = array([[1, 2], [3, 4]])
