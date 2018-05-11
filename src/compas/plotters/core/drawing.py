@@ -334,7 +334,7 @@ def draw_xpoints_xy(points, axes):
         ecolor    = point.get('edgecolor') or '#000000'
         lwidth    = point.get('edgewidth') or 1.0
         textcolor = point.get('textcolor') or '#000000'
-        fontsize  = point.get('fontsize') or 24
+        fontsize  = point.get('fontsize') or 12
         circles.append(Circle(pos[0:2], radius=radius))
         facecolors.append(color_to_rgb(fcolor, normalize=True))
         edgecolors.append(color_to_rgb(ecolor, normalize=True))
