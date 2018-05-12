@@ -3,13 +3,15 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from numpy import array
-from numpy import float64
-from numpy import complex64
-from numpy import ones
+try:
+    from numpy import array
+    from numpy import float32
+except:
+    pass
 
 try:
     import pycuda
+    import pycuda.gpuarray as cuda_array
     import pycuda.autoinit
     import pycuda.curandom
 except:
@@ -30,6 +32,8 @@ __all__ = [
     'ones_cuda',
     'zeros_cuda',
     'tile_cuda',
+    # 'hstack_cuda',
+    # 'vstack_cuda',
 ]
 
 
@@ -58,7 +62,7 @@ def rand_cuda(shape):
 
     """
 
-    return pycuda.curandom.rand(shape, float64)
+    return pycuda.curandom.rand(shape, float32)
 
 
 def device_cuda():
@@ -136,9 +140,10 @@ def give_cuda(a, type='real'):
     """
 
     if type == 'real':
-        return pycuda.gpuarray.to_gpu(array(a).astype(float64))
+        return cuda_array.to_gpu(array(a).astype(float32))
     elif type == 'complex':
-        return pycuda.gpuarray.to_gpu(array(a).astype(complex64))
+        raise NotImplementedError
+        # return cuda_array.to_gpu(array(a).astype(complex32))
 
 
 def get_cuda(a):
@@ -195,9 +200,8 @@ def ones_cuda(shape):
 
     """
 
-    a = pycuda.gpuarray.GPUArray(shape, dtype=float64, allocator=pycuda.driver.mem_alloc, order='C')
-    one = ones((), float64)
-    a.fill(one)
+    a = cuda_array.GPUArray(shape, dtype=float32, allocator=pycuda.driver.mem_alloc, order='C')
+    a.fill(1.0)
     return a
 
 
@@ -227,7 +231,7 @@ def zeros_cuda(shape):
 
     """
 
-    return pycuda.gpuarray.zeros(shape, dtype='float64')
+    return cuda_array.zeros(shape, dtype=float32)
 
 
 def tile_cuda(a, shape):
@@ -273,6 +277,14 @@ def tile_cuda(a, shape):
         c[:, i * n:i * n + n] = b
 
     return c
+
+
+def hstack_cuda():
+    raise NotImplementedError
+
+
+def vstack_cuda():
+    raise NotImplementedError
 
 
 # ==============================================================================

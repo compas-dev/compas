@@ -6,14 +6,13 @@ from __future__ import print_function
 try:
     from numpy import array
     from numpy import float32
-    from numpy import ones
-    from numpy import zeros
 except:
     pass
 
 try:
     import pyopencl as cl
     import pyopencl.array as cl_array
+    import pyopencl.clrandom
 except:
     pass
 
@@ -25,14 +24,39 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
+    'rand_cl',
     'give_cl',
     'get_cl',
     'ones_cl',
     'zeros_cl',
+    # 'tile_cl',
+    # 'hstack_cl',
+    'vstack_cl',
 ]
 
 
-def give_cl(queue, a):
+def rand_cl(queue, shape):
+
+    """ Create random values in the range [0, 1] as GPUArray.
+
+    Parameters
+    ----------
+    queue
+        PyOpenCL queue.
+    shape : tuple
+        Size of the random array.
+
+    Returns
+    -------
+    gpuarray
+        Random floats from 0 to 1 in GPUArray.
+
+    """
+
+    return pyopencl.clrandom.rand(queue, shape, dtype=float32)
+
+
+def give_cl(queue, a, type='real'):
 
     """ Give a list or an array to GPU memory.
 
@@ -42,6 +66,8 @@ def give_cl(queue, a):
         PyOpenCL queue.
     a : array, list
         Data to send to the GPU memory.
+    type : str
+        'real' or 'complex'.
 
     Returns
     -------
@@ -50,7 +76,10 @@ def give_cl(queue, a):
 
     """
 
-    return cl_array.to_device(queue, array(a, dtype=float32))
+    if type == 'real':
+        return cl_array.to_device(queue, array(a, dtype=float32))
+    elif type == 'complex':
+        raise NotImplementedError
 
 
 def get_cl(a):
@@ -74,7 +103,7 @@ def get_cl(a):
 
 def ones_cl(queue, shape):
 
-    """ Create GPUArray of ones on GPU memory.
+    """ Create GPUArray of ones directly on GPU memory.
 
     Parameters
     ----------
@@ -90,12 +119,14 @@ def ones_cl(queue, shape):
 
     """
 
-    return cl_array.to_device(queue, ones(shape, dtype=float32))
+    a = cl_array.zeros(queue, shape, dtype=float32)
+    a.fill(1.0)
+    return a
 
 
 def zeros_cl(queue, shape):
 
-    """ Create GPUArray of zeros on GPU memory.
+    """ Create GPUArray of zeros directly on GPU memory.
 
     Parameters
     ----------
@@ -111,7 +142,49 @@ def zeros_cl(queue, shape):
 
     """
 
-    return cl_array.to_device(queue, zeros(shape, dtype=float32))
+    return cl_array.zeros(queue, shape, dtype=float32)
+
+
+# def hstack_cl(a):
+
+#     """ Horizontally stack GPUArrays.
+
+#     Parameters
+#     ----------
+#     a : list
+#         List of GPUArrays.
+
+#     Returns
+#     -------
+#     gpuarray
+#         Horizontally stack GPUArrays.
+
+#     """
+
+#     return cl_array.concatenate(a, axis=1)
+
+
+def vstack_cl(a):
+
+    """ Vertically stack GPUArrays.
+
+    Parameters
+    ----------
+    a : list
+        List of GPUArrays.
+
+    Returns
+    -------
+    gpuarray
+        Vertically stack GPUArrays.
+
+    """
+
+    return cl_array.concatenate(a, axis=0)
+
+
+def tile_cl():
+    raise NotImplementedError
 
 
 # ==============================================================================
@@ -126,10 +199,26 @@ if __name__ == "__main__":
     a_ = give_cl(queue, [0, 1, 2])
     b_ = give_cl(queue, [3, 4, 5])
     c_ = a_ + b_
+    d_ = a_ - b_
+    e_ = a_ * b_
+    f_ = a_ / b_
+    g_ = a_**3
+    z_ = ones_cl(queue, (2, 2))
+    o_ = zeros_cl(queue, (2, 2))
+    # h_ = vstack_cl([z_, o_, z_])
+    # g_ = hstack_cl([z_, o_, z_])
 
+    print(get_cl(z_))
+    print(get_cl(o_))
     print(get_cl(c_))
-    print(get_cl(ones_cl(queue, (2, 2))))
-    print(get_cl(zeros_cl(queue, (2, 2))))
+    print(get_cl(d_))
+    print(get_cl(e_))
+    print(get_cl(f_))
+    print(get_cl(g_))
+    print(get_cl(e_ > c_))
+    # print(get_cl(h_))
+    # print(get_cl(g_))
+    print(get_cl(rand_cl(queue, (2, 2))))
 
 # ==============================================================================
 

@@ -55,19 +55,12 @@ opencl
     :toctree: generated/
     :nosignatures:
 
+    rand_cl
     give_cl
     get_cl
     ones_cl
     zeros_cl
-
-
-math_
------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
+    vstack_cl
 
 
 euler

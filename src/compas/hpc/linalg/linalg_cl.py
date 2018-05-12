@@ -10,9 +10,14 @@ try:
 except:
     pass
 
+try:
+    from compas.hpc import give_cl
+except:
+    pass
 
 try:
     import pyopencl as cl
+    import pyopencl.array as cl_array
 except:
     pass
 
@@ -24,29 +29,51 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'transpose_cl',
     'diag_cl',
+#     'transpose_cl',
+#     # 'dot_cl',
     'eye_cl',
 ]
 
 
-def transpose_cl(a):
+# def transpose_cl(a):
 
-    """ Return the transpose of a GPUArray.
+#     """ Return the transpose of a GPUArray.
 
-    Parameters
-    ----------
-    a : GPUArray
-        Array on GPU memory.
+#     Parameters
+#     ----------
+#     a : GPUArray
+#         Array on GPU memory.
 
-    Returns
-    -------
-    gpuarray
-        Tranpose of the input GPUArray.
+#     Returns
+#     -------
+#     gpuarray
+#         Tranpose of the input GPUArray.
 
-    """
+#     """
 
-    return a.transpose()
+#     return a.transpose()
+
+
+# def dot_cl(a, b):
+
+#     """ Matrix multiplication of two GPUArrays.
+
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray matrix 1 (m x n).
+#     b : gpuarray
+#         GPUArray matrix 2 (n x o).
+
+#     Returns
+#     -------
+#     gpuarray
+#         [c] = [a][b] of size (m x o)
+
+#     """
+
+#     return cl_array.dot(a, b)
 
 
 def diag_cl(queue, a):
@@ -103,8 +130,12 @@ if __name__ == "__main__":
     ctx = cl.create_some_context()
     queue = cl.CommandQueue(ctx)
 
-    a_ = give_cl(queue, [[0, 1, 2]])
+    # a_ = give_cl(queue, [0, 1, 2])
 
-    print(get_cl(transpose_cl(a_)))
+#     print(get_cl(transpose_cl(a_)))
     print(get_cl(diag_cl(queue, [0, 1, 2])))
     print(get_cl(eye_cl(queue, 3)))
+
+#     a = give_cl(queue, [[0, 1], [2, 3]])
+#     b = give_cl(queue, [[0, 1], [1, 0]])
+#     # c = get_cl(dot_cl(a, b))
