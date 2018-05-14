@@ -38,10 +38,8 @@ try:
 
     from compas.viewers import VtkViewer
 
-except ImportError:
-    import sys
-    if 'ironpython' not in sys.version.lower():
-        raise
+except:
+    pass
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
