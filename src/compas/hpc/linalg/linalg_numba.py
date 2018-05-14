@@ -24,11 +24,36 @@ __all__ = [
     'diag_numba',
     'diag_fill_numba',
     'diag_fill_complex_numba',
+    'diag_complex_numba',
 ]
 
 
 @jit(f8[:, :](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=True, cache=False)
 def diag_numba(A, b):
+
+    """ Fill matrix A with a diagonal represented by vector b.
+
+    Parameters
+    ----------
+    A : array
+        Base matrix.
+    b : array
+        Diagonal vector to fill with.
+
+    Returns
+    -------
+    array
+        Matrix A with diagonal filled.
+
+    """
+
+    for i in range(b.shape[0]):
+        A[i, i] = b[i]
+    return A
+
+
+@jit(complex128[:, :](complex128[:, :], complex128[:]), nogil=True, nopython=True, parallel=True, cache=False)
+def diag_complex_numba(A, b):
 
     """ Fill matrix A with a diagonal represented by vector b.
 
