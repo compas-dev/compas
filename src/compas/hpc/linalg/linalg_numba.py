@@ -14,6 +14,8 @@ try:
 except ImportError:
     prange = range
 
+from numpy import zeros
+
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
@@ -26,6 +28,9 @@ __all__ = [
     'diag_complex_numba',
     'diag_fill_numba',
     'diag_fill_complex_numba',
+    'dot_numba',
+    'dotv_numba',
+    'transpose_numba',
 ]
 
 
@@ -133,6 +138,87 @@ def diag_fill_complex_numba(A, b):
     return A
 
 
+@jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
+def dot_numba(A, B):
+
+    """ The multiplication of matrices.
+
+    Parameters
+    ----------
+    A : array
+        The first matrix (m x n).
+    B : array
+        The second matrix (n x p).
+
+    Returns
+    -------
+    array
+        A * B of size (m x p).
+
+    """
+
+    m, n = A.shape
+    p = B.shape[1]
+    C = zeros((m, p))
+    for i in range(m):
+        for j in range(p):
+            for k in range(n):
+                C[i, j] += A[i, k] * B[k, j]
+    return C
+
+
+@jit(f8[:](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
+def dotv_numba(A, b):
+
+    """ The multiplication of a matrix with a vector.
+
+    Parameters
+    ----------
+    A : array
+        The matrix (m x n).
+    b : array
+        The vector (n,).
+
+    Returns
+    -------
+    array
+        A * b of size (m,).
+
+    """
+
+    m, n = A.shape
+    C = zeros(m)
+    for i in range(m):
+        for j in range(n):
+            C[i] += A[i, j] * b[j]
+    return C
+
+
+@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
+def transpose_numba(A):
+
+    """ Transpose an array.
+
+    Parameters
+    ----------
+    A : array
+        The matrix (m x n).
+
+    Returns
+    -------
+    array
+        A transposed (n x m).
+
+    """
+
+    m, n = A.shape
+    B = zeros((n, m))
+    for i in range(m):
+        for j in range(n):
+            B[j, i] = A[i, j]
+    return B
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -148,3 +234,11 @@ if __name__ == "__main__":
 
     print(diag_numba(A, b))
     print(diag_fill_numba(A, 1.))
+
+    d = array([4., 5.])
+    e = array([[1., 2.], [0., 2.]])
+    f = array([[4., 5.], [1., 2.]])
+
+    # print(dot_numba(e, f))
+    print(dotv_numba(e, d))
+    print(transpose_numba(e))
