@@ -27,7 +27,7 @@ __all__ = [
 ]
 
 
-@jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=True, cache=False)
+@jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def distance_matrix_numba(A, B):
 
     """ Distance matrix between two point clouds.

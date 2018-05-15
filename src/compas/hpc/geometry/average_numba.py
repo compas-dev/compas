@@ -39,7 +39,7 @@ __all__ = [
 ]
 
 
-@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def centroid_points_numba(u):
 
     """ Compute the centroid of a set of points.
@@ -60,7 +60,7 @@ def centroid_points_numba(u):
     return scale_vector_numba(sum_vectors_numba(u, axis=0), factor=1./m)
 
 
-@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def centroid_points_xy_numba(u):
 
     """ Compute the centroid of a set of points lying in the XY plane.
@@ -81,7 +81,7 @@ def centroid_points_xy_numba(u):
     return centroid_points_numba(u)
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def midpoint_point_point_numba(u, v):
 
     """ Compute the midpoint of two points.
@@ -103,7 +103,7 @@ def midpoint_point_point_numba(u, v):
     return scale_vector_numba(add_vectors_numba(u, v), factor=0.5)
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def midpoint_point_point_xy_numba(u, v):
 
     """ Compute the midpoint of two points lying in the XY-plane.
@@ -125,7 +125,7 @@ def midpoint_point_point_xy_numba(u, v):
     return scale_vector_xy_numba(add_vectors_xy_numba(u, v), factor=0.5)
 
 
-@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def center_of_mass_polyline_numba(polyline):
 
     """ Compute the center of mass of polyline edges defined as an array of points.
@@ -160,7 +160,7 @@ def center_of_mass_polyline_numba(polyline):
     return scale_vector_numba(c, factor=1./L)
 
 
-@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def center_of_mass_polyline_xy_numba(polyline):
 
     """ Compute the center of mass of polyline edges in the XY plane, defined as an array of points.
@@ -193,7 +193,7 @@ def center_of_mass_polyline_xy_numba(polyline):
     return scale_vector_numba(c, factor=1./L)
 
 
-@jit(f8[:](f8[:, :], i8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:, :], i8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def center_of_mass_polyhedron_numba(vertices, faces):
 
     """ Compute the center of mass of the edges of a polyhedron.

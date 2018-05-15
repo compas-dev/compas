@@ -40,7 +40,7 @@ def fn(u, args):
     return z
 
 
-@jit(f8[:](f8[:, :], i8, i8, i8), nogil=True, nopython=True, parallel=False)
+@jit(f8[:](f8[:, :], i8, i8, i8), nogil=True, nopython=True, parallel=False, cache=True)
 def devo_numba(bounds, population, generations, printout):
 
     """ Call the Numba accelerated Differential Evolution solver.

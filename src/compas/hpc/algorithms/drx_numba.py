@@ -157,7 +157,7 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 @guvectorize([(f8, i8, i8, i8[:], i8[:], f8[:, :], f8[:], f8[:], f8[:], i8[:], i8[:], f8[:, :], f8[:, :], f8[:, :],
                i8[:], i8[:], f8[:], f8[:], f8, i8, i8[:], i8[:], i8[:], f8[:], f8[:], f8)],
              '(),(),(),(m),(m),(n,p),(m),(m),(m),(a),(b),(n,p),(n,p),(n,p),(c),(c),(c),(n),(),(),(k),(k),(k),(k),(k)->()',
-             nopython=True, cache=False, target='parallel')
+             nopython=True, cache=True, target='parallel')
 def drx_solver(tol, steps, summary, u, v, X, f0, l0, ks, ind_c, ind_t, B, P, S, rows, cols, vals, M, factor, beams,
                inds, indi, indf, EIx, EIy, out):
 

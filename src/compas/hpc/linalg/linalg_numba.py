@@ -5,6 +5,7 @@ from __future__ import print_function
 
 from numba import f8
 from numba import i8
+from numba import c16
 from numba import jit
 from numba import complex128
 
@@ -22,13 +23,13 @@ __email__     = 'liew@arch.ethz.ch'
 
 __all__ = [
     'diag_numba',
+    'diag_complex_numba',
     'diag_fill_numba',
     'diag_fill_complex_numba',
-    'diag_complex_numba',
 ]
 
 
-@jit(f8[:, :](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=True, cache=False)
+@jit(f8[:, :](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def diag_numba(A, b):
 
     """ Fill matrix A with a diagonal represented by vector b.
@@ -52,10 +53,10 @@ def diag_numba(A, b):
     return A
 
 
-@jit(complex128[:, :](complex128[:, :], complex128[:]), nogil=True, nopython=True, parallel=True, cache=False)
+@jit(c16[:, :](c16[:, :], c16[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def diag_complex_numba(A, b):
 
-    """ Fill matrix A with a diagonal represented by vector b.
+    """ Fill matrix A with a diagonal represented by vector b (complex).
 
     Parameters
     ----------
@@ -67,7 +68,7 @@ def diag_complex_numba(A, b):
     Returns
     -------
     array
-        Matrix A with diagonal filled.
+        Matrix A with diagonal filled (complex).
 
     """
 
@@ -76,7 +77,7 @@ def diag_complex_numba(A, b):
     return A
 
 
-@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=True, cache=False)
+@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def diag_fill_numba(A, b):
 
     """ Fill matrix A with a diagonal represented by scalar b.
@@ -104,10 +105,10 @@ def diag_fill_numba(A, b):
     return A
 
 
-@jit(complex128[:, :](complex128[:, :], complex128), nogil=True, nopython=True, parallel=True, cache=False)
+@jit(c16[:, :](c16[:, :], c16), nogil=True, nopython=True, parallel=False, cache=True)
 def diag_fill_complex_numba(A, b):
 
-    """ Fill complex matrix A with a diagonal represented by complex scalar b.
+    """ Fill matrix A with a diagonal represented by scalar b (complex).
 
     Parameters
     ----------
@@ -119,7 +120,7 @@ def diag_fill_complex_numba(A, b):
     Returns
     -------
     array
-        Matrix A with diagonal filled.
+        Matrix A with diagonal filled (complex).
 
     """
 
