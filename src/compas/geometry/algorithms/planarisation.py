@@ -428,7 +428,7 @@ if __name__ == "__main__":
     from compas.plotters import MeshPlotter
     from compas.utilities import i_to_rgb
 
-    mesh = Mesh.from_obj(compas.get_data('hypar.obj'))
+    mesh = Mesh.from_obj(compas.get('hypar.obj'))
 
     for key, attr in mesh.vertices(True):
         attr['is_fixed'] = mesh.vertex_degree(key) == 2

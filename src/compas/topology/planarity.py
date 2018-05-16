@@ -391,7 +391,7 @@ if __name__ == '__main__':
     from compas.datastructures import Network
     from compas.plotters import NetworkPlotter
 
-    network = Network.from_obj(compas.get_data('fink.obj'))
+    network = Network.from_obj(compas.get('fink.obj'))
 
     crossings = network_find_crossings(network)
 

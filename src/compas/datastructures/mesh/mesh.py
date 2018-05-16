@@ -2570,7 +2570,10 @@ if __name__ == '__main__':
     print(mesh.to_vertices_and_faces())
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
-    plotter.draw_vertices(text={key: str(key) for key in mesh.vertices()})
+
+    plotter.defaults['vertex.fontsize'] = 8
+
+    plotter.draw_vertices(text={key: str(key) for key in mesh.vertices()}, radius=0.2)
     plotter.draw_faces(text={fkey: str(fkey) for fkey in mesh.faces()})
     plotter.draw_edges()
     plotter.show()

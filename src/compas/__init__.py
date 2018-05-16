@@ -52,6 +52,9 @@ def get(filename):
     return os.path.abspath(os.path.join(DATA, filename))
 
 
+get_data = get
+
+
 def get_bunny():
     import urllib
     import tarfile

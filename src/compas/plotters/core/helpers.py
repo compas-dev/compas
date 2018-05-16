@@ -190,7 +190,7 @@ class Cloud3D(object):
         x = self.cloud[:, 0]
         y = self.cloud[:, 1]
         z = self.cloud[:, 2]
-        axes.plot(x, y, z, 'o', color=(1.0, 1.0, 1.0))
+        axes.plot(x, y, z, 'o', color=(0.7, 0.7, 0.7))
 
 
 class Hull(object):
