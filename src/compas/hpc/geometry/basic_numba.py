@@ -57,9 +57,6 @@ __all__ = [
     'dot_vectors_xy_numba',
     'vector_component_numba',
     'vector_component_xy_numba',
-    'multiply_matrices_numba',
-    'multiply_matrix_vector_numba',
-    'transpose_matrix_numba',
     'orthonormalise_vectors_numba',
     'plane_from_points_numba',
     'circle_from_points_numba',
@@ -69,7 +66,7 @@ __all__ = [
 
 # ==============================================================================
 
-@jit(f8[:](f8[:, :], i8), nogil=True, nopython=True, parallel=True, cache=False)
+@jit(f8[:](f8[:, :], i8), nogil=True, nopython=True, parallel=False, cache=True)
 def sum_vectors_numba(a, axis=0):
 
     """ Calculate the sum of an array of vectors along the specified axis.
@@ -104,7 +101,7 @@ def sum_vectors_numba(a, axis=0):
     return b
 
 
-@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def norm_vector_numba(a):
 
     """ Calculate the L2 norm or length of a vector.
@@ -123,7 +120,7 @@ def norm_vector_numba(a):
     return sqrt(a[0]**2 + a[1]**2 + a[2]**2)
 
 
-@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def norm_vectors_numba(a):
 
     """ Calculate the L2 norm or length of vectors.
@@ -146,7 +143,7 @@ def norm_vectors_numba(a):
     return w
 
 
-@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def length_vector_numba(a):
 
     """ Calculate the length of a vector.
@@ -165,7 +162,7 @@ def length_vector_numba(a):
     return sqrt(a[0]**2 + a[1]**2 + a[2]**2)
 
 
-@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def length_vector_xy_numba(a):
 
     """ Calculate the length of the vector, assuming it lies in the XY plane.
@@ -184,7 +181,7 @@ def length_vector_xy_numba(a):
     return sqrt(a[0]**2 + a[1]**2)
 
 
-@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def length_vector_sqrd_numba(a):
 
     """ Calculate the squared length of the vector.
@@ -203,7 +200,7 @@ def length_vector_sqrd_numba(a):
     return a[0]**2 + a[1]**2 + a[2]**2
 
 
-@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def length_vector_sqrd_xy_numba(a):
 
     """ Calculate the squared length of the vector, assuming it lies in the XY plane.
@@ -224,7 +221,7 @@ def length_vector_sqrd_xy_numba(a):
 
 # ==============================================================================
 
-@jit(f8[:](f8[:], f8), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def scale_vector_numba(a, factor):
 
     """ Scale a vector by a given factor.
@@ -249,7 +246,7 @@ def scale_vector_numba(a, factor):
     return b
 
 
-@jit(f8[:](f8[:], f8), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def scale_vector_xy_numba(a, factor):
 
     """ Scale a vector by a given factor, assuming it lies in the XY plane.
@@ -274,7 +271,7 @@ def scale_vector_xy_numba(a, factor):
     return b
 
 
-@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def scale_vectors_numba(a, factor):
 
     """ Scale multiple vectors by a given factor.
@@ -299,7 +296,7 @@ def scale_vectors_numba(a, factor):
     return b
 
 
-@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def scale_vectors_xy_numba(a, factor):
 
     """ Scale multiple vectors by a given factor, assuming they lie in the XY plane
@@ -325,7 +322,7 @@ def scale_vectors_xy_numba(a, factor):
     return b
 
 
-@jit(f8[:](f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def normalize_vector_numba(a):
 
     """ Normalize a given vector.
@@ -350,7 +347,7 @@ def normalize_vector_numba(a):
     return b
 
 
-@jit(f8[:](f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def normalize_vector_xy_numba(a):
 
     """ Normalize a given vector, assuming it lies in the XY-plane.
@@ -374,7 +371,7 @@ def normalize_vector_xy_numba(a):
     return b
 
 
-@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def normalize_vectors_numba(a):
 
     """ Normalise multiple vectors.
@@ -398,7 +395,7 @@ def normalize_vectors_numba(a):
     return b
 
 
-@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def normalize_vectors_xy_numba(a):
 
     """ Normalise multiple vectors, assuming they lie in the XY plane.
@@ -422,7 +419,7 @@ def normalize_vectors_xy_numba(a):
     return b
 
 
-@jit(f8[:](f8[:], f8), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def power_vector_numba(a, power):
 
     """ Raise a vector to the given power.
@@ -444,7 +441,7 @@ def power_vector_numba(a, power):
     return array([a[0]**power, a[1]**power, a[2]**power])
 
 
-@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def power_vectors_numba(a, power):
 
     """ Raise multiple vectors to the given power.
@@ -470,7 +467,7 @@ def power_vectors_numba(a, power):
     return b
 
 
-@jit(f8[:](f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def square_vector_numba(a):
 
     """ Raise a single vector to the power 2.
@@ -490,7 +487,7 @@ def square_vector_numba(a):
     return power_vector_numba(a, power=2.)
 
 
-@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def square_vectors_numba(a):
 
     """ Raise multiple vectors to the power 2.
@@ -512,7 +509,7 @@ def square_vectors_numba(a):
 
 # ==============================================================================
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def add_vectors_numba(u, v):
 
     """ Add two vectors.
@@ -534,7 +531,7 @@ def add_vectors_numba(u, v):
     return array([u[0] + v[0], u[1] + v[1], u[2] + v[2]])
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def add_vectors_xy_numba(u, v):
 
     """ Add two vectors, assuming they lie in the XY-plane.
@@ -556,7 +553,7 @@ def add_vectors_xy_numba(u, v):
     return array([u[0] + v[0], u[1] + v[1], 0.])
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def subtract_vectors_numba(u, v):
 
     """ Subtract one vector from another.
@@ -578,7 +575,7 @@ def subtract_vectors_numba(u, v):
     return array([u[0] - v[0], u[1] - v[1], u[2] - v[2]])
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def subtract_vectors_xy_numba(u, v):
 
     """ Subtract one vector from another, assuming they lie in the XY plane.
@@ -600,7 +597,7 @@ def subtract_vectors_xy_numba(u, v):
     return array([u[0] - v[0], u[1] - v[1], 0.])
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def multiply_vectors_numba(u, v):
 
     """ Element-wise multiplication of two vectors.
@@ -622,7 +619,7 @@ def multiply_vectors_numba(u, v):
     return array([u[0] * v[0], u[1] * v[1], u[2] * v[2]])
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def multiply_vectors_xy_numba(u, v):
 
     """ Element-wise multiplication of two vectors assumed to lie in the XY plane..
@@ -644,7 +641,7 @@ def multiply_vectors_xy_numba(u, v):
     return array([u[0] * v[0], u[1] * v[1], 0.])
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def divide_vectors_numba(u, v):
 
     """ Element-wise division of two vectors.
@@ -666,7 +663,7 @@ def divide_vectors_numba(u, v):
     return array([u[0] / v[0], u[1] / v[1], u[2] / v[2]])
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def divide_vectors_xy_numba(u, v):
 
     """ Element-wise division of two vectors assumed to lie in the XY plane.
@@ -690,7 +687,7 @@ def divide_vectors_xy_numba(u, v):
 
 # ==============================================================================
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def cross_vectors_numba(u, v):
 
     """ Compute the cross product of two vectors.
@@ -716,7 +713,7 @@ def cross_vectors_numba(u, v):
     return w
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def cross_vectors_xy_numba(u, v):
 
     """ Compute the cross product of two vectors, assuming they lie in the XY-plane.
@@ -738,7 +735,7 @@ def cross_vectors_xy_numba(u, v):
     return array([0., 0., u[0] * v[1] - u[1] * v[0]])
 
 
-@jit(f8(f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8(f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def dot_vectors_numba(u, v):
 
     """ Compute the dot product of two vectors.
@@ -760,7 +757,7 @@ def dot_vectors_numba(u, v):
     return u[0] * v[0] + u[1] * v[1] + u[2] * v[2]
 
 
-@jit(f8(f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8(f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def dot_vectors_xy_numba(u, v):
 
     """ Compute the dot product of two vectors, assuming they lie in the XY-plane.
@@ -782,7 +779,7 @@ def dot_vectors_xy_numba(u, v):
     return u[0] * v[0] + u[1] * v[1]
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def vector_component_numba(u, v):
 
     """ Compute the component of u in the direction of v.
@@ -805,7 +802,7 @@ def vector_component_numba(u, v):
     return scale_vector_numba(v, factor)
 
 
-@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def vector_component_xy_numba(u, v):
 
     """Compute the component of u in the direction of v, assuming they lie in the XY-plane.
@@ -830,88 +827,7 @@ def vector_component_xy_numba(u, v):
 
 # ==============================================================================
 
-@jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
-def multiply_matrices_numba(A, B):
-
-    """ The multiplication of matrices.
-
-    Parameters
-    ----------
-    A : array
-        The first matrix (m x n).
-    B : array
-        The second matrix (n x p).
-
-    Returns
-    -------
-    array
-        A * B of size (m x p).
-
-    """
-
-    m, n = A.shape
-    p = B.shape[1]
-    C = zeros((m, p))
-    for i in range(m):
-        for j in range(p):
-            for k in range(n):
-                C[i, j] += A[i, k] * B[k, j]
-    return C
-
-
-@jit(f8[:](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
-def multiply_matrix_vector_numba(A, b):
-
-    """ The multiplication of a matrix with a vector.
-
-    Parameters
-    ----------
-    A : array
-        The matrix (m x n).
-    b : array
-        The vector (n,).
-
-    Returns
-    -------
-    array
-        A * b of size (m,).
-
-    """
-
-    m, n = A.shape
-    C = zeros(m)
-    for i in range(m):
-        for j in range(n):
-            C[i] += A[i, j] * b[j]
-    return C
-
-
-@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
-def transpose_matrix_numba(A):
-
-    """ Transpose an array.
-
-    Parameters
-    ----------
-    A : array
-        The matrix (m x n).
-
-    Returns
-    -------
-    array
-        A transposed (n x m).
-
-    """
-
-    m, n = A.shape
-    B = zeros((n, m))
-    for i in range(m):
-        for j in range(n):
-            B[j, i] = A[i, j]
-    return B
-
-
-@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def orthonormalise_vectors_numba(a):
 
     """ Orthonomalise a set of vectors using the Gram-Schmidt process.
@@ -939,7 +855,7 @@ def orthonormalise_vectors_numba(a):
     return b
 
 
-@jit(f8[:](f8[:], f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def plane_from_points_numba(u, v, w):
 
     """ Construct a plane from three points.
@@ -966,7 +882,7 @@ def plane_from_points_numba(u, v, w):
     return p
 
 
-@jit(f8[:](f8[:], f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def circle_from_points_numba(a, b, c):
 
     """ Construct a circle from three points.
@@ -1014,7 +930,7 @@ def circle_from_points_numba(a, b, c):
     return cr
 
 
-@jit(f8[:](f8[:], f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=False)
+@jit(f8[:](f8[:], f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def circle_from_points_xy_numba(u, v, w):
 
     """ Construct a circle from three points assumed to be in the XY plane.
@@ -1108,9 +1024,7 @@ if __name__ == "__main__":
         # a = vector_component_numba(u, v)
         # a = vector_component_xy_numba(u, v)
 
-        # a = multiply_matrices_numba(e, f)
-        # a = multiply_matrix_vector_numba(e, d)
-        # a = transpose_matrix_numba(e)
+
         # a = orthonormalise_vectors_numba(c)
         # a = plane_from_points_numba(u, v, w)
         # a = circle_from_points_numba(u, v, w)

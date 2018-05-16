@@ -7,6 +7,7 @@ try:
     import pycuda
     import pycuda.autoinit
     import pycuda.cumath
+    import pycuda.gpuarray as cuda_array
 except:
     pass
 
@@ -22,8 +23,12 @@ __all__ = [
     # 'argmax_cuda',
     # 'argmin_cuda',
     'acos_cuda',
+    # 'acosh_cuda',
     'asin_cuda',
+    # 'asinh_cuda',
     'atan_cuda',
+    # 'atan2_cuda',
+    # 'atanh_cuda',
     'ceil_cuda',
     'cos_cuda',
     'cosh_cuda',
@@ -36,6 +41,7 @@ __all__ = [
     # 'mean_cuda',
     'maximum_cuda',
     'minimum_cuda',
+    'round_cuda',
     'sin_cuda',
     'sinh_cuda',
     'sqrt_cuda',
@@ -159,6 +165,10 @@ def acos_cuda(a):
     return pycuda.cumath.acos(a)
 
 
+def acosh_cuda():
+    raise NotImplementedError
+
+
 def asin_cuda(a):
 
     """ Trigonometric arcsine of GPUArray elements.
@@ -186,6 +196,10 @@ def asin_cuda(a):
     return pycuda.cumath.asin(a)
 
 
+def asinh_cuda():
+    raise NotImplementedError
+
+
 def atan_cuda(a):
 
     """ Trigonometric arctangent of GPUArray elements.
@@ -211,6 +225,14 @@ def atan_cuda(a):
     """
 
     return pycuda.cumath.atan(a)
+
+
+def atan2_cuda():
+    raise NotImplementedError
+
+
+def atanh_cuda():
+    raise NotImplementedError
 
 
 def ceil_cuda(a):
@@ -488,9 +510,9 @@ def maximum_cuda(a, b=None):
 
     """
 
-    if b:
-        return pycuda.gpuarray.maximum(a, b)
-    return pycuda.gpuarray.max(a)
+    if b is not None:
+        return cuda_array.maximum(a, b)
+    return cuda_array.max(a)
 
 
 def minimum_cuda(a, b=None):
@@ -519,9 +541,9 @@ def minimum_cuda(a, b=None):
 
     """
 
-    if b:
-        return pycuda.gpuarray.minimum(a, b)
-    return pycuda.gpuarray.min(a)
+    if b is not None:
+        return cuda_array.minimum(a, b)
+    return cuda_array.min(a)
 
 
 # def mean_cuda(a, axis):
@@ -551,6 +573,10 @@ def minimum_cuda(a, b=None):
 #     """
 
 #     return skcuda.misc.mean(a, axis)
+
+
+def round_cuda():
+    raise NotImplementedError
 
 
 def sin_cuda(a):
@@ -661,9 +687,9 @@ def sum_cuda(a, axis=None):
     """
 
     if axis is not None:
-        pass
+        raise NotImplementedError
     else:
-        return pycuda.gpuarray.sum(a)
+        return cuda_array.sum(a)
 
 
 def tan_cuda(a):
@@ -759,28 +785,4 @@ if __name__ == "__main__":
 
     # print(a)
 
-    from pycuda.compiler import SourceModule
-    import pycuda.driver as cuda
-    from numpy import array
-    from numpy import empty_like
 
-    mod = SourceModule("""
-    __global__ void doublify(float *a)
-    {
-    int idx = threadIdx.x + threadIdx.y*4;
-    a[idx] *= 2;
-    }
-    """)
-
-    a = array([[1, 2], [3, 4]])
-    a_ = cuda.mem_alloc(a.nbytes)
-    cuda.memcpy_htod(a_, a)
-    print(a_)
-
-    func = mod.get_function("doublify")
-    func(a_, block=(4, 4, 1))
-
-    b = empty_like(a)
-    cuda.memcpy_dtoh(b, a_)
-
-    print(b)

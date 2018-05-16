@@ -48,14 +48,19 @@ cuda
     zeros_cuda
     tile_cuda
 
-
-math_
------
+opencl
+------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
+    rand_cl
+    give_cl
+    get_cl
+    ones_cl
+    zeros_cl
+    vstack_cl
 
 
 euler
@@ -111,9 +116,6 @@ basic
     dot_vectors_xy_numba
     vector_component_numba
     vector_component_xy_numba
-    multiply_matrices_numba
-    multiply_matrix_vector_numba
-    transpose_matrix_numba
     orthonormalise_vectors_numba
     plane_from_points_numba
     circle_from_points_numba

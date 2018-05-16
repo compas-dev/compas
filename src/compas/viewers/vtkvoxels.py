@@ -125,7 +125,7 @@ class VtkVoxels(object):
         img.SetWholeExtent(0, nz - 1, 0, ny - 1, 0, nx - 1)
 
         self.opacity = opacity = vtkPiecewiseFunction()
-        opacity.AddPoint(0, 0.2)
+        opacity.AddPoint(1, 0.0)
         opacity.AddPoint(255, 0.2)
 
         self.cbar = cbar = vtkColorTransferFunction()
@@ -159,7 +159,7 @@ class VtkVoxels(object):
         a = 0.01
         b = 0.10
 
-        self.slider_opacity = self.slider(w, h, l, [a, y], [b, y], 0.0, 125, 0, 'Opacity')
+        self.slider_opacity = self.slider(w, h, l, [a, y], [b, y], 0.0, 125, 1, 'Opacity')
         self.slider_opacity.AddObserver(vtk.vtkCommand.InteractionEvent, OpacityCallback(self.opacity, self.volprop))
         y -= 0.12
 
