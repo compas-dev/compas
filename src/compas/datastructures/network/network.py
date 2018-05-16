@@ -715,16 +715,17 @@ network: {0}
 
 if __name__ == '__main__':
 
-    import compas
     from compas.plotters import NetworkPlotter
 
     network = Network.from_obj(compas.get('lines.obj'))
 
-    plotter = NetworkPlotter(network)
+    plotter = NetworkPlotter(network, figsize=(10, 7))
+
+    plotter.defaults['vertex.fontsize'] = 8
 
     network.delete_vertex(17)
 
-    plotter.draw_vertices(text='key')
+    plotter.draw_vertices(text='key', radius=0.2)
     plotter.draw_edges()
 
     plotter.show()

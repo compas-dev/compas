@@ -30,11 +30,40 @@ __email__     = 'liew@arch.ethz.ch'
 
 __all__ = [
     'diag_cuda',
+    'transpose_cuda',
     # 'det_cuda',
     # 'dot_cuda',
     # 'eig_cuda',
     'eye_cuda',
 ]
+
+
+def transpose_cuda(a):
+
+    """ Return the transpose of a GPUArray.
+
+     Parameters
+    ----------
+    a : GPUArray
+        Array on GPU memory.
+
+    Returns
+    -------
+    gpuarray
+        Tranpose of the input GPUArray.
+
+    Examples
+    --------
+    >>> a = transpose_cuda(give_cuda([[0, 1], [2, 3]]))
+    array([[ 0.,  2.],
+           [ 1.,  3.]])
+
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
+
+    """
+
+    return a.transpose()
 
 
 # def det_cuda(a):
@@ -182,47 +211,67 @@ if __name__ == "__main__":
 
     a = diag_cuda([1., 2., 3.])
     a = eye_cuda(3)
-    # c = det_cuda(give_cuda([[5, -2, 1], [0, 3, -1], [2, 0, 7]]))
+    b = give_cuda([[5, -2, 1], [0, 3, -1], [2, 0, 7]])
+    c = transpose_cuda(b)
 
-    print(a)
+    from numpy import array
+    from numpy import dot
+    from numpy import float32
+    from numpy import uint32
+    from compas.hpc import device_cuda
+
+    # device_cuda()
+
+    from pycuda import driver
+    from pycuda import gpuarray
+    from pycuda import compiler
+    from pycuda import tools
+
+    kernel = """
+        #include <stdio.h>
+
+        __global__ void dot_cuda(int m, float *a, float *b, float *c) {
+
+            int tx = threadIdx.x;
+            int ty = threadIdx.y;
+            int bx = blockIdx.x;
+            int by = blockIdx.y;
+            // int id = bx * blockDim.x + tx + by * blockDim.y + ty;
+            int id = 0;
+
+            float p = 0.;
+
+            for (int i = 0; i < m; i++) {
+                float ai = a[ty * m + i];
+                float bi = b[i * m + tx];
+                p += ai * bi;
+            }
+
+            c[ty * m + tx] = p;
+
+            printf("Thread %d.%d of Block %d.%d ID %d\\n", tx, ty, bx, by, id);
+        }
+    """
+
+    m = 2
+
+    a = array([[0, 1], [2, 3]], dtype=float32)
+    b = array([[1, 0], [0, 1]], dtype=float32)
+    c = dot(a, b)
+
+    a_ = give_cuda(a)
+    b_ = give_cuda(b)
+    c_ = gpuarray.empty(a.shape, float32)
+
+    mod = compiler.SourceModule(kernel)
+    dot_cuda = mod.get_function('dot_cuda')
+
+    dot_cuda(uint32(m), a_, b_, c_, block=(m, m, 1))
+
+    print(c)
+    print(c_)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#     # from compas.hpc import give_cuda
-
-#     # a = give_cuda([[0, 1], [2, 3]])
-#     # b = give_cuda([[0, 1], [1, 0]])
-#     # c = dot_cuda(a, b)
-
-#     # print(c)
-
-    # a = cuda_transpose(cuda_give([[0, 1], [2, 3]]))
-    # b = cuda_trace(cuda_give([[0, 1], [2, 3]]))
-#     c = cuda_pinv(cuda_give([[1, 3, -1], [2, 0, 3]]))
-#     d = cuda_normrow(cuda_give([[1, 2], [3, 4]]))
-#     e = cuda_inv(cuda_give([[4, 7], [2, 6]]))
-#     f = cuda_hermitian(cuda_give([[1 + 2.j, 3 - 4.j], [0 - 5.j, 6 - 1.j]], type='complex'))
-#     g = cuda_det(cuda_give([[5, -2, 1], [0, 3, -1], [2, 0, 7]]))
-#     h = cuda_conj(cuda_give([1 + 2.j, 3 - 4.j], type='complex'))
 
 # from numpy import float64
 # from numpy import ceil
@@ -421,22 +470,3 @@ if __name__ == "__main__":
 #         <class 'numpy.float64'>
 #     """
 #     return skcuda.linalg.trace(a)
-
-
-# def cuda_transpose(a):
-#     """ Transpose a GPUArray.
-
-#     Parameters:
-#         a (gpu): GPUArray of size (m x n).
-
-#     Returns:
-#         gpu: GPUArray transpose (n x m).
-
-#     Examples:
-#         >>> a = cuda_transpose(cuda_give([[0, 1], [2, 3]]))
-#         array([[ 0.,  2.],
-#                [ 1.,  3.]])
-#         >>> type(a)
-#         <class 'pycuda.gpuarray.GPUArray'>
-#     """
-#     return skcuda.linalg.transpose(a)

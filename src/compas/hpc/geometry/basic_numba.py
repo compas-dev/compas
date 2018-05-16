@@ -57,9 +57,6 @@ __all__ = [
     'dot_vectors_xy_numba',
     'vector_component_numba',
     'vector_component_xy_numba',
-    'multiply_matrices_numba',
-    'multiply_matrix_vector_numba',
-    'transpose_matrix_numba',
     'orthonormalise_vectors_numba',
     'plane_from_points_numba',
     'circle_from_points_numba',
@@ -830,87 +827,6 @@ def vector_component_xy_numba(u, v):
 
 # ==============================================================================
 
-@jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
-def multiply_matrices_numba(A, B):
-
-    """ The multiplication of matrices.
-
-    Parameters
-    ----------
-    A : array
-        The first matrix (m x n).
-    B : array
-        The second matrix (n x p).
-
-    Returns
-    -------
-    array
-        A * B of size (m x p).
-
-    """
-
-    m, n = A.shape
-    p = B.shape[1]
-    C = zeros((m, p))
-    for i in range(m):
-        for j in range(p):
-            for k in range(n):
-                C[i, j] += A[i, k] * B[k, j]
-    return C
-
-
-@jit(f8[:](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
-def multiply_matrix_vector_numba(A, b):
-
-    """ The multiplication of a matrix with a vector.
-
-    Parameters
-    ----------
-    A : array
-        The matrix (m x n).
-    b : array
-        The vector (n,).
-
-    Returns
-    -------
-    array
-        A * b of size (m,).
-
-    """
-
-    m, n = A.shape
-    C = zeros(m)
-    for i in range(m):
-        for j in range(n):
-            C[i] += A[i, j] * b[j]
-    return C
-
-
-@jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
-def transpose_matrix_numba(A):
-
-    """ Transpose an array.
-
-    Parameters
-    ----------
-    A : array
-        The matrix (m x n).
-
-    Returns
-    -------
-    array
-        A transposed (n x m).
-
-    """
-
-    m, n = A.shape
-    B = zeros((n, m))
-    for i in range(m):
-        for j in range(n):
-            B[j, i] = A[i, j]
-    return B
-
-
 @jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def orthonormalise_vectors_numba(a):
 
@@ -1108,9 +1024,7 @@ if __name__ == "__main__":
         # a = vector_component_numba(u, v)
         # a = vector_component_xy_numba(u, v)
 
-        # a = multiply_matrices_numba(e, f)
-        # a = multiply_matrix_vector_numba(e, d)
-        # a = transpose_matrix_numba(e)
+
         # a = orthonormalise_vectors_numba(c)
         # a = plane_from_points_numba(u, v, w)
         # a = circle_from_points_numba(u, v, w)
