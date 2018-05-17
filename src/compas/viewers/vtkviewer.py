@@ -24,6 +24,7 @@ try:
     from vtk import vtkSphereSource
     from vtk import vtkUnsignedCharArray
     import vtk
+
 except ImportError:
     pass
 
@@ -46,17 +47,17 @@ class VtkViewer(object):
         # Note: vertex indices currently need to be given as a series of keys starting from 0.
 
         self.settings = {
-            'draw_axes':     True,
-            'draw_vertices': True,
-            'draw_edges':    True,
-            'draw_faces':    True,
-            'draw_blocks':   True,
-            'vertex_size':   0.05,
-            'edge_width':    2,
-            'camera_pos':    [10, -1, 10],
-            'camera_focus':  [0, 0, 0],
-            'camera_azi':    30,
-            'camera_ele':    0,
+            'draw_axes'     : True,
+            'draw_vertices' : True,
+            'draw_edges'    : True,
+            'draw_faces'    : True,
+            'draw_blocks'   : True,
+            'vertex_size'   : 0.05,
+            'edge_width'    : 2,
+            'camera_pos'    : [10, -1, 10],
+            'camera_focus'  : [0, 0, 0],
+            'camera_azi'    : 30,
+            'camera_ele'    : 0,
         }
         self.keycallbacks = {}
         self.data = data
@@ -71,7 +72,7 @@ class VtkViewer(object):
         try:
             func = self.keycallbacks[key]
             func(self)
-        except:
+        except Exception:
             print('No callback for keypress {0}'.format(key))
 
     def camera(self):
@@ -167,7 +168,7 @@ class VtkViewer(object):
                 color = edge.get('color', [255, 100, 100])
                 try:
                     self.colors.InsertNextTypedTuple(color)
-                except:
+                except Exception:
                     self.colors.InsertNextTupleValue(color)
             self.poly.SetLines(edges)
 
@@ -183,7 +184,7 @@ class VtkViewer(object):
                 color = face.get('color', [150, 255, 150])
                 try:
                     self.colors.InsertNextTypedTuple(color)
-                except:
+                except Exception:
                     self.colors.InsertNextTupleValue(color)
             self.poly.SetPolys(faces)
 
@@ -398,7 +399,6 @@ class OpacityCallback():
 # ==============================================================================
 
 if __name__ == "__main__":
-
 
     def func(self):
         print('Callback')
