@@ -57,7 +57,8 @@ def centroid_points_numba(u):
     """
 
     m = u.shape[0]
-    return scale_vector_numba(sum_vectors_numba(u, axis=0), factor=1./m)
+    sc = 1. / m
+    return scale_vector_numba(sum_vectors_numba(u, axis=0), factor=sc)
 
 
 @jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
@@ -157,7 +158,8 @@ def center_of_mass_polyline_numba(polyline):
         cz += 0.5 * d * (p1[2] + p2[2])
         L += d
     c = array([cx, cy, cz])
-    return scale_vector_numba(c, factor=1./L)
+    sc = 1. / L
+    return scale_vector_numba(c, factor=sc)
 
 
 @jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
@@ -190,7 +192,8 @@ def center_of_mass_polyline_xy_numba(polyline):
         cy += 0.5 * d * (p1[1] + p2[1])
         L += d
     c = array([cx, cy, 0.])
-    return scale_vector_numba(c, factor=1./L)
+    sc = 1. / L
+    return scale_vector_numba(c, factor=sc)
 
 
 @jit(f8[:](f8[:, :], i8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)

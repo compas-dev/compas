@@ -973,6 +973,8 @@ def circle_from_points_xy_numba(u, v, w):
 
 if __name__ == "__main__":
 
+    from numpy.random import rand
+
     from time import time
 
     u = array([1., 2., 3.])
@@ -988,14 +990,14 @@ if __name__ == "__main__":
     for i in range(10**6):
 
         # a = sum_vectors_numba(c, axis=0)
-        a = norm_vector_numba(u)
-        a = norm_vectors_numba(c)
+        # a = norm_vector_numba(u)
+        # a = norm_vectors_numba(c)
         # a = length_vector_numba(u)
         # a = length_vector_xy_numba(u)
         # a = length_vector_sqrd_numba(u)
         # a = length_vector_sqrd_xy_numba(u)
 
-        # a = scale_vector_numba(u, factor=4.)
+        a = scale_vector_numba(u, factor=4.)
         # a = scale_vector_xy_numba(u, factor=4.)
         # a = scale_vectors_numba(c, factor=4.)
         # a = scale_vectors_xy_numba(c, factor=4.)
@@ -1030,5 +1032,9 @@ if __name__ == "__main__":
         # a = circle_from_points_numba(u, v, w)
         # a = circle_from_points_xy_numba(u, v, w)
 
+    # a = rand(10**7, 3)
+
+    # sum_vectors_numba(a, 1)
+
     print(time() - tic)
-    print(a)
+    # print(a)
