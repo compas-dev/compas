@@ -225,6 +225,7 @@ class VtkViewer(object):
         self.bc_pts = vtkPoints()
         self.colors = vtkUnsignedCharArray()
         self.colors.SetNumberOfComponents(3)
+        self.vcolors = self.data.get('vcolors', None)
 
         if self.data.get('vertices', None):
             for key, vertex in self.data['vertices'].items():
@@ -254,6 +255,12 @@ class VtkViewer(object):
         # Actor
 
         self.poly.GetCellData().SetScalars(self.colors)
+        if self.vcolors:
+            self.vertex_colors = vtkUnsignedCharArray()
+            self.vertex_colors.SetNumberOfComponents(3)
+            for key in self.data['vertices']:
+                self.vertex_colors.InsertNextTypedTuple(self.vcolors.get(key, [200, 200, 200]))
+            self.poly.GetPointData().SetScalars(self.vertex_colors)
         mapper = vtkPolyDataMapper()
         mapper.SetInputData(self.poly)
 
@@ -414,6 +421,16 @@ if __name__ == "__main__":
             5: [+3, -3, 2],
             6: [+3, +3, 2],
             7: [-3, +3, 2],
+        },
+        'vcolors': {  # turn on vertex coloring by uncommenting below
+            # 0: [255, 0, 255],
+            # 1: [255, 0, 0],
+            # 2: [255, 255, 0],
+            # 3: [255, 255, 0],
+            # 4: [0, 255, 0],
+            # 5: [0, 255, 150],
+            # 6: [0, 255, 255],
+            # 7: [0, 0, 255],
         },
         'edges': [
             {'u': 0, 'v': 4, 'color': [0, 0, 0]},
