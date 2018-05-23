@@ -144,3 +144,26 @@ def test(ctx, checks=True, doctest=False):
         cmd.append('--doctest-modules')
 
     ctx.run(' '.join(cmd))
+
+@task(help={
+      'release_type': 'Type of release follows semver rules. Must be one of: major, minor, patch.'})
+def release(ctx, release_type):
+    """Releases the project in one swift command!"""
+    if release_type not in ('patch', 'minor', 'major'):
+        raise Exit('The release type parameter is invalid.\nMust be one of: major, minor, patch')
+
+    ctx.run('bumpversion %s --verbose' % release_type)
+    # ctx.run('invoke docs test')   Commented out since there's no docs in this repo
+    ctx.run('invoke test')
+    ctx.run('python setup.py clean --all sdist bdist_wheel')
+
+    if confirm('You are about to upload the release to pypi.org. Are you sure? [y/N]'):
+        files = ['dist/*.whl', 'dist/*.gz', 'dist/*.zip']
+        dist_files = ' '.join([pattern for f in files for pattern in glob.glob(f)])
+
+        if len(dist_files):
+            ctx.run('twine upload --skip-existing %s' % dist_files)
+        else:
+            raise Exit('No files found to release')
+    else:
+        raise Exit('Aborted release')
