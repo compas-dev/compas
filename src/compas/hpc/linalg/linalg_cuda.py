@@ -4,9 +4,11 @@ from __future__ import division
 from __future__ import print_function
 
 try:
+    from numpy import ceil
     from numpy import diag
     from numpy import eye
     from numpy import float32
+    from numpy import uint32
 except:
     pass
 
@@ -32,10 +34,36 @@ __all__ = [
     'diag_cuda',
     'transpose_cuda',
     # 'det_cuda',
-    # 'dot_cuda',
+    'dot_cuda',
     # 'eig_cuda',
     'eye_cuda',
 ]
+
+
+kernel = """
+
+__global__ void dot_cuda(int m, int n, int o, float *a, float *b, float *c) {
+
+    // int nx  = blockDim.x * gridDim.x;
+    int idx = threadIdx.x + blockDim.x*blockIdx.x;
+    int idy = threadIdx.y + blockDim.y*blockIdx.y;
+
+    if (idx < o && idy < m) {
+
+        int id  = idy * o + idx;
+        float p = 0.;
+
+        for (int i = 0; i < n; i++) {
+            float ai = a[idy * n + i];
+            float bi = b[i * o + idx];
+            p += ai * bi;
+        }
+
+        c[id] = p;
+    }
+}
+"""
+mod = pycuda.compiler.SourceModule(kernel)
 
 
 def transpose_cuda(a):
@@ -94,36 +122,47 @@ def transpose_cuda(a):
 #     return skcuda.linalg.det(a)
 
 
-# def dot_cuda(a, b):
+def dot_cuda(a, b, dim=2):
 
-#     """ Matrix multiplication of two GPUArrays.
+    """ Matrix multiplication of two GPUArrays.
 
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray matrix 1 (m x n).
-#     b : gpuarray
-#         GPUArray matrix 2 (n x o).
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray matrix 1 (m x n).
+    b : gpuarray
+        GPUArray matrix 2 (n x o).
+    dim : int
+        Dimension of square CUDA block.
 
-#     Returns
-#     -------
-#     gpuarray
-#         [c] = [a][b] of size (m x o)
+    Returns
+    -------
+    gpuarray
+        [c] = [a][b] of size (m x o)
 
-#     Examples
-#     --------
-#     >>> a = give_cuda([[0, 1], [2, 3]])
-#     >>> b = give_cuda([[0, 1], [1, 0]])
-#     >>> c = dot_cuda(a, b)
-#     array([[ 1.,  0.],
-#            [ 3.,  2.]])
+    Examples
+    --------
+    >>> a = give_cuda([[0, 1], [2, 3]])
+    >>> b = give_cuda([[0, 1], [1, 0]])
+    >>> c = dot_cuda(a, b)
+    array([[ 1.,  0.],
+           [ 3.,  2.]])
 
-#     >>> type(c)
-#     <class 'pycuda.gpuarray.GPUArray'>
+    >>> type(c)
+    <class 'pycuda.gpuarray.GPUArray'>
 
-#     """
+    """
 
-#     return pycuda.gpuarray.dot(a, b)
+    m, n = a.shape
+    o = b.shape[1]
+    nx = int(ceil(o / dim))
+    ny = int(ceil(m / dim))
+
+    func = mod.get_function('dot_cuda')
+    c = pycuda.gpuarray.empty((m, o), float32)
+    func(uint32(m), uint32(n), uint32(o),  a, b, c, block=(dim, dim, 1), grid=(nx, ny, 1))
+
+    return c
 
 
 # def cuda_eig(a):
@@ -209,67 +248,30 @@ def eye_cuda(n):
 
 if __name__ == "__main__":
 
+    from compas.hpc import get_cuda
+
+    from numpy import allclose
+    from numpy import dot
+    from numpy.random import rand
+
+    from time import time
+
     a = diag_cuda([1., 2., 3.])
     a = eye_cuda(3)
     b = give_cuda([[5, -2, 1], [0, 3, -1], [2, 0, 7]])
     c = transpose_cuda(b)
 
-    from numpy import array
-    from numpy import dot
-    from numpy import float32
-    from numpy import uint32
-    from compas.hpc import device_cuda
-
-    # device_cuda()
-
-    from pycuda import driver
-    from pycuda import gpuarray
-    from pycuda import compiler
-    from pycuda import tools
-
-    kernel = """
-        #include <stdio.h>
-
-        __global__ void dot_cuda(int m, float *a, float *b, float *c) {
-
-            int tx = threadIdx.x;
-            int ty = threadIdx.y;
-            int bx = blockIdx.x;
-            int by = blockIdx.y;
-            // int id = bx * blockDim.x + tx + by * blockDim.y + ty;
-            int id = 0;
-
-            float p = 0.;
-
-            for (int i = 0; i < m; i++) {
-                float ai = a[ty * m + i];
-                float bi = b[i * m + tx];
-                p += ai * bi;
-            }
-
-            c[ty * m + tx] = p;
-
-            printf("Thread %d.%d of Block %d.%d ID %d\\n", tx, ty, bx, by, id);
-        }
-    """
-
-    m = 2
-
-    a = array([[0, 1], [2, 3]], dtype=float32)
-    b = array([[1, 0], [0, 1]], dtype=float32)
+    a = rand(200, 3)
+    b = rand(3, 500)
     c = dot(a, b)
 
     a_ = give_cuda(a)
     b_ = give_cuda(b)
-    c_ = gpuarray.empty(a.shape, float32)
+    c_ = dot_cuda(a_, b_)
 
-    mod = compiler.SourceModule(kernel)
-    dot_cuda = mod.get_function('dot_cuda')
-
-    dot_cuda(uint32(m), a_, b_, c_, block=(m, m, 1))
-
-    print(c)
-    print(c_)
+    tic = time()
+    print(1000 * (time() - tic))
+    print(allclose(c, get_cuda(c_)))
 
 
 
