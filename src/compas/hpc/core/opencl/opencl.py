@@ -6,6 +6,7 @@ from __future__ import print_function
 try:
     from numpy import array
     from numpy import float32
+    from numpy import complex64
 except:
     pass
 
@@ -79,7 +80,8 @@ def give_cl(queue, a, type='real'):
     if type == 'real':
         return cl_array.to_device(queue, array(a, dtype=float32))
     elif type == 'complex':
-        raise NotImplementedError
+        pass
+        # return cl_array.to_device(queue, array(a, dtype=complex64))
 
 
 def get_cl(a):

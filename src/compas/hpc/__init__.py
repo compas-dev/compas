@@ -141,9 +141,11 @@ average
 from .geometry import *
 from .algorithms import *
 from .core import *
+from .linalg import *
 
 from .geometry import __all__ as a
 from .algorithms import __all__ as b
 from .core import __all__ as c
+from .linalg import __all__ as d
 
-__all__ = a + b + c
+__all__ = a + b + c + d

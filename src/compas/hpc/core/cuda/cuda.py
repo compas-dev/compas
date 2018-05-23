@@ -6,6 +6,7 @@ from __future__ import print_function
 try:
     from numpy import array
     from numpy import float32
+    from numpy import complex64
 except:
     pass
 
@@ -142,8 +143,7 @@ def give_cuda(a, type='real'):
     if type == 'real':
         return cuda_array.to_gpu(array(a).astype(float32))
     elif type == 'complex':
-        raise NotImplementedError
-        # return cuda_array.to_gpu(array(a).astype(complex32))
+        return cuda_array.to_gpu(array(a).astype(complex64))
 
 
 def get_cuda(a):
@@ -295,8 +295,9 @@ if __name__ == "__main__":
 
     # device_cuda()
     # a = give_cuda([[1., 2., 3.], [4., 5., 6.]])
+    a = give_cuda([1.+1j, 2.+2j, 3.+3j], type='complex')
     # a = get_cuda(a)
-    a = ones_cuda((3, 3))
+    # a = ones_cuda((3, 3))
     # a = zeros_cuda((3, 3))
     # a = rand_cuda((2, 2))
     # a = tile_cuda(give_cuda([[1, 2], [3, 4]]), (2, 2))
