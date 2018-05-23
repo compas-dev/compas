@@ -8,6 +8,7 @@ from os import path
 from setuptools import find_packages, setup
 
 requirements = []
+optional_requirements = {}
 here = path.abspath(path.dirname(__file__))
 
 def read(*names, **kwargs):
@@ -50,6 +51,6 @@ setup(
     zip_safe=False,
     install_requires=requirements,
     python_requires='>=2.7',
-    # py_modules=[],
+    extras_require=optional_requirements
     # entry_points={},
 )
