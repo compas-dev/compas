@@ -84,7 +84,7 @@ def clean(ctx, docs=False, bytecode=True, builds=True):
     # does not contain the documentation of the library
     if docs:
         folders.append('docs/_build/')
-        raise Exception('This repository does not contain documentation at the moment')
+        raise Exit('This repository does not contain documentation at the moment')
 
     folders.append('dist/')
 
@@ -105,7 +105,7 @@ def clean(ctx, docs=False, bytecode=True, builds=True):
 def docs(ctx, rebuild=True, check_links=False):
     """Builds package's HTML documentation."""
 
-    raise Exception('This repository does not contain documentation at the moment')
+    raise Exit('This repository does not contain documentation at the moment')
 
     if rebuild:
         clean(ctx)
