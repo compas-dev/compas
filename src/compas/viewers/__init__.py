@@ -26,6 +26,13 @@ Classes
 
 """
 
+from compas.viewers import viewer
+from compas.viewers import meshviewer
+from compas.viewers import networkviewer
+from compas.viewers import volmeshviewer
+from compas.viewers import vtkviewer
+from compas.viewers import vtkvoxels
+
 from .core import *
 from .viewer import *
 from .vtkviewer import *
@@ -34,11 +41,10 @@ from .networkviewer import *
 from .meshviewer import *
 from .volmeshviewer import *
 
-from .vtkviewer import __all__ as a
-from .viewer import __all__ as b
-from .networkviewer import __all__ as c
-from .meshviewer import __all__ as d
-from .volmeshviewer import __all__ as e
-from .vtkvoxels import __all__ as f
 
-__all__ = a + b + c + d + e + f
+__all__ = [] 
+__all__ += viewer.__all__
+__all__ += meshviewer.__all__
+__all__ += networkviewer.__all__ 
+__all__ += meshviewer.__all__
+__all__ += vtkviewer.__all__

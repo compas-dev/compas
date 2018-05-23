@@ -87,11 +87,15 @@ class App(QtWidgets.QApplication):
     def init_menubar(self):
         if 'menubar' not in self.config:
             return
+        if not self.config['menubar']:
+            return
         self.menubar = self.main.menuBar()
         self.add_menubar_items(self.config['menubar'], self.menubar, 0)
 
     def init_toolbar(self):
         if 'toolbar' not in self.config:
+            return
+        if not self.config['toolbar']:
             return
         self.toolbar = self.main.addToolBar('Tools')
         self.toolbar.setMovable(False)
@@ -101,6 +105,8 @@ class App(QtWidgets.QApplication):
 
     def init_sidebar(self):
         if 'sidebar' not in self.config:
+            return
+        if not self.config['sidebar']:
             return
         self.sidebar = QtWidgets.QDockWidget()
         self.sidebar.setObjectName('Sidebar')
@@ -118,6 +124,10 @@ class App(QtWidgets.QApplication):
         layout.addStretch()
 
     def init_console(self):
+        if 'console' not in self.config:
+            return
+        if not self.config['console']:
+            return
         self.console = QtWidgets.QDockWidget()
         self.console.setObjectName('Console')
         self.console.setAllowedAreas(QtCore.Qt.BottomDockWidgetArea)
