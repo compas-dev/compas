@@ -1,0 +1,16 @@
+graft src
+graft tests
+graft samples
+
+prune libs
+prune temp
+
+include .bumpversion.cfg
+include .editorconfig
+
+include LICENSE
+include README.md
+
+include requirements-dev.txt tasks.py pytest.ini
+
+global-exclude *.py[cod] __pycache__ *.dylib

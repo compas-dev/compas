@@ -1,3 +1,6 @@
 bumpversion>=0.5
+check-manifest>=0.36
+flake8
 pytest
+isort
 -e .
