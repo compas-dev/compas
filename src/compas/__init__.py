@@ -167,8 +167,8 @@ def verify():
 
 
 def installed():
-    import pip
-    installed_packages = pip.get_installed_distributions()
+    import pkg_resources
+    installed_packages = pkg_resources.working_set
     flat_installed_packages = [package.project_name for package in installed_packages]
     return sorted(flat_installed_packages, key=str.lower)
 
