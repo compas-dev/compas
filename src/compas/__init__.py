@@ -179,4 +179,4 @@ def requirements():
             print(line.strip())
 
 
-__all__ = ['HOME', 'DATA', 'DOCS', 'LIBS', 'TEMP', 'get_data', 'get_license', 'get_requirements', 'get_version']
+__all__ = ['HOME', 'DATA', 'DOCS', 'LIBS', 'TEMP', 'get_data', 'license', 'requirements', 'version']

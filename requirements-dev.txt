@@ -4,4 +4,5 @@ check-manifest>=0.36
 flake8
 pytest
 isort
+twine
 -e .
