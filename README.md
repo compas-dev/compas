@@ -11,7 +11,12 @@ The complete documentation of the compas framework is available here: https://co
 
 ## Getting Started
 
-To install **compas**, simply use `pip` or `conda`:
+The recommended way to install **compas** is to use [Anaconda/conda](https://conda.io/docs/) which takes care of all dependencies:
+
+    conda config --add channels conda-forge
+    conda install compas
+
+But it can also be installed using `pip`:
 
     pip install compas
 
