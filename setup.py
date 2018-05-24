@@ -45,6 +45,7 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
     ],
     keywords=['architecture', 'fabrication', 'engineering'],
+    # TODO: The following excludes don't seem to be really working
     packages=find_packages('src', exclude=['compas_rhino', 'compas_maya', 'compas_blender']),
     package_dir={'': 'src'},
     include_package_data=True,
