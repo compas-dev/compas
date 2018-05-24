@@ -33,7 +33,7 @@ __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
-__version__   = '0.0.1'
+__version__   = '0.1.0'
 
 
 PY3 = sys.version_info.major == 3
