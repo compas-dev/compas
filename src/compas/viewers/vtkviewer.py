@@ -358,7 +358,7 @@ class InteractorStyle(vtkInteractorStyleTrackballCamera):
         return
 
 
-class VertexSizeCallback():
+class VertexSizeCallback(object):
 
     def __init__(self, vertex, support):
         self.vertex = vertex
@@ -381,7 +381,7 @@ class EdgeWidthCallback(object):
         self.actor.GetProperty().SetLineWidth(value)
 
 
-class OpacityCallback():
+class OpacityCallback(object):
 
     def __init__(self, actor, block_actor):
         self.actor = actor
