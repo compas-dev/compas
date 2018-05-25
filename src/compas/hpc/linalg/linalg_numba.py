@@ -3,9 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import numpy as np
 from numba import f8
-from numba import i8
 from numba import c16
 from numba import jit
 
@@ -17,7 +15,7 @@ except ImportError:
 from numpy import zeros
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+__author__    = ['Andrew Liew <liew@arch.ethz.ch>', 'Tomas Mendez Echenagucia <mtomas@ethz.ch>']
 __copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'liew@arch.ethz.ch'
@@ -28,24 +26,16 @@ __all__ = [
     'diag_complex_numba',
     'diag_fill_numba',
     'diag_fill_complex_numba',
-    'ew_matrix_scalar_multiplication_numba',
-    'ew_cmatrix_cscalar_multiplication_numba',
-    'ew_cmatrix_scalar_multiplication_numba',
-    'ew_matrix_cscalar_multiplication_numba',
-    'ew_matrix_matrix_multiplication_numba',
-    'ew_cmatrix_cmatrix_multiplication_numba',
-    'ew_cmatrix_matrix_multiplication_numba',
-    'ew_matrix_scalar_division_numba',
-    'ew_cmatrix_cscalar_division_numba',
-    'ew_cmatrix_scalar_division_numba',
-    'ew_matrix_cscalar_division_numba',
-    'ew_matrix_matrix_division_numba',
-    'ew_cmatrix_cmatrix_division_numba',
-    'ew_cmatrix_matrix_division_numba',
-    'ew_matrix_cmatrix_division_numba',
+    'scale_matrix_numba',
+    'scale_matrix_complex_numba',
+    'multiply_matrices_numba',
+    'multiply_matrices_complex_numba',
+    'divide_matrices_numba',
+    'divide_matrices_complex_numba',
     'dot_numba',
     'dotv_numba',
-    'transpose_numba']
+    'transpose_numba'
+]
 
 
 @jit(f8[:, :](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
@@ -152,10 +142,27 @@ def diag_fill_complex_numba(A, b):
     return A
 
 
-# elementwise matrix scalar multiplication -------------------------------------
+# Elementwise operations -------------------------------------
 
 @jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_matrix_scalar_multiplication_numba(A, b):
+def scale_matrix_numba(A, b):
+
+    """ Scale a matrix A with a float.
+
+    Parameters
+    ----------
+    A : array
+        Base matrix.
+    b : float
+        Scalar value.
+
+    Returns
+    -------
+    array
+        Matrix A scaled by b.
+
+    """
+
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] *= b
@@ -163,35 +170,49 @@ def ew_matrix_scalar_multiplication_numba(A, b):
 
 
 @jit(c16[:, :](c16[:, :], c16), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_cmatrix_cscalar_multiplication_numba(A, b):
+def scale_matrix_complex_numba(A, b):
+
+    """ Scale a complex matrix A with a complex number.
+
+    Parameters
+    ----------
+    A : array
+        Base complex matrix.
+    b : float
+        Complex number.
+
+    Returns
+    -------
+    array
+        Matrix A scaled by b.
+
+    """
+
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] *= b
     return A
-
-
-@jit(c16[:, :](c16[:, :], f8), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_cmatrix_scalar_multiplication_numba(A, b):
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            A[i, j] *= b
-    return A
-
-
-@jit(c16[:, :](f8[:, :], c16), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_matrix_cscalar_multiplication_numba(A, b):
-    C = np.zeros((A.shape[0], A.shape[1]), dtype=np.complex_)
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            C[i, j] = A[i, j] * b
-    return C
-
-
-# elementwise matrix matrix multiplication -------------------------------------
 
 
 @jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_matrix_matrix_multiplication_numba(A, B):
+def multiply_matrices_numba(A, B):
+
+    """ Multiply a matrix A with another matrix B.
+
+    Parameters
+    ----------
+    A : array
+        First matrix.
+    b : array
+        Second matrix.
+
+    Returns
+    -------
+    array
+        Element-wise A * B.
+
+    """
+
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] *= B[i, j]
@@ -199,61 +220,49 @@ def ew_matrix_matrix_multiplication_numba(A, B):
 
 
 @jit(c16[:, :](c16[:, :], c16[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_cmatrix_cmatrix_multiplication_numba(A, B):
+def multiply_matrices_complex_numba(A, B):
+
+    """ Multiply a complex matrix A with another complex matrix B.
+
+    Parameters
+    ----------
+    A : array
+        First complex matrix.
+    b : array
+        Second complex matrix.
+
+    Returns
+    -------
+    array
+        Element-wise A * B (complex).
+
+    """
+
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] *= B[i, j]
     return A
-
-
-@jit(c16[:, :](c16[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_cmatrix_matrix_multiplication_numba(A, B):
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            A[i, j] *= B[i, j]
-    return A
-
-
-# elementwise matrix scalar division -------------------------------------------
-
-
-@jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_matrix_scalar_division_numba(A, b):
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            A[i, j] /= b
-    return A
-
-
-@jit(c16[:, :](c16[:, :], c16), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_cmatrix_cscalar_division_numba(A, b):
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            A[i, j] /= b
-    return A
-
-
-@jit(c16[:, :](c16[:, :], f8), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_cmatrix_scalar_division_numba(A, b):
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            A[i, j] /= b
-    return A
-
-
-@jit(c16[:, :](f8[:, :], c16), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_matrix_cscalar_division_numba(A, b):
-    C = np.zeros((A.shape[0], A.shape[1]), dtype=np.complex_)
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            C[i, j] = A[i, j] / b
-    return C
-
-# elementwise matrix matrix division -------------------------------------------
 
 
 @jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_matrix_matrix_division_numba(A, B):
+def divide_matrices_numba(A, B):
+
+    """ Divide a matrix A with another matrix B.
+
+    Parameters
+    ----------
+    A : array
+        First matrix.
+    b : array
+        Second matrix.
+
+    Returns
+    -------
+    array
+        Element-wise A / B.
+
+    """
+
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] /= B[i, j]
@@ -261,28 +270,28 @@ def ew_matrix_matrix_division_numba(A, B):
 
 
 @jit(c16[:, :](c16[:, :], c16[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_cmatrix_cmatrix_division_numba(A, B):
+def divide_matrices_complex_numba(A, B):
+
+    """ Divide a complex matrix A with another complex matrix B.
+
+    Parameters
+    ----------
+    A : array
+        First complex matrix.
+    b : array
+        Second complex matrix.
+
+    Returns
+    -------
+    array
+        Element-wise A / B (complex).
+
+    """
+
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] /= B[i, j]
     return A
-
-
-@jit(c16[:, :](c16[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_cmatrix_matrix_division_numba(A, B):
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            A[i, j] /= B[i, j]
-    return A
-
-
-@jit(c16[:, :](f8[:, :], c16[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
-def ew_matrix_cmatrix_division_numba(A, B):
-    C = np.zeros((A.shape[0], A.shape[1]), dtype=np.complex_)
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            C[i, j] = A[i, j] / B[i, j]
-    return C
 
 
 @jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
@@ -365,6 +374,7 @@ def transpose_numba(A):
             B[j, i] = A[i, j]
     return B
 
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -373,18 +383,26 @@ if __name__ == "__main__":
 
     from numpy import array
     from numpy import float64
+    from numpy import complex128
     from numpy import zeros
+    from numpy.random import rand
 
-    A = zeros((3, 3))
-    b = array(list(range(3)), dtype=float64)
+    from time import time
 
-    print(diag_numba(A, b))
-    print(diag_fill_numba(A, 1.))
+    m = 10**3
 
-    d = array([4., 5.])
-    e = array([[1., 2.], [0., 2.]])
-    f = array([[4., 5.], [1., 2.]])
+    A = zeros((m, m)) + 3
+    b = array(list(range(m)), dtype=float64)
 
-    # print(dot_numba(e, f))
-    print(dotv_numba(e, d))
-    print(transpose_numba(e))
+    tic1 = time()
+    # diag_numba(A, b)
+    # diag_complex_numba(array(A, dtype=complex128), array(b, dtype=complex128))
+    # diag_fill_numba(A, 1.0)
+    # diag_fill_complex_numba(array(A, dtype=complex128), 1.0 + 1.0j)
+    # scale_matrix_numba(A, 2.0)
+    # scale_matrix_complex_numba(array(A, dtype=complex128), 1.+1j)
+    print(1000 * (time() - tic1))
+
+    # tic2 = time()
+    # B = array(A, dtype=complex128) * 1.+1j
+    # print(1000 * (time() - tic2))

@@ -4,7 +4,6 @@ from __future__ import division
 from __future__ import print_function
 
 from numba import f8
-from numba import i8
 from numba import jit
 
 try:
