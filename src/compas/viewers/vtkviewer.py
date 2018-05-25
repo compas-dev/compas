@@ -371,7 +371,7 @@ class VertexSizeCallback():
             self.support.SetRadius(value * 1.5)
 
 
-class EdgeWidthCallback():
+class EdgeWidthCallback(object):
 
     def __init__(self, actor):
         self.actor = actor
