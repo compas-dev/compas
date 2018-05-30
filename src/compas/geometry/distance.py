@@ -24,10 +24,10 @@ from compas.geometry.basic import vector_component
 from compas.geometry.basic import vector_component_xy
 
 
-__author__    = ['Tom Van Mele', ]
+__author__ = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+__license__ = 'MIT License'
+__email__ = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -50,6 +50,7 @@ __all__ = [
     'closest_point_on_polyline',
     'closest_point_on_polyline_xy',
     'closest_point_on_plane',
+    'closest_line_to_point',
 ]
 
 
@@ -205,10 +206,10 @@ def distance_point_line(point, line):
 
     """
     a, b = line
-    ab   = subtract_vectors(b, a)
-    pa   = subtract_vectors(a, point)
-    pb   = subtract_vectors(b, point)
-    l    = length_vector(cross_vectors(pa, pb))
+    ab = subtract_vectors(b, a)
+    pa = subtract_vectors(a, point)
+    pb = subtract_vectors(b, point)
+    l = length_vector(cross_vectors(pa, pb))
     l_ab = length_vector(ab)
     return l / l_ab
 
@@ -241,10 +242,10 @@ def distance_point_line_xy(point, line):
 
     """
     a, b = line
-    ab   = subtract_vectors_xy(b, a)
-    pa   = subtract_vectors_xy(a, point)
-    pb   = subtract_vectors_xy(b, point)
-    l    = fabs(cross_vectors_xy(pa, pb)[2])
+    ab = subtract_vectors_xy(b, a)
+    pa = subtract_vectors_xy(a, point)
+    pb = subtract_vectors_xy(b, point)
+    l = fabs(cross_vectors_xy(pa, pb)[2])
     l_ab = length_vector_xy(ab)
     return l / l_ab
 
@@ -275,10 +276,10 @@ def distance_point_line_sqrd(point, line):
 
     """
     a, b = line
-    ab   = subtract_vectors(b, a)
-    pa   = subtract_vectors(a, point)
-    pb   = subtract_vectors(b, point)
-    l    = length_vector_sqrd(cross_vectors(pa, pb))
+    ab = subtract_vectors(b, a)
+    pa = subtract_vectors(a, point)
+    pb = subtract_vectors(b, point)
+    l = length_vector_sqrd(cross_vectors(pa, pb))
     l_ab = length_vector_sqrd(ab)
     return l / l_ab
 
@@ -311,10 +312,10 @@ def distance_point_line_sqrd_xy(point, line):
 
     """
     a, b = line
-    ab   = subtract_vectors_xy(b, a)
-    pa   = subtract_vectors_xy(a, point)
-    pb   = subtract_vectors_xy(b, point)
-    l    = cross_vectors_xy(pa, pb)[2]**2
+    ab = subtract_vectors_xy(b, a)
+    pa = subtract_vectors_xy(a, point)
+    pb = subtract_vectors_xy(b, point)
+    l = cross_vectors_xy(pa, pb)[2]**2
     l_ab = length_vector_sqrd_xy(ab)
     return l / l_ab
 
@@ -677,8 +678,8 @@ def closest_point_on_segment(point, segment):
 
     """
     a, b = segment
-    p  = closest_point_on_line(point, segment)
-    d  = distance_point_point_sqrd(a, b)
+    p = closest_point_on_line(point, segment)
+    d = distance_point_point_sqrd(a, b)
     d1 = distance_point_point_sqrd(a, p)
     d2 = distance_point_point_sqrd(b, p)
     if d1 > d or d2 > d:
@@ -705,8 +706,8 @@ def closest_point_on_segment_xy(point, segment):
 
     """
     a, b = segment
-    p  = closest_point_on_line_xy(point, segment)
-    d  = distance_point_point_sqrd_xy(a, b)
+    p = closest_point_on_line_xy(point, segment)
+    d = distance_point_point_sqrd_xy(a, b)
     d1 = distance_point_point_sqrd_xy(a, p)
     d2 = distance_point_point_sqrd_xy(b, p)
     if d1 > d or d2 > d:
@@ -830,7 +831,7 @@ def closest_point_on_plane(point, plane):
     """
     base, normal = plane
     x, y, z = base
-    a, b, c  = normalize_vector(normal)
+    a, b, c = normalize_vector(normal)
     x1, y1, z1 = point
     d = a * x + b * y + c * z
     k = (a * x1 + b * y1 + c * z1 - d) / (a**2 + b**2 + c**2)
@@ -839,9 +840,35 @@ def closest_point_on_plane(point, plane):
             z1 - k * c]
 
 
+def closest_line_to_point(point, lines):
+    """Compute closest line to a point from a list of lines.
+
+    Parameters
+    ----------
+    point : sequenceof float
+        XYZ coordinates of point.
+    lines : sequence of lines (tuples of points).
+        The lines to be checked for distance.
+
+    Returns
+    -------
+    tuple
+        the closest line.
+    """
+    cloud = []
+
+    for segment in lines:
+        cloud.append(closest_point_on_segment(point, segment))
+
+    return lines[closest_point_in_cloud(point, cloud)[2]]
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
+
 if __name__ == "__main__":
     pass
+
+
