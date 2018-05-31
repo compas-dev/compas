@@ -131,9 +131,9 @@ CONFIG = {
         }
     ],
     'toolbar': [
-        {'text': 'Zoom Extents', 'action': 'zoom_extents', 'image': 'icons/zoom/icons8-zoom-to-extents-50.png'},
-        {'text': 'Zoom In', 'action': 'zoom_in', 'image': 'icons/zoom/icons8-zoom-in-50.png'},
-        {'text': 'Zoom Out', 'action': 'zoom_out', 'image': 'icons/zoom/icons8-zoom-out-50.png'},
+        {'text': 'Zoom Extents', 'action': 'zoom_extents', 'image': '../icons/zoom/icons8-zoom-to-extents-50.png'},
+        {'text': 'Zoom In', 'action': 'zoom_in', 'image': '../icons/zoom/icons8-zoom-in-50.png'},
+        {'text': 'Zoom Out', 'action': 'zoom_out', 'image': '../icons/zoom/icons8-zoom-out-50.png'},
     ],
     'sidebar': [
         {

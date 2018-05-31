@@ -30,7 +30,7 @@ from compas.topology import mesh_flip_cycles
 from compas.topology import mesh_subdivide
 
 from compas.viewers import core
-from compas.viewers.meshviewer.model import MeshViewModel
+from compas.viewers.meshviewer.model import MeshView
 
 
 __author__     = ['Tom Van Mele', ]
@@ -120,7 +120,7 @@ class Controller(core.controller.Controller):
     @mesh.setter
     def mesh(self, mesh):
         self._mesh = mesh
-        self._meshview = MeshViewModel(mesh)
+        self._meshview = MeshView(mesh)
 
     # centering the mesh should be handled
     # by storing a base translation vector for the camera

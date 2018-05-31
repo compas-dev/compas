@@ -25,16 +25,25 @@ __all__ = ['MeshViewer', ]
 class MeshViewer(App):
     """"""
 
-    def __init__(self, config=CONFIG, style=STYLE):
-        super(MeshViewer, self).__init__(config, style)
+    def __init__(self):
+        super(MeshViewer, self).__init__(CONFIG, STYLE)
         self.controller = Controller(self)
         self.view = View(self.controller)
         self.setup()
         self.init()
 
+    def show(self):
+        super(MeshViewer, self).show()
+
+        # self.controller.mesh = mesh
+
+        # self.controller.center_mesh()
+        # self.controller.view.make_buffers()
+        # self.controller.view.update()
+
     # @property
     # def mesh(self):
-    #     return self.controller._mesh
+    #     return self.controller.mesh
 
     # @mesh.setter
     # def mesh(self, mesh):
@@ -47,5 +56,15 @@ class MeshViewer(App):
 
 if __name__ == '__main__':
 
-    viewer = MeshViewer().show()
+    import compas
+    from compas.datastructures import Mesh
 
+    # mesh = Mesh.from_polyhedron(6)
+    # print(mesh)
+
+    MeshViewer().show()
+
+    # viewer.controller.mesh = Mesh.from_polyhedron(6)
+    # viewer.controller.center_mesh()
+    # viewer.controller.view.make_buffers()
+    # viewer.controller.view.update()

@@ -113,7 +113,6 @@ class DataEncoder(json.JSONEncoder):
         from compas.datastructures import Datastructure
 
         if isinstance(o, Datastructure):
-            print(type(o))
             return {
                 'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
                 'value': o.to_data()

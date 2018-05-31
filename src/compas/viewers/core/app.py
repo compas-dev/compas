@@ -103,6 +103,9 @@ class App(QtWidgets.QApplication):
         self.toolbar.setIconSize(QtCore.QSize(24, 24))
         self.add_toolbar_items(self.config['toolbar'], self.toolbar)
 
+    # make this resizable
+    # rename this to controls
+    # add true sidebar
     def init_sidebar(self):
         if 'sidebar' not in self.config:
             return
@@ -123,6 +126,7 @@ class App(QtWidgets.QApplication):
         self.add_sidebar_items(self.config['sidebar'], layout)
         layout.addStretch()
 
+    # make this into something that canbe toggled
     def init_console(self):
         if 'console' not in self.config:
             return

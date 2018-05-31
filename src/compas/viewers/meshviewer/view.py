@@ -53,23 +53,7 @@ class View(GLWidget):
     # arrays
     # ==========================================================================
 
-    # @property
-    # def faces(self):
-    #     faces = []
-    #     for fkey in self.mesh.faces():
-    #         vertices = self.mesh.face_vertices(fkey)
-    #         if len(vertices) == 3:
-    #             faces.append(vertices)
-    #         elif len(vertices) == 4:
-    #             a, b, c, d = vertices
-    #             faces.append([a, b, c])
-    #             faces.append([c, d, a])
-    #         else:
-    #             raise NotImplementedError
-    #             # c = self.mesh.face_centroid(fkey)
-    #             # for u, v in self.mesh.face_halfedges(fkey):
-    #             #     faces.append([u, v, c])
-    #     return faces
+    # move this to model?
 
     @property
     def array_xyz(self):
@@ -137,6 +121,8 @@ class View(GLWidget):
     def draw_buffers(self):
         if not self.buffers:
             return
+
+        print('here')
 
         glEnableClientState(GL_VERTEX_ARRAY)
         glEnableClientState(GL_COLOR_ARRAY)

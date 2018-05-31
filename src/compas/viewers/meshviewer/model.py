@@ -12,10 +12,10 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = ['MeshViewModel', ]
+__all__ = ['MeshView', ]
 
 
-class MeshViewModel(object):
+class MeshView(object):
     
     def __init__(self, mesh):
         self._mesh = None
