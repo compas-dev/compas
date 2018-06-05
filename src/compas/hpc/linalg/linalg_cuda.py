@@ -21,7 +21,7 @@ try:
     import pycuda
     import pycuda.autoinit
 except:
-    pass
+    has_pycuda = None
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
@@ -63,7 +63,8 @@ __global__ void dot_cuda(int m, int n, int o, float *a, float *b, float *c) {
     }
 }
 """
-mod = pycuda.compiler.SourceModule(kernel)
+if has_pycuda:
+    mod = pycuda.compiler.SourceModule(kernel)
 
 
 def transpose_cuda(a):
