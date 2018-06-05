@@ -28,4 +28,6 @@ from .utilities import __all__ as c
 from .forms import __all__ as d
 from .ui import __all__ as e
 
-__all__ = a + b + c + d + e
+__version__ = '0.1.0'
+
+__all__ = a + b + c + d + e + ['__version__']

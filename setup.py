@@ -1,36 +1,23 @@
-# from distutils.core import setup
-# from distutils.extension import Extension
-# from Cython.Build import cythonize
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+from __future__ import print_function
 
-# extensions = [
-#     Extension(
-#         "compas.geometry.hpc.cpoint",
-#         sources=["compas/geometry/hpc/cpoint.pyx"]
-#         # language="c++"
-#     ),
-#     Extension(
-#         "compas.geometry.hpc.cvector",
-#         sources=["compas/geometry/hpc/cvector.pyx"]
-#         # language="c++"
-#     ),
-# ]
-
-# setup(
-#     ext_modules=cythonize(extensions)
-# )
-
-from setuptools import setup
-from setuptools import Extension
-from setuptools import find_packages
-
-from codecs import open
+import io
 from os import path
 
+from setuptools import find_packages, setup
+
+requirements = []
+optional_requirements = {}
 here = path.abspath(path.dirname(__file__))
 
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+def read(*names, **kwargs):
+    return io.open(
+        path.join(here, *names),
+        encoding=kwargs.get('encoding', 'utf8')
+    ).read()
 
+long_description = read('README.md')
 
 setup(
     name='compas',
@@ -46,6 +33,10 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Scientific/Engineering',
         'License :: OSI Approved :: MIT License',
+        'Operating System :: Unix',
+        'Operating System :: POSIX',
+        'Operating System :: Microsoft :: Windows',
+        'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
@@ -53,20 +44,14 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
     ],
-    keywords='architecture fabrication engineering',
+    keywords=['architecture', 'fabrication', 'engineering'],
+    # TODO: The following excludes don't seem to be really working
     packages=find_packages('src', exclude=['compas_rhino', 'compas_maya', 'compas_blender']),
     package_dir={'': 'src'},
-    package_data={'compas': ['*.dll', '*.so']},
-    # include_package_data=True,  # combine with MANIFEST.in
-    # exclude_package_data={},
-    data_files=[('', ['LICENSE', 'README.md']), ('samples', ['*.obj', '*.json'])],
-    install_requires=[],
+    include_package_data=True,
+    zip_safe=False,
+    install_requires=requirements,
     python_requires='>=2.7',
-    # py_modules=[],
+    extras_require=optional_requirements
     # entry_points={},
-    ext_modules=[
-        Extension(
-            'compas.geometry.'
-        )
-    ]
 )

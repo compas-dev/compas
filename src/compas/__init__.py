@@ -33,7 +33,7 @@ __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
-__version__   = '0.0.1'
+__version__   = '0.1.0'
 
 
 PY3 = sys.version_info.major == 3
@@ -41,7 +41,7 @@ PY3 = sys.version_info.major == 3
 HERE = os.path.dirname(__file__)
 
 HOME = os.path.abspath(os.path.join(HERE, '../../'))
-DATA = os.path.abspath(os.path.join(HOME, 'data'))
+DATA = os.path.abspath(os.path.join(HOME, 'samples'))
 DOCS = os.path.abspath(os.path.join(HOME, 'docs'))
 LIBS = os.path.abspath(os.path.join(HOME, 'libs'))
 TEMP = os.path.abspath(os.path.join(HOME, 'temp'))
@@ -167,8 +167,8 @@ def verify():
 
 
 def installed():
-    import pip
-    installed_packages = pip.get_installed_distributions()
+    import pkg_resources
+    installed_packages = pkg_resources.working_set
     flat_installed_packages = [package.project_name for package in installed_packages]
     return sorted(flat_installed_packages, key=str.lower)
 
@@ -179,4 +179,4 @@ def requirements():
             print(line.strip())
 
 
-__all__ = ['HOME', 'DATA', 'DOCS', 'LIBS', 'TEMP', 'get_data', 'get_license', 'get_requirements', 'get_version']
+__all__ = ['HOME', 'DATA', 'DOCS', 'LIBS', 'TEMP', 'get_data', 'license', 'requirements', 'version']
