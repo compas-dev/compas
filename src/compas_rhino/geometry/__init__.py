@@ -26,8 +26,18 @@ except ImportError:
     if 'ironpython' in sys.version.lower():
         raise
 
+import compas_rhino
+
 
 class RhinoGeometry(object):
+
+    @staticmethod
+    def from_name(name):
+        guids = compas_rhino.get_objects(name=name)
+        if len(guids) > 1:
+            raise NotImplementedError
+
+        return RhinoGeometry.from_guid(guids[0])
 
     @staticmethod
     def from_guid(guid):

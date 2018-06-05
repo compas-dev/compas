@@ -177,10 +177,13 @@ class RhinoCurve(RhinoGeometry):
         rs.EnableRedraw(True)
         return points
 
-    def closest_point(self, point, maxdist=None):
+    def closest_point(self, point, maxdist=None, return_param=False):
         maxdist = maxdist or 0.0
         rc, t = self.geometry.ClosestPoint(Point3d(*point), maxdist)
-        return list(self.geometry.PointAt(t))
+        x, y, z = list(self.geometry.PointAt(t))
+        if not return_param:
+            return x, y, z
+        return x, y, z, t
 
     def closest_points(self, points, maxdist=None):
         return [self.closest_point(point, maxdist) for point in points]

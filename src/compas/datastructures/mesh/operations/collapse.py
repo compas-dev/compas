@@ -136,64 +136,79 @@ def mesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     # UV face
     fkey = self.halfedge[u][v]
-    face = self.face_vertices(fkey)
-    f = len(face)
 
-    # switch between UV face sizes
-    # note: in a triself this is not necessary!
-    if f < 3:
-        raise Exception("Invalid self face: {}".format(fkey))
-    if f == 3:
-        # delete UV
-        o = face[face.index(u) - 1]
+    if fkey is None:
         del self.halfedge[u][v]
-        del self.halfedge[v][o]
-        del self.halfedge[o][u]
-        del self.face[fkey]
+
     else:
-        # u > v > d => u > d
-        d = self.face_vertex_decendant(fkey, v)
-        face.remove(v)
-        del self.halfedge[u][v]
-        del self.halfedge[v][d]
-        self.halfedge[u][d] = fkey
+        face = self.face_vertices(fkey)
+        f = len(face)
+
+        # switch between UV face sizes
+        # note: in a triself this is not necessary!
+        if f < 3:
+            raise Exception("Invalid self face: {}".format(fkey))
+        if f == 3:
+            # delete UV
+            o = face[face.index(u) - 1]
+            del self.halfedge[u][v]
+            del self.halfedge[v][o]
+            del self.halfedge[o][u]
+            del self.face[fkey]
+        else:
+            # u > v > d => u > d
+            d = self.face_vertex_descendant(fkey, v)
+            face.remove(v)
+            del self.halfedge[u][v]
+            del self.halfedge[v][d]
+            self.halfedge[u][d] = fkey
 
     # VU face
     fkey = self.halfedge[v][u]
-    face = self.face[fkey]
-    f = len(face)
 
-    # switch between VU face sizes
-    # note: in a triself this is not necessary!
-    if f < 3:
-        raise Exception("Invalid mesh face: {}".format(fkey))
-    if f == 3:
-        # delete UV
-        o = face[face.index(v) - 1]
-        del self.halfedge[v][u]  # the collapsing halfedge
-        del self.halfedge[u][o]
-        del self.halfedge[o][v]
-        del self.face[fkey]
-    else:
-        # a > v > u => a > u
-        a = self.face_vertex_ancestor(fkey, v)
-        face.remove(v)
-        del self.halfedge[a][v]
+    if fkey is None:
         del self.halfedge[v][u]
-        self.halfedge[a][u] = fkey
+
+    else:
+        face = self.face_vertices(fkey)
+        f = len(face)
+
+        # switch between VU face sizes
+        # note: in a triself this is not necessary!
+        if f < 3:
+            raise Exception("Invalid mesh face: {}".format(fkey))
+        if f == 3:
+            # delete UV
+            o = face[face.index(v) - 1]
+            del self.halfedge[v][u]  # the collapsing halfedge
+            del self.halfedge[u][o]
+            del self.halfedge[o][v]
+            del self.face[fkey]
+        else:
+            # a > v > u => a > u
+            a = self.face_vertex_ancestor(fkey, v)
+            face.remove(v)
+            del self.halfedge[a][v]
+            del self.halfedge[v][u]
+            self.halfedge[a][u] = fkey
 
     # V neighbours and halfedges coming into V
     for nbr, fkey in list(self.halfedge[v].items()):
-        # a > v > nbr => a > u > nbr
-        face = self.face[fkey]
-        a = self.face_vertex_ancestor(fkey, v)
-        face[face.index(v)] = u
 
-        if v in self.halfedge[a]:
-            del self.halfedge[a][v]
-        del self.halfedge[v][nbr]
-        self.halfedge[a][u] = fkey
-        self.halfedge[u][nbr] = fkey
+        if fkey is None:
+            self.halfedge[u][nbr] = None
+            del self.halfedge[v][nbr]
+        else:
+            # a > v > nbr => a > u > nbr
+            face = self.face[fkey]
+            a = self.face_vertex_ancestor(fkey, v)
+            face[face.index(v)] = u
+
+            if v in self.halfedge[a]:
+                del self.halfedge[a][v]
+            del self.halfedge[v][nbr]
+            self.halfedge[a][u] = fkey
+            self.halfedge[u][nbr] = fkey
 
         # only update what will not be updated in the previous part
         # verify what this is exactly
