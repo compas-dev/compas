@@ -76,8 +76,8 @@ napoleon_use_rtype = False
 # plot_working_directory
 # plot_template
 
-plot_html_show_source_link = False
-plot_html_show_formats = False
+# plot_html_show_source_link = False
+# plot_html_show_formats = False
 
 # intersphinx options
 
@@ -86,7 +86,7 @@ intersphinx_mapping = {'python': ('https://docs.python.org/', None)}
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = 'default'
+html_theme = 'classic'
 # html_theme_path = ['_theme']
 html_theme_options = {}
 html_context = {}
