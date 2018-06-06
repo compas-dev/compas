@@ -86,7 +86,7 @@ intersphinx_mapping = {'python': ('https://docs.python.org/', None)}
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = 'classic'
+html_theme = 'default'
 # html_theme_path = ['_theme']
 html_theme_options = {}
 html_context = {}
