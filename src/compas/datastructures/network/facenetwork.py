@@ -52,7 +52,7 @@ class FaceNetwork(FaceHelpers,
         from compas.topology import network_find_faces
         from compas.plotters import FaceNetworkPlotter
 
-        network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
+        network = FaceNetwork.from_obj(compas.get('lines.obj'))
 
         network_find_faces(network, breakpoints=network.leaves())
 

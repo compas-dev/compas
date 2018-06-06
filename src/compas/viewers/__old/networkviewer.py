@@ -48,7 +48,7 @@ class NetworkViewer(Viewer):
         from compas.datastructures.network import Network
         from compas.datastructures.network.viewer import NetworkViewer
 
-        network = Network.from_obj(compas.get_data('lines.obj'))
+        network = Network.from_obj(compas.get('lines.obj'))
 
         network.add_edge(0, 14)
         network.add_edge(15, 10)

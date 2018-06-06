@@ -73,7 +73,7 @@ def depth_first_ordering(adjacency, root):
     >>> import compas
     >>> from compas.datastructures import Network
     >>> from compas.topology import depth_first_search as dfs
-    >>> network = Network.from_obj(compas.get_data('lines.obj'))
+    >>> network = Network.from_obj(compas.get('lines.obj'))
     >>> print(dfs(network, network.get_any_vertex()))
 
     See Also
@@ -342,7 +342,7 @@ def shortest_path(adjacency, root, goal):
         from compas.topology import shortest_path
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
         adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 
@@ -414,7 +414,7 @@ def dijkstra_distances(adjacency, weight, target):
         from compas.plotters import NetworkPlotter
         from compas.utilities import i_to_red
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
         adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 
@@ -499,7 +499,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
         from compas.topology import dijkstra_path
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
         adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 
@@ -544,7 +544,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
         from compas.topology import dijkstra_path
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
         adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 
@@ -687,7 +687,7 @@ if __name__ == '__main__':
         from compas.topology import shortest_path
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
         adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 
@@ -731,7 +731,7 @@ if __name__ == '__main__':
         from compas.plotters import NetworkPlotter
         from compas.utilities import i_to_red
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
         adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
 

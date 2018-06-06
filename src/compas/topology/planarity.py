@@ -203,7 +203,7 @@ def network_is_planar(network):
         from compas.topology import network_find_crossings
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('lines.obj'))
+        network = Network.from_obj(compas.get('lines.obj'))
 
         network.add_edge(21, 29)
         network.add_edge(17, 28)
@@ -287,7 +287,7 @@ def network_embed_in_plane(network, fix=None, straightline=True):
         from compas.topology import network_embed_in_plane
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('fink.obj'))
+        network = Network.from_obj(compas.get('fink.obj'))
 
         embedding = network.copy()
 

@@ -1,14 +1,3 @@
 ********************************************************************************
-The main library of COMPAS
+Visualisation
 ********************************************************************************
-
-.. toctree::
-   :maxdepth: 3
-   :titlesonly:
-
-   overview
-   tutorial
-   examples
-   api
-   citing
-   releases

@@ -1,14 +1,3 @@
 ********************************************************************************
-The main library of COMPAS
+Geometry processing
 ********************************************************************************
-
-.. toctree::
-   :maxdepth: 3
-   :titlesonly:
-
-   overview
-   tutorial
-   examples
-   api
-   citing
-   releases

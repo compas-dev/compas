@@ -437,9 +437,9 @@ if __name__ == "__main__":
 
     from compas.datastructures.mesh import Mesh
 
-    filename = os.path.join(compas.get_data('stanford/bunny/reconstruction/bun_zipper.ply'))
-    filename = os.path.join(compas.get_data('stanford/dragon_recon/dragon_vrip.ply'))
-    filename = os.path.join(compas.get_data('stanford/Armadillo.ply'))
+    filename = os.path.join(compas.get('stanford/bunny/reconstruction/bun_zipper.ply'))
+    filename = os.path.join(compas.get('stanford/dragon_recon/dragon_vrip.ply'))
+    filename = os.path.join(compas.get('stanford/Armadillo.ply'))
 
     reader = PLYreader(filename)
 

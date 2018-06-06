@@ -376,7 +376,7 @@ if __name__ == '__main__':
 
     import compas
 
-    obj = OBJ(compas.get_data('faces.obj'))
+    obj = OBJ(compas.get('faces.obj'))
 
     print(obj.parser.vertices)
     print(obj.parser.lines)

@@ -51,7 +51,7 @@ def network_split_edge(network, u, v, t=0.5, allow_boundary=True):
         from compas.plotters import FaceNetworkPlotter
         from compas.topology import network_find_faces
 
-        network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
+        network = FaceNetwork.from_obj(compas.get('lines.obj'))
 
         network_find_faces(network, breakpoints=network.leaves())
 
@@ -164,7 +164,7 @@ if __name__ == "__main__":
 
     from compas.topology import network_find_faces
 
-    network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
+    network = FaceNetwork.from_obj(compas.get('lines.obj'))
 
     network_find_faces(network, breakpoints=network.leaves())
 

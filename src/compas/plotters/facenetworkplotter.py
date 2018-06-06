@@ -116,7 +116,7 @@ if __name__ == "__main__":
     from compas.datastructures import FaceNetwork
     from compas.topology import network_find_faces
 
-    network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
+    network = FaceNetwork.from_obj(compas.get('lines.obj'))
 
     network_find_faces(network, breakpoints=network.leaves())
 
