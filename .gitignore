@@ -115,6 +115,6 @@ temp/**
 src/.build/**
 *.rhl
 
-samples/bunny
+data/bunny
 *.ply
 *.tar.gz
