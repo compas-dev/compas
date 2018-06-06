@@ -8,32 +8,6 @@ compas.geometry
 This package provides functionality for working with geometry outside
 independent of CAD software.
 
-The functions in this package expect input arguments to be structured in a certain way:
-
-point
-    The xyz coordinates as a sequence of floats.
-vector
-    The xyz coordinates of the end point.
-    The start is always the origin.
-line
-    A tuple with two points representing a continuous line (ray).
-segment
-    A tuple with two points representing a line segment.
-plane
-    A tuple with a base point and normal vector.
-circle
-    A tuple with a point the normal vector of the plane of the circle and the radius as float.
-polygon
-    A sequence of points. First and last are not the same.
-    The polygon is assumed closed.
-polyline
-    A sequence of points. First and last are the same if the polyline is closed.
-    Otherwise it is assumed open.
-polyhedron
-    A list of vertices represented by their XYZ coordinates and a list of faces referencing the vertex list.
-frame
-    A list of three orthonormal vectors.
-
 
 Primitives
 ==========
@@ -72,6 +46,42 @@ XForms
 ..     :nosignatures:
 .. 
 ..     KDTree
+
+
+Algorithms
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    bestfit_plane
+    bestfit_plane_numpy
+    bestfit_circle_numpy
+    bounding_box
+    bounding_box_xy
+    convex_hull
+    convex_hull_xy
+    convex_hull_numpy
+    convex_hull_xy_numpy
+    discrete_coons_patch
+    flatness
+    mesh_contours_numpy
+    mesh_cull_duplicate_vertices
+    mesh_flatness
+    mesh_isolines_numpy
+    mesh_planarize_faces
+    mesh_planarize_faces_shapeop
+    mesh_smooth_centroid
+    network_parallelise_edges
+    network_smooth_centroid
+    oriented_bounding_box_numpy
+    oriented_bounding_box_xy_numpy
+    planarize_faces
+    scalarfield_contours_numpy
+    smooth_area
+    smooth_centroid
+    smooth_centerofmass
 
 
 Functions
@@ -121,18 +131,6 @@ Basic
     transpose_matrix
     vector_component
     vector_component_xy
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    vector_from_points
-    vector_from_points_xy
-    plane_from_points
-    circle_from_points
-    circle_from_points_xy
-    pointcloud
-    pointcloud_xy
 
 Distance
 --------
@@ -356,42 +354,6 @@ Transformations
     translate_lines_xy
     translate_points
     translate_points_xy
-
-
-Algorithms
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    bestfit_plane
-    bestfit_plane_numpy
-    bestfit_circle_numpy
-    bounding_box
-    bounding_box_xy
-    convex_hull
-    convex_hull_xy
-    convex_hull_numpy
-    convex_hull_xy_numpy
-    discrete_coons_patch
-    flatness
-    mesh_contours_numpy
-    mesh_cull_duplicate_vertices
-    mesh_flatness
-    mesh_isolines_numpy
-    mesh_planarize_faces
-    mesh_planarize_faces_shapeop
-    mesh_smooth_centroid
-    network_parallelise_edges
-    network_smooth_centroid
-    oriented_bounding_box_numpy
-    oriented_bounding_box_xy_numpy
-    planarize_faces
-    scalarfield_contours_numpy
-    smooth_area
-    smooth_centroid
-    smooth_centerofmass
 
 """
 
