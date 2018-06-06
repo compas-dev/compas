@@ -33,7 +33,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
-    # 'matplotlib.sphinxext.plot_directive',
+    'matplotlib.sphinxext.plot_directive',
 ]
 
 # autodoc options
@@ -76,8 +76,8 @@ napoleon_use_rtype = False
 # plot_working_directory
 # plot_template
 
-# plot_html_show_source_link = False
-# plot_html_show_formats = False
+plot_html_show_source_link = False
+plot_html_show_formats = False
 
 # intersphinx options
 
