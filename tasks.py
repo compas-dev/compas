@@ -99,6 +99,7 @@ def clean(ctx, docs=False, bytecode=True, builds=True):
     for folder in folders:
         rmtree(os.path.join(BASE_FOLDER, folder), ignore_errors=True)
 
+
 @task(help={
       'rebuild': 'True to clean all previously built docs before starting, otherwise False.',
       'check_links': 'True to check all web links in docs for validity, otherwise False.'})
@@ -144,6 +145,7 @@ def test(ctx, checks=True, doctest=False):
         cmd.append('--doctest-modules')
 
     ctx.run(' '.join(cmd))
+
 
 @task(help={
       'release_type': 'Type of release follows semver rules. Must be one of: major, minor, patch.'})
