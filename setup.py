@@ -9,6 +9,7 @@ from setuptools import find_packages, setup
 
 requirements = []
 optional_requirements = {}
+
 here = path.abspath(path.dirname(__file__))
 
 def read(*names, **kwargs):
