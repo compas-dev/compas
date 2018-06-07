@@ -77,7 +77,7 @@ if __name__ == "__main__":
     from compas_rhino.helpers.artists.networkartist import NetworkArtist
     from compas_rhino.helpers.modifiers.edgemodifier import EdgeModifier
 
-    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get('grid_irregular.obj'))
 
     artist = NetworkArtist(network)
 

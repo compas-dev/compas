@@ -43,7 +43,7 @@ PY3 = sys.version_info.major == 3
 HERE = os.path.dirname(__file__)
 
 HOME = os.path.abspath(os.path.join(HERE, '../../'))
-DATA = os.path.abspath(os.path.join(HOME, 'samples'))
+DATA = os.path.abspath(os.path.join(HOME, 'data'))
 DOCS = os.path.abspath(os.path.join(HOME, 'docs'))
 LIBS = os.path.abspath(os.path.join(HOME, 'libs'))
 TEMP = os.path.abspath(os.path.join(HOME, 'temp'))
@@ -52,10 +52,6 @@ TEMP = os.path.abspath(os.path.join(HOME, 'temp'))
 def _find_resource(filename):
     filename = filename.strip('/')
     return os.path.abspath(os.path.join(DATA, filename))
-
-
-def get_data(filename):
-    return _find_resource(filename)
 
 
 def get(filename):
@@ -186,4 +182,5 @@ def requirements():
             print(line.strip())
 
 
-__all__ = ['HOME', 'DATA', 'DOCS', 'LIBS', 'TEMP', 'get_data', 'get_license', 'get_requirements', 'get_version']
+__all__  = ['HOME', 'DATA', 'DOCS', 'LIBS', 'TEMP']
+__all__ += ['get', 'license', 'version', 'help', 'copyright', 'credits', 'verify', 'installed', 'requirements']

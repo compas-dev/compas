@@ -671,7 +671,7 @@ if __name__ == "__main__":
     from compas_rhino.helpers import network_select_vertex
     from compas_rhino.helpers import network_move_vertex
 
-    network = Network.from_obj(compas.get_data('lines.obj'))
+    network = Network.from_obj(compas.get('lines.obj'))
 
     network_draw(network, layer='test', clear_layer=True)
 

@@ -873,7 +873,7 @@ if __name__ == '__main__':
     import compas
     from compas.viewers import VolMeshViewer
 
-    mesh = VolMesh.from_obj(compas.get_data('boxes.obj'))
+    mesh = VolMesh.from_obj(compas.get('boxes.obj'))
 
     mesh.scale(0.5)
 

@@ -113,7 +113,7 @@ def trimesh_split_edge(self, u, v, t=0.5, allow_boundary=False):
         from compas.plotters import MeshPlotter
         from compas.topology import mesh_quads_to_triangles
 
-        mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         mesh_quads_to_triangles(mesh)
 
@@ -225,7 +225,7 @@ if __name__ == "__main__":
     from compas.plotters import MeshPlotter
     from compas.topology import mesh_quads_to_triangles
 
-    mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     mesh_quads_to_triangles(mesh)
 

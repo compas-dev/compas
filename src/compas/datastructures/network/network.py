@@ -92,7 +92,7 @@ class Network(FromToJson,
         from compas.datastructures import Network
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('lines.obj'))
+        network = Network.from_obj(compas.get('lines.obj'))
 
         plotter = NetworkPlotter(network)
 

@@ -295,6 +295,6 @@ if __name__ == "__main__":
 
     from compas.datastructures.mesh import Mesh
 
-    mesh = Mesh.from_obj(compas.get_data('faces_big.obj'))
+    mesh = Mesh.from_obj(compas.get('faces_big.obj'))
 
     mesh_unify_cycles(mesh)

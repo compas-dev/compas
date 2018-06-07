@@ -427,7 +427,7 @@ if __name__ == "__main__":
     from compas_rhino.helpers import volmesh_select_vertex
     # from compas_rhino.helpers import volmesh_move_vertex
 
-    volmesh = VolMesh.from_obj(compas.get_data('boxes.obj'))
+    volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 
     volmesh_draw(volmesh, layer='test', clear_layer=True)
 

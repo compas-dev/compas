@@ -68,7 +68,7 @@ if __name__ == "__main__":
     from compas.datastructures import Network
     from compas_rhino.helpers.artists.networkartist import NetworkArtist
 
-    network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+    network = Network.from_obj(compas.get('grid_irregular.obj'))
 
     artist = NetworkArtist(network, layer='NetworkArtist')
 

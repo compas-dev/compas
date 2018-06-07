@@ -48,7 +48,7 @@
 
 #             from compas.datastructures.network import Network
 
-#             network = Network.from_obj(compas.get_data('lines.obj'))
+#             network = Network.from_obj(compas.get('lines.obj'))
 
 #             for u, v, attr in network.edges(True):
 #                 attr['f'] = random.choice([-1.0, 1.0]) * random.randint(1, 10)
