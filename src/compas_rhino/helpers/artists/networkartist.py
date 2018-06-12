@@ -1,7 +1,6 @@
 import time
 
 from compas.utilities import color_to_colordict
-from compas.cad import ArtistInterface
 
 import compas_rhino
 
@@ -27,7 +26,7 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['NetworkArtist']
 
 
-class NetworkArtist(ForceArtist, PathArtist, EdgeArtist, VertexArtist, ArtistInterface):
+class NetworkArtist(ForceArtist, PathArtist, EdgeArtist, VertexArtist):
     """"""
 
     def __init__(self, network, layer=None):

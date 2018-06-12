@@ -1,7 +1,5 @@
 import time
 
-from compas.cad import ArtistInterface
-
 import compas_rhino
 
 from compas_rhino.helpers.artists.mixins import VertexArtist
@@ -25,7 +23,7 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['VolMeshArtist']
 
 
-class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, ArtistInterface):
+class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     """"""
 
     def __init__(self, volmesh, layer=None):
