@@ -1,4 +1,4 @@
-from compas.cad import SurfaceGeometryInterface
+from compas_blender.geometry import BlenderGeometry
 
 
 __author__     = ['Andrew Liew <liew@arch.ethz.ch>']
@@ -10,7 +10,7 @@ __email__      = 'liew@arch.ethz.ch'
 __all__ = ['BlenderSurface']
 
 
-class BlenderSurface(SurfaceGeometryInterface):
+class BlenderSurface(BlenderGeometry):
     """"""
 
     def __init__(self, object):

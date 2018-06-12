@@ -4,7 +4,6 @@ from __future__ import division
 
 import compas_rhino
 
-# from compas.cad import CurveGeometryInterface
 from compas_rhino.geometry import RhinoGeometry
 
 try:

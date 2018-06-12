@@ -19,6 +19,12 @@ Object-oriented wrappers for native Blender geometry.
 
 """
 
+
+class BlenderGeometry(object):
+
+    pass
+
+
 from .point import BlenderPoint
 from .curve import BlenderCurve
 from .mesh import BlenderMesh

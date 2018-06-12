@@ -1,8 +1,7 @@
-from compas.cad import MeshGeometryInterface
-
 from compas.geometry import add_vectors
 from compas.geometry import distance_point_point
 
+from compas_blender.geometry import BlenderGeometry
 from compas_blender.utilities import select_mesh
 
 try:
@@ -20,7 +19,7 @@ __email__      = 'liew@arch.ethz.ch'
 __all__ = ['BlenderMesh']
 
 
-class BlenderMesh(MeshGeometryInterface):
+class BlenderMesh(BlenderGeometry):
     """"""
 
     def __init__(self, object):

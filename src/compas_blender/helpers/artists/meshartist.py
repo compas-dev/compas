@@ -5,8 +5,6 @@ try:
 except ImportError:
     pass
 
-from compas.cad import ArtistInterface
-
 from compas_blender.utilities import clear_layer
 from compas_blender.helpers.artists.mixins import VertexArtist
 from compas_blender.helpers.artists.mixins import EdgeArtist
@@ -22,7 +20,7 @@ __email__      = 'liew@arch.ethz.ch'
 __all__ = ['MeshArtist']
 
 
-class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, ArtistInterface):
+class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     """"""
 
     def __init__(self, mesh, layer=0):

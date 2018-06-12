@@ -56,8 +56,8 @@ def convex_hull(points):
         import random
 
         from compas.geometry import distance_point_point
-        from compas.cad.rhino.helpers.mesh import draw_mesh
-        from compas.datastructures.mesh import Mesh
+        from compas.datastructures import Mesh
+        from compas_rhino import MeshArtist
 
         radius = 5
         origin = (0., 0., 0.)
@@ -76,10 +76,11 @@ def convex_hull(points):
 
         mesh = Mesh.from_vertices_and_faces(points, faces)
 
-        draw_mesh(mesh,
-                    show_faces = True,
-                    show_vertices = False,
-                    show_edges = False)
+        artist = MeshArtist(mesh)
+
+        artist.clear()
+        artist.draw_faces()
+        artist.redraw()
 
     """
     def _normal_face(face):
