@@ -45,7 +45,7 @@ class MeshConduit(Conduit):
             from compas.datastructures.mesh import Mesh
             from compas.topology import smooth_mesh_centroid
 
-            mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+            mesh = Mesh.from_obj(compas.get('faces.obj'))
 
             conduit = MeshConduit(mesh)
             conduit.enable()

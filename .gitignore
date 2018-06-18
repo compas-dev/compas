@@ -104,7 +104,12 @@ ENV/
 # compas
 # ------------------------------------------------------------------------------
 
+docs/__build/
+docs/_images/*.gif
+docs/reference/generated/
+
 *.3dmbak
+*.rhl
 
 libs/**
 !libs/PLACEHOLDER
@@ -113,7 +118,6 @@ temp/**
 !temp/PLACEHOLDER
 
 src/.build/**
-*.rhl
 
 data/bunny
 *.ply

@@ -65,7 +65,7 @@ if __name__ == "__main__":
     from compas.datastructures import VolMesh
     from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
 
-    volmesh = VolMesh.from_obj(compas.get_data('boxes.obj'))
+    volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 
     artist = VolMeshArtist(volmesh, layer='VolMeshArtist')
 
