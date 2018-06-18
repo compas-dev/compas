@@ -1,4 +1,5 @@
 from __future__ import print_function
+
 import math
 
 from compas.geometry.basic import cross_vectors
@@ -19,6 +20,7 @@ from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import decompose_matrix
 
 from compas.geometry.transformations import allclose
+
 
 __author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
 __license__ = 'MIT License'

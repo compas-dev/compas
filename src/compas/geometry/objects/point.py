@@ -309,7 +309,6 @@ if __name__ == '__main__':
     from compas.geometry import Line
     from compas.geometry import Polygon
 
-    from compas.geometry import projection_matrix
 
     point    = Point(0.0, 0.0, 0.0)
     normal   = Vector(0.0, 0.0, 1.0)
@@ -326,12 +325,4 @@ if __name__ == '__main__':
     print(p.distance_to_line(line))
     print(p.distance_to_plane(plane))
     print(p.in_triangle(triangle))
-
-    # print(p.in_polygon(polygon))
-    # print(p.in_polyhedron())
-
-    # p.transform()
-    # p.translate()
-    # p.project_to_line()
-    # p.project_to_plane()
 

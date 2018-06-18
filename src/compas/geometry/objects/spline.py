@@ -76,7 +76,7 @@ class Bezier(object):
         degree (int): The degree of the curve.
     """
     def __init__(self, points):
-        self.points = []
+        self._points = []
         self.points = points
 
     @property
@@ -89,12 +89,12 @@ class Bezier(object):
         Returns:
             list: A list of ``Point`` objects.
         """
-        return self.points
+        return self._points
 
     @points.setter
     def points(self, points):
         if points:
-            self.points = [Point(point) for point in points]
+            self._points = [Point(*point) for point in points]
 
     @property
     def degree(self):
@@ -111,7 +111,7 @@ class Bezier(object):
             Point: the corresponding point on the curve.
         """
         n = self.degree
-        point = Point([0, 0, 0])
+        point = Point(0, 0, 0)
         for i, p in enumerate(self.points):
             b = bernstein(n, i, t)
             point += p * b

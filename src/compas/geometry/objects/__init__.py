@@ -2,7 +2,7 @@ from .vector import Vector
 from .point import Point
 
 from .line import Line
-#from .plane import Plane
+from .plane import Plane
 from .frame import Frame
 from .transformation import Transformation, Rotation, Translation, Scale, Reflection, Projection, Shear
 
@@ -21,6 +21,7 @@ from .kdtree import KDTree
 __all__ = [
     'Vector', 'Point',
     'Line',
+    'Plane',
     'Frame', 'Transformation', 'Rotation', 'Translation', 'Scale', 'Reflection', 'Projection', 'Shear',
     'Polyline', 'Polygon', 'Polyhedron',
     'KDTree'

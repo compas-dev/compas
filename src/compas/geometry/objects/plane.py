@@ -2,8 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.objects import Point
 from compas.geometry.objects import Vector
+from compas.geometry.objects import Point
 
 from compas.geometry import orthonormalise_vectors
 
@@ -135,35 +135,9 @@ class Plane(object):
 
 if __name__ == '__main__':
 
-    from compas.viewers import Viewer
-    from compas.viewers import xdraw_points
-    from compas.viewers import xdraw_lines
-
     base = Point(1.0, 0.0, 0.0)
     normal = Vector(1.0, 1.0, 1.0)
 
     plane = Plane.from_point_and_normal(base, normal)
 
-    points = [{
-        'pos'  : base,
-        'color': (1.0, 0.0, 0.0),
-        'size' : 10.0
-    }]
-
-    lines = []
-    for vector in plane.basis + [plane.normal]:
-        lines.append({
-            'start' : base,
-            'end'   : base + vector,
-            'color' : (0.0, 0.0, 0.0),
-            'width' : 3.0
-        })
-
-    def draw_plane():
-        xdraw_points(points)
-        xdraw_lines(lines)
-
-    Viewer(
-        displayfuncs=[draw_plane, ],
-        delay_setup=False
-    ).show()
+    print(plane)
