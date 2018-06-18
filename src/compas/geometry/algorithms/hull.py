@@ -140,11 +140,20 @@ def convex_hull_xy(points):
     .. [1] Wiki Books. *Algorithm Implementation/Geometry/Convex hull/Monotone chain*.
            Available at: https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain.
 
+    Examples
+    --------
+
+
     """
+    def cross(o, a, b):
+        u = subtract_vectors(a, o)
+        v = subtract_vectors(b, o)
+        return cross_vectors_xy(u, v)[2]
+
 
     # Sort the points lexicographically (tuples are compared lexicographically).
     # Remove duplicates to detect the case we have just one unique point.
-    points = sorted(set(points))
+    points = sorted(set(map(tuple, points)))
 
     # Boring case: no points or a single point, possibly repeated multiple times.
     if len(points) <= 1:
@@ -153,14 +162,14 @@ def convex_hull_xy(points):
     # Build lower hull
     lower = []
     for p in points:
-        while len(lower) >= 2 and cross_vectors_xy(lower[-2], lower[-1], p) <= 0:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
             lower.pop()
         lower.append(p)
 
     # Build upper hull
     upper = []
     for p in reversed(points):
-        while len(upper) >= 2 and cross_vectors_xy(upper[-2], upper[-1], p) <= 0:
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
             upper.pop()
         upper.append(p)
 
@@ -178,34 +187,33 @@ if __name__ == "__main__":
 
     # todo: distinguish between vertices of hull and internal vertices
 
-    import random
+    from compas.geometry import pointcloud_xy
+    from compas.plotters import Plotter
+    from compas.utilities import pairwise
 
-    from compas.datastructures import Mesh
-    from compas.viewers import MeshViewer
+    cloud = pointcloud_xy(50, (0, 100), (0, 100))
+    hull = convex_hull_xy(cloud)
 
-    from compas.topology import mesh_unify_cycles
-
-    radius = 5
-    origin = (0., 0., 0.)
-    count = 0
     points = []
+    for a in cloud:
+        points.append({
+            'pos'       : a,
+            'facecolor' : '#0000ff',
+            'radius'    : 0.5
+        })
 
-    while count < 1000:
-        x = (random.random() - 0.5) * radius * 2
-        y = (random.random() - 0.5) * radius * 2
-        z = (random.random() - 0.5) * radius * 2
-        pt = x, y, z
-        if distance_point_point(origin, pt) <= radius:
-            points.append(pt)
-            count += 1
+    lines = []
+    for a, b in pairwise(hull + hull[:1]):
+        lines.append({
+            'start' : a,
+            'end'   : b,
+            'color' : '#ff0000',
+            'width' : 2.0
+        })
 
-    faces = convex_hull(points)
+    plotter = Plotter()
 
-    mesh = Mesh.from_vertices_and_faces(points, faces)
+    plotter.draw_points(points)
+    plotter.draw_lines(lines)
 
-    mesh_unify_cycles(mesh)
-
-    viewer = MeshViewer(mesh)
-
-    viewer.setup()
-    viewer.show()
+    plotter.show()
