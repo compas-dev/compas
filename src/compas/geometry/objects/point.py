@@ -46,8 +46,8 @@ class Point(object):
 
     Examples
     --------
-    >>> p1 = Point([1, 2, 3])
-    >>> p2 = Point([4, 5, 6])
+    >>> p1 = Point(1, 2, 3)
+    >>> p2 = Point(4, 5, 6)
 
     >>> p1.x
     1.0
