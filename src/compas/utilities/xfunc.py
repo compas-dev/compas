@@ -5,6 +5,7 @@ from __future__ import division
 import os
 import sys
 import json
+import compas
 
 try:
     from subprocess import Popen
@@ -295,7 +296,7 @@ class XFunc(object):
     @basedir.setter
     def basedir(self, basedir):
         if not os.path.isdir(basedir):
-            raise Exception('basedir is not a directory: %s' % basedir)
+            raise Exception("basedir is not a directory: %s" % basedir)
         self._basedir = os.path.abspath(basedir)
 
     @property
@@ -305,9 +306,9 @@ class XFunc(object):
     @tmpdir.setter
     def tmpdir(self, tmpdir):
         if not os.path.isdir(tmpdir):
-            raise Exception('tmpdir is not a directory: %s' % tmpdir)
+            raise Exception("tmpdir is not a directory: %s" % tmpdir)
         if not os.access(tmpdir, os.W_OK):
-            raise Exception('you do not have write access to tmpdir')
+            raise Exception("You do not have write access to 'tmpdir'. Please set the 'tmpdir' attribute to a different directory.")
         self._tmpdir = os.path.abspath(tmpdir)
 
     @property
