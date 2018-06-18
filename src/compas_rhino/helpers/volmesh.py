@@ -11,9 +11,10 @@ from compas_rhino.helpers.selectors import FaceSelector
 try:
     import Rhino
     import scriptcontext as sc
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

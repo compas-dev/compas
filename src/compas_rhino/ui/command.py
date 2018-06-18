@@ -2,9 +2,10 @@ from __future__ import print_function
 
 try:
     import rhinoscriptsyntax as rs
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

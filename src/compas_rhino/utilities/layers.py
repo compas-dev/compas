@@ -9,8 +9,8 @@ try:
     find_object = sc.doc.Objects.Find
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 else:

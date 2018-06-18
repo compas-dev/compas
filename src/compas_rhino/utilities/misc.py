@@ -13,8 +13,8 @@ try:
     from Rhino.UI.Dialogs import ShowMessageBox
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 try:

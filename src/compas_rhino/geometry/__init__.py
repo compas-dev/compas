@@ -18,11 +18,11 @@ Object-oriented wrappers for native Rhino geometry.
     RhinoSurface
 
 """
-import sys
-
 try:
     import rhinoscriptsyntax as rs
+
 except ImportError:
+    import sys
     if 'ironpython' in sys.version.lower():
         raise
 

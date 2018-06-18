@@ -6,9 +6,10 @@ from compas_rhino.ui import Mouse
 
 try:
     from System.Drawing import Color
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

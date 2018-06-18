@@ -396,11 +396,11 @@ class XFunc(object):
 if __name__ == '__main__':
 
     import compas
-    import compas_rhino
 
     from compas.datastructures import Mesh
     from compas.utilities import XFunc
-    from compas_rhino.helpers import MeshArtist
+
+    fd_numpy = XFunc('compas.numerical.fd_numpy')
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -410,18 +410,12 @@ if __name__ == '__main__':
     q        = mesh.get_edges_attribute('q', 1.0)
     loads    = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
 
-    xyz, q, f, l, r = XFunc('compas.numerical.fd_numpy')(vertices, edges, fixed, q, loads)
+    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
 
     for key, attr in mesh.vertices(True):
         attr['x'] = xyz[key][0]
         attr['y'] = xyz[key][1]
         attr['z'] = xyz[key][2]
 
-    artist = MeshArtist(mesh)
+    print(fd_numpy.profile)
 
-    artist.clear()
-
-    artist.draw_vertices()
-    artist.draw_edges()
-
-    artist.redraw()

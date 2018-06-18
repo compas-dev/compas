@@ -31,8 +31,8 @@ try:
     from Rhino.Display import DisplayConduit
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
     class DisplayConduit(object):

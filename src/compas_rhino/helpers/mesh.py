@@ -21,9 +21,10 @@ try:
     import Rhino
     import scriptcontext as sc
     import rhinoscriptsyntax as rs
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

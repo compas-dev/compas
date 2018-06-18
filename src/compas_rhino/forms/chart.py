@@ -10,8 +10,8 @@ try:
     from System.Windows.Forms.DataVisualization import Charting
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

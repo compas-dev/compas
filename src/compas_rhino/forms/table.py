@@ -16,8 +16,8 @@ try:
     from System.Windows.Forms import SizeType
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

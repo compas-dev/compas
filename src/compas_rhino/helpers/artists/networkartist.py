@@ -6,14 +6,15 @@ import compas_rhino
 
 from compas_rhino.helpers.artists.mixins import VertexArtist
 from compas_rhino.helpers.artists.mixins import EdgeArtist
-from compas_rhino.helpers.artists.mixins import PathArtist
-from compas_rhino.helpers.artists.mixins import ForceArtist
+# from compas_rhino.helpers.artists.mixins import PathArtist
+# from compas_rhino.helpers.artists.mixins import ForceArtist
 
 try:
     import rhinoscriptsyntax as rs
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 
@@ -26,7 +27,7 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['NetworkArtist']
 
 
-class NetworkArtist(ForceArtist, PathArtist, EdgeArtist, VertexArtist):
+class NetworkArtist(EdgeArtist, VertexArtist):
     """"""
 
     def __init__(self, network, layer=None):

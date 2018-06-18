@@ -29,8 +29,8 @@ try:
     from System.Drawing import FontStyle
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

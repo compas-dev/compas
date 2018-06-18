@@ -9,9 +9,10 @@ import compas_rhino
 try:
     import Rhino
     from Rhino.Geometry import Point3d
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

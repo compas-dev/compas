@@ -2,9 +2,10 @@ from __future__ import print_function
 
 try:
     from Rhino.UI import MouseCallback
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
     class MouseCallback(object):

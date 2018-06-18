@@ -10,8 +10,8 @@ try:
     from System.Collections.Generic import List
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

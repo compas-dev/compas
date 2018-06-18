@@ -12,8 +12,8 @@ try:
     from System.Windows.Forms import TrackBar
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

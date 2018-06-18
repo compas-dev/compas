@@ -8,9 +8,10 @@ from compas_rhino.helpers.artists.mixins import FaceArtist
 
 try:
     import rhinoscriptsyntax as rs
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 

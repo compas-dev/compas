@@ -118,3 +118,7 @@ src/.build/**
 data/bunny
 *.ply
 *.tar.gz
+
+docs/reference/generated/
+docs/__build
+*.gif
