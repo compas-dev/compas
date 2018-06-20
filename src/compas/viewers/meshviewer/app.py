@@ -49,8 +49,5 @@ class MeshViewer(App):
 
 if __name__ == '__main__':
 
-    from compas.datastructures import Mesh
-
     viewer = MeshViewer()
-    viewer.mesh = Mesh.from_polyhedron(6)
     viewer.show()
