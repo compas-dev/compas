@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import pickle
+
 from copy import deepcopy
 from ast import literal_eval
 
@@ -306,6 +308,70 @@ class Mesh(FromToJson,
         # set the counts
         self._max_int_key = max_int_key
         self._max_int_fkey = max_int_fkey
+
+    # --------------------------------------------------------------------------
+    # serialisation
+    # --------------------------------------------------------------------------
+
+    def dump(self, filepath):
+        data = {
+            'attributes'  : self.attributes,
+            'dva'         : self.default_vertex_attributes,
+            'dea'         : self.default_edge_attributes,
+            'dfa'         : self.default_face_attributes,
+            'vertex'      : self.vertex,
+            'edge'        : {},
+            'edgedata'    : self.edgedata,
+            'face'        : self.face,
+            'facedata'    : self.facedata,
+            'max_int_key' : self._max_int_key,
+            'max_int_fkey': self._max_int_fkey,
+        }
+        with open(filepath, 'wb+') as file:
+            pickle.dump(data, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    def dumps(self):
+        data = {
+            'attributes'  : self.attributes,
+            'dva'         : self.default_vertex_attributes,
+            'dea'         : self.default_edge_attributes,
+            'dfa'         : self.default_face_attributes,
+            'vertex'      : self.vertex,
+            'edge'        : {},
+            'edgedata'    : self.edgedata,
+            'face'        : self.face,
+            'facedata'    : self.facedata,
+            'max_int_key' : self._max_int_key,
+            'max_int_fkey': self._max_int_fkey,
+        }
+        return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
+
+    def load(self, filepath):
+        with open(filepath, 'rb') as file:
+            data = pickle.load(file)
+        self.attributes = data['attributes']
+        self.default_vertex_attributes = data['dva']
+        self.default_edge_attributes = data['dea']
+        self.default_face_attributes = data['dfa']
+        self.vertex = data['vertex']
+        self.face = data['face']
+        self.edgedata = data['edgedata']
+        self.facedata = data['facedata']
+        self._max_int_key = data['max_int_key']
+        self._max_int_fkey = data['max_int_fkey']
+
+    def loads(self, s):
+        data = pickle.loads(s)
+        self.attributes = data['attributes']
+        self.default_vertex_attributes = data['dva']
+        self.default_edge_attributes = data['dea']
+        self.default_face_attributes = data['dfa']
+        self.vertex = data['vertex']
+        self.face = data['face']
+        self.edgedata = data['edgedata']
+        self.facedata = data['facedata']
+        self._max_int_key = data['max_int_key']
+        self._max_int_fkey = data['max_int_fkey']
 
     # --------------------------------------------------------------------------
     # constructors
@@ -2566,8 +2632,16 @@ if __name__ == '__main__':
     mesh = Mesh.from_lines(lines, delete_boundary_face=True)
     # mesh = Mesh.from_points(obj.parser.vertices)
 
-    print(mesh.face_vertices(0))
-    print(mesh.to_vertices_and_faces())
+    # print(mesh.face_vertices(0))
+    # print(mesh.to_vertices_and_faces())
+
+    # mesh.dump('test.pickle')
+    # mesh.load('test.pickle')
+
+    # print(mesh.face_vertices(0))
+    # print(mesh.to_vertices_and_faces())
+
+    # mesh.loads(mesh.dumps())
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
@@ -2577,5 +2651,3 @@ if __name__ == '__main__':
     plotter.draw_faces(text={fkey: str(fkey) for fkey in mesh.faces()})
     plotter.draw_edges()
     plotter.show()
-
-    print(mesh)
