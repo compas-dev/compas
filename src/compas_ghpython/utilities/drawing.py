@@ -1,0 +1,236 @@
+from __future__ import print_function
+
+from functools import wraps
+
+try:
+    import rhinoscriptsyntax as rs
+    import scriptcontext as sc
+
+    from System.Collections.Generic import List
+    from System.Enum import ToObject
+    from System.Array import CreateInstance
+
+    from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Vector3d
+    from Rhino.Geometry import Line
+    from Rhino.Geometry import Polyline
+    from Rhino.Geometry import PolylineCurve
+    from Rhino.Geometry import GeometryBase
+    from Rhino.Geometry import Brep
+    from Rhino.Geometry import Cylinder
+    from Rhino.Geometry import Circle
+    from Rhino.Geometry import Plane
+    from Rhino.Geometry import PipeCapMode
+    from Rhino.Geometry import Curve
+    from Rhino.Geometry import Sphere
+    from Rhino.Geometry import Mesh
+    from Rhino.Geometry import Vector3f, Point2f
+
+    TOL = sc.doc.ModelAbsoluteTolerance
+
+except ImportError:
+    import platform
+    if platform.python_implementation() == 'IronPython':
+        raise
+
+__author__ = ['Romana Rust', ]
+__email__ = 'rust@arch.ethz.ch'
+
+
+__all__ = [
+    'xdraw_frame',
+    'xdraw_points',
+    'xdraw_lines',
+    'xdraw_polylines',
+    'xdraw_faces',
+    'xdraw_cylinders',
+    'xdraw_pipes',
+    'xdraw_spheres',
+    'xdraw_mesh',
+    'xdraw_network',
+]
+
+def xdraw_frame(frame):
+    """Draw frame.
+    """
+    pt = Point3d(*frame.point)
+    xaxis = Vector3d(*frame.xaxis)
+    yaxis = Vector3d(*frame.yaxis)
+    return Plane(pt, xaxis, yaxis)
+
+
+def xdraw_points(points):
+    """Draw points.
+    """
+    rg_points = []
+    for p in iter(points):
+        pos = p['pos']
+        rg_points.append(Point3d(*pos))
+    return rg_points
+
+
+def xdraw_lines(lines):
+    """Draw lines.
+    """
+    rg_lines = []
+    for l in iter(lines):
+        sp = l['start']
+        ep = l['end']
+        rg_lines.append(Line(Point3d(*sp), Point3d(*ep)))
+    return rg_lines
+
+
+def xdraw_polylines(polylines):
+    """Draw polylines.
+    """
+    rg_polylines = []
+    for p in iter(polylines):
+        points = p['points']
+        poly = Polyline([Point3d(*xyz) for xyz in points])
+        poly.DeleteShortSegments(TOL)
+        rg_polylines.append(poly)
+    return rg_polylines
+
+
+def xdraw_faces(faces, srf=None, u=10, v=10, trim=True, tangency=True,
+                spacing=0.1, flex=1.0, pull=1.0):
+    """Draw polygonal faces as Breps.
+    """
+    rg_breps = []
+    for f in iter(faces):
+        points = f['points']
+        corners = [Point3d(*point) for point in points]
+        pcurve = PolylineCurve(corners)
+        geo = List[GeometryBase](1)
+        geo.Add(pcurve)
+        p = len(points)
+        if p == 4:
+            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
+                                               Point3d(*points[1]),
+                                               Point3d(*points[2]),
+                                               TOL)
+        elif p == 5:
+            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
+                                               Point3d(*points[1]),
+                                               Point3d(*points[2]),
+                                               Point3d(*points[3]),
+                                               TOL)
+        else:
+            brep = Brep.CreatePatch(geo, u, v, TOL)
+        if not brep:
+            continue
+        rg_breps.append(brep)
+    return rg_breps
+
+
+def xdraw_cylinders(cylinders, cap=False):
+    rg_cylinders = []
+    for c in iter(cylinders):
+        start = c['start']
+        end = c['end']
+        radius = c['radius']
+        if radius < TOL:
+            continue
+        base = Point3d(*start)
+        normal = Point3d(*end) - base
+        height = normal.Length
+        if height < TOL:
+            continue
+        plane = Plane(base, normal)
+        circle = Circle(plane, radius)
+        cylinder = Cylinder(circle, height)
+        brep = cylinder.ToBrep(cap, cap)
+        if not brep:
+            continue
+        rg_cylinders.append(brep)
+    return rg_cylinders
+
+
+def xdraw_pipes(pipes, cap=2, fit=1.0):
+    rg_pipes = []
+    abs_tol = TOL
+    ang_tol = sc.doc.ModelAngleToleranceRadians
+    for p in pipes:
+        points = p['points']
+        radius = p['radius']
+        params = [0.0, 1.0]
+        cap = ToObject(PipeCapMode, cap)
+        if type(radius) in (int, float):
+            radius = [radius] * 2
+        radius = [float(r) for r in radius]
+        rail = Curve.CreateControlPointCurve([Point3d(*xyz) for xyz in points])
+        breps = Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol,
+                                ang_tol)
+        rg_pipes += breps
+    return rg_pipes
+
+
+def xdraw_spheres(spheres):
+    rg_sheres = []
+    for s in iter(spheres):
+        pos = s['pos']
+        radius = s['radius']
+        rg_sheres.append(Sphere(Point3d(*pos), radius))
+    return rg_sheres
+
+
+def xdraw_mesh(vertices, faces, vertex_normals=None, texture_coordinates=None,
+               vertex_colors=None):
+    """Draw mesh in Grasshopper.
+    """
+
+    mesh = Mesh()
+    for a, b, c in vertices:
+        mesh.Vertices.Add(a, b, c)
+    for face in faces:
+        if len(face) < 4:
+            mesh.Faces.AddFace(face[0], face[1], face[2])
+        else:
+            mesh.Faces.AddFace(face[0], face[1], face[2], face[3])
+
+    if vertex_normals:
+        count = len(vertex_normals)
+        normals = CreateInstance(Vector3f, count)
+        for i, normal in enumerate(vertex_normals):
+            normals[i] = Vector3f(normal[0], normal[1], normal[2])
+        mesh.Normals.SetNormals(normals)
+
+    if texture_coordinates:
+        count = len(texture_coordinates)
+        tcs = CreateInstance(Point2f, count)
+        for i, tc in enumerate(texture_coordinates):
+            tcs[i] = Point2f(tc[0], tc[1])
+        mesh.TextureCoordinates.SetTextureCoordinates(tcs)
+
+    if vertex_colors:
+        for i, color in vertex_colors.iteritems():
+            color = rs.coercecolor(color)
+            mesh.VertexColors.SetColor(i, color)
+
+    return mesh
+
+
+def xdraw_network(network):
+    """Draw a network in Grasshopper.
+    """
+    points = []
+    for key, attr in network.vertices_iter(True):
+        points.append({
+            'pos': network.vertex_coordinates(key),
+        })
+
+    lines = []
+    for u, v, attr in network.edges_iter(True):
+        lines.append({
+            'start': network.vertex_coordinates(u),
+            'end': network.vertex_coordinates(v),
+        })
+
+    points_rg = xdraw_points(points)
+    lines_rg = xdraw_lines(lines)
+
+    return points_rg, lines_rg
+
+
+if __name__ == '__main__':
+    pass
