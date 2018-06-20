@@ -2,6 +2,7 @@ from .view import View
 from .controller import Controller
 
 CONFIG = {
+    'console' : [],
     'menubar': [
         {
             'type'  : 'menu',
@@ -226,12 +227,15 @@ CONFIG = {
 }
 
 STYLE = """
-QMainWindow {}
+QMainWindow {
+    padding: 0px;
+    margin: 0px;
+}
 
 QMenuBar {}
 
 QToolBar#Tools {
-padding: 4px;
+padding: 0px;
 }
 
 QDockWidget#Sidebar {}

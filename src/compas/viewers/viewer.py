@@ -75,14 +75,15 @@ class Viewer(App):
 if __name__ == '__main__':
 
     config = {
-        'menubar': [
-        ],
-        'toolbar': [
-        ],
-        'sidebar': [
-        ],
-        'console': [
-        ] 
+        # 'menubar': [
+        # ],
+        # 'toolbar': [
+        # ],
+        # 'sidebar': [
+        # ],
+        # 'console': [
+        # ] 
     }
 
-    viewer = Viewer(config).show()
+    viewer = Viewer(config)
+    viewer.show()

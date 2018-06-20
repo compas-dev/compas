@@ -49,6 +49,7 @@ class App(QtWidgets.QApplication):
         self.main = MainWindow()
         self.main.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.main.setCentralWidget(self.view)
+        self.main.setContentsMargins(0, 0, 0, 0)
         self.centre()
 
     def centre(self):
@@ -62,11 +63,12 @@ class App(QtWidgets.QApplication):
         self.main.setGeometry(x, y, w, h)
 
     def init(self):
+        # self.main.setUnifiedTitleAndToolBarOnMac(True)
+        self.init_statusbar()
         self.init_menubar()
         self.init_toolbar()
         self.init_sidebar()
         self.init_console()
-        self.init_statusbar()
 
     def show(self):
         self.main.show()
@@ -82,6 +84,7 @@ class App(QtWidgets.QApplication):
 
     def init_statusbar(self):
         self.statusbar = self.main.statusBar()
+        self.statusbar.setContentsMargins(0, 0, 0, 0)
         self.statusbar.showMessage('Ready')
 
     def init_menubar(self):
@@ -90,6 +93,7 @@ class App(QtWidgets.QApplication):
         if not self.config['menubar']:
             return
         self.menubar = self.main.menuBar()
+        self.menubar.setContentsMargins(0, 0, 0, 0)
         self.add_menubar_items(self.config['menubar'], self.menubar, 0)
 
     def init_toolbar(self):
@@ -101,6 +105,7 @@ class App(QtWidgets.QApplication):
         self.toolbar.setMovable(False)
         self.toolbar.setObjectName('Tools')
         self.toolbar.setIconSize(QtCore.QSize(24, 24))
+        self.toolbar.setContentsMargins(0, 0, 0, 0)
         self.add_toolbar_items(self.config['toolbar'], self.toolbar)
 
     # make this resizable
@@ -117,6 +122,7 @@ class App(QtWidgets.QApplication):
         self.sidebar.setFeatures(QtWidgets.QDockWidget.NoDockWidgetFeatures)
         self.sidebar.setFixedWidth(240)
         self.sidebar.setTitleBarWidget(QtWidgets.QWidget())
+        self.sidebar.setContentsMargins(0, 0, 0, 0)
         self.main.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.sidebar)
         widget = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout()
@@ -126,11 +132,9 @@ class App(QtWidgets.QApplication):
         self.add_sidebar_items(self.config['sidebar'], layout)
         layout.addStretch()
 
-    # make this into something that canbe toggled
+    # make this into something that can be toggled
     def init_console(self):
         if 'console' not in self.config:
-            return
-        if not self.config['console']:
             return
         self.console = QtWidgets.QDockWidget()
         self.console.setObjectName('Console')
@@ -138,6 +142,7 @@ class App(QtWidgets.QApplication):
         self.console.setFeatures(QtWidgets.QDockWidget.NoDockWidgetFeatures)
         self.console.setFixedHeight(128)
         self.console.setTitleBarWidget(QtWidgets.QWidget())
+        self.console.setContentsMargins(0, 0, 0, 0)
         self.main.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.console)
         editor = QtWidgets.QPlainTextEdit()
         editor.setReadOnly(True)
@@ -224,7 +229,8 @@ class App(QtWidgets.QApplication):
     def add_group(self, item, parent):
         group = QtWidgets.QGroupBox(item.get('text', None))
         box = QtWidgets.QVBoxLayout()
-        box.setContentsMargins(0, 4, 0, 4)
+        box.setContentsMargins(0, 0, 0, 0)
+        group.setContentsMargins(0, 0, 0, 0)
         group.setLayout(box)
         parent.addWidget(group)
         self.add_sidebar_items(item['items'], box)

@@ -4,6 +4,8 @@ from __future__ import division
 
 import compas
 
+from compas.datastructures import Mesh
+
 from compas.viewers.core import App
 
 from compas.viewers.meshviewer.view import View
@@ -32,23 +34,6 @@ class MeshViewer(App):
         self.setup()
         self.init()
 
-    def show(self):
-        super(MeshViewer, self).show()
-
-        # self.controller.mesh = mesh
-
-        # self.controller.center_mesh()
-        # self.controller.view.make_buffers()
-        # self.controller.view.update()
-
-    # @property
-    # def mesh(self):
-    #     return self.controller.mesh
-
-    # @mesh.setter
-    # def mesh(self, mesh):
-    #     self.controller.mesh = mesh
-
 
 # ==============================================================================
 # Main
@@ -59,12 +44,6 @@ if __name__ == '__main__':
     import compas
     from compas.datastructures import Mesh
 
-    # mesh = Mesh.from_polyhedron(6)
-    # print(mesh)
+    viewer = MeshViewer()
 
-    MeshViewer().show()
-
-    # viewer.controller.mesh = Mesh.from_polyhedron(6)
-    # viewer.controller.center_mesh()
-    # viewer.controller.view.make_buffers()
-    # viewer.controller.view.update()
+    viewer.show()
