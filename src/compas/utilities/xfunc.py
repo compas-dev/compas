@@ -76,7 +76,7 @@ try:
 
     stream = StringIO()
     stats  = pstats.Stats(profile, stream=stream)
-    stats.strip_dirs()
+    # stats.strip_dirs()
     stats.sort_stats(1)
     stats.print_stats(20)
 
@@ -96,15 +96,6 @@ with open(opath, 'w+') as fp:
     json.dump(odict, fp, cls=DataEncoder)
 
 """
-
-
-# def test_xfunc(numiter=100, pause=0.1, ds=None):
-#     if ds:
-#         print(ds)
-#     for k in range(numiter):
-#         print(k)
-#         time.sleep(pause)
-#     return ds
 
 
 class DataEncoder(json.JSONEncoder):

@@ -33,10 +33,10 @@ try:
     from scipy.sparse import coo_matrix
     from scipy.sparse.linalg import spsolve
 
-    from matplotlib import pyplot as plt
-    from mpl_toolkits.mplot3d import Axes3D
+    # from matplotlib import pyplot as plt
+    # from mpl_toolkits.mplot3d import Axes3D
 
-    from compas.viewers import VtkViewer
+    # from compas.viewers import VtkViewer
 
 except:
     pass
