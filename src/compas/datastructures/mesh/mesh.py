@@ -12,6 +12,7 @@ from compas.files import PLYreader
 
 from compas.utilities import pairwise
 from compas.utilities import window
+from compas.utilities import geometric_key
 
 from compas.geometry import normalize_vector
 from compas.geometry import centroid_points
@@ -573,7 +574,40 @@ class Mesh(FromToJson,
         """
         from compas.topology import delaunay_from_points
         faces = delaunay_from_points(points, boundary=boundary, holes=holes)
-        return Mesh.from_vertices_and_faces(points, faces)
+        return cls.from_vertices_and_faces(points, faces)
+
+    @classmethod
+    def from_polygons(cls, polygons, precision='3f'):
+        """Construct a mesh from a series of polygons.
+
+        Parameters
+        ----------
+        polygons : list
+            A list of polygons, with each polygon defined as an ordered list of
+            XYZ coordinates of its corners.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+
+        """
+        faces = []
+        gkey_xyz = {}
+
+        for points in polygons:
+            face = []
+            for xyz in points:
+                gkey = geometric_key(xyz, precision=precision)
+                gkey_xyz[gkey] = xyz
+                face.append(gkey)
+            faces.append(face)
+
+        gkey_index = {gkey: index for index, gkey in enumerate(gkey_xyz)}
+        vertices = gkey_xyz.values()
+        faces[:] = [[gkey_index[gkey] for gkey in face] for face in faces]
+
+        return cls.from_vertices_and_faces(vertices, faces)
 
     # --------------------------------------------------------------------------
     # converters
