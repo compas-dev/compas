@@ -2,10 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
-from compas.datastructures import Mesh
-
 from compas.viewers.core import App
 
 from compas.viewers.meshviewer.view import View
@@ -34,6 +30,18 @@ class MeshViewer(App):
         self.setup()
         self.init()
 
+    @property
+    def mesh(self):
+        return self.controller.mesh
+
+    @mesh.setter
+    def mesh(self, mesh):
+        self.controller.mesh = mesh
+        self.controller.center_mesh()
+        self.view.glInit()
+        self.view.make_buffers()
+        self.view.update()
+
 
 # ==============================================================================
 # Main
@@ -41,9 +49,8 @@ class MeshViewer(App):
 
 if __name__ == '__main__':
 
-    import compas
     from compas.datastructures import Mesh
 
     viewer = MeshViewer()
-
+    viewer.mesh = Mesh.from_polyhedron(6)
     viewer.show()

@@ -122,8 +122,6 @@ class View(GLWidget):
         if not self.buffers:
             return
 
-        print('here')
-
         glEnableClientState(GL_VERTEX_ARRAY)
         glEnableClientState(GL_COLOR_ARRAY)
         glBindBuffer(GL_ARRAY_BUFFER, self.buffers['xyz'])
