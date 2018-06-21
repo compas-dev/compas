@@ -92,7 +92,6 @@ class Mesh(FromToJson,
            VertexMappings,
            VertexCoordinatesDescriptors,
            FaceAttributesManagement,
-           EdgeAttributesManagement,
            VertexAttributesManagement,
            Datastructure):
     """Definition of a mesh.
@@ -134,7 +133,6 @@ class Mesh(FromToJson,
             'color.face'   : None,
         }
         self.vertex = {}
-        self.edge = {}
         self.halfedge = {}
         self.face = {}
         self.facedata = {}
@@ -221,7 +219,6 @@ class Mesh(FromToJson,
                 'dea'         : self.default_edge_attributes,
                 'dfa'         : self.default_face_attributes,
                 'vertex'      : {},
-                'edge'        : {},
                 'edgedata'    : {},
                 'face'        : {},
                 'facedata'    : {},
@@ -244,14 +241,6 @@ class Mesh(FromToJson,
             ruv = repr(uv)
             data['edgedata'][ruv] = self.edgedata[uv]
 
-        # for u in self.edge:
-        #     ru = repr(u)
-        #     data['edge'][ru] = {}
-
-        #     for v in self.edge[u]:
-        #         rv = repr(v)
-        #         data['edge'][ru][rv] = self.edge[u][v]
-
         return data
 
     @data.setter
@@ -264,7 +253,6 @@ class Mesh(FromToJson,
         vertex       = data.get('vertex') or {}
         face         = data.get('face') or {}
         facedata     = data.get('facedata') or {}
-        edge         = data.get('edge') or {}
         edgedata     = data.get('edgedata') or {}
         max_int_key  = data.get('max_int_key', -1)
         max_int_fkey = data.get('max_int_fkey', -1)
@@ -276,37 +264,21 @@ class Mesh(FromToJson,
 
         self.clear()
 
-        # add the vertices
         for key, attr in iter(vertex.items()):
             key = literal_eval(key)
             self.add_vertex(key, attr_dict=attr)
 
-        # add the faces
         for fkey, vertices in iter(face.items()):
             attr = facedata.get(fkey) or {}
             vertices = [literal_eval(k) for k in vertices]
             fkey = literal_eval(fkey)
             self.add_face(vertices, fkey=fkey, attr_dict=attr)
 
-        # # add the edges
-        # # todo: replace by method call
-        # for u, nbrs in iter(edge.items()):
-        #     nbrs = nbrs or {}
-        #     u = literal_eval(u)
-        #     self.edge[u] = {}
-
-        #     for v, attr in iter(nbrs.items()):
-        #         attr = attr or {}
-        #         v = literal_eval(v)
-
-        #         self.add_edge(u, v, attr_dict=attr)
-
         for uv, attr in iter(edgedata.items()):
             attr = attr or {}
             uv = literal_eval(uv)
             self.edgedata[uv] = attr
 
-        # set the counts
         self._max_int_key = max_int_key
         self._max_int_fkey = max_int_fkey
 
@@ -321,7 +293,6 @@ class Mesh(FromToJson,
             'dea'         : self.default_edge_attributes,
             'dfa'         : self.default_face_attributes,
             'vertex'      : self.vertex,
-            'edge'        : {},
             'edgedata'    : self.edgedata,
             'face'        : self.face,
             'facedata'    : self.facedata,
@@ -338,7 +309,6 @@ class Mesh(FromToJson,
             'dea'         : self.default_edge_attributes,
             'dfa'         : self.default_face_attributes,
             'vertex'      : self.vertex,
-            'edge'        : {},
             'edgedata'    : self.edgedata,
             'face'        : self.face,
             'facedata'    : self.facedata,
@@ -743,13 +713,11 @@ class Mesh(FromToJson,
     def clear(self):
         """Clear all the mesh data."""
         del self.vertex
-        del self.edge
         del self.edgedata
         del self.halfedge
         del self.face
         del self.facedata
         self.vertex   = {}
-        self.edge     = {}
         self.edgedata = {}
         self.halfedge = {}
         self.face     = {}
@@ -770,11 +738,6 @@ class Mesh(FromToJson,
         self.face = {}
         self.facedata = {}
         self._max_int_fkey = -1
-
-    def clear_edgedict(self):
-        """Clear only the edges."""
-        del self.edge
-        self.edge = {}
 
     def clear_halfedgedict(self):
         """Clear only the half edges."""
@@ -849,7 +812,6 @@ class Mesh(FromToJson,
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
-            self.edge[key] = {}
 
         self.vertex[key].update(attr)
 
@@ -928,71 +890,6 @@ class Mesh(FromToJson,
                 self.halfedge[v][u] = None
 
         return fkey
-
-    # to be updated
-    def add_edge(self, u, v, attr_dict=None, **kwattr):
-        """Add an edge to the mesh object.
-
-        Parameters
-        ----------
-        u : hashable
-            The identifier of the starting vertex.
-        v : hashable
-            The identifier of the end vertex.
-        attr_dict : dict, optional
-            Edge attributes.
-        kwattr : dict, optional
-            Additional named edge attributes.
-            Named face attributes overwrite corresponding attributes in the
-            attribute dict (``attr_dict``).
-
-        Returns
-        -------
-        None
-            If adding the edge was unsuccessful.
-            This is the case when
-
-            * there is no corresponding half-edge present in the mesh, or
-            * the opposite edge already exists.
-
-        tuple
-            The identifiers of start and end vertex.
-
-        Notes
-        -----
-        Adding an edge to a mesh has no effect on the topology.
-        In fact, the addition of an edge is only allowed if the edge matches one
-        of the existing half-edges. In other words, an edge can only be added if
-        it corresponds to the sides of one of the faces.
-        The purpose of adding edges is to store information about the edges explicitly.
-        For example, for form-finding algorithms.
-
-        Examples
-        --------
-        >>>
-
-        """
-        # check if a corresponding halfedge exists
-        if u in self.halfedge and v in self.halfedge[u]:
-            pass
-        elif v in self.halfedge and u in self.halfedge[v]:
-            pass
-        else:
-            return
-
-        # check if the opposite edge already exists
-        if v in self.edge and u in self.edge[v]:
-            return
-
-        # add or update edge
-        if u not in self.edge:
-            self.edge[u] = {}
-        if v not in self.edge[u]:
-            self.edge[u][v] = {}
-        attr = self._compile_eattr(attr_dict, kwattr)
-        self.edge[u][v].update(attr)
-
-        return u, v
 
     # --------------------------------------------------------------------------
     # modifiers
@@ -1416,33 +1313,6 @@ class Mesh(FromToJson,
             else:
                 yield fkey
 
-    # to be removed
-    def halfedges(self):
-        """Iterate ove the halfedges of the mesh.
-
-        Yields
-        ------
-        tuple
-            The next halfedge as a (u, v) tuple.
-
-        Note
-        ----
-        Duplicates (opposite halfedges) are automatically excluded.
-        This method thus yields the undirected edges of the mesh.
-
-        """
-        edges = set()
-        for fkey in self.faces():
-            for u, v in self.face_halfedges(fkey):
-                if (u, v) in edges or (v, u) in edges:
-                    continue
-
-                edges.add((u, v))
-                edges.add((v, u))
-
-                yield u, v
-
-    # to be updated
     def edges(self, data=False):
         """Iterate over the edges of the mesh.
 
@@ -1507,44 +1377,17 @@ class Mesh(FromToJson,
                 edges.add((u, v))
                 edges.add((v, u))
 
-                if u in self.edge and v in self.edge[u]:
-                    # the edge (u, v) already exists in the edge dict
-                    if data:
-                        yield u, v, self.edge[u][v]
+                if (u, v) not in self.edgedata:
+                    if (v, u) in self.edgedata:
+                        self.edgedata[u, v] = self.edgedata[v, u].copy()
+                        del self.edgedata[v, u]
                     else:
-                        yield u, v
+                        self.edgedata[u, v] = self.default_edge_attributes.copy()
 
-                elif v in self.edge and u in self.edge[v]:
-                    # the edge (v, u) already exists in the edge dict
-                    if data:
-                        yield v, u, self.edge[v][u]
-                    else:
-                        yield v, u
-
+                if data:
+                    yield u, v, self.edgedata[u, v]
                 else:
-                    # the edge does not exist yet.
-                    # therefore create the edge and yield the result.
-                    if u not in self.edge:
-                        self.edge[u] = {}
-
-                    self.edge[u][v] = self.default_edge_attributes.copy()
-
-                    if data:
-                        yield u, v, self.edge[u][v]
-                    else:
-                        yield u, v
-
-    # to be removed/updated
-    def wireframe(self):
-        """Iterate over the halfedges of the mesh.
-
-        Yields
-        ------
-        tuple
-            The next halfedge as a (u, v) tuple.
-
-        """
-        return self.halfedges()
+                    yield u, v
 
     # --------------------------------------------------------------------------
     # special accessors
@@ -2622,6 +2465,300 @@ class Mesh(FromToJson,
         """
         return [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
+    # --------------------------------------------------------------------------
+    # attributes
+    # --------------------------------------------------------------------------
+
+    def update_default_edge_attributes(self, attr_dict=None, **kwattr):
+        """Update the default edge attributes (this also affects already existing edges).
+
+        Parameters
+        ----------
+        attr_dict : dict (None)
+            A dictionary of attributes with their default values.
+        kwattr : dict
+            A dictionary compiled of remaining named arguments.
+            Defaults to an empty dict.
+
+        Note
+        ----
+        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        if they exist.
+
+        """
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        for u, v, data in self.edges(True):
+            attr = deepcopy(attr_dict)
+            attr.update(data)
+            self.edgedata[u, v] = attr
+        self.default_edge_attributes.update(attr_dict)
+
+    def set_edge_attribute(self, key, name, value):
+        """Set one attribute of one edge.
+
+        Parameters
+        ----------
+        key : tuple, list
+            The identifier of the edge, in the form of a pair of vertex identifiers.
+        name : str
+            The name of the attribute.
+        value : object
+            The value of the attribute.
+
+        See Also
+        --------
+        * :meth:`set_edge_attributes`
+        * :meth:`set_edges_attribute`
+        * :meth:`set_edges_attributes`
+
+        """
+        if key not in self.edgedata:
+            self.edgedata[key] = self.default_edge_attributes.copy()
+        self.edgedata[key][name] = value
+
+    def set_edge_attributes(self, key, attr_dict=None, **kwattr):
+        """Set multiple attributes of one edge.
+
+        Parameters
+        ----------
+        key : tuple, list
+            The identifier of the edge, in the form of a pair of vertex identifiers.
+        attr_dict : dict (None)
+            A dictionary of attributes as name-value pairs.
+        kwattr : dict
+            A dictionary compiled of remaining named arguments.
+            Defaults to an empty dict.
+
+        Note
+        ----
+        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
+        if they exist.
+
+        See Also
+        --------
+        * :meth:`set_edge_attribute`
+        * :meth:`set_edges_attribute`
+        * :meth:`set_edges_attributes`
+
+        """
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        if key not in self.edgedata:
+            self.edgedata[key] = self.default_edge_attributes.copy()
+        self.edgedata[key].update(attr_dict)
+
+    def set_edges_attribute(self, name, value, keys=None):
+        """Set one attribute of multiple edges.
+
+        Parameters
+        ----------
+        name : str
+            The name of the attribute.
+        value : object
+            The value of the attribute.
+        keys : iterable (None)
+            A list of edge identifiers.
+            Each edge identifier is a pair of vertex identifiers.
+            Defaults to all edges.
+
+        See Also
+        --------
+        * :meth:`set_edge_attribute`
+        * :meth:`set_edge_attributes`
+        * :meth:`set_edges_attributes`
+
+        """
+        if not keys:
+            for u, v, attr in self.edges(True):
+                attr[name] = value
+        else:
+            for key in keys:
+                if key not in self.edgedata:
+                    self.edgedata[key] = self.default_edge_attributes.copy()
+                self.edgedata[key][name] = value
+
+    def set_edges_attributes(self, keys=None, attr_dict=None, **kwattr):
+        """Set multiple attributes of multiple edges.
+
+        Parameters
+        ----------
+        keys : iterable (None)
+            A list of edge identifiers.
+            Each edge identifier is a pair of vertex identifiers.
+            Defaults to all edges.
+        attr_dict : dict (None)
+            A dictionary of attributes as name-value pairs.
+        kwattr : dict
+            A dictionary compiled of remaining named arguments.
+            Defaults to an empty dict.
+
+        Note
+        ----
+        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
+        if they exist.
+
+        See Also
+        --------
+        * :meth:`set_edge_attribute`
+        * :meth:`set_edge_attributes`
+        * :meth:`set_edges_attribute`
+
+        """
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        if not keys:
+            for u, v, attr in self.edges(True):
+                attr.update(attr_dict)
+        else:
+            for key in keys:
+                if key not in self.edgedata:
+                    self.edgedata[key] = self.default_edge_attributes.copy()
+                self.edgedata[key].update(attr_dict)
+
+    def get_edge_attribute(self, key, name, value=None):
+        """Get the value of a named attribute of one edge.
+
+        Parameters
+        ----------
+        key : tuple, list
+            The identifier of the edge, in the form of a pair of vertex identifiers.
+        name : str
+            The name of the attribute.
+        value : object (None)
+            The default value.
+
+        Returns
+        -------
+        value
+            The value of the attribute,
+            or the default value if the attribute does not exist.
+
+        See Also
+        --------
+        * :meth:`get_edge_attributes`
+        * :meth:`get_edges_attribute`
+        * :meth:`get_edges_attributes`
+
+        """
+        if key not in self.edgedata:
+            self.edgedata[key] = self.default_edge_attributes.copy()
+        return self.edgedata[key].get(name, value)
+
+    def get_edge_attributes(self, key, names, values=None):
+        """Get the value of a named attribute of one edge.
+
+        Parameters
+        ----------
+        key : tuple, list
+            The identifier of the edge, in the form of a pair of vertex identifiers.
+        names : list
+            A list of attribute names.
+        values : list (None)
+            A list of default values.
+            Defaults to a list of ``None`` s.
+
+        Returns
+        -------
+        values : list
+            A list of values.
+            Every attribute that does not exist is replaced by the corresponding
+            default value.
+
+        See Also
+        --------
+        * :meth:`get_edge_attribute`
+        * :meth:`get_edges_attribute`
+        * :meth:`get_edges_attributes`
+
+        """
+        if key not in self.edgedata:
+            self.edgedata[key] = self.default_edge_attributes.copy()
+        if not values:
+            values = [None] * len(names)
+        return [self.edgedata[key].get(name, value) for name, value in zip(names, values)]
+
+    def get_edges_attribute(self, name, value=None, keys=None):
+        """Get the value of a named attribute of multiple edges.
+
+        Parameters
+        ----------
+        name : str
+            The name of the attribute.
+        value : object (None)
+            The default value.
+        keys : iterable (None)
+            A list of edge identifiers.
+            Each edge identifier is a pair of vertex identifiers.
+            Defaults to all edges.
+
+        Returns
+        -------
+        values : list
+            A list of values of the named attribute of the specified edges.
+
+        See Also
+        --------
+        * :meth:`get_edge_attribute`
+        * :meth:`get_edge_attributes`
+        * :meth:`get_edges_attributes`
+
+        """
+        if not keys:
+            return [attr.get(name, value) for u, v, attr in self.edges(True)]
+        data = []
+        for key in keys:
+            if key not in self.edgedata:
+                self.edgedata[key] = self.default_edge_attributes.copy()
+            data.append(self.edgedata[key].get(name, value))
+        return data
+
+    def get_edges_attributes(self, names, values=None, keys=None):
+        """Get the values of multiple named attribute of multiple edges.
+
+        Parameters
+        ----------
+        names : list
+            The names of the attributes.
+        values : list (None)
+            A list of default values.
+            Defaults to a list of ``None`` s.
+        keys : iterable (None)
+            A list of edge identifiers.
+            Each edge identifier is a pair of vertex identifiers.
+            Defaults to all edges.
+
+        Returns
+        -------
+        values: list of list
+            The values of the attributes of the specified edges.
+            If an attribute does not exist for a specific edge, it is replaced
+            by the default value.
+
+        See Also
+        --------
+        * :meth:`get_edge_attribute`
+        * :meth:`get_edge_attributes`
+        * :meth:`get_edges_attribute`
+
+        """
+        if not values:
+            values = [None] * len(names)
+        temp = list(zip(names, values))
+        if not keys:
+            return [[attr.get(name, value) for name, value in temp] for u, v, attr in self.edges(True)]
+        data = []
+        for key in keys:
+            if key not in self.edgedata:
+                self.edgedata[key] = self.default_edge_attributes.copy()
+            data.append([self.edgedata[key].get(name, value) for name, value in temp])
+        return data
+
+
+# remove this
 
 # Mesh.collapse_edge = MethodType(mesh_collapse_edge, None, Mesh)
 # Mesh.collapse_edge_tri = MethodType(trimesh_collapse_edge, None, Mesh)
@@ -2656,7 +2793,6 @@ Mesh.swap_edge_tri = trimesh_swap_edge.__get__(None, Mesh)
 if __name__ == '__main__':
 
     import compas
-    from compas.files import OBJ
     from compas.plotters import MeshPlotter
 
     obj = OBJ(compas.get('lines_noleaves.obj'))
@@ -2664,18 +2800,10 @@ if __name__ == '__main__':
     lines = [(obj.parser.vertices[u], obj.parser.vertices[v]) for u, v in obj.parser.lines]
 
     mesh = Mesh.from_lines(lines, delete_boundary_face=True)
-    # mesh = Mesh.from_points(obj.parser.vertices)
+    mesh.update_default_edge_attributes({'q': 1.0})
 
-    # print(mesh.face_vertices(0))
-    # print(mesh.to_vertices_and_faces())
-
-    # mesh.dump('test.pickle')
-    # mesh.load('test.pickle')
-
-    # print(mesh.face_vertices(0))
-    # print(mesh.to_vertices_and_faces())
-
-    # mesh.loads(mesh.dumps())
+    for u, v, attr in mesh.edges(True):
+        print(u, v, attr)
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 

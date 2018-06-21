@@ -340,7 +340,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         edgepoints = []
 
-        for u, v in list(subd.halfedges()):
+        for u, v in list(subd.edges()):
 
             w = subd.split_edge(u, v, allow_boundary=True)
 
