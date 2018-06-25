@@ -103,7 +103,7 @@ if __name__ == "__main__":
     vertices = set(mesh.vertices())
 
     fkey  = 12
-    where = mesh.face_vertices(fkey)[0:1]
+    where = mesh.face_vertices(fkey)[0:2]
     centroid = mesh.face_centroid(fkey)
 
     face = mesh.unweld_vertices(fkey, where)
