@@ -24,7 +24,6 @@ __all__ = [
     'planarize_faces',
     'mesh_flatness',
     'mesh_planarize_faces',
-    'mesh_planarize_faces_shapeop',
 ]
 
 
