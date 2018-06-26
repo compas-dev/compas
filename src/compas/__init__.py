@@ -13,7 +13,6 @@ compas
     compas.datastructures
     compas.files
     compas.geometry
-    compas.hpc
     compas.interop
     compas.numerical
     compas.plotters
