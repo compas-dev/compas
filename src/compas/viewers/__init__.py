@@ -40,3 +40,4 @@ __all__ = []
 __all__ += viewer.__all__
 __all__ += meshviewer.__all__
 __all__ += vtkviewer.__all__
+__all__ += vtkvoxels.__all__

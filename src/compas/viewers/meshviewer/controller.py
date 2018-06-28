@@ -21,6 +21,9 @@ from OpenGL.GLUT import *
 
 import compas
 
+from compas.files import STLReader
+from compas.files import parse_stl_data
+
 from compas.datastructures import Mesh
 
 from compas.geometry import centroid_points
@@ -47,6 +50,13 @@ get_obj_file = partial(
     caption='Select OBJ file',
     dir=compas.DATA,
     filter='OBJ files (*.obj)'
+)
+
+get_stl_file = partial(
+    QtWidgets.QFileDialog.getOpenFileName,
+    caption='Select STL file',
+    dir=compas.DATA,
+    filter='STL files (*.stl)'
 )
 
 get_json_file = partial(
@@ -130,6 +140,7 @@ class Controller(core.controller.Controller):
         for key, attr in self.mesh.vertices(True):
             attr['x'] -= cx
             attr['y'] -= cy
+            attr['z'] -= cz
 
     # ==========================================================================
     # constructors
@@ -143,6 +154,9 @@ class Controller(core.controller.Controller):
             self.view.make_buffers()
             self.view.update()
 
+    def to_obj(self):
+        self.message('Export to OBJ is under construction...')
+
     def from_json(self):
         filename, _ = get_json_file()
         if filename:
@@ -151,11 +165,22 @@ class Controller(core.controller.Controller):
             self.view.make_buffers()
             self.view.update()
 
-    def to_obj(self):
-        self.message('Export to OBJ is under construction...')
-
     def to_json(self):
         self.message('Export to JSON is under construction...')
+
+    def from_stl(self):
+        filename, _ = get_stl_file()
+        if filename:
+            reader = STLReader(filename)
+            reader.read()
+            vertices, faces = parse_stl_data(reader.facets)
+            self.mesh = Mesh.from_vertices_and_faces(vertices, faces)
+            self.center_mesh()
+            self.view.make_buffers()
+            self.view.update()
+
+    def to_stl(self):
+        self.message('Export to STL is under construction...')
 
     def from_polyhedron(self, f):
         self.mesh = Mesh.from_polyhedron(f)

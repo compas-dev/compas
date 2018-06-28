@@ -1,6 +1,10 @@
 from .view import View
 from .controller import Controller
 
+import os
+
+here = os.path.abspath(os.path.dirname(__file__))
+
 CONFIG = {
     'menubar': [
         {
@@ -56,9 +60,11 @@ CONFIG = {
             'items' : [
                 {'text' : 'From OBJ', 'action': 'from_obj'},
                 {'text' : 'From JSON', 'action': 'from_json'},
+                {'text' : 'From STL', 'action': 'from_stl'},
                 {'type' : 'separator'},
                 {'text' : 'To OBJ', 'action': 'to_obj'},
                 {'text' : 'To JSON', 'action': 'to_json'},
+                {'text' : 'To STL', 'action': 'to_stl'},
                 {'type' : 'separator'},
                 {
                     'type' : 'menu',
@@ -131,9 +137,9 @@ CONFIG = {
         }
     ],
     'toolbar': [
-        {'text': 'Zoom Extents', 'action': 'zoom_extents', 'image': '../icons/zoom/icons8-zoom-to-extents-50.png'},
-        {'text': 'Zoom In', 'action': 'zoom_in', 'image': '../icons/zoom/icons8-zoom-in-50.png'},
-        {'text': 'Zoom Out', 'action': 'zoom_out', 'image': '../icons/zoom/icons8-zoom-out-50.png'},
+        {'text': 'Zoom Extents', 'action': 'zoom_extents', 'image': os.path.join(here, '../icons/zoom/icons8-zoom-to-extents-50.png')},
+        {'text': 'Zoom In', 'action': 'zoom_in', 'image': os.path.join(here, '../icons/zoom/icons8-zoom-in-50.png')},
+        {'text': 'Zoom Out', 'action': 'zoom_out', 'image': os.path.join(here, '../icons/zoom/icons8-zoom-out-50.png')},
     ],
     'sidebar': [
         {

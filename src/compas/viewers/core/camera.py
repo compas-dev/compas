@@ -30,7 +30,7 @@ class Camera(object):
         self.view = view
         self.fov = 60.0
         self.near = 1.0
-        self.far = 100
+        self.far = 1000
         self.rx = -60.0  # from y to z => pos
         self.rz = +45.0  # from x to y => pos
         self.dr = +0.5
@@ -102,6 +102,7 @@ class Camera(object):
         Note that the camera is always positioned in the same location (0, 0, 0)
         and always points in the same direction (-Z). Aiming the camera is
         accomplished by translating and rotating the objects in the scene.
+
         """
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()

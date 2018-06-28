@@ -425,6 +425,10 @@ class Mesh(FromToJson,
         return mesh
 
     @classmethod
+    def from_stl(cls, filepath):
+        pass
+
+    @classmethod
     def from_lines(cls, lines, delete_boundary_face=False, precision='3f'):
         """Construct a mesh object from a list of lines described by start and end point coordinates.
 
