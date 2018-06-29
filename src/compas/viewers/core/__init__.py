@@ -9,6 +9,7 @@ from .colorbutton import *
 from .glwidget import *
 from .controller import *
 from .app import *
+from .buffers import *
 
 from .drawing import __all__ as a
 from .arrow import __all__ as b
@@ -21,5 +22,6 @@ from .colorbutton import __all__ as h
 from .glwidget import __all__ as i
 from .controller import __all__ as j
 from .app import __all__ as k
+from .buffers import __all__ as l
 
-__all__ = a + b + c + d + e + f + g + h + i + j + k
+__all__ = a + b + c + d + e + f + g + h + i + j + k + l

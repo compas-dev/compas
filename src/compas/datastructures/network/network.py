@@ -328,6 +328,10 @@ network: {0}
             network.add_edge(u, v)
         return network
 
+    @classmethod
+    def from_grid(cls, xlim, ylim):
+        pass
+
     # --------------------------------------------------------------------------
     # converters
     # --------------------------------------------------------------------------

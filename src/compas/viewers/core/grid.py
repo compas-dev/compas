@@ -6,6 +6,11 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
+from compas.utilities import flatten
+
+from compas.viewers.core.buffers import make_vertex_buffer
+from compas.viewers.core.buffers import make_index_buffer
+
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -18,12 +23,14 @@ __all__ = ['Grid', ]
 
 class Grid(object):
     """"""
-    def __init__(self):
-        self.xlim = -10, 10
-        self.ylim = -10, 10
-        self.linewidth = 1
-        self.color = (0, 0, 0)
-        self.dotted = True
+    def __init__(self, xlim=(-10, 10), ylim=(-10, 10), linewidth=1, color=(0, 0, 0), dotted=True):
+        self.xlim = xlim
+        self.ylim = ylim
+        self.linewidth = linewidth
+        self.color = color
+        self.dotted = dotted
+        # self.buffer_xyz = None
+        # self.buffer_lines = None
 
     def draw(self):
         glColor3f(*self.color)

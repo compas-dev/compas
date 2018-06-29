@@ -9,6 +9,8 @@ from ast import literal_eval
 
 from compas.files import OBJ
 from compas.files import PLYreader
+from compas.files import STLReader
+from compas.files import parse_stl_data
 
 from compas.utilities import pairwise
 from compas.utilities import window
@@ -426,7 +428,11 @@ class Mesh(FromToJson,
 
     @classmethod
     def from_stl(cls, filepath):
-        pass
+        reader = STLReader(filepath)
+        reader.read()
+        vertices, faces = parse_stl_data(reader.facets)
+        mesh = cls.from_vertices_and_faces(vertices, faces)
+        return mesh
 
     @classmethod
     def from_lines(cls, lines, delete_boundary_face=False, precision='3f'):

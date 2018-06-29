@@ -29,6 +29,9 @@ class MeshViewer(App):
         self.view = View(self.controller)
         self.setup()
         self.init()
+        self.view.glInit()
+        self.view.setup_grid()
+        self.view.setup_axes()
 
     @property
     def mesh(self):
@@ -40,7 +43,7 @@ class MeshViewer(App):
         self.controller.center_mesh()
         self.view.glInit()
         self.view.make_buffers()
-        self.view.update()
+        self.view.updateGL()
 
 
 # ==============================================================================
@@ -48,6 +51,21 @@ class MeshViewer(App):
 # ==============================================================================
 
 if __name__ == '__main__':
+
+    # because of current near/far settings of the camera
+    # the viewer has difficulties displaying very small or very large objects
+    # near/far should be set based on the size of the objects
+    # user should be able to change these settings
+
+    # camera aiming should be implemented with gluLookAt
+    # zooming, rotating, panning should be implemented accordingly
+
+    # there seems to be an issue with keeping the mesh and meshview synchronised
+
+    # some lighting would be appropriate
+    # texture mapping for appreciation of mesh quality?
+
+    import compas
 
     viewer = MeshViewer()
     viewer.show()

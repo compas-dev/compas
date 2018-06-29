@@ -61,10 +61,12 @@ CONFIG = {
                 {'text' : 'From OBJ', 'action': 'from_obj'},
                 {'text' : 'From JSON', 'action': 'from_json'},
                 {'text' : 'From STL', 'action': 'from_stl'},
+                {'text' : 'From PLY', 'action': 'from_ply'},
                 {'type' : 'separator'},
                 {'text' : 'To OBJ', 'action': 'to_obj'},
                 {'text' : 'To JSON', 'action': 'to_json'},
                 {'text' : 'To STL', 'action': 'to_stl'},
+                {'text' : 'To PLY', 'action': 'to_ply'},
                 {'type' : 'separator'},
                 {
                     'type' : 'menu',

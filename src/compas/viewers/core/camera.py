@@ -6,6 +6,10 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
+from math import cos
+from math import sin
+from math import pi
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
@@ -29,7 +33,7 @@ class Camera(object):
     def __init__(self, view):
         self.view = view
         self.fov = 60.0
-        self.near = 1.0
+        self.near = 0.1
         self.far = 1000
         self.rx = -60.0  # from y to z => pos
         self.rz = +45.0  # from x to y => pos
@@ -82,13 +86,15 @@ class Camera(object):
         pass
 
     def rotate(self):
-        dx = self.view.mouse.dx()
-        dy = self.view.mouse.dy()
-        self.rx += self.dr * dy
-        self.rz += self.dr * dx
+        if self.view.current == self.view.VIEW_PERSPECTIVE:
+            dx = self.view.mouse.dx()
+            dy = self.view.mouse.dy()
+            self.rx += self.dr * dy
+            self.rz += self.dr * dx
 
     def translate(self):
         """"""
+        # should be reimplemented per view
         dx = self.view.mouse.dx()
         dy = self.view.mouse.dy()
         self.tx += self.dt * dx
@@ -106,6 +112,16 @@ class Camera(object):
         """
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
+
+        # r = 10.0
+        # phi = 45 * pi / 180
+        # teta = 270 * pi / 180
+
+        # x = r * cos(phi) * sin(teta)
+        # y = r * sin(phi) * sin(teta)
+        # z = r * cos(phi)
+
+        # gluLookAt(x, y, z, 0, 0, 0, 0, 0, 1)
 
         glTranslatef(self.tx, self.ty, self.tz)
 
