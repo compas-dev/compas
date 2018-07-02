@@ -40,8 +40,9 @@ class Camera(object):
         self.dr = +0.5
         self.tx = +0.0
         self.ty = +0.0
-        self.tz = -10.0  # move the scene away from the camera
         self.dt = +0.05
+        self.distance = 10.0
+        self.dd = +0.05
         self.target = [0.0, 0.0, 0.0]
 
     @property
@@ -49,6 +50,18 @@ class Camera(object):
         w = self.view.width()
         h = self.view.height()
         return float(w) / float(h)
+
+    def zoom(self, steps=1):
+        """Zoom in.
+
+        Notes
+        -----
+        Zooming in is achieved by moving the objects in the scene closer to the
+        camera, i.e. by decreasing the absolute size of the Z-component of the
+        translation vector that is applied to all objects.
+        """
+        increment = self.dd * self.distance
+        self.distance -= steps * increment
 
     def zoom_in(self, steps=1):
         """Zoom in.
@@ -59,7 +72,8 @@ class Camera(object):
         camera, i.e. by decreasing the absolute size of the Z-component of the
         translation vector that is applied to all objects.
         """
-        self.tz -= steps * self.tz * self.dt
+        increment = self.dd * self.distance
+        self.distance += steps * increment
 
     def zoom_out(self, steps=1):
         """Zoom out.
@@ -71,17 +85,8 @@ class Camera(object):
         the Z-component of the translation vector that is used to transform all
         objects.
         """
-        self.tz += steps * self.tz * self.dt
-
-    def zoom(self, steps=1):
-        """Zoom.
-
-        Notes
-        -----
-        This is th same as zooming in.
-
-        """
-        self.tz -= steps * self.tz * self.dt
+        increment = self.dd * self.distance
+        self.distance -= steps * increment
 
     def zoom_extents(self):
         pass
@@ -114,23 +119,9 @@ class Camera(object):
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
-        # perhaps use this functionality to implement fly-by
-        # r = -self.tz
-        # phi = -self.rx * pi / 180  # rotation of Z towards XY (polar)
-        # teta = (self.rz - 180) * pi / 180  # rotation around Z (azimuth)
-        # tx = -self.tx
-        # ty = -self.ty
-        # tz = 0
-        # ox = r * sin(phi) * cos(teta)
-        # oy = r * sin(phi) * sin(teta)
-        # oz = r * cos(phi)
-        # gluLookAt(ox + tx, oy + ty, oz + ty, tx, ty, tz, 0, 0, 1)
+        glTranslatef(self.tx, self.ty, 0)
+        glTranslatef(0, 0, -self.distance)
 
-        # transformations are applied in opposite order!
-        # so the last one first...
-
-        # replace this by camera eye position
-        glTranslatef(self.tx, self.ty, self.tz)
         glTranslatef(self.target[0], self.target[1], self.target[2])
 
         if self.view.current == self.view.VIEW_PERSPECTIVE:
@@ -158,7 +149,7 @@ class Camera(object):
             gluPerspective(self.fov, self.aspect, self.near, self.far)
 
         else:
-            glOrtho(self.tz, -self.tz, self.tz / self.aspect, -self.tz / self.aspect, self.near, self.far)
+            glOrtho(-self.distance, self.distance, -self.distance / self.aspect, self.distance / self.aspect, self.near, self.far)
 
         glPopAttrib()
 

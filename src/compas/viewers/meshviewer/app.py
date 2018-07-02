@@ -31,7 +31,7 @@ class MeshViewer(App):
         self.init()
         self.view.glInit()
         self.view.setup_grid()
-        self.view.setup_axes()
+        # self.view.setup_axes()
 
     @property
     def mesh(self):
@@ -98,6 +98,6 @@ if __name__ == '__main__':
 
     viewer = MeshViewer()
     viewer.mesh = mesh
-    viewer.view.camera.target = t
+    # viewer.view.camera.target = t
 
     viewer.show()

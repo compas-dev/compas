@@ -229,6 +229,11 @@ CONFIG = {
                     ]
                 }
             ]
+        },
+        {
+            'type' : 'group',
+            'text' : None,
+            'items': [],
         }
     ]
 }

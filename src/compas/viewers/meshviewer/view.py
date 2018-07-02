@@ -118,9 +118,11 @@ class View(GLWidget):
     # ==========================================================================
 
     def paint(self):
+        glDisable(GL_DEPTH_TEST)
         for dl in self.display_lists:
             glCallList(dl)
 
+        glEnable(GL_DEPTH_TEST)
         self.draw_buffers()
 
     def make_buffers(self):

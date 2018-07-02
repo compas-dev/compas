@@ -161,7 +161,7 @@ class Controller(core.controller.Controller):
         filename, _ = get_obj_file()
         if filename:
             self.mesh = Mesh.from_obj(filename)
-            self.center_mesh()
+            # self.center_mesh()
             self.view.make_buffers()
             self.view.updateGL()
 
@@ -172,7 +172,7 @@ class Controller(core.controller.Controller):
         filename, _ = get_json_file()
         if filename:
             self.mesh = Mesh.from_json(filename)
-            self.center_mesh()
+            # self.center_mesh()
             self.view.make_buffers()
             self.view.updateGL()
 
@@ -184,12 +184,12 @@ class Controller(core.controller.Controller):
         if filename:
             mesh = Mesh.from_stl(filename)
 
-            xyz = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-            cx, cy, cz = centroid_points(xyz)
-            for key, attr in mesh.vertices(True):
-                attr['x'] -= cx
-                attr['y'] -= cy
-                attr['z'] -= cz
+            # xyz = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+            # cx, cy, cz = centroid_points(xyz)
+            # for key, attr in mesh.vertices(True):
+            #     attr['x'] -= cx
+            #     attr['y'] -= cy
+            #     attr['z'] -= cz
 
             self.mesh = mesh
 
@@ -203,7 +203,7 @@ class Controller(core.controller.Controller):
         filename, _ = get_ply_file()
         if filename:
             self.mesh = Mesh.from_ply(filename)
-            self.center_mesh()
+            # self.center_mesh()
             self.view.make_buffers()
             self.view.updateGL()
 
@@ -212,7 +212,7 @@ class Controller(core.controller.Controller):
 
     def from_polyhedron(self, f):
         self.mesh = Mesh.from_polyhedron(f)
-        self.center_mesh()
+        # self.center_mesh()
         self.view.make_buffers()
         self.view.updateGL()
 
