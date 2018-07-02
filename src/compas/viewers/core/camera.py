@@ -35,8 +35,8 @@ class Camera(object):
         self.fov = 60.0
         self.near = 0.1
         self.far = 1000
-        self.rx = -30.0  # from y to z => pos
-        self.rz = +30.0  # from x to y => pos
+        self.rx = view.settings['camera.elevation:value']  # from y to z => pos
+        self.rz = view.settings['camera.azimuth:value']  # from x to y => pos
         self.dr = +0.5
         self.tx = +0.0
         self.ty = +0.0

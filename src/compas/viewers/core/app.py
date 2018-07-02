@@ -19,6 +19,7 @@ else:
 
 from compas.viewers.core import ColorButton
 from compas.viewers.core import Slider
+from compas.viewers.core import TextEdit
 
 
 __author__    = ['Tom Van Mele', ]
@@ -66,7 +67,7 @@ class App(QtWidgets.QApplication):
         # self.main.setUnifiedTitleAndToolBarOnMac(True)
         self.init_statusbar()
         self.init_menubar()
-        self.init_toolbar()
+        # self.init_toolbar()
         self.init_sidebar()
         self.init_console()
 
@@ -205,6 +206,12 @@ class App(QtWidgets.QApplication):
             if itype == 'colorbutton':
                 self.add_colorbutton(item, parent)
                 continue
+            if itype == 'textedit':
+                self.add_textedit(item, parent)
+                continue
+            if itype == 'stretch':
+                parent.addStretch()
+                continue
 
     # ==========================================================================
     # add one
@@ -255,6 +262,12 @@ class App(QtWidgets.QApplication):
 
     def add_button(self, item, parent):
         pass
+
+    def add_textedit(self, item, parent):
+        textedit = TextEdit(item['text'],
+                            item['value'],
+                            getattr(self.controller, item['edit']))
+        parent.addLayout(textedit.layout)
 
     def add_colorbutton(self, item, parent):
         button = ColorButton(item['text'],

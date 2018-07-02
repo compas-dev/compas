@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from .view import View
 from .controller import Controller
 
@@ -233,7 +237,50 @@ CONFIG = {
         {
             'type' : 'group',
             'text' : None,
-            'items': [],
+            'items': [
+                {
+                    'type'   : 'slider',
+                    'text'   : 'azimuth',
+                    'value'  : Controller.settings['camera.azimuth:value'],
+                    'minval' : Controller.settings['camera.azimuth:minval'],
+                    'maxval' : Controller.settings['camera.azimuth:maxval'],
+                    'step'   : Controller.settings['camera.azimuth:step'],
+                    'scale'  : Controller.settings['camera.azimuth:scale'],
+                    'slide'  : 'slide_azimuth',
+                    'edit'   : 'edit_azimuth'
+                },
+                {
+                    'type'   : 'slider',
+                    'text'   : 'elevation',
+                    'value'  : Controller.settings['camera.elevation:value'],
+                    'minval' : Controller.settings['camera.elevation:minval'],
+                    'maxval' : Controller.settings['camera.elevation:maxval'],
+                    'step'   : Controller.settings['camera.elevation:step'],
+                    'scale'  : Controller.settings['camera.elevation:scale'],
+                    'slide'  : 'slide_elevation',
+                    'edit'   : 'edit_elevation'
+                },
+                {
+                    'type'   : 'slider',
+                    'text'   : 'distance',
+                    'value'  : Controller.settings['camera.distance:value'],
+                    'minval' : Controller.settings['camera.distance:minval'],
+                    'maxval' : Controller.settings['camera.distance:maxval'],
+                    'step'   : Controller.settings['camera.distance:step'],
+                    'scale'  : Controller.settings['camera.distance:scale'],
+                    'slide'  : 'slide_distance',
+                    'edit'   : 'edit_distance'
+                },
+                {
+                    'type'   : 'textedit',
+                    'text'   : 'fov',
+                    'value'  : Controller.settings['camera.fov:value'],
+                    'edit'   : 'edit_fov'
+                },
+                {
+                    'type'   : 'stretch',
+                }
+            ],
         }
     ]
 }

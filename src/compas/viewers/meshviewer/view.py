@@ -36,8 +36,8 @@ class View(GLWidget):
     """"""
 
     def __init__(self, controller):
-        super(View, self).__init__()
         self.controller = controller
+        super(View, self).__init__()
         self.n = 0
         self.v = 0
         self.e = 0

@@ -114,6 +114,26 @@ class Controller(core.controller.Controller):
     settings['edges.labels.on'] = False
     settings['faces.labels.on'] = False
 
+    settings['camera.elevation:value'] = -10
+    settings['camera.elevation:minval'] = -180
+    settings['camera.elevation:maxval'] = 0
+    settings['camera.elevation:step'] = +1
+    settings['camera.elevation:scale'] = +1
+
+    settings['camera.azimuth:value'] = +30
+    settings['camera.azimuth:minval'] = -180
+    settings['camera.azimuth:maxval'] = +180
+    settings['camera.azimuth:step'] = +1
+    settings['camera.azimuth:scale'] = +1
+
+    settings['camera.distance:value'] = +10
+    settings['camera.distance:minval'] = 0
+    settings['camera.distance:maxval'] = +100
+    settings['camera.distance:step'] = +1
+    settings['camera.distance:scale'] = +1
+
+    settings['camera.fov:value'] = 50
+
     def __init__(self, app):
         super(Controller, self).__init__(app)
         self._mesh = None
@@ -326,6 +346,35 @@ class Controller(core.controller.Controller):
         self.view.update_vertex_buffer('normals.color', self.view.array_normals_color)
         self.view.updateGL()
         self.app.main.activateWindow()
+
+    # ==========================================================================
+    # camera
+    # ==========================================================================
+
+    def slide_azimuth(self, value):
+        self.view.camera.rz = float(value)
+        self.view.updateGL()
+
+    def edit_azimuth(self, value):
+        print(value)
+
+    def slide_elevation(self, value):
+        self.view.camera.rx = float(value)
+        self.view.updateGL()
+
+    def edit_elevation(self, value):
+        print(value)
+
+    def slide_distance(self, value):
+        self.view.camera.distance = float(value)
+        self.view.updateGL()
+
+    def edit_distance(self, value):
+        print(value)
+
+    def edit_fov(self, value):
+        self.view.camera.fov = float(value)
+        self.view.updateGL()
 
     # ==========================================================================
     # tools
