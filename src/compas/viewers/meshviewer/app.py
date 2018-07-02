@@ -65,6 +65,11 @@ if __name__ == '__main__':
     # some lighting would be appropriate
     # texture mapping for appreciation of mesh quality?
 
+    # don't auto-centre the objects
+    # provide zoom extents and focus functions instead
+    # allow user to adjust camera settings
+    # and adapt projection parameters to the size of the model
+
     import compas
     from compas.datastructures import Mesh
     from compas.geometry import transform
