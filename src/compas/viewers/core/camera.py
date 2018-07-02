@@ -35,13 +35,14 @@ class Camera(object):
         self.fov = 60.0
         self.near = 0.1
         self.far = 1000
-        self.rx = -60.0  # from y to z => pos
-        self.rz = +45.0  # from x to y => pos
+        self.rx = -30.0  # from y to z => pos
+        self.rz = +30.0  # from x to y => pos
         self.dr = +0.5
         self.tx = +0.0
         self.ty = +0.0
         self.tz = -10.0  # move the scene away from the camera
         self.dt = +0.05
+        self.target = [0.0, 0.0, 0.0]
 
     @property
     def aspect(self):
@@ -113,17 +114,24 @@ class Camera(object):
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
-        # r = 10.0
-        # phi = 45 * pi / 180
-        # teta = 270 * pi / 180
+        # perhaps use this functionality to implement fly-by
+        # r = -self.tz
+        # phi = -self.rx * pi / 180  # rotation of Z towards XY (polar)
+        # teta = (self.rz - 180) * pi / 180  # rotation around Z (azimuth)
+        # tx = -self.tx
+        # ty = -self.ty
+        # tz = 0
+        # ox = r * sin(phi) * cos(teta)
+        # oy = r * sin(phi) * sin(teta)
+        # oz = r * cos(phi)
+        # gluLookAt(ox + tx, oy + ty, oz + ty, tx, ty, tz, 0, 0, 1)
 
-        # x = r * cos(phi) * sin(teta)
-        # y = r * sin(phi) * sin(teta)
-        # z = r * cos(phi)
+        # transformations are applied in opposite order!
+        # so the last one first...
 
-        # gluLookAt(x, y, z, 0, 0, 0, 0, 0, 1)
-
+        # replace this by camera eye position
         glTranslatef(self.tx, self.ty, self.tz)
+        glTranslatef(self.target[0], self.target[1], self.target[2])
 
         if self.view.current == self.view.VIEW_PERSPECTIVE:
             glRotatef(self.rx, 1, 0, 0)
@@ -138,6 +146,8 @@ class Camera(object):
 
         if self.view.current == self.view.VIEW_TOP:
             pass
+
+        glTranslatef(-self.target[0], -self.target[1], -self.target[2])
 
     def focus(self):
         glPushAttrib(GL_TRANSFORM_BIT)

@@ -66,6 +66,33 @@ if __name__ == '__main__':
     # texture mapping for appreciation of mesh quality?
 
     import compas
+    from compas.datastructures import Mesh
+    from compas.geometry import transform
+    from compas.geometry import matrix_from_translation
+
+
+    class Mesh(Mesh):
+
+        def apply_xform(self, M):
+            key_index = self.key_index()
+            points = self.get_vertices_attributes('xyz')
+            points = transform(points, M)
+            for key, attr in self.vertices(True):
+                index = key_index[key]
+                x, y, z = points[index]
+                attr['x'] = x
+                attr['y'] = y
+                attr['z'] = z
+
+
+    t = [3, 0, 0]
+    M = matrix_from_translation(t)
+
+    mesh = Mesh.from_polyhedron(6)
+    mesh.apply_xform(M)
 
     viewer = MeshViewer()
+    viewer.mesh = mesh
+    viewer.view.camera.target = t
+
     viewer.show()
