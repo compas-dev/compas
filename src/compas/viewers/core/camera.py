@@ -20,30 +20,68 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['Camera', ]
 
 
-# Perhaps zoom should be stored as a zoom factor somewhere.
-# Not just as the Z-component of the translation vector.
-
-# Centering should not be handled on the object level,
-# but through a base translation vector.
-
-
 class Camera(object):
     """"""
 
     def __init__(self, view):
         self.view = view
-        self.fov = 60.0
-        self.near = 0.1
-        self.far = 1000
-        self.rx = view.settings['camera.elevation:value']  # from y to z => pos
-        self.rz = view.settings['camera.azimuth:value']  # from x to y => pos
-        self.dr = +0.5
         self.tx = +0.0
         self.ty = +0.0
         self.dt = +0.05
         self.distance = 10.0
         self.dd = +0.05
         self.target = [0.0, 0.0, 0.0]
+
+    @property
+    def settings(self):
+        if self.view:
+            return self.view.settings
+        else:
+            return None
+
+    @property
+    def rx(self):
+        return self.settings['camera.elevation:value']
+
+    @rx.setter
+    def rx(self, value):
+        self.settings['camera.elevation:value'] = value
+
+    @property
+    def rz(self):
+        return self.settings['camera.azimuth:value']
+
+    @rz.setter
+    def rz(self, value):
+        self.settings['camera.azimuth:value'] = value
+
+    @property
+    def dr(self):
+        return self.settings['camera.rotation:delta']
+
+    @property
+    def fov(self):
+        return self.settings['camera.fov:value']
+
+    @fov.setter
+    def fov(self, value):
+        self.settings['camera.fov:value'] = value
+
+    @property
+    def near(self):
+        return self.settings['camera.near:value']
+
+    @near.setter
+    def near(self, value):
+        self.settings['camera.near:value'] = value
+
+    @property
+    def far(self):
+        return self.settings['camera.far:value']
+
+    @far.setter
+    def far(self, value):
+        self.settings['camera.far:value'] = value
 
     @property
     def aspect(self):
@@ -95,8 +133,8 @@ class Camera(object):
         if self.view.current == self.view.VIEW_PERSPECTIVE:
             dx = self.view.mouse.dx()
             dy = self.view.mouse.dy()
-            self.rx += self.dr * dy
-            self.rz += self.dr * dx
+            self.rx = self.rx + self.dr * dy
+            self.rz = self.rz + self.dr * dx
 
     def translate(self):
         """"""

@@ -239,6 +239,7 @@ CONFIG = {
             'text' : None,
             'items': [
                 {
+                    'name'   : 'azimuth',
                     'type'   : 'slider',
                     'text'   : 'azimuth',
                     'value'  : Controller.settings['camera.azimuth:value'],
@@ -250,6 +251,7 @@ CONFIG = {
                     'edit'   : 'edit_azimuth'
                 },
                 {
+                    'name'   : 'elevation',
                     'type'   : 'slider',
                     'text'   : 'elevation',
                     'value'  : Controller.settings['camera.elevation:value'],
@@ -261,6 +263,7 @@ CONFIG = {
                     'edit'   : 'edit_elevation'
                 },
                 {
+                    'name'   : 'distance',
                     'type'   : 'slider',
                     'text'   : 'distance',
                     'value'  : Controller.settings['camera.distance:value'],

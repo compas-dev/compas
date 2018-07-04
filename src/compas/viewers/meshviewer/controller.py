@@ -78,8 +78,8 @@ def flist(items):
 
 
 class Controller(core.controller.Controller):
+    settings = core.controller.Controller.settings or {}
 
-    settings = {}
     settings['vertices.size:value'] = 1.0
     settings['vertices.size:minval'] = 1
     settings['vertices.size:maxval'] = 100
@@ -131,8 +131,12 @@ class Controller(core.controller.Controller):
     settings['camera.distance:maxval'] = +100
     settings['camera.distance:step'] = +1
     settings['camera.distance:scale'] = +1
+    settings['camera.distance:delta'] = +0.05
 
+    settings['camera.rotation:delta'] = +0.5
     settings['camera.fov:value'] = 50
+    settings['camera.near:value'] = 0.1
+    settings['camera.far:value'] = 1000
 
     def __init__(self, app):
         super(Controller, self).__init__(app)
@@ -153,15 +157,9 @@ class Controller(core.controller.Controller):
 
     @mesh.setter
     def mesh(self, mesh):
-        # if self._mesh:
-        #     del self._mesh
-        # if self._meshview:
-        #     del self._meshview
         self._mesh = mesh
         self._meshview = MeshView(mesh)
 
-    # centering the mesh should be handled
-    # by storing a base translation vector for the camera
     def center_mesh(self):
         xyz = [self.mesh.vertex_coordinates(key) for key in self.mesh.vertices()]
         cx, cy, cz = centroid_points(xyz)
@@ -192,7 +190,6 @@ class Controller(core.controller.Controller):
         filename, _ = get_json_file()
         if filename:
             self.mesh = Mesh.from_json(filename)
-            # self.center_mesh()
             self.view.make_buffers()
             self.view.updateGL()
 
@@ -202,17 +199,7 @@ class Controller(core.controller.Controller):
     def from_stl(self):
         filename, _ = get_stl_file()
         if filename:
-            mesh = Mesh.from_stl(filename)
-
-            # xyz = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-            # cx, cy, cz = centroid_points(xyz)
-            # for key, attr in mesh.vertices(True):
-            #     attr['x'] -= cx
-            #     attr['y'] -= cy
-            #     attr['z'] -= cz
-
-            self.mesh = mesh
-
+            self.mesh = Mesh.from_stl(filename)
             self.view.make_buffers()
             self.view.updateGL()
 
@@ -223,7 +210,6 @@ class Controller(core.controller.Controller):
         filename, _ = get_ply_file()
         if filename:
             self.mesh = Mesh.from_ply(filename)
-            # self.center_mesh()
             self.view.make_buffers()
             self.view.updateGL()
 
@@ -232,7 +218,6 @@ class Controller(core.controller.Controller):
 
     def from_polyhedron(self, f):
         self.mesh = Mesh.from_polyhedron(f)
-        # self.center_mesh()
         self.view.make_buffers()
         self.view.updateGL()
 
