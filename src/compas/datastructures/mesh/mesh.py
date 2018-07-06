@@ -39,6 +39,7 @@ from compas.datastructures._mixins import VertexCoordinatesDescriptors
 from compas.datastructures._mixins import EdgeAttributesManagement
 from compas.datastructures._mixins import EdgeHelpers
 from compas.datastructures._mixins import EdgeGeometry
+from compas.datastructures._mixins import EdgeFilter
 
 from compas.datastructures._mixins import FaceAttributesManagement
 from compas.datastructures._mixins import FaceHelpers
@@ -89,6 +90,7 @@ class Mesh(FromToJson,
            EdgeHelpers,
            VertexHelpers,
            VertexFilter,
+           EdgeFilter,
            FaceMappings,
            EdgeMappings,
            VertexMappings,

@@ -81,13 +81,13 @@ try:
     stats.print_stats(20)
 
 except Exception:
-    odict = {}
+    odict = dict()
     odict['error']      = traceback.format_exc()
     odict['data']       = None
     odict['profile']    = None
 
 else:
-    odict = {}
+    odict = dict()
     odict['error']      = None
     odict['data']       = r
     odict['profile']    = stream.getvalue()
