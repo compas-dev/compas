@@ -315,7 +315,7 @@ class XFunc(object):
             if not line:
                 break
             line = line.strip()
-            if mode:
+            if self.verbose:
                 print(line)
 
         stderr = p.StandardError.ReadToEnd()
