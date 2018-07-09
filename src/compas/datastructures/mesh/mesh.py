@@ -472,19 +472,28 @@ class Mesh(FromToJson,
 
         """
         from compas.topology import network_find_faces
-        from compas.datastructures import FaceNetwork
+        from compas.datastructures import Network
 
-        network = FaceNetwork.from_lines(lines, precision=precision)
+        network = Network.from_lines(lines, precision=precision)
 
-        network_find_faces(network, breakpoints=network.leaves())
+        mesh = cls()
+        # mesh.vertex = network.vertex
+        # mesh.halfedge = network.halfedge
 
-        if delete_boundary_face:
-            network.delete_face(0)
+        for key, attr in network.vertices(True):
+            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0)
 
-        key_index = network.key_index()
-        vertices = [network.vertex_coordinates(key) for key in network.vertices()]
-        faces = [[key_index[key] for key in network.face_vertices(fkey)] for fkey in network.faces()]
-        mesh = cls.from_vertices_and_faces(vertices, faces)
+        mesh.halfedge = network.halfedge
+
+        network_find_faces(mesh, breakpoints=mesh.leaves())
+
+        # if delete_boundary_face:
+        #     mesh.delete_face(0)
+
+        # key_index = network.key_index()
+        # vertices = [network.vertex_coordinates(key) for key in network.vertices()]
+        # faces = [[key_index[key] for key in network.face_vertices(fkey)] for fkey in network.faces()]
+        # mesh = cls.from_vertices_and_faces(vertices, faces)
 
         return mesh
 
@@ -1382,8 +1391,11 @@ class Mesh(FromToJson,
         """
         edges = set()
 
-        for fkey in self.faces():
-            for u, v in self.face_halfedges(fkey):
+        # why is this not a loop over the halfedges?
+        # for fkey in self.faces():
+        #     for u, v in self.face_halfedges(fkey):
+        for u in self.halfedge:
+            for v in self.halfedge[u]:
 
                 if (u, v) in edges or (v, u) in edges:
                     continue
