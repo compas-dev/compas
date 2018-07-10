@@ -9,6 +9,7 @@ try:
     from System.Collections.Generic import List
     from System.Enum import ToObject
     from System.Array import CreateInstance
+    from System.Drawing import Color
 
     from Rhino.Geometry import Point3d
     from Rhino.Geometry import Vector3d
@@ -203,9 +204,11 @@ def xdraw_mesh(vertices, faces, vertex_normals=None, texture_coordinates=None,
         mesh.TextureCoordinates.SetTextureCoordinates(tcs)
 
     if vertex_colors:
-        for i, color in vertex_colors.iteritems():
-            color = rs.coercecolor(color)
-            mesh.VertexColors.SetColor(i, color)
+        count = len(vertex_colors)
+        colors = CreateInstance(Color, count)
+        for i, color in enumerate(vertex_colors):
+            colors[i] = rs.coercecolor(color)
+        mesh.VertexColors.SetColors(colors)
 
     return mesh
 

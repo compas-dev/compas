@@ -311,6 +311,34 @@ class Frame(object):
             self.xaxis = xaxis
             self.yaxis = yaxis
             return self
+    
+    @classmethod
+    def from_data(cls, data):
+        """Construct a frame from its data representation.
+
+        Args:
+            data (`dict`): The data dictionary.
+
+        Returns:
+            (:class:`Frame`)
+        """
+        frame = cls()
+        frame.data = data
+        return frame
+    
+    def to_data(self):
+        return self.data
+    
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the frame."""
+        return {'point': self.point, 'xaxis': self.xaxis, 'yaxis': self.yaxis}
+        
+    @data.setter
+    def data(self, data):
+        self.point = data.get('point', [0, 0, 0])
+        self.xaxis = data.get('xaxis', [1, 0, 0])
+        self.yaxis = data.get('yaxis', [0, 1, 0])
 
     def __repr__(self):
         s = "[[%.4f, %.4f, %.4f], " % tuple(self.point)
