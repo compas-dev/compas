@@ -16,7 +16,11 @@ __all__ = [
 ]
 
 
-def mesh_split_edge(self, u, v, t=0.5, allow_boundary=False):
+def mesh_split(mesh):
+    pass
+
+
+def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     """Split and edge by inserting a vertex along its length.
 
     Parameters
@@ -49,43 +53,43 @@ def mesh_split_edge(self, u, v, t=0.5, allow_boundary=False):
 
     # check if the split is legal
     # don't split if edge is on boundary
-    fkey_uv = self.halfedge[u][v]
-    fkey_vu = self.halfedge[v][u]
+    fkey_uv = mesh.halfedge[u][v]
+    fkey_vu = mesh.halfedge[v][u]
 
     if not allow_boundary:
         if fkey_uv is None or fkey_vu is None:
             return
 
     # coordinates
-    x, y, z = self.edge_point(u, v, t)
+    x, y, z = mesh.edge_point(u, v, t)
 
     # the split vertex
-    w = self.add_vertex(x=x, y=y, z=z)
+    w = mesh.add_vertex(x=x, y=y, z=z)
 
     # split half-edge UV
-    self.halfedge[u][w] = fkey_uv
-    self.halfedge[w][v] = fkey_uv
-    del self.halfedge[u][v]
+    mesh.halfedge[u][w] = fkey_uv
+    mesh.halfedge[w][v] = fkey_uv
+    del mesh.halfedge[u][v]
 
     # update the UV face if it is not the `None` face
     if fkey_uv is not None:
-        j = self.face[fkey_uv].index(v)
-        self.face[fkey_uv].insert(j, w)
+        j = mesh.face[fkey_uv].index(v)
+        mesh.face[fkey_uv].insert(j, w)
 
     # split half-edge VU
-    self.halfedge[v][w] = fkey_vu
-    self.halfedge[w][u] = fkey_vu
-    del self.halfedge[v][u]
+    mesh.halfedge[v][w] = fkey_vu
+    mesh.halfedge[w][u] = fkey_vu
+    del mesh.halfedge[v][u]
 
     # update the VU face if it is not the `None` face
     if fkey_vu is not None:
-        i = self.face[fkey_vu].index(u)
-        self.face[fkey_vu].insert(i, w)
+        i = mesh.face[fkey_vu].index(u)
+        mesh.face[fkey_vu].insert(i, w)
 
     return w
 
 
-def trimesh_split_edge(self, u, v, t=0.5, allow_boundary=False):
+def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     """Split an edge of a triangle mesh.
 
     Parameters
@@ -137,50 +141,50 @@ def trimesh_split_edge(self, u, v, t=0.5, allow_boundary=False):
 
     # check if the split is legal
     # don't split if edge is on boundary
-    fkey_uv = self.halfedge[u][v]
-    fkey_vu = self.halfedge[v][u]
+    fkey_uv = mesh.halfedge[u][v]
+    fkey_vu = mesh.halfedge[v][u]
 
     if not allow_boundary:
         if fkey_uv is None or fkey_vu is None:
             return
 
     # coordinates
-    x, y, z = self.edge_point(u, v, t)
+    x, y, z = mesh.edge_point(u, v, t)
 
     # the split vertex
-    w = self.add_vertex(x=x, y=y, z=z)
+    w = mesh.add_vertex(x=x, y=y, z=z)
 
     # the UV face
     if fkey_uv is None:
-        self.halfedge[u][w] = None
-        self.halfedge[w][v] = None
-        del self.halfedge[u][v]
+        mesh.halfedge[u][w] = None
+        mesh.halfedge[w][v] = None
+        del mesh.halfedge[u][v]
     else:
-        face = self.face[fkey_uv]
+        face = mesh.face[fkey_uv]
         o = face[face.index(u) - 1]
-        self.add_face([u, w, o])
-        self.add_face([w, v, o])
-        del self.halfedge[u][v]
-        del self.face[fkey_uv]
+        mesh.add_face([u, w, o])
+        mesh.add_face([w, v, o])
+        del mesh.halfedge[u][v]
+        del mesh.face[fkey_uv]
 
     # the VU face
     if fkey_vu is None:
-        self.halfedge[v][w] = None
-        self.halfedge[w][u] = None
-        del self.halfedge[v][u]
+        mesh.halfedge[v][w] = None
+        mesh.halfedge[w][u] = None
+        del mesh.halfedge[v][u]
     else:
-        face = self.face[fkey_vu]
+        face = mesh.face[fkey_vu]
         o = face[face.index(v) - 1]
-        self.add_face([v, w, o])
-        self.add_face([w, u, o])
-        del self.halfedge[v][u]
-        del self.face[fkey_vu]
+        mesh.add_face([v, w, o])
+        mesh.add_face([w, u, o])
+        del mesh.halfedge[v][u]
+        del mesh.face[fkey_vu]
 
     # return the key of the split vertex
     return w
 
 
-def mesh_split_face(self, fkey, u, v):
+def mesh_split_face(mesh, fkey, u, v):
     """Split a face by inserting an edge between two specified vertices.
 
     Parameters:
@@ -189,10 +193,10 @@ def mesh_split_face(self, fkey, u, v):
         v (str) : The key of the second split vertex.
 
     """
-    if u not in self.face[fkey] or v not in self.face[fkey]:
+    if u not in mesh.face[fkey] or v not in mesh.face[fkey]:
         raise ValueError('The split vertices do not belong to the split face.')
 
-    face = self.face[fkey]
+    face = mesh.face[fkey]
 
     i = face.index(u)
     j = face.index(v)
@@ -207,10 +211,10 @@ def mesh_split_face(self, fkey, u, v):
         f = face[i:] + face[:j + 1]
         g = face[j:i + 1]
 
-    f = self.add_face(f)
-    g = self.add_face(g)
+    f = mesh.add_face(f)
+    g = mesh.add_face(g)
 
-    del self.face[fkey]
+    del mesh.face[fkey]
 
     return f, g
 
@@ -221,6 +225,8 @@ def mesh_split_face(self, fkey, u, v):
 
 if __name__ == "__main__":
 
+    from random import choice
+
     import compas
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
@@ -230,7 +236,9 @@ if __name__ == "__main__":
 
     mesh_quads_to_triangles(mesh)
 
-    split = mesh.split_edge_tri(15, 20)
+    u, v = choice(list(mesh.edges()))
+
+    split = mesh.split_edge_tri(u, v, allow_boundary=True)
 
     facecolor = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
 

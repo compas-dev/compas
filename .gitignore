@@ -126,3 +126,6 @@ data/bunny
 docs/reference/generated/
 docs/__build
 *.gif
+
+*.pickle
+

@@ -4,6 +4,8 @@ from __future__ import division
 from __future__ import print_function
 
 try:
+    import vtk
+
     from vtk import vtkActor
     from vtk import vtkAxesActor
     from vtk import vtkCellArray
@@ -23,7 +25,6 @@ try:
     from vtk import vtkSliderWidget
     from vtk import vtkSphereSource
     from vtk import vtkUnsignedCharArray
-    import vtk
 
 except ImportError:
     pass
