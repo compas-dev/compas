@@ -120,25 +120,7 @@ class EdgeFilter(object):
 class FaceFilter(object):
 
     def faces_where(self, conditions):
-        keys = []
-        for fkey, attr in self.faces(True):
-            is_match = True
-            for name, value in conditions.items():
-                if name not in attr:
-                    is_match = False
-                    break
-                if isinstance(value, (tuple, list)):
-                    minval, maxval = value
-                    if attr[name] < minval or attr[name] > maxval:
-                        is_match = False
-                        break
-                else:
-                    if value != attr[name]:
-                        is_match = False
-                        break
-            if is_match:
-                keys.append(fkey)
-        return keys
+        raise NotImplementedError
 
 
 # ==============================================================================

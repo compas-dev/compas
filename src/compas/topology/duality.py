@@ -286,10 +286,10 @@ def network_find_faces(network, breakpoints=None):
     if not breakpoints:
         breakpoints = []
 
-    # network.clear_facedict()
-    # network.clear_halfedgedict()
+    network.clear_facedict()
+    network.clear_halfedgedict()
 
-    # network.halfedge = {key: {} for key in network.vertices()}
+    network.halfedge = {key: {} for key in network.vertices()}
 
     for u, v in network.edges():
         network.halfedge[u][v] = None
@@ -297,7 +297,7 @@ def network_find_faces(network, breakpoints=None):
 
     _sort_neighbours(network)
 
-    leaves = list(network.leaves())
+    leaves = network.leaves()
 
     if leaves:
         u = sorted([(key, network.vertex[key]) for key in leaves], key=lambda x: (x[1]['y'], x[1]['x']))[0][0]

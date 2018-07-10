@@ -223,6 +223,7 @@ def eye():
 if __name__ == "__main__":
 
     import time
+    # import compas_rhino
 
     try:
         lib = ctypes.cdll.LoadLibrary('_test/test.so')

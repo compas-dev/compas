@@ -220,12 +220,4 @@ class GLWidget(QOpenGLWidget):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    import sys
-
-    app = QtGui.QApplication(sys.argv)
-    
-    w = GLWidget()
-    w.show()
-
-    app.exec_()
+    pass

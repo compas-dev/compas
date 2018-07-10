@@ -23,9 +23,9 @@ from compas.numerical import uvw_lengths
 from compas.numerical.algorithms.drx_numpy import _beam_data
 from compas.numerical.algorithms.drx_numpy import _create_arrays
 
-from compas_hpc import cross_vectors_numba as cross
-from compas_hpc import dot_vectors_numba as dot
-from compas_hpc import length_vector_numba as length
+from compas.hpc import cross_vectors_numba as cross
+from compas.hpc import dot_vectors_numba as dot
+from compas.hpc import length_vector_numba as length
 
 
 from time import time

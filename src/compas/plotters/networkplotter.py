@@ -6,6 +6,7 @@ from matplotlib.patches import Circle
 
 from compas.utilities import valuedict
 from compas.plotters.plotter import Plotter
+from compas.plotters.mixins import ForcePlotterMixin
 
 try:
     basestring
@@ -22,7 +23,7 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = ['NetworkPlotter', ]
 
 
-class NetworkPlotter(Plotter):
+class NetworkPlotter(ForcePlotterMixin, Plotter):
     """Definition of a plotter object based on matplotlib for compas Networks.
 
     Parameters

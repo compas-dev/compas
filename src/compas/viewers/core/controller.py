@@ -34,8 +34,6 @@ __all__ = ['Controller', ]
 
 class Controller(object):
 
-    settings = {}
-
     def __init__(self, app):
         self.app = app
 

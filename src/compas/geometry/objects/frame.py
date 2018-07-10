@@ -6,8 +6,8 @@ from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import subtract_vectors
 
-from compas.geometry.objects.xform import Transformation
-from compas.geometry.objects.xform import Rotation
+from compas.geometry.objects.transformation import Transformation
+from compas.geometry.objects.transformation import Rotation
 
 from compas.geometry.transformations import matrix_from_basis_vectors
 from compas.geometry.transformations import basis_vectors_from_matrix

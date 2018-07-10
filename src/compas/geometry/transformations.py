@@ -1299,11 +1299,12 @@ def rotate_points(points, axis, angle, origin=None):
     return points
 
 
-def rotate_points_xy(points, angle, origin=None):
+def rotate_points_xy(points, axis, angle, origin=None):
     """Rotates points around an arbitrary axis in 2D.
 
     Parameters:
         points (sequence of sequence of float): XY coordinates of the points.
+        axis (sequence of float): The rotation axis.
         angle (float): the angle of rotation in radians.
         origin (sequence of float): Optional. The origin of the rotation axis.
             Default is ``[0.0, 0.0, 0.0]``.
@@ -1320,11 +1321,12 @@ def rotate_points_xy(points, angle, origin=None):
 
     """
     if not origin:
-        origin = [0.0, 0.0, 0.0]
+        origin = [0.0, 0.0]
     # rotation matrix
+    x, y = normalize_vector_xy(axis)
     cosa = math.cos(angle)
     sina = math.sin(angle)
-    R = [[cosa, -sina, 0.0], [sina, cosa, 0.0], [0.0, 0.0, 1.0]]
+    R = [[cosa, -sina], [sina, cosa]]
     # translate points
     points = translate_points_xy(points, scale_vector_xy(origin, -1.0))
     # rotate points
