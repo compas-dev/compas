@@ -340,7 +340,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         edgepoints = []
 
-        for u, v in list(subd.edges()):
+        for u, v in list(subd.halfedges()):
 
             w = subd.split_edge(u, v, allow_boundary=True)
 
@@ -637,15 +637,25 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
     from compas.utilities import print_profile
-    from compas.viewers import MeshViewer
+    from compas.viewers import SubdMeshViewer
+
+    subdivide = print_profile(mesh_subdivide_doosabin)
 
     mesh = Mesh.from_polyhedron(6)
+
     fixed = [mesh.get_any_vertex()]
-    print(fixed)
 
-    subdivide = partial(mesh_subdivide_catmullclark, fixed=fixed)
-    subd = subdivide(mesh, k=4)
+    subdivide = partial(mesh_subdivide_doosabin, fixed=fixed)
 
-    viewer = MeshViewer()
-    viewer.mesh = subd
+    viewer = SubdMeshViewer(mesh, subdfunc=subdivide, width=1440, height=900)
+
+    viewer.axes_on = False
+    viewer.grid_on = False
+
+    for _ in range(10):
+       viewer.camera.zoom_in()
+
+    viewer.subdivide(k=2)
+
+    viewer.setup()
     viewer.show()

@@ -34,6 +34,9 @@ __all__ = [
     'intersection_segment_plane',
     'intersection_plane_plane',
     'intersection_plane_plane_plane',
+    # 'intersection_lines',
+    # 'intersection_lines_xy',
+    # 'intersection_planes',
     # 'intersection_segment_segment',
     # 'intersection_circle_circle',
 ]
@@ -423,6 +426,104 @@ def intersection_plane_plane_plane(plane1, plane2, plane3, epsilon=1e-6):
     if point:
         return point
     return None
+
+
+def intersection_lines_numpy(lines):
+    """
+    Examples
+    --------
+    .. code-block:: python
+
+        lines = []
+    """
+    from numpy import array
+    from numpy import arange
+    from numpy import eye
+    from scipy.linalg import norm
+    from scipy.linalg import solve
+
+    l1 = array([[-2, 0], [0, 1]], dtype=float).T
+    l2 = array([[0, -2], [1, 0]], dtype=float).T
+    l3 = array([[5, 0], [0, 7]], dtype=float).T
+    l4 = array([[3, 0], [0, 20]], dtype=float).T
+
+    p1 = l1[:, 0].reshape((-1, 1))
+    p2 = l2[:, 0].reshape((-1, 1))
+    p3 = l3[:, 0].reshape((-1, 1))
+    p4 = l4[:, 0].reshape((-1, 1))
+
+    n1 = (l1[:, 1] - l1[:, 0]).reshape((-1, 1))
+    n2 = (l2[:, 1] - l2[:, 0]).reshape((-1, 1))
+    n3 = (l3[:, 1] - l3[:, 0]).reshape((-1, 1))
+    n4 = (l4[:, 1] - l4[:, 0]).reshape((-1, 1))
+
+    n1 = n1 / norm(n1)
+    n2 = n2 / norm(n2)
+    n3 = n3 / norm(n3)
+    n4 = n4 / norm(n4)
+
+    # an eye matrix (ones on the diagonal)
+
+    I = eye(2, dtype=float)
+
+    # R.p = q
+
+    R = (I - n1.dot(n1.T)) + (I - n2.dot(n2.T)) + (I - n3.dot(n3.T)) + (I - n4.dot(n4.T))
+    q = ((I - n1.dot(n1.T)).dot(p1) +
+         (I - n2.dot(n2.T)).dot(p2) +
+         (I - n3.dot(n3.T)).dot(p3) +
+         (I - n4.dot(n4.T)).dot(p4))
+
+    RtR = R.T.dot(R)
+    Rtq = R.T.dot(q)
+
+    p = solve(RtR, Rtq)
+
+    # plot the lines
+
+    xy1 = p1 + n1 * arange(10)
+    xy2 = p2 + n2 * arange(10)
+    xy3 = p3 + n3 * arange(10)
+    xy4 = p4 + n4 * arange(10)
+
+
+def intersection_lines_xy(lines):
+    """Compute the intersections of mulitple lines in the XY plane.
+
+    Parameters
+    ----------
+    lines : sequence
+        A list of sequences of XY(Z) coordinates of two 2D or 3D points
+        (Z will be ignored) representing the lines.
+
+    Returns
+    -------
+    None
+        If there is no intersection point (parallel lines).
+    list
+        XY coordinates of intersection point.
+
+    Notes
+    -----
+    If the lines are parallel, there is no intersection point [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia.*Line-line intersection*.
+           Available at: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
+
+    """
+    # points = []
+    # for a, b in pairwise(lines):
+    #     point = intersection_line_line_xy(a, b)
+    #     if point:
+    #         points.append(point)
+    # return points
+    raise NotImplementedError
+
+
+def intersection_planes():
+    raise NotImplementedError
 
 
 # ==============================================================================

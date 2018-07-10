@@ -156,7 +156,6 @@ from .objects import *
 from .misc import *
 from .drawing import *
 from .geometry import *
-from .xfunc import *
 
 from .document import __all__ as a
 from .layers import __all__ as b
@@ -164,6 +163,5 @@ from .objects import __all__ as c
 from .misc import __all__ as d
 from .drawing import __all__ as e
 from .geometry import __all__ as f
-from .xfunc import __all__ as g
 
-__all__ = a + b + c + d + e + f + g
+__all__ = a + b + c + d + e + f

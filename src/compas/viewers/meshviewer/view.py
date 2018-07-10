@@ -12,8 +12,6 @@ import compas
 from compas.utilities import hex_to_rgb
 from compas.utilities import flatten
 from compas.viewers.core import GLWidget
-from compas.viewers.core import Grid
-from compas.viewers.core import Axes
 
 
 __author__     = ['Tom Van Mele', ]
@@ -94,35 +92,13 @@ class View(GLWidget):
         return flist(hex_to_rgb(self.settings['faces.color:back']) for key in self.mesh.xyz)
 
     # ==========================================================================
-    # CAD
-    # ==========================================================================
-
-    def setup_grid(self):
-        grid = Grid()
-        index = glGenLists(1)
-        glNewList(index, GL_COMPILE)
-        grid.draw()
-        glEndList()
-        self.display_lists.append(index)
-
-    def setup_axes(self):
-        axes = Axes()
-        index = glGenLists(1)
-        glNewList(index, GL_COMPILE)
-        axes.draw()
-        glEndList()
-        self.display_lists.append(index)
-
-    # ==========================================================================
     # painting
     # ==========================================================================
 
     def paint(self):
-        glDisable(GL_DEPTH_TEST)
         for dl in self.display_lists:
             glCallList(dl)
 
-        glEnable(GL_DEPTH_TEST)
         self.draw_buffers()
 
     def make_buffers(self):
@@ -146,9 +122,10 @@ class View(GLWidget):
         if not self.buffers:
             return
 
+        print('here')
+
         glEnableClientState(GL_VERTEX_ARRAY)
         glEnableClientState(GL_COLOR_ARRAY)
-
         glBindBuffer(GL_ARRAY_BUFFER, self.buffers['xyz'])
         glVertexPointer(3, GL_FLOAT, 0, None)
 
@@ -176,9 +153,6 @@ class View(GLWidget):
             glColorPointer(3, GL_FLOAT, 0, None)
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['vertices'])
             glDrawElements(GL_POINTS, self.v, GL_UNSIGNED_INT, None)
-
-        if self.settings['normals.on']:
-            pass
 
         glDisableClientState(GL_COLOR_ARRAY)
         glDisableClientState(GL_VERTEX_ARRAY)

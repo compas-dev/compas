@@ -294,8 +294,8 @@ def vstack_cuda():
 if __name__ == "__main__":
 
     # device_cuda()
-    a = give_cuda([[1., 2., 3.], [4., 5., 6.]])
-    # a = give_cuda([1.+1j, 2.+2j, 3.+3j], type='complex')
+    # a = give_cuda([[1., 2., 3.], [4., 5., 6.]])
+    a = give_cuda([1.+1j, 2.+2j, 3.+3j], type='complex')
     # a = get_cuda(a)
     # a = ones_cuda((3, 3))
     # a = zeros_cuda((3, 3))

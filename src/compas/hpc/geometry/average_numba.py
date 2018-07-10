@@ -3,17 +3,17 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas_hpc.geometry import add_vectors_numba
-from compas_hpc.geometry import add_vectors_xy_numba
-from compas_hpc.geometry import cross_vectors_numba
-from compas_hpc.geometry import dot_vectors_numba
-from compas_hpc.geometry import length_vector_numba
-from compas_hpc.geometry import length_vector_xy_numba
-from compas_hpc.geometry import scale_vector_numba
-from compas_hpc.geometry import scale_vector_xy_numba
-from compas_hpc.geometry import subtract_vectors_numba
-from compas_hpc.geometry import subtract_vectors_xy_numba
-from compas_hpc.geometry import sum_vectors_numba
+from compas.hpc.geometry import add_vectors_numba
+from compas.hpc.geometry import add_vectors_xy_numba
+from compas.hpc.geometry import cross_vectors_numba
+from compas.hpc.geometry import dot_vectors_numba
+from compas.hpc.geometry import length_vector_numba
+from compas.hpc.geometry import length_vector_xy_numba
+from compas.hpc.geometry import scale_vector_numba
+from compas.hpc.geometry import scale_vector_xy_numba
+from compas.hpc.geometry import subtract_vectors_numba
+from compas.hpc.geometry import subtract_vectors_xy_numba
+from compas.hpc.geometry import sum_vectors_numba
 
 from numba import f8
 from numba import i8

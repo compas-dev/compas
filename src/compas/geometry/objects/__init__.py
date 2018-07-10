@@ -4,7 +4,7 @@ from .point import Point
 from .line import Line
 from .plane import Plane
 from .frame import Frame
-from .xform import Transformation, Rotation, Translation, Scale, Reflection, Projection, Shear
+from .transformation import Transformation, Rotation, Translation, Scale, Reflection, Projection, Shear
 
 from .polyline import Polyline
 from .polygon import Polygon

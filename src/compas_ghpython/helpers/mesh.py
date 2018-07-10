@@ -13,8 +13,13 @@ from compas_ghpython.utilities import xdraw_mesh
 from compas.utilities.colors import color_to_colordict
 
 
-def mesh_draw(mesh, show_faces=True, show_vertices=False, show_edges=False,
-              vertexcolor=None, edgecolor=None, facecolor=None):
+def mesh_draw(mesh, 
+              show_faces=False, 
+              show_vertices=False, 
+              show_edges=False,
+              vertexcolor=None, 
+              edgecolor=None, 
+              facecolor=None):
     """
     Draw a mesh object in Grasshopper.
 
@@ -80,4 +85,4 @@ def mesh_draw(mesh, show_faces=True, show_vertices=False, show_edges=False,
     if show_vertices:
         color = vertexcolor
 
-    return xdraw_mesh(xyz, faces, color)
+    return xdraw_mesh(xyz, faces, vertex_colors=color)

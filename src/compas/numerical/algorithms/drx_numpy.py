@@ -615,12 +615,14 @@ if __name__ == "__main__":
 
     plotter.show()
 
+
     # ==========================================================================
     # Example 3
     # ==========================================================================
 
     from compas.datastructures import Mesh
     from compas.viewers import VtkViewer
+
 
     m = 100
     x = y = [(i / m - 0.5) * 7 for i in range(m + 1)]

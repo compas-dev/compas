@@ -27,7 +27,7 @@ class Axes(object):
         x_color = self.x_color
         y_color = self.y_color
         z_color = self.z_color
-        glLineWidth(1)
+        glLineWidth(3)
         glBegin(GL_LINES)
         glColor3f(* x_color)
         glVertex3f(0, 0, 0)
