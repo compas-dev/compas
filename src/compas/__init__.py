@@ -13,7 +13,6 @@ compas
     compas.datastructures
     compas.files
     compas.geometry
-    compas.hpc
     compas.interop
     compas.numerical
     compas.plotters
@@ -71,15 +70,42 @@ def get_bunny():
 
         urllib.urlretrieve(url, destination)
 
-        tar = tarfile.open(destination)
-        tar.extractall(DATA)
-        tar.close()
+        with tarfile.open(destination) as file:
+            file.extractall(DATA)
 
         os.remove(destination)
 
         print('Got it!\n')
 
     return bunny
+
+
+def get_armadillo():
+    import urllib
+    import gzip
+    import shutil
+
+    armadillo = os.path.abspath(os.path.join(DATA, 'armadillo/Armadillo.ply'))
+
+    if not os.path.exists(armadillo):
+        url = 'http://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz'
+
+        print('Getting the armadillo from {} ...'.format(url))
+        print('This will take a few seconds...')
+
+        destination = os.path.abspath(os.path.join(DATA, 'Armadillo.ply.gz'))
+
+        urllib.urlretrieve(url, destination)
+
+        with gzip.open(destination, 'rb') as ifile, open(armadillo, 'wb+') as ofile:
+            shutil.copyfileobj(ifile, ofile)
+
+        os.remove(destination)
+
+        print('Got it!\n')
+
+    return armadillo
+
 
 
 def license():

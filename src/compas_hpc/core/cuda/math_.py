@@ -752,11 +752,11 @@ def tanh_cuda(a):
 
 if __name__ == "__main__":
 
-    from compas.hpc import give_cuda
+    from compas_hpc import give_cuda
 
     from numpy import pi
 
-    # a = maximum_cuda(give_cuda([1, 2, 3]), give_cuda([3, 2, 1]))
+    a = maximum_cuda(give_cuda([1, 2, 3]), give_cuda([3, 2, 1]))
     # a = maximum_cuda(give_cuda([1, 2, 3]))
     # a = minimum_cuda(give_cuda([1, 2, 3]), give_cuda([3, 2, 1]))
     # a = minimum_cuda(give_cuda([1, 2, 3]))

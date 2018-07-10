@@ -148,7 +148,7 @@ class Network(FromToJson,
 
         return """
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-network: {0}
+{0}
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 - default vertex attributes
@@ -327,6 +327,10 @@ network: {0}
         for u, v in edges:
             network.add_edge(u, v)
         return network
+
+    @classmethod
+    def from_grid(cls, xlim, ylim):
+        pass
 
     # --------------------------------------------------------------------------
     # converters
