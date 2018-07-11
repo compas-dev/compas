@@ -2540,9 +2540,12 @@ class Mesh(FromToJson,
         * :meth:`set_edges_attributes`
 
         """
-        if key not in self.edgedata:
-            self.edgedata[key] = self.default_edge_attributes.copy()
-        self.edgedata[key][name] = value
+        u, v = key
+        if (u, v) not in self.edgedata:
+            self.edgedata[u, v] = self.default_edge_attributes.copy()
+        self.edgedata[u, v][name] = value
+        if (v, u) in self.edgedata:
+            del self.edgedata[v, u]
 
     def set_edge_attributes(self, key, attr_dict=None, **kwattr):
         """Set multiple attributes of one edge.
@@ -2575,6 +2578,9 @@ class Mesh(FromToJson,
         if key not in self.edgedata:
             self.edgedata[key] = self.default_edge_attributes.copy()
         self.edgedata[key].update(attr_dict)
+        u, v = key
+        if (v, u) in self.edgedata:
+            del self.edgedata[v, u]
 
     def set_edges_attribute(self, name, value, keys=None):
         """Set one attribute of multiple edges.
@@ -2598,13 +2604,9 @@ class Mesh(FromToJson,
 
         """
         if not keys:
-            for u, v, attr in self.edges(True):
-                attr[name] = value
-        else:
-            for key in keys:
-                if key not in self.edgedata:
-                    self.edgedata[key] = self.default_edge_attributes.copy()
-                self.edgedata[key][name] = value
+            keys = self.edges()
+        for key in keys:
+            self.set_edge_attribute(key, name, value)
 
     def set_edges_attributes(self, keys=None, attr_dict=None, **kwattr):
         """Set multiple attributes of multiple edges.
@@ -2637,13 +2639,9 @@ class Mesh(FromToJson,
             attr_dict = {}
         attr_dict.update(kwattr)
         if not keys:
-            for u, v, attr in self.edges(True):
-                attr.update(attr_dict)
-        else:
-            for key in keys:
-                if key not in self.edgedata:
-                    self.edgedata[key] = self.default_edge_attributes.copy()
-                self.edgedata[key].update(attr_dict)
+            keys = self.edges()
+        for key in keys:
+            self.set_edge_attributes(key, attr_dict=attr_dict)
 
     def get_edge_attribute(self, key, name, value=None):
         """Get the value of a named attribute of one edge.
