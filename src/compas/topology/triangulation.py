@@ -4,6 +4,8 @@ from __future__ import division
 
 import random
 
+from compas.utilities import flatten
+
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import add_vectors
@@ -547,7 +549,7 @@ def trimesh_remesh(mesh,
         # smoothen
         if smooth:
             if allow_boundary_split:
-                boundary  = set(mesh.vertices_on_boundary())
+                boundary = set(mesh.vertices_on_boundary())
 
             mesh_smooth_area(mesh, fixed=fixed.union(boundary), kmax=1)
 
@@ -562,7 +564,7 @@ def trimesh_remesh(mesh,
 
 if __name__ == "__main__":
 
-    testrun = 1
+    testrun = 2
 
     if testrun == 1:
         from compas.datastructures import Mesh
