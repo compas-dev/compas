@@ -386,14 +386,20 @@ class Mesh(FromToJson,
         >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         """
-        mesh = cls()
         obj = OBJ(filepath)
         vertices = obj.parser.vertices
-        faces = obj.parser.faces
-        for x, y, z in vertices:
-            mesh.add_vertex(x=x, y=y, z=z)
-        for face in faces:
-            mesh.add_face(face)
+        faces    = obj.parser.faces
+        if faces:
+            mesh = cls()
+            for x, y, z in vertices:
+                mesh.add_vertex(x=x, y=y, z=z)
+            for face in faces:
+                mesh.add_face(face)
+        else:
+            edges = obj.parser.lines
+            if edges:
+                lines = [(vertices[u], vertices[v], 0) for u, v in edges]
+                mesh = cls.from_lines(lines)
         return mesh
 
     @classmethod
@@ -477,8 +483,6 @@ class Mesh(FromToJson,
         network = Network.from_lines(lines, precision=precision)
 
         mesh = cls()
-        # mesh.vertex = network.vertex
-        # mesh.halfedge = network.halfedge
 
         for key, attr in network.vertices(True):
             mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0)
@@ -2448,7 +2452,8 @@ class Mesh(FromToJson,
         if not ordered:
             return vertices
 
-        key = vertices[0]
+        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices_all], key=lambda x: (x[1][1], x[1][0]))[0][0]
+
         vertices = []
         start = key
 

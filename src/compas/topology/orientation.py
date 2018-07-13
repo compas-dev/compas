@@ -153,7 +153,7 @@ def mesh_face_adjacency(mesh):
 
             closest = []
             for i, point in enumerate(points):
-                sphere = Sphere(Point3d(* point), 2.0)
+                sphere = Sphere(Point3d(* point), 4.0)
                 data = []
                 tree.Search(sphere, callback, data)
                 closest.append(data)
