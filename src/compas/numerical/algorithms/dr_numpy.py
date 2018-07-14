@@ -355,8 +355,8 @@ if __name__ == "__main__":
     import random
 
     import compas
-    from compas.datastructures import Network
-    from compas.plotters import NetworkPlotter
+    from compas.datastructures import Mesh
+    from compas.plotters import MeshPlotter
     from compas.utilities import i_to_rgb
 
     dva = {
@@ -381,43 +381,43 @@ if __name__ == "__main__":
         'radius': 0.0,
     }
 
-    network = Network.from_obj(compas.get('lines.obj'))
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    network.update_default_vertex_attributes(dva)
-    network.update_default_edge_attributes(dea)
+    mesh.update_default_vertex_attributes(dva)
+    mesh.update_default_edge_attributes(dea)
 
-    for key, attr in network.vertices(True):
-        attr['is_fixed'] = network.vertex_degree(key) == 1
+    for key, attr in mesh.vertices(True):
+        attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
-    for u, v, attr in network.edges(True):
+    for u, v, attr in mesh.edges(True):
         attr['qpre'] = 1.0 * random.randint(1, 7)
 
-    k_i = network.key_index()
+    k_i = mesh.key_index()
 
-    vertices = network.get_vertices_attributes(('x', 'y', 'z'))
-    edges    = [(k_i[u], k_i[v]) for u, v in network.edges()]
-    fixed    = [k_i[key] for key in network.vertices_where({'is_fixed': True})]
-    loads    = network.get_vertices_attributes(('px', 'py', 'pz'))
-    qpre     = network.get_edges_attribute('qpre')
-    fpre     = network.get_edges_attribute('fpre')
-    lpre     = network.get_edges_attribute('lpre')
-    linit    = network.get_edges_attribute('linit')
-    E        = network.get_edges_attribute('E')
-    radius   = network.get_edges_attribute('radius')
+    vertices = mesh.get_vertices_attributes(('x', 'y', 'z'))
+    edges    = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
+    fixed    = [k_i[key] for key in mesh.vertices_where({'is_fixed': True})]
+    loads    = mesh.get_vertices_attributes(('px', 'py', 'pz'))
+    qpre     = mesh.get_edges_attribute('qpre')
+    fpre     = mesh.get_edges_attribute('fpre')
+    lpre     = mesh.get_edges_attribute('lpre')
+    linit    = mesh.get_edges_attribute('linit')
+    E        = mesh.get_edges_attribute('E')
+    radius   = mesh.get_edges_attribute('radius')
 
     lines = []
-    for u, v in network.edges():
+    for u, v in mesh.edges():
         lines.append({
-            'start': network.vertex_coordinates(u, 'xy'),
-            'end'  : network.vertex_coordinates(v, 'xy'),
+            'start': mesh.vertex_coordinates(u, 'xy'),
+            'end'  : mesh.vertex_coordinates(v, 'xy'),
             'color': '#cccccc',
             'width': 0.5
         })
 
-    plotter = NetworkPlotter(network, figsize=(10, 7), fontsize=6)
+    plotter = MeshPlotter(mesh, figsize=(10, 7), fontsize=6)
 
     plotter.draw_lines(lines)
-    plotter.draw_vertices(facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})})
+    plotter.draw_vertices(facecolor={key: '#000000' for key in mesh.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
     plotter.update(pause=1.0)
@@ -429,7 +429,7 @@ if __name__ == "__main__":
         plotter.update_edges()
         plotter.update(pause=0.001)
 
-        for key, attr in network.vertices(True):
+        for key, attr in mesh.vertices(True):
             index = k_i[key]
             attr['x'] = xyz[index, 0]
             attr['y'] = xyz[index, 1]
@@ -440,23 +440,23 @@ if __name__ == "__main__":
                                linit, E, radius,
                                kmax=100, callback=callback)
 
-    for index, (u, v, attr) in enumerate(network.edges(True)):
+    for index, (u, v, attr) in enumerate(mesh.edges(True)):
         attr['f'] = f[index, 0]
         attr['l'] = l[index, 0]
 
-    fmax = max(network.get_edges_attribute('f'))
+    fmax = max(mesh.get_edges_attribute('f'))
 
     plotter.clear_vertices()
     plotter.clear_edges()
 
     plotter.draw_vertices(
-        facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})}
+        facecolor={key: '#000000' for key in mesh.vertices_where({'is_fixed': True})}
     )
 
     plotter.draw_edges(
-        text={(u, v): '{:.0f}'.format(attr['f']) for u, v, attr in network.edges(True)},
-        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
-        width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)}
+        text={(u, v): '{:.0f}'.format(attr['f']) for u, v, attr in mesh.edges(True)},
+        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in mesh.edges(True)},
+        width={(u, v): 10 * attr['f'] / fmax for u, v, attr in mesh.edges(True)}
     )
 
     plotter.update(pause=1.0)
