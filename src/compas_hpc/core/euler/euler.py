@@ -95,7 +95,7 @@ class EulerSSH(SSH):
 
     def load_module(self, module):
 
-        """ Load a specific Euler module.
+        """ Load an Euler module.
 
         Parameters
         ----------
@@ -153,7 +153,7 @@ class EulerSSH(SSH):
         time : str
             Requested amount of CPU time '1:30' (hrs:mins) or '60' (mins).
         output : str
-            Name of output summary file.
+            Name of the output summary file.
         mem : int
             Requested RAM in MB per CPU.
         cpus : int
@@ -165,7 +165,7 @@ class EulerSSH(SSH):
 
         Notes
         -----
-        - If the output file already exists, it will be overwritten.
+        - If the output file already exists in /cluster/home/user/ it will be overwritten.
         - STRICTLY do not request more than 24 CPUs, make sure the job can use all those requested.
 
         """
@@ -193,6 +193,7 @@ class EulerSSH(SSH):
 
         if type == 'all':
             self.server_command(command='bqueues')
+
         elif type == 'user':
             if job:
                 self.server_command(command='bbjobs {0}'.format(job))
@@ -201,7 +202,7 @@ class EulerSSH(SSH):
 
     def show_resources(self):
 
-        """ Show the available Euler resources for user.
+        """ Show the available Euler resources for the user.
 
         Parameters
         ----------
@@ -217,7 +218,7 @@ class EulerSSH(SSH):
 
     def peek_job(self, job):
 
-        """ View the curent output of a running job.
+        """ View the curent terminal output of a running job.
 
         Parameters
         ----------
@@ -255,7 +256,7 @@ class EulerSSH(SSH):
 
         Parameters
         ----------
-        job : int, all
+        job : int, str
             Job number, or 'all' jobs.
 
         Returns
@@ -276,13 +277,23 @@ class EulerSSH(SSH):
 if __name__ == '__main__':
 
     euler_ssh = EulerSSH(username='liewa')
-    # euler_ssh.sync_folder(local_folder='/al/compas/', remote_folder='compas/')
-    # euler_ssh.sync_folder(local_folder='/al/compas_ags/', remote_folder='compas_ags/')
-    # euler_ssh.load_module(module='new gcc/4.8.2 python/3.6.1')
-    # euler_ssh.server_command(command='export OMP_NUM_THREADS=24')
-    # euler_ssh.submit_job(command='python /cluster/home/liewa/compas_ags/src/compas_ags/ags/loadpath3.py',
-                         # time='20', output='output.txt', mem=256, cpus=4)
-    # euler_ssh.show_jobs(type='user', job=58152512)
-    euler_ssh.receive_file(remote_file='/cluster/home/liewa/compas_ags/data/loadpath/fan.json',
-                           local_file='/al/compas_ags/data/loadpath/fan.json')
+
+    euler_ssh.sync_folder(local_folder='/home/al/compas/', remote_folder='compas/')
+
+    euler_ssh.load_module(module='python/3.6.0')
+    euler_ssh.show_module(module='python/3.6.0')
+    euler_ssh.loaded_modules()
+    euler_ssh.available_modules()
+
+    euler_ssh.show_resources()
+    euler_ssh.show_quotas()
+
+    euler_ssh.server_command(command='export OMP_NUM_THREADS=24')
+    euler_ssh.submit_job(command='python /cluster/home/liewa/script.py',
+                         time='20', output='output.txt', mem=256, cpus=4)
+    euler_ssh.show_jobs(type='user', job=58152512)
+
+    euler_ssh.receive_file(remote_file='/cluster/home/liewa/output.txt',
+                           local_file='/home/al/output.txt')
+
     euler_ssh.close()
