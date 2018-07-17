@@ -27,6 +27,7 @@ try:
     from Rhino.Geometry import PipeCapMode
     from Rhino.Geometry import Curve
     from Rhino.Geometry import Sphere
+    from Rhino.Geometry import TextDot
     from Rhino.DocObjects.ObjectColorSource import ColorFromObject
     from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
     from Rhino.DocObjects.ObjectDecoration import EndArrowhead
@@ -126,7 +127,7 @@ def xdraw_labels(labels):
         text  = l['text']
         name  = l.get('name', '')
         color = l.get('color', None)
-        guid  = add_dot(text, Point3d(*pos))
+        guid  = add_dot(TextDot(str(text), Point3d(*pos)))
         if not guid:
             continue
         obj = find_object(guid)
