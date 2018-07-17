@@ -3,6 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 
 import pickle
+import pprint
+import json
 
 from copy import deepcopy
 from ast import literal_eval
@@ -153,6 +155,10 @@ class Mesh(FromToJson,
 
     def __str__(self):
         """Compile a summary of the mesh."""
+        return json.dumps(self.data, sort_keys=True, indent=4)
+
+    def summary(self):
+        """Print a summary of the mesh."""
         numv = self.number_of_vertices()
         nume = self.number_of_edges()
         numf = self.number_of_faces()
@@ -162,11 +168,9 @@ class Mesh(FromToJson,
         fmin = self.face_min_degree()
         fmax = self.face_max_degree()
 
-        return TPL.format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
+        s = TPL.format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
 
-    def summary(self):
-        """Print a summary of the mesh."""
-        print(self)
+        print(s)
 
     # --------------------------------------------------------------------------
     # special properties
@@ -443,6 +447,14 @@ class Mesh(FromToJson,
         vertices, faces = parse_stl_data(reader.facets)
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
+
+    def leaves(self):
+        leaves = []
+        for key in self.halfedge:
+            nbrs = self.halfedge[key]
+            if len(nbrs) == 1:
+                leaves.append(key)
+        return leaves
 
     @classmethod
     def from_lines(cls, lines, delete_boundary_face=False, precision='3f'):
@@ -2552,7 +2564,7 @@ class Mesh(FromToJson,
         if (v, u) in self.edgedata:
             del self.edgedata[v, u]
 
-    def set_edge_attributes(self, key, attr_dict=None, **kwattr):
+    def set_edge_attributes(self, key, names, values):
         """Set multiple attributes of one edge.
 
         Parameters
@@ -2577,15 +2589,8 @@ class Mesh(FromToJson,
         * :meth:`set_edges_attributes`
 
         """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        if key not in self.edgedata:
-            self.edgedata[key] = self.default_edge_attributes.copy()
-        self.edgedata[key].update(attr_dict)
-        u, v = key
-        if (v, u) in self.edgedata:
-            del self.edgedata[v, u]
+        for name, value in zip(names, values):
+            self.set_edge_attribute(key, name, value)
 
     def set_edges_attribute(self, name, value, keys=None):
         """Set one attribute of multiple edges.
@@ -2613,7 +2618,7 @@ class Mesh(FromToJson,
         for key in keys:
             self.set_edge_attribute(key, name, value)
 
-    def set_edges_attributes(self, keys=None, attr_dict=None, **kwattr):
+    def set_edges_attributes(self, names, values, keys=None):
         """Set multiple attributes of multiple edges.
 
         Parameters
@@ -2640,13 +2645,8 @@ class Mesh(FromToJson,
         * :meth:`set_edges_attribute`
 
         """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        if not keys:
-            keys = self.edges()
-        for key in keys:
-            self.set_edge_attributes(key, attr_dict=attr_dict)
+        for name, value in zip(names, values):
+            self.set_edges_attribute(name, value, keys=keys)
 
     def get_edge_attribute(self, key, name, value=None):
         """Get the value of a named attribute of one edge.
@@ -2824,21 +2824,6 @@ if __name__ == '__main__':
     import compas
     from compas.plotters import MeshPlotter
 
-    obj = OBJ(compas.get('lines_noleaves.obj'))
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    lines = [(obj.parser.vertices[u], obj.parser.vertices[v]) for u, v in obj.parser.lines]
-
-    mesh = Mesh.from_lines(lines, delete_boundary_face=True)
-    mesh.update_default_edge_attributes({'q': 1.0})
-
-    for u, v, attr in mesh.edges(True):
-        print(u, v, attr)
-
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-    plotter.defaults['vertex.fontsize'] = 8
-
-    plotter.draw_vertices(text={key: str(key) for key in mesh.vertices()}, radius=0.2)
-    plotter.draw_faces(text={fkey: str(fkey) for fkey in mesh.faces()})
-    plotter.draw_edges()
-    plotter.show()
+    print(mesh)

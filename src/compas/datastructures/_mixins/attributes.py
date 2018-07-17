@@ -63,7 +63,7 @@ class VertexAttributesManagement(object):
         """
         self.vertex[key][name] = value
 
-    def set_vertex_attributes(self, key, attr_dict=None, **kwattr):
+    def set_vertex_attributes(self, key, names, values):
         """Set multiple attributes of one vertex.
 
         Parameters
@@ -88,10 +88,8 @@ class VertexAttributesManagement(object):
         * :meth:`set_vertices_attributes`
 
         """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        self.vertex[key].update(attr_dict)
+        for name, value in zip(names, values):
+            self.set_vertex_attribute(key, name, value)
 
     def set_vertices_attribute(self, name, value, keys=None):
         """Set one attribute of multiple vertices.
@@ -117,7 +115,7 @@ class VertexAttributesManagement(object):
         for key in keys:
             self.vertex[key][name] = value
 
-    def set_vertices_attributes(self, keys=None, attr_dict=None, **kwattr):
+    def set_vertices_attributes(self, names, values, keys=None):
         """Set multiple attributes of multiple vertices.
 
         Parameters
@@ -143,15 +141,8 @@ class VertexAttributesManagement(object):
         * :meth:`set_vertices_attribute`
 
         """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        if not keys:
-            for key, attr in self.vertices(True):
-                attr.update(attr_dict)
-        else:
-            for key in keys:
-                self.vertex[key].update(attr_dict)
+        for name, value in zip(names, values):
+            self.set_vertices_attribute(name, value, keys=keys)
 
     def get_vertex_attribute(self, key, name, value=None):
         """Get the value of a named attribute of one vertex.
@@ -337,7 +328,7 @@ class EdgeAttributesManagement(object):
                     self.edge[u][v] = self.default_edge_attributes.copy()
                     self.edge[u][v][name] = value
 
-    def set_edge_attributes(self, key, attr_dict=None, **kwattr):
+    def set_edge_attributes(self, key, names, values):
         """Set multiple attributes of one edge.
 
         Parameters
@@ -362,11 +353,8 @@ class EdgeAttributesManagement(object):
         * :meth:`set_edges_attributes`
 
         """
-        u, v = key
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        self.edge[u][v].update(attr_dict)
+        for name, value in zip(names, values):
+            self.set_edge_attribute(key, name, value)
 
     def set_edges_attribute(self, name, value, keys=None):
         """Set one attribute of multiple edges.
@@ -396,7 +384,7 @@ class EdgeAttributesManagement(object):
             for u, v in keys:
                 self.edge[u][v][name] = value
 
-    def set_edges_attributes(self, keys=None, attr_dict=None, **kwattr):
+    def set_edges_attributes(self, names, values, keys=None):
         """Set multiple attributes of multiple edges.
 
         Parameters
@@ -423,15 +411,8 @@ class EdgeAttributesManagement(object):
         * :meth:`set_edges_attribute`
 
         """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        if not keys:
-            for u, v, attr in self.edges(True):
-                attr.update(attr_dict)
-        else:
-            for u, v in keys:
-                self.edge[u][v].update(attr_dict)
+        for name, value in zip(names, values):
+            self.set_edges_attribute(name, value, keys=keys)
 
     def get_edge_attribute(self, key, name, value=None):
         """Get the value of a named attribute of one edge.
