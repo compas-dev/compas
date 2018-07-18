@@ -33,11 +33,6 @@ try:
     from scipy.sparse import coo_matrix
     from scipy.sparse.linalg import spsolve
 
-    from matplotlib import pyplot as plt
-    from mpl_toolkits.mplot3d import Axes3D
-
-    from compas.viewers import VtkViewer
-
 except:
     pass
 
@@ -54,7 +49,7 @@ __all__ = [
 ]
 
 
-def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
+def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, callback=None):
 
     """ Topology optimisation in 2D using NumPy and SciPy.
 
@@ -85,6 +80,8 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     - Based on the MATLAB code of  [andreassen2011]_.
 
     """
+    if callback and not callable(callback):
+        raise Exception("The provided callback is not callable.")
 
     nx = nelx + 1
     ny = nely + 1
@@ -173,12 +170,6 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
     H = coo_matrix((sH, (iH, jH)))
     Hs = sum(H.toarray(), 1)
 
-    # Set-up plot
-
-    plt.figure(figsize=(12, 8))
-    plt.axis([0, nelx, 0, nely])
-    plt.ion()
-
     # Main loop
 
     iteration = 0
@@ -225,10 +216,12 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5):
         # Update
 
         x = xn * 1.
-        plt.imshow(1 - x, cmap='gray', origin='lower')
-        plt.pause(0.001)
         iteration += 1
+
         print('Iteration: {0}  Compliance: {1:.4g}'.format(iteration, c))
+
+        if callback:
+            callback(x)
 
     return x
 
@@ -258,6 +251,8 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
         Filter radius.
     iterations : int
         Max number of iterations.
+    callback : callable
+        A callable object that will be called at the end of every iteration, if provided.
 
     Returns
     -------
@@ -269,6 +264,8 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
     - Based on the MATLAB code of CITE.
 
     """
+    if callback and not callable(callback):
+        raise Exception("The provided callback is not callable.")
 
     tolx = 0.01
     E = 1
@@ -492,7 +489,20 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
 
 if __name__ == "__main__":
 
-    # 2D Eg1
+    # # 2D Eg1
+
+    # from matplotlib import pyplot as plt
+
+    # nelx = 400
+    # nely = 40
+
+    # plt.figure(figsize=(12, 8))
+    # plt.axis([0, nelx, 0, nely])
+    # plt.ion()
+
+    # def callback(x):
+    #     plt.imshow(1 - x, cmap='gray', origin='lower')
+    #     plt.pause(0.001)
 
     # loads = {
     #     '200-40': [0, -1],
@@ -503,89 +513,90 @@ if __name__ == "__main__":
     #     '400-0': [0, 1],
     # }
 
-    # x = topop2d_numpy(nelx=400, nely=40, loads=loads, supports=supports, volfrac=0.5)
+    # x = topop2d_numpy(nelx=nelx, nely=nely, loads=loads, supports=supports, volfrac=0.5, callback=callback)
 
     # 2D Eg2
 
+    from matplotlib import pyplot as plt
+
+    nelx = 100
+    nely = 200
+
+    plt.figure(figsize=(12, 8))
+    plt.axis([0, nelx, 0, nely])
+    plt.ion()
+
+    def callback(x):
+        plt.imshow(1 - x, cmap='gray', origin='lower')
+        plt.pause(0.001)
+
+    loads = {
+        '0-50': [1, 0],
+        '0-100': [1, 0],
+        '0-150': [1, 0],
+        '0-200': [1, 0],
+    }
+
+    supports = {
+        '0-0': [1, 1],
+        '50-0': [1, 1],
+        '100-0': [1, 1],
+    }
+
+    x = topop2d_numpy(nelx=nelx, nely=nely, loads=loads, supports=supports, volfrac=0.3, callback=callback)
+
+    # # 3D Eg1
+
+    # import vtk
+    # from compas.viewers import VtkViewer
+
+    # nx = 30
+    # ny = 15
+    # nz = 30
+
     # loads = {
-    #     '0-50': [1, 0],
-    #     '0-100': [1, 0],
-    #     '0-150': [1, 0],
-    #     '0-200': [1, 0],
-    # }
-
-    # supports = {
-    #     '0-0': [1, 1],
-    #     '50-0': [1, 1],
-    #     '100-0': [1, 1],
-    # }
-
-    # x = topop2d_numpy(nelx=100, nely=200, loads=loads, supports=supports, volfrac=0.3)
-
-    # 3D Eg1
-
-    import vtk
-
-    # nx = 150
-    # ny = 30
-    # nz = 1
-
-    # loads = {
-    #     '{0}-{1}-{2}'.format(nx, 0, int(nz / 2)): [0, -1, 0],
+    #     '{0}-{1}-{2}'.format(1 * int(nx / 4), ny, 1 * int(nz / 4)): [0, -1, 0],
+    #     '{0}-{1}-{2}'.format(3 * int(nx / 4), ny, 1 * int(nz / 4)): [0, -1, 0],
+    #     '{0}-{1}-{2}'.format(1 * int(nx / 4), ny, 3 * int(nz / 4)): [0, -1, 0],
+    #     '{0}-{1}-{2}'.format(3 * int(nx / 4), ny, 3 * int(nz / 4)): [0, -1, 0],
     # }
 
     # supports = {}
-    # for k in range(nz + 1):
-    #     for j in range(ny + 1):
-    #         supports['{0}-{1}-{2}'.format(0, j, k)] = [1, 1, 1]
+    # supports['{0}-{1}-{2}'.format(0, 0, 0)] = [0, 1, 0]
+    # supports['{0}-{1}-{2}'.format(nx, 0, 0)] = [0, 1, 0]
+    # supports['{0}-{1}-{2}'.format(nx, 0, nz)] = [0, 1, 0]
+    # supports['{0}-{1}-{2}'.format(0, 0, nz)] = [0, 1, 0]
 
-    nx = 30
-    ny = 15
-    nz = 30
-
-    loads = {
-        '{0}-{1}-{2}'.format(1 * int(nx / 4), ny, 1 * int(nz / 4)): [0, -1, 0],
-        '{0}-{1}-{2}'.format(3 * int(nx / 4), ny, 1 * int(nz / 4)): [0, -1, 0],
-        '{0}-{1}-{2}'.format(1 * int(nx / 4), ny, 3 * int(nz / 4)): [0, -1, 0],
-        '{0}-{1}-{2}'.format(3 * int(nx / 4), ny, 3 * int(nz / 4)): [0, -1, 0],
-    }
-
-    supports = {}
-    supports['{0}-{1}-{2}'.format(0, 0, 0)] = [0, 1, 0]
-    supports['{0}-{1}-{2}'.format(nx, 0, 0)] = [0, 1, 0]
-    supports['{0}-{1}-{2}'.format(nx, 0, nz)] = [0, 1, 0]
-    supports['{0}-{1}-{2}'.format(0, 0, nz)] = [0, 1, 0]
-
-    data = {
-        'blocks': {
-            'size': 1,
-            'locations': [[0, 0, 0]],
-        }
-    }
+    # data = {
+    #     'blocks': {
+    #         'size': 1,
+    #         'locations': [[0, 0, 0]],
+    #     }
+    # }
 
 
-    def callback(x, self):
-        indj, indi, indk = where(x >= 0.95)
-        indj = ny - indj
-        locations = zip(indi, indj, indk)
-        self.locations = vtk.vtkPoints()
-        for c, xyz in enumerate(locations):
-            self.locations.InsertNextPoint(xyz)
-            self.locations.Modified()
-        self.blocks.SetPoints(self.locations)
-        self.window.Render()
+    # def callback(x, self):
+    #     indj, indi, indk = where(x >= 0.95)
+    #     indj = ny - indj
+    #     locations = zip(indi, indj, indk)
+    #     self.locations = vtk.vtkPoints()
+    #     for c, xyz in enumerate(locations):
+    #         self.locations.InsertNextPoint(xyz)
+    #         self.locations.Modified()
+    #     self.blocks.SetPoints(self.locations)
+    #     self.window.Render()
 
 
-    def execute(self):
-        print('TopOp started')
-        topop3d_numpy(nelx=nx, nely=ny, nelz=nz, loads=loads, supports=supports, iterations=200, volfrac=0.5,
-                      callback=callback, self=self)
+    # def execute(self):
+    #     print('TopOp started')
+    #     topop3d_numpy(nelx=nx, nely=ny, nelz=nz, loads=loads, supports=supports, iterations=200, volfrac=0.5,
+    #                   callback=callback, self=self)
 
 
-    viewer = VtkViewer(data=data)
-    viewer.keycallbacks['s'] = execute
-    viewer.settings['camera_pos'] = [0.5 * nx, 0, 2 * max([nx, ny])]
-    viewer.settings['camera_focus'] = [0.5 * nx, 0.5 * ny, 0.5 * nz]
-    viewer.settings['camera_azi'] = 0
-    # viewer.settings['camera_ele'] = 10
-    viewer.start()
+    # viewer = VtkViewer(data=data)
+    # viewer.keycallbacks['s'] = execute
+    # viewer.settings['camera_pos'] = [0.5 * nx, 0, 2 * max([nx, ny])]
+    # viewer.settings['camera_focus'] = [0.5 * nx, 0.5 * ny, 0.5 * nz]
+    # viewer.settings['camera_azi'] = 0
+    # # viewer.settings['camera_ele'] = 10
+    # viewer.start()

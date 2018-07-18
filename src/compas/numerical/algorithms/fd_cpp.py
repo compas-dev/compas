@@ -8,8 +8,8 @@ try:
     import ctypes
     import compas
 
-    from compas.interop.core.cpp.xdarray import Array2D
-    from compas.interop.core.cpp.xdarray import Array1D
+    from compas.interop.cpp.xdarray import Array2D
+    from compas.interop.cpp.xdarray import Array1D
 
 except (ImportError, SystemError):
     import sys

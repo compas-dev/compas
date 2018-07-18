@@ -3,17 +3,19 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import sys
 import json
+import time
+
 import compas
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
 
 try:
-    from subprocess import Popen
-    from subprocess import PIPE
+    from System.Diagnostics import Process
+
 except ImportError:
+    import sys
     if 'ironpython' not in sys.version.lower():
         raise
 
@@ -24,24 +26,20 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['XFunc', ]
+__all__ = ['XFunc', 'DataDecoder', 'DataEncoder', ]
 
 
 WRAPPER = """
-import os
 import sys
 import importlib
 
 import json
-
-try:
-    from cStringIO import StringIO
-except Exception:
-    from io import StringIO
-
+import cStringIO
 import cProfile
 import pstats
 import traceback
+
+sys.path.insert(0, '"{}/src"')
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
@@ -76,20 +74,20 @@ try:
 
     profile.disable()
 
-    stream = StringIO()
+    stream = cStringIO.StringIO()
     stats  = pstats.Stats(profile, stream=stream)
     # stats.strip_dirs()
     stats.sort_stats(1)
     stats.print_stats(20)
 
 except Exception:
-    odict = {}
+    odict = dict()
     odict['error']      = traceback.format_exc()
     odict['data']       = None
     odict['profile']    = None
 
 else:
-    odict = {}
+    odict = dict()
     odict['error']      = None
     odict['data']       = r
     odict['profile']    = stream.getvalue()
@@ -97,7 +95,7 @@ else:
 with open(opath, 'w+') as fp:
     json.dump(odict, fp, cls=DataEncoder)
 
-"""
+""".format(compas.HOME)
 
 
 class XFunc(object):
@@ -299,23 +297,30 @@ class XFunc(object):
         with open(self.opath, 'w+') as fh:
             fh.write('')
 
-        process_args = [self.python,
-                        '-u',
-                        '-c',
-                        WRAPPER,
-                        self.basedir,
-                        self.funcname,
-                        self.ipath,
-                        self.opath]
+        p = Process()
+        p.StartInfo.UseShellExecute = False
+        p.StartInfo.RedirectStandardOutput = True
+        p.StartInfo.RedirectStandardError = True
+        p.StartInfo.FileName = self.python
+        p.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4}'.format(WRAPPER,
+                                                                     self.basedir,
+                                                                     self.funcname,
+                                                                     self.ipath,
+                                                                     self.opath)
+        p.Start()
+        p.WaitForExit()
 
-        process = Popen(process_args, stderr=PIPE, stdout=PIPE)
-
-        while process.poll() is None:
-            line = process.stdout.readline().strip()
-            if self.callback:
-                self.callback(line, self.callback_args)
+        while True:
+            line = p.StandardOutput.ReadLine()
+            if not line:
+                break
+            line = line.strip()
             if self.verbose:
                 print(line)
+
+        stderr = p.StandardError.ReadToEnd()
+
+        print(stderr)
 
         with open(self.opath, 'r') as fh:
             odict = json.load(fh, cls=DataDecoder)
@@ -349,9 +354,9 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Mesh
-    from compas.utilities import XFunc
+    from compas_rhino.utilities import XFunc
 
-    fd_numpy = XFunc('compas.numerical.fd_numpy')
+    fd_numpy = XFunc('compas.numerical.fd_numpy', delete_files=True)
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -369,4 +374,3 @@ if __name__ == '__main__':
         attr['z'] = xyz[key][2]
 
     print(fd_numpy.profile)
-

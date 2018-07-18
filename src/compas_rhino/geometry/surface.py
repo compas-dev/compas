@@ -219,25 +219,18 @@ class RhinoSurface(RhinoGeometry):
         curves = rs.ExplodeCurves(border, delete_input=True)
         return curves
 
-    # def project_point(self, point, direction=(0, 0, 1)):
-    #     ppoints = rs.ProjectPointToSurface(point, self.guid, direction)
-    #     if not ppoints:
-    #         raise Exception('Could not project point to surface.')
-    #     ppoint = ppoints[0]
+    def project_point(self, point, direction=(0, 0, 1)):
+        projections = rs.ProjectPointToSurface(point, self.guid, direction)
+        if not projections:
+            return self.closest_point(point)
+        return list(projections[0])
 
-    # def project_points(self, points, direction=(0, 0, 1), include_none=True):
-    #     projections = rs.ProjectPointToSurface(points, self.guid, direction)
-    #     print projections
-    #     return map(list, projections)
-    #     # projections = []
-    #     # for point in points:
-    #     #     ppoints = rs.ProjectPointToSurface(point, self.guid, direction)
-    #     #     if not ppoints:
-    #     #         print ppoints
-    #     #         raise Exception('Could not project point to surface.')
-    #     #     ppoint = ppoints[0]
-    #     #     projections.append(list(ppoint))
-    #     # return projections
+    def project_points(self, points, direction=(0, 0, 1), include_none=True):
+        projections = rs.ProjectPointToSurface(points, self.guid, direction)
+        if not projections:
+            return self.closest_points(points)
+        projections[:] = [self.closest_point(point) if not point else point for point in projections]
+        return map(list, projections)
 
     def closest_point(self, point, maxdist=None):
         point = self.geometry.ClosestPoint(Point3d(*point))

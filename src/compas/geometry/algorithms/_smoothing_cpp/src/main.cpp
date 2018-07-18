@@ -3,12 +3,9 @@
 // cd _smoothing_cpp
 // g++ -shared -fPIC src/main.cpp -o smoothing.so
 
-extern "C"
-{
-    typedef void callback(int k);
+typedef void callback(int k);
+extern "C" void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback func);
 
-    void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback func);
-}
 
 void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback func) 
 {
@@ -17,7 +14,7 @@ void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neig
     int j, n;
     double cx, cy, cz;
 
-    std::vector< std::vector<double> > xyz(v, std::vector<double>(3, 0.0));
+    double xyz[v][3];
 
     for (k = 0; k < kmax; k++) {
 

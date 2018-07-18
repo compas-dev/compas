@@ -14,7 +14,10 @@ __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
 
-class Ga_Plotter(object):
+__all__ = ['GaPlotter']
+
+
+class GaPlotter(object):
     """This class is to be used for the visualization of the optimization performed by the
     ``compas_ga.ga`` function. The function ``draw_ga_evolution`` produces a PDF that shows the
     minimum, maximum and average fitness value of the genetic population per generation.
@@ -263,7 +266,12 @@ def visualize_evolution(input_path,
     vis.draw_ga_evolution(make_pdf=make_pdf, show_plot=show_plot)
 
 
-if __name__ == '__main__':
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == "__main__":
+
     import compas
     input_path = os.path.join(compas.TEMP, 'ga_out/')
     output_path = input_path

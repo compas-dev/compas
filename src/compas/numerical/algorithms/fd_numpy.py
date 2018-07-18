@@ -25,7 +25,8 @@ __email__     = 'vanmelet@ethz.ch'
 
 __all__ = [
     'fd_numpy',
-    'network_fd_numpy'
+    'network_fd_numpy',
+    'mesh_fd_numpy'
 ]
 
 
@@ -56,6 +57,28 @@ def network_fd_numpy(network):
         attr['f'] = f[index][0]
         attr['l'] = l[index][0]
     return network
+
+
+def mesh_fd_numpy(mesh):
+    key_index = mesh.key_index()
+    vertices = mesh.get_vertices_attributes('xyz')
+    edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
+    fixed = [key_index[key] for key in mesh.vertices_where({'is_fixed': True})]
+    q = mesh.get_edges_attribute('q', 1.0)
+    loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
+    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
+    for key, attr in mesh.vertices(True):
+        index = key_index[key]
+        attr['x'] = xyz[index][0]
+        attr['y'] = xyz[index][1]
+        attr['z'] = xyz[index][2]
+        attr['rx'] = r[index][0]
+        attr['ry'] = r[index][1]
+        attr['rz'] = r[index][2]
+    for index, (u, v, attr) in enumerate(mesh.edges(True)):
+        attr['f'] = f[index][0]
+        attr['l'] = l[index][0]
+    return mesh
 
 
 def fd_numpy(vertices, edges, fixed, q, loads):

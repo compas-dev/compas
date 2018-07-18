@@ -1,6 +1,6 @@
 graft src
 graft tests
-graft samples
+graft data
 
 prune libs
 prune temp

@@ -8,8 +8,8 @@ try:
     import ctypes
     from ctypes import *
 
-    from compas.interop.core.cpp.xdarray import Array1D
-    from compas.interop.core.cpp.xdarray import Array2D
+    from compas.interop.cpp.xdarray import Array1D
+    from compas.interop.cpp.xdarray import Array2D
 
 except (ImportError, SystemError):
     import sys
@@ -101,7 +101,6 @@ if __name__ == "__main__":
     import compas
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
-    from compas.geometry import smooth_centroid_cpp
 
     kmax = 50
 

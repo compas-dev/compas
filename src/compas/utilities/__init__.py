@@ -134,6 +134,7 @@ xfunc
     XFunc
 
 """
+from __future__ import absolute_import
 
 
 def is_list_of_int():
@@ -172,6 +173,7 @@ from .animation import *
 from .datetime_ import *
 from .itertools_ import *
 from .colors import *
+from .encoders import *
 from .maps import *
 from .mixing import *
 from .names import *
@@ -180,16 +182,19 @@ from .sorting import *
 from .xfunc import *
 from .xscript import *
 
-from .animation import __all__ as a
-from .datetime_ import __all__ as b
-from .itertools_ import __all__ as c
-from .colors import __all__ as d
-from .maps import __all__ as e
-from .mixing import __all__ as f
-from .names import __all__ as g
-from .profiling import __all__ as h
-from .sorting import __all__ as i
-from .xfunc import __all__ as j
-from .xscript import __all__ as k
+from . import animation
+from . import datetime_
+from . import itertools_
+from . import colors
+from . import maps
+from . import mixing
+from . import names
+from . import profiling
+from . import sorting
+from . import xfunc
+from . import xscript
 
-__all__ = a + b + c + d + e + f + g + h + i + j + k
+__all__  = []
+__all__ += animation.__all__ + datetime_.__all__ + itertools_.__all__ + colors.__all__
+__all__ += encoders.__all__ + maps.__all__ + mixing.__all__ + names.__all__
+__all__ += profiling.__all__ + sorting.__all__ + xfunc.__all__ + xscript.__all__

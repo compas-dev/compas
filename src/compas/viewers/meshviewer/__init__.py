@@ -1,5 +1,13 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from .view import View
 from .controller import Controller
+
+import os
+
+here = os.path.abspath(os.path.dirname(__file__))
 
 CONFIG = {
     'menubar': [
@@ -56,9 +64,13 @@ CONFIG = {
             'items' : [
                 {'text' : 'From OBJ', 'action': 'from_obj'},
                 {'text' : 'From JSON', 'action': 'from_json'},
+                {'text' : 'From STL', 'action': 'from_stl'},
+                {'text' : 'From PLY', 'action': 'from_ply'},
                 {'type' : 'separator'},
                 {'text' : 'To OBJ', 'action': 'to_obj'},
                 {'text' : 'To JSON', 'action': 'to_json'},
+                {'text' : 'To STL', 'action': 'to_stl'},
+                {'text' : 'To PLY', 'action': 'to_ply'},
                 {'type' : 'separator'},
                 {
                     'type' : 'menu',
@@ -131,9 +143,9 @@ CONFIG = {
         }
     ],
     'toolbar': [
-        {'text': 'Zoom Extents', 'action': 'zoom_extents', 'image': '../icons/zoom/icons8-zoom-to-extents-50.png'},
-        {'text': 'Zoom In', 'action': 'zoom_in', 'image': '../icons/zoom/icons8-zoom-in-50.png'},
-        {'text': 'Zoom Out', 'action': 'zoom_out', 'image': '../icons/zoom/icons8-zoom-out-50.png'},
+        {'text': 'Zoom Extents', 'action': 'zoom_extents', 'image': os.path.join(here, '../icons/zoom/icons8-zoom-to-extents-50.png')},
+        {'text': 'Zoom In', 'action': 'zoom_in', 'image': os.path.join(here, '../icons/zoom/icons8-zoom-in-50.png')},
+        {'text': 'Zoom Out', 'action': 'zoom_out', 'image': os.path.join(here, '../icons/zoom/icons8-zoom-out-50.png')},
     ],
     'sidebar': [
         {
@@ -221,6 +233,57 @@ CONFIG = {
                     ]
                 }
             ]
+        },
+        {
+            'type' : 'group',
+            'text' : None,
+            'items': [
+                {
+                    'name'   : 'azimuth',
+                    'type'   : 'slider',
+                    'text'   : 'azimuth',
+                    'value'  : Controller.settings['camera.azimuth:value'],
+                    'minval' : Controller.settings['camera.azimuth:minval'],
+                    'maxval' : Controller.settings['camera.azimuth:maxval'],
+                    'step'   : Controller.settings['camera.azimuth:step'],
+                    'scale'  : Controller.settings['camera.azimuth:scale'],
+                    'slide'  : 'slide_azimuth',
+                    'edit'   : 'edit_azimuth'
+                },
+                {
+                    'name'   : 'elevation',
+                    'type'   : 'slider',
+                    'text'   : 'elevation',
+                    'value'  : Controller.settings['camera.elevation:value'],
+                    'minval' : Controller.settings['camera.elevation:minval'],
+                    'maxval' : Controller.settings['camera.elevation:maxval'],
+                    'step'   : Controller.settings['camera.elevation:step'],
+                    'scale'  : Controller.settings['camera.elevation:scale'],
+                    'slide'  : 'slide_elevation',
+                    'edit'   : 'edit_elevation'
+                },
+                {
+                    'name'   : 'distance',
+                    'type'   : 'slider',
+                    'text'   : 'distance',
+                    'value'  : Controller.settings['camera.distance:value'],
+                    'minval' : Controller.settings['camera.distance:minval'],
+                    'maxval' : Controller.settings['camera.distance:maxval'],
+                    'step'   : Controller.settings['camera.distance:step'],
+                    'scale'  : Controller.settings['camera.distance:scale'],
+                    'slide'  : 'slide_distance',
+                    'edit'   : 'edit_distance'
+                },
+                {
+                    'type'   : 'textedit',
+                    'text'   : 'fov',
+                    'value'  : Controller.settings['camera.fov:value'],
+                    'edit'   : 'edit_fov'
+                },
+                {
+                    'type'   : 'stretch',
+                }
+            ],
         }
     ]
 }

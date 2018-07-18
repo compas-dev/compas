@@ -346,13 +346,13 @@ class Vector(object):
     # ==========================================================================
 
     def scale(self, n):
-        """Scale this vector by a factor n.
+        r"""Scale this vector by a factor n.
 
         Parameters:
             n (int, float): The scaling factor.
 
         Notes:
-            This is an alias for self \*= n
+            This is an alias for self *= n
         """
         self *= n
 
@@ -418,18 +418,11 @@ class Vector(object):
         if origin is None:
             origin = [0.0, 0.0, 0.0]
 
-        axis = Vector(*axis)
-        origin = Vector(*axis)
+        points = rotate_points([self], axis, angle, origin)
 
-        sina = sin(angle)
-        cosa = cos(angle)
-        kxu  = axis.cross(self)
-        v    = kxu * sina
-        w    = axis.cross(kxu) * (1 - cosa)
-
-        self.x += v[0] + w[0] + origin[0]
-        self.y += v[1] + w[1] + origin[1]
-        self.z += v[2] + w[2] + origin[2]
+        self.x = points[0][0]
+        self.y = points[0][1]
+        self.z = points[0][2]
 
     def project(self):
         pass
@@ -446,21 +439,9 @@ if __name__ == '__main__':
 
     from compas.geometry import matrix_from_axis_and_angle
 
-    u = Vector(1.0, 0.0, 0.0)
-    v = Vector(0.0, 1.0, 0.0)
+    u = Vector(0.0, 0.0, 1.0)
+    v = Vector(1.0, 0.0, 0.0)
 
-    print(Vector.sum_vectors([u, v]))
-
-    print(u)
-
-    print(u.dot(v))
-    print(u.cross(v))
-
-    u.rotate(pi / 2)
-
-    print(u)
-
-    R = matrix_from_axis_and_angle([0.0, 0.0, 1.0], - pi / 2)
-    u.transform(R)
+    u.rotate(pi / 4, v)
 
     print(u)
