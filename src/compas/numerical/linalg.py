@@ -448,7 +448,7 @@ def memoize(f):
 
 
 def _chofactor(A):
-    """Returns the Cholesky factorisation/decomposition matrix.
+    r"""Returns the Cholesky factorisation/decomposition matrix.
 
     Parameters
     ----------
@@ -481,7 +481,7 @@ def _chofactor(A):
 
 
 def _lufactorized(A):
-    """Return a function for solving a sparse linear system (LU decomposition).
+    r"""Return a function for solving a sparse linear system (LU decomposition).
 
     Parameters
     ----------
@@ -658,7 +658,7 @@ def rot90(vectors, axes):
 # ==============================================================================
 
 def solve_with_known(A, b, x, known):
-    """Solve a system of linear equations with part of solution known.
+    r"""Solve a system of linear equations with part of solution known.
 
     Parameters
     ----------
@@ -707,7 +707,7 @@ def solve_with_known(A, b, x, known):
 
 
 def spsolve_with_known(A, b, x, known):
-    """Solve (sparse) a system of linear equations with part of solution known.
+    r"""Solve (sparse) a system of linear equations with part of solution known.
 
     Parameters
     ----------

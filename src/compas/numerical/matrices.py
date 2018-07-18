@@ -94,7 +94,7 @@ def adjacency_matrix(adjacency, rtype='array'):
     return _return_matrix(A, rtype)
 
 
-def face_matrix(face_vertices, rtype='array'):
+def face_matrix(face_vertices, rtype='array', normalize=False):
     """Creates a face-vertex adjacency matrix.
 
     Parameters
@@ -110,8 +110,13 @@ def face_matrix(face_vertices, rtype='array'):
         Constructed face matrix.
 
     """
-    f = array([(i, j, 1) for i, vertices in enumerate(face_vertices) for j in vertices])
-    F = coo_matrix((f[:, 2], (f[:, 0], f[:, 1]))).asfptype()
+    if normalize:
+        f = array([(i, j, 1.0 / len(vertices)) for i, vertices in enumerate(face_vertices) for j in vertices])
+    else:
+        f = array([(i, j, 1) for i, vertices in enumerate(face_vertices) for j in vertices])
+    F = coo_matrix(
+        (f[:, 2].ravel().tolist(),
+            (f[:, 0].ravel().tolist(), f[:, 1].ravel().tolist()))).asfptype()
     return _return_matrix(F, rtype)
 
 
