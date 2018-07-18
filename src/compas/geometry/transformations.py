@@ -543,7 +543,7 @@ def euler_angles_from_matrix(M, static=True, axes='xyz'):
     return [ax, ay, az]
 
 
-def matrix_from_axis_and_angle(axis, angle, point=[0, 0, 0], rtype='list'):
+def matrix_from_axis_and_angle(axis, angle, point=None, rtype='list'):
     """Calculates a rotation matrix from an rotation axis, an angle and an
         optional point of rotation.
 
@@ -571,6 +571,8 @@ def matrix_from_axis_and_angle(axis, angle, point=[0, 0, 0], rtype='list'):
         >>> allclose([angle1], [angle2])
         True
     """
+    if not point:
+        point = [0.0, 0.0, 0.0]
 
     axis = list(axis)
     if length_vector(axis):
@@ -1924,33 +1926,37 @@ def project_points_line_xy(points, line):
 
 if __name__ == "__main__":
 
-    from numpy import array
-    from numpy import vstack
+    points = rotate_points([[0.0, 0.0, 1.0]], [1.0, 0.0, 0.0], 3.14159 / 4)
 
-    from numpy.random import randint
+    print(points[0])
 
-    import matplotlib.pyplot as plt
+    # from numpy import array
+    # from numpy import vstack
 
-    n = 200
+    # from numpy.random import randint
 
-    points = randint(0, high=100, size=(n, 3)).astype(float)
-    points = vstack((points, array([[0, 0, 0], [100, 0, 0]], dtype=float).reshape((-1, 3))))
+    # import matplotlib.pyplot as plt
 
-    a = math.pi / randint(1, high=8)
+    # n = 200
 
-    R = matrix_from_axis_and_angle([0, 0, 1], a, point=[0, 0, 0], rtype='array')
+    # points = randint(0, high=100, size=(n, 3)).astype(float)
+    # points = vstack((points, array([[0, 0, 0], [100, 0, 0]], dtype=float).reshape((-1, 3))))
 
-    points_ = transform_numpy(points, R)
+    # a = math.pi / randint(1, high=8)
 
-    plt.plot(points[:, 0], points[:, 1], 'bo')
-    plt.plot(points_[:, 0], points_[:, 1], 'ro')
+    # R = matrix_from_axis_and_angle([0, 0, 1], a, point=[0, 0, 0], rtype='array')
 
-    plt.plot(points[-2:, 0], points[-2:, 1], 'b-', label='before')
-    plt.plot(points_[-2:, 0], points_[-2:, 1], 'r-', label='after')
+    # points_ = transform_numpy(points, R)
 
-    plt.legend(title='Rotation {0}'.format(180 * a / math.pi), fancybox=True)
+    # plt.plot(points[:, 0], points[:, 1], 'bo')
+    # plt.plot(points_[:, 0], points_[:, 1], 'ro')
 
-    ax = plt.gca()
-    ax.set_aspect('equal')
+    # plt.plot(points[-2:, 0], points[-2:, 1], 'b-', label='before')
+    # plt.plot(points_[-2:, 0], points_[-2:, 1], 'r-', label='after')
 
-    plt.show()
+    # plt.legend(title='Rotation {0}'.format(180 * a / math.pi), fancybox=True)
+
+    # ax = plt.gca()
+    # ax.set_aspect('equal')
+
+    # plt.show()
