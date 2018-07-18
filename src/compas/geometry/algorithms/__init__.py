@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from .bbox import *
 from .bbox_numpy import *
 from .bestfit import *
@@ -11,21 +13,33 @@ from .parallelisation import *
 from .planarisation import *
 from .purging import *
 from .smoothing import *
-# from .smoothing_cpp import *
+from .smoothing_cpp import *
 
-from .bbox import __all__ as a
-from .bbox_numpy import __all__ as aa
-from .bestfit import __all__ as b
-from .boolean import __all__ as c
-from .geodesics import __all__ as d
-from .hull import __all__ as e
-from .hull_numpy import __all__ as ee
-from .interpolation import __all__ as f
-from .isolines import __all__ as g
-from .parallelisation import __all__ as h
-from .planarisation import __all__ as i
-from .purging import __all__ as j
-from .smoothing import __all__ as k
-# from .smoothing_cpp import __all__ as kk
+from . import bbox
+from . import bbox_numpy
+from . import bestfit
+from . import boolean
+from . import geodesics
+from . import hull
+from . import hull_numpy
+from . import interpolation
+from . import isolines
+from . import parallelisation
+from . import planarisation
+from . import purging
+from . import smoothing
+from . import smoothing_cpp
 
-__all__ = a + aa + b + c + d + e + ee + f + g + h + i + j + k
+__all__ = []
+
+__all__ += bbox.__all__ + bbox_numpy.__all__
+__all__ += bestfit.__all__
+__all__ += boolean.__all__
+__all__ += geodesics.__all__
+__all__ += hull.__all__ + hull_numpy.__all__
+__all__ += interpolation.__all__
+__all__ += isolines.__all__
+__all__ += parallelisation.__all__
+__all__ += planarisation.__all__
+__all__ += purging.__all__
+__all__ += smoothing.__all__ + smoothing_cpp.__all__
