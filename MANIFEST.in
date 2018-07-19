@@ -1,8 +1,6 @@
-graft src
 graft tests
 
-prune libs
-prune temp
+prune data
 
 include .bumpversion.cfg
 include .editorconfig

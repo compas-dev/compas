@@ -22,7 +22,7 @@ long_description = read('README.md')
 
 setup(
     name='COMPAS',
-    version='0.2.2',
+    version='0.2.4',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -54,11 +54,10 @@ setup(
         "Issues": "https://github.com/compas-dev/compas/issues",
     },
 
-    # packages=find_packages('src', exclude=['compas_hpc', ]),
-    packages=['compas', 'compas_rhino', 'compas_blender', ],
+    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', ],
     package_dir={'': 'src'},
     package_data={
-        '': ['_data/PLACEHOLDER', '_data/*.obj']
+        '': ['_data/*.obj']
     },
     data_files=[
     ],
