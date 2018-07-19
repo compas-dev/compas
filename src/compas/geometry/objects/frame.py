@@ -52,7 +52,8 @@ class Frame(object):
         self.point = [float(f) for f in list(point)]
         self.xaxis = list(normalize_vector(list(xaxis)))
         self.yaxis = list(normalize_vector(list(yaxis)))
-        self.yaxis = list(cross_vectors(self.zaxis, self.xaxis))  # correction
+        zaxis = list(normalize_vector(cross_vectors(self.xaxis, self.yaxis)))
+        self.yaxis = list(cross_vectors(zaxis, self.xaxis))  # correction
 
     def copy(self):
         """Returns a copy of the frame.
@@ -157,6 +158,39 @@ class Frame(object):
         R = matrix_from_euler_angles(a, static=True, axes='xyz')
         xaxis, yaxis = basis_vectors_from_matrix(R)
         return cls(point, xaxis, yaxis)
+
+    @classmethod
+    def from_list(cls, values):
+        """Construct a frame from a list of 12 or 16 :obj:`float` values.
+
+        Args:
+            values (:obj:`list` of :obj:`float`): The list of 12 or 16 values 
+                representing a 4x4 matrix.
+        
+        Note:
+            Since the transformation matrix follows the row-major order, the
+            translational components must be at the list's indices 3, 7, 11.
+        
+        Raises:
+            ValueError: If the length of the list is neither 12 nor 16.
+        
+        Example:
+            >>> f = Frame.from_list([-1.0, 0.0, 0.0, 8110, 
+                                    0.0, 0.0, -1.0, 7020,
+                                    0.0, -1.0, 0.0, 1810])
+        """
+
+        if len(values) == 12:
+            values.extend([0., 0., 0., 1.])
+        if len(values) != 16:
+            raise ValueError('Expected 12 or 16 floats but got %d' % len(values))
+
+        matrix = [[0. for i in range(4)] for j in range(4)]
+        for i in range(4):
+            for j in range(4):
+                matrix[i][j] = float(values[i * 4 + j])
+
+        return cls.from_matrix(matrix)
 
     @classmethod
     def from_quaternion(cls, quaternion, point=[0, 0, 0]):
