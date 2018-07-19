@@ -11,6 +11,8 @@ include .editorconfig
 include LICENSE
 include README.md
 
-include requirements-dev.txt tasks.py pytest.ini
+include requirements-dev.txt
+include tasks.py
+include pytest.ini
 
 global-exclude *.py[cod] __pycache__ *.dylib
