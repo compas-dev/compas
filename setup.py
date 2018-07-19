@@ -21,7 +21,7 @@ optional_requirements = {}
 
 setup(
     name='COMPAS',
-    version='0.2.4',
+    version='0.2.7',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -56,7 +56,7 @@ setup(
     packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', ],
     package_dir={'': 'src'},
     package_data={
-        '': ['_data/*.obj']
+        '': ['__data/*.obj']
     },
     data_files=[
     ],

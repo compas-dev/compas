@@ -1,68 +1,39 @@
-# compas
+# The COMPAS framework
 
-This is the public repository of the main library of the **compas** framework.
-The **compas** framework is an open-source, Python-based framework for computational research and collaboration in architecture, engineering and digital fabrication.
+This is the public repository of the main library of the **COMPAS** framework.
+The **COMPAS** framework is an open-source, Python-based framework for computational research and collaboration in architecture, engineering and digital fabrication.
 
 The main library consists of a core package (**compas**) and several additional
-packages for integration of the core functionality in CAD software (**compas_blender**, **compas_maya** and **compas_rhino**). The core package defines all *real* functionality.
+packages for integration of the core functionality in CAD software (**compas_blender**, **compas_rhino**, **compas_ghpython**). The core package defines all *real* functionality.
 The CAD packages simply provide a unified framework for processing, visualising, and interacting with datastructures, and for building user interfaces in different CAD software.
 
 The complete documentation of the compas framework is available here: https://compas-dev.github.io/.
 
+
 ## Getting Started
 
-The recommended way to install **compas** is to use [Anaconda/conda](https://conda.io/docs/) which takes care of all dependencies:
+The recommended way to install **COMPAS** is to use [Anaconda/conda](https://conda.io/docs/) which takes care of all dependencies:
 
     conda config --add channels conda-forge
-    conda install compas
+    conda install COMPAS
 
 But it can also be installed using `pip`:
 
-    pip install compas
+    pip install COMPAS
 
 Once installed, you can verify your setup. Start Python from the command line and run the following:
 
 ```python
+
 >>> import compas
->>> compas.verify()
+>>> import compas_rhino
+>>> import compas_blender
+>>> import compas_ghpython
+
 ```
-
-This will produce something like the following:
-
-    -------------------------------------------------------------------------------
-    Checking required packages...
-
-    All required packages are installed!
-
-    Checking optional packages...
-
-    The following optional packages are not installed:
-    - pycuda
-    - pyopengl
-    - pyside
-
-    -------------------------------------------------------------------------------
 
 Optionally, you can also install from source. Check the [documentation for more details](https://compas-dev.github.io/gettingstarted.html).
 
-### Dependencies
-
-**compas** has very few dependencies and most of them are included in a scientific
-Python distribution such as Anaconda or EPD.
-
-| package               | dependencies             | exceptions
-| --------------------- | ------------------------ | -------------------------- 
-| compas.com            | -                        | matlab (``MatlabEngine``, ``MatlabSession``), paramiko (``ssh``)
-| compas.datastructures | -                        |
-| compas.files          | -                        |
-| compas.geometry       | -                        | NumPy, SciPy (all functions with a ``_numpy`` suffix)
-| compas.hpc            | Numba, PyCuda, PyOpenCL  | 
-| compas.interop        | -                        |
-| compas.numerical      | NumPy, SciPy             |
-| compas.plotters       | Matplotlib               |
-| compas.topology       | -                        | NumPy, SciPy (all functions with a ``_numpy`` suffix), planarity (``network_is_planar``), NetworkX (``network_embed_in_plane``)
-| compas.utilities      | -                        | imageio (``gif_from_images``)
-| compas.viewers        | PyOpenGL, PySide         |
 
 ## First Steps
 
@@ -72,14 +43,17 @@ Some useful resources for first explorations:
 * https://compas-dev.github.io/main/tutorial.html
 * https://compas-dev.github.io/main/reference.html
 
+
 ## Questions and feedback
 
-The **compas** framework has a forum: http://forum.compas-framework.org/
+The **COMPAS** framework has a forum: http://forum.compas-framework.org/
 for questions and discussions.
+
 
 ## Issue tracker
 
 If you find a bug, please [file a report](https://github.com/compas-dev/compas/issues).
+
 
 ## Contributing
 
@@ -102,6 +76,7 @@ command line to ease recurring operations:
 * `invoke test`: Run all tests and checks in one swift command.
 * `invoke`: Show available tasks.
 
+
 ### Releasing this project
 
 Ready to release a new version **compas**? Here's how to do it:
@@ -116,13 +91,15 @@ Ready to release a new version **compas**? Here's how to do it:
 
         invoke release [patch|minor|major]
 
+
 ## License
 
-The main library of **compas** is [released under the MIT license](https://compas-dev.github.io/license.html).
+The main library of **COMPAS** is [released under the MIT license](https://compas-dev.github.io/license.html).
+
 
 ## Contact
 
-The **compas** framework is developed by the Block Research Group at ETH Zurich,
+The **COMPAS** framework is developed by the Block Research Group at ETH Zurich,
 with the support of the NCCR (National Centre for Competence in Research) in *Digital fabrication*.
 Main contributors are Tom Van Mele, Andrew Liew, Tomás Méndez and Matthias Rippmann.
 
