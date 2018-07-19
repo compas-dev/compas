@@ -140,7 +140,7 @@ def mesh_subdivide_quad(mesh, k=1):
     for _ in range(k):
         subd = mesh.copy()
 
-        for u, v in list(subd.halfedges()):
+        for u, v in list(subd.edges()):
             subd.split_edge(u, v, allow_boundary=True)
 
         for fkey in mesh.faces():
@@ -194,7 +194,7 @@ def mesh_subdivide_corner(mesh, k=1):
         subd = mesh.copy()
 
         # split every edge
-        for u, v in list(subd.halfedges()):
+        for u, v in list(subd.edges()):
             subd.split_edge(u, v, allow_boundary=True)
 
         # create 4 new faces for every old face
@@ -643,7 +643,7 @@ if __name__ == "__main__":
     fixed = [mesh.get_any_vertex()]
     print(fixed)
 
-    subdivide = partial(mesh_subdivide_catmullclark, fixed=fixed)
+    subdivide = partial(mesh_subdivide_quad)
     subd = subdivide(mesh, k=4)
 
     viewer = MeshViewer()

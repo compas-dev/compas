@@ -21,8 +21,8 @@ def read(*names, **kwargs):
 long_description = read('README.md')
 
 setup(
-    name='compas',
-    version='0.1.0',
+    name='COMPAS',
+    version='0.2.2',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -54,11 +54,13 @@ setup(
         "Issues": "https://github.com/compas-dev/compas/issues",
     },
 
-    packages=find_packages('src', exclude=['compas_hpc', ]),
+    # packages=find_packages('src', exclude=['compas_hpc', ]),
+    packages=['compas', 'compas_rhino', 'compas_blender', ],
     package_dir={'': 'src'},
-    package_data={},
+    package_data={
+        '': ['_data/PLACEHOLDER', '_data/*.obj']
+    },
     data_files=[
-        # ('./data', ['data/lines.obj', 'data/faces.obj']),
     ],
     include_package_data=True,
 
