@@ -7,9 +7,6 @@ from os import path
 
 from setuptools import find_packages, setup
 
-requirements = []
-optional_requirements = {}
-
 here = path.abspath(path.dirname(__file__))
 
 def read(*names, **kwargs):
@@ -19,6 +16,8 @@ def read(*names, **kwargs):
     ).read()
 
 long_description = read('README.md')
+requirements = read('requirements.txt').split('\n')
+optional_requirements = {}
 
 setup(
     name='COMPAS',

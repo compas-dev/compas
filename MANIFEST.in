@@ -9,6 +9,7 @@ include LICENSE
 include README.md
 
 include requirements-dev.txt
+include requirements.txt
 include tasks.py
 include pytest.ini
 

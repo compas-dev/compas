@@ -166,4 +166,4 @@ def requirements():
             print(line.strip())
 
 
-__all__ = ['get', 'license', 'requirements', 'version']
+__all__ = ['get', 'license', 'version', 'help', 'copyright', 'credits', 'verify', 'installed', 'requirements']
