@@ -7,13 +7,16 @@ from os import path
 
 from setuptools import find_packages, setup
 
+
 here = path.abspath(path.dirname(__file__))
+
 
 def read(*names, **kwargs):
     return io.open(
         path.join(here, *names),
         encoding=kwargs.get('encoding', 'utf8')
     ).read()
+
 
 long_description = read('README.md')
 requirements = read('requirements.txt').split('\n')
