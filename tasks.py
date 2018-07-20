@@ -61,10 +61,10 @@ def help(ctx):
 
 
 @task(help={
-    'docs': 'True to generate documentation, otherwise False',
+    'docs': 'True to clean up generated documentation, otherwise False',
     'bytecode': 'True to clean up compiled python files, otherwise False.',
     'builds': 'True to clean up build/packaging artifacts, otherwise False.'})
-def clean(ctx, docs=False, bytecode=True, builds=True):
+def clean(ctx, docs=True, bytecode=True, builds=True):
     """Cleans the local copy from compiled artifacts."""
     if builds:
         ctx.run('python setup.py clean')
@@ -79,11 +79,8 @@ def clean(ctx, docs=False, bytecode=True, builds=True):
 
     folders = []
 
-    # Docs is disabled by default for now because this repo
-    # does not contain the documentation of the library
     if docs:
-        folders.append('docs/_build/')
-        raise Exit('This repository does not contain documentation at the moment')
+        folders.append('docs/reference/generated')
 
     folders.append('dist/')
 
@@ -101,15 +98,16 @@ def clean(ctx, docs=False, bytecode=True, builds=True):
 
 @task(help={
       'rebuild': 'True to clean all previously built docs before starting, otherwise False.',
+      'doctest': 'True to run doctests, otherwise False.',
       'check_links': 'True to check all web links in docs for validity, otherwise False.'})
-def docs(ctx, rebuild=True, check_links=False):
+def docs(ctx, doctest=False, rebuild=True, check_links=False):
     """Builds package's HTML documentation."""
-
-    raise Exit('This repository does not contain documentation at the moment')
-
     if rebuild:
         clean(ctx)
-    ctx.run('sphinx-build -b doctest docs dist/docs')
+
+    if doctest:
+        ctx.run('sphinx-build -b doctest docs dist/docs')
+
     ctx.run('sphinx-build -b html docs dist/docs')
     if check_links:
         ctx.run('sphinx-build -b linkcheck docs dist/docs')
@@ -121,9 +119,8 @@ def check(ctx):
     log.write('Checking MANIFEST.in...')
     ctx.run('check-manifest --ignore-bad-ideas=test.so,fd.so,smoothing.so')
 
-    # NOTE: Commented out because this repo does not have docs right now
-    # log.write('Checking ReStructuredText formatting...')
-    # ctx.run('python setup.py check --strict --metadata --restructuredtext')
+    log.write('Checking metadata...')
+    ctx.run('python setup.py check --strict --metadata')
 
     log.write('Running flake8 python linter...')
     ctx.run('flake8 src tests setup.py')
@@ -155,9 +152,7 @@ def release(ctx, release_type):
 
     # Bump version and git tag it
     ctx.run('bumpversion %s --verbose' % release_type)
-    # NOTE: Commented out because this repo does not have docs right now
-    # ctx.run('invoke docs test')
-    ctx.run('invoke test')
+    ctx.run('invoke docs test')
     ctx.run('python setup.py clean --all sdist bdist_wheel')
     # TODO: Add github release upload if required
 
