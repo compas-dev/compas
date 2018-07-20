@@ -56,7 +56,6 @@ def confirm(question):
 @task(default=True)
 def help(ctx):
     """Lists available tasks and usage."""
-    ctx.run('invoke --help')
     ctx.run('invoke --list')
     log.write('Use "invoke -h <taskname>" to get detailed help for a task.')
 
