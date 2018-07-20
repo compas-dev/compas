@@ -113,10 +113,8 @@ def face_matrix(face_vertices, rtype='array', normalize=False):
     if normalize:
         f = array([(i, j, 1.0 / len(vertices)) for i, vertices in enumerate(face_vertices) for j in vertices])
     else:
-        f = array([(i, j, 1) for i, vertices in enumerate(face_vertices) for j in vertices])
-    F = coo_matrix(
-        (f[:, 2].ravel().tolist(),
-            (f[:, 0].ravel().tolist(), f[:, 1].ravel().tolist()))).asfptype()
+        f = array([(i, j, 1.0) for i, vertices in enumerate(face_vertices) for j in vertices])
+    F = coo_matrix((f[:, 2], (f[:, 0].astype(int), f[:, 1].astype(int))))
     return _return_matrix(F, rtype)
 
 
