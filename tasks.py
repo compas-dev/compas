@@ -131,7 +131,7 @@ def check(ctx):
 
 @task(help={
       'checks': 'True to run all checks before testing, otherwise False.'})
-def test(ctx, checks=True, doctest=False):
+def test(ctx, checks=False, doctest=False):
     """Run all tests."""
     if checks:
         check(ctx)
