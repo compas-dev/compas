@@ -280,8 +280,8 @@ class Point(object):
     def transform(self, matrix):
         points = transform([self, ], matrix)
         self.x = points[0][0]
-        self.x = points[0][0]
-        self.x = points[0][0]
+        self.y = points[0][1]
+        self.z = points[0][2]
 
     def translate(self, vector):
         self.x += vector.x
