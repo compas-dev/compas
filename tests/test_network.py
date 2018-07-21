@@ -1,5 +1,6 @@
 from compas.datastructures import Network
 
+
 def test_add_vertex():
     network = Network()
     assert network.add_vertex() == 0

@@ -117,7 +117,7 @@ def docs(ctx, doctest=False, rebuild=True, check_links=False):
 def check(ctx):
     """Check the consistency of documentation, coding style and a few other things."""
     log.write('Checking MANIFEST.in...')
-    ctx.run('check-manifest --ignore-bad-ideas=test.so,fd.so,smoothing.so')
+    ctx.run('check-manifest --ignore-bad-ideas=test.so,fd.so,smoothing.so,drx_c.so')
 
     log.write('Checking metadata...')
     ctx.run('python setup.py check --strict --metadata')
