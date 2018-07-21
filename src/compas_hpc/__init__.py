@@ -1,13 +1,13 @@
 """
 ********************************************************************************
-compas.hpc
+compas_hpc
 ********************************************************************************
 
-.. module:: compas.hpc
+.. module:: compas_hpc
 
-This package provides GPU-accelerated or JIT-compiled versions of many geometry,
-numerical and topological functions and algorithms. The package id built around
-`Numba`_, `PyCuda`_ and `PyOpenCL`_.
+This package provides GPU-accelerated and compiled versions of many geometry,
+numerical and topological functions and algorithms. The package is built around
+`Numba`_, C, `PyCuda`_ and `PyOpenCL`_.
 
 .. _Numba: https://numba.pydata.org/
 .. _PyCuda: https://mathema.tician.de/software/pycuda/
@@ -138,13 +138,13 @@ average
 
 """
 
-from .geometry import *
 from .algorithms import *
+from .geometry import *
 from .core import *
 from .linalg import *
 
-from .geometry import __all__ as a
-from .algorithms import __all__ as b
+from .algorithms import __all__ as a
+from .geometry import __all__ as b
 from .core import __all__ as c
 from .linalg import __all__ as d
 
