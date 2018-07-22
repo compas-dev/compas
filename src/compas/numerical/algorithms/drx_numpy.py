@@ -5,17 +5,20 @@ from __future__ import print_function
 
 try:
 #     from numpy import arccos
-#     from numpy import array
+    from numpy import array
 #     from numpy import cross
     from numpy import float64
     from numpy import int32
 #     from numpy import isnan
-#     from numpy import mean
-#     from numpy import newaxis
+    from numpy import mean
+    from numpy import newaxis
 #     from numpy import sin
-#     from numpy import sum
+    from numpy import sum
     from numpy import tile
     from numpy import zeros
+
+    from scipy.sparse import find
+
 except ImportError:
     import sys
     if 'ironpython' not in sys.version.lower():
@@ -23,7 +26,7 @@ except ImportError:
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import mass_matrix
-# from compas.numerical import normrow
+from compas.numerical import normrow
 from compas.numerical import uvw_lengths
 
 from time import time
@@ -40,7 +43,7 @@ __all__ = [
 ]
 
 
-def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False, callback=None, **kwargs):
+def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=100, update=False, callback=None, **kwargs):
 
     """ Run dynamic relaxation analysis.
 
@@ -48,27 +51,27 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
     ----------
     network : obj
         Network to analyse.
-    # factor : float
-    #     Convergence factor.
+    factor : float
+        Convergence factor.
     tol : float
         Tolerance value.
-    # steps : int
-    #     Maximum number of steps.
+    steps : int
+        Maximum number of steps.
     refresh : int
         Update progress every nth step.
-    # update : bool
-    #     Update the co-ordinates of the Network.
-    # callback : callable
-    #     Callback function.
+    update : bool
+        Update the co-ordinates of the Network.
+    callback : callable
+        Callback function.
 
     Returns
     -------
-    # array
-    #     Vertex co-ordinates.
-    # array
-    #     Edge forces.
-    # array
-    #     Edge lengths.
+    array
+        Vertex co-ordinates.
+    array
+        Edge forces.
+    array
+        Edge lengths.
 
     """
 
@@ -76,7 +79,7 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
 
     tic1 = time()
 
-    X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n = _create_arrays(network)
+    X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n, rows, cols, vals, nv = _create_arrays(network)
 #     try:
 #         inds, indi, indf, EIx, EIy = _beam_data(network)
 #         beams = 1
@@ -89,9 +92,9 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
 
     tic2 = time()
 
-#     X, f, l = drx_solver(ks, l0, f0, ind_c, ind_t, P, S, B, M, V, refresh, beams,
-#                          inds, indi, indf, EIx, EIy, callback, **kwargs)
-    drx_solver_numpy(tol, steps, factor, C, Ct, X, M)
+#      = drx_solver(ks, l0, f0, ind_c, ind_t, P, S, B, M, V, refresh, beams,
+#                          inds, indi, indf, EIx, EIy, callback, )
+    X, f, l = drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh, callback, **kwargs)
 
     toc2 = time() - tic2
 
@@ -103,26 +106,26 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=0, update=False
         print('Solver time: {0:.3f} s'.format(toc2))
         print('----------------------------------')
 
-#     # Update
+    # Update
 
-#     if update:
+    if update:
 
-#         k_i = network.key_index()
-#         for key in network.vertices():
-#             x, y, z = X[k_i[key], :]
-#             network.set_vertex_attributes(key, {'x': x, 'y': y, 'z': z})
+        k_i = network.key_index()
+        for key in network.vertices():
+            x, y, z = X[k_i[key], :]
+            network.set_vertex_attributes(key, 'xyz', [x, y, z])
 
-#         uv_i = network.uv_index()
-#         for uv in network.edges():
-#             i = uv_i[uv]
-#             network.set_edge_attribute(uv, 'f', float(f[i]))
+        uv_i = network.uv_index()
+        for uv in network.edges():
+            i = uv_i[uv]
+            network.set_edge_attribute(uv, 'f', float(f[i]))
 
-#     return X, f, l
+    return X, f, l
 
 
-# , ks, l0, f0, ind_c, ind_t, P, S, B, M, V, refresh, beams, inds, indi,
-#                indf, EIx, EIy, callback, **kwargs):
-def drx_solver_numpy(tol, steps, factor, C, Ct, X, M):
+#  M, V, , beams, inds, indi,
+#                indf, EIx, EIy, , ):
+def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh, callback, **kwargs):
 
     """ NumPy and SciPy dynamic relaxation solver.
 
@@ -140,28 +143,28 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M):
         Transposed connectivity matrix.
     X : array
         Nodal co-ordinates.
-#     ks : array
-#         Initial edge axial stiffnesses.
-#     l0 : array
-#         Initial edge lengths.
-#     f0 : array
-#         Initial edge forces.
-#     ind_c : list
-#         Indices of compression only edges.
-#     ind_t : list
-#         Indices of tension only edges.
-#     P : array
-#         Nodal loads Px, Py, Pz.
-#     S : array
-#         Shear forces Sx, Sy, Sz.
-#     B : array
-#         Constraint conditions Bx, By, Bz.
     M : array
         Mass matrix.
-#     V : array
-#         Nodal velocities Vx, Vy, Vz.
-#     refresh : int
-#         Update progress every n steps.
+    k0 : array
+        Initial edge axial stiffnesses.
+    l0 : array
+        Initial edge lengths.
+    f0 : array
+        Initial edge forces.
+    ind_c : list
+        Indices of compression only edges.
+    ind_t : list
+        Indices of tension only edges.
+    P : array
+        Nodal loads Px, Py, Pz.
+    S : array
+        Shear forces Sx, Sy, Sz.
+    B : array
+        Constraint conditions Bx, By, Bz.
+    V : array
+        Nodal velocities Vx, Vy, Vz.
+    refresh : int
+        Update progress every n steps.
 #     beams : bool
 #         Beam data flag.
 #     inds : list
@@ -174,8 +177,8 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M):
 #         Nodal EIx flexural stiffnesses.
 #     EIy : array
 #         Nodal EIy flexural stiffnesses.
-#     callback : obj
-#         Callback function.
+    callback : obj
+        Callback function.
 
     Returns
     -------
@@ -191,34 +194,42 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M):
     res = 1000 * tol
     ts, Uo = 0, 0
     M = factor * tile(M.reshape((-1, 1)), (1, 3))
+
     while (ts <= steps) and (res > tol):
+
         uvw, l = uvw_lengths(C, X)
-#         f = f0 + ks * (l - l0)
-#         if ind_t:
-#             f[ind_t] *= f[ind_t] > 0
-#         if ind_c:
-#             f[ind_c] *= f[ind_c] < 0
+        f = f0 + k0 * (l.ravel() - l0)
+
+        if ind_t:
+            f[ind_t] *= f[ind_t] > 0
+        if ind_c:
+            f[ind_c] *= f[ind_c] < 0
+
 #         if beams:
 #             S = _beam_shear(S, X, inds, indi, indf, EIx, EIy)
-#         q = f / l
-#         qt = tile(q, (1, 3))
-#         R = (P - S - Ct.dot(uvw * qt)) * B
-#         res = mean(normrow(R))
-#         V += R / M
-#         Un = sum(M * V**2)
-#         if Un < Uo:
-#             V *= 0
-#         Uo = Un
-#         X += V
-        print(l)
-#         if refresh:
-#             if (ts % refresh == 0) or (res < tol):
-#                 print('Step:{0} Residual:{1:.3f}'.format(ts, res))
-#                 if callback:
-#                     callback(X, **kwargs)
+
+        q = f[:, newaxis] / l
+        qt = tile(q, (1, 3))
+        R = (P - S - Ct.dot(uvw * qt)) * B
+        res = mean(normrow(R))
+
+        V += R / M
+        Un = sum(M * V**2)
+        if Un < Uo:
+            V *= 0
+        Uo = Un
+
+        X += V
+
+        if refresh:
+            if (ts % refresh == 0) or (res < tol):
+                print('Step:{0} Residual:{1:.3f}'.format(ts, res))
+                if callback:
+                    callback(X, **kwargs)
+
         ts += 1
 
-#     return X, f, l
+    return X, f, l
 
 
 # def _prepare_solver(network):
@@ -246,10 +257,7 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M):
 
 
 
-#     rows, cols, vals = find(Ct)
-#     rows_ = array(rows, dtype=int32)
-#     cols_ = array(cols, dtype=int32)
-#     vals_ = array(vals, dtype=float64)
+
 
 #     return u, v, f0_, l0_, ks_, ind_c, ind_t, rows_, cols_, vals_, M_, C, f0, ks, l0, beams, inds, indi, indf, EIx, EIy
 
@@ -344,11 +352,11 @@ def _create_arrays(network):
     # Vertices
 
     n = network.number_of_vertices()
-    B = zeros((n, 3))
-    P = zeros((n, 3))
+    B = zeros((n, 3), dtype=float64)
+    P = zeros((n, 3), dtype=float64)
     X = zeros((n, 3), dtype=float64)
-    S = zeros((n, 3))
-    V = zeros((n, 3))
+    S = zeros((n, 3), dtype=float64)
+    V = zeros((n, 3), dtype=float64)
 
     k_i = network.key_index()
     for key, vertex in network.vertex.items():
@@ -362,10 +370,10 @@ def _create_arrays(network):
     m  = network.number_of_edges()
     u  = zeros(m, dtype=int32)
     v  = zeros(m, dtype=int32)
-    E  = zeros(m)
-    A  = zeros(m)
-    s0 = zeros(m)
-    l0 = zeros(m)
+    E  = zeros(m, dtype=float64)
+    A  = zeros(m, dtype=float64)
+    s0 = zeros(m, dtype=float64)
+    l0 = zeros(m, dtype=float64)
     ind_c = []
     ind_t = []
 
@@ -405,8 +413,13 @@ def _create_arrays(network):
     C  = connectivity_matrix([[k_i[i], k_i[j]] for i, j in network.edges()], 'csr')
     Ct = C.transpose()
     M  = mass_matrix(Ct=Ct, ks=k0, q=q0, c=1, tiled=False)
+    rows, cols, vals = find(Ct)
+    rows = array(rows, dtype=int32)
+    cols = array(cols, dtype=int32)
+    vals = array(vals, dtype=float64)
+    nv = vals.shape[0]
 
-    return X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n
+    return X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n, rows, cols, vals, nv
 
 
 # ==============================================================================
@@ -520,13 +533,13 @@ if __name__ == "__main__":
 #     plotter.show()
 
     # ==========================================================================
-    # Example 3
+    # Example 3 (Dense)
     # ==========================================================================
 
     from compas.datastructures import Network
     from compas.viewers import VtkViewer
 
-    m = 2
+    m = 100
     x = y = [(i / m - 0.5) * 5 for i in range(m + 1)]
 
     vertices = [[xi, yi, 0] for yi in y for xi in x]
@@ -543,28 +556,25 @@ if __name__ == "__main__":
 
     network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
     pz = 1000 / network.number_of_vertices()
-    sides = [i for i in network.vertices() if network.vertex_degree(i) <= 3]
+    sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
     network.update_default_vertex_attributes({'P': [0, 0, pz]})
-    network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
-    network.set_vertices_attributes(sides, {'B': [0, 0, 0]})
-
-    drx_numpy(network=network, tol=0.01, update=True, refresh=1)
+    network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
+    network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
 
     data = {}
     data['vertices'] = {i: network.vertex_coordinates(i) for i in network.vertices()}
     data['edges']    = [{'u': u, 'v': v} for u, v in network.edges()]
 
 
-#     def callback(X, self):
-#         for i in range(X.shape[0]):
-#             self.vertices.SetPoint(i, X[i, :])
-#             self.vertices.Modified()
-#         self.window.Render()
+    def callback(X, self):
+        for i in range(X.shape[0]):
+            self.vertices.SetPoint(i, X[i, :])
+            self.vertices.Modified()
+        self.window.Render()
 
 
     def func(self):
-        pass
-#         X, f, l = drx_numpy(network=mesh, tol=0.01, update=True, refresh=1, callback=callback, self=self)
+        drx_numpy(network=network, tol=0.01, update=True, refresh=10, callback=callback, self=self)
 
 
     print('Press key S to start')
@@ -573,4 +583,4 @@ if __name__ == "__main__":
     viewer.settings['draw_vertices'] = 0
     viewer.settings['edge_width']    = 0.01
     viewer.keycallbacks['s'] = func
-    # viewer.start()
+    viewer.start()

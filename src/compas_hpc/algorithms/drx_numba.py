@@ -8,7 +8,7 @@ from numpy import array
 # from numpy import float64
 # from numpy import int64
 # from numpy import isnan
-# from numpy import mean
+from numpy import mean
 # from numpy import sin
 from numpy import sqrt
 from numpy import zeros
@@ -18,9 +18,7 @@ from numba import f8
 from numba import i4
 from numba import i8
 
-# from scipy.sparse import find
-
-# from compas.numerical import uvw_lengths
+from compas.numerical import uvw_lengths
 # from compas.numerical.algorithms.drx_numpy import _beam_data
 from compas.numerical.algorithms.drx_numpy import _create_arrays
 
@@ -76,7 +74,7 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 
     tic1 = time()
 
-    X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n = _create_arrays(network)
+    X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n, rows, cols, vals, nv = _create_arrays(network)
 #     f0_, l0_, ks_, ind_c, ind_t, B, P, S, rows_, cols_, vals_, M_, C, f0, ks, l0, beams, inds, indi, indf, EIx, EIy = _prepare_solver(network)
 
     if not ind_c:
@@ -92,11 +90,12 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 
     tic2 = time()
 
-#   , B, P, S, rows_, cols_, vals_, M_, factor,
+#   , , , ,
 #                beams, inds, indi, indf, EIx, EIy)
-    drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t)
-#     _, l = uvw_lengths(C, X)
-#     f = f0 + ks * (l - l0)
+    drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M,
+                     factor, V)
+    _, l = uvw_lengths(C, X)
+    f = f0 + k0 * (l.ravel() - l0)
 
     toc2 = time() - tic2
 
@@ -108,33 +107,35 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
         print('Solver time: {0:.3f} s'.format(toc2))
         print('----------------------------------')
 
-#     # Update
+    # Update
 
-#     if update:
+    if update:
 
-#         k_i = network.key_index()
-#         for key in network.vertices():
-#             x, y, z = X[k_i[key], :]
-#             network.set_vertex_attributes(key, {'x': x, 'y': y, 'z': z})
+        k_i = network.key_index()
+        for key in network.vertices():
+            x, y, z = X[k_i[key], :]
+            network.set_vertex_attributes(key, 'xyz', [x, y, z])
 
-#         uv_i = network.uv_index()
-#         for uv in network.edges():
-#             i = uv_i[uv]
-#             network.set_edge_attribute(uv, 'f', float(f[i]))
+        uv_i = network.uv_index()
+        for uv in network.edges():
+            i = uv_i[uv]
+            network.set_edge_attribute(uv, 'f', float(f[i]))
 
-#     return X, f, l
+    return X, f, l
 
 
-# @guvectorize([(f8[:, :], f8[:, :], f8[:, :],
-#                i8[:], i8[:], f8[:], f8[:], f8, i8, i8[:], i8[:], i8[:], f8[:], f8[:], f8)],
-#              ',(n,p),(n,p),(n,p),(c),(c),(c),(n),(),(),(k),(k),(k),(k),(k)->()',
+# @guvectorize([(,
+#                 , i8, i8[:], i8[:], i8[:], f8[:], f8[:], f8)],
+#              ',,(),(k),(k),(k),(k),(k)->()',
 #              nopython=True, cache=True, target='parallel')
-# def drx_solver(B, P, S, rows, cols, vals, M, factor, beams,
+# def drx_solver(, , beams,
 #                inds, indi, indf, EIx, EIy, out):
-@guvectorize([(f8, i8, i8, i8, i8, i4[:], i4[:], f8[:, :], f8[:], f8[:], f8[:], i8[:], i8[:], f8)],
-    '(),(),(),(),(),(m),(m),(n,p),(m),(m),(m),(a),(b)->()',
+@guvectorize([(f8, i8, i8, i8, i8, i4[:], i4[:], f8[:, :], f8[:], f8[:], f8[:], i8[:], i8[:], f8[:, :], f8[:, :],
+    f8[:, :], i4[:], i4[:], f8[:], i8, f8[:], f8, f8[:, :], f8)],
+    '(),(),(),(),(),(m),(m),(n,p),(m),(m),(m),(a),(b),(n,p),(n,p),(n,p),(c),(c),(c),(),(n),(),(n,p)->()',
     nopython=True, cache=True, target='parallel')
-def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, out):
+def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv,
+                     M, factor, V, out):
 
     """ Numba accelerated dynamic relaxation solver.
 
@@ -166,22 +167,26 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
         Indices of compression only edges.
     ind_t : array
         Indices of tension only edges.
-#     B : array
-#         Constraint conditions Bx, By, Bz.
-#     P : array
-#         Nodal loads Px, Py, Pz.
-#     S : array
-#         Shear forces Sx, Sy, Sz.
-#     rows : array
-#         Edge adjacencies (rows).
-#     cols : array
-#         Edge adjacencies (columns).
-#     vals : array
-#         Edge adjacencies (values).
-#     M : array
-#         Mass matrix.
-#     factor : float
-#         Convergence factor.
+    B : array
+        Constraint conditions Bx, By, Bz.
+    P : array
+        Nodal loads Px, Py, Pz.
+    S : array
+        Shear forces Sx, Sy, Sz.
+    rows : array
+        Edge adjacencies (rows).
+    cols : array
+        Edge adjacencies (columns).
+    vals : array
+        Edge adjacencies (values).
+    nv : int
+        Length of rows, cols and vals.
+    M : array
+        Mass matrix.
+    factor : float
+        Convergence factor.
+    V : array
+        Nodal velocities.
 #     beams : int
 #         Beam analysis on: 1 or off: 0.
 #     inds : array
@@ -202,30 +207,24 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
 
 #     """
 
-#     nv  = vals.shape[0]
     f   = zeros(m)
     fx  = zeros(m)
     fy  = zeros(m)
     fz  = zeros(m)
-#     Vx  = zeros(n)
-#     Vy  = zeros(n)
-#     Vz  = zeros(n)
-#     frx = zeros(n)
-#     fry = zeros(n)
-#     frz = zeros(n)
-#     Rn  = zeros(n)
+    frx = zeros(n)
+    fry = zeros(n)
+    frz = zeros(n)
+    Rn  = zeros(n)
 
     res = 1000 * tol
     ts, Uo = 0, 0
     while (ts <= steps) and (res > tol):
 
         for i in range(m):
-
             xd = X[v[i], 0] - X[u[i], 0]
             yd = X[v[i], 1] - X[u[i], 1]
             zd = X[v[i], 2] - X[u[i], 2]
             l = sqrt(xd**2 + yd**2 + zd**2)
-
             f[i] = f0[i] + k0[i] * (l - l0[i])
             q = f[i] / l
             fx[i] = xd * q
@@ -234,22 +233,20 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
 
         if ind_t[0] != -1:
             for i in ind_t:
-                print(ind_t[i])
-#                 if f[i] < 0:
-#                     fx[i] = 0
-#                     fy[i] = 0
-#                     fz[i] = 0
+                if f[i] < 0:
+                    fx[i] = 0
+                    fy[i] = 0
+                    fz[i] = 0
 
         if ind_c[0] != -1:
             for i in ind_c:
-                pass
-#                 if f[i] > 0:
-#                     fx[i] = 0
-#                     fy[i] = 0
-#                     fz[i] = 0
+                if f[i] > 0:
+                    fx[i] = 0
+                    fy[i] = 0
+                    fz[i] = 0
 
-#         S *= 0
 #         if beams:
+            # S *= 0
 #             for i in range(len(inds)):
 #                 Xs = X[inds[i], :]
 #                 Xi = X[indi[i], :]
@@ -292,38 +289,41 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
 #                     S[indi[i], :] -= Sa + Sb
 #                     S[indf[i], :] += Sb
 
-#         frx *= 0
-#         fry *= 0
-#         frz *= 0
-#         for i in range(nv):
-#             frx[rows[i]] += vals[i] * fx[cols[i]]
-#             fry[rows[i]] += vals[i] * fy[cols[i]]
-#             frz[rows[i]] += vals[i] * fz[cols[i]]
-#         Un = 0.
-#         for i in range(n):
-#             Rx = (P[i, 0] - S[i, 0] - frx[i]) * B[i, 0]
-#             Ry = (P[i, 1] - S[i, 1] - fry[i]) * B[i, 1]
-#             Rz = (P[i, 2] - S[i, 2] - frz[i]) * B[i, 2]
-#             Rn[i] = sqrt(Rx**2 + Ry**2 + Rz**2)
-#             Mi = M[i] * factor
-#             Vx[i] += Rx / Mi
-#             Vy[i] += Ry / Mi
-#             Vz[i] += Rz / Mi
-#             Un += Mi * (Vx[i]**2 + Vy[i]**2 + Vz[i]**2)
-#         if Un < Uo:
-#             Vx *= 0
-#             Vy *= 0
-#             Vz *= 0
-#         Uo = Un
-#         for i in range(n):
-#             X[i, 0] += Vx[i]
-#             X[i, 1] += Vy[i]
-#             X[i, 2] += Vz[i]
-#         res = mean(Rn)
+        frx *= 0
+        fry *= 0
+        frz *= 0
+        Un = 0.
+
+        for i in range(nv):
+            frx[rows[i]] += vals[i] * fx[cols[i]]
+            fry[rows[i]] += vals[i] * fy[cols[i]]
+            frz[rows[i]] += vals[i] * fz[cols[i]]
+
+        for i in range(n):
+            Rx = (P[i, 0] - S[i, 0] - frx[i]) * B[i, 0]
+            Ry = (P[i, 1] - S[i, 1] - fry[i]) * B[i, 1]
+            Rz = (P[i, 2] - S[i, 2] - frz[i]) * B[i, 2]
+            Rn[i] = sqrt(Rx**2 + Ry**2 + Rz**2)
+            Mi = M[i] * factor
+            V[i, 0] += Rx / Mi
+            V[i, 1] += Ry / Mi
+            V[i, 2] += Rz / Mi
+            Un += Mi * (V[i, 0]**2 + V[i, 1]**2 + V[i, 2]**2)
+
+        if Un < Uo:
+            V *= 0
+        Uo = Un
+
+        for i in range(n):
+            X[i, 0] += V[i, 0]
+            X[i, 1] += V[i, 1]
+            X[i, 2] += V[i, 2]
+
+        res = mean(Rn)
         ts += 1
 
-#     if summary:
-#         print('Step:', ts - 1, ' Residual:', res)
+    if summary:
+        print('Step:', ts - 1, ' Residual:', res)
 
     out = 0.
 
@@ -341,7 +341,7 @@ if __name__ == "__main__":
     from compas.datastructures import Network
     from compas.viewers import VtkViewer
 
-    m = 2
+    m = 100
     x = y = [(i / m - 0.5) * 5 for i in range(m + 1)]
 
     vertices = [[xi, yi, 0] for yi in y for xi in x]
@@ -358,12 +358,12 @@ if __name__ == "__main__":
 
     network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
     pz = 1000 / network.number_of_vertices()
-    sides = [i for i in network.vertices() if network.vertex_degree(i) <= 3]
+    sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
     network.update_default_vertex_attributes({'P': [0, 0, pz]})
-    network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
-    network.set_vertices_attributes(sides, {'B': [0, 0, 0]})
+    network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
+    network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
 
-    drx_numba(network=network, tol=0.01, summary=1)
+    drx_numba(network=network, tol=0.01, summary=1, update=1)
 
     data = {}
     data['vertices'] = {i: network.vertex_coordinates(i) for i in network.vertices()}
@@ -372,7 +372,7 @@ if __name__ == "__main__":
     viewer = VtkViewer(data=data)
     viewer.settings['draw_vertices'] = 0
     viewer.settings['edge_width']    = 0.01
-    # viewer.start()
+    viewer.start()
 
 
     # def func(self):
