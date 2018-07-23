@@ -1699,16 +1699,6 @@ class Mesh(FromToJson,
             return 0
         return max(self.vertex_degree(key) for key in self.vertices())
 
-    # def vertex_connected_edges(self, key):
-    #     """Return the edges connected to a vertex."""
-    #     edges = []
-    #     for nbr in self.vertex_neighbours(key):
-    #         if nbr in self.edge[key]:
-    #             edges.append((key, nbr))
-    #         else:
-    #             edges.append((nbr, key))
-    #     return edges
-
     def vertex_faces(self, key, ordered=False, include_none=False):
         """The faces connected to a vertex.
 
@@ -1821,20 +1811,6 @@ class Mesh(FromToJson,
         """
         return self.halfedge[u][v], self.halfedge[v][u]
 
-    # def edge_connected_edges(self, u, v):
-    #     edges = []
-    #     for nbr in self.vertex_neighbours(u):
-    #         if nbr in self.edge[u]:
-    #             edges.append((u, nbr))
-    #         else:
-    #             edges.append((nbr, u))
-    #     for nbr in self.vertex_neighbours(v):
-    #         if nbr in self.edge[v]:
-    #             edges.append((v, nbr))
-    #         else:
-    #             edges.append((nbr, v))
-    #     return edges
-
     def is_edge_on_boundary(self, u, v):
         """Verify that an edge is on the boundary.
 
@@ -1890,16 +1866,6 @@ class Mesh(FromToJson,
         """
         vertices = self.face_vertices(fkey)
         return list(pairwise(vertices + vertices[0:1]))
-
-    # def face_edges(self, fkey):
-    #     """Return the edges corresponding to the halfedges of a face."""
-    #     edges = []
-    #     for u, v in self.face_halfedges(fkey):
-    #         if v in self.edge[u]:
-    #             edges.append((u, v))
-    #         else:
-    #             edges.append((v, u))
-    #     return edges
 
     def face_corners(self, fkey):
         """Return triplets of face vertices forming the corners of the face.
@@ -2016,65 +1982,6 @@ class Mesh(FromToJson,
         if not self.face:
             return 0
         return max(self.face_degree(fkey) for fkey in self.faces())
-
-    # def face_vertex_neighbours(self, fkey):
-    #     """Return the neighbours of a face across its vertices.
-
-    #     Parameters
-    #     ----------
-    #     fkey : hashable
-    #         Identifier of the face.
-
-    #     Returns
-    #     -------
-    #     list
-    #         The identifiers of the neighbouring faces.
-
-    #     Example
-    #     -------
-    #     .. plot::
-    #         :include-source:
-
-    #         import compas
-    #         from compas.datastructures import Mesh
-    #         from compas.plotters import MeshPlotter
-
-    #         mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    #         key = 12
-    #         nbrs = mesh.face_vertex_neighbours(key)
-
-    #         text = {nbr: str(nbr) for nbr in nbrs}
-    #         text[key] = str(key)
-
-    #         color = {nbr: '#cccccc' for nbr in nbrs}
-    #         color[key] = '#ff0000'
-
-    #         plotter = MeshPlotter(mesh)
-    #         plotter.draw_vertices()
-    #         plotter.draw_faces(text=text, facecolor=color)
-    #         plotter.draw_edges()
-    #         plotter.show()
-
-    #     """
-    #     nbrs = []
-    #     for u, v in self.face_halfedges(fkey):
-    #         nbr = self.halfedge[v][u]
-    #         if nbr is not None:
-    #             w = self.face_vertex_descendant(fkey, u)
-    #             nbrs.append(self.halfedge[w][u])
-    #     return nbrs
-
-    # def face_neighbourhood(self, fkey):
-    #     """Return the neighbours of a face across both edges and corners."""
-    #     nbrs = []
-    #     for u, v in self.face_halfedges(fkey):
-    #         nbr = self.halfedge[v][u]
-    #         if nbr is not None:
-    #             nbrs.append(nbr)
-    #             w = self.face_vertex_descendant(fkey, u)
-    #             nbrs.append(self.halfedge[w][u])
-    #     return nbrs
 
     def face_vertex_ancestor(self, fkey, key):
         """Return the vertex before the specified vertex in a specific face.
@@ -2660,7 +2567,7 @@ class Mesh(FromToJson,
 
         """
         if key not in self.edgedata:
-            self.set_edge_attributes(key, self.default_edge_attributes.keys(), self.default_edge_attributes.values())
+            self.set_edge_attributes(key, [], [])
         return self.edgedata[key].get(name, value)
 
     def get_edge_attributes(self, key, names, values=None):
@@ -2760,6 +2667,8 @@ class Mesh(FromToJson,
 
         return [self.get_edge_attributes(key, names, values) for key in keys]
 
+
+# move these to where they are needed
 
 Mesh.collapse_edge = mesh_collapse_edge.__get__(None, Mesh)
 Mesh.split_face = mesh_split_face.__get__(None, Mesh)

@@ -106,36 +106,44 @@ def normalize_values(values, new_min=0.0, new_max=1.0):
     return [(((value - old_min) * new_range) / old_range) + new_min for value in values]
 
 
-def remap_values(val, target_min=0.0, target_max=1.0, original_min=None, original_max=None):
+def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, original_max=None):
     """
     Maps a list of numbers from one domain to another.
-    Normalise - If you do not specify a target domain 0.0-1.0 will be used.
+    If you do not specify a target domain 0.0-1.0 will be used.
 
-    Args:
-        val ([int], [long], [float]): The value to remap
-        original_min (int, long, float): The minimun value of the original domain
-        original_max (int, long, float): The maximum value of the original domain
-        target_min (int, long, float): The minimun value of the target domain. Default 0.0
-        target_max (int, long, float): The maximum value of the target domain. Default 1.0
+    Parameters
+    ----------
+    val : list of int, list of long, list of float
+        The value to remap
+    original_min : int, long, float
+        The minimun value of the original domain
+    original_max : int, long, float
+        The maximum value of the original domain
+    target_min : int, long, float
+        The minimun value of the target domain. Default 0.0
+    target_max : int, long, float
+        The maximum value of the target domain. Default 1.0
 
-    Returns:
-        [int] : The remaped list
-        [long] : The remaped list
-        [float] : The remaped list
+    Returns
+    -------
+    list
+        The remaped list of values
+
     """
-    if isinstance(val, list):
+    if isinstance(values, list):
 
         if original_min is None:
-            original_min = min(val)
+            original_min = min(values)
         if original_max is None:
-            original_max = max(val)
+            original_max = max(values)
 
         original_range = original_max - original_min
         target_range = target_max - target_min
+        ratio = target_range / original_range
 
-        return [ target_min + ( (item - original_min) * target_range / original_range ) for item in val ]
+        return [target_min + ((value - original_min) * ratio) for value in values]
     else:
-        raise TypeError('Parameter val should be of type: [int], [float], [long]')
+        raise TypeError('Parameter val should be of type: list of int, list of float, list of long')
 
 
 # ==============================================================================
