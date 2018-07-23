@@ -6,7 +6,7 @@ import compas_rhino
 
 from compas_rhino.geometry.surface import RhinoSurface
 
-from compas_rhino.helpers.artists import MeshArtist
+from compas_rhino.artists import MeshArtist
 
 from compas_rhino.helpers.modifiers import Modifier
 from compas_rhino.helpers.modifiers import VertexModifier

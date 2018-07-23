@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas_rhino
 
-from compas_rhino.helpers.artists import NetworkArtist
+from compas_rhino.artists import NetworkArtist
 
 from compas_rhino.helpers.modifiers import Modifier
 from compas_rhino.helpers.modifiers import VertexModifier

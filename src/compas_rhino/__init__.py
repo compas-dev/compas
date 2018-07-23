@@ -16,12 +16,15 @@ compas_rhino
     compas_rhino.utilities
 
 """
+from __future__ import absolute_import
 
 from .utilities import *
-from .utilities import __all__ as a
+from . import utilities
 
 from .helpers import *
-from .helpers import __all__ as b
+from . import helpers
+
 
 __version__ = '0.2.7'
-__all__ = a + b + ['__version__']
+
+__all__ = utilities.__all__ + helpers.__all__ + ['__version__']

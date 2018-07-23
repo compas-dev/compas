@@ -3,7 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.utilities import geometric_key
-from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
+
+from compas_rhino.artists import VolMeshArtist
+
 from compas_rhino.helpers.selectors import VertexSelector
 from compas_rhino.helpers.selectors import EdgeSelector
 from compas_rhino.helpers.selectors import FaceSelector

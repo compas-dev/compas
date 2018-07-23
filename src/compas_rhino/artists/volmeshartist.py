@@ -2,9 +2,9 @@ import time
 
 import compas_rhino
 
-from compas_rhino.helpers.artists.mixins import VertexArtist
-from compas_rhino.helpers.artists.mixins import EdgeArtist
-from compas_rhino.helpers.artists.mixins import FaceArtist
+from compas_rhino.artists.mixins import VertexArtist
+from compas_rhino.artists.mixins import EdgeArtist
+from compas_rhino.artists.mixins import FaceArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import VolMesh
-    from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
+    from compas_rhino.artists.volmeshartist import VolMeshArtist
 
     volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 

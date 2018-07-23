@@ -1,13 +1,10 @@
 import time
 
-from compas.utilities import color_to_colordict
-
 import compas_rhino
 
-from compas_rhino.helpers.artists.mixins import VertexArtist
-from compas_rhino.helpers.artists.mixins import EdgeArtist
-# from compas_rhino.helpers.artists.mixins import PathArtist
-# from compas_rhino.helpers.artists.mixins import ForceArtist
+from compas_rhino.artists.mixins import VertexArtist
+from compas_rhino.artists.mixins import EdgeArtist
+from compas_rhino.artists.mixins import FaceArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -24,22 +21,24 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = ['NetworkArtist']
+__all__ = ['MeshArtist']
 
 
-class NetworkArtist(EdgeArtist, VertexArtist):
+class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     """"""
 
-    def __init__(self, network, layer=None):
-        self.datastructure = network
+    def __init__(self, mesh, layer=None):
+        self.datastructure = mesh
         self.layer = layer
-        self.defaults = {
-            'color.vertex': (0, 0, 0),
-            'color.edge'  : (0, 0, 0),
-        }
 
-    # this should be called 'update_view'
-    # 'redraw' should draw the network again, with the same settings
+    @property
+    def layer(self):
+        return self.datastructure.attributes.get('layer')
+
+    @layer.setter
+    def layer(self, value):
+        self.datastructure.attributes['layer'] = value
+
     def redraw(self, timeout=None):
         """Redraw the Rhino view."""
         if timeout:
@@ -56,6 +55,7 @@ class NetworkArtist(EdgeArtist, VertexArtist):
 
     def clear(self):
         self.clear_vertices()
+        self.clear_faces()
         self.clear_edges()
 
 
@@ -65,20 +65,29 @@ class NetworkArtist(EdgeArtist, VertexArtist):
 
 if __name__ == "__main__":
 
-    import compas
-    from compas.datastructures import Network
-    from compas_rhino.helpers.artists.networkartist import NetworkArtist
+    from compas.datastructures import Mesh
+    from compas.geometry import Polyhedron
 
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
+    from compas_rhino.artists.meshartist import MeshArtist
 
-    artist = NetworkArtist(network, layer='NetworkArtist')
+    poly = Polyhedron.generate(12)
 
-    artist.clear_layer()
+    mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
+
+    artist = MeshArtist(mesh)
+
+    artist.clear()
 
     artist.draw_vertices()
     artist.redraw(0.0)
 
     artist.draw_vertexlabels()
+    artist.redraw(1.0)
+
+    artist.draw_faces()
+    artist.redraw(1.0)
+
+    artist.draw_facelabels()
     artist.redraw(1.0)
 
     artist.draw_edges()
