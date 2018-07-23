@@ -72,7 +72,7 @@ def is_sequence_of_type(sequence, t):
 
 def is_item_iterable(item):
     try:
-        _ = [i for i in item]
+        _ = [for i in item]
     except TypeError:
         return False
     return True
