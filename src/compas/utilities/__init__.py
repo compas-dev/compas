@@ -153,7 +153,7 @@ from .animation import *
 from .coercing import *
 from .colors import *
 from .datetime_ import *
-from .decorators import *
+# from .decorators import *
 from .encoders import *
 from .itertools_ import *
 from .maps import *
@@ -168,7 +168,7 @@ from . import animation
 from . import coercing
 from . import colors
 from . import datetime_
-from . import decorators
+# from . import decorators
 from . import encoders
 from . import itertools_
 from . import maps
@@ -181,6 +181,6 @@ from . import xscript
 
 __all__  = []
 __all__ += animation.__all__ + coercing.__all__ + colors.__all__
-__all__ += datetime_.__all__ + decorators.__all__ + encoders.__all__ + itertools_.__all__
+__all__ += datetime_.__all__ + encoders.__all__ + itertools_.__all__
 __all__ += maps.__all__ + mixing.__all__ + names.__all__
 __all__ += profiling.__all__ + sorting.__all__ + xfunc.__all__ + xscript.__all__
