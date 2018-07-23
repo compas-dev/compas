@@ -40,6 +40,20 @@ __all__ = [
 ]
 
 
+def _args(network, factor, summary, steps, tol):
+
+    X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n, rows, cols, vals, nv = _create_arrays(network)
+
+    if not ind_c:
+        ind_c = [-1]
+    if not ind_t:
+        ind_t = [-1]
+    ind_c = array(ind_c)
+    ind_t = array(ind_t)
+
+    return tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M, factor, V
+
+
 def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
 
     """ Run Numba accelerated dynamic relaxation analysis.
@@ -61,12 +75,12 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 
     Returns
     -------
-    # array
-    #     Vertex co-ordinates.
-    # array
-    #     Edge forces.
-    # array
-    #     Edge lengths.
+    array
+        Vertex co-ordinates.
+    array
+        Edge forces.
+    array
+        Edge lengths.
 
     """
 
@@ -74,15 +88,7 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 
     tic1 = time()
 
-    X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n, rows, cols, vals, nv = _create_arrays(network)
-#     f0_, l0_, ks_, ind_c, ind_t, B, P, S, rows_, cols_, vals_, M_, C, f0, ks, l0, beams, inds, indi, indf, EIx, EIy = _prepare_solver(network)
-
-    if not ind_c:
-        ind_c = [-1]
-    if not ind_t:
-        ind_t = [-1]
-    ind_c = array(ind_c)
-    ind_t = array(ind_t)
+    args = _args(network, factor, summary, steps, tol)
 
     toc1 = time() - tic1
 
@@ -90,12 +96,12 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 
     tic2 = time()
 
-#   , , , ,
 #                beams, inds, indi, indf, EIx, EIy)
-    drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M,
-                     factor, V)
-    _, l = uvw_lengths(C, X)
-    f = f0 + k0 * (l.ravel() - l0)
+    tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M, factor, V = args
+    drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv,
+                     M, factor, V)
+    # _, l = uvw_lengths(C, X)
+    # f = f0 + k0 * (l.ravel() - l0)
 
     toc2 = time() - tic2
 
@@ -116,12 +122,13 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
             x, y, z = X[k_i[key], :]
             network.set_vertex_attributes(key, 'xyz', [x, y, z])
 
-        uv_i = network.uv_index()
-        for uv in network.edges():
-            i = uv_i[uv]
-            network.set_edge_attribute(uv, 'f', float(f[i]))
+        # uv_i = network.uv_index()
+        # for uv in network.edges():
+        #     i = uv_i[uv]
+        #     network.set_edge_attribute(uv, 'f', float(f[i]))
 
-    return X, f, l
+    return X
+    # return X, f, l
 
 
 # @guvectorize([(,
@@ -335,117 +342,127 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
 if __name__ == "__main__":
 
     # ==========================================================================
-    # Example 1
+    # Example 1 (dense)
     # ==========================================================================
 
-    from compas.datastructures import Network
-    from compas.viewers import VtkViewer
+    # from compas.datastructures import Network
+    # from compas.viewers import VtkViewer
 
-    m = 100
-    x = y = [(i / m - 0.5) * 5 for i in range(m + 1)]
+    # m = 100
+    # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
+    # vertices = [[xi, yi, 0] for yi in p for xi in p]
+    # edges = []
 
-    vertices = [[xi, yi, 0] for yi in y for xi in x]
-    edges = []
+    # for i in range(m):
+    #     for j in range(m):
+    #         s = (m + 1)
+    #         p1 = (j + 0) * s + i + 0
+    #         p2 = (j + 0) * s + i + 1
+    #         p3 = (j + 1) * s + i + 0
+    #         p4 = (j + 1) * s + i + 1
+    #         edges.append([p1, p2])
+    #         edges.append([p1, p3])
+    #         if j == m - 1:
+    #             edges.append([p4, p3])
+    #         if i == m - 1:
+    #             edges.append([p2, p4])
 
-    for i in range(m):
-        for j in range(m):
-            edges.append([(j + 0) * (m + 1) + i + 0, (j + 0) * (m + 1) + i + 1])
-            edges.append([(j + 0) * (m + 1) + i + 0, (j + 1) * (m + 1) + i + 0])
-            if j == m - 1:
-                edges.append([(j + 1) * (m + 1) + i + 1, (j + 1) * (m + 1) + i + 0])
-            if i == m - 1:
-                edges.append([(j + 0) * (m + 1) + i + 1, (j + 1) * (m + 1) + i + 1])
+    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    # sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
+    # network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
+    # network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
+    # network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
 
-    network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    pz = 1000 / network.number_of_vertices()
-    sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
-    network.update_default_vertex_attributes({'P': [0, 0, pz]})
-    network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
-    network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
+    # drx_numba(network=network, tol=0.01, summary=1, update=1)
 
-    drx_numba(network=network, tol=0.01, summary=1, update=1)
+    # data = {
+    #     'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
+    #     'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
+    # }
 
-    data = {}
-    data['vertices'] = {i: network.vertex_coordinates(i) for i in network.vertices()}
-    data['edges']    = [{'u': u, 'v': v} for u, v in network.edges()]
+    # viewer = VtkViewer(data=data)
+    # viewer.settings['draw_vertices'] = 0
+    # viewer.settings['edge_width']    = 0.01
+    # viewer.start()
 
-    viewer = VtkViewer(data=data)
-    viewer.settings['draw_vertices'] = 0
-    viewer.settings['edge_width']    = 0.01
-    viewer.start()
+
+    # ==========================================================================
+    # Example 2 (keyboard)
+    # ==========================================================================
+
+    # from compas.datastructures import Network
+    # from compas.viewers import VtkViewer
+
+
+    # m = 50
+    # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
+    # vertices = [[xi, yi, 0] for yi in p for xi in p]
+    # edges = []
+
+    # for i in range(m):
+    #     for j in range(m):
+    #         s = (m + 1)
+    #         p1 = (j + 0) * s + i + 0
+    #         p2 = (j + 0) * s + i + 1
+    #         p3 = (j + 1) * s + i + 0
+    #         p4 = (j + 1) * s + i + 1
+    #         edges.append([p1, p2])
+    #         edges.append([p1, p3])
+    #         if j == m - 1:
+    #             edges.append([p4, p3])
+    #         if i == m - 1:
+    #             edges.append([p2, p4])
+
+    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    # sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
+    # network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
+    # network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
+    # network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
+
+    # data = {
+    #     'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
+    #     'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
+    # }
 
 
     # def func(self):
-    #     u, v, X0, f0_, l0_, ks_, ind_c, ind_t, B, P, S, rows_, cols_, vals_, M_, C, f0, ks, l0, beams, inds, indi, indf, EIx, EIy = self.args
-    #     drx_solver(0.01, 1000, 0, u, v, X0, f0_, l0_, ks_, ind_c, ind_t, B, P, S, rows_, cols_, vals_, M_, 1, beams, inds, indi, indf, EIx, EIy)
-    #     for i in range(X0.shape[0]):
-    #         self.vertices.SetPoint(i, X0[i, :])
+    #     tol, steps, _, m, n, u, v, X, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V = self.args
+    #     X_ = self.X if self.X is not None else X
+    #     drx_solver_numba(tol, steps, 0, m, n, u, v, X_, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V)
+    #     for i in range(X_.shape[0]):
+    #         self.vertices.SetPoint(i, X_[i, :])
     #         self.vertices.Modified()
     #     self.window.Render()
-    #     self.X0 = X0
+    #     self.X = X_
 
-    # from compas.datastructures import Mesh
-    # from compas.viewers import VtkViewer
-
-    # m = 20
-    # x = y = [(i / m - 0.5) * 7 for i in range(m + 1)]
-    # vertices = [[xi, yi, 0] for yi in y for xi in x]
-    # faces = [[(j + 0) * (m + 1) + i + 0, (j + 0) * (m + 1) + i + 1,
-    #           (j + 1) * (m + 1) + i + 1, (j + 1) * (m + 1) + i + 0]
-    #          for i in range(m) for j in range(m)]
-    # mesh = Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)
-
-    # pz = 30 / mesh.number_of_vertices()
-    # sides = [i for i in mesh.vertices() if mesh.vertex_degree(i) == 2]
-    # mesh.update_default_vertex_attributes({'P': [0, 0, pz]})
-    # mesh.update_default_edge_attributes({'E': 5, 'A': 1, 'ct': 't'})
-    # mesh.set_vertices_attributes(sides, {'B': [0, 0, 0]})
-
-    # def z_up_3(self):
-    #     self.X0[self.sides[3], 2] += 0.05
+    # def z_up(self):
+    #     self.X[0, 2] += 0.1
     #     func(self)
 
-    # def z_down_3(self):
-    #     self.X0[self.sides[3], 2] -= 0.05
-    #     func(self)
-
-    # def z_up_2(self):
-    #     self.X0[self.sides[2], 2] += 0.05
-    #     func(self)
-
-    # def z_down_2(self):
-    #     self.X0[self.sides[2], 2] -= 0.05
+    # def z_down(self):
+    #     self.X[0, 2] -= 0.1
     #     func(self)
 
 
     # print('Press key S to start')
 
-    # data = {}
-    # data['vertices'] = {i: mesh.vertex_coordinates(i) for i in mesh.vertices()}
-    # data['edges']    = [{'u': ui, 'v': vi} for ui, vi in mesh.edges()]
-    # data['faces']    = {i: {'vertices': j} for i, j in mesh.face.items()}
-
     # viewer = VtkViewer(data=data)
-    # viewer.args = _prepare_solver(mesh)
+    # viewer.args = _args(network=network, factor=1, summary=0, steps=10000, tol=0.01)
+    # viewer.X = None
     # viewer.settings['draw_vertices'] = 0
-    # viewer.settings['draw_edges'] = 1
-    # viewer.settings['draw_faces'] = 1
-    # viewer.settings['edge_width'] = 0.02
-    # viewer.sides = sides
+    # viewer.settings['edge_width']    = 0.01
     # viewer.keycallbacks['s'] = func
-    # viewer.keycallbacks['4'] = z_up_3
-    # viewer.keycallbacks['5'] = z_down_3
-    # viewer.keycallbacks['6'] = z_up_2
-    # viewer.keycallbacks['7'] = z_down_2
+    # viewer.keycallbacks['a'] = z_up
+    # viewer.keycallbacks['d'] = z_down
     # viewer.start()
 
 
     # ==========================================================================
-    # Example 2
+    # Example 3 (mouse)
     # ==========================================================================
 
-    # from compas.datastructures import Network
-    # from compas.viewers import VtkViewer
+    from compas.datastructures import Network
+    from compas.viewers import VtkViewer
 
     # from numpy import linspace
     # from numpy import sign

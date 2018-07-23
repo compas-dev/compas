@@ -4,15 +4,15 @@ from __future__ import division
 from __future__ import print_function
 
 try:
-#     from numpy import arccos
+    from numpy import arccos
     from numpy import array
-#     from numpy import cross
+    from numpy import cross
     from numpy import float64
     from numpy import int32
-#     from numpy import isnan
+    from numpy import isnan
     from numpy import mean
     from numpy import newaxis
-#     from numpy import sin
+    from numpy import sin
     from numpy import sum
     from numpy import tile
     from numpy import zeros
@@ -80,11 +80,9 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=100, update=Fal
     tic1 = time()
 
     X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n, rows, cols, vals, nv = _create_arrays(network)
-#     try:
-#         inds, indi, indf, EIx, EIy = _beam_data(network)
-#         beams = 1
-#     except AttributeError:
-#         beams = inds = indi = indf = EIx = EIy = None
+    inds, indi, indf, EIx, EIy, beams = _beam_data(network)
+    EIx = EIx.reshape(-1, 1)
+    EIy = EIy.reshape(-1, 1)
 
     toc1 = time() - tic1
 
@@ -92,9 +90,8 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=100, update=Fal
 
     tic2 = time()
 
-#      = drx_solver(ks, l0, f0, ind_c, ind_t, P, S, B, M, V, refresh, beams,
-#                          inds, indi, indf, EIx, EIy, callback, )
-    X, f, l = drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh, callback, **kwargs)
+    X, f, l = drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh,
+                               beams, inds, indi, indf, EIx, EIy, callback, **kwargs)
 
     toc2 = time() - tic2
 
@@ -123,9 +120,8 @@ def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=100, update=Fal
     return X, f, l
 
 
-#  M, V, , beams, inds, indi,
-#                indf, EIx, EIy, , ):
-def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh, callback, **kwargs):
+def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh,
+                     beams, inds, indi, indf, EIx, EIy, callback, **kwargs):
 
     """ NumPy and SciPy dynamic relaxation solver.
 
@@ -165,29 +161,29 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, 
         Nodal velocities Vx, Vy, Vz.
     refresh : int
         Update progress every n steps.
-#     beams : bool
-#         Beam data flag.
-#     inds : list
-#         Indices of beam element start nodes.
-#     indi : list
-#         Indices of beam element intermediate nodes.
-#     indf : list
-#         Indices of beam element finish nodes beams.
-#     EIx : array
-#         Nodal EIx flexural stiffnesses.
-#     EIy : array
-#         Nodal EIy flexural stiffnesses.
+    beams : int
+        Beam data flag 1 or 0.
+    inds : array
+        Indices of beam element start nodes.
+    indi : array
+        Indices of beam element intermediate nodes.
+    indf : array
+        Indices of beam element finish nodes beams.
+    EIx : array
+        Nodal EIx flexural stiffnesses.
+    EIy : array
+        Nodal EIy flexural stiffnesses.
     callback : obj
         Callback function.
 
     Returns
     -------
-#     array
-#         Updated nodal co-ordinates.
-#     array
-#         Updated forces.
-#     array
-#         Updated lengths.
+    array
+        Vertex co-ordinates.
+    array
+        Edge forces.
+    array
+        Edge lengths.
 
     """
 
@@ -205,8 +201,8 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, 
         if ind_c:
             f[ind_c] *= f[ind_c] < 0
 
-#         if beams:
-#             S = _beam_shear(S, X, inds, indi, indf, EIx, EIy)
+        if beams:
+            S = _beam_shear(S, X, inds, indi, indf, EIx, EIy)
 
         q = f[:, newaxis] / l
         qt = tile(q, (1, 3))
@@ -232,119 +228,85 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, 
     return X, f, l
 
 
-# def _prepare_solver(network):
+def _beam_data(network):
 
-#     E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, ks = _create_arrays(network)
-#     try:
-#         inds, indi, indf, EIx, EIy = _beam_data(network)
-#         inds = array(inds)
-#         indi = array(indi)
-#         indf = array(indf)
-#         EIx  = EIx.ravel()
-#         EIy  = EIy.ravel()
-#         beams = 1
-#     except AttributeError:
-#         inds = indi = indf = array([0])
-#         EIx = EIy = array([0.])
-#         beams = 0
+    if getattr(network, 'beams', None):
+        inds, indi, indf, EIx, EIy = [], [], [], [], []
+        for beam in network.beams.values():
+            nodes = beam['nodes']
+            inds.extend(nodes[:-2])
+            indi.extend(nodes[1:-1])
+            indf.extend(nodes[2:])
+            EIx.extend([network.vertex[i]['EIx'] for i in nodes[1:-1]])
+            EIy.extend([network.vertex[i]['EIy'] for i in nodes[1:-1]])
+        inds = array(inds, dtype=int32)
+        indi = array(indi, dtype=int32)
+        indf = array(indf, dtype=int32)
+        EIx  = array(EIx, dtype=float64)
+        EIy  = array(EIy, dtype=float64)
+        beams = 1
 
-#     # Arrays
+    else:
+        inds = indi = indf = array([0], dtype=int32)
+        EIx = EIy = array([0.], dtype=float64)
+        beams = 0
 
-#     f0_ = f0.ravel()
-#     ks_ = ks.ravel()
-#     l0_ = l0.ravel()
-#     M_  = M.ravel()
-
-
-
-
-
-#     return u, v, f0_, l0_, ks_, ind_c, ind_t, rows_, cols_, vals_, M_, C, f0, ks, l0, beams, inds, indi, indf, EIx, EIy
+    return inds, indi, indf, EIx, EIy, beams
 
 
-# def _beam_data(network):
+def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
 
-#     """ Create data for beam element calculations.
+    S *= 0
 
-#     Parameters
-#     ----------
-#     network : obj
-#         Network to be analysed.
+    Xs = X[inds, :]
+    Xi = X[indi, :]
+    Xf = X[indf, :]
+    Qa = Xi - Xs
+    Qb = Xf - Xi
+    Qc = Xf - Xs
+    Qn = cross(Qa, Qb)
+    mu = 0.5 * (Xf - Xs)
 
-#     Returns
-#     -------
-#     list
-#         Indices of beam element start nodes.
-#     list
-#         Indices of beam element intermediate nodes.
-#     list
-#         Indices of beam element finish nodes beams.
-#     array
-#         Nodal EIx flexural stiffnesses of all beams.
-#     array
-#         Nodal EIy flexural stiffnesses of all beams.
+    La  = normrow(Qa)
+    Lb  = normrow(Qb)
+    Lc  = normrow(Qc)
+    LQn = normrow(Qn)
+    Lmu = normrow(mu)
+    a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
+    k = 2 * sin(a) / Lc
 
-#     """
+    ex = Qn / tile(LQn, (1, 3))  # temporary simplification
+    ez = mu / tile(Lmu, (1, 3))
+    ey = cross(ez, ex)
 
-#     inds, indi, indf, EIx, EIy = [], [], [], [], []
-#     for beam in network.beams.values():
-#         nodes = beam['nodes']
-#         inds.extend(nodes[:-2])
-#         indi.extend(nodes[1:-1])
-#         indf.extend(nodes[2:])
-#         EIx.extend([network.vertex[i]['EIx'] for i in nodes[1:-1]])
-#         EIy.extend([network.vertex[i]['EIy'] for i in nodes[1:-1]])
-#     EIx = array(EIx)[:, newaxis]
-#     EIy = array(EIy)[:, newaxis]
+    K = tile(k / LQn, (1, 3)) * Qn
+    Kx = tile(sum(K * ex, 1)[:, newaxis], (1, 3)) * ex
+    Ky = tile(sum(K * ey, 1)[:, newaxis], (1, 3)) * ey
+    Mc = EIx * Kx + EIy * Ky
 
-#     return inds, indi, indf, EIx, EIy
+    cma = cross(Mc, Qa)
+    cmb = cross(Mc, Qb)
+    ua = cma / tile(normrow(cma), (1, 3))
+    ub = cmb / tile(normrow(cmb), (1, 3))
+    c1 = cross(Qa, ua)
+    c2 = cross(Qb, ub)
+    Lc1 = normrow(c1)
+    Lc2 = normrow(c2)
+    Ms = sum(Mc**2, 1)[:, newaxis]
 
+    Sa = ua * tile(Ms * Lc1 / (La * sum(Mc * c1, 1)[:, newaxis]), (1, 3))
+    Sb = ub * tile(Ms * Lc2 / (Lb * sum(Mc * c2, 1)[:, newaxis]), (1, 3))
+    Sa[isnan(Sa)] = 0
+    Sb[isnan(Sb)] = 0
+    S[inds, :] += Sa
+    S[indi, :] -= Sa + Sb
+    S[indf, :] += Sb
 
-# def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
+    # Add node junction duplication for when elements cross each other
+    # mu[0, :] = -1.25*x[0, :] + 1.5*x[1, :] - 0.25*x[2, :]
+    # mu[-1, :] = 0.25*x[-3, :] - 1.5*x[-2, :] + 1.25*x[-1, :]
 
-#     S *= 0
-#     Xs = X[inds, :]
-#     Xi = X[indi, :]
-#     Xf = X[indf, :]
-#     Qa = Xi - Xs
-#     Qb = Xf - Xi
-#     Qc = Xf - Xs
-#     Qn = cross(Qa, Qb)
-#     mu = 0.5 * (Xf - Xs)
-#     La = normrow(Qa)
-#     Lb = normrow(Qb)
-#     Lc = normrow(Qc)
-#     LQn = normrow(Qn)
-#     Lmu = normrow(mu)
-#     a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
-#     k = 2 * sin(a) / Lc
-#     ex = Qn / tile(LQn, (1, 3))  # temporary simplification
-#     ez = mu / tile(Lmu, (1, 3))
-#     ey = cross(ez, ex)
-#     K = tile(k / LQn, (1, 3)) * Qn
-#     Kx = tile(sum(K * ex, 1)[:, newaxis], (1, 3)) * ex
-#     Ky = tile(sum(K * ey, 1)[:, newaxis], (1, 3)) * ey
-#     Mc = EIx * Kx + EIy * Ky
-#     cma = cross(Mc, Qa)
-#     cmb = cross(Mc, Qb)
-#     ua = cma / tile(normrow(cma), (1, 3))
-#     ub = cmb / tile(normrow(cmb), (1, 3))
-#     c1 = cross(Qa, ua)
-#     c2 = cross(Qb, ub)
-#     Lc1 = normrow(c1)
-#     Lc2 = normrow(c2)
-#     Ms = sum(Mc**2, 1)[:, newaxis]
-#     Sa = ua * tile(Ms * Lc1 / (La * sum(Mc * c1, 1)[:, newaxis]), (1, 3))
-#     Sb = ub * tile(Ms * Lc2 / (Lb * sum(Mc * c2, 1)[:, newaxis]), (1, 3))
-#     Sa[isnan(Sa)] = 0
-#     Sb[isnan(Sb)] = 0
-#     S[inds, :] += Sa
-#     S[indi, :] -= Sa + Sb
-#     S[indf, :] += Sb
-#     # Add node junction duplication for when elements cross each other
-#     # mu[0, :] = -1.25*x[0, :] + 1.5*x[1, :] - 0.25*x[2, :]
-#     # mu[-1, :] = 0.25*x[-3, :] - 1.5*x[-2, :] + 1.25*x[-1, :]
-#     return S
+    return S
 
 
 def _create_arrays(network):
@@ -428,159 +390,156 @@ def _create_arrays(network):
 
 if __name__ == "__main__":
 
-#     import compas
+    # ==========================================================================
+    # Example 1 (Dense)
+    # ==========================================================================
 
-#     from compas.datastructures import Network
-#     from compas.plotters import NetworkPlotter
-#     from compas.utilities import i_to_rgb
-
-#     from numpy import linspace
-#     from numpy import sign
+    # from compas.datastructures import Network
+    # from compas.viewers import VtkViewer
 
 
-#     def callback(X, k_i):
-#         for key in network.vertices():
-#             x, y, z = X[k_i[key], :]
-#             network.set_vertex_attributes(key, {'x': x, 'y': y, 'z': z})
-#         plotter.update_edges()
-#         plotter.update(pause=0.01)
+    # m = 100
+    # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
+    # vertices = [[xi, yi, 0] for yi in p for xi in p]
+    # edges = []
+
+    # for i in range(m):
+    #     for j in range(m):
+    #         s = (m + 1)
+    #         p1 = (j + 0) * s + i + 0
+    #         p2 = (j + 0) * s + i + 1
+    #         p3 = (j + 1) * s + i + 0
+    #         p4 = (j + 1) * s + i + 1
+    #         edges.append([p1, p2])
+    #         edges.append([p1, p3])
+    #         if j == m - 1:
+    #             edges.append([p4, p3])
+    #         if i == m - 1:
+    #             edges.append([p2, p4])
+
+    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    # sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
+    # network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
+    # network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
+    # network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
+
+    # data = {
+    #     'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
+    #     'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
+    # }
 
 
-#     # ==========================================================================
-#     # Example 1
-#     # ==========================================================================
+    # def callback(X, self):
+    #     for i in range(X.shape[0]):
+    #         self.vertices.SetPoint(i, X[i, :])
+    #         self.vertices.Modified()
+    #     self.window.Render()
 
-#     # Load Network
 
-#     network = Network.from_obj(compas.get('lines.obj'))
-#     network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
-#     network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
-#     network.set_vertices_attributes(network.leaves(), {'is_fixed': True, 'B': [0, 0, 0]})
+    # def func(self):
+    #     drx_numpy(network=network, tol=0.01, update=True, refresh=10, callback=callback, self=self)
 
-#     # Plotter
 
-#     plotter = NetworkPlotter(network, figsize=(10, 7))
-#     lines = []
-#     for u, v in network.edges():
-#         lines.append({
-#             'start': network.vertex_coordinates(u, 'xy'),
-#             'end'  : network.vertex_coordinates(v, 'xy'),
-#             'color': '#cccccc',
-#             'width': 1.0})
-#     plotter.draw_lines(lines)
-#     plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
-#     plotter.draw_edges()
+    # print('Press key S to start')
 
-#     # Solver
-
-#     drx_numpy(network=network, tol=0.001, refresh=1, update=True, callback=callback, k_i=network.key_index())
-#     fmax = max(network.get_edges_attribute('f'))
-
-#     # Forces
-
-#     plotter.draw_edges(
-#         color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
-#         width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)})
-#     plotter.update()
-#     plotter.show()
+    # viewer = VtkViewer(data=data)
+    # viewer.settings['draw_vertices'] = 0
+    # viewer.settings['edge_width']    = 0.01
+    # viewer.keycallbacks['s'] = func
+    # viewer.start()
 
 
     # ==========================================================================
-    # Example 2
+    # Example 2 (grid)
     # ==========================================================================
 
-#     # # Input
+    # import compas
 
-#     L = 2.5
-#     n = 40
-#     EI = 0.2
+    # from compas.datastructures import Network
+    # from compas.plotters import NetworkPlotter
 
-#     # Network
 
-#     vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
-#     for i in range(n):
-#         if vertices[i][1] < 0.5:
-#             vertices[i][0] = sign(vertices[i][0]) * vertices[i][1]
-#     vertices[0][0] += 0.1
-#     vertices[-1][0] -= 0.1
-#     edges = [[i, i + 1] for i in range(n - 1)]
+    # network = Network.from_obj(compas.get('lines.obj'))
+    # network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
+    # network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
+    # network.set_vertices_attributes(['is_fixed', 'B'], [True, [0, 0, 0]], network.leaves())
 
-#     network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-#     network.update_default_vertex_attributes({'is_fixed': False, 'P': [0, 0, 0], 'EIx': EI, 'EIy': EI})
-#     network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
-#     network.set_vertices_attributes(network.leaves(), {'B': [0, 0, 0], 'is_fixed': True})
-#     network.beams = {'beam': {'nodes': list(range(n))}}
+    # lines = []
+    # for u, v in network.edges():
+    #     lines.append({
+    #         'start': network.vertex_coordinates(u, 'xy'),
+    #         'end'  : network.vertex_coordinates(v, 'xy'),
+    #         'color': '#cccccc'
+    #     })
 
-#     # Plotter
+    # plotter = NetworkPlotter(network, figsize=(10, 7))
+    # plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+    # plotter.draw_lines(lines)
+    # plotter.draw_edges()
 
-#     plotter = NetworkPlotter(network, figsize=(10, 7))
-#     lines = []
-#     for u, v in network.edges():
-#         lines.append({
-#             'start': network.vertex_coordinates(u, 'xy'),
-#             'end'  : network.vertex_coordinates(v, 'xy'),
-#             'color': '#cccccc',
-#             'width': 1.0})
-#     plotter.draw_lines(lines)
 
-#     plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in network.vertices_where({'is_fixed': True})})
-#     plotter.draw_edges()
+    # def callback(X, k_i):
+    #     for key in network.vertices():
+    #         x, y, z = X[k_i[key], :]
+    #         network.set_vertex_attributes(key, 'xyz', [x, y, z])
+    #     plotter.update_edges()
+    #     plotter.update(pause=0.01)
 
-#     # Solver
 
-#     drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=1, callback=callback, k_i=network.key_index())
+    # drx_numpy(network=network, tol=0.001, refresh=1, update=True, callback=callback, k_i=network.key_index())
 
-#     plotter.show()
+    # plotter.show()
+
 
     # ==========================================================================
-    # Example 3 (Dense)
+    # Example 3 (beam)
     # ==========================================================================
+
+    from numpy import linspace
+    from numpy import sign
 
     from compas.datastructures import Network
-    from compas.viewers import VtkViewer
+    from compas.plotters import NetworkPlotter
 
-    m = 100
-    x = y = [(i / m - 0.5) * 5 for i in range(m + 1)]
 
-    vertices = [[xi, yi, 0] for yi in y for xi in x]
-    edges = []
+    L  = 2.5
+    n  = 100
+    EI = 0.2
 
-    for i in range(m):
-        for j in range(m):
-            edges.append([(j + 0) * (m + 1) + i + 0, (j + 0) * (m + 1) + i + 1])
-            edges.append([(j + 0) * (m + 1) + i + 0, (j + 1) * (m + 1) + i + 0])
-            if j == m - 1:
-                edges.append([(j + 1) * (m + 1) + i + 1, (j + 1) * (m + 1) + i + 0])
-            if i == m - 1:
-                edges.append([(j + 0) * (m + 1) + i + 1, (j + 1) * (m + 1) + i + 1])
+    vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
+    for i in range(n):
+        if vertices[i][1] < 0.5:
+            vertices[i][0] = sign(vertices[i][0]) * vertices[i][1]
+    edges = [[i, i + 1] for i in range(n - 1)]
 
     network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    pz = 1000 / network.number_of_vertices()
-    sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
-    network.update_default_vertex_attributes({'P': [0, 0, pz]})
-    network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
-    network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
+    network.update_default_vertex_attributes({'is_fixed': False, 'EIx': EI, 'EIy': EI})
+    network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+    network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], network.leaves())
+    network.beams = {'beam': {'nodes': list(range(n))}}
 
-    data = {}
-    data['vertices'] = {i: network.vertex_coordinates(i) for i in network.vertices()}
-    data['edges']    = [{'u': u, 'v': v} for u, v in network.edges()]
+    lines = []
+    for u, v in network.edges():
+        lines.append({
+            'start': network.vertex_coordinates(u, 'xy'),
+            'end'  : network.vertex_coordinates(v, 'xy'),
+            'color': '#cccccc'
+        })
 
-
-    def callback(X, self):
-        for i in range(X.shape[0]):
-            self.vertices.SetPoint(i, X[i, :])
-            self.vertices.Modified()
-        self.window.Render()
-
-
-    def func(self):
-        drx_numpy(network=network, tol=0.01, update=True, refresh=10, callback=callback, self=self)
+    plotter = NetworkPlotter(network, figsize=(10, 7))
+    plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in network.vertices_where({'is_fixed': True})})
+    plotter.draw_lines(lines)
+    plotter.draw_edges()
 
 
-    print('Press key S to start')
+    def callback(X, k_i):
+        for key in network.vertices():
+            x, y, z = X[k_i[key], :]
+            network.set_vertex_attributes(key, 'xyz', [x, y, z])
+        plotter.update_edges()
+        plotter.update(pause=0.01)
 
-    viewer = VtkViewer(data=data)
-    viewer.settings['draw_vertices'] = 0
-    viewer.settings['edge_width']    = 0.01
-    viewer.keycallbacks['s'] = func
-    viewer.start()
+
+    drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=1, callback=callback, k_i=network.key_index())
+
+    plotter.show()
