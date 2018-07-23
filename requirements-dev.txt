@@ -1,3 +1,4 @@
+sphinx>=1.6
 invoke>=0.14
 bumpversion>=0.5
 check-manifest>=0.36
