@@ -35,7 +35,7 @@ __all__ = [
 #         GeometricKey.__instance.precision = precision
 
 
-def geometric_key(xyz, precision='3f', tolerance=1e-9, sanitize=True):
+def geometric_key(xyz, precision='3f', sanitize=True):
     """Convert XYZ coordinates to a string that can be used as a dict key.
 
     Parameters:
@@ -45,12 +45,8 @@ def geometric_key(xyz, precision='3f', tolerance=1e-9, sanitize=True):
             individual numbers in the string.
             Supported values are any float precision, or decimal integer (``'d'``).
             Default is ``'3f'``.
-        tolerance (float): Optional.
-            A tolerance for values that should be considered zero.
-            Default is ``1e-9``.
         sanitize (bool): Optional.
-            Flag that indicates whether or not the input should be cleaned up
-            using the tolerance value.
+            Flag that indicates whether or not the input should be cleaned up.
             Default is ``True``.
 
     Returns:
@@ -69,31 +65,38 @@ def geometric_key(xyz, precision='3f', tolerance=1e-9, sanitize=True):
 
     """
     x, y, z = xyz
+
     if precision == 'd':
         return '{0},{1},{2}'.format(int(x), int(y), int(z))
+
     if sanitize:
-        tolerance = tolerance ** 2
-        if x ** 2 < tolerance:
+        minzero = "-{0:.{1}}".format(0.0, precision)
+
+        if "{0:.{1}}".format(x, precision) == minzero:
             x = 0.0
-        if y ** 2 < tolerance:
+        if "{0:.{1}}".format(y, precision) == minzero:
             y = 0.0
-        if z ** 2 < tolerance:
+        if "{0:.{1}}".format(z, precision) == minzero:
             z = 0.0
+
     return '{0:.{3}},{1:.{3}},{2:.{3}}'.format(x, y, z, precision)
 
 
-def geometric_key2(xy, precision='3f', tolerance=1e-9, sanitize=True):
+def geometric_key2(xy, precision='3f', sanitize=True):
     """Convert XY coordinates to a string that can be used as a dict key."""
     x, y = xy
+
     if precision == 'd':
         return '{0},{1}'.format(int(x), int(y))
-    if sanitize:
-        tolerance = tolerance ** 2
 
-        if x ** 2 < tolerance:
+    if sanitize:
+        minzero = "-{0:.{1}}".format(0.0, precision)
+
+        if "{0:.{1}}".format(x, precision) == minzero:
             x = 0.0
-        if y ** 2 < tolerance:
+        if "{0:.{1}}".format(y, precision) == minzero:
             y = 0.0
+
     return '{0:.{2}},{1:.{2}}'.format(x, y, precision)
 
 
@@ -154,20 +157,21 @@ if __name__ == "__main__":
 
     from math import pi
 
-    gkey1 = GeometricKey(precision='1f')
-    gkey2 = GeometricKey(precision='2f')
-    gkey3 = GeometricKey(precision='3f')
+    # gkey1 = GeometricKey(precision='1f')
+    # gkey2 = GeometricKey(precision='2f')
+    # gkey3 = GeometricKey(precision='3f')
 
-    GeometricKey.set_precision('3f')
+    # GeometricKey.set_precision('3f')
 
-    # print(geometric_key([pi, pi, pi], '3f'))
-    # print(geometric_key([-0.00001, +0.00001, 0.00001], '3f', tolerance=1e-3))
+    print(geometric_key([pi, pi, pi], '3f'))
+    print(geometric_key([-0.00001, +0.00001, 0.00001], '3f'))
+    print(geometric_key2([-0.00001, +0.00001], '3f'))
 
     # print(geometric_key((1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774), '3f', tolerance=1e-9))
     # print(geometric_key((-1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774), '3f', tolerance=1e-9))
 
-    print(gkey1([pi, pi, pi]))
-    print(gkey2([-0.00001, +0.00001, 0.00001]))
+    # print(gkey1([pi, pi, pi]))
+    # print(gkey2([-0.00001, +0.00001, 0.00001]))
 
-    print(gkey3((1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774)))
-    print(gkey1((-1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774)))
+    # print(gkey3((1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774)))
+    # print(gkey1((-1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774)))
