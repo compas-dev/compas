@@ -501,15 +501,10 @@ class Mesh(FromToJson,
 
         mesh.halfedge = network.halfedge
 
-        network_find_faces(mesh, breakpoints=mesh.leaves())
+        network_find_faces(mesh)
 
-        # if delete_boundary_face:
-        #     mesh.delete_face(0)
-
-        # key_index = network.key_index()
-        # vertices = [network.vertex_coordinates(key) for key in network.vertices()]
-        # faces = [[key_index[key] for key in network.face_vertices(fkey)] for fkey in network.faces()]
-        # mesh = cls.from_vertices_and_faces(vertices, faces)
+        if delete_boundary_face:
+            mesh.delete_face(0)
 
         return mesh
 
@@ -1227,7 +1222,7 @@ class Mesh(FromToJson,
     def is_manifold(self):
         """Verify that the mesh is manifold.
 
-        A mesh is manifold if the fllowing conditions are fulfilled:
+        A mesh is manifold if the following conditions are fulfilled:
 
         * Each edge is incident to only one or two faces.
         * The faces incident to a vertex form a closed or an open fan.
@@ -1407,9 +1402,6 @@ class Mesh(FromToJson,
         """
         edges = set()
 
-        # why is this not a loop over the halfedges?
-        # for fkey in self.faces():
-        #     for u, v in self.face_halfedges(fkey):
         for u in self.halfedge:
             for v in self.halfedge[u]:
 
@@ -1420,11 +1412,11 @@ class Mesh(FromToJson,
                 edges.add((v, u))
 
                 if (u, v) not in self.edgedata:
+                    self.edgedata[u, v] = self.default_edge_attributes.copy()
                     if (v, u) in self.edgedata:
-                        self.edgedata[u, v] = self.edgedata[v, u].copy()
+                        self.edgedata[u, v].update(self.edgedata[v, u])
                         del self.edgedata[v, u]
-                    else:
-                        self.edgedata[u, v] = self.default_edge_attributes.copy()
+                    self.edgedata[v, u] = self.edgedata[u, v]
 
                 if data:
                     yield u, v, self.edgedata[u, v]
@@ -1434,14 +1426,6 @@ class Mesh(FromToJson,
     # --------------------------------------------------------------------------
     # special accessors
     # --------------------------------------------------------------------------
-
-    # def indexed_edges(self):
-    #     key_index = self.key_index()
-    #     return [(key_index[u], key_index[v]) for u, v in self.edges()]
-
-    # def indexed_face_vertices(self):
-    #     key_index = self.key_index()
-    #     return [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
 
     # --------------------------------------------------------------------------
     # vertex topology
@@ -2535,7 +2519,7 @@ class Mesh(FromToJson,
         for u, v, data in self.edges(True):
             attr = deepcopy(attr_dict)
             attr.update(data)
-            self.edgedata[u, v] = attr
+            self.edgedata[u, v] = self.edgedata[v, u] = attr
         self.default_edge_attributes.update(attr_dict)
 
     def set_edge_attribute(self, key, name, value):
@@ -2560,9 +2544,11 @@ class Mesh(FromToJson,
         u, v = key
         if (u, v) not in self.edgedata:
             self.edgedata[u, v] = self.default_edge_attributes.copy()
-        self.edgedata[u, v][name] = value
         if (v, u) in self.edgedata:
+            self.edgedata[u, v].update(self.edgedata[v, u])
             del self.edgedata[v, u]
+            self.edgedata[v, u] = self.edgedata[u, v]
+        self.edgedata[u, v][name] = value
 
     def set_edge_attributes(self, key, names, values):
         """Set multiple attributes of one edge.
@@ -2674,7 +2660,7 @@ class Mesh(FromToJson,
 
         """
         if key not in self.edgedata:
-            self.edgedata[key] = self.default_edge_attributes.copy()
+            self.set_edge_attributes(key, self.default_edge_attributes.keys(), self.default_edge_attributes.values())
         return self.edgedata[key].get(name, value)
 
     def get_edge_attributes(self, key, names, values=None):
@@ -2704,11 +2690,10 @@ class Mesh(FromToJson,
         * :meth:`get_edges_attributes`
 
         """
-        if key not in self.edgedata:
-            self.edgedata[key] = self.default_edge_attributes.copy()
         if not values:
             values = [None] * len(names)
-        return [self.edgedata[key].get(name, value) for name, value in zip(names, values)]
+
+        return [self.get_edge_attribute(key, name, value) for name, value in zip(names, values)]
 
     def get_edges_attribute(self, name, value=None, keys=None):
         """Get the value of a named attribute of multiple edges.
@@ -2737,13 +2722,9 @@ class Mesh(FromToJson,
 
         """
         if not keys:
-            return [attr.get(name, value) for u, v, attr in self.edges(True)]
-        data = []
-        for key in keys:
-            if key not in self.edgedata:
-                self.edgedata[key] = self.default_edge_attributes.copy()
-            data.append(self.edgedata[key].get(name, value))
-        return data
+            keys = self.edges()
+
+        return [self.get_edge_attribute(key, name, value) for key in keys]
 
     def get_edges_attributes(self, names, values=None, keys=None):
         """Get the values of multiple named attribute of multiple edges.
@@ -2774,28 +2755,11 @@ class Mesh(FromToJson,
         * :meth:`get_edges_attribute`
 
         """
-        if not values:
-            values = [None] * len(names)
-        temp = list(zip(names, values))
         if not keys:
-            return [[attr.get(name, value) for name, value in temp] for u, v, attr in self.edges(True)]
-        data = []
-        for key in keys:
-            if key not in self.edgedata:
-                self.edgedata[key] = self.default_edge_attributes.copy()
-            data.append([self.edgedata[key].get(name, value) for name, value in temp])
-        return data
+            keys = self.edges()
 
+        return [self.get_edge_attributes(key, names, values) for key in keys]
 
-# remove this
-
-# Mesh.collapse_edge = MethodType(mesh_collapse_edge, None, Mesh)
-# Mesh.collapse_edge_tri = MethodType(trimesh_collapse_edge, None, Mesh)
-# Mesh.split_face = MethodType(mesh_split_face, None, Mesh)
-# Mesh.split_edge = MethodType(mesh_split_edge, None, Mesh)
-# Mesh.split_edge_tri = MethodType(trimesh_split_edge, None, Mesh)
-# Mesh.swap_edge_tri = MethodType(trimesh_swap_edge, None, Mesh)
-# Mesh.unweld_vertices = MethodType(mesh_unweld_vertices, None, Mesh)
 
 Mesh.collapse_edge = mesh_collapse_edge.__get__(None, Mesh)
 Mesh.split_face = mesh_split_face.__get__(None, Mesh)
@@ -2806,14 +2770,6 @@ Mesh.collapse_edge_tri = trimesh_collapse_edge.__get__(None, Mesh)
 Mesh.split_edge_tri = trimesh_split_edge.__get__(None, Mesh)
 Mesh.swap_edge_tri = trimesh_swap_edge.__get__(None, Mesh)
 
-# setattr(Mesh, "collapse_edge", mesh_collapse_edge)
-# setattr(Mesh, "split_face", mesh_split_face)
-# setattr(Mesh, "split_edge", mesh_split_edge)
-# setattr(Mesh, "unweld_vertices", mesh_unweld_vertices)
-# setattr(Mesh, "collapse_edge_tri", trimesh_collapse_edge)
-# setattr(Mesh, "split_edge_tri", trimesh_split_edge)
-# setattr(Mesh, "swap_edge_tri", trimesh_swap_edge)
-
 
 # ==============================================================================
 # Main
@@ -2823,7 +2779,39 @@ if __name__ == '__main__':
 
     import compas
     from compas.plotters import MeshPlotter
+    from compas.files import OBJ
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    obj = OBJ(compas.get('lines.obj'))
+    vertices = obj.parser.vertices
+    edges    = obj.parser.lines
+    lines    = [[vertices[u], vertices[v]] for u, v in edges]
 
-    print(mesh)
+    mesh = Mesh.from_lines(lines, delete_boundary_face=True)
+
+    # print(mesh.face_vertices(0))
+
+    print(list(mesh.faces()))
+    print(mesh.number_of_vertices())
+    print(mesh.number_of_faces())
+    print(mesh.number_of_edges())
+
+    plotter = MeshPlotter(mesh)
+    plotter.draw_vertices(text='key')
+    plotter.draw_edges()
+    plotter.draw_faces()
+    plotter.show()
+
+    edges = list(mesh.edges())
+
+    mesh.update_default_edge_attributes({'q': 2.0})
+
+    mesh.set_edge_attribute((0, 1), 'q', 5.0)
+    mesh.set_edges_attributes(('f', 'l'), (2.0, 3.0), keys=edges[0:10])
+
+    for key in mesh.edges():
+        u, v = key
+        print(mesh.get_edge_attributes((v, u), ('q', 'f', 'l'), (1.0, 0.0, None)))
+
+    print(mesh.get_edges_attribute('q'))
+    print(mesh.get_edges_attribute('f'))
+    print(mesh.get_edges_attribute('l', 1.0))
