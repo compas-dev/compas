@@ -22,9 +22,9 @@ from compas.geometry.transformations import decompose_matrix
 from compas.geometry.transformations import allclose
 
 
-__author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
+__author__  = ['Romana Rust <rust@arch.ethz.ch>', ]
 __license__ = 'MIT License'
-__email__ = 'rust@arch.ethz.ch'
+__email__   = 'rust@arch.ethz.ch'
 
 
 class Frame(object):

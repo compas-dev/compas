@@ -7,8 +7,7 @@ import collections
 from compas.geometry import distance_point_point_sqrd
 
 
-__author__     = ['Matthias Rippmann <rippmann@arch.ethz.ch>',
-                  'Tom Van Mele <van.mele@arch.ethz.ch>']
+__author__     = ['Matthias Rippmann <rippmann@arch.ethz.ch>', 'Tom Van Mele <van.mele@arch.ethz.ch>']
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'rippmann@arch.ethz.ch'
