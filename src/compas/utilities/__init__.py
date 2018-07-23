@@ -137,26 +137,6 @@ xfunc
 from __future__ import absolute_import
 
 
-def is_list_of_int():
-    pass
-
-
-def is_list_of_float():
-    pass
-
-
-def is_list_of_str():
-    pass
-
-
-def is_list_of_list():
-    pass
-
-
-def is_list_of_dict():
-    pass
-
-
 def valuedict(keys, value, default):
     value = value or default
 
@@ -170,10 +150,12 @@ def valuedict(keys, value, default):
 
 
 from .animation import *
-from .datetime_ import *
-from .itertools_ import *
+from .coercing import *
 from .colors import *
+from .datetime_ import *
+from .decorators import *
 from .encoders import *
+from .itertools_ import *
 from .maps import *
 from .mixing import *
 from .names import *
@@ -183,9 +165,12 @@ from .xfunc import *
 from .xscript import *
 
 from . import animation
-from . import datetime_
-from . import itertools_
+from . import coercing
 from . import colors
+from . import datetime_
+from . import decorators
+from . import encoders
+from . import itertools_
 from . import maps
 from . import mixing
 from . import names
@@ -195,6 +180,7 @@ from . import xfunc
 from . import xscript
 
 __all__  = []
-__all__ += animation.__all__ + datetime_.__all__ + itertools_.__all__ + colors.__all__
-__all__ += encoders.__all__ + maps.__all__ + mixing.__all__ + names.__all__
+__all__ += animation.__all__ + coercing.__all__ + colors.__all__
+__all__ += datetime_.__all__ + decorators.__all__ + encoders.__all__ + itertools_.__all__
+__all__ += maps.__all__ + mixing.__all__ + names.__all__
 __all__ += profiling.__all__ + sorting.__all__ + xfunc.__all__ + xscript.__all__

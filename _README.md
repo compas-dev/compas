@@ -8,19 +8,19 @@ packages for integration of the core functionality in CAD software (**compas_ble
 The core package defines all *real* functionality.
 The CAD packages simply provide a unified framework for processing, visualising, and interacting with geometry and datastructures, and for building user interfaces in different CAD software.
 
-The complete documentation of the compas framework is available at https://compas-dev.github.io/.
+The complete documentation of the compas framework is available here: https://compas-dev.github.io/.
 
 
 ## Getting Started
 
-The recommended way to install **COMPAS** is to use [Anaconda/conda](https://conda.io/docs/):
+The recommended way to install **COMPAS** is to use [Anaconda/conda](https://conda.io/docs/) which takes care of all dependencies:
 
-    $ conda config --add channels conda-forge
-    $ conda install COMPAS
+    conda config --add channels conda-forge
+    conda install COMPAS
 
 But it can also be installed using `pip`:
 
-    $ pip install COMPAS
+    pip install COMPAS
 
 Once installed, you can verify your setup. Start Python from the command line and run the following:
 
@@ -53,12 +53,44 @@ for questions and discussions.
 
 ## Issue tracker
 
-If you find a bug, please help us solve it by [filing a report](https://github.com/compas-dev/compas/issues).
+If you find a bug, please [file a report](https://github.com/compas-dev/compas/issues).
 
 
 ## Contributing
 
-If you want to contribute, check out our [developer guidelines](https://compas-dev.github.io/devguide.html).
+Make sure you setup your local development environment correctly:
+
+* Clone the [compas](https://github.com/compas-dev/compas) repository.
+* Create a virtual environment.
+* Install development dependencies:
+
+        pip install -r requirements-dev.txt
+
+**You're ready to start coding!**
+
+During development, use [pyinvoke](http://docs.pyinvoke.org/) tasks on the
+command line to ease recurring operations:
+
+* `invoke clean`: Clean all generated artifacts.
+* `invoke check`: Run various code and documentation style checks.
+* `invoke docs`: Generate documentation.
+* `invoke test`: Run all tests and checks in one swift command.
+* `invoke`: Show available tasks.
+
+
+### Releasing this project
+
+Ready to release a new version of **COMPAS**? Here's how to do it:
+
+* We use [semver](http://semver.org), i.e. we bump versions as follows:
+
+  * `patch`: bugfixes.
+  * `minor`: backwards-compatible features added.
+  * `major`: backwards-incompatible changes.
+
+* Ready? Release everything:
+
+        invoke release [patch|minor|major]
 
 
 ## License
