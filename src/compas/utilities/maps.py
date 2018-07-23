@@ -14,25 +14,25 @@ __all__ = [
 ]
 
 
-class GeometricKey(object):
+# class GeometricKey(object):
 
-    __instance = None
+#     __instance = None
 
-    def __new__(cls, precision='3f', tolerance=1e-9, sanitize=True):
-        if GeometricKey.__instance is None:
-            GeometricKey.__instance = object.__new__(cls)
-            GeometricKey.__instance.precision = precision
-            GeometricKey.__instance.tolerance = tolerance
-            GeometricKey.__instance.sanitize = sanitize
+#     def __new__(cls, precision='3f', tolerance=1e-9, sanitize=True):
+#         if GeometricKey.__instance is None:
+#             GeometricKey.__instance = object.__new__(cls)
+#             GeometricKey.__instance.precision = precision
+#             GeometricKey.__instance.tolerance = tolerance
+#             GeometricKey.__instance.sanitize = sanitize
 
-        return GeometricKey.__instance
+#         return GeometricKey.__instance
 
-    def __call__(self, xyz):
-        return geometric_key(xyz, self.precision, self.tolerance, self.sanitize)
+#     def __call__(self, xyz):
+#         return geometric_key(xyz, self.precision, self.tolerance, self.sanitize)
 
-    @staticmethod
-    def set_precision(precision):
-        GeometricKey.__instance.precision = precision
+#     @staticmethod
+#     def set_precision(precision):
+#         GeometricKey.__instance.precision = precision
 
 
 def geometric_key(xyz, precision='3f', tolerance=1e-9, sanitize=True):
@@ -97,13 +97,46 @@ def geometric_key2(xy, precision='3f', tolerance=1e-9, sanitize=True):
     return '{0:.{2}},{1:.{2}}'.format(x, y, precision)
 
 
-def normalize_values(l, new_min=0.0, new_max=1.0):
+def normalize_values(values, new_min=0.0, new_max=1.0):
     """Normalize a list of numbers to the range between new_min and new_max."""
     old_max = max(l)
     old_min = min(l)
     old_range = (old_max - old_min)
     new_range = (new_max - new_min)
-    return [(((item - old_min) * new_range) / old_range) + new_min for item in l]
+    return [(((value - old_min) * new_range) / old_range) + new_min for value in values]
+
+
+def remap_values(val, target_min=0.0, target_max=1.0, original_min=None, original_max=None):
+    """
+    Maps a list of numbers from one domain to another.
+    Normalise - If you do not specify a target domain 0.0-1.0 will be used.
+
+    Args:
+        val ([int], [long], [float]): The value to remap
+        original_min (int, long, float): The minimun value of the original domain
+        original_max (int, long, float): The maximum value of the original domain
+        target_min (int, long, float): The minimun value of the target domain. Default 0.0
+        target_max (int, long, float): The maximum value of the target domain. Default 1.0
+
+    Returns:
+        [int] : The remaped list
+        [long] : The remaped list
+        [float] : The remaped list
+    """
+    if isinstance(val, list):
+
+        if original_min is None:
+            original_min = min(val)
+        if original_max is None:
+            original_max = max(val)
+
+        original_range = original_max - original_min
+        target_range = target_max - target_min
+
+        return [ target_min + ( (item - original_min) * target_range / original_range ) for item in val ]
+    else:
+        raise TypeError('Parameter val should be of type: [int], [float], [long]')
+
 
 # ==============================================================================
 # Main
