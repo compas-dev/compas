@@ -27,18 +27,10 @@ __all__ = [
     'get_object_name',
     'get_object_names',
     'get_object_attributes',
-#    'purge_objects',
-#    'is_curve_line',
-#    'is_curve_polyline',
-#    'is_curve_polygon',
-#    'get_points',
-#    'get_curves',
-#    'get_lines',
-#    'get_polylines',
-#    'get_polygons',
+    'purge_objects',
+    'get_points',
+    'get_curves',
     'get_object_coordinates',
-#    'get_line_coordinates',
-#    'get_polygon_coordinates',
     'get_meshes',
 #    'get_mesh_face_vertices',
 #    'get_mesh_vertex_coordinates',
@@ -48,26 +40,15 @@ __all__ = [
 #    'get_mesh_vertex_index',
 #    'get_mesh_face_index',
 #    'get_mesh_edge_index',
-#    'select_point',
-#    'select_points',
+    'select_point',
+    'select_points',
 #    'select_curve',
 #    'select_curves',
-#    'select_line',
-#    'select_lines',
-#    'select_polyline',
-#    'select_polylines',
-#    'select_polygon',
-#    'select_polygons',
 #    'select_surface',
 #    'select_surfaces',
 #    'select_mesh',
 #    'select_meshes',
     
-#    'delete_object',
-#    'delete_objects',
-#    'get_points',
-#    'get_curves',
-#    'get_meshes',
 #    'set_object_layer',
 #    'set_objects_layer',
 #    'set_object_show_name',
@@ -131,6 +112,9 @@ def delete_objects_by_name(names):
 #    for layer in range(20):
 #        delete_objects(get_objects(layer=layer))
 
+def purge_objects():
+    raise NotImplementedError
+
 
 # ==============================================================================
 # Get
@@ -187,73 +171,43 @@ def get_object_coordinates(objects):
     return [list(object.location) for object in objects]
 
 
-#def get_points():
-#    """ Retrieves all Empty objects in scene.
+def get_points(collection=None):
 
-#    Parameters:
-#        None
-
-#    Returns:
-#        list: Empty objects.
-#    """
-#    objects = bpy.context.scene.objects
-#    return [object for object in objects if object.type == 'EMPTY']
+    return [i for i in get_objects(collection=collection) if i.type == 'EMPTY']
 
 
-#def get_curves():
-#    """ Retrieves all Curve objects in scene.
+def get_curves(collection=None):
 
-#    Parameters:
-#        None
-
-#    Returns:
-#        list: Curve objects.
-#    """
-#    objects = bpy.context.scene.objects
-#    return [object for object in objects if object.type == 'CURVE']
+    return [i for i in get_objects(collection=collection) if i.type == 'CURVE']
 
 
 def get_meshes(collection=None):
 
-    return [object for object in get_objects(collection=collection) if object.type == 'MESH']
+    return [i for i in get_objects(collection=collection) if i.type == 'MESH']
 
 
-## ==============================================================================
-## Select
-## ==============================================================================
+# ==============================================================================
+# Select
+# ==============================================================================
 
-#def select_point():
-#    """ Select point (empty) object.
+def select_point():
 
-#    Parameters:
-#        None
-
-#    Returns:
-#        obj: Empty object or None.
-#    """
-#    selected = bpy.context.selected_objects
-#    if selected:
-#        for object in selected:
-#            if object.type == 'EMPTY':
-#                return object
-#    print('***** Point (empty) object was not selected *****')
-#    return None
+    selected = bpy.context.selected_objects
+    if selected:
+        for object in selected:
+            if object.type == 'EMPTY':
+                return object
+    print('***** A point (empty) object was not in the selection *****')
+    return
 
 
-#def select_points():
-#    """ Select points (empty) objects.
+def select_points():
 
-#    Parameters:
-#        None
-
-#    Returns:
-#        list: Empty objects or None.
-#    """
-#    selected = bpy.context.selected_objects
-#    if selected:
-#        return [object for object in selected if object.type == 'EMPTY']
-#    print('***** Point (empty) objects were not selected *****')
-#    return None
+    selected = bpy.context.selected_objects
+    if selected:
+        return [i for i in selected if i.type == 'EMPTY']
+    print('***** Point (empty) objects were not in the selection *****')
+    return
 
 
 #def select_curve():
@@ -625,24 +579,26 @@ def get_meshes(collection=None):
 
 if __name__ == "__main__":
     
-    print(get_objects(name='Cube'))
-    print(get_objects(type='MESH'))
-    print(get_objects(collection='Collection 1'))
+    #print(get_objects(name='Cube'))
+    #print(get_objects(type='MESH'))
+    #print(get_objects(collection='Collection 1'))
     
-    print(get_object_types(objects=get_objects(collection='Collection 1')))
-    print(get_object_name(object=get_objects(collection='Collection 1')[0]))
-    print(get_object_names(objects=get_objects(collection='Collection 1')))
-    print(get_object_attributes(objects=get_objects(collection='Collection 1')))
+    #print(get_object_types(objects=get_objects(collection='Collection 1')))
+    #print(get_object_name(object=get_objects(collection='Collection 1')[0]))
+    #print(get_object_names(objects=get_objects(collection='Collection 1')))
+    #print(get_object_attributes(objects=get_objects(collection='Collection 1')))
     
-    print(get_object_coordinates(objects=get_objects(collection='Collection 1')))
+    #print(get_object_coordinates(objects=get_objects(collection='Collection 1')))
     
-    print(get_meshes())
-    print(get_meshes(collection='Collection 1'))
+    #print(get_meshes())
+    #print(get_points())
+    #print(get_curves())
+    #print(get_meshes(collection='Collection 1'))
+    #print(get_points(collection='Collection 1'))
     
     #delete_object(get_objects(name='Cube')[0])
     #delete_objects_by_name(names=['Cube'])
     #delete_object(get_objects(collection='Collection 1'))
-    
-    #for i in dir(bpy.data.objects[0]):
-    #    print(i)
  
+    #bpy.ops.object.select_by_type(type='MESH') 
+    
