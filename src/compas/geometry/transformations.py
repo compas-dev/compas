@@ -60,19 +60,13 @@ __all__ = [
     'determinant',
     'inverse',
     'identity_matrix',
+
     'matrix_from_frame',
     'matrix_from_euler_angles',
-    'euler_angles_from_matrix',
     'matrix_from_axis_and_angle',
     'matrix_from_axis_angle_vector',
-    'axis_and_angle_from_matrix',
-    'axis_angle_vector_from_matrix',
-    'matrix_from_quaternion',
-    'quaternion_from_matrix',
     'matrix_from_basis_vectors',
-    'basis_vectors_from_matrix',
     'matrix_from_translation',
-    'translation_from_matrix',
     'matrix_from_orthogonal_projection',
     'matrix_from_parallel_projection',
     'matrix_from_perspective_projection',
@@ -80,6 +74,14 @@ __all__ = [
     'matrix_from_shear_entries',
     'matrix_from_shear',
     'matrix_from_scale_factors',
+
+    'euler_angles_from_matrix',
+    'axis_and_angle_from_matrix',
+    'axis_angle_vector_from_matrix',
+    'matrix_from_quaternion',
+    'quaternion_from_matrix',
+    'basis_vectors_from_matrix',
+    'translation_from_matrix',
     'compose_matrix',
     'decompose_matrix',
 
@@ -250,9 +252,8 @@ def global_coords_numpy(o, uvw, rst):
     return xyz.T
 
 
-# ==============================================================================
-# xforms
-# ==============================================================================
+def identity_matrix(dim):
+    return [[1. if i == j else 0. for i in range(dim)] for j in range(dim)]
 
 
 def determinant(M, check=True):
@@ -377,8 +378,9 @@ def inverse(M):
     return I
 
 
-def identity_matrix(dim):
-    return [[1. if i == j else 0. for i in range(dim)] for j in range(dim)]
+# ==============================================================================
+# xforms
+# ==============================================================================
 
 
 def matrix_from_frame(frame):
@@ -707,7 +709,7 @@ def axis_angle_vector_from_matrix(M):
 
 
 def matrix_from_quaternion(quaternion):
-    """Calculates a ``Rotation`` from quaternion coefficients.
+    """Calculates a rotation matrix from quaternion coefficients.
 
     Args:
         quaternion (:obj:`list` of :obj:`float`): Four numbers that

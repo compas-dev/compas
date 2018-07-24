@@ -52,8 +52,8 @@ class Frame(object):
         self.point = [float(f) for f in list(point)]
         self.xaxis = list(normalize_vector(list(xaxis)))
         self.yaxis = list(normalize_vector(list(yaxis)))
-        zaxis = list(normalize_vector(cross_vectors(self.xaxis, self.yaxis)))
-        self.yaxis = list(cross_vectors(zaxis, self.xaxis))  # correction
+        zaxis      = list(normalize_vector(cross_vectors(self.xaxis, self.yaxis)))
+        self.yaxis = list(cross_vectors(zaxis, self.xaxis))
 
     def copy(self):
         """Returns a copy of the frame.

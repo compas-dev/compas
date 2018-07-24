@@ -78,9 +78,9 @@ class Vector(object):
 
     """
 
-    __slots__ = ['_x', '_y', '_z', '_w']
+    __slots__ = ['_x', '_y', '_z', '_w', 'precision']
 
-    def __init__(self, x, y, z, w=1.0, unitize=False):
+    def __init__(self, x, y, z, w=1.0):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
@@ -89,8 +89,7 @@ class Vector(object):
         self.y = y
         self.z = z
         self.w = w
-        if unitize:
-            self.unitize()
+        self.precision = '3f'
 
     # ==========================================================================
     # factory
@@ -142,7 +141,7 @@ class Vector(object):
     # ==========================================================================
 
     def __repr__(self):
-        return '[{0}, {1}, {2}]'.format(self.x, self.y, self.z)
+        return 'Vector({0:.{4}}, {1:.{4}}, {2:.{4}}, {3:.{4}})'.format(self.x, self.y, self.z, self.w, self.precision)
 
     # ==========================================================================
     # access
@@ -313,7 +312,8 @@ class Vector(object):
     # ==========================================================================
 
     def copy(self):
-        return Vector(self.x, self.y, self.z)
+        cls = type(self)
+        return cls(self.x, self.y, self.z)
 
     # ==========================================================================
     # methods: none

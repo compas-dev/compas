@@ -213,7 +213,7 @@ class Line(object):
             n (int, float): The scaling factor.
 
         Notes:
-            This is an alias for self \*= n
+            This is an alias for self *= n
         """
         self *= n
 
