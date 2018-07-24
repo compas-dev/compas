@@ -6,7 +6,9 @@ import sys
 from copy import deepcopy
 from functools import partial
 
-# from hilo.loads import selfweight_calculator
+from compas.geometry import cross_vectors
+from compas.geometry import length_vector
+from compas.geometry import centroid_points
 
 try:
     from compas.numerical.alglib.core import xalglib
@@ -24,6 +26,44 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = []
 
 
+def selfweight_calculator(mesh, density=1.0):
+    key_index = mesh.key_index()
+
+    sw = [0] * mesh.number_of_vertices()
+    ro = [attr['t'] * density for key, attr in mesh.vertices(True)]
+
+    def calculate_selfweight(xyz):
+        fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
+
+        for u in mesh.vertices():
+            i  = key_index[u]
+            p0 = xyz[i]
+            a  = 0
+
+            for v in mesh.halfedge[u]:
+                j   = key_index[v]
+                p1  = xyz[j]
+                p01 = [p1[axis] - p0[axis] for axis in range(3)]
+
+                fkey = mesh.halfedge[u][v]
+                if fkey in fkey_centroid:
+                    p2  = fkey_centroid[fkey]
+                    p02 = [p2[axis] - p0[axis] for axis in range(3)]
+                    a  += 0.25 * length_vector(cross_vectors(p01, p02))
+
+                fkey = mesh.halfedge[v][u]
+                if fkey in fkey_centroid:
+                    p3  = fkey_centroid[fkey]
+                    p03 = [p3[axis] - p0[axis] for axis in range(3)]
+                    a  += 0.25 * length_vector(cross_vectors(p01, p03))
+
+            sw[i] = a * ro[i]
+
+        return sw
+
+    return calculate_selfweight
+
+
 def update_xyz_from_qs(mesh, density=1.0, kmax=10):
     key_index = {key: index for index, key in enumerate(mesh.vertices())}
 
@@ -38,7 +78,7 @@ def update_xyz_from_qs(mesh, density=1.0, kmax=10):
     nf      = len(fixed)
     xyzf    = [xyz[i] for i in fixed]
 
-    # selfweight = selfweight_calculator(mesh, density=density)
+    selfweight = selfweight_calculator(mesh, density=density)
 
     adjacency = {key_index[key]: [key_index[nbr] for nbr in mesh.vertex_neighbours(key)] for key in mesh.vertices()}
 
@@ -62,13 +102,13 @@ def update_xyz_from_qs(mesh, density=1.0, kmax=10):
     _update_matrices(adjacency, free, nonzero_fixed, nonzero_free, CtQC, CitQCf, CitQCi, ij_q)
 
     for k in range(kmax):
-        _compute_xyz_free(s, xyz, xyzf, loads, free, ni, CitQCf, CitQCi)
+        _compute_xyz_free(s, xyz, xyzf, loads, free, ni, CitQCf, CitQCi, selfweight=selfweight)
 
     p  = deepcopy(loads)
-    # sw = selfweight(xyz)
+    sw = selfweight(xyz)
 
-    # for i in range(len(p)):
-    #     p[i][2] -= sw[i]
+    for i in range(len(p)):
+        p[i][2] -= sw[i]
 
     rx, ry, rz = _compute_residuals(xyz, p, n, CtQC)
 
