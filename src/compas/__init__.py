@@ -38,11 +38,16 @@ __version__   = '0.2.7'
 PY3 = sys.version_info.major == 3
 
 HERE = os.path.dirname(__file__)
+DATA = os.path.abspath(os.path.join(HERE, '../../data'))
 
 
 def get(filename):
     filename = filename.strip('/')
-    return os.path.abspath(os.path.join(HERE, '__data', filename))
+    localpath = os.path.abspath(os.path.join(DATA, filename))
+    if os.path.exists(localpath):
+        return localpath
+    else:
+        return "https://raw.githubusercontent.com/compas-dev/compas/develop/data/{}".format(filename)
 
 
 # def get_bunny():

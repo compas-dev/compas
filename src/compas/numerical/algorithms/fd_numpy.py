@@ -56,7 +56,6 @@ def network_fd_numpy(network):
     for index, (u, v, attr) in enumerate(network.edges(True)):
         attr['f'] = f[index][0]
         attr['l'] = l[index][0]
-    return network
 
 
 def mesh_fd_numpy(mesh):
@@ -78,7 +77,6 @@ def mesh_fd_numpy(mesh):
     for index, (u, v, attr) in enumerate(mesh.edges(True)):
         attr['f'] = f[index][0]
         attr['l'] = l[index][0]
-    return mesh
 
 
 def fd_numpy(vertices, edges, fixed, q, loads):

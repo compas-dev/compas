@@ -34,8 +34,8 @@ class OBJ(object):
     * http://paulbourke.net/dataformats/obj/
 
     """
-    def __init__(self, filepath, remote=False, precision=None):
-        self.reader = OBJReader(filepath, remote=remote)
+    def __init__(self, filepath, precision=None):
+        self.reader = OBJReader(filepath)
         self.parser = OBJParser(self.reader, precision=precision)
 
 
@@ -89,9 +89,9 @@ class OBJReader(object):
 
     """
 
-    def __init__(self, filepath, remote=False):
+    def __init__(self, filepath):
         self.filepath = filepath
-        self.remote = remote
+        self.remote = filepath.startswith('http')
         self.content = None
         # vertex data
         self.vertices = []
@@ -126,7 +126,7 @@ class OBJReader(object):
     def open(self):
         if self.remote:
             resp = urllib2.urlopen(self.filepath)
-            self.content = iter(resp.readlines())
+            self.content = iter(resp.read().decode('utf-8').split('\n'))
         else:
             with open(self.filepath, 'r') as fh:
                 self.content = iter(fh.readlines())

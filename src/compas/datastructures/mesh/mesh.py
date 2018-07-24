@@ -2690,10 +2690,14 @@ if __name__ == '__main__':
     from compas.plotters import MeshPlotter
     from compas.files import OBJ
 
-    obj = OBJ(compas.get('lines.obj'))
+    path = compas.get('lines.obj')
+
+    obj = OBJ(path)
     vertices = obj.parser.vertices
     edges    = obj.parser.lines
     lines    = [[vertices[u], vertices[v]] for u, v in edges]
+
+    print(lines)
 
     mesh = Mesh.from_lines(lines, delete_boundary_face=True)
 
