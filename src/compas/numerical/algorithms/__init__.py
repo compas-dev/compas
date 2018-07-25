@@ -9,20 +9,13 @@ from .fd_cpp import *
 from .pca_numpy import *
 from .topop_numpy import *
 
-from . import dr
-from . import dr_numpy
-from . import drx_numpy
-from . import fd_alglib
-from . import fd_numpy
-from . import fd_cpp
-from . import pca_numpy
-from . import topop_numpy
+from .dr import __all__ as a1
+from .dr_numpy import __all__ as a2
+from .drx_numpy import __all__ as a3
+from .fd_alglib import __all__ as a4
+from .fd_numpy import __all__ as a5
+from .fd_cpp import __all__ as a6
+from .pca_numpy import __all__ as a7
+from .topop_numpy import __all__ as a8
 
-__all__ = []
-
-__all__ += dr.__all__ + dr_numpy.__all__
-__all__ += drx_numpy.__all__
-__all__ += fd_cpp.__all__ + fd_numpy.__all__ + fd_alglib.__all__
-__all__ += pca_numpy.__all__
-__all__ += topop_numpy.__all__
-
+__all__ = a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8
