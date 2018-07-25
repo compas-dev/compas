@@ -6,9 +6,20 @@ import io
 from os import path
 
 from setuptools import setup
+from setuptools.command.develop import develop
+from setuptools.command.install import install
 
 
 here = path.abspath(path.dirname(__file__))
+
+
+class PostInstallCommand(install):
+    def run(self):
+        # add Rhino paths
+        # check system paths
+        # check ironpython version
+        # do ther stuff
+        install.run(self)
 
 
 def read(*names, **kwargs):
@@ -58,11 +69,8 @@ setup(
 
     packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', ],
     package_dir={'': 'src'},
-    package_data={
-        '': ['__data/*.obj']
-    },
-    data_files=[
-    ],
+    package_data={},
+    data_files=[],
     include_package_data=True,
 
     zip_safe=False,
@@ -75,5 +83,9 @@ setup(
         'console_scripts': [],
     },
 
-    ext_modules=[]
+    ext_modules=[],
+
+    cmdclass={
+        'install': PostInstallCommand,
+    }
 )
