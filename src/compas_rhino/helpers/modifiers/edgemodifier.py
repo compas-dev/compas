@@ -37,16 +37,15 @@ class EdgeModifier(object):
     def update_edge_attributes(self, keys, names=None):
         if not names:
             names = self.default_edge_attributes.keys()
-
         names = sorted(names)
 
-        u, v = keys[0]
-        values = [self.edge[u][v][name] for name in names]
+        key = keys[0]
+        values = self.get_edge_attributes(key, names)
 
         if len(keys) > 1:
             for i, name in enumerate(names):
-                for u, v in keys[1:]:
-                    if values[i] != self.edge[u][v][name]:
+                for key in keys[1:]:
+                    if values[i] != self.get_edge_attribute(key, name):
                         values[i] = '-'
                         break
 
@@ -56,13 +55,14 @@ class EdgeModifier(object):
         if values:
             for name, value in zip(names, values):
                 if value != '-':
-                    for u, v in keys:
+                    for key in keys:
                         try:
-                            self.edge[u][v][name] = ast.literal_eval(value)
-                        except (ValueError, TypeError):
-                            self.edge[u][v][name] = value
-            return True
+                            value = literal_eval(value)
+                        except (SyntaxError, ValueError, TypeError):
+                            pass
+                        self.set_edge_attribute(key, name, value)
 
+            return True
         return False
 
 
