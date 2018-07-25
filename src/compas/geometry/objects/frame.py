@@ -19,6 +19,9 @@ from compas.geometry.transformations import matrix_from_axis_angle_vector
 from compas.geometry.transformations import euler_angles_from_matrix
 from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import decompose_matrix
+from compas.geometry.transformations import inverse
+from compas.geometry.transformations import transform
+from compas.geometry.transformations import matrix_from_frame
 
 
 __author__  = ['Romana Rust <rust@arch.ethz.ch>', ]
@@ -313,6 +316,50 @@ class Frame(object):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
+    def represent_in_local_coordinates(self, point):
+        """Represents a point in the frame's local coordinate system.
+
+        Args:
+            point(:obj:`list` of :obj:`float`): A point in world XY.
+
+        Returns:
+            (:obj:`list` of :obj:`float`): A point in the local coordinate 
+                system of the frame.
+
+        Example:
+            >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            >>> pw1 = [2, 2, 2]
+            >>> pf = f.represent_in_local_coordinates(pw1)
+            >>> pw2 = f.represent_in_global_coordinates(pf)
+            >>> allclose(pw1, pw2)
+            True
+        """
+        v = subtract_vectors(point, self.point)
+        T = inverse(matrix_from_basis_vectors(self.xaxis, self.yaxis))
+        return transform([v], T)[0]
+
+    def represent_in_global_coordinates(self, point):
+        """Represents a point from local coordinates in the world coordinate 
+            system.
+
+        Args:
+            point(:obj:`list` of :obj:`float`): A point in local coordinates.
+
+        Returns:
+            (:obj:`list` of :obj:`float`): A point in the world coordinate 
+                system.
+
+        Example:
+            >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            >>> pw1 = [2, 2, 2]
+            >>> pf = f.represent_in_local_coordinates(pw1)
+            >>> pw2 = f.represent_in_global_coordinates(pf)
+            >>> allclose(pw1, pw2)
+            True
+        """
+        T = matrix_from_frame(self)
+        return transform([point], T)[0]
+
     def transform(self, transformation, copy=False):
         """Transforms the frame with the ``Transformation``.
 
@@ -432,3 +479,9 @@ if __name__ == '__main__':
     f2 = Frame.worldXY()
     f2.transform(T)
     print(f1 == f2)
+
+    f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    pw1 = [2, 2, 2]
+    pf = f.represent_in_local_coordinates(pw1)
+    pw2 = f.represent_in_global_coordinates(pf)
+    print(allclose(pw1, pw2))

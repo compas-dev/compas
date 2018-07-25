@@ -18,6 +18,7 @@ from compas.geometry.basic import allclose
 from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
 from compas.geometry.transformations import _NEXT_SPEC
+from compas.geometry.transformations import identity_matrix
 
 
 __author__    = ['Tom Van Mele', ]

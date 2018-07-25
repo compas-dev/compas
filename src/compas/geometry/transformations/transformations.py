@@ -37,6 +37,8 @@ from compas.geometry.distance import closest_point_on_plane
 from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
 from compas.geometry.transformations import _NEXT_SPEC
+from compas.geometry.transformations import transform
+from compas.geometry.transformations import matrix_from_axis_and_angle
 
 
 __author__    = ['Tom Van Mele', ]
