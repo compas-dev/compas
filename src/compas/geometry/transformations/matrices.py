@@ -18,6 +18,7 @@ from compas.geometry.basic import allclose
 from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
 from compas.geometry.transformations import _NEXT_SPEC
+from compas.geometry.transformations import identity_matrix
 
 from compas.geometry.transformations.helpers import multiply_matrix_vector
 from compas.geometry.transformations.helpers import identity_matrix
