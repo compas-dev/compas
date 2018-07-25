@@ -57,7 +57,7 @@ class EdgeModifier(object):
                 if value != '-':
                     for key in keys:
                         try:
-                            value = literal_eval(value)
+                            value = ast.literal_eval(value)
                         except (SyntaxError, ValueError, TypeError):
                             pass
                         self.set_edge_attribute(key, name, value)
