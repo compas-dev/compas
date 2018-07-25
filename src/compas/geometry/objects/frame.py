@@ -5,6 +5,7 @@ import math
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import subtract_vectors
+from compas.geometry.basic import allclose
 
 from compas.geometry.objects.xform import Transformation
 from compas.geometry.objects.xform import Rotation
@@ -18,8 +19,6 @@ from compas.geometry.transformations import matrix_from_axis_angle_vector
 from compas.geometry.transformations import euler_angles_from_matrix
 from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import decompose_matrix
-
-from compas.geometry.transformations import allclose
 
 
 __author__  = ['Romana Rust <rust@arch.ethz.ch>', ]

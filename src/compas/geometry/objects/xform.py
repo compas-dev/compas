@@ -23,6 +23,7 @@ from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import scale_vector
 from compas.geometry.basic import norm_vector
 from compas.geometry.basic import transpose_matrix
+from compas.geometry.basic import allclose
 
 from compas.geometry.transformations import homogenize
 
@@ -52,8 +53,6 @@ from compas.geometry.transformations import matrix_from_scale_factors
 from compas.geometry.transformations import compose_matrix
 from compas.geometry.transformations import decompose_matrix
 from compas.geometry.transformations import transform
-
-from compas.geometry.transformations import allclose
 
 
 __author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
