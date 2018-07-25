@@ -207,10 +207,6 @@ def determinant(M, check=True):
 def inverse(M):
     """Calculates the inverse of a square matrix M.
 
-    This method uses Gaussian elimination (elementary row operations) to
-    calculate the inverse. The elementary row operations are a) swap 2 rows,
-    b) multiply a row by a scalar, and c) add 2 rows.
-
     Args:
         M (:obj:`list` of :obj:`list` of :obj:`float`): The square
             matrix of any dimension.
@@ -239,6 +235,9 @@ def inverse(M):
         True
     """
 
+    def matrix_minor(m, i, j):
+        return [row[:j] + row[j+1:] for row in (m[:i]+m[i+1:])]
+
     detM = determinant(M)  # raises ValueError if matrix is not squared
 
     if detM == 0:
@@ -246,42 +245,22 @@ def inverse(M):
 
     dim = len(M)
 
-    # create identity I and copy M into C
-    I = identity_matrix(dim)
-    C = [[float(M[j][i]) for i in range(dim)] for j in range(dim)]
-
-    # Perform elementary row operations
-    for i in range(dim):
-        e = C[i][i]
-
-        if e == 0:
-            for ii in range(dim):
-                if C[ii][i] != 0:
-                    for j in range(dim):
-                        e = C[i][j]
-                        C[i][j] = C[ii][j]
-                        C[ii][j] = e
-                        e = I[i][j]
-                        I[i][j] = I[ii][j]
-                        I[ii][j] = e
-                    break
-            e = C[i][i]
-            if e == 0:
-                ValueError("Matrix not invertible")
-
-        for j in range(dim):
-            C[i][j] = C[i][j] / e
-            I[i][j] = I[i][j] / e
-
-        for ii in range(dim):
-            if ii == i:
-                continue
-            e = C[ii][i]
-            for j in range(dim):
-                C[ii][j] -= e * C[i][j]
-                I[ii][j] -= e * I[i][j]
-
-    return I
+    if len(M) == 2:
+        return [[M[1][1]/detM, -1*M[0][1]/detM],
+                [-1*M[1][0]/detM, M[0][0]/detM]]
+    else:
+        cofactors = []
+        for r in range(len(M)):
+            cofactor_row = []
+            for c in range(len(M)):
+                minor = matrix_minor(M, r, c)
+                cofactor_row.append(((-1)**(r+c)) * determinant(minor))
+            cofactors.append(cofactor_row)
+        cofactors = transpose_matrix(cofactors)
+        for r in range(len(cofactors)):
+            for c in range(len(cofactors)):
+                cofactors[r][c] = cofactors[r][c]/detM
+        return cofactors
 
 
 def decompose_matrix(M):
