@@ -38,6 +38,13 @@ from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
 from compas.geometry.transformations import _NEXT_SPEC
 
+from compas.geometry.transformations.helpers import multiply_matrix_vector
+from compas.geometry.transformations.helpers import transform
+from compas.geometry.transformations.helpers import transform_numpy
+
+from compas.geometry.transformations.matrices import matrix_from_scale_factors
+from compas.geometry.transformations.matrices import matrix_from_axis_and_angle
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
@@ -774,37 +781,33 @@ def project_points_line_xy(points, line):
 
 if __name__ == "__main__":
 
-    points = rotate_points([[0.0, 0.0, 1.0]], [1.0, 0.0, 0.0], 3.14159 / 4)
+    from numpy import array
+    from numpy import vstack
 
-    print(points[0])
+    from numpy.random import randint
 
-    # from numpy import array
-    # from numpy import vstack
+    import matplotlib.pyplot as plt
 
-    # from numpy.random import randint
+    n = 200
 
-    # import matplotlib.pyplot as plt
+    points = randint(0, high=100, size=(n, 3)).astype(float)
+    points = vstack((points, array([[0, 0, 0], [100, 0, 0]], dtype=float).reshape((-1, 3))))
 
-    # n = 200
+    a = math.pi / randint(1, high=8)
 
-    # points = randint(0, high=100, size=(n, 3)).astype(float)
-    # points = vstack((points, array([[0, 0, 0], [100, 0, 0]], dtype=float).reshape((-1, 3))))
+    R = matrix_from_axis_and_angle([0, 0, 1], a, point=[0, 0, 0], rtype='array')
 
-    # a = math.pi / randint(1, high=8)
+    points_ = transform_numpy(points, R)
 
-    # R = matrix_from_axis_and_angle([0, 0, 1], a, point=[0, 0, 0], rtype='array')
+    plt.plot(points[:, 0], points[:, 1], 'bo')
+    plt.plot(points_[:, 0], points_[:, 1], 'ro')
 
-    # points_ = transform_numpy(points, R)
+    plt.plot(points[-2:, 0], points[-2:, 1], 'b-', label='before')
+    plt.plot(points_[-2:, 0], points_[-2:, 1], 'r-', label='after')
 
-    # plt.plot(points[:, 0], points[:, 1], 'bo')
-    # plt.plot(points_[:, 0], points_[:, 1], 'ro')
+    plt.legend(title='Rotation {0}'.format(180 * a / math.pi), fancybox=True)
 
-    # plt.plot(points[-2:, 0], points[-2:, 1], 'b-', label='before')
-    # plt.plot(points_[-2:, 0], points_[-2:, 1], 'r-', label='after')
+    ax = plt.gca()
+    ax.set_aspect('equal')
 
-    # plt.legend(title='Rotation {0}'.format(180 * a / math.pi), fancybox=True)
-
-    # ax = plt.gca()
-    # ax.set_aspect('equal')
-
-    # plt.show()
+    plt.show()
