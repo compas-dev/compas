@@ -20,6 +20,9 @@ from compas.geometry.transformations import _SPEC2TUPLE
 from compas.geometry.transformations import _NEXT_SPEC
 from compas.geometry.transformations import identity_matrix
 
+from compas.geometry.transformations.helpers import multiply_matrix_vector
+from compas.geometry.transformations.helpers import identity_matrix
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
