@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
+import compas
 
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
@@ -22,8 +23,7 @@ try:
     from scipy.sparse import vstack as svstack
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 
 __author__    = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']

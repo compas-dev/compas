@@ -3,16 +3,15 @@ from __future__ import absolute_import
 from __future__ import division
 
 import sys
-
-from compas.numerical.alglib.core import Array
-from compas.numerical.alglib.core import Zeros
+import compas
 
 try:
+    from compas.numerical.alglib.core import Array
+    from compas.numerical.alglib.core import Zeros
     from compas.numerical.alglib.core import xalglib
 
 except ImportError:
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__    = ['Tom Van Mele', ]

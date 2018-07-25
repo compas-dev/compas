@@ -3,6 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 
 import sys
+import compas
+
 from copy import deepcopy
 from functools import partial
 
@@ -13,8 +15,7 @@ from compas.geometry import centroid_points
 try:
     from compas.numerical.alglib.core import xalglib
 except ImportError:
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__    = ['Tom Van Mele', ]
@@ -23,48 +24,12 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = []
+__all__ = [
+    'mesh_fd_alglib',
+]
 
 
-def selfweight_calculator(mesh, density=1.0):
-    key_index = mesh.key_index()
-
-    sw = [0] * mesh.number_of_vertices()
-    ro = [attr['t'] * density for key, attr in mesh.vertices(True)]
-
-    def calculate_selfweight(xyz):
-        fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
-
-        for u in mesh.vertices():
-            i  = key_index[u]
-            p0 = xyz[i]
-            a  = 0
-
-            for v in mesh.halfedge[u]:
-                j   = key_index[v]
-                p1  = xyz[j]
-                p01 = [p1[axis] - p0[axis] for axis in range(3)]
-
-                fkey = mesh.halfedge[u][v]
-                if fkey in fkey_centroid:
-                    p2  = fkey_centroid[fkey]
-                    p02 = [p2[axis] - p0[axis] for axis in range(3)]
-                    a  += 0.25 * length_vector(cross_vectors(p01, p02))
-
-                fkey = mesh.halfedge[v][u]
-                if fkey in fkey_centroid:
-                    p3  = fkey_centroid[fkey]
-                    p03 = [p3[axis] - p0[axis] for axis in range(3)]
-                    a  += 0.25 * length_vector(cross_vectors(p01, p03))
-
-            sw[i] = a * ro[i]
-
-        return sw
-
-    return calculate_selfweight
-
-
-def update_xyz_from_qs(mesh, density=1.0, kmax=10):
+def mesh_fd_alglib(mesh, density=1.0, kmax=10):
     key_index = {key: index for index, key in enumerate(mesh.vertices())}
 
     xyz     = mesh.get_vertices_attributes('xyz')
@@ -78,7 +43,7 @@ def update_xyz_from_qs(mesh, density=1.0, kmax=10):
     nf      = len(fixed)
     xyzf    = [xyz[i] for i in fixed]
 
-    selfweight = selfweight_calculator(mesh, density=density)
+    selfweight = _selfweight_calculator(mesh, density=density)
 
     adjacency = {key_index[key]: [key_index[nbr] for nbr in mesh.vertex_neighbours(key)] for key in mesh.vertices()}
 
@@ -129,6 +94,49 @@ def update_xyz_from_qs(mesh, density=1.0, kmax=10):
         l = mesh.edge_length(u, v)
         f = q * l
         mesh.set_edge_attributes((u, v), ('q', 'f', 'l'), (q, f, l))
+
+
+# ==============================================================================
+# helpers
+# ==============================================================================
+
+
+def _selfweight_calculator(mesh, density=1.0):
+    key_index = mesh.key_index()
+
+    sw = [0] * mesh.number_of_vertices()
+    ro = [attr['t'] * density for key, attr in mesh.vertices(True)]
+
+    def calculate_selfweight(xyz):
+        fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
+
+        for u in mesh.vertices():
+            i  = key_index[u]
+            p0 = xyz[i]
+            a  = 0
+
+            for v in mesh.halfedge[u]:
+                j   = key_index[v]
+                p1  = xyz[j]
+                p01 = [p1[axis] - p0[axis] for axis in range(3)]
+
+                fkey = mesh.halfedge[u][v]
+                if fkey in fkey_centroid:
+                    p2  = fkey_centroid[fkey]
+                    p02 = [p2[axis] - p0[axis] for axis in range(3)]
+                    a  += 0.25 * length_vector(cross_vectors(p01, p02))
+
+                fkey = mesh.halfedge[v][u]
+                if fkey in fkey_centroid:
+                    p3  = fkey_centroid[fkey]
+                    p03 = [p3[axis] - p0[axis] for axis in range(3)]
+                    a  += 0.25 * length_vector(cross_vectors(p01, p03))
+
+            sw[i] = a * ro[i]
+
+        return sw
+
+    return calculate_selfweight
 
 
 def _nonzero(adjacency, fixed, free):
@@ -238,7 +246,7 @@ def _compute_residuals(xyz, p, n, CtQC):
 
 
 # ==============================================================================
-# Debugging
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

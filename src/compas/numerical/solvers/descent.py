@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
+import compas
 
 try:
     from numpy import array
@@ -19,8 +20,8 @@ try:
     from numpy import zeros
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
+
 else:
     eps = finfo(float64).eps
     e = sqrt(eps)

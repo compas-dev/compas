@@ -3,14 +3,14 @@ from __future__ import absolute_import
 from __future__ import division
 
 import sys
+import compas
 
 try:
     from numpy import asarray
     from scipy.linalg import svd
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 
 __author__    = ['Tom Van Mele <vanmelet@ethz.ch>']

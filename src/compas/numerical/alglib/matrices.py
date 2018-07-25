@@ -3,14 +3,15 @@ from __future__ import absolute_import
 from __future__ import division
 
 import sys
-
-from compas.numerical.alglib.core import Array
-from compas.numerical.alglib.core import Zeros
-from compas.numerical.alglib.core import Diagonal
-
-from compas.numerical.alglib.core import SparseArray
+import compas
 
 try:
+    from compas.numerical.alglib.core import Array
+    from compas.numerical.alglib.core import Zeros
+    from compas.numerical.alglib.core import Diagonal
+
+    from compas.numerical.alglib.core import SparseArray
+
     from compas.numerical.alglib.core.xalglib import sparsecreate
     from compas.numerical.alglib.core.xalglib import sparseset
     from compas.numerical.alglib.core.xalglib import sparseget
@@ -21,8 +22,7 @@ try:
     from compas.numerical.alglib.core.xalglib import sparseishash
 
 except ImportError:
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__    = 'Tom Van Mele'
