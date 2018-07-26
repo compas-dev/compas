@@ -15,9 +15,7 @@ try:
     from System.Diagnostics import Process
 
 except ImportError:
-    import sys
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 
 __author__     = ['Tom Van Mele', ]
