@@ -7,6 +7,9 @@ from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import allclose
 
+from compas.geometry.objects import Point
+from compas.geometry.objects import Vector
+
 from compas.geometry.xforms import Transformation
 from compas.geometry.xforms import Rotation
 
@@ -20,13 +23,12 @@ from compas.geometry.transformations import euler_angles_from_matrix
 from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import decompose_matrix
 from compas.geometry.transformations import inverse
-from compas.geometry.transformations import transform
 from compas.geometry.transformations import matrix_from_frame
 
 
-__author__  = ['Romana Rust <rust@arch.ethz.ch>', ]
+__author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
 __license__ = 'MIT License'
-__email__   = 'rust@arch.ethz.ch'
+__email__ = 'rust@arch.ethz.ch'
 
 
 class Frame(object):
@@ -36,11 +38,11 @@ class Frame(object):
     orientation.
 
     Attributes:
-        point (:obj:`list` of :obj:`float`, optional): The origin of the frame.
+        point (tuple, list, ``Point``, optional): The origin of the frame.
             Defaults to [0, 0, 0].
-        xaxis (:obj:`list` of :obj:`float`, optional): The x-axis of the frame.
+        xaxis (tuple, list, ``Vector``, optional): The x-axis of the frame.
             Defaults to [1, 0, 0].
-        yaxis (:obj:`list` of :obj:`float`, optional): The y-axis of the frame.
+        yaxis (tuple, list, ``Vector``, optional): The y-axis of the frame.
             Defaults to [0, 1, 0].
 
     Examples:
@@ -86,10 +88,10 @@ class Frame(object):
         """Calculates a frame from 3 points.
 
         Args:
-            point (:obj:`list` of :obj:`float`): The origin of the frame.
-            point_xaxis (:obj:`list` of :obj:`float`): A point on the x-axis of
+            point (tuple, list, ``Point``): The origin of the frame.
+            point_xaxis (tuple, list, ``Point``): A point on the x-axis of
                 the frame.
-            point_xyplane (:obj:`list` of :obj:`float`): A point within the
+            point_xyplane (tuple, list, ``Point``): A point within the
                 xy-plane of the frame.
 
         Example:
@@ -166,18 +168,18 @@ class Frame(object):
         """Construct a frame from a list of 12 or 16 :obj:`float` values.
 
         Args:
-            values (:obj:`list` of :obj:`float`): The list of 12 or 16 values 
+            values (:obj:`list` of :obj:`float`): The list of 12 or 16 values
                 representing a 4x4 matrix.
-        
+
         Note:
             Since the transformation matrix follows the row-major order, the
             translational components must be at the list's indices 3, 7, 11.
-        
+
         Raises:
             ValueError: If the length of the list is neither 12 nor 16.
-        
+
         Example:
-            >>> f = Frame.from_list([-1.0, 0.0, 0.0, 8110, 
+            >>> f = Frame.from_list([-1.0, 0.0, 0.0, 8110,
                                     0.0, 0.0, -1.0, 7020,
                                     0.0, -1.0, 0.0, 1810])
         """
@@ -185,7 +187,9 @@ class Frame(object):
         if len(values) == 12:
             values.extend([0., 0., 0., 1.])
         if len(values) != 16:
-            raise ValueError('Expected 12 or 16 floats but got %d' % len(values))
+            raise ValueError(
+                'Expected 12 or 16 floats but got %d' %
+                len(values))
 
         matrix = [[0. for i in range(4)] for j in range(4)]
         for i in range(4):
@@ -269,7 +273,7 @@ class Frame(object):
     def normal(self):
         """Returns the frame's normal (z-axis).
         """
-        return cross_vectors(self.xaxis, self.yaxis)
+        return Vector(*cross_vectors(self.xaxis, self.yaxis))
 
     @property
     def zaxis(self):
@@ -323,7 +327,7 @@ class Frame(object):
             point(:obj:`list` of :obj:`float`): A point in world XY.
 
         Returns:
-            (:obj:`list` of :obj:`float`): A point in the local coordinate 
+            (:obj:`list` of :obj:`float`): A point in the local coordinate
                 system of the frame.
 
         Example:
@@ -334,19 +338,20 @@ class Frame(object):
             >>> allclose(pw1, pw2)
             True
         """
-        v = subtract_vectors(point, self.point)
+        pt = Point(*subtract_vectors(point, self.point))
         T = inverse(matrix_from_basis_vectors(self.xaxis, self.yaxis))
-        return transform([v], T)[0]
+        pt.transform(T)
+        return pt
 
     def represent_in_global_coordinates(self, point):
-        """Represents a point from local coordinates in the world coordinate 
+        """Represents a point from local coordinates in the world coordinate
             system.
 
         Args:
             point(:obj:`list` of :obj:`float`): A point in local coordinates.
 
         Returns:
-            (:obj:`list` of :obj:`float`): A point in the world coordinate 
+            (:obj:`list` of :obj:`float`): A point in the world coordinate
                 system.
 
         Example:
@@ -358,16 +363,40 @@ class Frame(object):
             True
         """
         T = matrix_from_frame(self)
-        return transform([point], T)[0]
+        pt = Point(*point)
+        pt.transform(T)
+        return pt
 
-    def transform(self, transformation, copy=False):
+    def transform(self, transformation):
         """Transforms the frame with the ``Transformation``.
 
         Args:
             transformation (:class:`Transformation`): The transformation used
                 to transform the Frame.
-            copy (:obj:`bool`, optional): If true, a copy of the frame will be
-                made. Defaults to false.
+
+        Example:
+            >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            >>> T = Transformation.from_frame(f1)
+            >>> f2 = Frame.worldXY()
+            >>> f2.transform(T)
+            >>> f1 == f2
+            True
+        """
+
+        T = transformation * Transformation.from_frame(self)
+        point = T.translation
+        xaxis, yaxis = T.basis_vectors
+        self.point = point
+        self.xaxis = xaxis
+        self.yaxis = yaxis
+
+    def transformed(self, transformation):
+        """Returns a copy of the current frame transformed with the
+            ``Transformation``.
+
+        Args:
+            transformation (:class:`Transformation`): The transformation used
+                to transform the Frame.
 
         Returns:
             (:class:`Frame`): The transformed frame.
@@ -376,22 +405,15 @@ class Frame(object):
             >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.from_frame(f1)
             >>> f2 = Frame.worldXY()
-            >>> f1 == f2.transform(T)
+            >>> f1 == f2.transformed(T)
             True
         """
 
         T = transformation * Transformation.from_frame(self)
         point = T.translation
         xaxis, yaxis = T.basis_vectors
+        return Frame(point, xaxis, yaxis)
 
-        if copy:
-            return Frame(point, xaxis, yaxis)
-        else:
-            self.point = point
-            self.xaxis = xaxis
-            self.yaxis = yaxis
-            return self
-    
     @classmethod
     def from_data(cls, data):
         """Construct a frame from its data representation.
@@ -405,15 +427,15 @@ class Frame(object):
         frame = cls()
         frame.data = data
         return frame
-    
+
     def to_data(self):
         return self.data
-    
+
     @property
     def data(self):
         """Returns the data dictionary that represents the frame."""
         return {'point': self.point, 'xaxis': self.xaxis, 'yaxis': self.yaxis}
-        
+
     @data.setter
     def data(self, data):
         self.point = data.get('point', [0, 0, 0])
@@ -482,6 +504,7 @@ if __name__ == '__main__':
 
     f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     pw1 = [2, 2, 2]
+    pw1 = Point(*pw1)
     pf = f.represent_in_local_coordinates(pw1)
     pw2 = f.represent_in_global_coordinates(pf)
     print(allclose(pw1, pw2))
