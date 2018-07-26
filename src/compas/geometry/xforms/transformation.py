@@ -11,11 +11,11 @@ Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
 import math
-from copy import deepcopy
 
-from compas.geometry.basic import multiply_matrix_vector
 from compas.geometry.basic import multiply_matrices
-from compas.geometry.basic import transpose_matrix
+
+from compas.geometry.objects import Point
+from compas.geometry.objects import Vector
 
 from compas.geometry.transformations import inverse
 from compas.geometry.transformations import identity_matrix
@@ -43,7 +43,6 @@ class Transformation(object):
     It is the base class for transformations like :class:`Rotation`,
     :class:`Translation`, :class:`Scale`, :class:`Reflection`,
     :class:`Projection` and :class:`Shear`.
-
 
     The class allows to concatenate Transformations by multiplication, to
     calculate the inverse transformation and to decompose a transformation into
@@ -198,10 +197,10 @@ class Transformation(object):
 
         Sc = Scale(sc)
         Sh = Shear.from_entries(sh)
-        R  = Rotation.from_euler_angles(a, static=True, axes='xyz')
-        T  = Translation(t)
-        P  = Projection.from_entries(p)
-        
+        R = Rotation.from_euler_angles(a, static=True, axes='xyz')
+        T = Translation(t)
+        P = Projection.from_entries(p)
+
         return Sc, Sh, R, T, P
 
     @property
@@ -224,7 +223,8 @@ class Transformation(object):
         """
         sc, sh, a, t, p = decompose_matrix(self.matrix)
         R = matrix_from_euler_angles(a, static=True, axes='xyz')
-        return basis_vectors_from_matrix(R)
+        xv, yv = basis_vectors_from_matrix(R)
+        return Vector(*xv), Vector(*yv)
 
     def transform_point(self, point):
         """Transforms a point.
@@ -241,12 +241,12 @@ class Transformation(object):
             True
 
         Returns:
-            (:obj:`list` of :obj:`float`): The transformed point.
+            (``Point``): The transformed point.
         """
 
-        ph = list(point) + [1.]  # make homogeneous coordinates
-        pht = multiply_matrix_vector(self.matrix, ph)
-        return pht[:3]
+        pt = Point(*point)
+        pt.transform(self)
+        return pt
 
     def transform_points(self, points):
         """Transforms a list of points.
@@ -317,10 +317,14 @@ class Transformation(object):
             raise TypeError("Wrong input type.")
 
     def __repr__(self):
-        s  = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
-        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[1]])
-        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[2]])
-        s += " [%s]]" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[3]])
+        s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10)
+                                   for n in self.matrix[0]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10)
+                                    for n in self.matrix[1]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10)
+                                    for n in self.matrix[2]])
+        s += " [%s]]" % ",".join([("%.4f" % n).rjust(10)
+                                  for n in self.matrix[3]])
         s += "\n"
         return s
 
@@ -375,4 +379,3 @@ if __name__ == "__main__":
     print(allclose(scale1, scale2))
     print(allclose(angle1, angle2))
     print(allclose(trans1, trans2))
-
