@@ -93,11 +93,9 @@ def create_layers():
 
 if __name__ == "__main__":
 
+    pass
+
     #create_layers()
-    
-    
-    
-    
     
     #for i in dir(bpy.context): 
         #print(i)

@@ -42,13 +42,13 @@ __all__ = [
 #    'get_mesh_edge_index',
     'select_point',
     'select_points',
-#    'select_curve',
-#    'select_curves',
-#    'select_surface',
-#    'select_surfaces',
-#    'select_mesh',
-#    'select_meshes',
-    
+    'select_curve',
+    'select_curves',
+    'select_surface',
+    'select_surfaces',
+    'select_mesh',
+    'select_meshes',
+
 #    'set_object_layer',
 #    'set_objects_layer',
 #    'set_object_show_name',
@@ -60,10 +60,6 @@ __all__ = [
 #    'set_object_scale',
 #    'set_objects_scale',
 #    'join_objects',
-#    'select_point',
-#    'select_points',
-#    'select_curve',
-#    'select_curves',
 #    'select_mesh',
 #    'select_meshes',
 #    'select_object',
@@ -87,30 +83,21 @@ def delete_object(object):
 
    bpy.data.objects.remove(object)
    #bpy.data.objects.remove(object, True)  # unlinking argument crashes
-    
 
-def delete_objects(objects):
+
+def delete_objects(objects=[]):
+
+    if not objects:
+        objects = bpy.data.objects
 
     for object in objects:
         delete_object(object)
-        
+
 def delete_objects_by_name(names):
-    
+
     objects = [bpy.data.objects[name] for name in names]
     delete_objects(objects)
 
-
-#def delete_all_objects():
-#    """ Delete all scene objects.
-
-#     Parameters:
-#        None
-
-#    Returns:
-#        None
-#    """
-#    for layer in range(20):
-#        delete_objects(get_objects(layer=layer))
 
 def purge_objects():
     raise NotImplementedError
@@ -121,18 +108,18 @@ def purge_objects():
 # ==============================================================================
 
 def get_objects(name=None, color=None, collection=None, type=None):
-    
+
     objects = list(bpy.data.objects)
-    
+
     if name:
         objects = [bpy.data.objects[name]]
-        
+
     elif color:
         raise NotImplementedError
-        
+
     elif collection:
         objects = list(bpy.data.collections[collection].objects)
-        
+
     elif type:
         objects = [i for i in objects if i.type == type]
 
@@ -140,7 +127,7 @@ def get_objects(name=None, color=None, collection=None, type=None):
 
 
 def get_object_types(objects):
-    
+
     return [object.type for object in objects]
 
 
@@ -150,7 +137,7 @@ def get_object_name(object):
 
 
 def get_object_names(objects):
-    
+
     return [get_object_name(object) for object in objects]
 
 
@@ -164,7 +151,7 @@ def get_object_attributes(objects):
         except Exception:
             attrs.append(None)
     return attrs
-            
+
 
 def get_object_coordinates(objects):
 
@@ -210,72 +197,64 @@ def select_points():
     return
 
 
-#def select_curve():
-#    """ Select curve object.
+def select_curve():
 
-#    Parameters:
-#        None
-
-#    Returns:
-#        obj: Curve object or None.
-#    """
-#    selected = bpy.context.selected_objects
-#    if selected:
-#        for object in selected:
-#            if object.type == 'CURVE':
-#                return object
-#    print('***** Curve object was not selected *****')
-#    return None
+    selected = bpy.context.selected_objects
+    if selected:
+        for object in selected:
+            if object.type == 'CURVE':
+                return object
+    print('***** A curve object was not in the selection *****')
+    return
 
 
-#def select_curves():
-#    """ Select curve objects.
+def select_curves():
 
-#    Parameters:
-#        None
-
-#    Returns:
-#        list: Curve objects or None.
-#    """
-#    selected = bpy.context.selected_objects
-#    if selected:
-#        return [object for object in selected if object.type == 'CURVE']
-#    print('***** Curve objects were not selected *****')
-#    return None
+    selected = bpy.context.selected_objects
+    if selected:
+        return [i for i in selected if i.type == 'CURVE']
+    print('***** Curve objects were not in the selection *****')
+    return
 
 
-#def select_mesh():
-#    """ Select Blender mesh object.
+def select_mesh():
 
-#    Parameters:
-#        None
-
-#    Returns:
-#        obj: Blender mesh object or None.
-#    """
-#    selected = bpy.context.selected_objects
-#    if selected:
-#        for object in selected:
-#            if object.type == 'MESH':
-#                return object
-#    print('***** Mesh object was not selected *****')
-#    return None
+    selected = bpy.context.selected_objects
+    if selected:
+        for object in selected:
+            if object.type == 'MESH':
+                return object
+    print('***** A mesh object was not in the selection *****')
+    return
 
 
-#def select_meshes():
-#    """ Select Blender mesh objects.
+def select_meshes():
 
-#    Parameters:
-#        None
+    selected = bpy.context.selected_objects
+    if selected:
+        return [i for i in selected if i.type == 'MESH']
+    print('***** Mesh objects were not in the selection *****')
+    return
 
-#    Returns:
-#        list: Blender mesh objects or None.
-#    """
-#    selected = bpy.context.selected_objects
-#    if selected:
-#        return [object for object in selected if object.type == 'MESH']
-#    print('***** Mesh objects were not selected *****')
-#    return None
+
+def select_surface():
+
+    selected = bpy.context.selected_objects
+    if selected:
+        for object in selected:
+            if object.type == 'SURFACE':
+                return object
+    print('***** A surface object was not in the selection *****')
+    return
+
+
+def select_surfaces():
+
+    selected = bpy.context.selected_objects
+    if selected:
+        return [i for i in selected if i.type == 'SURFACE']
+    print('***** Surface objects were not in the selection *****')
+    return
 
 
 #def select_object(object):
@@ -579,26 +558,29 @@ def select_points():
 
 if __name__ == "__main__":
     
+    pass
+
     #print(get_objects(name='Cube'))
     #print(get_objects(type='MESH'))
     #print(get_objects(collection='Collection 1'))
-    
+
     #print(get_object_types(objects=get_objects(collection='Collection 1')))
     #print(get_object_name(object=get_objects(collection='Collection 1')[0]))
     #print(get_object_names(objects=get_objects(collection='Collection 1')))
     #print(get_object_attributes(objects=get_objects(collection='Collection 1')))
-    
+
     #print(get_object_coordinates(objects=get_objects(collection='Collection 1')))
-    
+
     #print(get_meshes())
     #print(get_points())
     #print(get_curves())
     #print(get_meshes(collection='Collection 1'))
     #print(get_points(collection='Collection 1'))
-    
+
     #delete_object(get_objects(name='Cube')[0])
     #delete_objects_by_name(names=['Cube'])
     #delete_object(get_objects(collection='Collection 1'))
- 
-    #bpy.ops.object.select_by_type(type='MESH') 
-    
+
+    #bpy.ops.object.select_by_type(type='MESH')
+    print(bpy.data.objects['SurfSphere'].type)
+
