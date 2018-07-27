@@ -4,17 +4,17 @@ from __future__ import division
 
 import sys
 import array
+import compas
 
 from compas.utilities import flatten
 
-from compas.numerical.alglib.core import Array
-from compas.numerical.alglib.core import Zeros
-
 try:
+    from compas.numerical.alglib.core import Array
+    from compas.numerical.alglib.core import Zeros
     from compas.numerical.alglib.core import xalglib
+
 except ImportError:
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__    = ['Tom Van Mele', ]

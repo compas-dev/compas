@@ -12,9 +12,8 @@ try:
     from compas.interop.cpp.xdarray import Array2D
 
 except (ImportError, SystemError):
-    import sys
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
+
 
 HERE = os.path.dirname(__file__)
 

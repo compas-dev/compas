@@ -5,8 +5,12 @@ compas.geometry
 
 .. module:: compas.geometry
 
-This package provides functionality for working with geometry outside
-independent of CAD software.
+This package provides functionality for working with geometry independent of CAD software.
+The package defines geometric primitives, basic geometry functions, and an implementation
+of a wide range of geometric algorithms.
+
+
+
 
 
 Primitives

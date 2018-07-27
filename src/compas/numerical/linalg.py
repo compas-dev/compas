@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
+import compas
 
 from functools import wraps
 
@@ -32,8 +33,8 @@ try:
     from scipy.sparse.linalg import spsolve
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
+
 else:
     old_settings = seterr(all='ignore')
 

@@ -1,7 +1,8 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+
+import compas
 
 try:
     from numpy import abs
@@ -33,8 +34,8 @@ try:
     from scipy.sparse import coo_matrix
     from scipy.sparse.linalg import spsolve
 
-except:
-    pass
+except ImportError:
+    compas.raise_if_not_ironpython()
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']

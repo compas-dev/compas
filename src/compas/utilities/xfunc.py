@@ -13,9 +13,9 @@ from compas.utilities import DataDecoder
 try:
     from subprocess import Popen
     from subprocess import PIPE
+
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 
 __author__     = ['Tom Van Mele', ]

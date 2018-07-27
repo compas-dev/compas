@@ -2688,43 +2688,24 @@ if __name__ == '__main__':
 
     import compas
     from compas.plotters import MeshPlotter
-    from compas.files import OBJ
 
-    path = compas.get('lines.obj')
+    mesh = Mesh()
 
-    obj = OBJ(path)
-    vertices = obj.parser.vertices
-    edges    = obj.parser.lines
-    lines    = [[vertices[u], vertices[v]] for u, v in edges]
+    a = mesh.add_vertex(x=0, y=0)
+    b = mesh.add_vertex(x=0.5, y=0.1)
+    c = mesh.add_vertex(x=1, y=0)
+    d = mesh.add_vertex(x=0.9, y=0.5)
+    e = mesh.add_vertex(x=0.9, y=1)
+    f = mesh.add_vertex(x=0.5, y=1)
+    g = mesh.add_vertex(x=0, y=1)
+    h = mesh.add_vertex(x=0, y=0.5)
 
-    print(lines)
-
-    mesh = Mesh.from_lines(lines, delete_boundary_face=True)
-
-    # print(mesh.face_vertices(0))
-
-    print(list(mesh.faces()))
-    print(mesh.number_of_vertices())
-    print(mesh.number_of_faces())
-    print(mesh.number_of_edges())
+    mesh.add_face([a, b, c, d, e, f, g, h])
 
     plotter = MeshPlotter(mesh)
-    plotter.draw_vertices(text='key')
+
+    plotter.draw_vertices()
     plotter.draw_edges()
     plotter.draw_faces()
+
     plotter.show()
-
-    edges = list(mesh.edges())
-
-    mesh.update_default_edge_attributes({'q': 2.0})
-
-    mesh.set_edge_attribute((0, 1), 'q', 5.0)
-    mesh.set_edges_attributes(('f', 'l'), (2.0, 3.0), keys=edges[0:10])
-
-    for key in mesh.edges():
-        u, v = key
-        print(mesh.get_edge_attributes((v, u), ('q', 'f', 'l'), (1.0, 0.0, None)))
-
-    print(mesh.get_edges_attribute('q'))
-    print(mesh.get_edges_attribute('f'))
-    print(mesh.get_edges_attribute('l', 1.0))

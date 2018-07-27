@@ -86,6 +86,15 @@ def get(filename):
 #     return armadillo
 
 
+def raise_if_not_ironpython():
+    if 'ironpython' not in sys.version.lower():
+        raise
+
+
+def raise_if_ironpython():
+    if 'ironpython' in sys.version.lower():
+        raise
+
 
 def license():
     with open(os.path.join(HOME, 'LICENSE')) as fp:
@@ -172,4 +181,16 @@ def requirements():
             print(line.strip())
 
 
-__all__ = ['get', 'license', 'version', 'help', 'copyright', 'credits', 'verify', 'installed', 'requirements']
+__all__ = [
+    'get',
+    'license',
+    'version',
+    'help',
+    'copyright',
+    'credits',
+    'verify',
+    'installed',
+    'requirements',
+    'raise_if_ironpython',
+    'raise_if_not_ironpython',
+]

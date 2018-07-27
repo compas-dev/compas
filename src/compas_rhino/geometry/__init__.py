@@ -49,6 +49,12 @@ class RhinoGeometry(object):
         if otype == rs.filter.curve:
             return RhinoCurve(guid)
 
+        if otype == rs.filter.mesh:
+            return RhinoMesh(guid)
+
+        if otype == rs.filter.surface:
+            return RhinoSurface(guid)
+
     @property
     def name(self):
         value = self.object.Name

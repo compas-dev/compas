@@ -6,16 +6,15 @@ from __future__ import print_function
 from ctypes import cast
 from ctypes import CDLL
 from ctypes import c_double
-from ctypes import c_float
 from ctypes import c_int
 from ctypes import POINTER
 
+from compas.numerical.algorithms.drx_numpy import _beam_data
 from compas.numerical.algorithms.drx_numpy import _create_arrays
 
 from numpy import array
 from numpy import int32
 from numpy import ctypeslib
-from numpy import frombuffer
 
 from time import time
 
@@ -66,6 +65,7 @@ def drx_c(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
     tic1 = time()
 
     X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n, rows, cols, vals, nv = _create_arrays(network)
+    inds, indi, indf, EIx, EIy, beams = _beam_data(network)
 
     if not ind_c:
         ind_c = array([0], dtype=int32)
@@ -125,6 +125,13 @@ def drx_c(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
         M.ctypes.data_as(POINTER(c_double)),
         c_double(factor),
         V.ctypes.data_as(POINTER(c_double)),
+        inds.ctypes.data_as(POINTER(c_int)),
+        indi.ctypes.data_as(POINTER(c_int)),
+        indf.ctypes.data_as(POINTER(c_int)),
+        EIx.ctypes.data_as(POINTER(c_double)),
+        EIy.ctypes.data_as(POINTER(c_double)),
+        c_int(beams),
+        c_int(len(inds)),
     )
 
     Xr = ctypeslib.as_array(ptr, (n, 3))
@@ -170,33 +177,70 @@ if __name__ == "__main__":
     # Example 1 (dense)
     # ==========================================================================
 
+    # from compas.datastructures import Network
+    # from compas.viewers import VtkViewer
+
+    # m = 100
+    # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
+    # vertices = [[xi, yi, 0] for yi in p for xi in p]
+    # edges = []
+
+    # for i in range(m):
+    #     for j in range(m):
+    #         s = (m + 1)
+    #         p1 = (j + 0) * s + i + 0
+    #         p2 = (j + 0) * s + i + 1
+    #         p3 = (j + 1) * s + i + 0
+    #         p4 = (j + 1) * s + i + 1
+    #         edges.append([p1, p2])
+    #         edges.append([p1, p3])
+    #         if j == m - 1:
+    #             edges.append([p4, p3])
+    #         if i == m - 1:
+    #             edges.append([p2, p4])
+
+    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    # sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
+    # network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
+    # network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
+    # network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
+
+    # drx_c(network=network, tol=0.01, summary=1, update=1)
+
+    # data = {
+    #     'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
+    #     'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
+    # }
+
+    # viewer = VtkViewer(data=data)
+    # viewer.settings['draw_vertices'] = 0
+    # viewer.settings['edge_width']    = 0.01
+    # viewer.start()
+
+
+    # ==========================================================================
+    # Example 2 (beam)
+    # ==========================================================================
+
     from compas.datastructures import Network
     from compas.viewers import VtkViewer
 
-    m = 100
-    p = [(i / m - 0.5) * 5 for i in range(m + 1)]
-    vertices = [[xi, yi, 0] for yi in p for xi in p]
-    edges = []
+    from numpy import linspace
 
-    for i in range(m):
-        for j in range(m):
-            s = (m + 1)
-            p1 = (j + 0) * s + i + 0
-            p2 = (j + 0) * s + i + 1
-            p3 = (j + 1) * s + i + 0
-            p4 = (j + 1) * s + i + 1
-            edges.append([p1, p2])
-            edges.append([p1, p3])
-            if j == m - 1:
-                edges.append([p4, p3])
-            if i == m - 1:
-                edges.append([p2, p4])
+
+    L = 12
+    n = 40
+    EI = 0.2
+
+    vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-5, 5, n))]
+    edges = [[i, i + 1] for i in range(n - 1)]
 
     network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
-    network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
-    network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
-    network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
+    leaves  = network.leaves()
+    network.update_default_vertex_attributes({'EIx': EI, 'EIy': EI})
+    network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+    network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], leaves)
+    network.beams = {'beam': {'nodes': list(range(n))}}
 
     drx_c(network=network, tol=0.01, summary=1, update=1)
 
@@ -206,6 +250,6 @@ if __name__ == "__main__":
     }
 
     viewer = VtkViewer(data=data)
-    viewer.settings['draw_vertices'] = 0
-    viewer.settings['edge_width']    = 0.01
-    viewer.start()
+    viewer.settings['vertex_size'] = 0.02
+
+    # viewer.start()

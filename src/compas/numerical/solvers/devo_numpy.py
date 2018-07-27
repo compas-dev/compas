@@ -1,7 +1,8 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+
+import compas
 
 try:
     from numpy import array
@@ -26,9 +27,7 @@ try:
     from scipy.optimize import fmin_l_bfgs_b
 
 except ImportError:
-    import sys
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 from time import time
 
