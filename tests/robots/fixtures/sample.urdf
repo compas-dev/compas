@@ -4,7 +4,7 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
-   <link name="panda_link0">
+   <link name="panda_link0" type="test_type">
       <inertial>
           <origin xyz="0 0 0.5" rpy="0 0 0"/>
           <mass value="1"/>

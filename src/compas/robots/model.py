@@ -11,7 +11,7 @@ from compas.geometry.xforms import Rotation
 # so we scale it all to millimeters
 SCALE_FACTOR = 1000
 
-__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'MeshDescriptor', 'Origin', 'Mass',
+__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'Box', 'Cylinder', 'Sphere', 'MeshDescriptor', 'Origin', 'Mass',
            'Inertia', 'ParentJoint', 'ChildJoint', 'Calibration', 'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']
 
 
@@ -20,8 +20,7 @@ class Origin(object):
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
-        xyz = [
-            float(i) * SCALE_FACTOR for i in attributes.get('xyz', '0 0 0').split(' ')]
+        xyz = [float(i) * SCALE_FACTOR for i in attributes.get('xyz', '0 0 0').split(' ')]
         rpy = list(map(float, attributes.get('rpy', '0 0 0').split(' ')))
         xform = Rotation.from_axis_angle_vector(rpy, xyz)
         return Frame.from_transformation(xform)
@@ -71,12 +70,34 @@ class Inertial(object):
         self.inertia = inertia
 
 
+class Box(object):
+    """3D shape primitive representing a box."""
+
+    def __init__(self, size):
+        self.size = [float(i) * SCALE_FACTOR for i in size.split(' ')]
+
+
+class Cylinder(object):
+    """3D shape primitive representing a cylinder."""
+
+    def __init__(self, radius, length):
+        self.radius = float(radius) * SCALE_FACTOR
+        self.length = float(length) * SCALE_FACTOR
+
+
+class Sphere(object):
+    """3D shape primitive representing a sphere."""
+
+    def __init__(self, radius):
+        self.radius = float(radius) * SCALE_FACTOR
+
+
 class MeshDescriptor(object):
     """Description of a mesh."""
 
     def __init__(self, filename, scale=1.0):
         self.filename = filename
-        self.scale = scale
+        self.scale = float(scale)
 
 
 class Geometry(object):
@@ -325,6 +346,9 @@ URDF.add_parser('visual', Visual)
 URDF.add_parser('collision', Collision)
 URDF.add_parser('geometry', Geometry)
 URDF.add_parser('mesh', MeshDescriptor)
+URDF.add_parser('box', Box)
+URDF.add_parser('cylinder', Cylinder)
+URDF.add_parser('sphere', Sphere)
 URDF.add_parser('origin', Origin)
 URDF.add_parser('mass', Mass)
 URDF.add_parser('inertia', Inertia)

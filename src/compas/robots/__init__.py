@@ -36,6 +36,9 @@ elements connecting the links together.
     Visual
     Collision
     Geometry
+    Box
+    Cylinder
+    Sphere
     MeshDescriptor
     Origin
     Mass
