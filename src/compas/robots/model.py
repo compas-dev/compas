@@ -4,13 +4,15 @@ import inspect
 import xml.etree.ElementTree as ET
 
 from compas.files import URDF
-from compas.geometry import Frame, Rotation, Vector
+from compas.geometry import Frame, Vector
+from compas.geometry.xforms import Rotation
 
 # URDF is defined in meters
 # so we scale it all to millimeters
 SCALE_FACTOR = 1000
 
-__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'MeshDescriptor', 'Origin', 'Mass', 'Inertia', 'ParentJoint', 'ChildJoint', 'Calibration', 'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']
+__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'MeshDescriptor', 'Origin', 'Mass',
+           'Inertia', 'ParentJoint', 'ChildJoint', 'Calibration', 'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']
 
 
 class Origin(object):
@@ -18,7 +20,8 @@ class Origin(object):
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
-        xyz = [float(i) * SCALE_FACTOR for i in attributes.get('xyz', '0 0 0').split(' ')]
+        xyz = [
+            float(i) * SCALE_FACTOR for i in attributes.get('xyz', '0 0 0').split(' ')]
         rpy = list(map(float, attributes.get('rpy', '0 0 0').split(' ')))
         xform = Rotation.from_axis_angle_vector(rpy, xyz)
         return Frame.from_transformation(xform)
@@ -67,6 +70,7 @@ class Inertial(object):
         self.mass = mass
         self.inertia = inertia
 
+
 class MeshDescriptor(object):
     """Description of a mesh."""
 
@@ -74,13 +78,16 @@ class MeshDescriptor(object):
         self.filename = filename
         self.scale = scale
 
+
 class Geometry(object):
     """Shape of a link."""
 
     def __init__(self, box=None, cylinder=None, sphere=None, mesh=None):
         self.shape = box or cylinder or sphere or mesh
         if not self.shape:
-            raise ValueError('Geometry must define at least one of: box, cylinder, sphere, mesh')
+            raise ValueError(
+                'Geometry must define at least one of: box, cylinder, sphere, mesh')
+
 
 class Visual(object):
     """Visual description of a link.
