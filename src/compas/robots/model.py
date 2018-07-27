@@ -18,9 +18,8 @@ class Origin(object):
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
-        xyz = map(lambda i: float(i) * SCALE_FACTOR,
-                  attributes.get('xyz', '0 0 0').split(' '))
-        rpy = map(float, attributes.get('rpy', '0 0 0').split(' '))
+        xyz = [float(i) * SCALE_FACTOR for i in attributes.get('xyz', '0 0 0').split(' ')]
+        rpy = list(map(float, attributes.get('rpy', '0 0 0').split(' ')))
         xform = Rotation.from_axis_angle_vector(rpy, xyz)
         return Frame.from_transformation(xform)
 
@@ -219,8 +218,7 @@ class Axis(object):
     def __init__(self, xyz='0 0 0'):
         # We are not using Vector here because we
         # cannot attach _urdf_source to it due to __slots__
-        xyz = map(lambda i: float(i) * SCALE_FACTOR,
-                  xyz.split(' '))
+        xyz = [float(i) * SCALE_FACTOR for i in xyz.split(' ')]
         self.x = xyz[0]
         self.y = xyz[1]
         self.z = xyz[2]
