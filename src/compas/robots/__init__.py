@@ -21,7 +21,7 @@ This package parses URDF v1.0 according to the `URDF XSD Schema`_.
 Model
 =====
 
-The root of the URDF model is the :class::`Robot` class, which
+The root of the URDF model is the :class:`Robot` class, which
 describes a robot consisting of a set of link elements, and a set of joint
 elements connecting the links together.
 
