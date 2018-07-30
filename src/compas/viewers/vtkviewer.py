@@ -8,18 +8,33 @@ try:
     from vtk import vtkAxesActor
     from vtk import vtkCamera
     from vtk import vtkCellArray
+    from vtk import vtkColorTransferFunction
     from vtk import vtkCubeSource
+    from vtk import vtkFixedPointVolumeRayCastMapper
     from vtk import vtkGlyph3DMapper
     from vtk import vtkIdList
+    from vtk import vtkImageImport
     from vtk import vtkInteractorStyleTrackballCamera
     from vtk import vtkLine
+    from vtk import vtkPiecewiseFunction
     from vtk import vtkPoints
     from vtk import vtkPolyData
     from vtk import vtkPolyDataMapper
     from vtk import vtkRenderer
+    from vtk import vtkRenderWindow
     from vtk import vtkSphereSource
     from vtk import vtkUnsignedCharArray
+    from vtk import vtkVolume
+    from vtk import vtkVolumeProperty
     from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+except ImportError:
+    pass
+
+try:
+    from numpy import asarray
+    from numpy import max
+    from numpy import min
+    from numpy import uint8
 except ImportError:
     pass
 
@@ -80,13 +95,13 @@ class MainWindow(QMainWindow):
         renderer.ResetCameraClippingRange()
         renderer.UseFXAAOn()
 
+        self.window = window = vtkRenderWindow()
+        window.AddRenderer(renderer)
+
         # Widget
 
         self.frame = frame = QFrame()
-
-        self.widget = widget = QVTKRenderWindowInteractor(frame)
-        widget.GetRenderWindow().AddRenderer(renderer)
-
+        self.widget = widget = QVTKRenderWindowInteractor(frame, rw=window)
         self.layout = layout = QVBoxLayout()
         layout.addWidget(widget)
 
@@ -240,6 +255,9 @@ class VtkViewer(QApplication):
         else:
             self.block_actor = None
 
+        if self.data.get('voxels', None) is not None:
+            self.draw_voxels()
+
         self.polydata.GetCellData().SetScalars(self.colors)
 
         if self.vcolors:
@@ -338,17 +356,25 @@ class VtkViewer(QApplication):
         self.layout = layout = QVBoxLayout()
         layout.addStretch()
 
-        self.add_label(name='label_vertices', text='Vertex size: {0}'.format(self.vertex_size))
-        self.add_slider(name='slider_vertices', value=self.vertex_size, minimum=0, maximum=100,
-                        interval=10, callback=self.vertex_callback)
+        if self.data.get('vertices', None):
+            self.add_label(name='label_vertices', text='Vertex size: {0}'.format(self.vertex_size))
+            self.add_slider(name='slider_vertices', value=self.vertex_size, minimum=0, maximum=100,
+                            interval=10, callback=self.vertex_callback)
 
-        self.add_label(name='label_edges', text='Edge width: {0}'.format(self.edge_width))
-        self.add_slider(name='slider_edges', value=self.edge_width, minimum=0, maximum=100,
-                        interval=10, callback=self.edge_callback)
+        if self.data.get('edges', None):
+            self.add_label(name='label_edges', text='Edge width: {0}'.format(self.edge_width))
+            self.add_slider(name='slider_edges', value=self.edge_width, minimum=0, maximum=100,
+                            interval=10, callback=self.edge_callback)
 
-        self.add_label(name='label_opacity', text='Opacity: {0}'.format(100))
-        self.add_slider(name='slider_opacity', value=100, minimum=0, maximum=100,
-                        interval=10, callback=self.opacity_callback)
+        if self.data.get('vertices', None) or self.data.get('faces', None):
+            self.add_label(name='label_opacity', text='Opacity: {0}'.format(100))
+            self.add_slider(name='slider_opacity', value=100, minimum=0, maximum=100,
+                            interval=10, callback=self.opacity_callback)
+
+        if self.data.get('voxels', None) is not None:
+            self.add_label(name='label_gradient', text='Gradient: {0}'.format(0))
+            self.add_slider(name='slider_gradient', value=0, minimum=0, maximum=100,
+                            interval=10, callback=self.gradient_callback)
 
         widget = QWidget(self.sidebar)
         widget.setLayout(layout)
@@ -505,6 +531,78 @@ class VtkViewer(QApplication):
 
 
     # ==============================================================================
+    # Voxels
+    # ==============================================================================
+
+    def draw_voxels(self):
+
+        self.show_axes = False
+
+        u = self.data['voxels']
+        u /= (2 * max([abs(min(u)), abs(max(u))]))
+        u += 0.5
+        u *= 255
+
+        nx, ny, nz = u.shape
+        U = asarray(u, dtype=uint8)
+        dstr = U.tostring()
+
+        img = vtkImageImport()
+        img.CopyImportVoidPointer(dstr, len(dstr))
+        img.SetDataScalarTypeToUnsignedChar()
+        img.SetNumberOfScalarComponents(1)
+        img.SetDataExtent(0, nz - 1, 0, ny - 1, 0, nx - 1)
+        img.SetWholeExtent(0, nz - 1, 0, ny - 1, 0, nx - 1)
+
+        self.gradient = gradient = vtkPiecewiseFunction()
+        gradient.AddPoint(1, 0.0)
+        gradient.AddPoint(255, 0.2)
+
+        self.cbar = cbar = vtkColorTransferFunction()
+        cbar.AddRGBPoint(0.0, 0.0, 0.0, 1.0)
+        cbar.AddRGBPoint(42.0, 0.0, 0.5, 1.0)
+        cbar.AddRGBPoint(84.0, 0.0, 1.0, 0.5)
+        cbar.AddRGBPoint(128.0, 0.0, 1.0, 0.0)
+        cbar.AddRGBPoint(168.0, 0.5, 1.0, 0.0)
+        cbar.AddRGBPoint(212.0, 1.0, 0.5, 0.0)
+        cbar.AddRGBPoint(255.0, 1.0, 0.0, 0.0)
+
+        self.volprop = volprop = vtkVolumeProperty()
+        volprop.SetColor(cbar)
+        volprop.SetScalarOpacity(gradient)
+        volprop.ShadeOff()
+        volprop.SetInterpolationTypeToLinear()
+
+        mapper = vtkFixedPointVolumeRayCastMapper()
+        mapper.SetInputConnection(img.GetOutputPort())
+
+        volume = vtkVolume()
+        volume.SetMapper(mapper)
+        volume.SetProperty(volprop)
+        self.main.renderer.AddVolume(volume)
+
+        self.main.camera.SetPosition(0, -2 * max([nx, ny, nz]), nz)
+        self.main.camera.SetFocalPoint(0.5 * nx, 0.5 * ny, 0.5 * nz)
+
+    def gradient_callback(self):
+
+        value = self.sliders['slider_gradient'].value()
+        self.labels['label_gradient'].setText('Gradient: {0}'.format(value))
+
+        self.gradient = gradient = vtkPiecewiseFunction()
+        gradient.AddPoint(0, 0.2)
+        if value:
+            gradient.AddPoint(127 - value * 1.27, 0.0)
+            gradient.AddPoint(127 + value * 1.27, 0.0)
+        else:
+            gradient.AddPoint(128, 0.2)
+        gradient.AddPoint(255, 0.2)
+
+        self.volprop.SetScalarOpacity(gradient)
+        self.main.widget.Render()
+
+
+    # ==============================================================================
     # Axis
     # ==============================================================================
 
@@ -521,6 +619,10 @@ class VtkViewer(QApplication):
 # ==============================================================================
 
 if __name__ == "__main__":
+
+    # ==============================================================================
+    # Mesh
+    # ==============================================================================
 
     def func(self):
         print('Callback test!')
@@ -569,3 +671,21 @@ if __name__ == "__main__":
     viewer.show_axes = False
     viewer.keycallbacks['s'] = func
     viewer.start()
+
+
+    # ==============================================================================
+    # Voxels
+    # ==============================================================================
+
+    # from numpy import linspace
+    # from numpy import meshgrid
+
+    # r = linspace(-1, 1, 50)
+    # x, y, z = meshgrid(r, r, r)
+
+    # data = {
+    #     'voxels': x + y + z,
+    # }
+
+    # viewer = VtkViewer(data=data)
+    # viewer.start()
