@@ -446,6 +446,7 @@ if __name__ == "__main__":
     viewer.vertex_size = 1
     viewer.edge_width  = 10
     viewer.keycallbacks['s'] = func
+    viewer.setup()
     viewer.start()
 
 

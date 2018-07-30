@@ -40,6 +40,7 @@ except ImportError:
 
 try:
     from PyQt5.Qt import QApplication
+    from PyQt5.Qt import QComboBox
     from PyQt5.Qt import QDockWidget
     from PyQt5.Qt import QFrame
     from PyQt5.Qt import QLabel
@@ -179,11 +180,32 @@ class VtkViewer(QApplication):
         self.show_axes       = True
         self.vertex_size     = 20.0
         self.edge_width      = 20.0
-        self.name   = name
-        self.data = data
-        self.height = height
-        self.width  = width
+
+        self.name         = name
+        self.data         = data
+        self.height       = height
+        self.width        = width
         self.keycallbacks = {}
+
+        self.labels    = {}
+        self.listboxes = {}
+        self.sliders   = {}
+
+
+    # ==============================================================================
+    # Setup
+    # ==============================================================================
+
+    def setup(self):
+
+        self.main = MainWindow(app=self)
+        self.main.show()
+
+        self.setup_statusbar()
+        self.setup_menubar()
+        self.setup_sidebar()
+
+        self.draw()
 
 
     # ==============================================================================
@@ -191,14 +213,6 @@ class VtkViewer(QApplication):
     # ==============================================================================
 
     def start(self):
-
-        self.main = MainWindow(app=self)
-        self.main.show()
-        self.draw()
-
-        self.setup_statusbar()
-        self.setup_menubar()
-        self.setup_sidebar()
 
         sys.exit(self.exec_())
 
@@ -336,13 +350,23 @@ class VtkViewer(QApplication):
         slider.valueChanged.connect(callback)
         self.layout.addWidget(slider)
 
-
     def add_label(self, name, text):
 
         self.labels[name] = label = QLabel()
         label.setText(text)
         self.layout.addWidget(label)
 
+    def add_listbox(self, name, items, callback):
+
+        self.listboxes[name] = listbox = QComboBox()
+        listbox.addItems(items)
+        listbox.currentIndexChanged.connect(callback)
+        self.layout.addWidget(listbox)
+
+    def add_splitter(self):
+
+        pass
+        # self.layout.setFrameShape(QFrame.HLine)
 
     def setup_sidebar(self):
 
@@ -350,28 +374,27 @@ class VtkViewer(QApplication):
         sidebar.setFixedWidth(120)
         # sidebar.setWindowTitle('-')
 
-        self.sliders = {}
-        self.labels  = {}
-
         self.layout = layout = QVBoxLayout()
         layout.addStretch()
 
         if self.data.get('vertices', None):
+
             self.add_label(name='label_vertices', text='Vertex size: {0}'.format(self.vertex_size))
             self.add_slider(name='slider_vertices', value=self.vertex_size, minimum=0, maximum=100,
                             interval=10, callback=self.vertex_callback)
 
-        if self.data.get('edges', None):
+        if self.data.get('edges', None) or self.data.get('faces', None):
+
             self.add_label(name='label_edges', text='Edge width: {0}'.format(self.edge_width))
             self.add_slider(name='slider_edges', value=self.edge_width, minimum=0, maximum=100,
                             interval=10, callback=self.edge_callback)
 
-        if self.data.get('vertices', None) or self.data.get('faces', None):
             self.add_label(name='label_opacity', text='Opacity: {0}'.format(100))
             self.add_slider(name='slider_opacity', value=100, minimum=0, maximum=100,
                             interval=10, callback=self.opacity_callback)
 
         if self.data.get('voxels', None) is not None:
+
             self.add_label(name='label_gradient', text='Gradient: {0}'.format(0))
             self.add_slider(name='slider_gradient', value=0, minimum=0, maximum=100,
                             interval=10, callback=self.gradient_callback)
@@ -433,8 +456,9 @@ class VtkViewer(QApplication):
         value = self.sliders['slider_vertices'].value()
         self.labels['label_vertices'].setText('Vertex size: {0}'.format(value))
         self.vertex.SetRadius(value * 0.001)
-        self.support.SetRadius(value * 1.5 * 0.001)
-        self.main.widget.Render()
+        if self.support:
+            self.support.SetRadius(value * 1.5 * 0.001)
+        self.main.window.Render()
 
 
     # ==============================================================================
@@ -467,7 +491,7 @@ class VtkViewer(QApplication):
             value = 0.1
         self.labels['label_edges'].setText('Edge width: {0}'.format(value))
         self.actor.GetProperty().SetLineWidth(value * 0.1)
-        self.main.widget.Render()
+        self.main.window.Render()
 
 
     # ==============================================================================
@@ -498,8 +522,9 @@ class VtkViewer(QApplication):
         value = self.sliders['slider_opacity'].value()
         self.labels['label_opacity'].setText('Opacity: {0}'.format(value))
         self.actor.GetProperty().SetOpacity(value * 0.01)
-        self.block_actor.GetProperty().SetOpacity(value * 0.01)
-        self.main.widget.Render()
+        if self.block_actor:
+            self.block_actor.GetProperty().SetOpacity(value * 0.01)
+        self.main.window.Render()
 
 
     # ==============================================================================
@@ -599,7 +624,7 @@ class VtkViewer(QApplication):
         gradient.AddPoint(255, 0.2)
 
         self.volprop.SetScalarOpacity(gradient)
-        self.main.widget.Render()
+        self.main.window.Render()
 
 
     # ==============================================================================
@@ -670,6 +695,7 @@ if __name__ == "__main__":
     viewer = VtkViewer(data=data)
     viewer.show_axes = False
     viewer.keycallbacks['s'] = func
+    viewer.setup()
     viewer.start()
 
 
@@ -688,4 +714,5 @@ if __name__ == "__main__":
     # }
 
     # viewer = VtkViewer(data=data)
+    # viewer.setup()
     # viewer.start()
