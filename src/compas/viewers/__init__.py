@@ -27,17 +27,14 @@ Classes
 from compas.viewers import viewer
 from compas.viewers import meshviewer
 from compas.viewers import vtkviewer
-from compas.viewers import vtkvoxels
 
 from .core import *
 from .viewer import *
 from .meshviewer import *
 from .vtkviewer import *
-from .vtkvoxels import *
 
 
-__all__ = [] 
+__all__ = []
 __all__ += viewer.__all__
 __all__ += meshviewer.__all__
 __all__ += vtkviewer.__all__
-__all__ += vtkvoxels.__all__
