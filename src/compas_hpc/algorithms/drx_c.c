@@ -1,8 +1,16 @@
 
+#include <geometry/basic_c.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <math.h>
 #include <stdio.h>
+
+
+// author:    Andrew Liew <liew@arch.ethz.ch>
+// copyright: Copyright 2018, BLOCK Research Group - ETH Zurich
+// license:   MIT License
+// email:     liew@arch.ethz.ch
+
 
 void drx_solver_c(double tol, int steps, int summary, int m, int n, int *u, int *v, double *X, double *f0, double *l0, double *k0, int *ind_c, int *ind_t, int ind_c_n, int ind_t_n, double *B, double *P, double *S, int *rows, int *cols, double *vals, int nv, double *M, double factor, double *V, int *inds, int *indi, int *indf, double *EIx, double *EIy, int beams, int nb) {
 
@@ -11,6 +19,7 @@ void drx_solver_c(double tol, int steps, int summary, int m, int n, int *u, int 
     double f[m], fx[m], fy[m], fz[m];
     double frx[n], fry[n], frz[n];
     double l;
+    double La, Lb, Lc, LQn, Lmu;
     double Mi;
     double q;
     double res;
@@ -18,12 +27,14 @@ void drx_solver_c(double tol, int steps, int summary, int m, int n, int *u, int 
     double Un, Uo;
     double xd, yd, zd;
 
-    gsl_vector * Xs = gsl_vector_alloc(3);
-    gsl_vector * Xi = gsl_vector_alloc(3);
-    gsl_vector * Xf = gsl_vector_alloc(3);
-    gsl_vector * Qa = gsl_vector_alloc(3);
-    gsl_vector * Qb = gsl_vector_alloc(3);
-    gsl_vector * Qc = gsl_vector_alloc(3);
+    gsl_vector *Xs = gsl_vector_alloc(3);
+    gsl_vector *Xi = gsl_vector_alloc(3);
+    gsl_vector *Xf = gsl_vector_alloc(3);
+    gsl_vector *Qa = gsl_vector_alloc(3);
+    gsl_vector *Qb = gsl_vector_alloc(3);
+    gsl_vector *Qc = gsl_vector_alloc(3);
+    gsl_vector *Qn = gsl_vector_alloc(3);
+    gsl_vector *mu = gsl_vector_alloc(3);
 
     ts = 0;
     Uo = 0.;
@@ -67,25 +78,27 @@ void drx_solver_c(double tol, int steps, int summary, int m, int n, int *u, int 
 
         if (beams) {
             for (i = 0; i < nb; i++) {
+
                 a = inds[i] * 3;
                 b = indi[i] * 3;
                 c = indf[i] * 3;
-                for (j = 0; j < 3; j++) {
-                    gsl_vector_set(Xs, j, X[a + j]);
-                    gsl_vector_set(Xi, j, X[b + j]);
-                    gsl_vector_set(Xf, j, X[c + j]);
-                }
-                gsl_vector_memcpy(Qa, Xi);
-                gsl_vector_sub(Qa, Xs);
-            //     Qb = Xf - Xi
-            //     Qc = Xf - Xs
-            //     Qn = cross(Qa, Qb)
-            //     mu = 0.5 * (Xf - Xs)
-            //     La = length(Qa)
-            //     Lb = length(Qb)
-            //     Lc = length(Qc)
-            //     LQn = length(Qn)
-            //     Lmu = length(mu)
+                vector_from_pointer(&X[a], Xs);
+                vector_from_pointer(&X[b], Xi);
+                vector_from_pointer(&X[c], Xf);
+                subtract_vectors(Xi, Xs, Qa);
+                subtract_vectors(Xf, Xi, Qb);
+                subtract_vectors(Xf, Xs, Qc);
+                cross_vectors(Qa, Qb, Qn);
+
+                subtract_vectors(Xf, Xs, mu);
+                scale_vector(mu, 0.5);
+
+                La  = length_vector(Qa);
+                Lb  = length_vector(Qb);
+                Lc  = length_vector(Qc);
+                LQn = length_vector(Qn);
+                Lmu = length_vector(mu);
+
             //     a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
             //     k = 2 * sin(a) / Lc
             //     ex = Qn / LQn
@@ -114,6 +127,7 @@ void drx_solver_c(double tol, int steps, int summary, int m, int n, int *u, int 
             //         S[indi[i], :] -= Sa + Sb
             //         S[indf[i], :] += Sb
             printf("%f %f %f\n", gsl_vector_get(Qa, 0), gsl_vector_get(Qa, 1), gsl_vector_get(Qa, 2));
+            printf("%f\n", Lmu);
             }
         }
 

@@ -180,6 +180,7 @@ if __name__ == "__main__":
     # from compas.datastructures import Network
     # from compas.viewers import VtkViewer
 
+
     # m = 100
     # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
     # vertices = [[xi, yi, 0] for yi in p for xi in p]
@@ -213,8 +214,9 @@ if __name__ == "__main__":
     # }
 
     # viewer = VtkViewer(data=data)
-    # viewer.settings['draw_vertices'] = 0
-    # viewer.settings['edge_width']    = 0.01
+    # viewer.vertex_size = 0
+    # viewer.edge_width  = 0.01
+    # viewer.setup()
     # viewer.start()
 
 
@@ -250,6 +252,7 @@ if __name__ == "__main__":
     }
 
     viewer = VtkViewer(data=data)
-    viewer.settings['vertex_size'] = 0.02
+    viewer.vertex_size = 0.02
 
+    # viewer.setup()
     # viewer.start()
