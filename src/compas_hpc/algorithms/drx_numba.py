@@ -22,9 +22,9 @@ from compas.numerical import uvw_lengths
 from compas.numerical.algorithms.drx_numpy import _beam_data
 from compas.numerical.algorithms.drx_numpy import _create_arrays
 
-# from compas_hpc import cross_vectors_numba as cross
+from compas_hpc.geometry import cross_vectors_numba as cross
 # from compas_hpc import dot_vectors_numba as dot
-# from compas_hpc import length_vector_numba as length
+from compas_hpc.geometry import length_vector_numba as length
 
 from time import time
 
@@ -248,19 +248,22 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
         if beams:
             S *= 0
             for i in range(len(inds)):
+
                 Xs = X[inds[i], :]
                 Xi = X[indi[i], :]
                 Xf = X[indf[i], :]
                 Qa = Xi - Xs
                 Qb = Xf - Xi
                 Qc = Xf - Xs
-            #     Qn = cross(Qa, Qb)
-            #     mu = 0.5 * (Xf - Xs)
-            #     La = length(Qa)
-            #     Lb = length(Qb)
-            #     Lc = length(Qc)
-            #     LQn = length(Qn)
-            #     Lmu = length(mu)
+                Qn = cross(Qa, Qb)
+
+                mu = 0.5 * (Xf - Xs)
+                La = length(Qa)
+                Lb = length(Qb)
+                Lc = length(Qc)
+                LQn = length(Qn)
+                Lmu = length(mu)
+
             #     a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
             #     k = 2 * sin(a) / Lc
             #     ex = Qn / LQn
@@ -288,7 +291,7 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
             #         S[inds[i], :] += Sa
             #         S[indi[i], :] -= Sa + Sb
             #         S[indf[i], :] += Sb
-            print(Qa)
+            print(Qa, Lmu)
 
         frx *= 0
         fry *= 0
@@ -342,6 +345,7 @@ if __name__ == "__main__":
     # from compas.datastructures import Network
     # from compas.viewers import VtkViewer
 
+
     # m = 100
     # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
     # vertices = [[xi, yi, 0] for yi in p for xi in p]
@@ -375,8 +379,9 @@ if __name__ == "__main__":
     # }
 
     # viewer = VtkViewer(data=data)
-    # viewer.settings['draw_vertices'] = 0
-    # viewer.settings['edge_width']    = 0.01
+    # viewer.vertex_size = 0
+    # viewer.edge_width = 0.01
+    # viewer.setup()
     # viewer.start()
 
 
@@ -420,13 +425,15 @@ if __name__ == "__main__":
 
 
     # def func(self):
-    #     tol, steps, _, m, n, u, v, X, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V = self.args
+    #     print('test', len(self.args))
+    #     tol, steps, _, m, n, u, v, X, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V, inds, indi, indf, EIx, EIy, beams = self.args
     #     X_ = self.X if self.X is not None else X
-    #     drx_solver_numba(tol, steps, 0, m, n, u, v, X_, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V)
+    #     drx_solver_numba(tol, steps, 0, m, n, u, v, X_, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V,
+    #                      inds, indi, indf, EIx, EIy, beams)
     #     for i in range(X_.shape[0]):
     #         self.vertices.SetPoint(i, X_[i, :])
-    #         self.vertices.Modified()
-    #     self.window.Render()
+    #     self.vertices.Modified()
+    #     self.main.window.Render()
     #     self.X = X_
 
     # def z_up(self):
@@ -443,11 +450,12 @@ if __name__ == "__main__":
     # viewer = VtkViewer(data=data)
     # viewer.args = _args(network=network, factor=1, summary=0, steps=10000, tol=0.01)
     # viewer.X = None
-    # viewer.settings['draw_vertices'] = 0
-    # viewer.settings['edge_width']    = 0.01
+    # viewer.vertex_size = 0
+    # viewer.edge_width  = 0.01
     # viewer.keycallbacks['s'] = func
     # viewer.keycallbacks['a'] = z_up
     # viewer.keycallbacks['d'] = z_down
+    # viewer.setup()
     # viewer.start()
 
 
@@ -518,7 +526,7 @@ if __name__ == "__main__":
     viewer = VtkViewer(data=data)
     # viewer.args = _prepare_solver(network)
     # viewer.settings['draw_axes'] = 1
-    viewer.settings['vertex_size'] = 0.02
+    viewer.vertex_size = 0.02
     # viewer.keycallbacks['s'] = func
     # viewer.func = func
 
@@ -538,4 +546,5 @@ if __name__ == "__main__":
     # right_widget.On()
     # right_widget.AddObserver("InteractionEvent", RightHandle(viewer))
 
+    # viewer.setup()
     # viewer.start()

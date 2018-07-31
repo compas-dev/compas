@@ -394,59 +394,60 @@ if __name__ == "__main__":
     # Example 1 (Dense)
     # ==========================================================================
 
-    # from compas.datastructures import Network
-    # from compas.viewers import VtkViewer
+    from compas.datastructures import Network
+    from compas.viewers import VtkViewer
 
 
-    # m = 100
-    # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
-    # vertices = [[xi, yi, 0] for yi in p for xi in p]
-    # edges = []
+    m = 70
+    p = [(i / m - 0.5) * 5 for i in range(m + 1)]
+    vertices = [[xi, yi, 0] for yi in p for xi in p]
+    edges = []
 
-    # for i in range(m):
-    #     for j in range(m):
-    #         s = (m + 1)
-    #         p1 = (j + 0) * s + i + 0
-    #         p2 = (j + 0) * s + i + 1
-    #         p3 = (j + 1) * s + i + 0
-    #         p4 = (j + 1) * s + i + 1
-    #         edges.append([p1, p2])
-    #         edges.append([p1, p3])
-    #         if j == m - 1:
-    #             edges.append([p4, p3])
-    #         if i == m - 1:
-    #             edges.append([p2, p4])
+    for i in range(m):
+        for j in range(m):
+            s = (m + 1)
+            p1 = (j + 0) * s + i + 0
+            p2 = (j + 0) * s + i + 1
+            p3 = (j + 1) * s + i + 0
+            p4 = (j + 1) * s + i + 1
+            edges.append([p1, p2])
+            edges.append([p1, p3])
+            if j == m - 1:
+                edges.append([p4, p3])
+            if i == m - 1:
+                edges.append([p2, p4])
 
-    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    # sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
-    # network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
-    # network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
-    # network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
+    network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
+    network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
+    network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
+    network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
 
-    # data = {
-    #     'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
-    #     'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
-    # }
-
-
-    # def callback(X, self):
-    #     for i in range(X.shape[0]):
-    #         self.vertices.SetPoint(i, X[i, :])
-    #         self.vertices.Modified()
-    #     self.window.Render()
+    data = {
+        'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
+        'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
+    }
 
 
-    # def func(self):
-    #     drx_numpy(network=network, tol=0.01, update=True, refresh=10, callback=callback, self=self)
+    def callback(X, self):
+        for i in range(X.shape[0]):
+            self.vertices.SetPoint(i, X[i, :])
+        self.vertices.Modified()
+        self.main.window.Render()
 
 
-    # print('Press key S to start')
+    def func(self):
+        drx_numpy(network=network, tol=0.05, update=True, refresh=5, callback=callback, self=self)
 
-    # viewer = VtkViewer(data=data)
-    # viewer.settings['draw_vertices'] = 0
-    # viewer.settings['edge_width']    = 0.01
-    # viewer.keycallbacks['s'] = func
-    # viewer.start()
+
+    print('Press key S to start')
+
+    viewer = VtkViewer(data=data)
+    viewer.vertex_size = 1
+    viewer.edge_width  = 10
+    viewer.keycallbacks['s'] = func
+    viewer.setup()
+    viewer.start()
 
 
     # ==========================================================================
@@ -495,51 +496,51 @@ if __name__ == "__main__":
     # Example 3 (beam)
     # ==========================================================================
 
-    from numpy import linspace
-    from numpy import sign
+    # from numpy import linspace
+    # from numpy import sign
 
-    from compas.datastructures import Network
-    from compas.plotters import NetworkPlotter
-
-
-    L  = 2.5
-    n  = 100
-    EI = 0.2
-
-    vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
-    for i in range(n):
-        if vertices[i][1] < 0.5:
-            vertices[i][0] = sign(vertices[i][0]) * vertices[i][1]
-    edges = [[i, i + 1] for i in range(n - 1)]
-
-    network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    network.update_default_vertex_attributes({'is_fixed': False, 'EIx': EI, 'EIy': EI})
-    network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
-    network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], network.leaves())
-    network.beams = {'beam': {'nodes': list(range(n))}}
-
-    lines = []
-    for u, v in network.edges():
-        lines.append({
-            'start': network.vertex_coordinates(u, 'xy'),
-            'end'  : network.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc'
-        })
-
-    plotter = NetworkPlotter(network, figsize=(10, 7))
-    plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in network.vertices_where({'is_fixed': True})})
-    plotter.draw_lines(lines)
-    plotter.draw_edges()
+    # from compas.datastructures import Network
+    # from compas.plotters import NetworkPlotter
 
 
-    def callback(X, k_i):
-        for key in network.vertices():
-            x, y, z = X[k_i[key], :]
-            network.set_vertex_attributes(key, 'xyz', [x, y, z])
-        plotter.update_edges()
-        plotter.update(pause=0.01)
+    # L  = 2.5
+    # n  = 100
+    # EI = 0.2
+
+    # vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
+    # for i in range(n):
+    #     if vertices[i][1] < 0.5:
+    #         vertices[i][0] = sign(vertices[i][0]) * vertices[i][1]
+    # edges = [[i, i + 1] for i in range(n - 1)]
+
+    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    # network.update_default_vertex_attributes({'is_fixed': False, 'EIx': EI, 'EIy': EI})
+    # network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+    # network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], network.leaves())
+    # network.beams = {'beam': {'nodes': list(range(n))}}
+
+    # lines = []
+    # for u, v in network.edges():
+    #     lines.append({
+    #         'start': network.vertex_coordinates(u, 'xy'),
+    #         'end'  : network.vertex_coordinates(v, 'xy'),
+    #         'color': '#cccccc'
+    #     })
+
+    # plotter = NetworkPlotter(network, figsize=(10, 7))
+    # plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in network.vertices_where({'is_fixed': True})})
+    # plotter.draw_lines(lines)
+    # plotter.draw_edges()
 
 
-    drx_numpy(network=network, tol=0.01, refresh=10, factor=30, update=1, callback=callback, k_i=network.key_index())
+    # def callback(X, k_i):
+    #     for key in network.vertices():
+    #         x, y, z = X[k_i[key], :]
+    #         network.set_vertex_attributes(key, 'xyz', [x, y, z])
+    #     plotter.update_edges()
+    #     plotter.update(pause=0.01)
 
-    plotter.show()
+
+    # drx_numpy(network=network, tol=0.01, refresh=20, factor=30, update=1, callback=callback, k_i=network.key_index())
+
+    # plotter.show()
