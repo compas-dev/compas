@@ -11,5 +11,6 @@ include README.md
 include requirements.txt
 
 exclude requirements-dev.txt requirements-freeze.txt pytest.ini .bumpversion.cfg .editorconfig tasks.py
+exclude _README.md
 
 global-exclude *.py[cod] __pycache__ *.dylib *.nb[ic]
