@@ -1,7 +1,7 @@
 from __future__ import print_function
+from copy import deepcopy
 
 try:
-    import ghpythonlib.components as ghcomp
     from Rhino.Geometry import Transform
 except ImportError:
     import platform
@@ -56,7 +56,9 @@ def xtransform(geo, transformation, copy=False):
     """
     T = xform_from_transformation(transformation)
     if copy:
-        return ghcomp.Transform(geo, T)
+        geo_cp = geo.Duplicate()
+        geo_cp.Transform(T)
+        return geo_cp
     else:
         geo.Transform(T)
         return geo
