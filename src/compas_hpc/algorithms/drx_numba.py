@@ -3,13 +3,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-# from numpy import arccos
+from numpy import arccos
 from numpy import array
 # from numpy import float64
 # from numpy import int64
-# from numpy import isnan
+from numpy import isnan
 from numpy import mean
-# from numpy import sin
+from numpy import sin
 from numpy import sqrt
 from numpy import zeros
 
@@ -23,7 +23,7 @@ from compas.numerical.algorithms.drx_numpy import _beam_data
 from compas.numerical.algorithms.drx_numpy import _create_arrays
 
 from compas_hpc.geometry import cross_vectors_numba as cross
-# from compas_hpc import dot_vectors_numba as dot
+from compas_hpc.geometry import dot_vectors_numba as dot
 from compas_hpc.geometry import length_vector_numba as length
 
 from time import time
@@ -264,34 +264,36 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
                 LQn = length(Qn)
                 Lmu = length(mu)
 
-            #     a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
-            #     k = 2 * sin(a) / Lc
-            #     ex = Qn / LQn
-            #     ez = mu / Lmu
-            #     ey = cross(ez, ex)
-            #     K = k * Qn / LQn
-            #     Kx = dot(K, ex) * ex
-            #     Ky = dot(K, ey) * ey
-            #     Mc = EIx[i] * Kx + EIy[i] * Ky
-            #     cma = cross(Mc, Qa)
-            #     cmb = cross(Mc, Qb)
-            #     ua = cma / length(cma)
-            #     ub = cmb / length(cmb)
-            #     c1 = cross(Qa, ua)
-            #     c2 = cross(Qb, ub)
-            #     Lc1 = length(c1)
-            #     Lc2 = length(c2)
-            #     Ms = Mc[0]**2 + Mc[1]**2 + Mc[2]**2
-            #     Sa = ua * Ms * Lc1 / (La * dot(Mc, c1))
-            #     Sb = ub * Ms * Lc2 / (Lb * dot(Mc, c2))
-            #     # print(isnan(Sa))
-            #     if isnan(Sa[0]) or isnan(Sb[0]):
-            #         pass
-            #     else:
-            #         S[inds[i], :] += Sa
-            #         S[indi[i], :] -= Sa + Sb
-            #         S[indf[i], :] += Sb
-            print(Qa, Lmu)
+                a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
+                k = 2 * sin(a) / Lc
+                ex = Qn / LQn
+                ez = mu / Lmu
+                ey = cross(ez, ex)
+
+                K = k * Qn / LQn
+                Kx = dot(K, ex) * ex
+                Ky = dot(K, ey) * ey
+                Mc = EIx[i] * Kx + EIy[i] * Ky
+                cma = cross(Mc, Qa)
+                cmb = cross(Mc, Qb)
+                ua = cma / length(cma)
+                ub = cmb / length(cmb)
+                c1 = cross(Qa, ua)
+                c2 = cross(Qb, ub)
+                Lc1 = length(c1)
+                Lc2 = length(c2)
+                Ms = Mc[0]**2 + Mc[1]**2 + Mc[2]**2
+
+                Sa = ua * Ms * Lc1 / (La * dot(Mc, c1))
+                Sb = ub * Ms * Lc2 / (Lb * dot(Mc, c2))
+                # print(isnan(Sa))
+
+                if isnan(Sa).any() or isnan(Sb).any():
+                    pass
+                else:
+                    S[inds[i], :] += Sa
+                    S[indi[i], :] -= Sa + Sb
+                    S[indf[i], :] += Sb
 
         frx *= 0
         fry *= 0
@@ -546,5 +548,5 @@ if __name__ == "__main__":
     # right_widget.On()
     # right_widget.AddObserver("InteractionEvent", RightHandle(viewer))
 
-    # viewer.setup()
-    # viewer.start()
+    viewer.setup()
+    viewer.start()

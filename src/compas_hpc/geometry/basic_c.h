@@ -1,5 +1,6 @@
 
 #include <gsl/gsl_blas.h>
+#include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 
 
@@ -7,6 +8,9 @@
 // copyright: Copyright 2018, BLOCK Research Group - ETH Zurich
 // license:   MIT License
 // email:     liew@arch.ethz.ch
+
+
+int i, j;
 
 
 // ==========================================================================================================
@@ -31,9 +35,31 @@ double length_vector(gsl_vector *u) {
 }
 
 
+double length_vector_squared(gsl_vector *u) {
+
+    double a;
+
+    a = 0.;
+
+    for (i = 0; i < 3; i++) {
+        a += gsl_pow_2(gsl_vector_get(u, i));
+    }
+
+    return a;
+
+}
+
+
 void scale_vector(gsl_vector *u, double a) {
 
     gsl_vector_scale(u, a);
+
+}
+
+
+void normalise_vector(gsl_vector *u) {
+
+    gsl_vector_scale(u, 1./length_vector(u));
 
 }
 
@@ -56,6 +82,22 @@ void subtract_vectors(const gsl_vector *u, const gsl_vector *v, gsl_vector *w) {
     gsl_vector_sub(w, v);
 
 }
+
+
+double dot_vectors(const gsl_vector *u, const gsl_vector *v) {
+
+    double a;
+
+    a = 0.;
+
+    for (i = 0; i < 3; i++) {
+        a += gsl_vector_get(u, i) * gsl_vector_get(v, i);
+    }
+
+    return a;
+
+}
+
 
 
 void cross_vectors(const gsl_vector *u, const gsl_vector *v, gsl_vector *w) {
