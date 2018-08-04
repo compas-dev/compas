@@ -99,7 +99,6 @@ double dot_vectors(const gsl_vector *u, const gsl_vector *v) {
 }
 
 
-
 void cross_vectors(const gsl_vector *u, const gsl_vector *v, gsl_vector *w) {
 
     double w1 = gsl_vector_get(u, 1) * gsl_vector_get(v, 2) - gsl_vector_get(u, 2) * gsl_vector_get(v, 1);
