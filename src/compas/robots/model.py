@@ -138,8 +138,9 @@ class Material(object):
 class Geometry(object):
     """Shape of a link."""
 
-    def __init__(self, box=None, cylinder=None, sphere=None, mesh=None):
+    def __init__(self, box=None, cylinder=None, sphere=None, mesh=None, **kwargs):
         self.shape = box or cylinder or sphere or mesh
+        self.attr = kwargs
         if not self.shape:
             raise ValueError(
                 'Geometry must define at least one of: box, cylinder, sphere, mesh')
@@ -340,12 +341,11 @@ class Robot(object):
     model, ruling out all parallel robots.
     """
 
-    def __init__(self, name, joints=[], links=[], material=None, transmission=None, **kwargs):
+    def __init__(self, name, joints=[], links=[], material=[], **kwargs):
         self.name = name
         self.joints = joints
         self.links = links
         self.material = material
-        self.transmission = transmission
         self.attr = kwargs
 
     @classmethod

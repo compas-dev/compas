@@ -37,6 +37,7 @@ def get_metadata(type):
 
             args[argspec.args[i]] = data
 
+        metadata['keywords'] = argspec.keywords is not None
         metadata['init_args'] = args
 
     metadata['argument_map'] = getattr(type, 'argument_map', {})
@@ -181,6 +182,9 @@ class URDF(object):
         if argument_name:
             return argument_name
 
+        if metadata['keywords']:
+            return urdf_tag
+
         raise ValueError('Cannot find a matching argument for %s' % urdf_tag)
 
     @classmethod
@@ -191,7 +195,7 @@ class URDF(object):
         for child in elements:
             key = cls._argname_from_element(child, metadata)
 
-            if metadata['init_args'][key]['sequence']:
+            if key in metadata['init_args'] and metadata['init_args'][key]['sequence']:
                 itemlist = result.get(key, [])
                 itemlist.append(child)
                 result[key] = itemlist
