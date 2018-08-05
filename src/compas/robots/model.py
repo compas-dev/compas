@@ -15,13 +15,25 @@ __all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometr
            'Inertia', 'ParentJoint', 'ChildJoint', 'Calibration', 'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']
 
 
+def _parse_floats(values, scale_factor=None):
+    result = []
+
+    for i in values.split():
+        val = float(i)
+        if scale_factor:
+            val = val * scale_factor
+        result.append(val)
+
+    return result
+
+
 class Origin(object):
     """Reference frame represented by an instance of :class:`Frame`."""
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
-        xyz = [float(i) * SCALE_FACTOR for i in attributes.get('xyz', '0 0 0').split(' ')]
-        rpy = list(map(float, attributes.get('rpy', '0 0 0').split(' ')))
+        xyz = _parse_floats(attributes.get('xyz', '0 0 0'), SCALE_FACTOR)
+        rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
         xform = Rotation.from_axis_angle_vector(rpy, xyz)
         return Frame.from_transformation(xform)
 
@@ -74,7 +86,7 @@ class Box(object):
     """3D shape primitive representing a box."""
 
     def __init__(self, size):
-        self.size = [float(i) * SCALE_FACTOR for i in size.split(' ')]
+        self.size = _parse_floats(size, SCALE_FACTOR)
 
 
 class Cylinder(object):
@@ -95,16 +107,16 @@ class Sphere(object):
 class MeshDescriptor(object):
     """Description of a mesh."""
 
-    def __init__(self, filename, scale=1.0):
+    def __init__(self, filename, scale='1.0 1.0 1.0'):
         self.filename = filename
-        self.scale = float(scale)
+        self.scale = _parse_floats(scale)
 
 
 class Color(object):
     """Color represented in RGBA."""
 
     def __init__(self, rgba):
-        self.rgba = [float(i) for i in rgba.split(' ')]
+        self.rgba = _parse_floats(rgba)
 
 
 class Texture(object):
@@ -269,7 +281,7 @@ class Axis(object):
     def __init__(self, xyz='0 0 0'):
         # We are not using Vector here because we
         # cannot attach _urdf_source to it due to __slots__
-        xyz = [float(i) * SCALE_FACTOR for i in xyz.split(' ')]
+        xyz = _parse_floats(xyz, SCALE_FACTOR)
         self.x = xyz[0]
         self.y = xyz[1]
         self.z = xyz[2]
