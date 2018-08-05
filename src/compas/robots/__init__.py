@@ -40,6 +40,9 @@ elements connecting the links together.
     Cylinder
     Sphere
     MeshDescriptor
+    Material
+    Texture
+    Color
     Origin
     Mass
     Inertia

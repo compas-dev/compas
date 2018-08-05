@@ -44,6 +44,18 @@ def get_metadata(type):
     return metadata
 
 
+class GenericUrdfElement(object):
+    """Generic parser for all URDF elements that are not explicitely supported."""
+
+    @classmethod
+    def from_urdf(cls, attributes, elements, text):
+        el = GenericUrdfElement()
+        el.attributes = attributes
+        el.elements = elements
+        el.text = text
+        return el
+
+
 class URDF(object):
     """Parse and generate URDF files.
 
@@ -52,14 +64,18 @@ class URDF(object):
     _parsers = dict()
 
     @classmethod
-    def add_parser(cls, tag, parser_type):
+    def add_parser(cls, parser_type, *tags):
         """Append an URDF parser type for a defined tag.
 
         Args:
-            tag (:obj:`str`): URDF tag to be parsed.
             parser_type: Python class handling URDF parsing of the tag.
+            tags (:obj:`str`): One or more URDF string tag that the parser can parse.
         """
-        cls._parsers[tag] = parser_type
+        if len(tags) == 0:
+            raise ValueError('Must define at least one tag')
+
+        for tag in tags:
+            cls._parsers[tag] = parser_type
 
     @classmethod
     def parse(cls, source):
@@ -80,7 +96,7 @@ class URDF(object):
         tree = ET.parse(source)
         root = tree.getroot()
 
-        return cls.parse_element(root)
+        return cls.parse_element(root, root.tag)
 
     @classmethod
     def from_string(cls, text):
@@ -99,10 +115,10 @@ class URDF(object):
         >>> robot = URDF.from_string('<robot name="panda"/>')
         """
         root = ET.fromstring(text)
-        return cls.parse_element(root)
+        return cls.parse_element(root, root.tag)
 
     @classmethod
-    def parse_element(cls, element):
+    def parse_element(cls, element, path=''):
         """Recursively parse URDF element and its children.
 
         If the parser type implements a class method ``from_urdf``,
@@ -112,13 +128,15 @@ class URDF(object):
 
         Args:
             element: XML Element node.
+            path: Full path to the element.
 
         Returns:
             An instance of the model object represented by the given element.
         """
-        children = [cls.parse_element(child) for child in element]
+        children = [cls.parse_element(child, '/'.join([path, child.tag])) for child in element]
 
-        parser_type = cls._parsers[element.tag]
+        parser_type = cls._parsers.get(path, None) or GenericUrdfElement
+
         metadata = get_metadata(parser_type)
 
         attributes = dict(element.attrib)

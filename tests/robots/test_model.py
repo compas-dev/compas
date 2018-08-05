@@ -16,9 +16,29 @@ def urdf_file():
 def urdf_file_with_shapes():
     return os.path.join(BASE_FOLDER, 'fixtures', 'sample.with_shapes.urdf')
 
+
+@pytest.fixture
+def ur5_file():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'ur5.xacro')
+
+
+def test_ur5_urdf(ur5_file):
+    r = Robot.from_urdf_file(ur5_file)
+    assert r.name == 'ur5'
+    assert len(list(filter(lambda i: i.type == 'revolute', r.joints))) == 6
+
+
 def test_root_urdf_attributes():
-    r = Robot.from_urdf_string("""<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"></robot>""")
+    r = Robot.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"></robot>""")
     assert r.name == 'panda'
+
+
+def test_robot_material_attributes():
+    r = Robot.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot name="panda"><material name="LightGrey"><color rgba="0.7 0.7 0.7 1.0"/></material></robot>""")
+    assert r.material.color.rgba == [0.7, 0.7, 0.7, 1.0]
+
 
 def test_unknown_urdf_attributes():
     r = Robot.from_urdf_string(
@@ -26,10 +46,12 @@ def test_unknown_urdf_attributes():
     assert r.name == 'panda'
     assert r.attr['some_random_attr'] == '1337'
 
+
 def test_parse_from_file(urdf_file):
     r = Robot.from_urdf_file(urdf_file)
     assert r is not None
     assert r.name == 'panda'
+
 
 def test_inertial_parser(urdf_file):
     r = Robot.from_urdf_file(urdf_file)
@@ -37,6 +59,7 @@ def test_inertial_parser(urdf_file):
     assert r.links[0].inertial.origin.point == [0.0, 0.0, 0.0]
     assert r.links[0].inertial.mass.value == 1.0
     assert r.links[0].inertial.inertia.izz == 100.0
+
 
 def test_link_parser(urdf_file):
     r = Robot.from_urdf_file(urdf_file)
@@ -55,7 +78,6 @@ def test_geometry_parser(urdf_file_with_shapes):
 
     assert r.links[0].visual[0].geometry.shape.filename == 'package://franka_description/meshes/visual/link0.dae'
     assert r.links[0].visual[0].geometry.shape.scale == 1.
-
 
     assert type(r.links[0].collision[0].geometry.shape) == Sphere
     assert r.links[0].collision[0].geometry.shape.radius == 200.

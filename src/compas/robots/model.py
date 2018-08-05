@@ -11,7 +11,7 @@ from compas.geometry.xforms import Rotation
 # so we scale it all to millimeters
 SCALE_FACTOR = 1000
 
-__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'Box', 'Cylinder', 'Sphere', 'MeshDescriptor', 'Origin', 'Mass',
+__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'Box', 'Cylinder', 'Sphere', 'MeshDescriptor', 'Color', 'Texture', 'Material', 'Origin', 'Mass',
            'Inertia', 'ParentJoint', 'ChildJoint', 'Calibration', 'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']
 
 
@@ -98,6 +98,29 @@ class MeshDescriptor(object):
     def __init__(self, filename, scale=1.0):
         self.filename = filename
         self.scale = float(scale)
+
+
+class Color(object):
+    """Color represented in RGBA."""
+
+    def __init__(self, rgba):
+        self.rgba = [float(i) for i in rgba.split(' ')]
+
+
+class Texture(object):
+    """Texture description."""
+
+    def __init__(self, filename):
+        self.filename = filename
+
+
+class Material(object):
+    """Material description."""
+
+    def __init__(self, name, color=None, texture=None):
+        self.name = name
+        self.color = color
+        self.texture = texture
 
 
 class Geometry(object):
@@ -338,25 +361,33 @@ class Robot(object):
         return URDF.from_string(text)
 
 
-URDF.add_parser('robot', Robot)
-URDF.add_parser('joint', Joint)
-URDF.add_parser('link', Link)
-URDF.add_parser('inertial', Inertial)
-URDF.add_parser('visual', Visual)
-URDF.add_parser('collision', Collision)
-URDF.add_parser('geometry', Geometry)
-URDF.add_parser('mesh', MeshDescriptor)
-URDF.add_parser('box', Box)
-URDF.add_parser('cylinder', Cylinder)
-URDF.add_parser('sphere', Sphere)
-URDF.add_parser('origin', Origin)
-URDF.add_parser('mass', Mass)
-URDF.add_parser('inertia', Inertia)
-URDF.add_parser('parent', ParentJoint)
-URDF.add_parser('child', ChildJoint)
-URDF.add_parser('calibration', Calibration)
-URDF.add_parser('dynamics', Dynamics)
-URDF.add_parser('limit', Limit)
-URDF.add_parser('axis', Axis)
-URDF.add_parser('mimic', Mimic)
-URDF.add_parser('safety_controller', SafetyController)
+URDF.add_parser(Robot, 'robot')
+URDF.add_parser(Joint, 'robot/joint')
+URDF.add_parser(Link, 'robot/link')
+URDF.add_parser(Inertial, 'robot/link/inertial')
+URDF.add_parser(Mass, 'robot/link/inertial/mass')
+URDF.add_parser(Inertia, 'robot/link/inertial/inertia')
+
+URDF.add_parser(Origin, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin', 'robot/joint/origin')
+
+URDF.add_parser(Visual, 'robot/link/visual')
+URDF.add_parser(Collision, 'robot/link/collision')
+
+URDF.add_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
+URDF.add_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
+URDF.add_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')
+URDF.add_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder')
+URDF.add_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere')
+
+URDF.add_parser(Material, 'robot/material', 'robot/link/visual/material')
+URDF.add_parser(Color, 'robot/material/color', 'robot/link/visual/material/color')
+URDF.add_parser(Texture, 'robot/material/texture', 'robot/link/visual/material/texture')
+
+URDF.add_parser(ParentJoint, 'robot/joint/parent')
+URDF.add_parser(ChildJoint, 'robot/joint/child')
+URDF.add_parser(Calibration, 'robot/joint/calibration')
+URDF.add_parser(Dynamics, 'robot/joint/dynamics')
+URDF.add_parser(Limit, 'robot/joint/limit')
+URDF.add_parser(Axis, 'robot/joint/axis')
+URDF.add_parser(Mimic, 'robot/joint/mimic')
+URDF.add_parser(SafetyController, 'robot/joint/safety_controller')
