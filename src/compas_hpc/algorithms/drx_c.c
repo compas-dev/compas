@@ -14,13 +14,14 @@
 
 void drx_solver_c(double tol, int steps, int summary, int m, int n, int *u, int *v, double *X, double *f0, double *l0, double *k0, int *ind_c, int *ind_t, int ind_c_n, int ind_t_n, double *B, double *P, double *S, int *rows, int *cols, double *vals, int nv, double *M, double factor, double *V, int *inds, int *indi, int *indf, double *EIx, double *EIy, int beams, int nb) {
 
-    int a, b, c, i, j, k, ts;
+    int a, b, c, i, j, k, ts, nans;
 
+    double alpha, kappa;
     double f[m], fx[m], fy[m], fz[m];
     double frx[n], fry[n], frz[n];
     double l;
-    double La, Lb, Lc, LQn, Lmu;
-    double Mi;
+    double La, Lb, Lc, LQn, Lmu, Lc1, Lc2;
+    double Mi, Ms;
     double q;
     double res;
     double Rx, Ry, Rz, Rn;
@@ -35,6 +36,17 @@ void drx_solver_c(double tol, int steps, int summary, int m, int n, int *u, int 
     gsl_vector *Qc = gsl_vector_alloc(3);
     gsl_vector *Qn = gsl_vector_alloc(3);
     gsl_vector *mu = gsl_vector_alloc(3);
+    gsl_vector *ex = gsl_vector_alloc(3);
+    gsl_vector *ey = gsl_vector_alloc(3);
+    gsl_vector *ez = gsl_vector_alloc(3);
+    gsl_vector *K  = gsl_vector_alloc(3);
+    gsl_vector *Kx = gsl_vector_alloc(3);
+    gsl_vector *Ky = gsl_vector_alloc(3);
+    gsl_vector *Mc = gsl_vector_alloc(3);
+    gsl_vector *ua = gsl_vector_alloc(3);
+    gsl_vector *ub = gsl_vector_alloc(3);
+    gsl_vector *c1 = gsl_vector_alloc(3);
+    gsl_vector *c2 = gsl_vector_alloc(3);
 
     ts = 0;
     Uo = 0.;
@@ -77,11 +89,20 @@ void drx_solver_c(double tol, int steps, int summary, int m, int n, int *u, int 
         }
 
         if (beams) {
+
+            for (i = 0; i < n; i++) {
+                j = i * 3;
+                S[j + 0] = 0.;
+                S[j + 1] = 0.;
+                S[j + 2] = 0.;
+            }
+
             for (i = 0; i < nb; i++) {
 
                 a = inds[i] * 3;
                 b = indi[i] * 3;
                 c = indf[i] * 3;
+
                 vector_from_pointer(&X[a], Xs);
                 vector_from_pointer(&X[b], Xi);
                 vector_from_pointer(&X[c], Xf);
@@ -99,35 +120,54 @@ void drx_solver_c(double tol, int steps, int summary, int m, int n, int *u, int 
                 LQn = length_vector(Qn);
                 Lmu = length_vector(mu);
 
-            //     a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
-            //     k = 2 * sin(a) / Lc
-            //     ex = Qn / LQn
-            //     ez = mu / Lmu
-            //     ey = cross(ez, ex)
-            //     K = k * Qn / LQn
-            //     Kx = dot(K, ex) * ex
-            //     Ky = dot(K, ey) * ey
-            //     Mc = EIx[i] * Kx + EIy[i] * Ky
-            //     cma = cross(Mc, Qa)
-            //     cmb = cross(Mc, Qb)
-            //     ua = cma / length(cma)
-            //     ub = cmb / length(cmb)
-            //     c1 = cross(Qa, ua)
-            //     c2 = cross(Qb, ub)
-            //     Lc1 = length(c1)
-            //     Lc2 = length(c2)
-            //     Ms = Mc[0]**2 + Mc[1]**2 + Mc[2]**2
-            //     Sa = ua * Ms * Lc1 / (La * dot(Mc, c1))
-            //     Sb = ub * Ms * Lc2 / (Lb * dot(Mc, c2))
-            //     # print(isnan(Sa))
-            //     if isnan(Sa[0]) or isnan(Sb[0]):
-            //         pass
-            //     else:
-            //         S[inds[i], :] += Sa
-            //         S[indi[i], :] -= Sa + Sb
-            //         S[indf[i], :] += Sb
-            printf("%f %f %f\n", gsl_vector_get(Qa, 0), gsl_vector_get(Qa, 1), gsl_vector_get(Qa, 2));
-            printf("%f\n", Lmu);
+                alpha = acos((gsl_pow_2(La) + gsl_pow_2(Lb) - gsl_pow_2(Lc)) / (2. * La * Lb));
+                kappa = 2. * sin(alpha) / Lc;
+                gsl_vector_memcpy(ex, Qn);
+                gsl_vector_memcpy(ez, mu);
+                scale_vector(ex, 1./LQn);
+                scale_vector(ez, 1./Lmu);
+                cross_vectors(ez, ex, ey);
+                gsl_vector_memcpy(K, Qn);
+                scale_vector(K, kappa/LQn);
+
+                gsl_vector_memcpy(Kx, ex);
+                gsl_vector_memcpy(Ky, ey);
+                scale_vector(Kx, dot_vectors(K, ex));
+                scale_vector(Ky, dot_vectors(K, ey));
+                scale_vector(Kx, EIx[i]);
+                scale_vector(Ky, EIy[i]);
+                add_vectors(Kx, Ky, Mc);
+                cross_vectors(Mc, Qa, ua);
+                cross_vectors(Mc, Qb, ub);
+                normalise_vector(ua);
+                normalise_vector(ub);
+                cross_vectors(Qa, ua, c1);
+                cross_vectors(Qb, ub, c2);
+                Lc1 = length_vector(c1);
+                Lc2 = length_vector(c2);
+                Ms = length_vector_squared(Mc);
+
+                scale_vector(ua, Ms * Lc1 / (La * dot_vectors(Mc, c1)));
+                scale_vector(ub, Ms * Lc2 / (Lb * dot_vectors(Mc, c2)));
+
+                nans = 0;
+                for (j = 0; j < 3; j++) {
+                    if (gsl_isnan(gsl_vector_get(ua, j)) || gsl_isnan(gsl_vector_get(ub, j))) {
+                        nans = 1;
+                        break;
+                    }
+                }
+
+                if (nans == 0) {
+                    for (j = 0; j < 3; j++) {
+                        S[a + j] += gsl_vector_get(ua, j);
+                        S[b + j] -= (gsl_vector_get(ua, j) + gsl_vector_get(ub, j));
+                        S[c + j] += gsl_vector_get(ub, j);
+                    }
+                }
+
+            // printf("%f %f %f\n", gsl_vector_get(ub, 0), gsl_vector_get(ub, 1), gsl_vector_get(ub, 2));
+            // printf("%f\n", Ms);
             }
         }
 

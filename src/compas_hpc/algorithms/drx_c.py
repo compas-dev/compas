@@ -254,5 +254,5 @@ if __name__ == "__main__":
     viewer = VtkViewer(data=data)
     viewer.vertex_size = 0.02
 
-    # viewer.setup()
-    # viewer.start()
+    viewer.setup()
+    viewer.start()

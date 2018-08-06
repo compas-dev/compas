@@ -49,8 +49,8 @@ try:
     from PyQt5.Qt import QVBoxLayout
     from PyQt5.Qt import QWidget
     from PyQt5.QtCore import Qt
-except ImportError:
-    raise ImportError('Error with PyQt5 import')
+except:
+    pass
 
 import sys
 
