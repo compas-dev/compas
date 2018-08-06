@@ -11,7 +11,7 @@ from compas.geometry.xforms import Rotation
 # so we scale it all to millimeters
 SCALE_FACTOR = 1000
 
-__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'Box', 'Cylinder', 'Sphere', 'MeshDescriptor', 'Color', 'Texture', 'Material', 'Origin', 'Mass',
+__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'Box', 'Cylinder', 'Sphere', 'Capsule', 'MeshDescriptor', 'Color', 'Texture', 'Material', 'Origin', 'Mass',
            'Inertia', 'ParentJoint', 'ChildJoint', 'Calibration', 'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']
 
 
@@ -104,6 +104,14 @@ class Sphere(object):
         self.radius = float(radius) * SCALE_FACTOR
 
 
+class Capsule(Cylinder):
+    """3D shape primitive representing a capsule."""
+
+    def __init__(self, radius, length):
+        self.radius = float(radius) * SCALE_FACTOR
+        self.length = float(length) * SCALE_FACTOR
+
+
 class MeshDescriptor(object):
     """Description of a mesh."""
 
@@ -138,12 +146,12 @@ class Material(object):
 class Geometry(object):
     """Shape of a link."""
 
-    def __init__(self, box=None, cylinder=None, sphere=None, mesh=None, **kwargs):
-        self.shape = box or cylinder or sphere or mesh
+    def __init__(self, box=None, cylinder=None, sphere=None, capsule=None, mesh=None, **kwargs):
+        self.shape = box or cylinder or sphere or capsule or mesh
         self.attr = kwargs
         if not self.shape:
-            raise ValueError(
-                'Geometry must define at least one of: box, cylinder, sphere, mesh')
+            raise TypeError(
+                'Geometry must define at least one of: box, cylinder, sphere, capsule, mesh')
 
 
 class Visual(object):
@@ -392,6 +400,7 @@ URDF.add_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/c
 URDF.add_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')
 URDF.add_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder')
 URDF.add_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere')
+URDF.add_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule')
 
 URDF.add_parser(Material, 'robot/material', 'robot/link/visual/material')
 URDF.add_parser(Color, 'robot/material/color', 'robot/link/visual/material/color')
