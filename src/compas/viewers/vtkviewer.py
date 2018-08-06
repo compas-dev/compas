@@ -488,7 +488,9 @@ class VtkViewer(QApplication):
 
         value = self.sliders['slider_edges'].value()
         if value == 0:
-            value = 0.1
+            self.actor.GetProperty().EdgeVisibilityOff()
+        else:
+            self.actor.GetProperty().EdgeVisibilityOn()
         self.labels['label_edges'].setText('Edge width: {0}'.format(value))
         self.actor.GetProperty().SetLineWidth(value * 0.1)
         self.main.window.Render()
@@ -649,70 +651,70 @@ if __name__ == "__main__":
     # Mesh
     # ==============================================================================
 
-    def func(self):
-        print('Callback test!')
+    # def func(self):
+    #     print('Callback test!')
 
-    data = {
-        'vertices': {
-            0: [-3, -3, 0],
-            1: [+3, -3, 0],
-            2: [+3, +3, 0],
-            3: [-3, +3, 0],
-            4: [-3, -3, 3],
-            5: [+3, -3, 3],
-            6: [+3, +3, 3],
-            7: [-3, +3, 3],
-        },
-        'vertex_colors': {
-            # turn on vertex coloring by uncommenting
-            0: [255, 0, 255],
-            1: [255, 0, 0],
-            2: [255, 255, 0],
-            3: [255, 255, 0],
-            4: [0, 255, 0],
-            5: [0, 255, 150],
-            6: [0, 255, 255],
-            7: [0, 0, 255],
-        },
-        'edges': [
-            {'u': 0, 'v': 4, 'color': [0, 0, 0]},
-            {'u': 1, 'v': 5, 'color': [0, 0, 255]},
-            {'u': 2, 'v': 6, 'color': [0, 255, 0]},
-            {'u': 3, 'v': 7}
-        ],
-        'faces': {
-            0: {'vertices': [4, 5, 6], 'color': [250, 150, 150]},
-            1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
-        },
-        'fixed':
-            [0, 1],
-        'blocks': {
-            'size': 1,
-            'locations': [[0, 0, 3], [0, 0, 4]],
-        }
-    }
+    # data = {
+    #     'vertices': {
+    #         0: [-3, -3, 0],
+    #         1: [+3, -3, 0],
+    #         2: [+3, +3, 0],
+    #         3: [-3, +3, 0],
+    #         4: [-3, -3, 3],
+    #         5: [+3, -3, 3],
+    #         6: [+3, +3, 3],
+    #         7: [-3, +3, 3],
+    #     },
+    #     'vertex_colors': {
+    #         # turn on vertex coloring by uncommenting
+    #         0: [255, 0, 255],
+    #         1: [255, 0, 0],
+    #         2: [255, 255, 0],
+    #         3: [255, 255, 0],
+    #         4: [0, 255, 0],
+    #         5: [0, 255, 150],
+    #         6: [0, 255, 255],
+    #         7: [0, 0, 255],
+    #     },
+    #     'edges': [
+    #         {'u': 0, 'v': 4, 'color': [0, 0, 0]},
+    #         {'u': 1, 'v': 5, 'color': [0, 0, 255]},
+    #         {'u': 2, 'v': 6, 'color': [0, 255, 0]},
+    #         {'u': 3, 'v': 7}
+    #     ],
+    #     'faces': {
+    #         0: {'vertices': [4, 5, 6], 'color': [250, 150, 150]},
+    #         1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
+    #     },
+    #     'fixed':
+    #         [0, 1],
+    #     'blocks': {
+    #         'size': 1,
+    #         'locations': [[0, 0, 3], [0, 0, 4]],
+    #     }
+    # }
 
-    viewer = VtkViewer(data=data)
-    viewer.show_axes = False
-    viewer.keycallbacks['s'] = func
-    viewer.setup()
-    viewer.start()
+    # viewer = VtkViewer(data=data)
+    # viewer.show_axes = False
+    # viewer.keycallbacks['s'] = func
+    # viewer.setup()
+    # viewer.start()
 
 
     # ==============================================================================
     # Voxels
     # ==============================================================================
 
-    # from numpy import linspace
-    # from numpy import meshgrid
+    from numpy import linspace
+    from numpy import meshgrid
 
-    # r = linspace(-1, 1, 50)
-    # x, y, z = meshgrid(r, r, r)
+    r = linspace(-1, 1, 50)
+    x, y, z = meshgrid(r, r, r)
 
-    # data = {
-    #     'voxels': x + y + z,
-    # }
+    data = {
+        'voxels': x + y + z,
+    }
 
-    # viewer = VtkViewer(data=data)
-    # viewer.setup()
-    # viewer.start()
+    viewer = VtkViewer(data=data)
+    viewer.setup()
+    viewer.start()
