@@ -129,7 +129,7 @@ class Texture(object):
 class Material(object):
     """Material description."""
 
-    def __init__(self, name, color=None, texture=None):
+    def __init__(self, name=None, color=None, texture=None):
         self.name = name
         self.color = color
         self.texture = texture
@@ -249,7 +249,7 @@ class Limit(object):
         upper: Upper joint limit (radians for revolute joints, millimeter for prismatic joints).
     """
 
-    def __init__(self, effort, velocity, lower=0.0, upper=0.0):
+    def __init__(self, effort=0.0, velocity=0.0, lower=0.0, upper=0.0):
         self.effort = float(effort)
         self.velocity = float(velocity)
         # TODO: Scale upper/lower limits once this is connected to a joint, if the joint is prismatic
