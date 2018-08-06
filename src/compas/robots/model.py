@@ -11,8 +11,20 @@ from compas.geometry.xforms import Rotation
 # so we scale it all to millimeters
 SCALE_FACTOR = 1000
 
-__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'Box', 'Cylinder', 'Sphere', 'MeshDescriptor', 'Origin', 'Mass',
+__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'Box', 'Cylinder', 'Sphere', 'Capsule', 'MeshDescriptor', 'Color', 'Texture', 'Material', 'Origin', 'Mass',
            'Inertia', 'ParentJoint', 'ChildJoint', 'Calibration', 'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']
+
+
+def _parse_floats(values, scale_factor=None):
+    result = []
+
+    for i in values.split():
+        val = float(i)
+        if scale_factor:
+            val = val * scale_factor
+        result.append(val)
+
+    return result
 
 
 class Origin(object):
@@ -20,8 +32,8 @@ class Origin(object):
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
-        xyz = [float(i) * SCALE_FACTOR for i in attributes.get('xyz', '0 0 0').split(' ')]
-        rpy = list(map(float, attributes.get('rpy', '0 0 0').split(' ')))
+        xyz = _parse_floats(attributes.get('xyz', '0 0 0'), SCALE_FACTOR)
+        rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
         xform = Rotation.from_axis_angle_vector(rpy, xyz)
         return Frame.from_transformation(xform)
 
@@ -74,7 +86,7 @@ class Box(object):
     """3D shape primitive representing a box."""
 
     def __init__(self, size):
-        self.size = [float(i) * SCALE_FACTOR for i in size.split(' ')]
+        self.size = _parse_floats(size, SCALE_FACTOR)
 
 
 class Cylinder(object):
@@ -92,22 +104,54 @@ class Sphere(object):
         self.radius = float(radius) * SCALE_FACTOR
 
 
+class Capsule(Cylinder):
+    """3D shape primitive representing a capsule."""
+
+    def __init__(self, radius, length):
+        self.radius = float(radius) * SCALE_FACTOR
+        self.length = float(length) * SCALE_FACTOR
+
+
 class MeshDescriptor(object):
     """Description of a mesh."""
 
-    def __init__(self, filename, scale=1.0):
+    def __init__(self, filename, scale='1.0 1.0 1.0'):
         self.filename = filename
-        self.scale = float(scale)
+        self.scale = _parse_floats(scale)
+
+
+class Color(object):
+    """Color represented in RGBA."""
+
+    def __init__(self, rgba):
+        self.rgba = _parse_floats(rgba)
+
+
+class Texture(object):
+    """Texture description."""
+
+    def __init__(self, filename):
+        self.filename = filename
+
+
+class Material(object):
+    """Material description."""
+
+    def __init__(self, name=None, color=None, texture=None):
+        self.name = name
+        self.color = color
+        self.texture = texture
 
 
 class Geometry(object):
     """Shape of a link."""
 
-    def __init__(self, box=None, cylinder=None, sphere=None, mesh=None):
-        self.shape = box or cylinder or sphere or mesh
+    def __init__(self, box=None, cylinder=None, sphere=None, capsule=None, mesh=None, **kwargs):
+        self.shape = box or cylinder or sphere or capsule or mesh
+        self.attr = kwargs
         if not self.shape:
-            raise ValueError(
-                'Geometry must define at least one of: box, cylinder, sphere, mesh')
+            raise TypeError(
+                'Geometry must define at least one of: box, cylinder, sphere, capsule, mesh')
 
 
 class Visual(object):
@@ -119,14 +163,15 @@ class Visual(object):
             to the reference frame of the link.
         name: Name of the visual element.
         material: Material of the visual element.
+        attr: Non-standard attributes.
     """
 
-    def __init__(self, geometry, origin=None, name=None, material=None):
+    def __init__(self, geometry, origin=None, name=None, material=None, **kwargs):
         self.geometry = geometry
         self.origin = origin
         self.name = name
         self.material = material
-
+        self.attr = kwargs
 
 class Collision(object):
     """Collidable description of a link.
@@ -136,13 +181,14 @@ class Collision(object):
         origin: Reference frame of the collidable element with respect
             to the reference frame of the link.
         name: Name of the collidable element.
+        attr: Non-standard attributes.
     """
 
-    def __init__(self, geometry, origin=None, name=None):
+    def __init__(self, geometry, origin=None, name=None, **kwargs):
         self.geometry = geometry
         self.origin = origin
         self.name = name
-
+        self.attr = kwargs
 
 class Link(object):
     """Link represented as a rigid body with an inertia, visual, and collision features.
@@ -213,7 +259,7 @@ class Limit(object):
         upper: Upper joint limit (radians for revolute joints, millimeter for prismatic joints).
     """
 
-    def __init__(self, effort, velocity, lower=0.0, upper=0.0):
+    def __init__(self, effort=0.0, velocity=0.0, lower=0.0, upper=0.0):
         self.effort = float(effort)
         self.velocity = float(velocity)
         # TODO: Scale upper/lower limits once this is connected to a joint, if the joint is prismatic
@@ -246,7 +292,7 @@ class Axis(object):
     def __init__(self, xyz='0 0 0'):
         # We are not using Vector here because we
         # cannot attach _urdf_source to it due to __slots__
-        xyz = [float(i) * SCALE_FACTOR for i in xyz.split(' ')]
+        xyz = _parse_floats(xyz, SCALE_FACTOR)
         self.x = xyz[0]
         self.y = xyz[1]
         self.z = xyz[2]
@@ -303,14 +349,20 @@ class Robot(object):
 
     In line with URDF limitations, only tree structures can be represented by this
     model, ruling out all parallel robots.
+
+    Attributes:
+        name: Unique name of the robot.
+        joints: List of joint elements.
+        links: List of links of the robot.
+        materials: List of global materials.
+        attr: Non-standard attributes.
     """
 
-    def __init__(self, name, joints=[], links=[], material=None, transmission=None, **kwargs):
+    def __init__(self, name, joints=[], links=[], materials=[], **kwargs):
         self.name = name
         self.joints = joints
         self.links = links
-        self.material = material
-        self.transmission = transmission
+        self.materials = materials
         self.attr = kwargs
 
     @classmethod
@@ -338,25 +390,34 @@ class Robot(object):
         return URDF.from_string(text)
 
 
-URDF.add_parser('robot', Robot)
-URDF.add_parser('joint', Joint)
-URDF.add_parser('link', Link)
-URDF.add_parser('inertial', Inertial)
-URDF.add_parser('visual', Visual)
-URDF.add_parser('collision', Collision)
-URDF.add_parser('geometry', Geometry)
-URDF.add_parser('mesh', MeshDescriptor)
-URDF.add_parser('box', Box)
-URDF.add_parser('cylinder', Cylinder)
-URDF.add_parser('sphere', Sphere)
-URDF.add_parser('origin', Origin)
-URDF.add_parser('mass', Mass)
-URDF.add_parser('inertia', Inertia)
-URDF.add_parser('parent', ParentJoint)
-URDF.add_parser('child', ChildJoint)
-URDF.add_parser('calibration', Calibration)
-URDF.add_parser('dynamics', Dynamics)
-URDF.add_parser('limit', Limit)
-URDF.add_parser('axis', Axis)
-URDF.add_parser('mimic', Mimic)
-URDF.add_parser('safety_controller', SafetyController)
+URDF.add_parser(Robot, 'robot')
+URDF.add_parser(Joint, 'robot/joint')
+URDF.add_parser(Link, 'robot/link')
+URDF.add_parser(Inertial, 'robot/link/inertial')
+URDF.add_parser(Mass, 'robot/link/inertial/mass')
+URDF.add_parser(Inertia, 'robot/link/inertial/inertia')
+
+URDF.add_parser(Origin, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin', 'robot/joint/origin')
+
+URDF.add_parser(Visual, 'robot/link/visual')
+URDF.add_parser(Collision, 'robot/link/collision')
+
+URDF.add_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
+URDF.add_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
+URDF.add_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')
+URDF.add_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder')
+URDF.add_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere')
+URDF.add_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule')
+
+URDF.add_parser(Material, 'robot/material', 'robot/link/visual/material')
+URDF.add_parser(Color, 'robot/material/color', 'robot/link/visual/material/color')
+URDF.add_parser(Texture, 'robot/material/texture', 'robot/link/visual/material/texture')
+
+URDF.add_parser(ParentJoint, 'robot/joint/parent')
+URDF.add_parser(ChildJoint, 'robot/joint/child')
+URDF.add_parser(Calibration, 'robot/joint/calibration')
+URDF.add_parser(Dynamics, 'robot/joint/dynamics')
+URDF.add_parser(Limit, 'robot/joint/limit')
+URDF.add_parser(Axis, 'robot/joint/axis')
+URDF.add_parser(Mimic, 'robot/joint/mimic')
+URDF.add_parser(SafetyController, 'robot/joint/safety_controller')
