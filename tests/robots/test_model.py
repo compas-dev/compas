@@ -37,7 +37,7 @@ def test_root_urdf_attributes():
 def test_robot_material_attributes():
     r = Robot.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot name="panda"><material name="LightGrey"><color rgba="0.7 0.7 0.7 1.0"/></material></robot>""")
-    assert r.material.color.rgba == [0.7, 0.7, 0.7, 1.0]
+    assert r.materials[0].color.rgba == [0.7, 0.7, 0.7, 1.0]
 
 
 def test_unknown_urdf_attributes():
@@ -77,7 +77,7 @@ def test_geometry_parser(urdf_file_with_shapes):
     r = Robot.from_urdf_file(urdf_file_with_shapes)
 
     assert r.links[0].visual[0].geometry.shape.filename == 'package://franka_description/meshes/visual/link0.dae'
-    assert r.links[0].visual[0].geometry.shape.scale == 1.
+    assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
     assert type(r.links[0].collision[0].geometry.shape) == Sphere
     assert r.links[0].collision[0].geometry.shape.radius == 200.
