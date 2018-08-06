@@ -88,3 +88,38 @@ def test_geometry_parser(urdf_file_with_shapes):
     assert type(r.links[1].collision[0].geometry.shape) == Cylinder
     assert r.links[1].collision[0].geometry.shape.length == 600.
     assert r.links[1].collision[0].geometry.shape.radius == 200.
+
+
+if __name__ == '__main__':
+    import os
+    from zipfile import ZipFile
+    try:
+        from StringIO import StringIO as ReaderIO
+        from urllib import urlopen
+    except ImportError:
+        from io import BytesIO as ReaderIO
+        from urllib.request import urlopen
+
+    print('Downloading large collection of URDF from Drake project...')
+    print('This might take a few minutes...')
+    resp = urlopen('https://github.com/RobotLocomotion/drake/archive/master.zip')
+    zipfile = ZipFile(ReaderIO(resp.read()))
+    errors = []
+    all_files = []
+
+    for f in zipfile.namelist():
+        if f.endswith('.urdf') or f.endswith('.xacro'):
+            with zipfile.open(f) as urdf_file:
+                try:
+                    all_files.append(f)
+                    r = Robot.from_urdf_file(urdf_file)
+                except Exception as e:
+                    errors.append((f, e))
+
+    print('Found %d files and parsed successfully %d of them' %
+          (len(all_files), len(all_files) - len(errors)))
+
+    if len(errors):
+        print('\nErrors found during parsing:')
+        for error in errors:
+            print(' * File=%s, Error=%s' % error)
