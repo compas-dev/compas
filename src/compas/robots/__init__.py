@@ -21,7 +21,7 @@ This package parses URDF v1.0 according to the `URDF XSD Schema`_.
 Model
 =====
 
-The root of the URDF model is the :class:`Robot` class, which
+The root of the model is the :class:`Robot` class, which
 describes a robot consisting of a set of link elements, and a set of joint
 elements connecting the links together.
 
@@ -32,20 +32,52 @@ elements connecting the links together.
     Robot
     Joint
     Link
-    Inertial
-    Visual
-    Collision
+
+Geometric description
+=====================
+
+The robot itself as well as its links can be geometrically described
+using the following classes.
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Origin
     Geometry
     Box
     Cylinder
     Sphere
+    Capsule
     MeshDescriptor
     Material
     Texture
     Color
-    Origin
+
+Link
+====
+
+The link is described as a rigid body with inertial, visual and collision values.
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Visual
+    Collision
+    Inertial
     Mass
     Inertia
+
+Joint
+=====
+
+The joint describes the kinematics and dynamics of the robot's joint.
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     ParentJoint
     ChildJoint
     Calibration

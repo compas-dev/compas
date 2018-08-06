@@ -349,13 +349,20 @@ class Robot(object):
 
     In line with URDF limitations, only tree structures can be represented by this
     model, ruling out all parallel robots.
+
+    Attributes:
+        name: Unique name of the robot.
+        joints: List of joint elements.
+        links: List of links of the robot.
+        materials: List of global materials.
+        attr: Non-standard attributes.
     """
 
-    def __init__(self, name, joints=[], links=[], material=[], **kwargs):
+    def __init__(self, name, joints=[], links=[], materials=[], **kwargs):
         self.name = name
         self.joints = joints
         self.links = links
-        self.material = material
+        self.materials = materials
         self.attr = kwargs
 
     @classmethod
