@@ -142,11 +142,15 @@ class URDF(object):
 
         attributes = dict(element.attrib)
         text = element.text.strip() if element.text else None
-        if 'from_urdf' in metadata:
-            obj = metadata['from_urdf'](attributes, children, text)
-        else:
-            obj = cls.from_generic_urdf(
-                parser_type, attributes, children, text)
+
+        try:
+            if 'from_urdf' in metadata:
+                obj = metadata['from_urdf'](attributes, children, text)
+            else:
+                obj = cls.from_generic_urdf(
+                    parser_type, attributes, children, text)
+        except Exception as e:
+            raise TypeError('Cannot create instance of %s. Message=%s' % (parser_type, e))
 
         obj._urdf_source = element
 
