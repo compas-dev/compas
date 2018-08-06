@@ -34,8 +34,7 @@ class Origin(object):
     def from_urdf(cls, attributes, elements, text):
         xyz = _parse_floats(attributes.get('xyz', '0 0 0'), SCALE_FACTOR)
         rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
-        xform = Rotation.from_axis_angle_vector(rpy, xyz)
-        return Frame.from_transformation(xform)
+        return Frame.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
 
 
 class Mass(object):
