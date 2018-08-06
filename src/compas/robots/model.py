@@ -155,14 +155,15 @@ class Visual(object):
             to the reference frame of the link.
         name: Name of the visual element.
         material: Material of the visual element.
+        attr: Non-standard attributes.
     """
 
-    def __init__(self, geometry, origin=None, name=None, material=None):
+    def __init__(self, geometry, origin=None, name=None, material=None, **kwargs):
         self.geometry = geometry
         self.origin = origin
         self.name = name
         self.material = material
-
+        self.attr = kwargs
 
 class Collision(object):
     """Collidable description of a link.
@@ -172,13 +173,14 @@ class Collision(object):
         origin: Reference frame of the collidable element with respect
             to the reference frame of the link.
         name: Name of the collidable element.
+        attr: Non-standard attributes.
     """
 
-    def __init__(self, geometry, origin=None, name=None):
+    def __init__(self, geometry, origin=None, name=None, **kwargs):
         self.geometry = geometry
         self.origin = origin
         self.name = name
-
+        self.attr = kwargs
 
 class Link(object):
     """Link represented as a rigid body with an inertia, visual, and collision features.
