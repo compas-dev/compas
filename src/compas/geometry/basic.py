@@ -38,6 +38,8 @@ __all__ = [
     'normalize_vector_xy',
     'normalize_vectors',
     'normalize_vectors_xy',
+    'homogenize_vectors',
+    'dehomogenize_vectors',
     'orthonormalise_vectors',
     'power_vector',
     'power_vectors',
@@ -1054,6 +1056,59 @@ def multiply_matrix_vector(A, b):
 # ==============================================================================
 # linalg
 # ==============================================================================
+
+
+def homogenize_vectors(vectors, w=1.0):
+    """Homogenise a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+    w : float, optional
+        Homogenisation parameter.
+        Defaults to ``1.0``.
+
+    Returns
+    -------
+    list
+        Homogenised vectors.
+
+    Examples
+    --------
+    >>> vectors = [[1.0, 0.0, 0.0]]
+    >>> homogenize(vectors)
+    [[1.0, 0.0, 0.0, 1.0]]
+
+    Notes
+    -----
+    Vectors described by XYZ components are homogenised by appending a homogenisation
+    parameter to the components, and by dividing each component by that parameter.
+    Homogenisatioon of vectors is often used in relation to transformations.
+
+    """
+    return [[x / w, y / w, z / w, w] for x, y, z in vectors]
+
+
+def dehomogenize_vectors(vectors):
+    """Dehomogenise a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+
+    Returns
+    -------
+    list
+        Dehomogenised vectors.
+
+    Examples
+    --------
+    >>>
+
+    """
+    return [[x * w, y * w, z * w] for x, y, z, w in vectors]
 
 
 def orthonormalise_vectors(vectors):

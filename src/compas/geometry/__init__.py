@@ -9,83 +9,41 @@ This package provides functionality for working with geometry independent of CAD
 The package defines geometric primitives, basic geometry functions, and an implementation
 of a wide range of geometric algorithms.
 
+The functions, methods and algorithms of the geometry package take various geometric
+primitives and objects as input parameters. These primitives and objects may be passed
+into those functions as instances of the corresponding classes defined in :mod:`compas.geometry.objects`
+or as an equivalent representation using (combinations of) built-in Python objects.
+The following table defines those representations.
 
+=========== ====================================================================
+parameter   representation
+=========== ====================================================================
+vector      :obj:`list` of XYZ coordinates.
+point       :obj:`list` of XYZ coordinates.
+segment     2-:obj:`tuple` of points.
+line        2-:obj:`tuple` of points.
+ray         2-:obj:`tuple` of points.
+polyline    :obj:`list` of points.
+polygon     :obj:`list` of points.
+plane       2-:obj:`tuple` of origin (point) and normal (vector).
+frame       3-:obj:`tuple` of origin (point), U axis (vector) and V axis (vector).
+circle      3-:obj:`tuple` of centre (point), normal (vector) and radius (float).
+=========== ====================================================================
 
+.. note::
 
+    Many functions have an "_xy" version. These functions also accept 2D representations
+    of geometric objects. However, all functions always return 3D representations
+    of geometric objects. For example, `scale_vector_xy` accepts both 2D and 3D
+    vectors, but always returns a 3D vector with the Z-component set to zero::
 
-Primitives
-==========
+        >>> v3 = [1.0, 0.0, 2.0]
+        >>> scale_vector_xy(v3, 3.0)
+        [3.0, 0.0, 0.0]
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Vector
-    Point
-    Line
-    Polyline
-    Polygon
-    Polyhedron
-
-
-XForms
-======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Frame
-    Transformation
-    Rotation
-    Translation
-    Scale
-    Reflection
-    Projection
-    Shear
-
-
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
-.. 
-..     KDTree
-
-
-Algorithms
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    bestfit_plane
-    bestfit_plane_numpy
-    bestfit_circle_numpy
-    bounding_box
-    bounding_box_xy
-    convex_hull
-    convex_hull_xy
-    convex_hull_numpy
-    convex_hull_xy_numpy
-    discrete_coons_patch
-    flatness
-    mesh_contours_numpy
-    mesh_cull_duplicate_vertices
-    mesh_flatness
-    mesh_isolines_numpy
-    mesh_planarize_faces
-    mesh_planarize_faces_shapeop
-    mesh_smooth_centroid
-    network_parallelise_edges
-    network_smooth_centroid
-    oriented_bounding_box_numpy
-    oriented_bounding_box_xy_numpy
-    planarize_faces
-    scalarfield_contours_numpy
-    smooth_area
-    smooth_centroid
-    smooth_centerofmass
+        >>> v2 = [1.0, 0.0]
+        >>> scale_vector_xy(v2, 3.0)
+        [3.0, 0.0, 0.0]
 
 
 Functions
@@ -196,8 +154,8 @@ Average
     midpoint_point_point
     midpoint_point_point_xy
 
-Orientation
------------
+Normals
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -279,128 +237,156 @@ Transformations
     :toctree: generated/
     :nosignatures:
 
-    transform
-    transform_numpy
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    homogenize
-    dehomogenize
-    homogenize_numpy
-    dehomogenize_numpy
-    local_axes
-    local_coords_numpy
-    global_coords_numpy
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    determinant
-    inverse
-    identity_matrix
-    matrix_from_frame
-    matrix_from_euler_angles
-    euler_angles_from_matrix
-    matrix_from_axis_and_angle
-    matrix_from_axis_angle_vector
-    axis_and_angle_from_matrix
-    axis_angle_vector_from_matrix
-    matrix_from_quaternion
-    quaternion_from_matrix
-    matrix_from_basis_vectors
-    basis_vectors_from_matrix
-    matrix_from_translation
-    translation_from_matrix
-    matrix_from_orthogonal_projection
-    matrix_from_parallel_projection
-    matrix_from_perspective_projection
-    matrix_from_perspective_entries
-    matrix_from_shear_entries
-    matrix_from_shear
-    matrix_from_scale_factors
-    compose_matrix
-    decompose_matrix
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    mirror_point_line
-    mirror_point_line_xy
-    mirror_point_plane
-    mirror_point_point
-    mirror_point_point_xy
     mirror_points_line
     mirror_points_line_xy
     mirror_points_plane
     mirror_points_point
     mirror_points_point_xy
-    mirror_vector_vector
-    offset_line
-    offset_polyline
-    offset_polygon
-    orient_points
-    project_point_line
-    project_point_line_xy
-    project_point_plane
     project_points_line
     project_points_line_xy
     project_points_plane
-    reflect_line_plane
-    reflect_line_triangle
     rotate_points
     rotate_points_xy
     scale_points
-    translate_lines
-    translate_lines_xy
     translate_points
     translate_points_xy
 
-"""
 
-# level 0
+Objects
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Vector
+    Point
+    Line
+    Segment
+    Ray
+    Polyline
+    Polygon
+    Plane
+    Frame
+    Circle
+
+
+XForms
+======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Transformation
+    Rotation
+    Translation
+    Scale
+    Reflection
+    Projection
+    Shear
+
+
+Spatial
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    KDTree
+    RTree
+    QuadTree
+    OcTree
+
+
+Algorithms
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    bestfit_plane
+    bestfit_plane_numpy
+    bestfit_circle_numpy
+    bounding_box
+    bounding_box_xy
+    convex_hull
+    convex_hull_xy
+    convex_hull_numpy
+    convex_hull_xy_numpy
+    discrete_coons_patch
+    flatness
+    mesh_contours_numpy
+    mesh_cull_duplicate_vertices
+    mesh_flatness
+    mesh_isolines_numpy
+    mesh_planarize_faces
+    mesh_planarize_faces_shapeop
+    mesh_smooth_centroid
+    network_parallelise_edges
+    network_smooth_centroid
+    oriented_bounding_box_numpy
+    oriented_bounding_box_xy_numpy
+    planarize_faces
+    scalarfield_contours_numpy
+    smooth_area
+    smooth_centroid
+    smooth_centerofmass
+
+"""
+from __future__ import absolute_import
 
 from .basic import *
-from .basic import __all__ as a
-
-# level 1
-
 from .distance import *
 from .angles import *
 from .average import *
-
-from .distance import __all__ as b
-from .angles import __all__ as c
-from .average import __all__ as d
-
-# level 2
-
-from .orientation import *
+from .normals import *
 from .queries import *
 from .intersections import *
-
-from .orientation import __all__ as h
-from .intersections import __all__ as i
-from .queries import __all__ as j
-
-# level 3
-
 from .size import *
+
 from .transformations import *
 
-from .size import __all__ as k
-from .transformations import __all__ as l
-
-# level 4
-
 from .objects import *
+from .spatial import *
+from .xforms import *
+
 from .algorithms import *
 
-from .objects import __all__ as m
-from .algorithms import __all__ as n
+from . import basic
+from . import distance
+from . import angles
+from . import average
+from . import normals
+from . import queries
+from . import intersections
+from . import size
 
+from . import transformations
 
-__all__ = a + b + c + d + h + i + j + k + l + m + n
+from . import objects
+from . import spatial
+from . import xforms
+
+from . import algorithms
+
+__all__  = []
+__all__ += basic.__all__
+__all__ += distance.__all__
+__all__ += angles.__all__
+__all__ += average.__all__
+__all__ += normals.__all__
+__all__ += queries.__all__
+__all__ += intersections.__all__
+__all__ += size.__all__
+
+__all__ += transformations.__all__
+
+__all__ += objects.__all__
+__all__ += spatial.__all__
+__all__ += xforms.__all__
+
+__all__ += algorithms.__all__
+

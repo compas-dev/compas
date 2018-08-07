@@ -24,7 +24,6 @@ from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import basis_vectors_from_matrix
 from compas.geometry.transformations import translation_from_matrix
 from compas.geometry.transformations import decompose_matrix
-from compas.geometry.transformations import transform
 
 
 __author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
@@ -145,7 +144,7 @@ class Transformation(object):
             >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
             >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.from_frame_to_frame(f1, f2)
-            >>> f1 == f1.transform(T)
+            >>> f1 == f1.transform_points(T)
             True
         """
         T1 = matrix_from_frame(frame_from)
@@ -226,48 +225,6 @@ class Transformation(object):
         xv, yv = basis_vectors_from_matrix(R)
         return Vector(*xv), Vector(*yv)
 
-    def transform_point(self, point):
-        """Transforms a point.
-
-        Args:
-            point (:obj:`list` of :obj:`float`)
-
-        Example:
-            >>> from compas.geometry import Frame
-            >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            >>> T = Transformation.from_frame(f)
-            >>> q = T.transform_point([0,0,0])
-            >>> allclose(f.point, q)
-            True
-
-        Returns:
-            (``Point``): The transformed point.
-        """
-
-        pt = Point(*point)
-        pt.transform(self)
-        return pt
-
-    def transform_points(self, points):
-        """Transforms a list of points.
-
-        Args:
-            points (:obj:`list` of :obj:`list` of :obj:`float`): A list of
-                points.
-
-        Example:
-            >>> from compas.geometry import Frame
-            >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            >>> T = Transformation.from_frame(f1)
-            >>> pts = [[1.0, 1.0, 1.0], [1.68, 1.68, 1.27], [0.33, 1.73, 0.85]]
-            >>> pts_ = T.transform_points(pts)
-
-        Returns:
-            (:obj:`list` of :obj:`list` of :obj:`float`): The transformed \
-                points.
-        """
-        return transform(points, self.matrix)
-
     @property
     def list(self):
         """Flattens the ``Transformation`` into a list of numbers.
@@ -335,10 +292,12 @@ class Transformation(object):
 
 if __name__ == "__main__":
 
+    from compas.geometry import Point
     from compas.geometry import Frame
     from compas.geometry import allclose
     from compas.geometry import matrix_from_translation
     from compas.geometry import matrix_from_scale_factors
+    from compas.geometry import transform_points
 
     f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     T = Transformation.from_frame(f1)
@@ -359,13 +318,14 @@ if __name__ == "__main__":
 
     f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     T = Transformation.from_frame(f)
-    q = T.transform_point([0, 0, 0])
-    print(allclose(f.point, q))
+    p = Point(0, 0, 0)
+    p.transform(T)
+    print(allclose(f.point, p))
 
     f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     T = Transformation.from_frame(f1)
-    pts = [[1.0, 1.0, 1.0], [1.68, 1.68, 1.27], [0.33, 1.73, 0.85]]
-    pts_ = T.transform_points(pts)
+    points = [[1.0, 1.0, 1.0], [1.68, 1.68, 1.27], [0.33, 1.73, 0.85]]
+    points = transform_points(points, T)
 
     trans1 = [1, 2, 3]
     angle1 = [-2.142, 1.141, -0.142]

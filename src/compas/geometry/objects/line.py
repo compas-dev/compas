@@ -11,76 +11,76 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['Line']
+__all__ = ['Line', ]
 
 
 class Line(object):
-    r"""A line object is defined by two points in three-dimensional space.
+    """A line in three-dimensional space.
 
     Parameters
     ----------
-    p1 : tuple, list, Point
-        The xyz coordinates of the first point.
-    p2 : tuple, list, Point
-        The xyz coordinates of the second point.
+    p1 : point
+        The first point.
+    p2 : point
+        The second point.
 
-    Attributes
-    ----------
-    start : Point
-        The start point.
-    end : Point
-        The end point.
-    length : float, **read-only**
-        The length of the line between start and end.
-    midpoint : Point, **read-only**
-        The midpoint between start and end.
-    direction : Vector, **read-only**
-        A unit vector pointing from start to end.
+    Examples
+    --------
+    >>> line = Line([0, 0, 0], [1, 1, 1])
+    >>> line.midpoint
+    Point(0.500, 0.500, 0.500)
+    >>> line.length
+    1.73205080757
+    >>> line.direction
+    Vector(0.577, 0.577, 0.577, 1.000)
+
+    >>> type(line.start)
+    <class 'compas.geometry.objects.point.Point'>
+    >>> type(line.midpoint)
+    <class 'compas.geometry.objects.point.Point'>
+    >>> type(line.direction)
+    <class 'compas.geometry.objects.vector.Vector'>
 
     Notes
     -----
     For more info on lines and linear equations, see [1]_.
-
-    For convenience, this class implements the following *magic* methods:
-
-    * ``__repr__``
-    * ``__len__``
-    * ``__getitem__``
-    * ``__setitem__``
-    * ``__iter__``
-    * ``__mul__``
-    * ``__imul__``
 
     References
     ----------
     .. [1] Wikipedia. *Linear equation*.
            Available at: https://en.wikipedia.org/wiki/Linear_equation.
 
-    Examples
-    --------
-    >>> line = Line([0,0,0], [1,1,1])
-    >>> line.midpoint
-    [0.5, 0.5, 0.0]
-    >>> line.length
-    1.73205080757
-    >>> line.direction
-    [0.57735026919, 0.57735026919, 0.57735026919]
-
-    >>> type(line.start)
-    <class 'point.Point'>
-    >>> type(line.midpoint)
-    <class 'point.Point'>
-    >>> type(line.direction)
-    <class 'vector.Vector'>
-
     """
+
+    __slots__ = ['_start', '_end']
+
     def __init__(self, p1, p2):
-        self.start = Point(* p1)
-        self.end = Point(* p2)
+        self._start = None
+        self._end = None
+        self.start = p1
+        self.end = p2
 
     # ==========================================================================
-    # factory
+    # properties
     # ==========================================================================
+
+    @property
+    def start(self):
+        """Point: the start point."""
+        return self._start
+
+    @start.setter
+    def start(self, point):
+        self._start = Point(*point)
+
+    @property
+    def end(self):
+        """Point: the end point."""
+        return self._end
+
+    @end.setter
+    def end(self, point):
+        self._end = Point(*point)
 
     # ==========================================================================
     # descriptors
@@ -88,47 +88,31 @@ class Line(object):
 
     @property
     def vector(self):
-        """A vector pointing from start to end.
-
-        Returns:
-            Vector: The vector.
-        """
+        """Vector: A vector pointing from start to end."""
         return self.end - self.start
 
     @property
     def length(self):
-        """The length of the vector from start to end.
-
-        Returns:
-            float: The length.
-        """
+        """:obj:`float`: The length of the vector from start to end."""
         return self.vector.length
 
     @property
-    def midpoint(self):
-        """The midpoint between start and end.
-
-        Returns:
-            Point: The midpoint.
-        """
-        v = self.direction * (0.5 * self.length)
-        return self.start + v
+    def direction(self):
+        """Vector: A unit vector pointing from start and end."""
+        return self.vector * (1 / self.length)
 
     @property
-    def direction(self):
-        """A unit vector pointing from start and end.
-
-        Returns:
-            Vector: The direction.
-        """
-        return self.vector * (1 / self.length)
+    def midpoint(self):
+        """Point: The midpoint between start and end."""
+        v = self.direction * (0.5 * self.length)
+        return self.start + v
 
     # ==========================================================================
     # representation
     # ==========================================================================
 
     def __repr__(self):
-        return '({0}, {1})'.format(self.start, self.end)
+        return 'Line({0}, {1})'.format(self.start, self.end)
 
     def __len__(self):
         return 2
@@ -146,10 +130,10 @@ class Line(object):
 
     def __setitem__(self, key, value):
         if key == 0:
-            self.start = Point(value)
+            self.start = value
             return
         if key == 1:
-            self.end = Point(value)
+            self.end = value
             return
         raise KeyError
 
@@ -160,31 +144,16 @@ class Line(object):
     # comparison
     # ==========================================================================
 
+    def __eq__(self, other):
+        raise NotImplementedError
+
     # ==========================================================================
     # operators
     # ==========================================================================
 
-    def __mul__(self, n):
-        """Create a line with the same start point and direction, but scaled
-        length.
-
-        Parameters:
-            n (int, float): The scaling factor.
-
-        Returns:
-            Line: A line with the same start point and direction, but scaled length.
-        """
-        v = self.direction * (n * self.length)
-        return Line(self.start, self.start + v)
-
     # ==========================================================================
     # inplace operators
     # ==========================================================================
-
-    def __imul__(self, n):
-        v = self.direction * (n * self.length)
-        self.end = self.start + v
-        return self
 
     # ==========================================================================
     # methods
@@ -195,27 +164,26 @@ class Line(object):
     # ==========================================================================
 
     def translate(self, vector):
-        """Translate the line by a vector."""
+        """Translate the line by a vector.
+
+        Parameters
+        ----------
+        vector : vector
+            The translation vector.
+
+        """
         self.start.translate(vector)
         self.end.translate(vector)
 
-    def rotate(self, angle, origin=None):
-        """Rotate the line around the origin, or around a specified origin."""
+    def rotate(self, angle, axis=None, origin=None):
+        """Rotate the line around a specified axis and origin."""
+        if not axis:
+            axis = [0.0, 0.0, 1.0]
         if not origin:
-            origin = [0, 0, 0]
-        origin = Point(origin)
+            origin = [0.0, 0.0, 0.0]
 
-    def scale(self, n):
-        """Increase the distance between start and end by a factor n, while
-        keeping the start point fixed.
-
-        Parameters:
-            n (int, float): The scaling factor.
-
-        Notes:
-            This is an alias for self *= n
-        """
-        self *= n
+        self.start.rotate(angle, axis, origin)
+        self.end.rotate(angle, axis, origin)
 
 
 # ==============================================================================
@@ -226,16 +194,11 @@ if __name__ == '__main__':
 
     l1 = Line([0, 0, 0], [1, 1, 1])
 
+    print(l1)
+
     print(type(l1.start))
     print(l1.midpoint)
     print(type(l1.midpoint))
     print(l1.length)
     print(l1.direction)
     print(type(l1.direction))
-
-    l2 = l1 * 2
-    print(l2.start)
-    print(l2.end)
-    print(l1.end)
-    l1 *= 2
-    print(l1.end)

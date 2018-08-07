@@ -10,8 +10,6 @@ from .polygon import Polygon
 from .polyhedron import Polyhedron
 from .circle import Circle
 
-from .kdtree import KDTree
-
 
 __all__ = [
     'Vector',
@@ -23,5 +21,4 @@ __all__ = [
     'Polygon',
     'Polyhedron',
     'Circle',
-    'KDTree',
 ]

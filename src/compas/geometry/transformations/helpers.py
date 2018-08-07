@@ -25,11 +25,11 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'transform',
+    'transform_points',
+    'transform_points_numpy',
+
     'homogenize',
     'dehomogenize',
-
-    'transform_numpy',
     'homogenize_numpy',
     'dehomogenize_numpy',
 
@@ -46,19 +46,24 @@ __all__ = [
 ]
 
 
-def transform(points, T):
+def transform_points(points, T):
     points = homogenize(points)
     points = transpose_matrix(multiply_matrices(T, transpose_matrix(points)))
     return dehomogenize(points)
 
 
-def transform_numpy(points, T):
+def transform_points_numpy(points, T):
     from numpy import asarray
 
     T = asarray(T)
     points = homogenize_numpy(points)
     points = T.dot(points.T).T
     return dehomogenize_numpy(points)
+
+
+# ==============================================================================
+# helping helpers
+# ==============================================================================
 
 
 def homogenize(vectors, w=1.0):
