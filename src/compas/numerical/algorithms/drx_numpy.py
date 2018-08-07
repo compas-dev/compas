@@ -430,11 +430,7 @@ if __name__ == "__main__":
 
 
     def callback(X, self):
-        for i in range(X.shape[0]):
-            self.vertices.SetPoint(i, X[i, :])
-        self.vertices.Modified()
-        self.main.window.Render()
-
+        self.update_vertices_coordinates({i: X[i, :] for i in range(X.shape[0])})
 
     def func(self):
         drx_numpy(network=network, tol=0.05, update=True, refresh=5, callback=callback, self=self)
