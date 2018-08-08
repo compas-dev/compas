@@ -32,7 +32,7 @@ __email__ = 'rust@arch.ethz.ch'
 
 
 class Frame(object):
-    """The ``Frame`` consists of a point and and two orthonormal base vectors.
+    """A frame is defined by a base point and two orthonormal base vectors.
 
     It represents a plane in three dimensions with a defined origin and
     orientation.
@@ -443,9 +443,9 @@ class Frame(object):
         self.yaxis = data.get('yaxis', [0, 1, 0])
 
     def __repr__(self):
-        s = "[[%.4f, %.4f, %.4f], " % tuple(self.point)
-        s += "[%.4f, %.4f, %.4f], " % tuple(self.xaxis)
-        s += "[%.4f, %.4f, %.4f]]" % tuple(self.yaxis)
+        s  = "[[%.4f, %.4f, %.4f], " % tuple(self.point)
+        s += " [%.4f, %.4f, %.4f], " % tuple(self.xaxis)
+        s += " [%.4f, %.4f, %.4f]] " % tuple(self.yaxis)
         return s
 
     def __iter__(self):

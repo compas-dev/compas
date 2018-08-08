@@ -18,7 +18,7 @@ __all__ = ['Plane', ]
 
 
 class Plane(object):
-    """A plane in three-dimensional space.
+    """A plane is defined by a base point and a normal vector.
 
     Parameters
     ----------
@@ -151,14 +151,19 @@ class Plane(object):
         return - a * x - b * y - c * z
 
     @property
-    def basis(self):
-        """Frame: The frame that forms an orthonormal basis for the local coordinates
-        of all points in the half-spaces defined by the plane.
+    def frame(self):
+        """Frame: The frame that forms a basis for the local coordinates of all
+        points in the half-spaces defined by the plane.
         """
         a, b, c = self.normal
         u = 1.0, 0.0, - a / c
         v = 0.0, 1.0, - b / c
-        return [Vector(*vector, unitize=True) for vector in orthonormalise_vectors([u, v])]
+        u, v = orthonormalise_vectors([u, v])
+        u = Vector(*u)
+        v = Vector(*v)
+        u.unitize()
+        v.unitize()
+        return self.point, u, v
 
     # ==========================================================================
     # representation
@@ -216,22 +221,22 @@ class Plane(object):
     # transformations
     # ==========================================================================
 
-    def translate(self, vector):
-        """Translate this ``Plane`` by a vector.
+    def transform(self, matrix):
+        """Transform this ``Plane`` using a given transformation matrix.
 
         Parameters
         ----------
-        vector : vector
-            The translation vector.
+        matrix : list of list
+            The transformation matrix.
 
         """
-        point = translate_points([self.point, ], vector)[0]
+        point, normal = transform([self.point, self.normal], matrix)
         self.point.x = point[0]
         self.point.y = point[1]
         self.point.z = point[2]
-
-    def rotate(self, angle, axis=None, origin=None):
-        pass
+        self.normal.x = normal[0]
+        self.normal.y = normal[1]
+        self.normal.z = normal[2]
 
 
 # ==============================================================================

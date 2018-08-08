@@ -49,7 +49,7 @@ class Projection(Transformation):
 
     @classmethod
     def parallel(cls, point, normal, direction):
-        """Returns an parallel ``Projection`` to project onto a plane defined
+        """Returns a parallel ``Projection`` to project onto a plane defined
         by point, normal and direction.
 
         Args:
@@ -68,7 +68,7 @@ class Projection(Transformation):
 
     @classmethod
     def perspective(cls, point, normal, perspective):
-        """Returns an perspective ``Projection`` to project onto a plane
+        """Returns a perspective ``Projection`` to project onto a plane
         defined by point, normal and perspective.
 
         Args:

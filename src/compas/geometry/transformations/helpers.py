@@ -28,6 +28,9 @@ __all__ = [
     'transform_points',
     'transform_points_numpy',
 
+    'transform_vectors',
+    'transform_vectors_numpy',
+
     'homogenize',
     'dehomogenize',
     'homogenize_numpy',
@@ -47,18 +50,25 @@ __all__ = [
 
 
 def transform_points(points, T):
-    points = homogenize(points)
-    points = transpose_matrix(multiply_matrices(T, transpose_matrix(points)))
-    return dehomogenize(points)
+    return dehomogenize(multiply_matrices(homogenize(points, w=1.0), transpose_matrix(T)))
+
+
+def transform_vectors(vectors, T):
+    return dehomogenize(multiply_matrices(homogenize(vectors, w=0.0), transpose_matrix(T)))
 
 
 def transform_points_numpy(points, T):
     from numpy import asarray
-
     T = asarray(T)
-    points = homogenize_numpy(points)
-    points = T.dot(points.T).T
-    return dehomogenize_numpy(points)
+    points = homogenize_numpy(points, w=1.0)
+    return dehomogenize_numpy(points.dot(T.T))
+
+
+def transform_vectors_numpy(vectors, T):
+    from numpy import asarray
+    T = asarray(T)
+    vectors = homogenize_numpy(vectors, w=0.0)
+    return dehomogenize_numpy(vectors.dot(T.T))
 
 
 # ==============================================================================

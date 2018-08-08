@@ -9,12 +9,7 @@ from math import pi
 
 from compas.geometry import *
 
-from compas.geometry import transform_points
-from compas.geometry import translate_points
-from compas.geometry import scale_points
-from compas.geometry import rotate_points
-from compas.geometry import project_points_plane
-from compas.geometry import project_points_line
+from compas.geometry import transform_vectors
 
 
 __author__     = ['Tom Van Mele', ]
@@ -27,7 +22,7 @@ __all__ = ['Vector', ]
 
 
 class Vector(object):
-    """A vector in three-dimensional space.
+    """A vector is defined by XYZ components and a homogenisation factor.
 
     Parameters
     ----------
@@ -37,9 +32,6 @@ class Vector(object):
         The Y component of the vector.
     z : float
         The Z component of the vector.
-    w : float, optional
-        Homogenisation factor.
-        Default is ``1.0``.
     precision : integer, optional
         The number of fractional digits used in the representation of the coordinates of the vector.
         Default is ``3``.
@@ -71,18 +63,16 @@ class Vector(object):
 
     """
 
-    __slots__ = ['_x', '_y', '_z', '_w', '_precision']
+    __slots__ = ['_x', '_y', '_z', '_precision']
 
-    def __init__(self, x, y, z, w=1.0, precision=None):
+    def __init__(self, x, y, z, precision=None):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
-        self._w = 1.0
         self._precision = 3
         self.x = x
         self.y = y
         self.z = z
-        self.w = w
         self.precision = precision
 
     # ==========================================================================
@@ -126,15 +116,6 @@ class Vector(object):
         self._z = float(z)
 
     @property
-    def w(self):
-        """:obj:`float`, optional: The homegenisation factor. Default is ``1.0``"""
-        return self._w
-
-    @w.setter
-    def w(self, w):
-        self._w = float(w)
-
-    @property
     def precision(self):
         """:obj:`int`: The number of fractional digits used in the representation of the coordinates of the point."""
         return self._precision
@@ -149,7 +130,7 @@ class Vector(object):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Vector({0:.{4}f}, {1:.{4}f}, {2:.{4}f}, {3:.{4}f})'.format(self.x, self.y, self.z, self.w, self.precision)
+        return 'Vector({0:.{3}f}, {1:.{3}f}, {2:.{3}f})'.format(self.x, self.y, self.z, self.precision)
 
     def __len__(self):
         return 3
@@ -508,6 +489,7 @@ class Vector(object):
 
     # ==========================================================================
     # transformations
+    # should there be transformation available for vectors?
     # ==========================================================================
 
     def transform(self, matrix):
@@ -520,66 +502,6 @@ class Vector(object):
 
         """
         point = transform([self, ], matrix)[0]
-        self.x = point[0]
-        self.y = point[1]
-        self.z = point[2]
-
-    def translate(self, vector):
-        """Translate this ``Vector`` by another vector.
-
-        Parameters
-        ----------
-        vector : vector
-            The translation vector.
-
-        Note
-        ----
-        What does it mean to translate a vector?
-        Should both the start and end point be moved?
-        Or is the result a new vector from the origin to the new end point?
-
-        """
-        point = translate_points([self, ], vector)[0]
-        self.x = point[0]
-        self.y = point[1]
-        self.z = point[2]
-
-    def scale(self, factor):
-        """Scale this ``Vector`` by a given factor.
-
-        Parameters
-        ----------
-        factor : float
-            The scale factor.
-
-        """
-        point = scale_points([self, ], factor)[0]
-        self.x = point[0]
-        self.y = point[1]
-        self.z = point[2]
-
-    def rotate(self, angle, axis=None, origin=None):
-        """Rotate this ``Vector`` over the given angle around the specified axis
-        and origin.
-
-        Parameters
-        ----------
-        angle : float
-            The rotation angle in radians.
-        axis : vector, optional
-            The rotation axis.
-            Default is the Z axis (``[0.0, 0.0, 1.0]``).
-        origin : point, optional
-            The origin of the rotation axis.
-            Default is ``[0.0, 0.0, 0.0]``.
-
-        """
-        if axis is None:
-            axis = [0.0, 0.0, 1.0]
-        if origin is None:
-            origin = [0.0, 0.0, 0.0]
-
-        point = rotate_points([self, ], angle, axis, origin)[0]
         self.x = point[0]
         self.y = point[1]
         self.z = point[2]

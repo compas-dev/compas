@@ -17,21 +17,20 @@ from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import vector_component
 from compas.geometry.basic import vector_component_xy
 from compas.geometry.basic import length_vector
+from compas.geometry.basic import multiply_matrix_vector
 
 from compas.geometry.distance import closest_point_on_plane
 
 from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
 from compas.geometry.transformations import _NEXT_SPEC
+
 from compas.geometry.transformations import transform_points
+from compas.geometry.transformations import transform_points_numpy
+
 from compas.geometry.transformations import matrix_from_axis_and_angle
-
-from compas.geometry.transformations.helpers import multiply_matrix_vector
-from compas.geometry.transformations.helpers import transform_points
-from compas.geometry.transformations.helpers import transform_points_numpy
-
-from compas.geometry.transformations.matrices import matrix_from_scale_factors
-from compas.geometry.transformations.matrices import matrix_from_axis_and_angle
+from compas.geometry.transformations import matrix_from_scale_factors
+from compas.geometry.transformations import matrix_from_axis_and_angle
 
 
 __author__    = ['Tom Van Mele', ]
@@ -396,7 +395,7 @@ if __name__ == "__main__":
 
     R = matrix_from_axis_and_angle([0, 0, 1], a, point=[0, 0, 0], rtype='array')
 
-    points_ = transform_points_numpy(points, R)
+    points_ = transform_numpy(points, R)
 
     plt.plot(points[:, 0], points[:, 1], 'bo')
     plt.plot(points_[:, 0], points_[:, 1], 'ro')

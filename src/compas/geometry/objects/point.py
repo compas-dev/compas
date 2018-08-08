@@ -29,12 +29,6 @@ from compas.geometry import is_point_in_convex_polygon_xy
 
 from compas.geometry import transform_points
 
-from compas.geometry import translate_points
-from compas.geometry import scale_points
-from compas.geometry import rotate_points
-from compas.geometry import project_points_plane
-from compas.geometry import project_points_line
-
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -46,7 +40,7 @@ __all__ = ['Point', ]
 
 
 class Point(object):
-    """A location in three-dimensional space.
+    """A point is defined by XYZ coordinates.
 
     Parameters
     ----------
@@ -687,11 +681,18 @@ class Point(object):
 
 if __name__ == '__main__':
 
+    from math import pi
+
     from compas.geometry import Point
     from compas.geometry import Vector
     from compas.geometry import Plane
     from compas.geometry import Line
     from compas.geometry import Polygon
+
+    from compas.geometry import matrix_from_axis_and_angle
+
+
+    M = matrix_from_axis_and_angle([0, 0, 1], pi / 2)
 
 
     point    = Point(0.0, 0.0, 0.0)
@@ -702,6 +703,8 @@ if __name__ == '__main__':
     polygon  = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
 
     p = Point(1.0, 1.0, 1.0)
+
+    p.transform(M)
 
     print(*p)
 

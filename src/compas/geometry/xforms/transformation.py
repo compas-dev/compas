@@ -144,7 +144,7 @@ class Transformation(object):
             >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
             >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.from_frame_to_frame(f1, f2)
-            >>> f1 == f1.transform_points(T)
+            >>> f1 == f1.transform(T)
             True
         """
         T1 = matrix_from_frame(frame_from)
@@ -284,6 +284,9 @@ class Transformation(object):
                                   for n in self.matrix[3]])
         s += "\n"
         return s
+
+    def __len__(self):
+        return len(self.matrix)
 
 
 # ==============================================================================

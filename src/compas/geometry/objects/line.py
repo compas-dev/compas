@@ -15,7 +15,7 @@ __all__ = ['Line', ]
 
 
 class Line(object):
-    """A line in three-dimensional space.
+    """A line is defined by two points.
 
     Parameters
     ----------
@@ -162,6 +162,23 @@ class Line(object):
     # ==========================================================================
     # transformations
     # ==========================================================================
+
+    def transform(self, matrix):
+        """Transform this ``Plane`` using a given transformation matrix.
+
+        Parameters
+        ----------
+        matrix : list of list
+            The transformation matrix.
+
+        """
+        point, normal = transform([self.point, self.normal], matrix)
+        self.point.x = point[0]
+        self.point.y = point[1]
+        self.point.z = point[2]
+        self.normal.x = normal[0]
+        self.normal.y = normal[1]
+        self.normal.z = normal[2]
 
     def translate(self, vector):
         """Translate the line by a vector.

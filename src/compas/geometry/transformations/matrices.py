@@ -20,9 +20,6 @@ from compas.geometry.transformations import _SPEC2TUPLE
 from compas.geometry.transformations import _NEXT_SPEC
 from compas.geometry.transformations import identity_matrix
 
-from compas.geometry.transformations.helpers import multiply_matrix_vector
-from compas.geometry.transformations.helpers import identity_matrix
-
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
@@ -601,7 +598,7 @@ def matrix_from_parallel_projection(point, normal, direction):
 
 
 def matrix_from_perspective_projection(point, normal, perspective):
-    """Returns an perspective projection matrix to project onto a plane \
+    """Returns a perspective projection matrix to project onto a plane
         defined by point, normal and perspective.
 
     Args:
@@ -618,18 +615,19 @@ def matrix_from_perspective_projection(point, normal, perspective):
     T = identity_matrix(4)
     normal = normalize_vector(normal)
 
-    T[0][0] = T[1][1] = T[2][2] = dot_vectors(
-        subtract_vectors(perspective, point), normal)
+    T[0][0] = T[1][1] = T[2][2] = dot_vectors(subtract_vectors(perspective, point), normal)
 
     for j in range(3):
         for i in range(3):
             T[i][j] -= perspective[i] * normal[j]
 
-    T[0][3], T[1][3], T[2][3] = scale_vector(
-        perspective, dot_vectors(point, normal))
+    T[0][3], T[1][3], T[2][3] = scale_vector(perspective, dot_vectors(point, normal))
+
     for i in range(3):
         T[3][i] -= normal[i]
+
     T[3][3] = dot_vectors(perspective, normal)
+
     return T
 
 
