@@ -1,22 +1,17 @@
 from __future__ import absolute_import, division, print_function
 
-import inspect
-import xml.etree.ElementTree as ET
-
 from compas.files import URDF
-from compas.geometry import add_vectors
-from compas.geometry import Vector
 from compas.geometry import Frame
-from compas.geometry.xforms import Rotation
-from compas.geometry.xforms import Transformation
-
 
 # URDF is defined in meters
 # so we scale it all to millimeters
 SCALE_FACTOR = 1000
 
-__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision', 'Geometry', 'Box', 'Cylinder', 'Sphere', 'Capsule', 'MeshDescriptor', 'Color', 'Texture', 'Material', 'Origin', 'Mass',
-           'Inertia', 'ParentJoint', 'ChildJoint', 'Calibration', 'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']
+__all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision',
+           'Geometry', 'Box', 'Cylinder', 'Sphere', 'Capsule', 'MeshDescriptor',
+           'Color', 'Texture', 'Material', 'Origin', 'Mass', 'Inertia',
+           'ParentJoint', 'ChildJoint', 'Calibration', 'Dynamics', 'Limit',
+           'Axis', 'Mimic', 'SafetyController']
 
 
 def _parse_floats(values, scale_factor=None):
@@ -176,6 +171,7 @@ class Visual(object):
         self.material = material
         self.attr = kwargs
 
+
 class Collision(object):
     """Collidable description of a link.
 
@@ -193,6 +189,7 @@ class Collision(object):
         self.name = name
         self.attr = kwargs
 
+
 class Link(object):
     """Link represented as a rigid body with an inertia, visual, and collision features.
 
@@ -204,6 +201,7 @@ class Link(object):
             from the visual properties of a link.
         inertial: Inertial properties of the link.
         attr: Non-standard attributes.
+        joints: A list of joints that are the link's children
     """
 
     def __init__(self, name, type=None, visual=[], collision=[], inertial=None, **kwargs):
@@ -213,6 +211,7 @@ class Link(object):
         self.collision = collision
         self.inertial = inertial
         self.attr = kwargs
+        self.joints = []
 
 
 class ParentJoint(object):
@@ -323,6 +322,7 @@ class Joint(object):
         safety_controller: Safety controller properties.
         mimic: Used to specify that the defined joint mimics another existing joint.
         attr: Non-standard attributes.
+        childlink: the joint's child link
     """
     SUPPORTED_TYPES = ('revolute', 'continuous', 'prismatic',
                        'fixed', 'floating', 'planar')
@@ -343,25 +343,7 @@ class Joint(object):
         self.safety_controller = safety_controller
         self.mimic = mimic
         self.attr = kwargs
-    
-    def update_origin(self, parent_origin):
-        """Update the origin based on the parent joint's origin.
-
-        This is called if the robot model is loaded.
-        """
-        parent_rotation = Rotation.from_frame(parent_origin)
-        rot = Rotation.from_frame(self.origin)
-        pos = add_vectors(parent_origin.point, 
-            parent_rotation.transform_point(self.origin.point))
-        rot = parent_rotation * rot
-        self.origin = Frame.from_rotation(rot, point=pos)
-    
-    def get_transformation(self):
-        """Returns the transformation based on the origin frame.
-        """
-        # TODO: check why yaxis and zaxis need to be exchanged
-        fx = Frame(self.origin.point, self.origin.xaxis, self.origin.zaxis)
-        return Transformation.from_frame(fx)
+        self.childlink = None
 
 
 class Robot(object):
@@ -386,6 +368,18 @@ class Robot(object):
         self.links = links
         self.materials = materials
         self.attr = kwargs
+        # save tree structure from link and joint lists
+        for link in self.links:
+            link.joints = self.find_children_joints(link)
+        for joint in self.joints:
+            joint.childlink = self.find_child_link(joint)
+
+    @property
+    def root(self):
+        if len(self.links):
+            return self.find_root_link()
+        else:
+            return None
 
     @classmethod
     def from_urdf_file(cls, file):
@@ -410,29 +404,25 @@ class Robot(object):
             A robot model instance.
         """
         return URDF.from_string(text)
-    
-    def urdf_get_root_link(self):
+
+    def find_root_link(self):
         """Returns the robot's root link.
 
         Raises:
             Exception: If the root link of the robot could not be found.
         """
-        root_link = None
-
         # search the link, which is never child for a joint
         for link in self.links:
             found = False
             for joint in self.joints:
                 if str(joint.child) == link.name:
                     found = True
+                    break
             if not found:
-                root_link = link
-                break
-        if not root_link:
-            raise Exception("Root link not found. Something wrong with URDF?")
-        return root_link
-    
-    def urdf_get_child_joints(self, link):
+                return link
+        raise Exception("Root link not found. Something wrong with URDF?")
+
+    def find_children_joints(self, link):
         """Returns a list of all children joints of the link.
         """
         joints = []
@@ -440,55 +430,52 @@ class Robot(object):
             if str(joint.parent) == link.name:
                 joints.append(joint)
         return joints
-    
-    def urdf_get_child_link(self, joint):
+
+    def find_child_link(self, joint):
         """Returns the child link of the joint or None if not found.
         """
-        # TODO: check is there only one child link for one joint?
         for link in self.links:
             if link.name == joint.child.link:
                 return link
         return None
-    
-    def urdf_get_parent_joint(self, link):
+
+    def find_parent_joint(self, link):
         """Returns the parent joint of the link or None if not found.
         """
         for joint in self.joints:
             if str(joint.child) == link.name:
                 return joint
         return None
-    
-    def urdf_iter_links(self):
+
+    def iter_links(self):
         """Returns an iterator over the links that starts with the root link.
         """
-        root = self.urdf_get_root_link()
+        root = self.root
         links = [root]
-        cjoints = self.urdf_get_child_joints(root)
 
         def func(cjoints, links):
             for j in cjoints:
-                link = self.urdf_get_child_link(j)
+                link = j.childlink
                 links.append(link)
-                links += func(self.urdf_get_child_joints(link), [])
+                links += func(link.joints, [])
             return links
-        
-        return iter(func(cjoints, links))
 
-    def urdf_iter_joints(self):
-        """Returns an iterator over the joints that starts with the root link's 
+        return iter(func(root.joints, links))
+
+    def iter_joints(self):
+        """Returns an iterator over the joints that starts with the root link's
             children joints.
         """
-        root = self.urdf_get_root_link()
         joints = []
 
         def func(clink, joints):
-            cjoints = self.urdf_get_child_joints(clink)
+            cjoints = clink.joints
             joints += cjoints
             for j in cjoints:
-                joints += func(self.urdf_get_child_link(j), [])
+                joints += func(j.childlink, [])
             return joints
 
-        return iter(func(root, joints))
+        return iter(func(self.root, joints))
 
 
 URDF.add_parser(Robot, 'robot')
