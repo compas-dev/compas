@@ -49,7 +49,7 @@ try:
     from PyQt5.Qt import QVBoxLayout
     from PyQt5.Qt import QWidget
     from PyQt5.QtCore import Qt
-except:
+except ImportError:
     pass
 
 import sys
@@ -179,7 +179,9 @@ class VtkViewer(QApplication):
         self.camera_target   = [0, 0, 0]
         self.show_axes       = True
         self.vertex_size     = 20.0
+        self.vertex_scale    = 0.001
         self.edge_width      = 20.0
+        self.edge_scale      = 0.05
 
         self.name         = name
         self.data         = data
@@ -290,7 +292,7 @@ class VtkViewer(QApplication):
 
         self.actor = actor = vtkActor()
         actor.SetMapper(mapper)
-        actor.GetProperty().SetLineWidth(self.edge_width * 0.02)
+        actor.GetProperty().SetLineWidth(self.edge_width * self.edge_scale)
         if self.edge_width == 0:
             actor.GetProperty().EdgeVisibilityOff()
         else:
@@ -416,7 +418,7 @@ class VtkViewer(QApplication):
     def draw_vertices(self):
 
         self.vertex = vertex = vtkSphereSource()
-        vertex.SetRadius(self.vertex_size * 0.0002)
+        vertex.SetRadius(self.vertex_size * self.vertex_scale)
         vertex.SetPhiResolution(15)
         vertex.SetThetaResolution(15)
 
@@ -435,7 +437,7 @@ class VtkViewer(QApplication):
         if self.data.get('fixed', None):
 
             self.support = support = vtkSphereSource()
-            support.SetRadius(self.vertex_size * 1.5 * 0.0002)
+            support.SetRadius(self.vertex_size * 1.5 * self.vertex_scale)
             support.SetPhiResolution(15)
             support.SetThetaResolution(15)
 
@@ -458,9 +460,9 @@ class VtkViewer(QApplication):
 
         value = self.sliders['slider_vertices'].value()
         self.labels['label_vertices'].setText('Vertex size: {0}'.format(value))
-        self.vertex.SetRadius(value * 0.0002)
+        self.vertex.SetRadius(value * self.vertex_scale)
         if self.support:
-            self.support.SetRadius(value * 1.5 * 0.0002)
+            self.support.SetRadius(value * 1.5 * self.vertex_scale)
         self.main.window.Render()
 
     def update_vertices_coordinates(self, coordinates):
@@ -512,7 +514,7 @@ class VtkViewer(QApplication):
         else:
             self.actor.GetProperty().EdgeVisibilityOn()
         self.labels['label_edges'].setText('Edge width: {0}'.format(value))
-        self.actor.GetProperty().SetLineWidth(value * 0.02)
+        self.actor.GetProperty().SetLineWidth(value * self.edge_scale)
         self.main.window.Render()
 
 

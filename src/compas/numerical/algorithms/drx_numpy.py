@@ -476,6 +476,7 @@ if __name__ == "__main__":
 
 
     # def callback(X, k_i):
+    #
     #     for key in network.vertices():
     #         x, y, z = X[k_i[key], :]
     #         network.set_vertex_attributes(key, 'xyz', [x, y, z])
@@ -530,6 +531,7 @@ if __name__ == "__main__":
 
 
     # def callback(X, k_i):
+    #
     #     for key in network.vertices():
     #         x, y, z = X[k_i[key], :]
     #         network.set_vertex_attributes(key, 'xyz', [x, y, z])
