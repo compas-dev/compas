@@ -43,8 +43,11 @@ __all__ = [
 
     'compose_matrix',
     'decompose_matrix',
-]
 
+    'mesh_transform',
+    'mesh_transformed',
+
+]
 
 def transform(points, T):
     points = homogenize(points)
@@ -434,6 +437,20 @@ def compose_matrix(scale=None, shear=None, angles=None,
         for j in range(4):
             M[i][j] /= M[3][3]
     return M
+
+
+def mesh_transform(mesh, transformation):
+    # TODO: this is really slow
+    xyz = transform(mesh.xyz, transformation.matrix)
+    for i in range(len(vertices)):
+        mesh.vertex[i].update({'x': vertices[i][0], 'y': vertices[i][1], 'z': vertices[i][2]})
+
+def mesh_transformed(mesh, transformation):
+    # TODO: this is really slow
+    mesh_copy = mesh.copy()
+    mesh_transform(mesh_copy, transformation)
+    return mesh_copy
+
 
 
 # ==============================================================================
