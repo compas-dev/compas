@@ -451,7 +451,6 @@ class Robot(object):
         """Returns an iterator over the links that starts with the root link.
         """
         root = self.root
-        links = [root]
 
         def func(cjoints, links):
             for j in cjoints:
@@ -460,13 +459,12 @@ class Robot(object):
                 links += func(link.joints, [])
             return links
 
-        return iter(func(root.joints, links))
+        return iter(func(root.joints, [root]))
 
     def iter_joints(self):
         """Returns an iterator over the joints that starts with the root link's
             children joints.
         """
-        joints = []
 
         def func(clink, joints):
             cjoints = clink.joints
@@ -475,7 +473,7 @@ class Robot(object):
                 joints += func(j.childlink, [])
             return joints
 
-        return iter(func(self.root, joints))
+        return iter(func(self.root, []))
 
 
 URDF.add_parser(Robot, 'robot')
