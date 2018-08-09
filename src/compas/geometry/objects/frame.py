@@ -67,35 +67,6 @@ class Frame(object):
         self.xaxis = xaxis
         self.yaxis = yaxis
 
-    @property
-    def point(self):
-        return self._point
-
-    @point.setter
-    def point(self, point):
-        self._point = Point(*point)
-
-    @property
-    def xaxis(self):
-        return self._xaxis
-    
-    @xaxis.setter
-    def xaxis(self, vector):
-        xaxis = Vector(*vector)
-        xaxis.unitize()
-        self._xaxis = xaxis
-
-    @property
-    def yaxis(self):
-        return self._yaxis
-    
-    @yaxis.setter
-    def yaxis(self, vector):
-        yaxis = Vector(*vector)
-        yaxis.unitize()
-        zaxis = Vector.cross(self.xaxis, yaxis)
-        self._yaxis = Vector.cross(zaxis, self.xaxis)
-
     # ==========================================================================
     # factory
     # ==========================================================================
@@ -421,6 +392,35 @@ class Frame(object):
     # ==========================================================================
     # descriptors
     # ==========================================================================
+
+    @property
+    def point(self):
+        return self._point
+
+    @point.setter
+    def point(self, point):
+        self._point = Point(*point)
+
+    @property
+    def xaxis(self):
+        return self._xaxis
+    
+    @xaxis.setter
+    def xaxis(self, vector):
+        xaxis = Vector(*vector)
+        xaxis.unitize()
+        self._xaxis = xaxis
+
+    @property
+    def yaxis(self):
+        return self._yaxis
+    
+    @yaxis.setter
+    def yaxis(self, vector):
+        yaxis = Vector(*vector)
+        yaxis.unitize()
+        zaxis = Vector.cross(self.xaxis, yaxis)
+        self._yaxis = Vector.cross(zaxis, self.xaxis)
 
     @property
     def data(self):

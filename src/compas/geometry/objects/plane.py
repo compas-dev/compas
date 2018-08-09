@@ -53,25 +53,6 @@ class Plane(object):
         self.point = point
         self.normal = normal
 
-    @property
-    def point(self):
-        """Point: The base point of the plane."""
-        return self._point
-
-    @point.setter
-    def point(self, point):
-        self._point = Point(*point)
-
-    @property
-    def normal(self):
-        """Vector: The normal vector of the plane."""
-        return self._normal
-
-    @normal.setter
-    def normal(self, vector):
-        self._normal = Vector(*vector)
-        self._normal.unitize()
-
     # ==========================================================================
     # factory
     # ==========================================================================
@@ -145,6 +126,25 @@ class Plane(object):
     # ==========================================================================
     # descriptors
     # ==========================================================================
+
+    @property
+    def point(self):
+        """Point: The base point of the plane."""
+        return self._point
+
+    @point.setter
+    def point(self, point):
+        self._point = Point(*point)
+
+    @property
+    def normal(self):
+        """Vector: The normal vector of the plane."""
+        return self._normal
+
+    @normal.setter
+    def normal(self, vector):
+        self._normal = Vector(*vector)
+        self._normal.unitize()
 
     @property
     def d(self):
