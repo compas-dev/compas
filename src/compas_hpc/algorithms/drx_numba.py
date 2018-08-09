@@ -5,8 +5,6 @@ from __future__ import print_function
 
 from numpy import arccos
 from numpy import array
-# from numpy import float64
-# from numpy import int64
 from numpy import isnan
 from numpy import mean
 from numpy import sin
@@ -52,7 +50,7 @@ def _args(network, factor, summary, steps, tol):
     ind_c = array(ind_c)
     ind_t = array(ind_t)
 
-    return tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M, factor, V, inds, indi, indf, EIx, EIy, beams
+    return tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M, factor, V, inds, indi, indf, EIx, EIy, beams, C
 
 
 def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
@@ -67,8 +65,8 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
         Convergence factor.
     tol : float
         Tolerance value.
-    # steps : int
-    #     Maximum number of steps.
+    steps : int
+        Maximum number of steps.
     summary : int
         Print summary at end (1:yes or 0:no).
     update : bool
@@ -97,11 +95,11 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 
     tic2 = time()
 
-    tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M, factor, V, inds, indi, indf, EIx, EIy, beams = args
+    tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M, factor, V, inds, indi, indf, EIx, EIy, beams, C = args
     drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv,
                      M, factor, V, inds, indi, indf, EIx, EIy, beams)
-    # _, l = uvw_lengths(C, X)
-    # f = f0 + k0 * (l.ravel() - l0)
+    _, l = uvw_lengths(C, X)
+    f = f0 + k0 * (l.ravel() - l0)
 
     toc2 = time() - tic2
 
@@ -122,13 +120,12 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
             x, y, z = X[k_i[key], :]
             network.set_vertex_attributes(key, 'xyz', [x, y, z])
 
-        # uv_i = network.uv_index()
-        # for uv in network.edges():
-        #     i = uv_i[uv]
-        #     network.set_edge_attribute(uv, 'f', float(f[i]))
+        uv_i = network.uv_index()
+        for uv in network.edges():
+            i = uv_i[uv]
+            network.set_edge_attribute(uv, 'f', float(f[i]))
 
-    return X
-    # return X, f, l
+    return X, f, l
 
 
 @guvectorize([(f8, i8, i8, i8, i8, i4[:], i4[:], f8[:, :], f8[:], f8[:], f8[:], i8[:], i8[:], f8[:, :], f8[:, :],
@@ -286,7 +283,6 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
 
                 Sa = ua * Ms * Lc1 / (La * dot(Mc, c1))
                 Sb = ub * Ms * Lc2 / (Lb * dot(Mc, c2))
-                # print(isnan(Sa))
 
                 if isnan(Sa).any() or isnan(Sb).any():
                     pass
@@ -344,47 +340,46 @@ if __name__ == "__main__":
     # Example 1 (dense)
     # ==========================================================================
 
-    # from compas.datastructures import Network
-    # from compas.viewers import VtkViewer
+    from compas.datastructures import Network
+    from compas.viewers import VtkViewer
 
 
-    # m = 100
-    # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
-    # vertices = [[xi, yi, 0] for yi in p for xi in p]
-    # edges = []
+    m = 100
+    p = [(i / m - 0.5) * 5 for i in range(m + 1)]
+    vertices = [[xi, yi, 0] for yi in p for xi in p]
+    edges = []
 
-    # for i in range(m):
-    #     for j in range(m):
-    #         s = (m + 1)
-    #         p1 = (j + 0) * s + i + 0
-    #         p2 = (j + 0) * s + i + 1
-    #         p3 = (j + 1) * s + i + 0
-    #         p4 = (j + 1) * s + i + 1
-    #         edges.append([p1, p2])
-    #         edges.append([p1, p3])
-    #         if j == m - 1:
-    #             edges.append([p4, p3])
-    #         if i == m - 1:
-    #             edges.append([p2, p4])
+    for i in range(m):
+        for j in range(m):
+            s = (m + 1)
+            p1 = (j + 0) * s + i + 0
+            p2 = (j + 0) * s + i + 1
+            p3 = (j + 1) * s + i + 0
+            p4 = (j + 1) * s + i + 1
+            edges.append([p1, p2])
+            edges.append([p1, p3])
+            if j == m - 1:
+                edges.append([p4, p3])
+            if i == m - 1:
+                edges.append([p2, p4])
 
-    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    # sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
-    # network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
-    # network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
-    # network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
+    network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
+    network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
+    network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
+    network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
 
-    # drx_numba(network=network, tol=0.01, summary=1, update=1)
+    drx_numba(network=network, tol=0.01, summary=1, update=1)
 
-    # data = {
-    #     'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
-    #     'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
-    # }
+    data = {
+        'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
+        'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
+    }
 
-    # viewer = VtkViewer(data=data)
-    # viewer.vertex_size = 0
-    # viewer.edge_width = 0.01
-    # viewer.setup()
-    # viewer.start()
+    viewer = VtkViewer(data=data)
+    viewer.vertex_size = 0
+    viewer.setup()
+    viewer.start()
 
 
     # ==========================================================================
@@ -427,22 +422,23 @@ if __name__ == "__main__":
 
 
     # def func(self):
-    #     print('test', len(self.args))
-    #     tol, steps, _, m, n, u, v, X, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V, inds, indi, indf, EIx, EIy, beams = self.args
+
+    #     tol, steps, _, m, n, u, v, X, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V, inds, indi, indf, EIx, EIy, beams, _ = self.args
     #     X_ = self.X if self.X is not None else X
     #     drx_solver_numba(tol, steps, 0, m, n, u, v, X_, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V,
     #                      inds, indi, indf, EIx, EIy, beams)
-    #     for i in range(X_.shape[0]):
-    #         self.vertices.SetPoint(i, X_[i, :])
-    #     self.vertices.Modified()
-    #     self.main.window.Render()
+    #     self.update_vertices_coordinates({i: X[i, :] for i in range(X.shape[0])})
     #     self.X = X_
 
+
     # def z_up(self):
+
     #     self.X[0, 2] += 0.1
     #     func(self)
 
+
     # def z_down(self):
+
     #     self.X[0, 2] -= 0.1
     #     func(self)
 
@@ -465,88 +461,91 @@ if __name__ == "__main__":
     # Example 3 (mouse)
     # ==========================================================================
 
-    from compas.datastructures import Network
-    from compas.viewers import VtkViewer
+    # from compas.datastructures import Network
+    # from compas.viewers import VtkViewer
 
-    from numpy import linspace
+    # from numpy import linspace
 
     # from vtk import vtkSphereWidget
 
 
     # def func(self):
-    #     u, v, X0, f0_, l0_, ks_, ind_c, ind_t, B, P, S, rows_, cols_, vals_, M_, C, f0, ks, l0, beams, inds, indi, indf, EIx, EIy = self.args
-    #     drx_solver(0.01, 1000, 0, u, v, X0, f0_, l0_, ks_, ind_c, ind_t, B, P, S, rows_, cols_, vals_, M_, 10, beams, inds, indi, indf, EIx, EIy)
-    #     for i in range(X0.shape[0]):
-    #         self.vertices.SetPoint(i, X0[i, :])
-    #         self.vertices.Modified()
-    #     self.window.Render()
-    #     self.X0 = X0
 
-    L = 12
-    n = 40
-    EI = 0.2
+    #     tol, steps, _, m, n, u, v, X, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V, inds, indi, indf, EIx, EIy, beams, _ = self.args
+    #     X_ = self.X if self.X is not None else X
+    #     drx_solver_numba(tol, steps, 0, m, n, u, v, X_, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V,
+    #                      inds, indi, indf, EIx, EIy, beams)
+    #     self.update_vertices_coordinates({i: X[i, :] for i in range(X.shape[0])})
+    #     self.X = X_
 
-    vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-5, 5, n))]
-    edges = [[i, i + 1] for i in range(n - 1)]
 
-    network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    leaves  = network.leaves()
-    network.update_default_vertex_attributes({'EIx': EI, 'EIy': EI})
-    network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
-    network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], leaves)
-    network.beams = {'beam': {'nodes': list(range(n))}}
+    # L = 12
+    # n = 40
+    # EI = 0.2
 
-    drx_numba(network=network, tol=0.01, summary=1, update=1)
+    # vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-5, 5, n))]
+    # edges = [[i, i + 1] for i in range(n - 1)]
 
-    data = {
-        'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
-        'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
-    }
+    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    # leaves  = network.leaves()
+    # network.update_default_vertex_attributes({'EIx': EI, 'EIy': EI})
+    # network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+    # network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], leaves)
+    # network.beams = {'beam': {'nodes': list(range(n))}}
+
+    # data = {
+    #     'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
+    #     'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
+    # }
 
 
     # class RightHandle():
 
     #     def __init__(self, viewer):
+
     #         self.viewer = viewer
 
     #     def __call__(self, caller, ev):
+
     #         xyz = caller.GetCenter()
-    #         self.viewer.X0[-1, :2] = xyz[:2]
+    #         self.viewer.X[-1, :] = xyz[:]
     #         self.viewer.func(self.viewer)
+
 
     # class LeftHandle():
 
     #     def __init__(self, viewer):
+
     #         self.viewer = viewer
 
     #     def __call__(self, caller, ev):
+
     #         xyz = caller.GetCenter()
-    #         self.viewer.X0[0, :2] = xyz[:2]
+    #         self.viewer.X[0, :] = xyz[:]
     #         self.viewer.func(self.viewer)
 
 
-    viewer = VtkViewer(data=data)
-    # viewer.args = _prepare_solver(network)
-    # viewer.settings['draw_axes'] = 1
-    viewer.vertex_size = 0.02
-    # viewer.keycallbacks['s'] = func
+    # viewer = VtkViewer(data=data)
+    # viewer.args = _args(network=network, factor=1, summary=0, steps=10000, tol=0.01)
+    # viewer.X = None
     # viewer.func = func
+    # viewer.keycallbacks['s'] = viewer.func
+    # viewer.setup()
 
     # left_widget = vtkSphereWidget()
-    # left_widget.SetCenter(network.vertex_coordinates(leaves[0]))
+    # left_widget.SetCenter(network.vertex_coordinates(network.leaves()[0]))
     # left_widget.SetRadius(0.1)
-    # left_widget.SetInteractor(viewer.interactor)
+    # left_widget.SetInteractor(viewer.main.interactor)
     # left_widget.SetRepresentationToSurface()
     # left_widget.On()
     # left_widget.AddObserver("InteractionEvent", LeftHandle(viewer))
 
     # right_widget = vtkSphereWidget()
-    # right_widget.SetCenter(network.vertex_coordinates(leaves[1]))
+    # right_widget.SetCenter(network.vertex_coordinates(network.leaves()[1]))
     # right_widget.SetRadius(0.1)
-    # right_widget.SetInteractor(viewer.interactor)
+    # right_widget.SetInteractor(viewer.main.interactor)
     # right_widget.SetRepresentationToSurface()
     # right_widget.On()
     # right_widget.AddObserver("InteractionEvent", RightHandle(viewer))
 
-    viewer.setup()
-    viewer.start()
+    # viewer.start()

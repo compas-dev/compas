@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from ctypes import cast
 from ctypes import CDLL
 from ctypes import c_double
 from ctypes import c_int
@@ -13,8 +12,10 @@ from compas.numerical.algorithms.drx_numpy import _beam_data
 from compas.numerical.algorithms.drx_numpy import _create_arrays
 
 from numpy import array
-from numpy import int32
 from numpy import ctypeslib
+from numpy import float64
+from numpy import int32
+from numpy import zeros
 
 from time import time
 
@@ -51,12 +52,12 @@ def drx_c(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
 
     Returns
     -------
-    # array
-    #     Vertex co-ordinates.
-    # array
-    #     Edge forces.
-    # array
-    #     Edge lengths.
+    array
+        Vertex co-ordinates.
+    array
+        Edge forces.
+    array
+        Edge lengths.
 
     """
 
@@ -89,15 +90,8 @@ def drx_c(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
 
     drx_c = CDLL('./drx_c.so')
 
-    # print(k0.ctypes.strides[:])
-    # print(l0.ctypes.data)
-    # print(l0.ctypes.shape[:])
-    # print(l0.ctypes.strides[:])
-
-    # ptr = cast(X, POINTER(ctypes.c_double * size))
-    ptr = X.ctypes.data_as(POINTER(c_double))
-    # pnt = ctypeslib.as_ctypes(X)
-    # ptr = cast(pnt, POINTER(c_double))
+    f = zeros(m, dtype=float64)
+    ptr1 = X.ctypes.data_as(POINTER(c_double))
 
     drx_c.drx_solver_c(
         c_double(tol),
@@ -107,7 +101,7 @@ def drx_c(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
         c_int(n),
         u.ctypes.data_as(POINTER(c_int)),
         v.ctypes.data_as(POINTER(c_int)),
-        ptr,
+        ptr1,
         f0.ctypes.data_as(POINTER(c_double)),
         l0.ctypes.data_as(POINTER(c_double)),
         k0.ctypes.data_as(POINTER(c_double)),
@@ -134,10 +128,10 @@ def drx_c(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
         c_int(len(inds)),
     )
 
-    Xr = ctypeslib.as_array(ptr, (n, 3))
-    # X = frombuffer(ptr.contents)
-    Xr[:, 0] = X[:, 0]  # hack
+    Xr = ctypeslib.as_array(ptr1, (n, 3))
+    # Xr[:, 0] = X[:, 0]  # hack
     # print(X)
+    # send and bring over f and l
 
     toc2 = time() - tic2
 
@@ -158,18 +152,15 @@ def drx_c(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
             x, y, z = Xr[k_i[key], :]
             network.set_vertex_attributes(key, 'xyz', [x, y, z])
 
-        # uv_i = network.uv_index()
-        # for uv in network.edges():
-        #     i = uv_i[uv]
-        #     network.set_edge_attribute(uv, 'f', float(f[i]))
+        uv_i = network.uv_index()
+        for uv in network.edges():
+            i = uv_i[uv]
+            network.set_edge_attribute(uv, 'f', float(f[i]))
 
-    # print(frombuffer(ptr.contents))
-    # print(ctypeslib.as_array(X))
 
-# ctypes_module.add_float.restype = c_double
-# res_float = ctypes_module.add_float(a, b)
-# print(res_float)
-
+# ==============================================================================
+# Main
+# ==============================================================================
 
 if __name__ == "__main__":
 
@@ -230,8 +221,8 @@ if __name__ == "__main__":
     from numpy import linspace
 
 
-    L = 12
-    n = 40
+    L  = 12
+    n  = 40
     EI = 0.2
 
     vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-5, 5, n))]
@@ -252,7 +243,5 @@ if __name__ == "__main__":
     }
 
     viewer = VtkViewer(data=data)
-    viewer.vertex_size = 0.02
-
     viewer.setup()
     viewer.start()

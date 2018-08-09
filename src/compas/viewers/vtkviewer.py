@@ -49,7 +49,7 @@ try:
     from PyQt5.Qt import QVBoxLayout
     from PyQt5.Qt import QWidget
     from PyQt5.QtCore import Qt
-except:
+except ImportError:
     pass
 
 import sys
@@ -112,8 +112,8 @@ class MainWindow(QMainWindow):
 
         self.interactor = interactor = widget.GetRenderWindow().GetInteractor()
         interactor.SetInteractorStyle(InteractorStyle())
-        interactor.Initialize()
         interactor.AddObserver('KeyPressEvent', app.keypress)
+        interactor.Initialize()
         interactor.Start()
 
         self.resize(app.width, app.height)
@@ -179,7 +179,9 @@ class VtkViewer(QApplication):
         self.camera_target   = [0, 0, 0]
         self.show_axes       = True
         self.vertex_size     = 20.0
+        self.vertex_scale    = 0.001
         self.edge_width      = 20.0
+        self.edge_scale      = 0.05
 
         self.name         = name
         self.data         = data
@@ -290,8 +292,11 @@ class VtkViewer(QApplication):
 
         self.actor = actor = vtkActor()
         actor.SetMapper(mapper)
-        actor.GetProperty().SetLineWidth(self.edge_width * 0.1)
-        actor.GetProperty().EdgeVisibilityOn()
+        actor.GetProperty().SetLineWidth(self.edge_width * self.edge_scale)
+        if self.edge_width == 0:
+            actor.GetProperty().EdgeVisibilityOff()
+        else:
+            actor.GetProperty().EdgeVisibilityOn()
         actor.GetProperty().SetEdgeColor([0, 0.5, 0])
         actor.GetProperty().SetInterpolationToGouraud()
 
@@ -413,7 +418,7 @@ class VtkViewer(QApplication):
     def draw_vertices(self):
 
         self.vertex = vertex = vtkSphereSource()
-        vertex.SetRadius(self.vertex_size * 0.001)
+        vertex.SetRadius(self.vertex_size * self.vertex_scale)
         vertex.SetPhiResolution(15)
         vertex.SetThetaResolution(15)
 
@@ -432,7 +437,7 @@ class VtkViewer(QApplication):
         if self.data.get('fixed', None):
 
             self.support = support = vtkSphereSource()
-            support.SetRadius(self.vertex_size * 1.5 * 0.001)
+            support.SetRadius(self.vertex_size * 1.5 * self.vertex_scale)
             support.SetPhiResolution(15)
             support.SetThetaResolution(15)
 
@@ -455,9 +460,26 @@ class VtkViewer(QApplication):
 
         value = self.sliders['slider_vertices'].value()
         self.labels['label_vertices'].setText('Vertex size: {0}'.format(value))
-        self.vertex.SetRadius(value * 0.001)
+        self.vertex.SetRadius(value * self.vertex_scale)
         if self.support:
-            self.support.SetRadius(value * 1.5 * 0.001)
+            self.support.SetRadius(value * 1.5 * self.vertex_scale)
+        self.main.window.Render()
+
+    def update_vertices_coordinates(self, coordinates):
+
+        for key, xyz in coordinates.items():
+            self.vertices.SetPoint(key, xyz)
+        self.vertices.Modified()
+        self.main.window.Render()
+
+    def update_vertices_colors(self, colors):
+
+        self.vertex_colors = vtkUnsignedCharArray()
+        self.vertex_colors.SetNumberOfComponents(3)
+        colors_ = [colors.get(i, [200, 200, 200]) for i in self.data['vertices'].keys()]
+        for color in colors_:
+            self.vertex_colors.InsertNextTypedTuple([int(round(i)) for i in color])
+        self.polydata.GetPointData().SetScalars(self.vertex_colors)
         self.main.window.Render()
 
 
@@ -492,7 +514,7 @@ class VtkViewer(QApplication):
         else:
             self.actor.GetProperty().EdgeVisibilityOn()
         self.labels['label_edges'].setText('Edge width: {0}'.format(value))
-        self.actor.GetProperty().SetLineWidth(value * 0.1)
+        self.actor.GetProperty().SetLineWidth(value * self.edge_scale)
         self.main.window.Render()
 
 
@@ -651,70 +673,70 @@ if __name__ == "__main__":
     # Mesh
     # ==============================================================================
 
-    # def func(self):
-    #     print('Callback test!')
+    def func(self):
+        print('Callback test!')
 
-    # data = {
-    #     'vertices': {
-    #         0: [-3, -3, 0],
-    #         1: [+3, -3, 0],
-    #         2: [+3, +3, 0],
-    #         3: [-3, +3, 0],
-    #         4: [-3, -3, 3],
-    #         5: [+3, -3, 3],
-    #         6: [+3, +3, 3],
-    #         7: [-3, +3, 3],
-    #     },
-    #     'vertex_colors': {
-    #         # turn on vertex coloring by uncommenting
-    #         0: [255, 0, 255],
-    #         1: [255, 0, 0],
-    #         2: [255, 255, 0],
-    #         3: [255, 255, 0],
-    #         4: [0, 255, 0],
-    #         5: [0, 255, 150],
-    #         6: [0, 255, 255],
-    #         7: [0, 0, 255],
-    #     },
-    #     'edges': [
-    #         {'u': 0, 'v': 4, 'color': [0, 0, 0]},
-    #         {'u': 1, 'v': 5, 'color': [0, 0, 255]},
-    #         {'u': 2, 'v': 6, 'color': [0, 255, 0]},
-    #         {'u': 3, 'v': 7}
-    #     ],
-    #     'faces': {
-    #         0: {'vertices': [4, 5, 6], 'color': [250, 150, 150]},
-    #         1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
-    #     },
-    #     'fixed':
-    #         [0, 1],
-    #     'blocks': {
-    #         'size': 1,
-    #         'locations': [[0, 0, 3], [0, 0, 4]],
-    #     }
-    # }
+    data = {
+        'vertices': {
+            0: [-3, -3, 0],
+            1: [+3, -3, 0],
+            2: [+3, +3, 0],
+            3: [-3, +3, 0],
+            4: [-3, -3, 3],
+            5: [+3, -3, 3],
+            6: [+3, +3, 3],
+            7: [-3, +3, 3],
+        },
+        'vertex_colors': {
+            # turn on vertex coloring by uncommenting
+            0: [255, 0, 255],
+            1: [255, 0, 0],
+            2: [255, 255, 0],
+            3: [255, 255, 0],
+            4: [0, 255, 0],
+            5: [0, 255, 150],
+            6: [0, 255, 255],
+            7: [0, 0, 255],
+        },
+        'edges': [
+            {'u': 0, 'v': 4, 'color': [0, 0, 0]},
+            {'u': 1, 'v': 5, 'color': [0, 0, 255]},
+            {'u': 2, 'v': 6, 'color': [0, 255, 0]},
+            {'u': 3, 'v': 7}
+        ],
+        'faces': {
+            0: {'vertices': [4, 5, 6], 'color': [250, 150, 150]},
+            1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
+        },
+        'fixed':
+            [0, 1],
+        'blocks': {
+            'size': 1,
+            'locations': [[0, 0, 3], [0, 0, 4]],
+        }
+    }
 
-    # viewer = VtkViewer(data=data)
-    # viewer.show_axes = False
-    # viewer.keycallbacks['s'] = func
-    # viewer.setup()
-    # viewer.start()
+    viewer = VtkViewer(data=data)
+    viewer.show_axes = False
+    viewer.keycallbacks['s'] = func
+    viewer.setup()
+    viewer.start()
 
 
     # ==============================================================================
     # Voxels
     # ==============================================================================
 
-    from numpy import linspace
-    from numpy import meshgrid
+    # from numpy import linspace
+    # from numpy import meshgrid
 
-    r = linspace(-1, 1, 50)
-    x, y, z = meshgrid(r, r, r)
+    # r = linspace(-1, 1, 50)
+    # x, y, z = meshgrid(r, r, r)
 
-    data = {
-        'voxels': x + y + z,
-    }
+    # data = {
+    #     'voxels': x + y + z,
+    # }
 
-    viewer = VtkViewer(data=data)
-    viewer.setup()
-    viewer.start()
+    # viewer = VtkViewer(data=data)
+    # viewer.setup()
+    # viewer.start()

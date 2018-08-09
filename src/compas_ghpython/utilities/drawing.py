@@ -217,13 +217,13 @@ def xdraw_network(network):
     """Draw a network in Grasshopper.
     """
     points = []
-    for key, attr in network.vertices_iter(True):
+    for key, attr in network.vertices(True):
         points.append({
             'pos': network.vertex_coordinates(key),
         })
 
     lines = []
-    for u, v, attr in network.edges_iter(True):
+    for u, v, attr in network.edges(True):
         lines.append({
             'start': network.vertex_coordinates(u),
             'end': network.vertex_coordinates(v),
