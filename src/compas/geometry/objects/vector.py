@@ -7,9 +7,9 @@ from math import cos
 from math import sqrt
 from math import pi
 
-from compas.geometry import *
+from compas.geometry.basic import length_vector
 
-from compas.geometry import transform_vectors
+from compas.geometry.transformations import transform_vectors
 
 
 __author__     = ['Tom Van Mele', ]
@@ -81,6 +81,21 @@ class Vector(object):
 
     @classmethod
     def from_start_end(cls, start, end):
+        """Construct a ``Vector`` from start and end points.
+
+        Parameters
+        ----------
+        start : point
+            The start point.
+        end : point
+            The end point.
+
+        Returns
+        -------
+        Vector
+            The vector from start to end.
+
+        """
         v = subtract_vectors(end, start)
         return cls(*v)
 
@@ -90,7 +105,7 @@ class Vector(object):
 
     @property
     def x(self):
-        """:obj:`float`: The X coordinate of the point."""
+        """float: The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -99,7 +114,7 @@ class Vector(object):
 
     @property
     def y(self):
-        """:obj:`float`: The Y coordinate of the point."""
+        """float: The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -108,7 +123,7 @@ class Vector(object):
 
     @property
     def z(self):
-        """:obj:`float`: The Z coordinate of the point."""
+        """float: The Z coordinate of the point."""
         return self._z
 
     @z.setter
@@ -117,7 +132,7 @@ class Vector(object):
 
     @property
     def precision(self):
-        """:obj:`int`: The number of fractional digits used in the representation of the coordinates of the point."""
+        """int: The number of fractional digits used in the representation of the coordinates of the point."""
         return self._precision
 
     @precision.setter
@@ -360,7 +375,7 @@ class Vector(object):
 
     @property
     def length(self):
-        """:obj:`float`: The length of this ``Vector``."""
+        """float: The length of this ``Vector``."""
         return length_vector(self)
 
     # ==========================================================================
@@ -389,26 +404,6 @@ class Vector(object):
         self.x = self.x / l
         self.y = self.y / l
         self.z = self.z / l
-
-    def homogenise(self, w):
-        """Homogenise the components of this ``Vector`` using the given homogenisation factor.
-
-        Parameters
-        ----------
-        w : float
-            The homogenisation factor.
-
-        """
-        self.x = self.x / w
-        self.y = self.y / w
-        self.z = self.z / w
-        self.w = w
-
-    def dehomogenise(self):
-        """Dehomogenise the components of this vector."""
-        self.x *= self.w
-        self.y *= self.w
-        self.z *= self.w
 
     def scale(self, n):
         """Scale this ``Vector`` by a factor n.
@@ -489,7 +484,6 @@ class Vector(object):
 
     # ==========================================================================
     # transformations
-    # should there be transformation available for vectors?
     # ==========================================================================
 
     def transform(self, matrix):
@@ -501,10 +495,28 @@ class Vector(object):
             The transformation matrix.
 
         """
-        point = transform([self, ], matrix)[0]
+        point = transform_vectors([self, ], matrix)[0]
         self.x = point[0]
         self.y = point[1]
         self.z = point[2]
+
+    def transformed(self, matrix):
+        """Return a transformed copy of this ``Vector`` using a given transformation matrix.
+
+        Parameters
+        ----------
+        matrix : list of list
+            The transformation matrix.
+
+        Returns
+        -------
+        Vector
+            The transformed copy.
+
+        """
+        vector = self.copy()
+        vector.transform(matrix)
+        return vector
 
 
 # ==============================================================================
@@ -518,6 +530,8 @@ if __name__ == '__main__':
     u = Vector(0.0, 0.0, 1.0)
     v = Vector(1.0, 0.0, 0.0)
 
-    u.rotate(pi / 4, v)
+    M = matrix_from_axis_and_angle(v, pi / 4)
+
+    u.transform(M)
 
     print(u)

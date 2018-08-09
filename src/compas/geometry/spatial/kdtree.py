@@ -4,7 +4,7 @@ from __future__ import division
 
 import collections
 
-from compas.geometry import distance_point_point_sqrd
+from compas.geometry.distance import distance_point_point_sqrd
 
 
 __author__     = ['Matthias Rippmann <rippmann@arch.ethz.ch>', 'Tom Van Mele <van.mele@arch.ethz.ch>']

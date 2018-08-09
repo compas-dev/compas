@@ -65,8 +65,51 @@ class Transformation(object):
     def __init__(self, matrix=None):
         if not matrix:
             matrix = identity_matrix(4)
-
         self.matrix = matrix
+
+    def __mul__(self, other):
+        return self.concatenate(other)
+
+    def __imul__(self, other):
+        return self.concatenate(other)
+
+    def __getitem__(self, key):
+        i, j = key
+        return self.matrix[i][j]
+
+    def __setitem__(self, key, value):
+        i, j = key
+        self.matrix[i][j] = value
+
+    def __iter__(self):
+        return iter(self.matrix)
+
+    def __eq__(self, other, tol=1e-05):
+        try:
+            M = self.matrix
+            O = other.matrix
+            for i in range(4):
+                for j in range(4):
+                    if math.fabs(M[i][j] - O[i][j]) > tol:
+                        return False
+            return True
+        except BaseException:
+            raise TypeError("Wrong input type.")
+
+    def __repr__(self):
+        s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10)
+                                   for n in self.matrix[0]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10)
+                                    for n in self.matrix[1]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10)
+                                    for n in self.matrix[2]])
+        s += " [%s]]" % ",".join([("%.4f" % n).rjust(10)
+                                  for n in self.matrix[3]])
+        s += "\n"
+        return s
+
+    def __len__(self):
+        return len(self.matrix)
 
     @classmethod
     def from_matrix(cls, matrix):
@@ -244,50 +287,6 @@ class Transformation(object):
         else:
             return cls(multiply_matrices(self.matrix, other.matrix))
 
-    def __mul__(self, other):
-        return self.concatenate(other)
-
-    def __imul__(self, other):
-        return self.concatenate(other)
-
-    def __getitem__(self, key):
-        i, j = key
-        return self.matrix[i][j]
-
-    def __setitem__(self, key, value):
-        i, j = key
-        self.matrix[i][j] = value
-
-    def __iter__(self):
-        return iter(self.matrix)
-
-    def __eq__(self, other, tol=1e-05):
-        try:
-            M = self.matrix
-            O = other.matrix
-            for i in range(4):
-                for j in range(4):
-                    if math.fabs(M[i][j] - O[i][j]) > tol:
-                        return False
-            return True
-        except BaseException:
-            raise TypeError("Wrong input type.")
-
-    def __repr__(self):
-        s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10)
-                                   for n in self.matrix[0]])
-        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10)
-                                    for n in self.matrix[1]])
-        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10)
-                                    for n in self.matrix[2]])
-        s += " [%s]]" % ",".join([("%.4f" % n).rjust(10)
-                                  for n in self.matrix[3]])
-        s += "\n"
-        return s
-
-    def __len__(self):
-        return len(self.matrix)
-
 
 # ==============================================================================
 # Main
@@ -301,6 +300,9 @@ if __name__ == "__main__":
     from compas.geometry import matrix_from_translation
     from compas.geometry import matrix_from_scale_factors
     from compas.geometry import transform_points
+
+    from numpy import asarray
+
 
     f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     T = Transformation.from_frame(f1)

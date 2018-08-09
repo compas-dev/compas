@@ -4,6 +4,9 @@ from __future__ import division
 
 from compas.geometry.objects import Point
 
+from compas.geometry.transformations import transform_points
+from compas.geometry.transformations import transform_vectors
+
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -93,7 +96,7 @@ class Line(object):
 
     @property
     def length(self):
-        """:obj:`float`: The length of the vector from start to end."""
+        """float: The length of the vector from start to end."""
         return self.vector.length
 
     @property
@@ -156,6 +159,22 @@ class Line(object):
     # ==========================================================================
 
     # ==========================================================================
+    # helpers
+    # ==========================================================================
+
+    def copy(self):
+        """Make a copy of this ``Line``.
+
+        Returns
+        -------
+        Line
+            The copy.
+
+        """
+        cls = type(self)
+        return cls(self.start.copy(), self.end.copy())
+
+    # ==========================================================================
     # methods
     # ==========================================================================
 
@@ -172,7 +191,8 @@ class Line(object):
             The transformation matrix.
 
         """
-        point, normal = transform([self.point, self.normal], matrix)
+        point = transform_points([self.point], matrix)[0]
+        normal = transform_vectors([self.normal], matrix)[0]
         self.point.x = point[0]
         self.point.y = point[1]
         self.point.z = point[2]
@@ -180,27 +200,23 @@ class Line(object):
         self.normal.y = normal[1]
         self.normal.z = normal[2]
 
-    def translate(self, vector):
-        """Translate the line by a vector.
+    def transformed(self, matrix):
+        """Return a transformed copy of this ``Line`` using a given transformation matrix.
 
         Parameters
         ----------
-        vector : vector
-            The translation vector.
+        matrix : list of list
+            The transformation matrix.
+
+        Returns
+        -------
+        Line
+            The transformed copy.
 
         """
-        self.start.translate(vector)
-        self.end.translate(vector)
-
-    def rotate(self, angle, axis=None, origin=None):
-        """Rotate the line around a specified axis and origin."""
-        if not axis:
-            axis = [0.0, 0.0, 1.0]
-        if not origin:
-            origin = [0.0, 0.0, 0.0]
-
-        self.start.rotate(angle, axis, origin)
-        self.end.rotate(angle, axis, origin)
+        line = self.copy()
+        line.transform(matrix)
+        return line
 
 
 # ==============================================================================

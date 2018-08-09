@@ -2,10 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.geometry.basic import orthonormalise_vectors
+
+from compas.geometry.transformations import transform_points
+from compas.geometry.transformations import transform_vectors
+
 from compas.geometry.objects import Vector
 from compas.geometry.objects import Point
-
-from compas.geometry import orthonormalise_vectors
 
 
 __author__     = ['Tom Van Mele', ]
@@ -230,7 +233,8 @@ class Plane(object):
             The transformation matrix.
 
         """
-        point, normal = transform([self.point, self.normal], matrix)
+        point = transform_points([self.point], matrix)
+        normal = transform_vectors([self.normal], matrix)
         self.point.x = point[0]
         self.point.y = point[1]
         self.point.z = point[2]

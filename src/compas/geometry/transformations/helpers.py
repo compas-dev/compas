@@ -105,7 +105,7 @@ def homogenize(vectors, w=1.0):
     [[1.0, 0.0, 0.0, 1.0]]
 
     """
-    return [[x / w, y / w, z / w, w] for x, y, z in vectors]
+    return [[x * w, y * w, z * w, w] if w else [x, y, z, 0.0] for x, y, z in vectors]
 
 
 def dehomogenize(vectors):
@@ -126,7 +126,7 @@ def dehomogenize(vectors):
     >>>
 
     """
-    return [[x * w, y * w, z * w] for x, y, z, w in vectors]
+    return [[x / w, y / w, z / w] if w else [x, y, z] for x, y, z, w in vectors]
 
 
 def homogenize_numpy(points):

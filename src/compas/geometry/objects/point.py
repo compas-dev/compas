@@ -4,30 +4,21 @@ from __future__ import division
 
 from compas.geometry.objects import Vector
 
-from compas.geometry import distance_point_point
-from compas.geometry import distance_point_line
-from compas.geometry import distance_point_plane
+from compas.geometry.distance import distance_point_point
+from compas.geometry.distance import distance_point_line
+from compas.geometry.distance import distance_point_plane
 
-from compas.geometry import is_point_on_line
-from compas.geometry import is_point_on_line_xy
-from compas.geometry import is_point_on_segment
-from compas.geometry import is_point_on_segment_xy
-from compas.geometry import is_point_on_polyline
-from compas.geometry import is_point_on_polyline_xy
+from compas.geometry.queries import is_point_on_line
+from compas.geometry.queries import is_point_on_segment
+from compas.geometry.queries import is_point_on_polyline
+from compas.geometry.queries import is_point_in_triangle
+from compas.geometry.queries import is_point_in_circle
 
-# from compas.geometry import is_point_on_circle
+from compas.geometry.queries import is_polygon_convex_xy
+from compas.geometry.queries import is_point_in_polygon_xy
+from compas.geometry.queries import is_point_in_convex_polygon_xy
 
-from compas.geometry import is_point_in_triangle
-from compas.geometry import is_point_in_triangle_xy
-from compas.geometry import is_point_in_circle
-from compas.geometry import is_point_in_circle_xy
-
-from compas.geometry import is_polygon_convex_xy
-
-from compas.geometry import is_point_in_polygon_xy
-from compas.geometry import is_point_in_convex_polygon_xy
-
-from compas.geometry import transform_points
+from compas.geometry.transformations import transform_points
 
 
 __author__     = ['Tom Van Mele', ]
@@ -126,7 +117,7 @@ class Point(object):
 
     @property
     def x(self):
-        """:obj:`float`: The X coordinate of the point."""
+        """float: The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -135,7 +126,7 @@ class Point(object):
 
     @property
     def y(self):
-        """:obj:`float`: The Y coordinate of the point."""
+        """float: The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -144,7 +135,7 @@ class Point(object):
 
     @property
     def z(self):
-        """:obj:`float`: The Z coordinate of the point."""
+        """float: The Z coordinate of the point."""
         return self._z
 
     @z.setter
@@ -153,7 +144,7 @@ class Point(object):
 
     @property
     def precision(self):
-        """:obj:`int`: The number of fractional digits used in the representation of the coordinates of the point."""
+        """int: The number of fractional digits used in the representation of the coordinates of the point."""
         return self._precision
 
     @precision.setter
@@ -423,16 +414,13 @@ class Point(object):
         """
         return distance_point_plane(self, plane)
 
-    def on_line(self, line, xy=False):
+    def on_line(self, line):
         """Determine if the point lies on the given line.
 
         Parameters
         ----------
         line : line
             The line.
-        xy : bool, optional
-            Assume the test is performed in the XY plane.
-            Default is False.
 
         Returns
         -------
@@ -441,20 +429,15 @@ class Point(object):
             False, otherwise.
 
         """
-        if xy:
-            is_point_on_line_xy(self, line)
         return is_point_on_line(self, line)
 
-    def on_segment(self, segment, xy=False):
+    def on_segment(self, segment):
         """Determine if the point lies on the given segment.
 
         Parameters
         ----------
         segment : segment
             The segment.
-        xy : bool, optional
-            Assume the test is performed in the XY plane.
-            Default is False.
 
         Returns
         -------
@@ -463,20 +446,15 @@ class Point(object):
             False, otherwise.
 
         """
-        if xy:
-            return is_point_on_segment_xy(self, segment)
         return is_point_on_segment(self, segment)
 
-    def on_polyline(self, polyline, xy=False):
+    def on_polyline(self, polyline):
         """Determine if the point lies on the given polyline.
 
         Parameters
         ----------
         polyline : polyline
             The polyline.
-        xy : bool, optional
-            Assume the test is performed in the XY plane.
-            Default is False.
 
         Returns
         -------
@@ -485,20 +463,15 @@ class Point(object):
             False, otherwise.
 
         """
-        if xy:
-            return is_point_on_polyline_xy(self, polyline)
         return is_point_on_polyline(self, polyline)
 
-    def on_circle(self, circle, xy=False):
+    def on_circle(self, circle):
         """Determine if the point lies on the given circle.
 
         Parameters
         ----------
         circle : circle
             The circle.
-        xy : bool, optional
-            Assume the test is performed in the XY plane.
-            Default is False.
 
         Returns
         -------
@@ -509,16 +482,13 @@ class Point(object):
         """
         raise NotImplementedError
 
-    def in_triangle(self, triangle, xy=False):
+    def in_triangle(self, triangle):
         """Determine if the point lies in the given triangle.
 
         Parameters
         ----------
         triangle : triangle
             The triangle.
-        xy : bool, optional
-            Assume the test is performed in the XY plane.
-            Default is False.
 
         Returns
         -------
@@ -527,8 +497,6 @@ class Point(object):
             False, otherwise.
 
         """
-        if xy:
-            return is_point_in_triangle_xy(self, triangle)
         return is_point_in_triangle(self, triangle)        
 
     def in_polygon(self, polygon):
@@ -551,16 +519,13 @@ class Point(object):
         return is_point_in_polygon_xy(self, polygon)
 
 
-    def in_circle(self, circle, xy=False):
+    def in_circle(self, circle):
         """Determine if the point lies on the given polyline.
 
         Parameters
         ----------
         polyline : polyline
             The polyline.
-        xy : bool, optional
-            Assume the test is performed in the XY plane.
-            Default is False.
 
         Returns
         -------
@@ -569,8 +534,6 @@ class Point(object):
             False, otherwise.
 
         """
-        if xy:
-            return is_point_in_circle_xy(self, circle)
         return is_point_in_circle(self, circle)
 
     def in_polyhedron(self, polyhedron):
@@ -608,71 +571,23 @@ class Point(object):
         self.y = point[1]
         self.z = point[2]
 
-    def translate(self, vector):
-        """Translate this ``Point`` by a vector.
+    def transformed(self, matrix):
+        """Return a transformed copy of this ``Point`` using a given transformation matrix.
 
         Parameters
         ----------
-        vector : vector
-            The translation vector.
+        matrix : list of list
+            The transformation matrix.
+
+        Returns
+        -------
+        Point
+            The transformed copy.
 
         """
-        point = translate_points([self, ], vector)[0]
-        self.x = point[0]
-        self.y = point[1]
-        self.z = point[2]
-
-    def scale(self, factor):
-        """Scale the coordinates of this ``Point`` by a given factor.
-
-        Parameters
-        ----------
-        factor : float
-            The scale factor.
-
-        """
-        point = scale_points([self, ], factor)[0]
-        self.x = point[0]
-        self.y = point[1]
-        self.z = point[2]
-
-    def rotate(self, angle, axis=None, origin=None):
-        """Rotate this ``Vector`` over the given angle around the specified axis
-        and origin.
-
-        Parameters
-        ----------
-        angle : float
-            The rotation angle in radians.
-        axis : vector, optional
-            The rotation axis.
-            Default is the Z axis (``[0.0, 0.0, 1.0]``).
-        origin : point, optional
-            The origin of the rotation axis.
-            Default is ``[0.0, 0.0, 0.0]``.
-
-        """
-        if axis is None:
-            axis = [0.0, 0.0, 1.0]
-        if origin is None:
-            origin = [0.0, 0.0, 0.0]
-
-        point = rotate_points([self, ], angle, axis, origin)[0]
-        self.x = point[0]
-        self.y = point[1]
-        self.z = point[2]
-
-    def project_to_line(self, line):
-        point = project_points_line([self, ], line)[0]
-        self.x = point[0]
-        self.y = point[1]
-        self.z = point[2]
-
-    def project_to_plane(self, plane):
-        point = project_points_plane([self, ], plane)[0]
-        self.x = point[0]
-        self.y = point[1]
-        self.z = point[2]
+        point = self.copy()
+        point.transform(matrix)
+        return point
 
 
 # ==============================================================================
