@@ -16,6 +16,7 @@ compas
     compas.interop
     compas.numerical
     compas.plotters
+    compas.robots
     compas.topology
     compas.utilities
     compas.viewers

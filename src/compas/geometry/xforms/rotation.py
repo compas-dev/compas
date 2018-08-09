@@ -24,9 +24,9 @@ from compas.geometry.transformations import axis_angle_vector_from_matrix
 from compas.geometry.transformations import matrix_from_quaternion
 from compas.geometry.transformations import quaternion_from_matrix
 from compas.geometry.transformations import basis_vectors_from_matrix
+from compas.geometry.transformations import matrix_from_frame
 
 from compas.geometry.xforms import Transformation
-
 
 __author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
 __license__ = 'MIT License'
@@ -83,6 +83,29 @@ class Rotation(Transformation):
         R.matrix[0][0], R.matrix[1][0], R.matrix[2][0] = xaxis
         R.matrix[0][1], R.matrix[1][1], R.matrix[2][1] = yaxis
         R.matrix[0][2], R.matrix[1][2], R.matrix[2][2] = zaxis
+        return R
+    
+    @classmethod
+    def from_frame(cls, frame):
+        """Computes a change of basis transformation from world XY to frame.
+
+        It is the same as from_frame_to_frame(Frame.worldXY(), frame).
+
+        Args:
+            frame (:class:`Frame`): a frame describing the targeted Cartesian
+                coordinate system
+
+        Example:
+            >>> from compas.geometry import Frame
+            >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            >>> T = Transformation.from_frame(f1)
+            >>> f2 = Frame.from_transformation(T)
+            >>> f1 == f2
+            True
+        """
+        R = cls()
+        R.matrix = matrix_from_frame(frame)
+        R.matrix[0][3], R.matrix[1][3], R.matrix[2][3] = [0., 0., 0.]
         return R
 
     @classmethod

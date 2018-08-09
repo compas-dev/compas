@@ -55,11 +55,13 @@ def mesh_draw(mesh,
                                      colorformat='rgb',
                                      normalize=False)
 
+    """
     edgecolor = color_to_colordict(edgecolor,
                                    mesh.edges(),
                                    default=mesh.attributes['color.edge'],
                                    colorformat='rgb',
                                    normalize=False)
+    """
 
     facecolor = color_to_colordict(facecolor,
                                    mesh.faces(),
