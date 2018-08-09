@@ -153,20 +153,20 @@ class Plane(object):
         x, y, z = self.point
         return - a * x - b * y - c * z
 
-    @property
-    def frame(self):
-        """Frame: The frame that forms a basis for the local coordinates of all
-        points in the half-spaces defined by the plane.
-        """
-        a, b, c = self.normal
-        u = 1.0, 0.0, - a / c
-        v = 0.0, 1.0, - b / c
-        u, v = orthonormalise_vectors([u, v])
-        u = Vector(*u)
-        v = Vector(*v)
-        u.unitize()
-        v.unitize()
-        return self.point, u, v
+    # @property
+    # def frame(self):
+    #     """Frame: The frame that forms a basis for the local coordinates of all
+    #     points in the half-spaces defined by the plane.
+    #     """
+    #     a, b, c = self.normal
+    #     u = 1.0, 0.0, - a / c
+    #     v = 0.0, 1.0, - b / c
+    #     u, v = orthonormalise_vectors([u, v])
+    #     u = Vector(*u)
+    #     v = Vector(*v)
+    #     u.unitize()
+    #     v.unitize()
+    #     return self.point, u, v
 
     # ==========================================================================
     # representation

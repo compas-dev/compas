@@ -56,7 +56,7 @@ def test_parse_from_file(urdf_file):
 def test_inertial_parser(urdf_file):
     r = Robot.from_urdf_file(urdf_file)
     assert r.links[0].inertial.origin is not None
-    assert r.links[0].inertial.origin.point == [0.0, 0.0, 0.0]
+    assert r.links[0].inertial.origin.point == [0.0, 0.0, 500.0]
     assert r.links[0].inertial.mass.value == 1.0
     assert r.links[0].inertial.inertia.izz == 100.0
 
