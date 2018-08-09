@@ -20,6 +20,8 @@ from compas.geometry.basic import length_vector
 from compas.geometry.basic import multiply_matrix_vector
 
 from compas.geometry.distance import closest_point_on_plane
+from compas.geometry.distance import closest_point_on_line
+from compas.geometry.distance import closest_point_on_line_xy
 
 from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
@@ -270,7 +272,8 @@ def mirror_vector_vector(v1, v2):
 
     Returns
     -------
-    Tuple: mirrored vector
+    list of float
+        The mirrored vector.
 
     Notes
     -----
@@ -295,6 +298,11 @@ def mirror_point_point(point, mirror):
     mirror : list of float
         XYZ coordinates of the mirror point.
 
+    Returns
+    -------
+    list of float
+        The mirrored point.
+
     """
     return add_vectors(mirror, subtract_vectors(mirror, point))
 
@@ -309,50 +317,175 @@ def mirror_point_point_xy(point, mirror):
     mirror : list of float
         XY(Z) coordinates of the mirror point.
 
+    Returns
+    -------
+    list of float
+        The mirrored point, with Z=0.
+
     """
     return add_vectors_xy(mirror, subtract_vectors_xy(mirror, point))
 
 
 def mirror_points_point(points, mirror):
-    """Mirror multiple points about a point."""
+    """Mirror multiple points about a point.
+
+    Parameters
+    ----------
+    points : list of list of float
+        List of points.
+    mirror : list of float
+       The mirror point.
+
+    Returns
+    -------
+    list of list float
+        The mirrored points, with Z=0.
+
+    """
     return [mirror_point_point(point, mirror) for point in points]
 
 
 def mirror_points_point_xy(points, mirror):
-    """Mirror multiple points about a point."""
+    """Mirror multiple points about a point.
+
+    Parameters
+    ----------
+    points : list of list of float
+        List of points with XY(Z) coordinates.
+    mirror : list of float
+       The XY(Z) coordinates of the mirror point.
+
+    Returns
+    -------
+    list of list float
+        The mirrored points, with Z=0.
+
+    """
     return [mirror_point_point_xy(point, mirror) for point in points]
 
 
 def mirror_point_line(point, line):
-    pass
+    """Mirror a point about a line.
+
+    Parameters
+    ----------
+    point : list of float
+        XYZ coordinates of the point to mirror.
+    line : tuple
+        Two points defining the mirror line.
+
+    Returns
+    -------
+    list of float
+        The mirrored point.
+
+    """
+    closest = closest_point_on_line(point, line)
+    return add_vectors(closest, subtract_vectors(closest, point))
 
 
 def mirror_point_line_xy(point, line):
-    pass
+    """Mirror a point about a line.
+
+    Parameters
+    ----------
+    point : list of float
+        XY(Z) coordinates of the point to mirror.
+    line : tuple
+        Two points defining the line.
+        XY(Z) coordinates of the two points defining the mirror line.
+
+    Returns
+    -------
+    list of float
+        The mirrored point, with Z=0.
+
+    """
+    closest = closest_point_on_line_xy(point, line)
+    return add_vectors_xy(closest, subtract_vectors_xy(closest, point))
 
 
 def mirror_points_line(points, line):
-    pass
+    """Mirror a point about a line.
+
+    Parameters
+    ----------
+    points : list of point
+        List of points to mirror.
+    line : tuple
+        Two points defining the mirror line.
+
+    Returns
+    -------
+    list of point
+        The mirrored points.
+
+    """
+    return [closest_point_on_line(point, line) for point in points]
 
 
 def mirror_points_line_xy(point, line):
-    pass
+    """Mirror a point about a line.
+
+    Parameters
+    ----------
+    points : list of point
+        List of points to mirror.
+    line : tuple
+        Two points defining the mirror line.
+
+    Returns
+    -------
+    list of point
+        The mirrored points.
+
+    """
+    return [closest_point_on_line_xy(point, line) for point in points]
 
 
 def mirror_point_plane(point, plane):
-    """Mirror a point about a plane."""
-    p1 = closest_point_on_plane(point, plane)
-    vec = subtract_vectors(p1, point)
-    return add_vectors(p1, vec)
+    """Mirror a point about a plane.
+
+    Parameters
+    ----------
+    point : list of float
+        XYZ coordinates of mirror point.
+    plane : tuple
+        Base point and normal defining the mirror plane.
+
+    Returns
+    -------
+    list of float
+        XYZ coordinates of the mirrored point.
+
+    """
+    closest = closest_point_on_plane(point, plane)
+    return add_vectors(closest, subtract_vectors(closest, point))
 
 
 def mirror_points_plane(points, plane):
-    """Mirror multiple points about a plane."""
+    """Mirror a point about a plane.
+
+    Parameters
+    ----------
+    points : list of point
+        List of points to mirror.
+    plane : tuple
+        Base point and normal defining the mirror plane.
+
+    Returns
+    -------
+    list of point
+        The mirrored points.
+
+    """
     return [mirror_point_plane(point, plane) for point in points]
 
 
 # ==============================================================================
 # project
+# specify orhtogonal
+# add perspective
 # ==============================================================================
 
 
@@ -362,9 +495,9 @@ def project_point_plane(point, plane):
     Parameters
     ----------
     point : list of float
-        XYZ coordinates of the original point.
+        XYZ coordinates of the point.
     plane : tuple
-        Base poin.t and normal vector defining the plane
+        Base point and normal vector defining the projection plane.
 
     Returns
     -------
@@ -403,15 +536,15 @@ def project_points_plane(points, plane):
 
     Parameters
     ----------
-    points : list of list of float
-        Cloud of XYZ coordinates.
+    points : list of point
+        List of points.
     plane : tuple
         Base point and normal vector defining the projection plane.
 
     Returns
     -------
-    list of list
-        The XYZ coordinates of the projected points.
+    list of point
+        The projected points.
 
     See Also
     --------
@@ -427,9 +560,9 @@ def project_point_line(point, line):
     Parameters
     ----------
     point : list of float
-        XYZ coordinates.
+        XYZ coordinates of the point.
     line : tuple
-        Two points defining a line.
+        Two points defining the projection line.
 
     Returns
     -------
@@ -455,14 +588,14 @@ def project_point_line(point, line):
 
 
 def project_point_line_xy(point, line):
-    """Project a point onto a line.
+    """Project a point onto a line in the XY plane.
 
     Parameters
     ----------
     point : list of float
-        XY coordinates.
+        XY(Z) coordinates of the point.
     line : tuple
-        Two points defining a line.
+        Two points defining the projection line.
 
     Returns
     -------
@@ -487,13 +620,69 @@ def project_point_line_xy(point, line):
 
 
 def project_points_line(points, line):
-    """Project multiple points onto a line."""
+    """Project points onto a line.
+
+    Parameters
+    ----------
+    points : list of point
+        XYZ coordinates of the points.
+    line : tuple
+        Two points defining the projection line.
+
+    Returns
+    -------
+    list of point
+        XYZ coordinates of the projected points.
+
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Wiki Books. *Linear Algebra/Orthogonal Projection Onto a Line*.
+           Available at: https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line.
+
+    """
     return [project_point_line(point, line) for point in points]
 
 
 def project_points_line_xy(points, line):
-    """Project multiple points onto a line."""
+    """Project points onto a line in the XY plane.
+
+    Parameters
+    ----------
+    point : list of float
+        XY(Z) coordinates of the point.
+    line : tuple
+        Two points defining the projection line.
+
+    Returns
+    -------
+    list
+        XYZ coordinates of the projected point, with Z=0.
+
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Wiki Books. *Linear Algebra/Orthogonal Projection Onto a Line*.
+           Available at: https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line.
+
+    """
     return [project_point_line_xy(point, line) for point in points]
+
+
+# ==============================================================================
+# reflection
+# ==============================================================================
+
+
+# ==============================================================================
+# shear
+# ==============================================================================
 
 
 # ==============================================================================
