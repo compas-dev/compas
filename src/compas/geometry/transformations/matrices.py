@@ -60,16 +60,18 @@ __all__ = [
 def matrix_from_frame(frame):
     """Computes a change of basis transformation from world XY to the frame.
 
-    Args:
-        frame (:class:`compas.geometry.Frame`): a frame describing the targeted Cartesian
-            coordinate system
+    Parameters
+    ----------
+    frame : :class:`compas.geometry.Frame`
+        A frame describing the targeted Cartesian coordinate system
 
-    Example:
-        >>> from compas.geometry import Frame
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = matrix_from_frame(f)
+    Examples
+    --------
+    >>> from compas.geometry import Frame
+    >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    >>> T = matrix_from_frame(f)
+
     """
-
     M = identity_matrix(4)
     M[0][0], M[1][0], M[2][0] = frame.xaxis
     M[0][1], M[1][1], M[2][1] = frame.yaxis
@@ -87,23 +89,28 @@ def matrix_from_euler_angles(euler_angles, static=True, axes='xyz'):
     the rotations are applied to a static (extrinsic) or rotating (intrinsic)
     frame and the order of axes.
 
-    Args:
-        euler_angles(:obj:`list` of :obj:`float`): Three numbers that represent
-            the angles of rotations about the defined axes.
-        static(:obj:`bool`, optional): If true the rotations are applied to a
-            static frame. If not, to a rotational. Defaults to true.
-        axes(:obj:`str`, optional): A 3 character string specifying order of
-            the axes. Defaults to 'xyz'.
+    Parameters
+    ----------
+    euler_angles : list of float
+        Three numbers that represent the angles of rotations about the defined axes.
+    static : bool, optional
+        If true the rotations are applied to a static frame.
+        If not, to a rotational.
+        Defaults to true.
+    axes : str, optional
+        A 3 character string specifying order of the axes.
+        Defaults to 'xyz'.
 
-    Example:
-        >>> ea1 = 1.4, 0.5, 2.3
-        >>> args = True, 'xyz'
-        >>> R = matrix_from_euler_angles(ea1, *args)
-        >>> ea2 = euler_angles_from_matrix(R, *args)
-        >>> allclose(ea1, ea2)
-        True
+    Examples
+    --------
+    >>> ea1 = 1.4, 0.5, 2.3
+    >>> args = True, 'xyz'
+    >>> R = matrix_from_euler_angles(ea1, *args)
+    >>> ea2 = euler_angles_from_matrix(R, *args)
+    >>> allclose(ea1, ea2)
+    True
+
     """
-
     global _SPEC2TUPLE
     global _NEXT_SPEC
 
@@ -155,28 +162,35 @@ def matrix_from_euler_angles(euler_angles, static=True, axes='xyz'):
 
 def euler_angles_from_matrix(M, static=True, axes='xyz'):
     """Returns Euler angles from the rotation matrix M according to specified
-        axis sequence and type of rotation.
+    axis sequence and type of rotation.
 
-    Args:
-        M (:obj:`list` of :obj:`list` of :obj:`float`): The 3x3 or 4x4 matrix
-            in row-major order.
-        static(:obj:`bool`, optional): If true the rotations are applied to a
-            static frame. If not, to a rotational. Defaults to True.
-        axes(:obj:`str`, optional): A 3 character string specifying order of
-            the axes. Defaults to 'xyz'.
+    Parameters
+    ----------
+    M : list of list of float
+        The 3x3 or 4x4 matrix in row-major order.
+    static : bool, optional
+        If true the rotations are applied to a static frame.
+        If not, to a rotational.
+        Defaults to True.
+    axes : str, optional
+        A 3 character string specifying order of the axes.
+        Defaults to 'xyz'.
 
-    Returns:
-        (:obj:`list` of :obj:`float`): The 3 Euler angles.
+    Returns
+    -------
+    list of float
+        The 3 Euler angles.
 
-    Example:
-        >>> ea1 = 1.4, 0.5, 2.3
-        >>> args = True, 'xyz'
-        >>> R = matrix_from_euler_angles(ea1, *args)
-        >>> ea2 = euler_angles_from_matrix(R, *args)
-        >>> allclose(ea1, ea2)
-        True
+    Examples
+    --------
+    >>> ea1 = 1.4, 0.5, 2.3
+    >>> args = True, 'xyz'
+    >>> R = matrix_from_euler_angles(ea1, *args)
+    >>> ea2 = euler_angles_from_matrix(R, *args)
+    >>> allclose(ea1, ea2)
+    True
+
     """
-
     global _SPEC2TUPLE
     global _NEXT_SPEC
     global _EPS
@@ -220,32 +234,39 @@ def euler_angles_from_matrix(M, static=True, axes='xyz'):
 
 
 def matrix_from_axis_and_angle(axis, angle, point=None, rtype='list'):
-    """Calculates a rotation matrix from an rotation axis, an angle and an
-        optional point of rotation.
+    """Calculates a rotation matrix from an rotation axis, an angle and an optional
+    point of rotation.
 
-    Note:
-        The rotation is based on the right hand rule, i.e. anti-clockwise
-        if the axis of rotation points towards the observer.
+    Parameters
+    ----------
+    axis : list of float
+        Three numbers that represent the axis of rotation.
+    angle : float
+        The rotation angle in radians.
+    point : list of float, optional
+        A point to perform a rotation around an origin other than [0, 0, 0].
 
-    Args:
-        axis (:obj:`list` of :obj:`float`): Three numbers that
-            represent the axis of rotation
-        angle (:obj:`float`): The rotation angle in radians.
-        point (:obj:`list` of :obj:`float`, optional): A point to
-            perform a rotation around an origin other than [0, 0, 0].
+    Returns
+    -------
+    list of list of float
+        The matrix.
 
-    Returns:
-        (:obj:`list` of :obj:`list` of :obj:`float`): The matrix.
+    Notes
+    -----
+    The rotation is based on the right hand rule, i.e. anti-clockwise if the
+    axis of rotation points towards the observer.
 
-    Example:
-        >>> axis1 = normalize_vector([-0.043, -0.254, 0.617])
-        >>> angle1 = 0.1
-        >>> R = matrix_from_axis_and_angle(axis1, angle1)
-        >>> axis2, angle2 = axis_and_angle_from_matrix(R)
-        >>> allclose(axis1, axis2)
-        True
-        >>> allclose([angle1], [angle2])
-        True
+    Examples
+    --------
+    >>> axis1 = normalize_vector([-0.043, -0.254, 0.617])
+    >>> angle1 = 0.1
+    >>> R = matrix_from_axis_and_angle(axis1, angle1)
+    >>> axis2, angle2 = axis_and_angle_from_matrix(R)
+    >>> allclose(axis1, axis2)
+    True
+    >>> allclose([angle1], [angle2])
+    True
+
     """
     if not point:
         point = [0.0, 0.0, 0.0]
@@ -293,19 +314,22 @@ def matrix_from_axis_and_angle(axis, angle, point=None, rtype='list'):
 def matrix_from_axis_angle_vector(axis_angle_vector, point=[0, 0, 0]):
     """Calculates a rotation matrix from an axis-angle vector.
 
-    Args:
-        axis_angle_vector (:obj:`list` of :obj:`float`): Three numbers
-            that represent the axis of rotation and angle of rotation
-            through the vector's magnitude.
-        point (:obj:`list` of :obj:`float`, optional): A point to
-            perform a rotation around an origin other than [0, 0, 0].
+    Parameters
+    ----------
+    axis_angle_vector : list of float
+        Three numbers that represent the axis of rotation and angle of rotation
+        through the vector's magnitude.
+    point : list of float, optional
+        A point to perform a rotation around an origin other than [0, 0, 0].
 
-    Example:
-        >>> aav1 = [-0.043, -0.254, 0.617]
-        >>> R = matrix_from_axis_angle_vector(aav1)
-        >>> aav2 = axis_angle_vector_from_matrix(R)
-        >>> allclose(aav1, aav2)
-        True
+    Examples
+    --------
+    >>> aav1 = [-0.043, -0.254, 0.617]
+    >>> R = matrix_from_axis_angle_vector(aav1)
+    >>> aav2 = axis_angle_vector_from_matrix(R)
+    >>> allclose(aav1, aav2)
+    True
+
     """
     axis = list(axis_angle_vector)
     angle = length_vector(axis_angle_vector)
@@ -314,8 +338,6 @@ def matrix_from_axis_angle_vector(axis_angle_vector, point=[0, 0, 0]):
 
 def axis_and_angle_from_matrix(M):
     """Returns the axis and the angle of the rotation matrix M.
-
-
     """
     epsilon = 0.01  # margin to allow for rounding errors
     epsilon2 = 0.1  # margin to distinguish between 0 and 180 degrees
@@ -386,19 +408,24 @@ def axis_angle_vector_from_matrix(M):
 def matrix_from_quaternion(quaternion):
     """Calculates a rotation matrix from quaternion coefficients.
 
-    Args:
-        quaternion (:obj:`list` of :obj:`float`): Four numbers that
-            represents the four coefficient values of a quaternion.
+    Parameters
+    ----------
+    quaternion : list of float
+        Four numbers that represents the four coefficient values of a quaternion.
 
-    Raises:
-        ValueError: If quaternion is invalid.
+    Raises
+    ------
+    ValueError
+        If quaternion is invalid.
 
-    Example:
-        >>> q1 = [0.945, -0.021, -0.125, 0.303]
-        >>> R = matrix_from_quaternion(q1)
-        >>> q2 = quaternion_from_matrix(R)
-        >>> allclose(q1, q2, tol=1e-03)
-        True
+    Examples
+    --------
+    >>> q1 = [0.945, -0.021, -0.125, 0.303]
+    >>> R = matrix_from_quaternion(q1)
+    >>> q2 = quaternion_from_matrix(R)
+    >>> allclose(q1, q2, tol=1e-03)
+    True
+
     """
     q = quaternion
     n = q[0]**2 + q[1]**2 + q[2]**2 + q[3]**2  # dot product
@@ -423,20 +450,25 @@ def matrix_from_quaternion(quaternion):
 def quaternion_from_matrix(M):
     """Returns the 4 quaternion coefficients from a rotation matrix.
 
-    Args:
-        M (:obj:`list` of :obj:`list` of :obj:`float`): The rotation matrix.
+    Parameters
+    ----------
+    M : list of list of float
+        The coefficients of the rotation matrix, row per row.
 
-    Returns:
-        (:obj:`list` of :obj:`float`): The quaternion coefficients.
+    Returns
+    -------
+    list of float
+        The quaternion coefficients.
 
-    Example:
-        >>> q1 = [0.945, -0.021, -0.125, 0.303]
-        >>> R = matrix_from_quaternion(q1)
-        >>> q2 = quaternion_from_matrix(R)
-        >>> allclose(q1, q2, tol=1e-03)
-        True
+    Examples
+    --------
+    >>> q1 = [0.945, -0.021, -0.125, 0.303]
+    >>> R = matrix_from_quaternion(q1)
+    >>> q2 = quaternion_from_matrix(R)
+    >>> allclose(q1, q2, tol=1e-03)
+    True
+
     """
-
     qw, qx, qy, qz = 0, 0, 0, 0
     trace = M[0][0] + M[1][1] + M[2][2]
 
@@ -473,14 +505,19 @@ def quaternion_from_matrix(M):
 def matrix_from_basis_vectors(xaxis, yaxis):
     """Creates a rotation matrix from basis vectors (= orthonormal vectors).
 
-    Args:
-        xaxis (:obj:`list` oof :obj:`float`): The x-axis of the frame.
-        yaxis (:obj:`list` oof :obj:`float`): The y-axis of the frame.
+    Parameters
+    ----------
+    xaxis : list of float
+        The x-axis of the frame.
+    yaxis : list of float
+        The y-axis of the frame.
 
-    Example:
-        >>> xaxis = [0.68, 0.68, 0.27]
-        >>> yaxis = [-0.67, 0.73, -0.15]
-        >>> R = matrix_from_basis_vectors(xaxis, yaxis)
+    Examples
+    --------
+    >>> xaxis = [0.68, 0.68, 0.27]
+    >>> yaxis = [-0.67, 0.73, -0.15]
+    >>> R = matrix_from_basis_vectors(xaxis, yaxis)
+
     """
     xaxis = normalize_vector(list(xaxis))
     yaxis = normalize_vector(list(yaxis))
@@ -497,18 +534,23 @@ def matrix_from_basis_vectors(xaxis, yaxis):
 def basis_vectors_from_matrix(R):
     """Returns the basis vectors from the rotation matrix R.
 
-    Raises:
-        ValueError: If rotation matrix is invalid.
+    Raises
+    ------
+    ValueError
+        If rotation matrix is invalid.
 
-    Example:
-        >>> from compas.geometry import Frame
-        >>> f = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> R = matrix_from_frame(f)
-        >>> xaxis, yaxis = basis_vectors_from_matrix(R)
+    Examples
+    --------
+    >>> from compas.geometry import Frame
+    >>> f = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    >>> R = matrix_from_frame(f)
+    >>> xaxis, yaxis = basis_vectors_from_matrix(R)
+
     """
     xaxis = [R[0][0], R[1][0], R[2][0]]
     yaxis = [R[0][1], R[1][1], R[2][1]]
     zaxis = [R[0][2], R[1][2], R[2][2]]
+
     if not allclose(zaxis, cross_vectors(xaxis, yaxis)):
         raise ValueError("Matrix is invalid rotation matrix.")
     else:
@@ -518,12 +560,24 @@ def basis_vectors_from_matrix(R):
 def matrix_from_translation(translation, rtype='list'):
     """Returns a 4x4 translation matrix in row-major order.
 
-    Args:
-        translation (:obj:`list` of :obj:`float`): The x, y and z components
-            of the translation.
+    Parameters
+    ----------
+    translation : list of float
+        The x, y and z components of the translation.
 
-    Example:
-        >>> T = matrix_from_translation([1, 2, 3])
+    Examples
+    --------
+    >>> T = matrix_from_translation([1, 2, 3])
+
+    Notes
+    -----
+    .. code-block:: python
+
+        [ .  .  .  0 ]
+        [ .  .  .  1 ]
+        [ .  .  .  2 ]
+        [ .  .  .  . ]
+
     """
     M = identity_matrix(4)
     M[0][3] = float(translation[0])
@@ -546,17 +600,22 @@ def translation_from_matrix(M):
 
 
 def matrix_from_orthogonal_projection(point, normal):
-    """Returns an orthogonal projection matrix to project onto a plane \
-        defined by point and normal.
+    """Returns an orthogonal projection matrix to project onto a plane defined
+    by point and normal.
 
-    Args:
-        point(:obj:`list` of :obj:`float`)
-        normal(:obj:`list` of :obj:`float`)
+    Parameters
+    ----------
+    point : list of float
+        Base point of the plane.
+    normal : list of float
+        Normal vector of the plane.
 
-    Example:
-        >>> point = [0, 0, 0]
-        >>> normal = [0, 0, 1]
-        >>> P = matrix_from_orthogonal_projection(point, normal)
+    Examples
+    --------
+    >>> point = [0, 0, 0]
+    >>> normal = [0, 0, 1]
+    >>> P = matrix_from_orthogonal_projection(point, normal)
+
     """
     T = identity_matrix(4)
     normal = normalize_vector(normal)
@@ -571,19 +630,25 @@ def matrix_from_orthogonal_projection(point, normal):
 
 
 def matrix_from_parallel_projection(point, normal, direction):
-    """Returns an parallel projection matrix to project onto a plane defined \
-        by point, normal and direction.
+    """Returns an parallel projection matrix to project onto a plane defined by
+    point, normal and direction.
 
-    Args:
-        point(:obj:`list` of :obj:`float`)
-        normal(:obj:`list` of :obj:`float`)
-        direction(:obj:`list` of :obj:`float`)
+    Parameters
+    ----------
+    point : list of float
+        Base point of the plane.
+    normal : list of float
+        Normal vector of the plane.
+    direction : list of float
+        Direction of the projection.
 
-    Example:
-        >>> point = [0, 0, 0]
-        >>> normal = [0, 0, 1]
-        >>> direction = [1, 1, 1]
-        >>> P = matrix_from_parallel_projection(point, normal, direction)
+    Examples
+    --------
+    >>> point = [0, 0, 0]
+    >>> normal = [0, 0, 1]
+    >>> direction = [1, 1, 1]
+    >>> P = matrix_from_parallel_projection(point, normal, direction)
+
     """
     T = identity_matrix(4)
     normal = normalize_vector(normal)
@@ -599,19 +664,25 @@ def matrix_from_parallel_projection(point, normal, direction):
 
 
 def matrix_from_perspective_projection(point, normal, perspective):
-    """Returns a perspective projection matrix to project onto a plane
-        defined by point, normal and perspective.
+    """Returns a perspective projection matrix to project onto a plane defined
+    by point, normal and perspective.
 
-    Args:
-        point(:obj:`list` of :obj:`float`)
-        normal(:obj:`list` of :obj:`float`)
-        perspective(:obj:`list` of :obj:`float`)
+    Parameters
+    ----------
+    point : list of float
+        Base point of the projection plane.
+    normal : list of float
+        Normal vector of the projection plane.
+    perspective : list of float
+        Perspective of the projection.
 
-    Example:
-        >>> point = [0, 0, 0]
-        >>> normal = [0, 0, 1]
-        >>> perspective = [1, 1, 0]
-        >>> P = matrix_from_perspective_projection(point, normal, perspective)
+    Examples
+    --------
+    >>> point = [0, 0, 0]
+    >>> normal = [0, 0, 1]
+    >>> perspective = [1, 1, 0]
+    >>> P = matrix_from_perspective_projection(point, normal, perspective)
+
     """
     T = identity_matrix(4)
     normal = normalize_vector(normal)
@@ -635,9 +706,20 @@ def matrix_from_perspective_projection(point, normal, perspective):
 def matrix_from_perspective_entries(perspective):
     """Returns a matrix from perspective entries.
 
-    Args:
-        values(:obj:`list` of :obj:`float`): The 4 perspective entries of a
-            matrix.
+    Parameters
+    ----------
+    values : list of float
+        The 4 perspective entries of a matrix.
+
+    Notes
+    -----
+    .. code-block:: python
+
+        [ .  .  .  . ]
+        [ .  .  .  . ]
+        [ .  .  .  . ]
+        [ 0  1  2  3 ]
+
     """
     M = identity_matrix(4)
     M[3][0] = float(perspective[0])
@@ -650,12 +732,24 @@ def matrix_from_perspective_entries(perspective):
 def matrix_from_shear_entries(shear_entries):
     """Returns a shear matrix from the 3 factors for x-y, x-z, and y-z axes.
 
-    Args:
-        shear_entries (:obj:`list` of :obj:`float`): The 3 shear factors for
-            x-y, x-z, and y-z axes.
+    Parameters
+    ----------
+    shear_entries : list of float
+        The 3 shear factors for x-y, x-z, and y-z axes.
 
-    Example:
-        >>> Sh = matrix_from_shear_entries([1, 2, 3])
+    Examples
+    --------
+    >>> Sh = matrix_from_shear_entries([1, 2, 3])
+
+    Notes
+    -----
+    .. code-block:: python
+
+        [ .  0  1  . ]
+        [ .  .  2  . ]
+        [ .  .  .  . ]
+        [ .  .  .  . ]
+
     """
     M = identity_matrix(4)
     M[0][1] = float(shear_entries[0])
@@ -665,34 +759,42 @@ def matrix_from_shear_entries(shear_entries):
 
 
 def matrix_from_shear(angle, direction, point, normal):
-    """Constructs a shear matrix by an angle along the direction vector on \
-        the shear plane (defined by point and normal).
+    """Constructs a shear matrix by an angle along the direction vector on the
+    shear plane (defined by point and normal).
 
+    Parameters
+    ----------
+    angle : float
+        The angle in radians.
+    direction : list of float
+        The direction vector as list of 3 numbers.
+        It must be orthogonal to the normal vector.
+    point : list of float
+        The point of the shear plane as list of 3 numbers.
+    normal : list of float
+        The normal of the shear plane as list of 3 numbers.
+
+    Raises
+    ------
+    ValueError
+        If direction and normal are not orthogonal.
+
+    Notes
+    -----
     A point P is transformed by the shear matrix into P" such that
     the vector P-P" is parallel to the direction vector and its extent is
     given by the angle of P-P'-P", where P' is the orthogonal projection
     of P onto the shear plane (defined by point and normal).
 
-    Args:
-        angle (:obj:`float`): The angle in radians.
-        direction (:obj:`list` of :obj:`float`): The direction vector as
-            list of 3 numbers. It must be orthogonal to the normal vector.
-        point (:obj:`list` of :obj:`float`): The point of the shear plane
-            as list of 3 numbers.
-        normal (:obj:`list` of :obj:`float`): The normal of the shear plane
-            as list of 3 numbers.
+    Examples
+    --------
+    >>> angle = 0.1
+    >>> direction = [0.1, 0.2, 0.3]
+    >>> point = [4, 3, 1]
+    >>> normal = cross_vectors(direction, [1, 0.3, -0.1])
+    >>> S = matrix_from_shear(angle, direction, point, normal)
 
-    Raises:
-        ValueError: If direction and normal are not orthogonal.
-
-    Example:
-        >>> angle = 0.1
-        >>> direction = [0.1, 0.2, 0.3]
-        >>> point = [4, 3, 1]
-        >>> normal = cross_vectors(direction, [1, 0.3, -0.1])
-        >>> S = matrix_from_shear(angle, direction, point, normal)
     """
-
     normal = normalize_vector(normal)
     direction = normalize_vector(direction)
 
@@ -715,12 +817,24 @@ def matrix_from_shear(angle, direction, point, normal):
 def matrix_from_scale_factors(scale_factors, rtype='list'):
     """Returns a 4x4 scaling transformation.
 
-    Args:
-        scale_factors (:obj:`list` of :obj:`float`):  Three numbers defining
-            the scaling factors in x, y, and z respectively.
+    Parameters
+    ----------
+    scale_factors : list of float
+        Three numbers defining the scaling factors in x, y, and z respectively.
 
-    Example:
-        >>> Sc = matrix_from_scale_factors([1, 2, 3])
+    Examples
+    --------
+    >>> Sc = matrix_from_scale_factors([1, 2, 3])
+
+    Notes
+    -----
+    .. code-block:: python
+
+        [ 0  .  .  . ]
+        [ .  1  .  . ]
+        [ .  .  2  . ]
+        [ .  .  .  . ]
+
     """
     M = identity_matrix(4)
     M[0][0] = float(scale_factors[0])

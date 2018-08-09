@@ -132,13 +132,13 @@ def dehomogenize(vectors):
     return [[x / w, y / w, z / w] if w else [x, y, z] for x, y, z, w in vectors]
 
 
-def homogenize_numpy(points):
+def homogenize_numpy(points, w=1.0):
     from numpy import asarray
     from numpy import hstack
     from numpy import ones
 
     points = asarray(points)
-    points = hstack((points, ones((points.shape[0], 1))))
+    points = hstack((points, w * ones((points.shape[0], 1))))
     return points
 
 
@@ -149,6 +149,8 @@ def dehomogenize_numpy(points):
     return points[:, :-1] / points[:, -1].reshape((-1, 1))
 
 
+# this function will not always work
+# it is also a duplicate of stuff found in matrices and frame
 def local_axes(a, b, c):
     u = b - a
     v = c - a
@@ -157,6 +159,9 @@ def local_axes(a, b, c):
     return normalize_vector(u), normalize_vector(v), normalize_vector(w)
 
 
+# this should be defined somewhere else
+# and should have a python equivalent
+# there is an implementation available in frame
 def local_coords_numpy(o, uvw, xyz):
     from numpy import asarray
     from scipy.linalg import solve
@@ -167,6 +172,9 @@ def local_coords_numpy(o, uvw, xyz):
     return rst.T
 
 
+# this should be defined somewhere else
+# and should have a python equivalent
+# there is an implementation available in frame
 def global_coords_numpy(o, uvw, rst):
     from numpy import asarray
 
@@ -183,18 +191,24 @@ def identity_matrix(dim):
 def determinant(M, check=True):
     """Calculates the determinant of a square matrix M.
 
-    Args:
-        M (:obj:`list` of :obj:`list` of :obj:`float`): The square matrix of \
-            any dimension.
-        check (bool): If true checks if matrix is squared. Defaults to True.
+    Parameters
+    ----------
+    M : :obj:`list` of :obj:`list` of :obj:`float`
+        The square matrix of any dimension.
+    check : bool
+        If true checks if matrix is squared. Defaults to True.
 
-    Raises:
-        ValueError: If matrix is not a square matrix.
+    Raises
+    ------
+    ValueError
+        If matrix is not a square matrix.
 
-    Returns:
-        (:obj:`float`): The determinant.
+    Returns
+    -------
+    :obj:`float`
+        The determinant.
+
     """
-
     dim = len(M)
 
     if check:
@@ -225,34 +239,42 @@ def determinant(M, check=True):
 def inverse(M):
     """Calculates the inverse of a square matrix M.
 
-    Args:
-        M (:obj:`list` of :obj:`list` of :obj:`float`): The square
-            matrix of any dimension.
+    Parameters
+    ----------
+    M : :obj:`list` of :obj:`list` of :obj:`float`
+        The square matrix of any dimension.
 
-    Raises:
-        ValueError: If the matrix is not squared
-        ValueError: If the matrix is singular.
-        ValueError: If the matrix is not invertible.
+    Raises
+    ------
+    ValueError
+        If the matrix is not squared
+    ValueError
+        If the matrix is singular.
+    ValueError
+        If the matrix is not invertible.
 
-    Returns:
-        (:obj:`list` of :obj:`list` of :obj:`float`): The inverted matrix.
+    Returns
+    -------
+    :obj:`list` of :obj:`list` of :obj:`float`
+        The inverted matrix.
 
-    Example:
-        >>> from compas.geometry import Frame
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = matrix_from_frame(f)
-        >>> I = multiply_matrices(T, inverse(T))
-        >>> I2 = identity_matrix(4)
-        >>> allclose(I[0], I2[0])
-        True
-        >>> allclose(I[1], I2[1])
-        True
-        >>> allclose(I[2], I2[2])
-        True
-        >>> allclose(I[3], I2[3])
-        True
+    Examples
+    --------
+    >>> from compas.geometry import Frame
+    >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    >>> T = matrix_from_frame(f)
+    >>> I = multiply_matrices(T, inverse(T))
+    >>> I2 = identity_matrix(4)
+    >>> allclose(I[0], I2[0])
+    True
+    >>> allclose(I[1], I2[1])
+    True
+    >>> allclose(I[2], I2[2])
+    True
+    >>> allclose(I[3], I2[3])
+    True
+
     """
-
     def matrix_minor(m, i, j):
         return [row[:j] + row[j+1:] for row in (m[:i]+m[i+1:])]
 
@@ -282,48 +304,51 @@ def inverse(M):
 
 
 def decompose_matrix(M):
-    """Calculates the components of rotation, translation, scale, shear, \
-        and perspective of a given transformation matrix M.
+    """Calculates the components of rotation, translation, scale, shear, and
+    perspective of a given transformation matrix M.
 
-    Returns:
+    Parameters
+    ----------
+    M : :obj:`list` of :obj:`list` of :obj:`float`
+        The square matrix of any dimension.
 
-        scale (:obj:`list` of :obj:`float`): The 3 scale factors in x-, y-, \
-            and z-direction.
+    Raises
+    ------
+    ValueError
+        If matrix is singular or degenerative.
 
-        shear (:obj:`list` of :obj:`float`): The 3 shear factors for x-y, \
-            x-z, and y-z axes.
+    Returns
+    -------
+    scale : :obj:`list` of :obj:`float`
+        The 3 scale factors in x-, y-, and z-direction.
+    shear : :obj:`list` of :obj:`float`
+        The 3 shear factors for x-y, x-z, and y-z axes.
+    angles : :obj:`list` of :obj:`float`
+        The rotation specified through the 3 Euler angles about static x, y, z axes.
+    translation : :obj:`list` of :obj:`float`
+        The 3 values of translation.
+    perspective : :obj:`list` of :obj:`float`
+        The 4 perspective entries of the matrix.
 
-        angles (:obj:`list` of :obj:`float`): The rotation specified through \
-            the 3 Euler angles about static x, y, z axes.
-
-        translation (:obj:`list` of :obj:`float`): The 3 values of \
-            translation
-
-        perspective (:obj:`list` of :obj:`float`): The 4 perspective entries \
-            of the matrix.
-
-    Raises:
-        ValueError: If matrix is singular or degenerative.
-
-    Example:
-        >>> trans1 = [1, 2, 3]
-        >>> angle1 = [-2.142, 1.141, -0.142]
-        >>> scale1 = [0.123, 2, 0.5]
-        >>> T = matrix_from_translation(trans1)
-        >>> R = matrix_from_euler_angles(angle1)
-        >>> S = matrix_from_scale_factors(scale1)
-        >>> M = multiply_matrices(multiply_matrices(T, R), S)
-        >>> # M = compose_matrix(scale1, None, angle1, trans1, None)
-        >>> scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)
-        >>> allclose(scale1, scale2)
-        True
-        >>> allclose(angle1, angle2)
-        True
-        >>> allclose(trans1, trans2)
-        True
+    Examples
+    --------
+    >>> trans1 = [1, 2, 3]
+    >>> angle1 = [-2.142, 1.141, -0.142]
+    >>> scale1 = [0.123, 2, 0.5]
+    >>> T = matrix_from_translation(trans1)
+    >>> R = matrix_from_euler_angles(angle1)
+    >>> S = matrix_from_scale_factors(scale1)
+    >>> M = multiply_matrices(multiply_matrices(T, R), S)
+    >>> # M = compose_matrix(scale1, None, angle1, trans1, None)
+    >>> scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)
+    >>> allclose(scale1, scale2)
+    True
+    >>> allclose(angle1, angle2)
+    True
+    >>> allclose(trans1, trans2)
+    True
 
     """
-
     detM = determinant(M)  # raises ValueError if matrix is not squared
 
     if detM == 0:
@@ -402,36 +427,37 @@ def decompose_matrix(M):
 
 def compose_matrix(scale=None, shear=None, angles=None,
                    translation=None, perspective=None):
-    """Calculates a matrix from the components of scale, shear, euler_angles, \
-        translation and perspective.
+    """Calculates a matrix from the components of scale, shear, euler_angles,
+    translation and perspective.
+    
+    Parameters
+    ----------
+    scale : :obj:`list` of :obj:`float`
+        The 3 scale factors in x-, y-, and z-direction.
+    shear : :obj:`list` of :obj:`float`
+        The 3 shear factors for x-y, x-z, and y-z axes.
+    angles : :obj:`list` of :obj:`float`
+        The rotation specified through the 3 Euler angles about static x, y, z axes.
+    translation : :obj:`list` of :obj:`float`
+        The 3 values of translation.
+    perspective : :obj:`list` of :obj:`float`
+        The 4 perspective entries of the matrix.
 
-    Args:
-        scale (:obj:`list` of :obj:`float`): The 3 scale factors in x-, y-,
-            and z-direction. Defaults to None.
-        shear (:obj:`list` of :obj:`float`): The 3 shear factors for x-y,
-            x-z, and y-z axes. Defaults to None.
-        angles (:obj:`list` of :obj:`float`): The rotation specified
-            through the 3 Euler angles about static x, y, z axes. Defaults to
-            None.
-        translation (:obj:`list` of :obj:`float`): The 3 values of
-            translation. Defaults to None.
-        perspective (:obj:`list` of :obj:`float`): The 4 perspective entries
-            of the matrix. Defaults to None.
+    Examples
+    --------
+    >>> trans1 = [1, 2, 3]
+    >>> angle1 = [-2.142, 1.141, -0.142]
+    >>> scale1 = [0.123, 2, 0.5]
+    >>> M = compose_matrix(scale1, None, angle1, trans1, None)
+    >>> scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)
+    >>> allclose(scale1, scale2)
+    True
+    >>> allclose(angle1, angle2)
+    True
+    >>> allclose(trans1, trans2)
+    True
 
-    Example:
-        >>> trans1 = [1, 2, 3]
-        >>> angle1 = [-2.142, 1.141, -0.142]
-        >>> scale1 = [0.123, 2, 0.5]
-        >>> M = compose_matrix(scale1, None, angle1, trans1, None)
-        >>> scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)
-        >>> allclose(scale1, scale2)
-        True
-        >>> allclose(angle1, angle2)
-        True
-        >>> allclose(trans1, trans2)
-        True
     """
-
     M = [[1. if i == j else 0. for i in range(4)] for j in range(4)]
     if perspective is not None:
         P = matrix_from_perspective_entries(perspective)
@@ -454,18 +480,77 @@ def compose_matrix(scale=None, shear=None, angles=None,
     return M
 
 
+# TODO: this is really slow
 def mesh_transform(mesh, transformation):
-    # TODO: this is really slow
+    """Transform a mesh.
+    
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh.
+    transformation : Transformation
+        The transformation.
+
+    Notes
+    -----
+    The mesh is modified in-place.
+
+    Examples
+    --------
+    >>> mesh = Mesh.from_obj(compas.get('cube.obj'))
+    >>> T = matrix_from_axis_and_angle([0, 0, 1], pi / 4)
+    >>> tmesh = mesh.copy()
+    >>> mesh_transform(tmesh, T)
+    >>> viewer.mesh = tmesh  # this should be a list of meshes
+    >>> viewer.show()
+
+    See Also
+    --------
+    :func:`mesh_transformed`
+
+    """
     xyz = transform(mesh.xyz, transformation.matrix)
     for i in range(len(vertices)):
         mesh.vertex[i].update({'x': vertices[i][0], 'y': vertices[i][1], 'z': vertices[i][2]})
 
+
+# TODO: this is really slow
 def mesh_transformed(mesh, transformation):
-    # TODO: this is really slow
+    """Transform a copy of ``mesh``.
+    
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh.
+    transformation : Transformation
+        The transformation.
+
+    Returns
+    -------
+    Mesh
+        A transformed independent copy of ``mesh``.
+
+    Notes
+    -----
+    The original mesh is not modified.
+    Instead a transformed independent copy is returned.
+
+    Examples
+    --------
+    >>> mesh = Mesh.from_obj(compas.get('cube.obj'))
+    >>> T = matrix_from_axis_and_angle([0, 0, 1], pi / 4)
+    >>> tmesh = mesh_transformed(mesh, T)
+    >>> viewer.mesh = tmesh  # this should be a list of meshes
+    >>> viewer.show()
+
+    See Also
+    --------
+    :func:`mesh_transform`
+
+    """
     mesh_copy = mesh.copy()
     mesh_transform(mesh_copy, transformation)
     return mesh_copy
-
 
 
 # ==============================================================================
