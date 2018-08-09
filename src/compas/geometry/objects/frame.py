@@ -34,72 +34,134 @@ __email__ = 'rust@arch.ethz.ch'
 class Frame(object):
     """A frame is defined by a base point and two orthonormal base vectors.
 
-    It represents a plane in three dimensions with a defined origin and
-    orientation.
+    Parameters
+    ----------
+    point : point
+        The origin of the frame.
+    xaxis : vector
+        The x-axis of the frame.
+    yaxis : vector
+        The y-axis of the frame.
 
-    Attributes:
-        point (tuple, list, ``Point``, optional): The origin of the frame.
-            Defaults to [0, 0, 0].
-        xaxis (tuple, list, ``Vector``, optional): The x-axis of the frame.
-            Defaults to [1, 0, 0].
-        yaxis (tuple, list, ``Vector``, optional): The y-axis of the frame.
-            Defaults to [0, 1, 0].
+    Examples
+    --------
+    >>> f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
+    >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
+    >>> f = Frame.from_euler_angles([0.5, 1., 0.2])
+    >>> f = Frame.worldXY()
 
-    Examples:
-        >>> f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
-        >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
-        >>> f = Frame.from_euler_angles([0.5, 1., 0.2])
-        >>> f = Frame.worldXY()
+    Notes
+    -----
+    All input vectors are orthonormalised when creating a frame, with the first
+    vector as starting point.
+
     """
 
-    def __init__(self, point=[0, 0, 0], xaxis=[1, 0, 0], yaxis=[0, 1, 0]):
-        self.point = [float(f) for f in list(point)]
-        self.xaxis = list(normalize_vector(list(xaxis)))
-        self.yaxis = list(normalize_vector(list(yaxis)))
-        zaxis      = list(normalize_vector(cross_vectors(self.xaxis, self.yaxis)))
-        self.yaxis = list(cross_vectors(zaxis, self.xaxis))
+    __slots__ = ['_point', '_xaxis', '_yaxis']
 
-    def copy(self):
-        """Returns a copy of the frame.
-        """
-        cls = type(self)
-        return cls(self.point[:], self.xaxis[:], self.yaxis[:])
+    def __init__(self, point, xaxis, yaxis):
+        self._point = None
+        self._xaxis = None
+        self._yaxis = None
+        self.point = point
+        self.xaxis = xaxis
+        self.yaxis = yaxis
+
+    @property
+    def point(self):
+        return self._point
+
+    @point.setter
+    def point(self, point):
+        self._point = Point(*point)
+
+    @property
+    def xaxis(self):
+        return self._xaxis
+    
+    @xaxis.setter
+    def xaxis(self, vector):
+        xaxis = Vector(*vector)
+        xaxis.unitize()
+        self._xaxis = xaxis
+
+    @property
+    def yaxis(self):
+        return self._yaxis
+    
+    @yaxis.setter
+    def yaxis(self, vector):
+        yaxis = Vector(*vector)
+        yaxis.unitize()
+        zaxis = Vector.cross(self.xaxis, yaxis)
+        self._yaxis = Vector.cross(zaxis, self.xaxis)
+
+    # ==========================================================================
+    # factory
+    # ==========================================================================
 
     @classmethod
     def worldXY(cls):
-        """Returns the world XY frame.
+        """Construct the world XY frame.
+
+        Returns
+        -------
+        Frame
+            The world XY frame.
+
         """
         return cls([0, 0, 0], [1, 0, 0], [0, 1, 0])
 
     @classmethod
     def worldZX(cls):
-        """Returns the world ZX frame.
+        """Construct the world ZX frame.
+
+        Returns
+        -------
+        Frame
+            The world ZX frame.
+
         """
         return cls([0, 0, 0], [0, 0, 1], [1, 0, 0])
 
     @classmethod
     def worldYZ(cls):
-        """Returns the world YZ frame.
+        """Construct the world YZ frame.
+
+        Returns
+        -------
+        Frame
+            The world YZ frame.
+
         """
         return cls([0, 0, 0], [0, 1, 0], [0, 0, 1])
 
     @classmethod
     def from_points(cls, point, point_xaxis, point_xyplane):
-        """Calculates a frame from 3 points.
+        """Constructs a frame from 3 points.
 
-        Args:
-            point (tuple, list, ``Point``): The origin of the frame.
-            point_xaxis (tuple, list, ``Point``): A point on the x-axis of
-                the frame.
-            point_xyplane (tuple, list, ``Point``): A point within the
-                xy-plane of the frame.
+        Parameters
+        ----------
+        point : point
+            The origin of the frame.
+        point_xaxis : point
+            A point on the x-axis of the frame.
+        point_xyplane : point
+            A point within the xy-plane of the frame.
 
-        Example:
-            >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
+        Example
+        -------
+        >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
+
+        Returns
+        -------
+        Frame
+            The constructed frame.
+
         """
         xaxis = subtract_vectors(point_xaxis, point)
         xyvec = subtract_vectors(point_xyplane, point)
-        yaxis = list(cross_vectors(cross_vectors(xaxis, xyvec), xaxis))
+        yaxis = cross_vectors(cross_vectors(xaxis, xyvec), xaxis)
         return cls(point, xaxis, yaxis)
 
     @classmethod
@@ -269,6 +331,38 @@ class Frame(object):
         xaxis, yaxis = basis_vectors_from_matrix(R)
         return cls(point, xaxis, yaxis)
 
+    @classmethod
+    def from_data(cls, data):
+        """Construct a frame from its data representation.
+
+        Args:
+            data (`dict`): The data dictionary.
+
+        Returns:
+            (:class:`Frame`)
+        """
+        frame = cls()
+        frame.data = data
+        return frame
+
+    # ==========================================================================
+    # descriptors
+    # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the frame."""
+        return {'point': self.point, 'xaxis': self.xaxis, 'yaxis': self.yaxis}
+
+    @data.setter
+    def data(self, data):
+        self.point = data.get('point', [0, 0, 0])
+        self.xaxis = data.get('xaxis', [1, 0, 0])
+        self.yaxis = data.get('yaxis', [0, 1, 0])
+
+    def to_data(self):
+        return self.data
+
     @property
     def normal(self):
         """Returns the frame's normal (z-axis).
@@ -283,8 +377,7 @@ class Frame(object):
 
     @property
     def quaternion(self):
-        """Returns the 4 quaternion coefficients from the rotation given by the
-            frame.
+        """Returns the 4 quaternion coefficients from the rotation given by the frame.
         """
         rotation = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return quaternion_from_matrix(rotation)
@@ -295,6 +388,81 @@ class Frame(object):
         """
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return axis_angle_vector_from_matrix(R)
+
+    # ==========================================================================
+    # representation
+    # ==========================================================================
+
+    def __repr__(self):
+        s  = "[[%.4f, %.4f, %.4f], " % tuple(self.point)
+        s += " [%.4f, %.4f, %.4f], " % tuple(self.xaxis)
+        s += " [%.4f, %.4f, %.4f]] " % tuple(self.yaxis)
+        return s
+
+    def __len__(self):
+        return 3
+
+    # ==========================================================================
+    # access
+    # ==========================================================================
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.point
+        if key == 1:
+            return self.normal
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.point = value
+            return
+        if key == 1:
+            self.normal = value
+            return
+        raise KeyError
+
+    def __iter__(self):
+        return iter([self.point, self.xaxis, self.yaxis])
+
+    # ==========================================================================
+    # comparison
+    # ==========================================================================
+
+    def __eq__(self, other, tol=1e-05):
+        for v1, v2 in zip(self, other):
+            for a, b in zip(v1, v2):
+                if math.fabs(a - b) > tol:
+                    return False
+        return True
+
+    # ==========================================================================
+    # operators
+    # ==========================================================================
+
+    # ==========================================================================
+    # inplace operators
+    # ==========================================================================
+
+    # ==========================================================================
+    # helpers
+    # ==========================================================================
+
+    def copy(self):
+        """Make a copy of this ``Frame``.
+
+        Returns
+        -------
+        Frame
+            The copy.
+
+        """
+        cls = type(self)
+        return cls(self.point.copy(), self.xaxis.copy(), self.yaxis.copy())
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
 
     def euler_angles(self, static=True, axes='xyz'):
         """Returns the Euler angles from the rotation given by the frame.
@@ -367,6 +535,10 @@ class Frame(object):
         pt.transform(T)
         return pt
 
+    # ==========================================================================
+    # transformations
+    # ==========================================================================
+
     def transform(self, transformation):
         """Transforms the frame with the ``Transformation``.
 
@@ -413,50 +585,6 @@ class Frame(object):
         point = T.translation
         xaxis, yaxis = T.basis_vectors
         return Frame(point, xaxis, yaxis)
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a frame from its data representation.
-
-        Args:
-            data (`dict`): The data dictionary.
-
-        Returns:
-            (:class:`Frame`)
-        """
-        frame = cls()
-        frame.data = data
-        return frame
-
-    def to_data(self):
-        return self.data
-
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the frame."""
-        return {'point': self.point, 'xaxis': self.xaxis, 'yaxis': self.yaxis}
-
-    @data.setter
-    def data(self, data):
-        self.point = data.get('point', [0, 0, 0])
-        self.xaxis = data.get('xaxis', [1, 0, 0])
-        self.yaxis = data.get('yaxis', [0, 1, 0])
-
-    def __repr__(self):
-        s  = "[[%.4f, %.4f, %.4f], " % tuple(self.point)
-        s += " [%.4f, %.4f, %.4f], " % tuple(self.xaxis)
-        s += " [%.4f, %.4f, %.4f]] " % tuple(self.yaxis)
-        return s
-
-    def __iter__(self):
-        return iter([self.point, self.xaxis, self.yaxis])
-
-    def __eq__(self, other, tol=1e-05):
-        for v1, v2 in zip(self, other):
-            for a, b in zip(v1, v2):
-                if math.fabs(a - b) > tol:
-                    return False
-        return True
 
 
 # ==============================================================================

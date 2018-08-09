@@ -156,7 +156,7 @@ class Polyline(object):
 
         """
         cls = type(self)
-        return cls(self.points)
+        return cls([point.copy() for point in self.points])
 
     # ==========================================================================
     # methods

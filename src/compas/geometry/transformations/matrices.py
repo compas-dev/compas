@@ -366,6 +366,7 @@ def axis_and_angle_from_matrix(M):
 
     if (math.fabs(s) < 0.001):
         s = 1
+
     angle = math.acos((M[0][0] + M[1][1] + M[2][2] - 1) / 2)
 
     x = (M[2][1] - M[1][2]) / s

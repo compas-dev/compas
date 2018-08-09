@@ -8,6 +8,7 @@ from math import sqrt
 from math import pi
 
 from compas.geometry.basic import length_vector
+from compas.geometry.basic import cross_vectors
 
 from compas.geometry.transformations import transform_vectors
 
