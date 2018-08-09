@@ -309,8 +309,8 @@ class Mesh(FromToJson,
             'max_int_key' : self._max_int_key,
             'max_int_fkey': self._max_int_fkey,
         }
-        with open(filepath, 'wb+') as file:
-            pickle.dump(data, file, protocol=pickle.HIGHEST_PROTOCOL)
+        with open(filepath, 'wb+') as fo:
+            pickle.dump(data, fo, protocol=pickle.HIGHEST_PROTOCOL)
 
     def dumps(self):
         data = {
@@ -328,8 +328,9 @@ class Mesh(FromToJson,
         return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
 
     def load(self, filepath):
-        with open(filepath, 'rb') as file:
-            data = pickle.load(file)
+        with open(filepath, 'rb') as fo:
+            data = pickle.load(fo)
+
         self.attributes = data['attributes']
         self.default_vertex_attributes = data['dva']
         self.default_edge_attributes = data['dea']
@@ -343,6 +344,7 @@ class Mesh(FromToJson,
 
     def loads(self, s):
         data = pickle.loads(s)
+
         self.attributes = data['attributes']
         self.default_vertex_attributes = data['dva']
         self.default_edge_attributes = data['dea']

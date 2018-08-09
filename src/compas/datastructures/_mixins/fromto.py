@@ -67,13 +67,14 @@ class FromToData(object):
 class FromToJson(object):
 
     @classmethod
-    def from_json(cls, filepath):
+    def from_json(cls, f):
         """Construct a datastructure from structured data contained in a json file.
 
         Parameters
         ----------
-        filepath : str
-            The path to the json file.
+        f : str, file
+            The json file.
+            This can be a file path or an open file object.
 
         Returns
         -------
@@ -90,35 +91,44 @@ class FromToJson(object):
         * :meth:`to_json`
 
         """
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
+        if isinstance(f, file):
+            data = json.load(f)
+        else:
+            with open(f, 'r') as fp:
+                data = json.load(fp)
         graph = cls()
         graph.data = data
         return graph
 
-    def to_json(self, filepath=None):
+    def to_json(self, f=None):
         """Serialise the structured data representing the data structure to json.
 
         Parameters
         ----------
-        filepath : str (None)
-            The path to the json file.
+        f : str, file (None)
+            The json file.
+            This can be a file path or an open file object.
 
         Returns
         -------
         str
             The json string if no file path is provided.
+        None
+            Otherwise
 
         See Also
         --------
         * :meth:`from_json`
 
         """
-        if not filepath:
+        if not f:
             return json.dumps(self.data)
         else:
-            with open(filepath, 'w+') as fp:
-                json.dump(self.data, fp)
+            if isinstance(f, file):
+                json.dump(self.data, f)
+            else:
+                with open(f, 'w+') as fp:
+                    json.dump(self.data, fp)
 
 
 # ==============================================================================
