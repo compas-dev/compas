@@ -456,9 +456,9 @@ def compose_matrix(scale=None, shear=None, angles=None,
 
 def mesh_transform(mesh, transformation):
     # TODO: this is really slow
-    xyz = transform(mesh.xyz, transformation.matrix)
-    for i in range(len(vertices)):
-        mesh.vertex[i].update({'x': vertices[i][0], 'y': vertices[i][1], 'z': vertices[i][2]})
+    xyz = transform_points(mesh.xyz, transformation.matrix)
+    for i in range(len(xyz)):
+        mesh.vertex[i].update({'x': xyz[i][0], 'y': xyz[i][1], 'z': xyz[i][2]})
 
 def mesh_transformed(mesh, transformation):
     # TODO: this is really slow
