@@ -28,7 +28,7 @@ install:
 script:
 - invoke test
 - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-    cd temp && git clone https://github.com/compas-dev/sphinx_compas_theme && cd ..
+    cd temp && git clone https://github.com/compas-dev/sphinx_compas_theme && cd ..;
     invoke docs;
   fi
 
