@@ -57,8 +57,6 @@ class Frame(object):
 
     """
 
-    __slots__ = ['_point', '_xaxis', '_yaxis']
-
     def __init__(self, point, xaxis, yaxis):
         self._point = None
         self._xaxis = None
