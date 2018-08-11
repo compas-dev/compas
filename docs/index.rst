@@ -7,8 +7,13 @@ The main library of COMPAS
    :titlesonly:
 
    overview
-   tutorial
    examples
+   gettingstarted
+   tutorial
+   recipes
+   notes
    api
+   userguide
+   devguide
    citing
    releases

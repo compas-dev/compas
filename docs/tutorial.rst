@@ -7,10 +7,12 @@ Tutorial
     :glob:
 
     tutorial/datastructures
+    tutorial/files
     tutorial/geometry
-    tutorial/algorithms
     tutorial/interop
-    tutorial/callbacks
-    tutorial/cad
-    tutorial/xfuncs
-    tutorial/tools
+    tutorial/numerical
+    tutorial/plotters
+    tutorial/robots
+    tutorial/topology
+    tutorial/utilities
+    tutorial/viewers
