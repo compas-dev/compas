@@ -15,7 +15,7 @@ into those functions as instances of the corresponding classes defined in :mod:`
 or as an equivalent representation using (combinations of) built-in Python objects.
 The following table defines those representations.
 
-.. rst-class:: longtable
+.. rst-class:: table table-responsive table-bordered
 
 =========== ====================================================================
 parameter   representation
@@ -247,6 +247,8 @@ Transformations
     project_points_line
     project_points_line_xy
     project_points_plane
+    reflect_line_plane
+    reflect_line_triangle
     rotate_points
     rotate_points_xy
     scale_points

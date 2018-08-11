@@ -89,7 +89,9 @@ intersphinx_mapping = {'python': ('https://docs.python.org/', None)}
 
 html_theme = 'compas'
 html_theme_path = ['../temp/sphinx_compas_theme']
-html_theme_options = {}
+html_theme_options = {
+    'navbar_active' : 'main',
+}
 html_context = {}
 html_static_path = []
 html_extra_path = ['.nojekyll']

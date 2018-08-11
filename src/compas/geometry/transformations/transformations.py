@@ -64,6 +64,9 @@ __all__ = [
     'project_points_plane',
     'project_points_line',
     'project_points_line_xy',
+
+    'reflect_line_plane',
+    'reflect_line_triangle',
 ]
 
 
