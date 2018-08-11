@@ -314,6 +314,11 @@ class VtkViewer(QApplication):
         self.status.showMessage('Status bar')
 
 
+    def update_statusbar(self, text):
+
+        self.status.showMessage(text)
+
+
     # ==============================================================================
     # Menus
     # ==============================================================================
