@@ -15,6 +15,8 @@ into those functions as instances of the corresponding classes defined in :mod:`
 or as an equivalent representation using (combinations of) built-in Python objects.
 The following table defines those representations.
 
+.. rst-class:: longtable
+
 =========== ====================================================================
 parameter   representation
 =========== ====================================================================
