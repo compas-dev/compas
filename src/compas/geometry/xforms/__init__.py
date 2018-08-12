@@ -10,7 +10,7 @@ from .shear import Shear
 from .translation import Translation
 
 __all__ = [
-    'Translation',
+    'Transformation',
     'Projection',
     'Reflection',
     'Rotation',

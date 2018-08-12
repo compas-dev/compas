@@ -62,7 +62,13 @@ ply
 stl
 ===
 
-*Under construction...*
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    STLReader
+    parse_stl_data
+
 
 urdf
 ====
@@ -74,6 +80,7 @@ urdf
     URDF
 
 """
+from __future__ import absolute_import
 
 from .amf  import *
 from .dxf  import *
@@ -83,12 +90,20 @@ from .ply  import *
 from .stl  import *
 from .urdf import *
 
-from .amf  import __all__ as a
-from .dxf  import __all__ as b
-from .las  import __all__ as c
-from .obj  import __all__ as d
-from .ply  import __all__ as e
-from .stl  import __all__ as f
-from .urdf import __all__ as g
+from . import amf
+from . import dxf
+from . import las
+from . import obj
+from . import ply
+from . import stl
+from . import urdf
 
-__all__ = a + b + c + d + e + f + g
+__all__ = []
+
+__all__ += amf.__all__
+__all__ += dxf.__all__
+__all__ += las.__all__
+__all__ += obj.__all__
+__all__ += ply.__all__
+__all__ += stl.__all__
+__all__ += urdf.__all__

@@ -10,10 +10,10 @@ The main library of COMPAS
    examples
    gettingstarted
    tutorial
-   recipes
+   cookbook
    notes
-   api
-   userguide
+   tools
+   reference
    devguide
    citing
-   releases
+   license

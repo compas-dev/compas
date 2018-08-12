@@ -59,7 +59,7 @@ def pca_numpy(data):
         import matplotlib.pyplot as plt
 
         from compas.geometry import matrix_from_axis_and_angle
-        from compas.geometry import transform_numpy
+        from compas.geometry import transform_points_numpy
 
         from compas.plotters import Axes3D
         from compas.plotters import Cloud3D
@@ -81,7 +81,7 @@ def pca_numpy(data):
 
         R = Rz.dot(Ry)
 
-        data = transform_numpy(data, R)
+        data = transform_points_numpy(data, R)
 
         average, vectors, values = pca_numpy(data)
 

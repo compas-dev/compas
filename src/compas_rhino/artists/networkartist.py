@@ -1,8 +1,13 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import time
 
-from compas.utilities import color_to_colordict
-
+import compas
 import compas_rhino
+
+from compas.utilities import color_to_colordict
 
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
@@ -13,9 +18,7 @@ try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__    = ['Tom Van Mele', ]
@@ -28,7 +31,23 @@ __all__ = ['NetworkArtist']
 
 
 class NetworkArtist(EdgeArtist, VertexArtist):
-    """"""
+    """A network artist defines functionality for visualising COMPAS networks in Rhino.
+
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        A COMPAS network.
+    layer : str, optional
+        The name of the layer that will contain the network.
+
+    Attributes
+    ----------
+    layer
+    datastructure
+    defaults : dict
+        Default settings for color, scale, tolerance, ...
+
+    """
 
     def __init__(self, network, layer=None):
         self.datastructure = network
@@ -38,10 +57,17 @@ class NetworkArtist(EdgeArtist, VertexArtist):
             'color.edge'  : (0, 0, 0),
         }
 
-    # this should be called 'update_view'
-    # 'redraw' should draw the network again, with the same settings
     def redraw(self, timeout=None):
-        """Redraw the Rhino view."""
+        """Redraw the Rhino view.
+
+        Parameters
+        ----------
+        timeout : float, optional
+            The amount of time the artist waits before updating the Rhino view.
+            The time should be specified in seconds.
+            Default is ``None``.
+
+        """
         if timeout:
             time.sleep(timeout)
         rs.EnableRedraw(True)
@@ -55,6 +81,8 @@ class NetworkArtist(EdgeArtist, VertexArtist):
             compas_rhino.clear_current_layer()
 
     def clear(self):
+        """Clear the vertices and edges of the network, without clearing the
+        other elements in the layer."""
         self.clear_vertices()
         self.clear_edges()
 

@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-forms
+compas_rhino.forms
 ********************************************************************************
 
 .. module:: compas_rhino.forms
@@ -12,19 +12,18 @@ Windows forms for ...
 .. autosummary::
     :toctree: generated/
 
-    AttributesForm
+    BrowserForm
     ChartForm
     ImageForm
-    MultiPageForm
-    SettingsForm
     SliderForm
-    TableForm
     TextForm
 
 """
 
 from abc import ABCMeta
 from abc import abstractmethod
+
+import compas
 
 try:
     from System.Windows.Forms import DialogResult
@@ -33,9 +32,7 @@ try:
     import Rhino
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
     class WinForm(object):
         pass
@@ -71,14 +68,10 @@ class Form(WinForm):
         pass
 
 
-from .attributes import AttributesForm
-# from .browser import BrowserForm
+from .browser import BrowserForm
 from .chart import ChartForm
 from .image import ImageForm
-from .multipage import MultiPageForm
-from .settings import SettingsForm
 from .slider import SliderForm
-from .table import TableForm
 from .text import TextForm
 
-__all__ = ['AttributesForm', 'ChartForm', 'ImageForm', 'MultiPageForm', 'SettingsForm', 'SliderForm', 'TableForm', 'TextForm']
+__all__ = ['BrowserForm', 'ChartForm', 'ImageForm', 'SliderForm', 'TextForm']

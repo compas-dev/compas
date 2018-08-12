@@ -8,14 +8,14 @@ from compas_rhino.geometry.surface import RhinoSurface
 
 from compas_rhino.artists import MeshArtist
 
-from compas_rhino.helpers.modifiers import Modifier
-from compas_rhino.helpers.modifiers import VertexModifier
-from compas_rhino.helpers.modifiers import EdgeModifier
-from compas_rhino.helpers.modifiers import FaceModifier
+from compas_rhino.modifiers import Modifier
+from compas_rhino.modifiers import VertexModifier
+from compas_rhino.modifiers import EdgeModifier
+from compas_rhino.modifiers import FaceModifier
 
-from compas_rhino.helpers.selectors import VertexSelector
-from compas_rhino.helpers.selectors import EdgeSelector
-from compas_rhino.helpers.selectors import FaceSelector
+from compas_rhino.selectors import VertexSelector
+from compas_rhino.selectors import EdgeSelector
+from compas_rhino.selectors import FaceSelector
 
 try:
     import Rhino
@@ -1039,9 +1039,9 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Mesh
-    from compas_rhino.helpers import mesh_draw
-    from compas_rhino.helpers import mesh_select_vertex
-    from compas_rhino.helpers import mesh_move_vertex
+    from compas_rhino import mesh_draw
+    from compas_rhino import mesh_select_vertex
+    from compas_rhino import mesh_move_vertex
 
     mesh = Mesh.from_obj(compas.get_data('quadmesh_planar.obj'))
 

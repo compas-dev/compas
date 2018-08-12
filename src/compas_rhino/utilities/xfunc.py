@@ -164,7 +164,7 @@ class XFunc(object):
         import compas
         import compas_rhino
 
-        from compas_rhino.helpers import MeshArtist
+        from compas_rhino import MeshArtist
         from compas.datastructures import Mesh
         from compas.utilities import XFunc
 

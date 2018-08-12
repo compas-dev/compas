@@ -1,3 +1,8 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+import compas
 from compas_rhino.forms import Form
 
 try:
@@ -9,9 +14,7 @@ try:
     from System.Windows.Forms import DockStyle
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Tom Van Mele', ]
@@ -24,10 +27,34 @@ __all__ = ['BrowserForm', ]
 
 
 class BrowserForm(Form):
+    """A windows form for displaying web pages.
+
+    Parameters
+    ----------
+    url : str
+        The url of a web page.
+    title : str, optional
+        The title of the form.
+        Default is ``'BrowserForm'``
+    width : int, optional
+        The width of the form.
+        Default is ``1024``.
+    height : int, optional
+        The height of the form.
+        Default is ``786``.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        form = BrowserForm('http://block.arch.ethz.ch')
+        form.show()
+
+    """
 
     def __init__(self, url, title='BrowserForm', width=1024, height=786):
-        self.url = url
         super(BrowserForm, self).__init__(title, width, height)
+        self.url = url
         self.FormBorderStyle = FormBorderStyle.Sizable
 
     def init(self):

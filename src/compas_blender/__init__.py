@@ -8,7 +8,7 @@ compas_blender
 .. toctree::
     :maxdepth: 1
 
-    compas_blender.conduits
+    compas_blender.artists
     compas_blender.forms
     compas_blender.geometry
     compas_blender.helpers
@@ -16,19 +16,27 @@ compas_blender
     compas_blender.utilities
 
 """
+from __future__ import absolute_import
 
-from .conduits import *
+from .artists import *
 from .forms import *
 from .geometry import *
 from .helpers import *
 from .ui import *
 from .utilities import *
 
-from .conduits import __all__ as a
-from .forms import __all__ as b
-from .geometry import __all__ as c
-from .helpers import __all__ as d
-from .ui import __all__ as e
-from .utilities import __all__ as f
+from . import artists
+from . import forms
+from . import geometry
+from . import helpers
+from . import ui
+from . import utilities
 
-__all__ = a + b + c + d + e + f
+__all__ = []
+
+__all__ += artists.__all__
+__all__ += forms.__all__
+__all__ += geometry.__all__
+__all__ += helpers.__all__
+__all__ += ui.__all__
+__all__ += utilities.__all__

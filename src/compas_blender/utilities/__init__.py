@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-utilities
+compas_blender.utilities
 ********************************************************************************
 
 .. module:: compas_blender.utilities
@@ -123,6 +123,7 @@ modifiers
 
 
 """
+from __future__ import absolute_import
 
 from .document import *
 from .objects import *
@@ -131,11 +132,19 @@ from .drawing import *
 from .modifiers import *
 from .layers import *
 
-from .document import __all__ as a
-from .layers import __all__ as b
-from .objects import __all__ as c
-from .misc import __all__ as d
-from .drawing import __all__ as e
-from .modifiers import __all__ as f
+from . import document
+from . import layers
+from . import objects
+from . import misc
+from . import drawing
+from . import modifiers
 
-__all__ = a + b + c + d + e + f
+__all__ = []
+
+__all__ += document.__all__
+__all__ += layers.__all__
+__all__ += objects.__all__
+__all__ += misc.__all__
+__all__ += drawing.__all__
+__all__ += modifiers.__all__
+

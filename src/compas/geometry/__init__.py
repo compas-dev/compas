@@ -266,8 +266,6 @@ Objects
     Vector
     Point
     Line
-    Segment
-    Ray
     Polyline
     Polygon
     Plane
@@ -299,9 +297,6 @@ Spatial
     :nosignatures:
 
     KDTree
-    RTree
-    QuadTree
-    OcTree
 
 
 Algorithms
@@ -327,7 +322,6 @@ Algorithms
     mesh_flatness
     mesh_isolines_numpy
     mesh_planarize_faces
-    mesh_planarize_faces_shapeop
     mesh_smooth_centroid
     network_parallelise_edges
     network_smooth_centroid

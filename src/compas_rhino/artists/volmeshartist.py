@@ -1,5 +1,10 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import time
 
+import compas
 import compas_rhino
 
 from compas_rhino.artists.mixins import VertexArtist
@@ -10,9 +15,7 @@ try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__    = ['Tom Van Mele', ]
@@ -25,7 +28,23 @@ __all__ = ['VolMeshArtist']
 
 
 class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
-    """"""
+    """A volmesh artist defines functionality for visualising COMPAS volmeshes in Rhino.
+
+    Parameters
+    ----------
+    volmesh : compas.datastructures.VolMesh
+        A COMPAS volmesh.
+    layer : str, optional
+        The name of the layer that will contain the volmesh.
+
+    Attributes
+    ----------
+    layer
+    datastructure
+    defaults : dict
+        Default settings for color, scale, tolerance, ...
+
+    """
 
     def __init__(self, volmesh, layer=None):
         self.datastructure = volmesh

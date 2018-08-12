@@ -1790,7 +1790,7 @@ class Mesh(FromToJson,
 
         """
         if directed:
-            return u in self.edge and v in self.edge[u]
+            return (u, v) in self.edgedata
         else:
             return u in self.halfedge and v in self.halfedge[u]
 

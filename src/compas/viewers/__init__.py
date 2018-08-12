@@ -23,14 +23,7 @@ Classes
     MeshViewer
 
 """
-
-from compas.viewers import viewer
-from compas.viewers import meshviewer
-
-try:
-    from compas.viewers import vtkviewer
-except:
-    pass
+from __future__ import absolute_import
 
 from .core import *
 from .viewer import *
@@ -38,6 +31,14 @@ from .meshviewer import *
 
 try:
     from .vtkviewer import *
+except:
+    pass
+
+from . import viewer
+from . import meshviewer
+
+try:
+    from . import vtkviewer
 except:
     pass
 
