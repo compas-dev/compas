@@ -26,6 +26,7 @@ __email__     = 'liew@arch.ethz.ch'
 
 __all__ = [
     'distance_matrix_numba',
+    'closest_distance_field_numba',
 ]
 
 
