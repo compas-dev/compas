@@ -11,8 +11,6 @@ from compas.utilities import color_to_colordict
 
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
-# from compas_rhino.artists.mixins import PathArtist
-# from compas_rhino.artists.mixins import ForceArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -42,8 +40,6 @@ class NetworkArtist(EdgeArtist, VertexArtist):
 
     Attributes
     ----------
-    layer
-    datastructure
     defaults : dict
         Default settings for color, scale, tolerance, ...
 

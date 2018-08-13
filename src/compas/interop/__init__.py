@@ -3,7 +3,7 @@
 compas.interop
 ********************************************************************************
 
-.. module:: compas.interop
+.. currentmodule:: compas.interop
 
 This package includes utility functions for seamless integration of C, C++ and Fortran code.
 

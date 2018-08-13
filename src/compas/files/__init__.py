@@ -3,7 +3,7 @@
 compas.files
 ********************************************************************************
 
-.. module:: compas.files
+.. currentmodule:: compas.files
 
 This package provides support for file types related to geometry definition,
 manufacturing processes, CAD interoperability, robot models, ...

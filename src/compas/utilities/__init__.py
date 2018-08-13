@@ -3,7 +3,7 @@
 compas.utilities
 ********************************************************************************
 
-.. module:: compas.utilities
+.. currentmodule:: compas.utilities
 
 
 .. combine all decorators

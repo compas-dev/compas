@@ -3,7 +3,7 @@
 compas.robots
 ********************************************************************************
 
-.. module:: compas.robots
+.. currentmodule:: compas.robots
 
 This package provides basic structures and data exchange mechanisms that are
 building blocks for robotics support.

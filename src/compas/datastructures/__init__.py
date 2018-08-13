@@ -3,7 +3,7 @@
 compas.datastructures
 ********************************************************************************
 
-.. module:: compas.datastructures
+.. currentmodule:: compas.datastructures
 
 This package defines a mesh datastructure, a network, and a cellular mesh.
 

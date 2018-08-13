@@ -39,8 +39,6 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
     Attributes
     ----------
-    layer
-    datastructure
     defaults : dict
         Default settings for color, scale, tolerance, ...
 

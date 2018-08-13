@@ -3,7 +3,7 @@
 compas.numerical
 ********************************************************************************
 
-.. module:: compas.numerical
+.. currentmodule:: compas.numerical
 
 This package implements numerical solvers and algorithms.
 The array and matrix-based implementations are built around `NumPy`_ and `SciPy`_.

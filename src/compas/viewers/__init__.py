@@ -3,7 +3,7 @@
 compas.viewers
 ********************************************************************************
 
-.. module:: compas.viewers
+.. currentmodule:: compas.viewers
 
 This package wraps `PyOpenGL`_ and `PySide`_ to provide three-dimensional
 viewers with basic visualization and user interaction capabilities.
