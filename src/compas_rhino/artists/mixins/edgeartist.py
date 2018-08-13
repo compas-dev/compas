@@ -126,10 +126,6 @@ class EdgeArtist(object):
         All labels are assigned a name using the folling template:
         ``"{}.edge.{}".format(self.datastructure.name, key)``.
 
-        Examples
-        --------
-        >>>
-
         """
         if text is None:
             textdict = {(u, v): "{}-{}".format(u, v) for u, v in self.datastructure.edges()}

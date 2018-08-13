@@ -121,10 +121,6 @@ class VertexArtist(object):
         All labels are assigned a name using the folling template:
         ``"{}.vertex.label.{}".format(self.datastructure.name, key)``.
 
-        Examples
-        --------
-        >>>
-
         """
         if text is None:
             textdict = {key: str(key) for key in self.datastructure.vertices()}
