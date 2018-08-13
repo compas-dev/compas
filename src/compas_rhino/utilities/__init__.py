@@ -164,3 +164,8 @@ from . import geometry
 __all__ = []
 
 __all__ += document.__all__
+__all__ += layers.__all__
+__all__ += objects.__all__
+__all__ += misc.__all__
+__all__ += drawing.__all__
+__all__ += geometry.__all__
