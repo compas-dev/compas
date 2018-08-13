@@ -3,7 +3,7 @@
 compas_blender
 ********************************************************************************
 
-.. module:: compas_blender
+.. currentmodule:: compas_blender
 
 .. toctree::
     :maxdepth: 1

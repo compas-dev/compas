@@ -3,7 +3,7 @@
 compas_blender.ui
 ********************************************************************************
 
-.. module:: compas_blender.ui
+.. currentmodule:: compas_blender.ui
 
 
 """

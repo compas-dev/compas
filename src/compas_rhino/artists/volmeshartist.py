@@ -45,7 +45,7 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     """
 
     def __init__(self, volmesh, layer=None):
-        self.datastructure = volmesh
+        self.volmesh = volmesh
         self.layer = layer
         self.defaults = {
             'color.vertex' : (255, 0, 0),
@@ -53,8 +53,35 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
             'color.edge'   : (0, 0, 0),
         }
 
+    @property
+    def layer(self):
+        """str: The layer that contains the volmesh."""
+        return self.datastructure.attributes.get('layer')
+
+    @layer.setter
+    def layer(self, value):
+        self.datastructure.attributes['layer'] = value
+
+    @property
+    def volmesh(self):
+        """compas.datastructures.VolMesh: The volmesh that should be painted."""
+        return self.datastructure
+
+    @volmesh.setter
+    def volmesh(self, volmesh):
+        self.datastructure = volmesh
+
     def redraw(self, timeout=None):
-        """Redraw the Rhino view."""
+        """Redraw the Rhino view.
+
+        Parameters
+        ----------
+        timeout : float, optional
+            The amount of time the artist waits before updating the Rhino view.
+            The time should be specified in seconds.
+            Default is ``None``.
+
+        """
         if timeout:
             time.sleep(timeout)
         rs.EnableRedraw(True)
@@ -66,6 +93,8 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
             compas_rhino.clear_layer(self.layer)
 
     def clear(self):
+        """Clear the vertices, faces and edges of the volmesh, without clearing the
+        other elements in the layer."""
         self.clear_vertices()
         self.clear_faces()
         self.clear_edges()

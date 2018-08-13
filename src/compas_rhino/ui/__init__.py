@@ -3,7 +3,7 @@
 compas_rhino.ui
 ********************************************************************************
 
-.. module:: compas_rhino.ui
+.. currentmodule:: compas_rhino.ui
 
 .. autosummary::
     :toctree: generated/

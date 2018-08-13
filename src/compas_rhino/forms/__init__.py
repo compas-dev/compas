@@ -3,7 +3,7 @@
 compas_rhino.forms
 ********************************************************************************
 
-.. module:: compas_rhino.forms
+.. currentmodule:: compas_rhino.forms
 
 
 Windows forms for ...

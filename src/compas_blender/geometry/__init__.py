@@ -3,7 +3,7 @@
 compas_blender.geometry
 ********************************************************************************
 
-.. module:: compas_blender.geometry
+.. currentmodule:: compas_blender.geometry
 
 
 Object-oriented wrappers for native Blender geometry.

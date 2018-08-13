@@ -3,7 +3,7 @@
 compas_rhino.modifiers
 ********************************************************************************
 
-.. module:: compas_rhino.modifiers
+.. currentmodule:: compas_rhino.modifiers
 
 .. autosummary::
     :toctree: generated/

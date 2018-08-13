@@ -39,13 +39,8 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
     Attributes
     ----------
-    datastructure : compas.datastructures.Mesh
-        The mesh that will be painted.
     defaults : dict
         Default settings for color, scale, tolerance, ...
-    layer : str
-        The layer that contains the mesh.
-        The value of this property is stored in the ``attributes`` ``dict`` of the mesh.
 
     Examples
     --------
@@ -67,7 +62,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     """
 
     def __init__(self, mesh, layer=None):
-        self.datastructure = mesh
+        self.mesh = mesh
         self.layer = layer
         self.defaults = {
             'color.vertex' : (255, 0, 0),
@@ -77,11 +72,21 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
     @property
     def layer(self):
+        """str: The layer that contains the mesh."""
         return self.datastructure.attributes.get('layer')
 
     @layer.setter
     def layer(self, value):
         self.datastructure.attributes['layer'] = value
+
+    @property
+    def mesh(self):
+        """compas.datastructures.Mesh: The mesh that should be painted."""
+        return self.datastructure
+
+    @mesh.setter
+    def mesh(self, mesh):
+        self.datastructure = mesh
 
     def redraw(self, timeout=None):
         """Redraw the Rhino view.

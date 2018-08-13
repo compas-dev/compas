@@ -3,7 +3,7 @@
 compas_blender.forms
 ********************************************************************************
 
-.. module:: compas_blender.forms
+.. currentmodule:: compas_blender.forms
 
 """
 

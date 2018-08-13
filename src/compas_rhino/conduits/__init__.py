@@ -3,7 +3,7 @@
 compas_rhino.conduits
 ********************************************************************************
 
-.. module:: compas_rhino.conduits
+.. currentmodule:: compas_rhino.conduits
 
 
 Definition of display conduits.

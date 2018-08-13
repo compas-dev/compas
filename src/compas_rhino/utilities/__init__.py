@@ -3,7 +3,7 @@
 compas_rhino.utilities
 ********************************************************************************
 
-.. module:: compas_rhino.utilities
+.. currentmodule:: compas_rhino.utilities
 
 
 This package contains many convenience functions for working and interacting

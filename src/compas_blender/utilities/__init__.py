@@ -3,7 +3,7 @@
 compas_blender.utilities
 ********************************************************************************
 
-.. module:: compas_blender.utilities
+.. currentmodule:: compas_blender.utilities
 
 
 This package contains many convenience functions for working and interacting

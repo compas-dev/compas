@@ -3,7 +3,7 @@
 compas_rhino.artists
 ********************************************************************************
 
-.. module:: compas_rhino.artists
+.. currentmodule:: compas_rhino.artists
 
 
 Artists for visualising (painting) COMPAS data structures in Rhino.

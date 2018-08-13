@@ -3,7 +3,7 @@
 compas_blender.helpers
 ********************************************************************************
 
-.. module:: compas_blender.helpers
+.. currentmodule:: compas_blender.helpers
 
 
 Helpers make it easier to work with datastructures in Blender.

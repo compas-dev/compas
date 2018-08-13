@@ -3,7 +3,7 @@
 compas_rhino.helpers
 ********************************************************************************
 
-.. module:: compas_rhino.helpers
+.. currentmodule:: compas_rhino.helpers
 
 
 This package contains helpers for working with COMPAS data structures in Rhino.

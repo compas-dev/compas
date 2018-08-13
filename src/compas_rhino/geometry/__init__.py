@@ -3,7 +3,7 @@
 compas_rhino.geometry
 ********************************************************************************
 
-.. module:: compas_rhino.geometry
+.. currentmodule:: compas_rhino.geometry
 
 
 Object-oriented wrappers for native Rhino geometry.

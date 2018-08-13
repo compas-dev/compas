@@ -3,7 +3,7 @@
 compas_blender.artists
 ********************************************************************************
 
-.. module:: compas_blender.artists
+.. currentmodule:: compas_blender.artists
 
 
 Artists for visualising (painting) COMPAS data structures in Blender.

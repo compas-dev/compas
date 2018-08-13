@@ -46,12 +46,30 @@ class NetworkArtist(EdgeArtist, VertexArtist):
     """
 
     def __init__(self, network, layer=None):
-        self.datastructure = network
+        self.network = network
         self.layer = layer
         self.defaults = {
             'color.vertex': (0, 0, 0),
             'color.edge'  : (0, 0, 0),
         }
+
+    @property
+    def layer(self):
+        """str: The layer that contains the network."""
+        return self.datastructure.attributes.get('layer')
+
+    @layer.setter
+    def layer(self, value):
+        self.datastructure.attributes['layer'] = value
+
+    @property
+    def network(self):
+        """compas.datastructures.Network: The network that should be painted."""
+        return self.datastructure
+
+    @network.setter
+    def network(self, network):
+        self.datastructure = network
 
     def redraw(self, timeout=None):
         """Redraw the Rhino view.

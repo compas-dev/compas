@@ -3,7 +3,7 @@
 compas_rhino.inspectors
 ********************************************************************************
 
-.. module:: compas_rhino.inspectors
+.. currentmodule:: compas_rhino.inspectors
 
 .. autosummary::
     :toctree: generated/

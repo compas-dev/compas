@@ -3,7 +3,7 @@
 compas_rhino
 ********************************************************************************
 
-.. module:: compas_rhino
+.. currentmodule:: compas_rhino
 
 
 .. toctree::

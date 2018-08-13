@@ -3,7 +3,7 @@
 compas_rhino.selectors
 ********************************************************************************
 
-.. module:: compas_rhino.selectors
+.. currentmodule:: compas_rhino.selectors
 
 .. autosummary::
     :toctree: generated/
