@@ -1,3 +1,9 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+import compas
+
 from compas.utilities import color_to_colordict
 
 import compas_rhino
@@ -5,9 +11,7 @@ import compas_rhino
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__    = ['Tom Van Mele', ]
@@ -22,6 +26,36 @@ __all__ = ['FaceArtist']
 class FaceArtist(object):
 
     def clear_faces(self, keys=None):
+        """Clear all faces previously drawn by the ``FaceArtist``.
+
+        Parameters
+        ----------
+        keys : list, optional
+            The keys of a specific set of faces that should be cleared.
+            Default is to clear all faces.
+
+        """
+        if not keys:
+            name = '{}.face.*'.format(self.datastructure.name)
+            guids = compas_rhino.get_objects(name=name)
+        else:
+            guids = []
+            for key in keys:
+                name = self.datastructure.face_name(key)
+                guid = compas_rhino.get_object(name=name)
+                guids.append(guid)
+        compas_rhino.delete_objects(guids)
+
+    def clear_facelabels(self, keys=None):
+        """Clear all face labels previously drawn by the ``FaceArtist``.
+
+        Parameters
+        ----------
+        keys : list, optional
+            The keys of a specific set of face labels that should be cleared.
+            Default is to clear all face labels.
+
+        """
         if not keys:
             name = '{}.face.*'.format(self.datastructure.name)
             guids = compas_rhino.get_objects(name=name)
@@ -50,17 +84,13 @@ class FaceArtist(object):
             of key-color pairs. Missing keys will be assigned the default face
             color (``self.defaults['face.color']``).
             The default is ``None``, in which case all faces are assigned the
-            default vertex color.
+            default face color.
 
         Notes
         -----
         The faces are named using the following template:
-        ``"{}.face.{}".format(self.datastructure.attributes['name'], key)``.
-        This name is used afterwards to identify faces of the mesh in the Rhino model.
-
-        Examples
-        --------
-        >>>
+        ``"{}.face.{}".format(self.datastructure.name, key)``.
+        This name is used afterwards to identify faces in the Rhino model.
 
         """
         fkeys = fkeys or list(self.datastructure.faces())
@@ -91,12 +121,24 @@ class FaceArtist(object):
 
         Parameters
         ----------
+        text : dict
+            A dictionary of face labels as key-text pairs.
+            The default value is ``None``, in which case every face will be labelled with its key.
+        color : str, tuple, dict
+            The color sepcification of the labels.
+            String values are interpreted as hex colors (e.g. ``'#ff0000'`` for red).
+            Tuples are interpreted as RGB component specifications (e.g. ``(255, 0, 0) for red``.
+            If a dictionary of specififcations is provided, the keys of the
+            should refer to face keys and the values should be color
+            specifications in the form of strings or tuples.
+            The default value is ``None``, in which case the labels are assigned
+            the default face color (``self.datastructure.attributes['color.face']``).
 
         Notes
         -----
-
-        Examples
-        --------
+        The face labels are named using the following template:
+        ``"{}.face.label.{}".format(self.datastructure.name, key)``.
+        This name is used afterwards to identify faces and face labels in the Rhino model.
 
         """
         if text is None:
@@ -116,7 +158,7 @@ class FaceArtist(object):
         for key, text in iter(textdict.items()):
             labels.append({
                 'pos'   : self.datastructure.face_center(key),
-                'name'  : self.datastructure.face_name(key),
+                'name'  : "{}.face.label.{}".format(self.datastructure.name, key),
                 'color' : colordict[key],
                 'text'  : textdict[key],
                 'layer' : self.datastructure.get_face_attribute(key, 'layer', None)
