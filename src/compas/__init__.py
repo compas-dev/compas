@@ -39,6 +39,7 @@ __version__   = '0.2.7'
 PY3 = sys.version_info.major == 3
 
 HERE = os.path.dirname(__file__)
+HOME = os.path.abspath(os.path.join(HERE, '../..'))
 DATA = os.path.abspath(os.path.join(HERE, '../../data'))
 
 

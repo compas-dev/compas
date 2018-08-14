@@ -153,6 +153,7 @@ from .objects import *
 from .misc import *
 from .drawing import *
 from .geometry import *
+from .xfunc import *
 
 from . import document
 from . import layers
@@ -160,6 +161,7 @@ from . import objects
 from . import misc
 from . import drawing
 from . import geometry
+from . import xfunc
 
 __all__ = []
 
@@ -169,3 +171,4 @@ __all__ += objects.__all__
 __all__ += misc.__all__
 __all__ += drawing.__all__
 __all__ += geometry.__all__
+__all__ += xfunc.__all__
