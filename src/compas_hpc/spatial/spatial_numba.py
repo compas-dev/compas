@@ -65,19 +65,6 @@ def distance_matrix_numba(A, B):
     return o
 
 
-@guvectorize([(f8[:, :, :], f8[:, :, :], f8[:, :, :], f8[:, :], f8[:, :, :])],
-    '(m,n,o),(m,n,o),(m,n,o),(a,b)->(m,n,o)', nopython=True, cache=True, target='parallel')
-def _closest_distance_field_numba(x, y, z, points, distances):
-
-    m, n, o = x.shape
-
-    for i in range(m):
-        for j in range(n):
-            for k in range(o):
-                point = array([[x[i, j, k], y[i, j, k], z[i, j, k]]])
-                distances[i, j, k] = min(distance_matrix_numba(point, points))
-
-
 def closest_distance_field_numba(x, y, z, points):
 
     """ Closest distance field between a grid and set of target points.
@@ -102,7 +89,12 @@ def closest_distance_field_numba(x, y, z, points):
 
     m, n, o = x.shape
     distances = zeros((m, n, o))
-    _closest_distance_field_numba(x, y, z, points, distances)
+
+    for i in range(m):
+        for j in range(n):
+            for k in range(o):
+                point = array([[x[i, j, k], y[i, j, k], z[i, j, k]]])
+                distances[i, j, k] = min(distance_matrix_numba(point, points))
 
     return distances
 
@@ -121,7 +113,7 @@ if __name__ == "__main__":
 
     # Grid
 
-    n = 100
+    n = 50
     a = linspace(-1, 1, n)
     xm, ym, zm = meshgrid(a, a, a)
 
