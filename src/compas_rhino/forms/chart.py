@@ -15,7 +15,8 @@ try:
     from System.Windows.Forms.DataVisualization import Charting
 
 except ImportError:
-    compas.raise_if_ironpython()
+    if compas.is_ironpython() and compas.is_windows():
+        raise
 
 
 __author__     = ['Tom Van Mele', ]
@@ -27,29 +28,96 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = ['ChartForm', ]
 
 
+class Series(object):
+    pass
+
+
 class ChartForm(Form):
     """A windows form for displaying charts.
 
     Parameters
     ----------
-    
+    series : list of dict
+        A list of dictionaries with each dictionary defining the attributes of a series.
+        The following attributes are supported:
+
+        * name: The name of the series.
+        * data: A dictionary with x-y pairs.
+        * color (optional): A hex color or an RGB(255) color specification.
+        * linewidth (optional): The width of the series graph line.
+
+    xlimits : 2-tuple
+        Minimum and maximum values on the X-axis.
+    xstep : int
+        Size of the steps along the X-axis.
+    ylimits : 2-tuple, optional
+        Minimum and maximum values on the Y-axis.
+        Default is ``None``, in which case the limits will be computed from the min/max values of the data in the series.
+    ystep : int, optional
+        Size of the steps along the Y-axis.
+        Default is ``int((ymax - ymin) / 10.)```.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        import random
+        from compas_rhino.forms import ChartForm
+
+        def fib(n, memo={}):
+            if n == 0:
+                return 0
+            if n == 1:
+                return 1
+            if n == 2:
+                return 1
+            if n not in memo:
+                memo[n] = fib(n - 2, memo) + fib(n - 1, memo)
+            return memo[n]
+
+        series = [
+            {
+                'name'      : 'series1',
+                'color'     : (255, 0, 0),
+                'linewidth' : 1,
+                'data'      : dict((str(i), random.randint(30, 70)) for i in range(10)),
+            },
+            {
+                'name'      : 'series2',
+                'color'     : (0, 255, 0),
+                'linewidth' : 1,
+                'data'      : dict((str(i), i ** 2) for i in range(10)),
+            },
+            {
+                'name'      : 'series3',
+                'color'     : (0, 0, 255),
+                'linewidth' : 1,
+                'data'      : dict((str(i), fib(i)) for i in range(10)),
+            },
+        ]
+
+        form = ChartForm(series, (0, 10), 1)
+        form.show()
+
     """
 
-    def __init__(self, series, xmax, xstep):
+    def __init__(self, series, xlimits, xstep, ylimits=None, ystep=None, **kwargs):
         self.series = series
-        self.xmin = 0
-        self.xmax = xmax
+        self.xmin = xlimits[0]
+        self.xmax = xlimits[1]
         self.xstp = xstep
+
         self.ymin = 0
         self.ymax = 0
         self.ystp = None
-        for attr in series.itervalues():
+        for attr in series:
             keys = sorted(attr['data'].keys(), key=int)
             values = [attr['data'][key] for key in keys]
             y = map(float, values)
             self.ymin = min(min(y), self.ymin)
             self.ymax = max(max(y), self.ymax)
         self.ystp = int((self.ymax - self.ymin) / 10.)
+
         super(ChartForm, self).__init__()
 
     def init(self):
@@ -58,8 +126,8 @@ class ChartForm(Form):
         chart = charting.Chart()
         chart.Location = Point(10, 10)
         chart.Size = Size(800, 600)
-        chart.ChartAreas.Add('iterations')
-        area = chart.ChartAreas['iterations']
+        chart.ChartAreas.Add('series')
+        area = chart.ChartAreas['series']
         x = area.AxisX
         x.Minimum = self.xmin
         x.Maximum = self.xmax
@@ -72,7 +140,8 @@ class ChartForm(Form):
         y.Interval = self.ystp
         y.MajorGrid.LineColor = Color.Black
         y.MajorGrid.LineDashStyle = charting.ChartDashStyle.Dash
-        for name, attr in self.series.iteritems():
+        for attr in self.series:
+            name = attr['name']
             color = attr['color']
             linewidth = attr['linewidth']
             chart.Series.Add(name)
@@ -107,23 +176,26 @@ if __name__ == '__main__':
             memo[n] = fib(n - 2, memo) + fib(n - 1, memo)
         return memo[n]
 
-    series = {
-        'series1' : {
+    series = [
+        {
+            'name'      : 'series1',
             'color'     : (255, 0, 0),
             'linewidth' : 1,
             'data'      : dict((str(i), random.randint(30, 70)) for i in range(10)),
         },
-        'series2' : {
+        {
+            'name'      : 'series2',
             'color'     : (0, 255, 0),
             'linewidth' : 1,
             'data'      : dict((str(i), i ** 2) for i in range(10)),
         },
-        'series3' : {
+        {
+            'name'      : 'series3',
             'color'     : (0, 0, 255),
             'linewidth' : 1,
             'data'      : dict((str(i), fib(i)) for i in range(10)),
         },
-    }
+    ]
 
     form = ChartForm(series, 10, 1)
 

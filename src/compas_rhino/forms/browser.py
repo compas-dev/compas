@@ -14,7 +14,8 @@ try:
     from System.Windows.Forms import DockStyle
 
 except ImportError:
-    compas.raise_if_ironpython()
+    if compas.is_ironpython() and compas.is_windows():
+        raise
 
 
 __author__     = ['Tom Van Mele', ]

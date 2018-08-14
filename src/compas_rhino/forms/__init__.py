@@ -32,7 +32,8 @@ try:
     import Rhino
 
 except ImportError:
-    compas.raise_if_ironpython()
+    if compas.is_ironpython() and compas.is_windows():
+        raise
 
     class WinForm(object):
         pass

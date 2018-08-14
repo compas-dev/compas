@@ -87,13 +87,29 @@ def get(filename):
 #     return armadillo
 
 
+def is_windows():
+    return os.name == 'nt'
+
+
+def is_linux():
+    return os.name == 'posix'
+
+
+def is_mono():
+    return 'mono' in sys.version.lower()
+
+
+def is_ironpython():
+    return 'ironpython' in sys.version.lower()
+
+
 def raise_if_not_ironpython():
-    if 'ironpython' not in sys.version.lower():
+    if not is_ironpython():
         raise
 
 
 def raise_if_ironpython():
-    if 'ironpython' in sys.version.lower():
+    if is_ironpython():
         raise
 
 
