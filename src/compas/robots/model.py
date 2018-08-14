@@ -1,7 +1,16 @@
 from __future__ import absolute_import, division, print_function
 
 from compas.files import URDF
-from compas.geometry import Frame
+from compas.geometry import Point, Frame
+from compas.geometry import add_vectors
+from compas.geometry.xforms import Transformation
+from compas.geometry.xforms import Rotation
+from compas.geometry.xforms import Scale
+
+from compas.datastructures import Mesh as CMesh
+from compas.geometry.transformations import mesh_transform
+from compas.geometry.transformations import mesh_transformed
+from compas.geometry.transformations import transform_vectors
 
 # URDF is defined in meters
 # so we scale it all to millimeters
@@ -26,14 +35,36 @@ def _parse_floats(values, scale_factor=None):
     return result
 
 
-class Origin(object):
+class Origin(Frame):
     """Reference frame represented by an instance of :class:`Frame`."""
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
         xyz = _parse_floats(attributes.get('xyz', '0 0 0'), SCALE_FACTOR)
         rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
-        return Frame.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
+        return cls.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
+
+    def update(self, parent_origin):
+        """Update the origin based on the parent joint's origin.
+        """
+        parent_rotation = Rotation.from_frame(parent_origin)
+        rotated_point = Point(*self.point)
+        rotated_point.transform(parent_rotation.matrix)
+        rot = Rotation.from_frame(self)
+        pos = add_vectors(parent_origin.point, rotated_point)
+        rot = parent_rotation * rot
+        xaxis, yaxis = rot.basis_vectors
+        self.point = pos
+        self.xaxis = xaxis
+        self.yaxis = yaxis
+    
+    @property
+    def transformation(self):
+        """Returns the transformation based on the origin frame.
+        """
+        # TODO: check why yaxis and zaxis need to be exchanged
+        fx = Frame(self.point, self.xaxis, self.zaxis)
+        return Transformation.from_frame(fx)
 
 
 class Mass(object):
@@ -85,6 +116,14 @@ class Box(object):
 
     def __init__(self, size):
         self.size = _parse_floats(size, SCALE_FACTOR)
+        self.geometry = None
+
+    def create(self,urdf_importer, meshcls):
+        pass
+    
+    def transform(self, transformation):
+        if self.geometry:
+            self.geometry.transform(transformation)
 
 
 class Cylinder(object):
@@ -93,6 +132,14 @@ class Cylinder(object):
     def __init__(self, radius, length):
         self.radius = float(radius) * SCALE_FACTOR
         self.length = float(length) * SCALE_FACTOR
+        self.geometry = None
+
+    def create(self,urdf_importer, meshcls):
+        pass
+    
+    def transform(self, transformation):
+        if self.geometry:
+            self.geometry.transform(transformation)
 
 
 class Sphere(object):
@@ -100,6 +147,14 @@ class Sphere(object):
 
     def __init__(self, radius):
         self.radius = float(radius) * SCALE_FACTOR
+        self.geometry = None
+
+    def create(self,urdf_importer, meshcls):
+        pass
+    
+    def transform(self, transformation):
+        if self.geometry:
+            self.geometry.transform(transformation)
 
 
 class Capsule(Cylinder):
@@ -108,7 +163,15 @@ class Capsule(Cylinder):
     def __init__(self, radius, length):
         self.radius = float(radius) * SCALE_FACTOR
         self.length = float(length) * SCALE_FACTOR
+        self.geometry = None
 
+    def create(self,urdf_importer, meshcls):
+        pass
+    
+    def transform(self, transformation):
+        if self.geometry:
+            self.geometry.transform(transformation)
+    
 
 class MeshDescriptor(object):
     """Description of a mesh."""
@@ -116,6 +179,20 @@ class MeshDescriptor(object):
     def __init__(self, filename, scale='1.0 1.0 1.0'):
         self.filename = filename
         self.scale = _parse_floats(scale)
+        self.geometry = None
+
+    def create(self, urdf_importer, meshcls):
+        self.geometry = urdf_importer.read_mesh_from_resource_file_uri(self.filename, meshcls)
+        self.set_scale()
+        print(self.filename)
+    
+    def transform(self, transformation):
+        if self.geometry:
+            self.geometry.transform(transformation)
+    
+    def set_scale(self):
+        S = Scale([SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR])
+        self.transform(S)
 
 
 class Color(object):
@@ -212,7 +289,64 @@ class Link(object):
         self.inertial = inertial
         self.attr = kwargs
         self.joints = []
+        self.position = [0,0,0] # point
+        self.orientation = [0,0,0,1] # quaternion
 
+    def create(self, urdf_importer, meshcls, parent_joint=None):
+        """Recursive function to create all geometry shapes.
+        """
+
+        for item in self.visual:
+            item.geometry.shape.create(urdf_importer, meshcls)
+        for item in self.collision:
+            item.geometry.shape.create(urdf_importer, meshcls)
+
+        parent_origin = None
+
+        if parent_joint:
+            
+            parent_origin = parent_joint.origin
+            T = parent_origin.transformation
+
+            for item in self.visual:
+                item.geometry.shape.transform(T)
+            
+            for item in self.collision:
+                item.geometry.shape.transform(T)
+        else: 
+            parent_origin = Frame.worldXY()
+        
+        for cjoint in self.joints:
+            cjoint.origin.update(parent_origin)
+            if cjoint.axis:
+                cjoint.axis.update(parent_origin)
+            clink = cjoint.childlink
+            clink.create(urdf_importer, meshcls, cjoint)
+    
+    def set_transforms():
+        """
+        if ( visual_node_ )
+        {
+            visual_node_->setPosition( visual_position );
+            visual_node_->setOrientation( visual_orientation );
+        }
+
+        if ( collision_node_ )
+        {
+            collision_node_->setPosition( collision_position );
+            collision_node_->setOrientation( collision_orientation );
+        }
+
+        position_property_->setVector( visual_position );
+        orientation_property_->setQuaternion( visual_orientation );
+
+        if ( axes_ )
+        {
+            axes_->setPosition( visual_position );
+            axes_->setOrientation( visual_orientation );
+        }
+        }
+        """
 
 class ParentJoint(object):
     """Describes a parent relation between joints."""
@@ -294,10 +428,34 @@ class Axis(object):
     def __init__(self, xyz='0 0 0'):
         # We are not using Vector here because we
         # cannot attach _urdf_source to it due to __slots__
-        xyz = _parse_floats(xyz, SCALE_FACTOR)
+        #xyz = _parse_floats(xyz, SCALE_FACTOR)
+        xyz = _parse_floats(xyz, 1.)
         self.x = xyz[0]
         self.y = xyz[1]
         self.z = xyz[2]
+    
+    #def transform(self, transformation):
+    #    xyz = transform_vectors([[self.x, self.y, self.z]], transformation.matrix)
+    #    self.x = xyz[0][0]
+    #    self.y = xyz[0][1]
+    #    self.z = xyz[0][2]
+
+    def update(self, parent_origin):
+        """
+        axis_->setPosition( position );
+        axis_->setOrientation( orientation );
+        axis_->setDirection( parent_link_orientation * axis_property_->getVector() );
+        """
+        parent_rotation = Rotation.from_frame(parent_origin)
+        xyz = transform_vectors([[self.x, self.y, self.z]], parent_rotation.matrix)
+        self.x = xyz[0][0]
+        self.y = xyz[0][1]
+        self.z = xyz[0][2]
+
+
+    
+    def __str__(self):
+        return "[%.3f, %.3f, %.3f]" % (self.x, self.y, self.z)
 
 
 class Joint(object):
