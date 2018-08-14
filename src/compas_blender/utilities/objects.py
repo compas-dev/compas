@@ -48,6 +48,8 @@ __all__ = [
     'select_surfaces',
     'select_mesh',
     'select_meshes',
+    'set_select',
+    'set_deselect',
 
 #    'set_object_layer',
 #    'set_objects_layer',
@@ -62,11 +64,8 @@ __all__ = [
 #    'join_objects',
 #    'select_mesh',
 #    'select_meshes',
-#    'select_object',
-#    'select_objects',
 #    'select_all_objects',
 #    'deselect_object',
-#    'deselect_objects',
 #    'deselect_all_objects',
 #    'hide_object',
 #    'hide_objects',
@@ -179,160 +178,122 @@ def get_meshes(collection=None):
 
 def select_point():
 
+    # PROMPT FOR USER TO SELECT SOME OBJECTS
     selected = bpy.context.selected_objects
     if selected:
         for object in selected:
             if object.type == 'EMPTY':
                 return object
+            
     print('***** A point (empty) object was not in the selection *****')
     return
 
 
 def select_points():
 
+    # PROMPT FOR USER TO SELECT SOME OBJECTS
     selected = bpy.context.selected_objects
     if selected:
         return [i for i in selected if i.type == 'EMPTY']
+    
     print('***** Point (empty) objects were not in the selection *****')
     return
 
 
 def select_curve():
 
+    # PROMPT FOR USER TO SELECT SOME OBJECTS
     selected = bpy.context.selected_objects
     if selected:
         for object in selected:
             if object.type == 'CURVE':
                 return object
+           
     print('***** A curve object was not in the selection *****')
     return
 
 
 def select_curves():
 
+    # PROMPT FOR USER TO SELECT SOME OBJECTS
     selected = bpy.context.selected_objects
     if selected:
         return [i for i in selected if i.type == 'CURVE']
+    
     print('***** Curve objects were not in the selection *****')
     return
 
 
 def select_mesh():
 
+    # PROMPT FOR USER TO SELECT SOME OBJECTS
     selected = bpy.context.selected_objects
     if selected:
         for object in selected:
             if object.type == 'MESH':
                 return object
+            
     print('***** A mesh object was not in the selection *****')
     return
 
 
 def select_meshes():
 
+    # PROMPT FOR USER TO SELECT SOME OBJECTS
     selected = bpy.context.selected_objects
     if selected:
         return [i for i in selected if i.type == 'MESH']
+    
     print('***** Mesh objects were not in the selection *****')
     return
 
 
 def select_surface():
 
+    # PROMPT FOR USER TO SELECT SOME OBJECTS
     selected = bpy.context.selected_objects
     if selected:
         for object in selected:
             if object.type == 'SURFACE':
                 return object
+            
     print('***** A surface object was not in the selection *****')
     return
 
 
 def select_surfaces():
 
+    # PROMPT FOR USER TO SELECT SOME OBJECTS
     selected = bpy.context.selected_objects
     if selected:
         return [i for i in selected if i.type == 'SURFACE']
+    
     print('***** Surface objects were not in the selection *****')
     return
 
 
-#def select_object(object):
-#    """ Select specific object.
-
-#    Parameters:
-#        object (obj): Object to select.
-
-#    Returns:
-#        None
-#    """
-#    object.select = True
-
-
-#def select_objects(objects):
-#    """ Select specific objects.
-
-#    Parameters:
-#        objects (list): Objects to select.
-
-#    Returns:
-#        None
-#    """
-#    for object in objects:
-#        object.select = True
+def set_select(objects=[]):
+    
+    if objects:
+        if not isinstance(objects, list):
+            objects = [objects]
+        for object in objects:
+            object.select_set(action='SELECT')
+    
+    else:
+        bpy.ops.object.select_all(action='SELECT')
 
 
-#def select_all_objects():
-#    """ Select all objects.
-
-#    Parameters:
-#        None
-
-#    Returns:
-#        None
-#    """
-#    objects = bpy.context.scene.objects
-#    for object in objects:
-#        object.select = True
-
-
-#def deselect_object(object):
-#    """ De-select a specific object.
-
-#    Parameters:
-#        object (obj): Object to de-select.
-
-#    Returns:
-#        None
-#    """
-#    object.select = False
-
-
-#def deselect_objects(objects):
-#    """ De-select specific objects.
-
-#    Parameters:
-#        objects (list): Objects to de-select.
-
-#    Returns:
-#        None
-#    """
-#    if not isinstance(objects, list):
-#        objects = [objects]
-#    for object in objects:
-#        object.select = False
-
-
-#def deselect_all_objects():
-#    """ De-select all objects.
-
-#    Parameters:
-#        None
-
-#    Returns:
-#        None
-#    """
-#    deselect_objects(list(bpy.data.objects))
+def set_deselect(objects=[]):
+    
+    if objects:
+        if not isinstance(objects, list):
+            objects = [objects]
+        for object in objects:
+            object.select_set(action='DESELECT')
+    
+    else:
+        bpy.ops.object.select_all(action='DESELECT')
 
 
 ## ==============================================================================
@@ -558,9 +519,11 @@ def select_surfaces():
 
 if __name__ == "__main__":
     
-    pass
+    set_deselect()
 
-    #print(get_objects(name='Cube'))
+    cube = get_objects(name='Cube')[0]
+
+    print(cube)
     #print(get_objects(type='MESH'))
     #print(get_objects(collection='Collection 1'))
 
@@ -582,5 +545,5 @@ if __name__ == "__main__":
     #delete_object(get_objects(collection='Collection 1'))
 
     #bpy.ops.object.select_by_type(type='MESH')
-    print(bpy.data.objects['SurfSphere'].type)
+    #print(bpy.data.objects['SurfSphere'].type)
 

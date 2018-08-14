@@ -7,10 +7,13 @@ from compas.geometry import add_vectors
 #from compas.geometry import distance_point_point
 
 from compas_blender.geometry import BlenderGeometry
+from compas_blender.utilities import set_select
+from compas_blender.utilities import set_deselect
 from compas_blender.utilities import select_mesh
 
 try:
     import bpy
+    import bmesh
 except ImportError:
     pass
 
@@ -105,20 +108,31 @@ class BlenderMesh(BlenderGeometry):
         while vertex_colors:
             vertex_colors.remove(vertex_colors[0])
 
-#    def get_vertices_and_faces(self):
-#        vertices = self.get_vertex_coordinates()
-#        faces = self.get_face_vertex_indices()
-#        return vertices, faces
+    def get_vertices_and_faces(self):
 
-#    def get_border(self):
-#        raise NotImplementedError
+        vertices = self.get_vertex_coordinates()
+        faces    = self.get_face_vertex_indices()
 
-#    def get_vertex_index(self):
-#        # User must be in object mode, with vertex selected from edit mode.
-#        try:
-#            return mesh.get_vertex_indices()[0]
-#        except Exception:
-#            return None
+        return vertices, faces
+
+    def get_border(self):
+
+        raise NotImplementedError
+
+    def get_vertex_index(self):
+
+        #set_deselect()
+        #set_select(objects=self.mesh)
+        #bpy.ops.object.mode_set(mode='EDIT') 
+        
+        # USER PROMPT TO SELECT
+        
+        indices = []
+        for i in reversed(bmesh.from_edit_mesh(self.mesh.data).select_history):
+            if isinstance(i, bmesh.types.BMVert):
+                indices.append(i.index)
+
+        return indices
 
 #    def get_face_index(self):
 #        # User must be in object mode, with face selected from edit mode.
@@ -220,11 +234,12 @@ if __name__ == '__main__':
 #    mesh.unselect()
 #    mesh.select()
 #    
-    print(mesh.get_vertex_coordinates())
+    #print(mesh.get_vertex_coordinates())
 #    print(mesh.get_edge_vertex_indices())
-    print(mesh.get_face_vertex_indices())
-    print(mesh.get_face_vertices())
-#    print(mesh.get_vertices_and_faces())
+    #print(mesh.get_face_vertex_indices())
+    #print(mesh.get_face_vertices())
+    #print(mesh.get_vertices_and_faces())
+    print(mesh.get_vertex_index())
 #    print(mesh.face_normals())
 #    print(mesh.face_normal(face=4))
 #    print(mesh.face_area(face=4))
@@ -232,9 +247,9 @@ if __name__ == '__main__':
 #    print(mesh.edge_length(edge=4))
 #    print(mesh.edge_lengths())
     
-    mesh.set_vertex_colors(colors={0: [1, 0, 0], 2: [0, 1, 0], 4:[0, 0, 1]})
+    #mesh.set_vertex_colors(colors={0: [1, 0, 0], 2: [0, 1, 0], 4:[0, 0, 1]})
     #mesh.unset_vertex_colors()
-    print(mesh.get_vertex_colors(vertices=[0, 2, 4]))
+    #print(mesh.get_vertex_colors(vertices=[0, 2, 4]))
     
 #    X = [[x, y, z + 1] for x, y, z in mesh.get_vertex_coordinates()]
 #    mesh.update_vertices(X)
