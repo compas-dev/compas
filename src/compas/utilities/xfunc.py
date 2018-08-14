@@ -5,10 +5,16 @@ from __future__ import division
 import os
 import sys
 import json
+
 import compas
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
+
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
 
 try:
     from subprocess import Popen
@@ -35,6 +41,11 @@ import importlib
 import json
 
 try:
+    import cPickle as pickle
+except Exception:
+    import pickle
+
+try:
     from cStringIO import StringIO
 except Exception:
     from io import StringIO
@@ -46,13 +57,17 @@ import traceback
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
 
-basedir  = sys.argv[1]
-funcname = sys.argv[2]
-ipath    = sys.argv[3]
-opath    = sys.argv[4]
+basedir    = sys.argv[1]
+funcname   = sys.argv[2]
+ipath      = sys.argv[3]
+opath      = sys.argv[4]
+serializer = sys.argv[5]
 
-with open(ipath, 'r') as fp:
-    idict = json.load(fp, cls=DataDecoder)
+with open(ipath, 'r') as fo:
+    if serializer == 'json':
+        idict = json.load(fo, cls=DataDecoder)
+    else:
+        idict = pickle.load(fo)
 
 try:
     args   = idict['args']
@@ -94,8 +109,11 @@ else:
     odict['data']       = r
     odict['profile']    = stream.getvalue()
 
-with open(opath, 'w+') as fp:
-    json.dump(odict, fp, cls=DataEncoder)
+with open(opath, 'w+') as fo:
+    if serializer == 'json':
+        json.dump(odict, fo, cls=DataEncoder)
+    else:
+        pickle.dump(odict, fo, protocol=pickle.HIGHEST_PROTOCOL)
 
 """
 
@@ -201,22 +219,26 @@ class XFunc(object):
     """
 
     def __init__(self, funcname, basedir='.', tmpdir='.', delete_files=True,
-                 verbose=True, callback=None, callback_args=None, python='pythonw'):
-        self._basedir      = None
-        self._tmpdir       = None
-        self._callback     = None
-        self._python       = None
-        self.funcname      = funcname
-        self.basedir       = basedir
-        self.tmpdir        = tmpdir
-        self.delete_files  = delete_files
-        self.verbose       = verbose
-        self.callback      = callback
-        self.callback_args = callback_args
-        self.python        = python
-        self.data          = None
-        self.profile       = None
-        self.error         = None
+                 verbose=True, callback=None, callback_args=None, python='pythonw',
+                 paths=None, serializer='json'):
+        self._basedir       = None
+        self._tmpdir        = None
+        self._callback      = None
+        self._python        = None
+        self._serializer    = None
+        self.funcname       = funcname
+        self.basedir        = basedir
+        self.tmpdir         = tmpdir
+        self.delete_files   = delete_files
+        self.verbose        = verbose
+        self.callback       = callback
+        self.callback_args  = callback_args
+        self.python         = python
+        self.paths          = paths or []
+        self.serializer     = serializer
+        self.data           = None
+        self.profile        = None
+        self.error          = None
 
     def __call__(self, *args, **kwargs):
         """Make a call to the wrapped function.
@@ -237,7 +259,64 @@ class XFunc(object):
             This is ``None`` if something went wrong.
 
         """
-        return self._xecute(*args, **kwargs)
+        idict = {'args': args, 'kwargs': kwargs}
+
+        with open(self.ipath, 'w+') as fo:
+            if self.serializer == 'json':
+                json.dump(idict, fo, cls=DataEncoder)
+            else:
+                pickle.dump(idict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+
+        with open(self.opath, 'w+') as fh:
+            fh.write('')
+
+        # this part is different on Mono
+        # ----------------------------------------------------------------------
+        process_args = [self.python,
+                        '-u',
+                        '-c',
+                        WRAPPER,
+                        self.basedir,
+                        self.funcname,
+                        self.ipath,
+                        self.opath,
+                        self.serializer]
+
+        process = Popen(process_args, stderr=PIPE, stdout=PIPE)
+
+        while process.poll() is None:
+            line = process.stdout.readline().strip()
+            if self.callback:
+                self.callback(line, self.callback_args)
+            if self.verbose:
+                print(line)
+        # ----------------------------------------------------------------------
+        # end of part
+
+        with open(self.opath, 'r') as fo:
+            if self.serializer == 'json':
+                odict = json.load(fo, cls=DataDecoder)
+            else:
+                odict = pickle.load(fo)
+
+            self.data    = odict['data']
+            self.profile = odict['profile']
+            self.error   = odict['error']
+
+        if self.delete_files:
+            try:
+                os.remove(self.ipath)
+            except OSError:
+                pass
+            try:
+                os.remove(self.opath)
+            except OSError:
+                pass
+
+        if self.error:
+            raise Exception(self.error)
+
+        return self.data
 
     @property
     def basedir(self):
@@ -281,6 +360,17 @@ class XFunc(object):
         self._python = python
 
     @property
+    def serializer(self):
+        """{'json', 'pickle'}: Which serialisation mechanism to use."""
+        return self._serializer
+
+    @serializer.setter
+    def serializer(self, serializer):
+        if not serializer in ('json', 'pickle'):
+            raise Exception("*serializer* should be one of {'json', 'pickle'}.")
+        self._serializer = serializer
+
+    @property
     def ipath(self):
         return os.path.join(self.tmpdir, '%s.in' % self.funcname)
 
@@ -288,56 +378,6 @@ class XFunc(object):
     def opath(self):
         return os.path.join(self.tmpdir, '%s.out' % self.funcname)
 
-    def _xecute(self, *args, **kwargs):
-        """Execute a function with optional positional and named arguments.
-        """
-        idict = {'args': args, 'kwargs': kwargs}
-
-        with open(self.ipath, 'w+') as fh:
-            json.dump(idict, fh, cls=DataEncoder)
-
-        with open(self.opath, 'w+') as fh:
-            fh.write('')
-
-        process_args = [self.python,
-                        '-u',
-                        '-c',
-                        WRAPPER,
-                        self.basedir,
-                        self.funcname,
-                        self.ipath,
-                        self.opath]
-
-        process = Popen(process_args, stderr=PIPE, stdout=PIPE)
-
-        while process.poll() is None:
-            line = process.stdout.readline().strip()
-            if self.callback:
-                self.callback(line, self.callback_args)
-            if self.verbose:
-                print(line)
-
-        with open(self.opath, 'r') as fh:
-            odict = json.load(fh, cls=DataDecoder)
-
-            self.data    = odict['data']
-            self.profile = odict['profile']
-            self.error   = odict['error']
-
-        if self.delete_files:
-            try:
-                os.remove(self.ipath)
-            except OSError:
-                pass
-            try:
-                os.remove(self.opath)
-            except OSError:
-                pass
-
-        if self.error:
-            raise Exception(self.error)
-
-        return self.data
 
 
 # ==============================================================================
@@ -349,9 +389,10 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Mesh
+    from compas.plotters import MeshPlotter
     from compas.utilities import XFunc
 
-    fd_numpy = XFunc('compas.numerical.fd_numpy')
+    fd_numpy = XFunc('compas.numerical.fd_numpy', delete_files=False)
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -367,6 +408,12 @@ if __name__ == '__main__':
         attr['x'] = xyz[key][0]
         attr['y'] = xyz[key][1]
         attr['z'] = xyz[key][2]
+
+    plotter = MeshPlotter(mesh)
+    plotter.draw_vertices()
+    plotter.draw_faces()
+    plotter.draw_edges()
+    plotter.show()
 
     print(fd_numpy.profile)
 

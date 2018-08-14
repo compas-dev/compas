@@ -28,6 +28,7 @@ __all__ = ['XFunc', 'DataDecoder', 'DataEncoder', ]
 
 
 WRAPPER = """
+import os
 import sys
 import importlib
 
