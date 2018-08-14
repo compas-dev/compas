@@ -8,6 +8,7 @@ import sys
 import os
 
 sys.path.append(os.path.abspath('../../sphinx_compas_theme/sphinxext'))
+sys.path.append(os.path.abspath('../temp/sphinx_compas_theme/sphinxext'))
 
 # -- General configuration ------------------------------------------------
 
