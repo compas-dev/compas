@@ -68,10 +68,10 @@ class Form(WinForm):
         pass
 
 
-# from .browser import BrowserForm
+from .browser import BrowserForm
 from .chart import ChartForm
 from .image import ImageForm
 from .slider import SliderForm
 from .text import TextForm
 
-__all__ = ['ChartForm', 'ImageForm', 'SliderForm', 'TextForm']
+__all__ = ['BrowserForm', 'ChartForm', 'ImageForm', 'SliderForm', 'TextForm']

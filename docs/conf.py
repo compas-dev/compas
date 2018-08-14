@@ -7,8 +7,8 @@
 import sys
 import os
 
-sys.path.append(os.path.abspath('../../sphinx_compas_theme/sphinxext'))
-sys.path.append(os.path.abspath('../temp/sphinx_compas_theme/sphinxext'))
+# sys.path.append(os.path.abspath('../../sphinx_compas_theme/sphinxext'))
+# sys.path.append(os.path.abspath('../temp/sphinx_compas_theme/sphinxext'))
 
 # -- General configuration ------------------------------------------------
 
@@ -40,7 +40,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'matplotlib.sphinxext.plot_directive',
-    'plotfigure',
+    # 'plotfigure',
 ]
 
 # autodoc options
@@ -112,11 +112,24 @@ plot_template = """
    {% endif %}
 
    {% for img in images %}
+   {% set has_class = false %}
 
    .. figure:: {{ build_dir }}/{{ img.basename }}.{{ default_fmt }}
       {% for option in options -%}
+      {%- if option.startswith(':class:') -%}
+      {%- set has_class = true -%}
+      {%- if 'img-fluid' not in option -%}
+      {%- set option = option + ' img-fluid' -%}
+      {%- endif -%}
+      {%- if 'figure-img' not in option -%}
+      {%- set option = option + ' figure-img' -%}
+      {%- endif -%}
+      {%- endif -%}
       {{ option }}
       {% endfor %}
+      {%- if not has_class -%}
+      :class: figure-img img-fluid
+      {%- endif %}
 
       {% if html_show_formats and multi_image -%}
         (
