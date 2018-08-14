@@ -32,7 +32,12 @@ import sys
 import importlib
 
 import json
-import cStringIO
+
+try:
+    from cStringIO import StringIO
+except Exception:
+    from io import StringIO
+
 import cProfile
 import pstats
 import traceback
@@ -72,7 +77,7 @@ try:
 
     profile.disable()
 
-    stream = cStringIO.StringIO()
+    stream = StringIO()
     stats  = pstats.Stats(profile, stream=stream)
     # stats.strip_dirs()
     stats.sort_stats(1)
