@@ -15,7 +15,7 @@ try:
     from System.Diagnostics import Process
 
 except ImportError:
-    compas.raise_if_not_ironpython()
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Tom Van Mele', ]

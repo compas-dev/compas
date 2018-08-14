@@ -23,6 +23,13 @@ try:
 except ImportError:
     compas.raise_if_not_ironpython()
 
+    # try:
+    #     from System.Diagnostics import Process
+
+    # except ImportError:
+    #     compas.raise_if_ironpython()
+
+
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
@@ -145,6 +152,17 @@ class XFunc(object):
     callback_args : tuple, optional
         Additional parameter for the callback function.
         Default is ``None``.
+    python : str, optional
+        The Python executable.
+        This can be a path to a specific executable (e.g. ``'/opt/local/bin/python'``)
+        or the name of an executable registered on the system ``PATH`` (e.g. ``'pythonw'``).
+        Default is ``'pythonw'``.
+    paths : list, optional
+        A list of paths to be added to the ``PYTHONPATH`` by the subprocess.
+        Default is ``None``.
+    serializer : {'json', 'pickle'}, optional
+        The serialisation mechnanism to be used to pass data between the caller and the subprocess.
+        Default is ``'json'``.
 
     Attributes
     ----------
@@ -166,15 +184,16 @@ class XFunc(object):
 
     Notes
     -----
-    ...
+    To use the Python executable of a virtual environment, simply assign the path
+    to that executable to the ``python`` parameter. For example
 
-    References
-    ----------
-    ...
+    .. code-block:: python
+
+        fd_numpy = XFunc('compas.numerical.fd_numpy', python='/Users/brg/environments/py2/python')
 
     Examples
     --------
-    `compas.numerical` provides an implementation of the Force Desnity Method that
+    `compas.numerical` provides an implementation of the Force Density Method that
     is based on Numpy and Scipy. This implementation is not directly available in
     Rhino because Numpy and Scipy are not available for IronPython.
 
@@ -189,6 +208,9 @@ class XFunc(object):
         from compas_rhino.helpers import MeshArtist
         from compas.datastructures import Mesh
         from compas.utilities import XFunc
+
+        # make the function available as a wrapped function with the same call signature and return value as the original.
+        fd_numpy = XFunc('compas.numerical.fd_numpy')
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -205,7 +227,7 @@ class XFunc(object):
         q         = mesh.get_edges_attribute('q', 1.0)
         loads     = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
 
-        xyz, q, f, l, r = XFunc('compas.numerical.fd_numpy')(vertices, edges, fixed, q, loads)
+        xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
 
         for key, attr in mesh.vertices(True):
             attr['x'] = xyz[key][0]
@@ -239,84 +261,6 @@ class XFunc(object):
         self.data           = None
         self.profile        = None
         self.error          = None
-
-    def __call__(self, *args, **kwargs):
-        """Make a call to the wrapped function.
-
-        Parameters
-        ----------
-        args : list
-            Positional arguments to be passed to the wrapped function.
-            Default is ``[]``.
-        kwargs : dict
-            Named arguments to be passed to the wrapped function.
-            Default is ``{}``.
-
-        Returns
-        -------
-        object
-            The data returned by the wrapped call.
-            This is ``None`` if something went wrong.
-
-        """
-        idict = {'args': args, 'kwargs': kwargs}
-
-        with open(self.ipath, 'w+') as fo:
-            if self.serializer == 'json':
-                json.dump(idict, fo, cls=DataEncoder)
-            else:
-                pickle.dump(idict, fo, protocol=pickle.HIGHEST_PROTOCOL)
-
-        with open(self.opath, 'w+') as fh:
-            fh.write('')
-
-        # this part is different on Mono
-        # ----------------------------------------------------------------------
-        process_args = [self.python,
-                        '-u',
-                        '-c',
-                        WRAPPER,
-                        self.basedir,
-                        self.funcname,
-                        self.ipath,
-                        self.opath,
-                        self.serializer]
-
-        process = Popen(process_args, stderr=PIPE, stdout=PIPE)
-
-        while process.poll() is None:
-            line = process.stdout.readline().strip()
-            if self.callback:
-                self.callback(line, self.callback_args)
-            if self.verbose:
-                print(line)
-        # ----------------------------------------------------------------------
-        # end of part
-
-        with open(self.opath, 'r') as fo:
-            if self.serializer == 'json':
-                odict = json.load(fo, cls=DataDecoder)
-            else:
-                odict = pickle.load(fo)
-
-            self.data    = odict['data']
-            self.profile = odict['profile']
-            self.error   = odict['error']
-
-        if self.delete_files:
-            try:
-                os.remove(self.ipath)
-            except OSError:
-                pass
-            try:
-                os.remove(self.opath)
-            except OSError:
-                pass
-
-        if self.error:
-            raise Exception(self.error)
-
-        return self.data
 
     @property
     def basedir(self):
@@ -378,6 +322,107 @@ class XFunc(object):
     def opath(self):
         return os.path.join(self.tmpdir, '%s.out' % self.funcname)
 
+    def __call__(self, *args, **kwargs):
+        """Make a call to the wrapped function.
+
+        Parameters
+        ----------
+        args : list
+            Positional arguments to be passed to the wrapped function.
+            Default is ``[]``.
+        kwargs : dict
+            Named arguments to be passed to the wrapped function.
+            Default is ``{}``.
+
+        Returns
+        -------
+        result: object or None
+            The data returned by the wrapped call.
+            The type of the return value depends on the implementation of the wrapped function.
+            If something went wrong the value is ``None``.
+            In this case, check the ``error`` attribute for more information.
+
+        """
+        idict = {'args': args, 'kwargs': kwargs}
+
+        with open(self.ipath, 'w+') as fo:
+            if self.serializer == 'json':
+                json.dump(idict, fo, cls=DataEncoder)
+            else:
+                pickle.dump(idict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+
+        with open(self.opath, 'w+') as fh:
+            fh.write('')
+
+        # this part is different on Mono
+        # ----------------------------------------------------------------------
+        process_args = [self.python,
+                        '-u',
+                        '-c',
+                        WRAPPER,
+                        self.basedir,
+                        self.funcname,
+                        self.ipath,
+                        self.opath,
+                        self.serializer]
+
+        process = Popen(process_args, stderr=PIPE, stdout=PIPE)
+
+        while process.poll() is None:
+            line = process.stdout.readline().strip()
+            if self.callback:
+                self.callback(line, self.callback_args)
+            if self.verbose:
+                print(line)
+        # ----------------------------------------------------------------------
+        # end of part
+        # p = Process()
+        # p.StartInfo.UseShellExecute = False
+        # p.StartInfo.RedirectStandardOutput = True
+        # p.StartInfo.RedirectStandardError = True
+        # p.StartInfo.FileName = self.python
+        # p.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4}'.format(WRAPPER,
+        #                                                              self.basedir,
+        #                                                              self.funcname,
+        #                                                              self.ipath,
+        #                                                              self.opath)
+        # p.Start()
+        # p.WaitForExit()
+
+        # while True:
+        #     line = p.StandardOutput.ReadLine()
+        #     if not line:
+        #         break
+        #     line = line.strip()
+        #     if self.verbose:
+        #         print(line)
+
+        # stderr = p.StandardError.ReadToEnd()
+
+        with open(self.opath, 'r') as fo:
+            if self.serializer == 'json':
+                odict = json.load(fo, cls=DataDecoder)
+            else:
+                odict = pickle.load(fo)
+
+            self.data    = odict['data']
+            self.profile = odict['profile']
+            self.error   = odict['error']
+
+        if self.delete_files:
+            try:
+                os.remove(self.ipath)
+            except OSError:
+                pass
+            try:
+                os.remove(self.opath)
+            except OSError:
+                pass
+
+        if self.error:
+            raise Exception(self.error)
+
+        return self.data
 
 
 # ==============================================================================
@@ -392,7 +437,7 @@ if __name__ == '__main__':
     from compas.plotters import MeshPlotter
     from compas.utilities import XFunc
 
-    fd_numpy = XFunc('compas.numerical.fd_numpy', delete_files=False)
+    fd_numpy = XFunc('compas.numerical.fd_numpy', delete_files=True, serializer='json')
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -403,6 +448,8 @@ if __name__ == '__main__':
     loads    = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
 
     xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
+
+    print(type(xyz))
 
     for key, attr in mesh.vertices(True):
         attr['x'] = xyz[key][0]
