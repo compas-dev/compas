@@ -52,6 +52,7 @@ class FacesConduit(Conduit):
 
         import time
         from compas.geometry import Polyhedron
+        from compas_rhino.conduits import FacesConduit
 
         polyhedron = Polyhedron.generate(6)
 

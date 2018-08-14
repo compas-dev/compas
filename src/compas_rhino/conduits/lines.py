@@ -53,6 +53,8 @@ class LinesConduit(Conduit):
         import random
         import time
 
+        from compas_rhino.conduits import LinesConduit
+
         points = [(1.0 * random.ranint(0, 30), 1.0 * random.randint(0, 30), 0.0) for _ in range(100)]
         lines  = [(points[i], points[i + 1]) for i in range(99)]
 

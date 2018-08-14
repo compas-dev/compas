@@ -99,7 +99,7 @@ class VertexArtist(object):
         return compas_rhino.xdraw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_vertexlabels(self, text=None, color=None):
-        """Draw labels for selected vertices.
+        """Draw labels for a selection vertices.
 
         Parameters
         ----------

@@ -68,7 +68,7 @@ class FaceArtist(object):
         compas_rhino.delete_objects(guids)
 
     def draw_faces(self, fkeys=None, color=None, join_faces=False):
-        """Draw a selection of faces of the mesh.
+        """Draw a selection of faces.
 
         Parameters
         ----------
@@ -117,7 +117,7 @@ class FaceArtist(object):
         return guid
 
     def draw_facelabels(self, text=None, color=None):
-        """Draw labels for selected faces of the mesh.
+        """Draw labels for a selection of faces.
 
         Parameters
         ----------

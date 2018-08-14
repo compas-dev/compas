@@ -48,6 +48,7 @@ class LabelsConduit(Conduit):
 
         from random import randint
         import time
+        from compas_rhino.conduits import LabelsConduit
 
         labels = [([1.0 * randint(0, 100), 1.0 * randint(0, 100), 0.0], str(i)) for i in range(100)]
 

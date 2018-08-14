@@ -28,7 +28,12 @@ __all__ = ['ChartForm', ]
 
 
 class ChartForm(Form):
-    """"""
+    """A windows form for displaying charts.
+
+    Parameters
+    ----------
+    
+    """
 
     def __init__(self, series, xmax, xstep):
         self.series = series

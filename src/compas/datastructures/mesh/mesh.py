@@ -941,7 +941,7 @@ class Mesh(FromToJson,
 
         Examples
         --------
-        .. plot::
+        .. plot-figure::
             :include-source:
 
             import compas

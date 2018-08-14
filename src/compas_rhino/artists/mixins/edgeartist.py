@@ -61,7 +61,7 @@ class EdgeArtist(object):
         compas_rhino.delete_objects(guids)
 
     def draw_edges(self, keys=None, color=None):
-        """Draw a selection of edges of the network.
+        """Draw a selection of edges.
 
         Parameters
         ----------
@@ -104,7 +104,7 @@ class EdgeArtist(object):
         return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
-        """Draw labels for selected edges of the network.
+        """Draw labels for a selection of edges.
 
         Parameters
         ----------

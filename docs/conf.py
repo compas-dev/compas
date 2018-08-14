@@ -4,6 +4,10 @@
 #
 # needs_sphinx = '1.0'
 
+import sys
+import os
+
+sys.path.append(os.path.abspath('../../sphinx_compas_theme/sphinxext'))
 
 # -- General configuration ------------------------------------------------
 
@@ -35,6 +39,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'matplotlib.sphinxext.plot_directive',
+    'plotfigure',
 ]
 
 # autodoc options
@@ -75,7 +80,79 @@ napoleon_use_rtype = False
 # plot_rcparams
 # plot_apply_rcparams
 # plot_working_directory
-# plot_template
+
+# {% has_class = false -%}
+# {% for option in options -%}
+# {% if option.startswith(':class:') %}
+# {% has_class = true %}
+# {% endif %}
+# {% endfor %}
+
+
+plot_template = """
+{{ source_code }}
+
+{{ only_html }}
+
+   {% if source_link or (html_show_formats and not multi_image) %}
+   (
+   {%- if source_link -%}
+   `Source code <{{ source_link }}>`__
+   {%- endif -%}
+   {%- if html_show_formats and not multi_image -%}
+     {%- for img in images -%}
+       {%- for fmt in img.formats -%}
+         {%- if source_link or not loop.first -%}, {% endif -%}
+         `{{ fmt }} <{{ dest_dir }}/{{ img.basename }}.{{ fmt }}>`__
+       {%- endfor -%}
+     {%- endfor -%}
+   {%- endif -%}
+   )
+   {% endif %}
+
+   {% for img in images %}
+
+   .. figure:: {{ build_dir }}/{{ img.basename }}.{{ default_fmt }}
+      {% for option in options -%}
+      {{ option }}
+      {% endfor %}
+
+      {% if html_show_formats and multi_image -%}
+        (
+        {%- for fmt in img.formats -%}
+        {%- if not loop.first -%}, {% endif -%}
+        `{{ fmt }} <{{ dest_dir }}/{{ img.basename }}.{{ fmt }}>`__
+        {%- endfor -%}
+        )
+      {%- endif -%}
+
+      {{ caption }}
+   {% endfor %}
+
+{{ only_latex }}
+
+   {% for img in images %}
+   {% if 'pdf' in img.formats -%}
+   .. figure:: {{ build_dir }}/{{ img.basename }}.pdf
+      {% for option in options -%}
+      {{ option }}
+      {% endfor %}
+
+      {{ caption }}
+   {% endif -%}
+   {% endfor %}
+
+{{ only_texinfo }}
+
+   {% for img in images %}
+   .. image:: {{ build_dir }}/{{ img.basename }}.png
+      {% for option in options -%}
+      {{ option }}
+      {% endfor %}
+
+   {% endfor %}
+
+"""
 
 plot_html_show_source_link = False
 plot_html_show_formats = False

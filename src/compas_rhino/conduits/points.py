@@ -54,6 +54,8 @@ class PointsConduit(Conduit):
         from random import randint
         import time
 
+        from compas_rhino.conduits import PointsConduit
+
         points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
 
         try:
