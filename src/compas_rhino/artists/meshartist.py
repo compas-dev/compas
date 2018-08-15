@@ -40,7 +40,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     Attributes
     ----------
     defaults : dict
-        Default settings for color, scale, tolerance, ...
+        Default settings for colour, scale, tolerance, ...
 
     Examples
     --------
@@ -55,7 +55,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
         artist = MeshArtist(mesh, layer='COMPAS::MeshArtist')
         artist.clear_layer()
         artist.draw_faces(join_faces=True)
-        artist.draw_vertices(color={key: '#ff0000' for key in mesh.vertices_on_boundary()})
+        artist.draw_vertices(colour={key: '#ff0000' for key in mesh.vertices_on_boundary()})
         artist.draw_edges()
         artist.redraw()
 
@@ -65,9 +65,9 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
         self.mesh = mesh
         self.layer = layer
         self.defaults = {
-            'color.vertex' : (255, 0, 0),
-            'color.face'   : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
+            'colour.vertex' : (255, 0, 0),
+            'colour.face'   : (255, 255, 255),
+            'colour.edge'   : (0, 0, 0),
         }
 
     @property

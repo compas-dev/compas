@@ -27,9 +27,9 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
         self.datastructure = mesh
         self.layer = layer
         self.defaults = {
-            'color.vertex': [1, 0, 0],
-            'color.face': [1, 1, 1],
-            'color.edge': [0, 0, 1]}
+            'colour.vertex': [1, 0, 0],
+            'colour.face': [1, 1, 1],
+            'colour.edge': [0, 0, 1]}
 
     def redraw(self, timeout=None):
         """Redraw the Blender view."""

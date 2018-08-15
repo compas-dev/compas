@@ -124,11 +124,11 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
         split = mesh.split_edge_tri(17, 30)
 
-        facecolor = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
+        facecolour = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
 
         plotter = MeshPlotter(mesh)
 
-        plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2, facecolor=facecolor)
+        plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2, facecolour=facecolour)
         plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
 
         plotter.show()
@@ -240,11 +240,11 @@ if __name__ == "__main__":
 
     split = mesh.split_edge_tri(u, v, allow_boundary=True)
 
-    facecolor = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
+    facecolour = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-    plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2, facecolor=facecolor)
+    plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2, facecolour=facecolour)
     plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
 
     plotter.show()

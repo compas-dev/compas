@@ -1,4 +1,4 @@
-from compas.utilities import color_to_colordict
+from compas.utilities import colour_to_colourdict
 
 import compas_rhino
 
@@ -56,7 +56,7 @@ class VertexArtist(object):
                 guids.append(guid)
         compas_rhino.delete_objects(guids)
 
-    def draw_vertices(self, keys=None, color=None):
+    def draw_vertices(self, keys=None, colour=None):
         """Draw a selection of vertices.
 
         Parameters
@@ -64,16 +64,16 @@ class VertexArtist(object):
         keys : list
             A list of vertex keys identifying which vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
-        color : str, tuple, dict
-            The color specififcation for the vertices.
-            Colors should be specified in the form of a string (hex colors) or
+        colour : str, tuple, dict
+            The colour specififcation for the vertices.
+            colours should be specified in the form of a string (hex colours) or
             as a tuple of RGB components.
-            To apply the same color to all vertices, provide a single color
-            specification. Individual colors can be assigned using a dictionary
-            of key-color pairs. Missing keys will be assigned the default vertex
-            color (``self.datastructure.attributes['color.vertex']``).
+            To apply the same colour to all vertices, provide a single colour
+            specification. Individual colours can be assigned using a dictionary
+            of key-colour pairs. Missing keys will be assigned the default vertex
+            colour (``self.datastructure.attributes['colour.vertex']``).
             The default is ``None``, in which case all vertices are assigned the
-            default vertex color.
+            default vertex colour.
 
         Notes
         -----
@@ -83,22 +83,22 @@ class VertexArtist(object):
 
         """
         keys = keys or list(self.datastructure.vertices())
-        colordict = color_to_colordict(color,
+        colourdict = colour_to_colourdict(colour,
                                        keys,
-                                       default=self.datastructure.attributes.get('color.vertex'),
-                                       colorformat='rgb',
+                                       default=self.datastructure.attributes.get('colour.vertex'),
+                                       colourformat='rgb',
                                        normalize=False)
         points = []
         for key in keys:
             points.append({
                 'pos'   : self.datastructure.vertex_coordinates(key),
                 'name'  : self.datastructure.vertex_name(key),
-                'color' : colordict[key],
+                'colour' : colourdict[key],
                 'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
         return compas_rhino.xdraw_points(points, layer=self.layer, clear=False, redraw=False)
 
-    def draw_vertexlabels(self, text=None, color=None):
+    def draw_vertexlabels(self, text=None, colour=None):
         """Draw labels for a selection vertices.
 
         Parameters
@@ -106,15 +106,15 @@ class VertexArtist(object):
         text : dict
             A dictionary of vertex labels as key-text pairs.
             The default value is ``None``, in which case every vertex will be labelled with its key.
-        color : str, tuple, dict
-            The color sepcification of the labels.
-            String values are interpreted as hex colors (e.g. ``'#ff0000'`` for red).
+        colour : str, tuple, dict
+            The colour sepcification of the labels.
+            String values are interpreted as hex colours (e.g. ``'#ff0000'`` for red).
             Tuples are interpreted as RGB component specifications (e.g. ``(255, 0, 0) for red``.
             If a dictionary of specififcations is provided, the keys of the
-            should refer to vertex keys and the values should be color
+            should refer to vertex keys and the values should be colour
             specifications in the form of strings or tuples.
             The default value is ``None``, in which case the labels are assigned
-            the default vertex color (``self.datastructure.attributes['color.vertex']``).
+            the default vertex colour (``self.datastructure.attributes['colour.vertex']``).
 
         Notes
         -----
@@ -129,10 +129,10 @@ class VertexArtist(object):
         else:
             raise NotImplementedError
 
-        colordict = color_to_colordict(color,
+        colourdict = colour_to_colourdict(colour,
                                        textdict.keys(),
-                                       default=self.datastructure.attributes.get('color.vertex'),
-                                       colorformat='rgb',
+                                       default=self.datastructure.attributes.get('colour.vertex'),
+                                       colourformat='rgb',
                                        normalize=False)
         labels = []
 
@@ -140,7 +140,7 @@ class VertexArtist(object):
             labels.append({
                 'pos'  : self.datastructure.vertex_coordinates(key),
                 'name' : self.datastructure.vertex_label_name(key),
-                'color': colordict[key],
+                'colour': colourdict[key],
                 'text' : textdict[key],
                 'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
             })

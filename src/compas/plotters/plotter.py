@@ -53,9 +53,9 @@ class Plotter(object):
         The size of the plot in inches (width, length).
     figure_dpi : float
         The resolution of the plot.
-    figure_bgcolor : str, tuple, dict
-        The color specififcation for the figure background.
-        Colors should be specified in the form of a string (hex colors) or
+    figure_bgcolour : str, tuple, dict
+        The colour specififcation for the figure background.
+        colours should be specified in the form of a string (hex colours) or
         as a tuple of RGB components.
     axes_xlabel : str
         The label on the X axis of the plot.
@@ -67,25 +67,25 @@ class Plotter(object):
         Default point attributes:
 
         * 'point.radius'    : 0.1
-        * 'point.facecolor' : '#ffffff'
-        * 'point.edgecolor' : '#000000'
+        * 'point.facecolour' : '#ffffff'
+        * 'point.edgecolour' : '#000000'
         * 'point.edgewidth' : 0.5
-        * 'point.textcolor' : '#000000'
+        * 'point.textcolour' : '#000000'
         * 'point.fontsize'  : 10
 
         Default line attributes:
 
         * 'line.width'    : 1.0
-        * 'line.color'    : '#000000'
-        * 'line.textcolor': '#000000'
+        * 'line.colour'    : '#000000'
+        * 'line.textcolour': '#000000'
         * 'line.fontsize' : 10
 
         Default polygon attributes:
 
-        * 'polygon.facecolor' : '#ffffff'
-        * 'polygon.edgecolor' : '#000000'
+        * 'polygon.facecolour' : '#ffffff'
+        * 'polygon.edgecolour' : '#000000'
         * 'polygon.edgewidth' : 0.1
-        * 'polygon.textcolor' : '#000000'
+        * 'polygon.textcolour' : '#000000'
         * 'polygon.fontsize'  : 10
 
 
@@ -118,7 +118,7 @@ class Plotter(object):
             points.append({
                 'pos'      : mesh.vertex_coordinates(key),
                 'radius'   : 0.1,
-                'facecolor': '#ffffff'
+                'facecolour': '#ffffff'
             })
 
         lines = []
@@ -143,31 +143,31 @@ class Plotter(object):
         # figure attributes
         self.figure_size = figsize
         self.figure_dpi = dpi
-        self.figure_bgcolor = '#ffffff'
+        self.figure_bgcolour = '#ffffff'
         # axes attributes
         self.axes_xlabel = None
         self.axes_ylabel = None
         # drawing defaults
         # z-order
-        # color
+        # colour
         # size/thickness
         self.defaults = {
             'point.radius'    : 0.1,
-            'point.facecolor' : '#ffffff',
-            'point.edgecolor' : '#000000',
+            'point.facecolour' : '#ffffff',
+            'point.edgecolour' : '#000000',
             'point.edgewidth' : 0.5,
-            'point.textcolor' : '#000000',
+            'point.textcolour' : '#000000',
             'point.fontsize'  : kwargs.get('fontsize', 10),
 
             'line.width'    : 1.0,
-            'line.color'    : '#000000',
-            'line.textcolor': '#000000',
+            'line.colour'    : '#000000',
+            'line.textcolour': '#000000',
             'line.fontsize' : kwargs.get('fontsize', 10),
 
-            'polygon.facecolor' : '#ffffff',
-            'polygon.edgecolor' : '#000000',
+            'polygon.facecolour' : '#ffffff',
+            'polygon.edgecolour' : '#000000',
             'polygon.edgewidth' : 0.1,
-            'polygon.textcolor' : '#000000',
+            'polygon.textcolour' : '#000000',
             'polygon.fontsize'  : kwargs.get('fontsize', 10),
         }
 
@@ -228,30 +228,30 @@ class Plotter(object):
         return self.figure.canvas
 
     @property
-    def bgcolor(self):
-        """Returns the background color.
+    def bgcolour(self):
+        """Returns the background colour.
 
         Returns
         -------
         str
-            The color as a string (hex colors).
+            The colour as a string (hex colours).
 
         """
-        return self.figure.get_facecolor()
+        return self.figure.get_facecolour()
 
-    @bgcolor.setter
-    def bgcolor(self, value):
-        """Sets the background color.
+    @bgcolour.setter
+    def bgcolour(self, value):
+        """Sets the background colour.
 
         Parameters
         ----------
         value : str, tuple
-            The color specififcation for the figure background.
-            Colors should be specified in the form of a string (hex colors) or
+            The colour specififcation for the figure background.
+            colours should be specified in the form of a string (hex colours) or
             as a tuple of normalized RGB components.
 
         """
-        self.figure.set_facecolor(value)
+        self.figure.set_facecolour(value)
 
     @property
     def title(self):
@@ -477,10 +477,10 @@ class Plotter(object):
             * pos (list): XY(Z) coordinates
             * radius (float, optional): the radius of the circle. Default is 0.1.
             * text (str, optional): the text of the label. Default is None.
-            * facecolor (rgb or hex color, optional): The color of the face of the circle. Default is white.
-            * edgecolor (rgb or hex color, optional): The color of the edge of the cicrle. Default is black.
+            * facecolour (rgb or hex colour, optional): The colour of the face of the circle. Default is white.
+            * edgecolour (rgb or hex colour, optional): The colour of the edge of the cicrle. Default is black.
             * edgewidth (float, optional): The width of the edge of the circle. Default is 1.0.
-            * textcolor (rgb or hex color, optional): Color of the text label. Default is black.
+            * textcolour (rgb or hex colour, optional): colour of the text label. Default is black.
             * fontsize (int, optional): Font size of the text label. Default is 12.
 
         Returns
@@ -515,9 +515,9 @@ class Plotter(object):
             * start (list): XY(Z) coordinates of the start point.
             * end (list): XY(Z) coordinatesof the end point.
             * width (float, optional): The width of the line. Default is ``1.0``.
-            * color (rgb tuple or hex string, optional): The color of the line. Default is black.
+            * colour (rgb tuple or hex string, optional): The colour of the line. Default is black.
             * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+            * textcolour (rgb tuple or hex string, optional): colour of the label text. Default is black.
             * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
 
         Returns
@@ -543,10 +543,10 @@ class Plotter(object):
 
             * points (list): XY(Z) coordinates of the polygon vertices.
             * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+            * textcolour (rgb tuple or hex string, optional): colour of the label text. Default is black.
             * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
-            * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
-            * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
+            * facecolour (rgb tuple or hex string, optional): colour of the polygon face. Default is white.
+            * edgecolour (rgb tuple or hex string, optional): colour of the edge of the polygon. Default is black.
             * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
 
         Returns
@@ -573,9 +573,9 @@ class Plotter(object):
             * start (list): XY(Z) coordinates of the starting point.
             * end (list): XY(Z) coordinates of the end point.
             * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+            * textcolour (rgb tuple or hex string, optional): colour of the label text. Default is black.
             * fontsize (int, optional): The size of the font of the label text. Default is ```6``.
-            * color (rgb tuple or hex string, optional): Color of the arrow. Default is black.
+            * colour (rgb tuple or hex string, optional): colour of the arrow. Default is black.
             * width (float): Width of the arrow. Default is ``1.0``.
 
         Returns
@@ -661,7 +661,7 @@ if __name__ == "__main__":
         points.append({
             'pos': mesh.vertex_coordinates(key),
             'radius': 0.1,
-            'facecolor': '#ff0000' if mesh.vertex_degree(key) == 2 else '#ffffff'
+            'facecolour': '#ff0000' if mesh.vertex_degree(key) == 2 else '#ffffff'
         })
 
     lines = []

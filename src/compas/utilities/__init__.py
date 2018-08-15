@@ -20,7 +20,7 @@ animation
     gif_from_images
 
 
-colors
+colours
 ======
 
 .. autosummary::
@@ -34,8 +34,8 @@ colors
     i_to_white
     i_to_black
     rgb_to_hex
-    color_to_colordict
-    color_to_rgb
+    colour_to_colourdict
+    colour_to_rgb
 
 
 datetime
@@ -161,7 +161,7 @@ def valuedict(keys, value, default):
 
 from .animation import *
 from .coercing import *
-from .colors import *
+from .colours import *
 from .datetime_ import *
 from .decorators import *
 from .encoders import *
@@ -176,7 +176,7 @@ from .xscript import *
 
 from . import animation
 from . import coercing
-from . import colors
+from . import colours
 from . import datetime_
 from . import decorators
 from . import encoders
@@ -190,7 +190,7 @@ from . import xfunc
 from . import xscript
 
 __all__  = []
-__all__ += animation.__all__ + coercing.__all__ + colors.__all__
+__all__ += animation.__all__ + coercing.__all__ + colours.__all__
 __all__ += datetime_.__all__ + decorators.__all__ + encoders.__all__
 __all__ += itertools_.__all__ + maps.__all__ + mixing.__all__ + names.__all__
 __all__ += profiling.__all__ + sorting.__all__ + xfunc.__all__ + xscript.__all__

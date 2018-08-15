@@ -167,14 +167,14 @@ def fd_numpy(vertices, edges, fixed, q, loads):
             attr['z'] = xyz[index, 2]
 
         # visualisae the result
-        # color the vertices according to their elevation
+        # colour the vertices according to their elevation
 
         plotter = MeshPlotter(mesh)
 
         zmax = max(mesh.get_vertices_attribute('z'))
 
         plotter.draw_vertices(
-            facecolor={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)}
+            facecolour={key: i_to_black(attr['z'] / zmax) for key, attr in mesh.vertices(True)}
         )
         plotter.draw_faces()
         plotter.draw_edges()
@@ -226,7 +226,7 @@ if __name__ == '__main__':
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-    plotter.draw_as_lines(color='#cccccc', width=0.5)
+    plotter.draw_as_lines(colour='#cccccc', width=0.5)
 
     network_fd_numpy(mesh)
 
@@ -237,7 +237,7 @@ if __name__ == '__main__':
     plotter.draw_faces()
     plotter.draw_edges(
         width={(u, v): 10 * attr['f'] / fmax for u, v, attr in mesh.edges(True)},
-        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in mesh.edges(True)},
+        colour={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in mesh.edges(True)},
     )
 
     plotter.show()

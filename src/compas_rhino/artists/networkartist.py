@@ -7,7 +7,7 @@ import time
 import compas
 import compas_rhino
 
-from compas.utilities import color_to_colordict
+from compas.utilities import colour_to_colourdict
 
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
@@ -41,7 +41,7 @@ class NetworkArtist(EdgeArtist, VertexArtist):
     Attributes
     ----------
     defaults : dict
-        Default settings for color, scale, tolerance, ...
+        Default settings for colour, scale, tolerance, ...
 
     """
 
@@ -49,8 +49,8 @@ class NetworkArtist(EdgeArtist, VertexArtist):
         self.network = network
         self.layer = layer
         self.defaults = {
-            'color.vertex': (0, 0, 0),
-            'color.edge'  : (0, 0, 0),
+            'colour.vertex': (0, 0, 0),
+            'colour.edge'  : (0, 0, 0),
         }
 
     @property

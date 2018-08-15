@@ -13,7 +13,7 @@ try:
     import scriptcontext as sc
 
     from System.Collections.Generic import List
-    from System.Drawing.Color import FromArgb
+    from System.Drawing.colour import FromArgb
     from System.Enum import ToObject
 
     from Rhino.Geometry import Point3d
@@ -28,8 +28,8 @@ try:
     from Rhino.Geometry import Curve
     from Rhino.Geometry import Sphere
     from Rhino.Geometry import TextDot
-    from Rhino.DocObjects.ObjectColorSource import ColorFromObject
-    from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
+    from Rhino.DocObjects.ObjectcolourSource import colourFromObject
+    from Rhino.DocObjects.ObjectcolourSource import colourFromLayer
     from Rhino.DocObjects.ObjectDecoration import EndArrowhead
     from Rhino.DocObjects.ObjectDecoration import StartArrowhead
     from Rhino.DocObjects.ObjectPlotWeightSource import PlotWeightFromObject
@@ -120,13 +120,13 @@ def wrap_xdrawfunc(f):
 
 @wrap_xdrawfunc
 def xdraw_labels(labels):
-    """Draw labels as text dots and optionally set individual name and color."""
+    """Draw labels as text dots and optionally set individual name and colour."""
     guids = []
     for l in iter(labels):
         pos   = l['pos']
         text  = l['text']
         name  = l.get('name', '')
-        color = l.get('color', None)
+        colour = l.get('colour', None)
         guid  = add_dot(TextDot(str(text), Point3d(*pos)))
         if not guid:
             continue
@@ -134,11 +134,11 @@ def xdraw_labels(labels):
         if not obj:
             continue
         attr = obj.Attributes
-        if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+        if colour:
+            attr.Objectcolour = FromArgb(*colour)
+            attr.colourSource = colourFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.colourSource = colourFromLayer
         attr.Name = name
         obj.CommitChanges()
         guids.append(guid)
@@ -147,13 +147,13 @@ def xdraw_labels(labels):
 
 @wrap_xdrawfunc
 def xdraw_points(points):
-    """Draw points and optionally set individual name, layer, and color properties.
+    """Draw points and optionally set individual name, layer, and colour properties.
     """
     guids = []
     for p in iter(points):
         pos   = p['pos']
         name  = p.get('name', '')
-        color = p.get('color')
+        colour = p.get('colour')
         layer = p.get('layer')
         guid  = add_point(Point3d(*pos))
         if not guid:
@@ -162,11 +162,11 @@ def xdraw_points(points):
         if not obj:
             continue
         attr = obj.Attributes
-        if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+        if colour:
+            attr.Objectcolour = FromArgb(*colour)
+            attr.colourSource = colourFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.colourSource = colourFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -179,7 +179,7 @@ def xdraw_points(points):
 
 @wrap_xdrawfunc
 def xdraw_lines(lines):
-    """Draw lines and optionally set individual name, color, arrow, layer, and
+    """Draw lines and optionally set individual name, colour, arrow, layer, and
     width properties.
     """
     guids = []
@@ -187,7 +187,7 @@ def xdraw_lines(lines):
         sp    = l['start']
         ep    = l['end']
         name  = l.get('name', '')
-        color = l.get('color')
+        colour = l.get('colour')
         arrow = l.get('arrow')
         layer = l.get('layer')
         width = l.get('width')
@@ -198,11 +198,11 @@ def xdraw_lines(lines):
         if not obj:
             continue
         attr = obj.Attributes
-        if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+        if colour:
+            attr.Objectcolour = FromArgb(*colour)
+            attr.colourSource = colourFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.colourSource = colourFromLayer
         if arrow == 'end':
             attr.ObjectDecoration = EndArrowhead
         if arrow == 'start':
@@ -223,7 +223,7 @@ def xdraw_lines(lines):
 @wrap_xdrawfunc
 def xdraw_geodesics(geodesics):
     """Draw geodesic lines on specified surfaces, and optionally set individual
-    name, color, arrow, and layer properties.
+    name, colour, arrow, and layer properties.
     """
     guids = []
     for g in iter(geodesics):
@@ -231,7 +231,7 @@ def xdraw_geodesics(geodesics):
         ep    = g['end']
         srf   = g['srf']
         name  = g.get('name', '')
-        color = g.get('color')
+        colour = g.get('colour')
         arrow = g.get('arrow')
         layer = g.get('layer')
         # replace this by a proper rhinocommon call
@@ -242,11 +242,11 @@ def xdraw_geodesics(geodesics):
         if not obj:
             continue
         attr = obj.Attributes
-        if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+        if colour:
+            attr.Objectcolour = FromArgb(*colour)
+            attr.colourSource = colourFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.colourSource = colourFromLayer
         if arrow == 'end':
             attr.ObjectDecoration = EndArrowhead
         if arrow == 'start':
@@ -263,14 +263,14 @@ def xdraw_geodesics(geodesics):
 
 @wrap_xdrawfunc
 def xdraw_polylines(polylines):
-    """Draw polylines, and optionally set individual name, color, arrow, and
+    """Draw polylines, and optionally set individual name, colour, arrow, and
     layer properties.
     """
     guids = []
     for p in iter(polylines):
         points = p['points']
         name   = p.get('name', '')
-        color  = p.get('color')
+        colour  = p.get('colour')
         arrow  = p.get('arrow')
         layer  = p.get('layer')
         poly   = Polyline([Point3d(*xyz) for xyz in points])
@@ -282,11 +282,11 @@ def xdraw_polylines(polylines):
         if not obj:
             continue
         attr = obj.Attributes
-        if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+        if colour:
+            attr.Objectcolour = FromArgb(*colour)
+            attr.colourSource = colourFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.colourSource = colourFromLayer
         if arrow == 'end':
             attr.ObjectDecoration = EndArrowhead
         if arrow == 'start':
@@ -303,14 +303,14 @@ def xdraw_polylines(polylines):
 
 @wrap_xdrawfunc
 def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0):
-    """Draw polygonal faces as Breps, and optionally set individual name, color,
+    """Draw polygonal faces as Breps, and optionally set individual name, colour,
     and layer properties.
     """
     guids = []
     for f in iter(faces):
         points  = f['points']
         name    = f.get('name', '')
-        color   = f.get('color')
+        colour   = f.get('colour')
         layer   = f.get('layer')
         corners = [Point3d(*point) for point in points]
         pcurve  = PolylineCurve(corners)
@@ -339,11 +339,11 @@ def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0
         if not obj:
             continue
         attr = obj.Attributes
-        if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+        if colour:
+            attr.Objectcolour = FromArgb(*colour)
+            attr.colourSource = colourFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.colourSource = colourFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -363,7 +363,7 @@ def xdraw_cylinders(cylinders, cap=False):
         end    = c['end']
         radius = c['radius']
         name   = c.get('name', '')
-        color  = c.get('color')
+        colour  = c.get('colour')
         layer  = c.get('layer')
         if radius < TOL:
             continue
@@ -385,11 +385,11 @@ def xdraw_cylinders(cylinders, cap=False):
         if not obj:
             continue
         attr = obj.Attributes
-        if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+        if colour:
+            attr.Objectcolour = FromArgb(*colour)
+            attr.colourSource = colourFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.colourSource = colourFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -410,7 +410,7 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
         points  = p['points']
         radius  = p['radius']
         name    = p.get('name', '')
-        color   = p.get('color')
+        colour   = p.get('colour')
         layer   = p.get('layer')
         params  = [0.0, 1.0]
         cap     = ToObject(PipeCapMode, cap)
@@ -427,11 +427,11 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
             if not obj:
                 continue
             attr = obj.Attributes
-            if color:
-                attr.ObjectColor = FromArgb(*color)
-                attr.ColorSource = ColorFromObject
+            if colour:
+                attr.Objectcolour = FromArgb(*colour)
+                attr.colourSource = colourFromObject
             else:
-                attr.ColorSource = ColorFromLayer
+                attr.colourSource = colourFromLayer
             if layer and find_layer_by_fullpath:
                 index = find_layer_by_fullpath(layer, True)
                 if index >= 0:
@@ -444,14 +444,14 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
 
 
 # @wrap_xdrawfunc
-# def xdraw_forces(forces, color):
+# def xdraw_forces(forces, colour):
 #     guids = []
 #     for c in iter(cylinders):
 #         start  = c['start']
 #         end    = c['end']
 #         radius = c['radius']
 #         name   = c.get('name', '')
-#         color  = c.get('color')
+#         colour  = c.get('colour')
 #         layer  = c.get('layer')
 #         if radius < TOL:
 #             continue
@@ -473,11 +473,11 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
 #         if not obj:
 #             continue
 #         attr = obj.Attributes
-#         if color:
-#             attr.ObjectColor = FromArgb(*color)
-#             attr.ColorSource = ColorFromObject
+#         if colour:
+#             attr.Objectcolour = FromArgb(*colour)
+#             attr.colourSource = colourFromObject
 #         else:
-#             attr.ColorSource = ColorFromLayer
+#             attr.colourSource = colourFromLayer
 #         if layer and find_layer_by_fullpath:
 #             index = find_layer_by_fullpath(layer, True)
 #             if index >= 0:
@@ -496,7 +496,7 @@ def xdraw_spheres(spheres):
         pos    = s['pos']
         radius = s['radius']
         name   = s.get('name', '')
-        color  = s.get('color')
+        colour  = s.get('colour')
         layer  = s.get('layer')
         sphere = Sphere(Point3d(*pos), radius)
         guid   = add_sphere(sphere)
@@ -506,11 +506,11 @@ def xdraw_spheres(spheres):
         if not obj:
             continue
         attr = obj.Attributes
-        if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+        if colour:
+            attr.Objectcolour = FromArgb(*colour)
+            attr.colourSource = colourFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.colourSource = colourFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -523,10 +523,10 @@ def xdraw_spheres(spheres):
 
 
 @wrap_xdrawfunc
-def xdraw_mesh(vertices, faces, color, name):
+def xdraw_mesh(vertices, faces, colour, name):
     guid = rs.AddMesh(vertices, faces)
-    if color:
-        rs.ObjectColor(guid, color)
+    if colour:
+        rs.Objectcolour(guid, colour)
     if name:
         rs.ObjectName(guid, name)
     return guid
@@ -538,7 +538,7 @@ def xdraw_faces(faces):
     for face in iter(faces):
         points = face['points']
         name   = face.get('name')
-        color  = face.get('color')
+        colour  = face.get('colour')
 
         v = len(points)
 
@@ -551,7 +551,7 @@ def xdraw_faces(faces):
         else:
             mfaces = _face_to_max_quad(points, range(v))
 
-        guid = xdraw_mesh(points, mfaces, color, name, clear=False, redraw=False, layer=None)
+        guid = xdraw_mesh(points, mfaces, colour, name, clear=False, redraw=False, layer=None)
         guids.append(guid)
 
     return guids
@@ -582,7 +582,7 @@ if __name__ == '__main__':
     faces = []
     faces.append({
         'points' : [[0, 0, 0], [100, 0, 0], [100, 100, 0], [0, 100, 0], [0, 0, 0]],
-        'color'  : (255, 0, 0),
+        'colour'  : (255, 0, 0),
     })
 
     lines = []
@@ -591,14 +591,14 @@ if __name__ == '__main__':
             'start' : points[i],
             'end'   : points[i + 1],
             'name'  : 'test',
-            'color' : (0, 255, 0),
+            'colour' : (0, 255, 0),
             'arrow' : 'end',
         })
 
     polylines = []
     polylines.append({
         'points' : points[:10],
-        'color'  : (0, 255, 255),
+        'colour'  : (0, 255, 255),
         'arrow'  : 'start',
     })
 
@@ -609,13 +609,13 @@ if __name__ == '__main__':
             'end'    : points[i + 1],
             'radius' : 3,
             'name'   : 'test',
-            'color'  : (0, 255, 0),
+            'colour'  : (0, 255, 0),
         })
 
     pipes = []
     pipes.append({
         'points' : points[:10],
-        'color'  : (0, 255, 255),
+        'colour'  : (0, 255, 255),
         'radius' : [3, 5],
     })
 
@@ -624,7 +624,7 @@ if __name__ == '__main__':
         spheres.append({
             'pos'    : points[i],
             'radius' : 3,
-            'color'  : (0, 0, 255),
+            'colour'  : (0, 0, 255),
         })
 
     t0 = time.time()

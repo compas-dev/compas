@@ -13,7 +13,7 @@ combinatorial
     :toctree: generated/
     :nosignatures:
 
-    vertex_coloring
+    vertex_colouring
 
 orientation
 -----------

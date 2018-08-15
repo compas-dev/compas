@@ -1,4 +1,4 @@
-from compas.utilities import color_to_colordict
+from compas.utilities import colour_to_colourdict
 
 import compas_rhino
 

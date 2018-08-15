@@ -66,7 +66,7 @@ zmax = max(network.get_vertices_attribute('z'))
 
 plotter = NetworkPlotter(network, figsize=(10, 7))
 plotter.draw_vertices(
-    facecolor={key: i_to_red(attr['z'] / zmax) for key, attr in network.vertices(True)}
+    facecolour={key: i_to_red(attr['z'] / zmax) for key, attr in network.vertices(True)}
 )
 plotter.draw_edges()
 plotter.show()

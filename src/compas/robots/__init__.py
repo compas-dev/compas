@@ -52,7 +52,7 @@ using the following classes.
     MeshDescriptor
     Material
     Texture
-    Color
+    colour
 
 Link
 ====

@@ -50,14 +50,14 @@ class RhinoMesh(RhinoGeometry):
     def get_face_vertices(self):
         return map(list, rs.MeshFaceVertices(self.guid))
 
-    def get_vertex_colors(self):
-        return map(list, rs.MeshVertexColors(self.guid))
+    def get_vertex_colours(self):
+        return map(list, rs.MeshVertexcolours(self.guid))
 
-    def set_vertex_colors(self, colors):
-        return rs.MeshVertexColors(self.guid, colors)
+    def set_vertex_colours(self, colours):
+        return rs.MeshVertexcolours(self.guid, colours)
 
-    def unset_vertex_colors(self):
-        return rs.MeshVertexColors(self.guid, None)
+    def unset_vertex_colours(self):
+        return rs.MeshVertexcolours(self.guid, None)
 
     def get_vertices_and_faces(self):
         vertices = [map(float, vertex) for vertex in rs.MeshVertices(self.guid)]

@@ -27,8 +27,8 @@ class NetworkArtist(PathArtist, EdgeArtist, VertexArtist):
         self.datastructure = network
         self.layer = layer
         self.defaults = {
-            'color.vertex': [1, 0, 0],
-            'color.edge': [0, 0, 1]}
+            'colour.vertex': [1, 0, 0],
+            'colour.edge': [0, 0, 1]}
 
     def redraw(self, timeout=None):
         """Redraw the Blender view."""

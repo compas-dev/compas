@@ -216,7 +216,7 @@ def network_is_planar(network):
         plotter = NetworkPlotter(network)
 
         plotter.draw_vertices(radius=0.15, text={key: key for key in network.vertices()})
-        plotter.draw_edges(color={edge: '#ff0000' for edges in crossings for edge in edges})
+        plotter.draw_edges(colour={edge: '#ff0000' for edges in crossings for edge in edges})
 
         plotter.show()
 
@@ -299,11 +299,11 @@ def network_embed_in_plane(network, fix=None, straightline=True):
 
             plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
                                   'end': network.vertex_coordinates(v, 'xy'),
-                                  'color': '#cccccc'} for u, v in network.edges()])
+                                  'colour': '#cccccc'} for u, v in network.edges()])
 
             plotter.draw_vertices(radius=0.3,
                                   text={key: key for key in embedding.vertices()},
-                                  facecolor={key: '#ff0000' for key in fix})
+                                  facecolour={key: '#ff0000' for key in fix})
 
             plotter.draw_edges()
             plotter.show()
@@ -399,15 +399,15 @@ if __name__ == '__main__':
     print(crossings)
     print(len(crossings))
 
-    ecolor = {}
+    ecolour = {}
     for e1, e2 in crossings:
-        ecolor[e1] = '#ff0000'
-        ecolor[e2] = '#ff0000'
+        ecolour[e1] = '#ff0000'
+        ecolour[e2] = '#ff0000'
 
     plotter = NetworkPlotter(network, figsize=(10, 7))
 
     plotter.draw_vertices()
-    plotter.draw_edges(color=ecolor)
+    plotter.draw_edges(colour=ecolour)
     plotter.show()
 
     # embedding = network.copy()
@@ -420,11 +420,11 @@ if __name__ == '__main__':
 
     #     plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
     #                           'end': network.vertex_coordinates(v, 'xy'),
-    #                           'color': '#cccccc'} for u, v in network.edges()])
+    #                           'colour': '#cccccc'} for u, v in network.edges()])
 
     #     plotter.draw_vertices(radius=0.3,
     #                           text={key: key for key in embedding.vertices()},
-    #                           facecolor={key: '#ff0000' for key in fix})
+    #                           facecolour={key: '#ff0000' for key in fix})
 
     #     plotter.draw_edges()
 

@@ -206,7 +206,7 @@ if __name__ == "__main__":
     for a in cloud:
         points.append({
             'pos'       : a,
-            'facecolor' : '#0000ff',
+            'facecolour' : '#0000ff',
             'radius'    : 0.5
         })
 
@@ -215,7 +215,7 @@ if __name__ == "__main__":
         lines.append({
             'start' : a,
             'end'   : b,
-            'color' : '#ff0000',
+            'colour' : '#ff0000',
             'width' : 2.0
         })
 

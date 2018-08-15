@@ -40,7 +40,7 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     Attributes
     ----------
     defaults : dict
-        Default settings for color, scale, tolerance, ...
+        Default settings for colour, scale, tolerance, ...
 
     """
 
@@ -48,9 +48,9 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
         self.volmesh = volmesh
         self.layer = layer
         self.defaults = {
-            'color.vertex' : (255, 0, 0),
-            'color.face'   : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
+            'colour.vertex' : (255, 0, 0),
+            'colour.face'   : (255, 255, 255),
+            'colour.edge'   : (0, 0, 0),
         }
 
     @property

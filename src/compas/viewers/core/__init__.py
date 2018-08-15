@@ -5,7 +5,7 @@ from .camera import *
 from .grid import *
 from .mouse import *
 from .slider import *
-from .colorbutton import *
+from .colourbutton import *
 from .glwidget import *
 from .controller import *
 from .textedit import *
@@ -20,7 +20,7 @@ from .camera import __all__ as d
 from .grid import __all__ as e
 from .mouse import __all__ as f
 from .slider import __all__ as g
-from .colorbutton import __all__ as h
+from .colourbutton import __all__ as h
 from .glwidget import __all__ as i
 from .controller import __all__ as j
 from .app import __all__ as k

@@ -13,7 +13,7 @@ __all__ = ['Geometry',
            'Sphere',
            'Capsule',
            'MeshDescriptor',
-           'Color',
+           'colour',
            'Texture',
            'Material',
            'Origin'
@@ -80,8 +80,8 @@ class MeshDescriptor(object):
         self.scale = _parse_floats(scale)
 
 
-class Color(object):
-    """Color represented in RGBA."""
+class colour(object):
+    """colour represented in RGBA."""
 
     def __init__(self, rgba):
         self.rgba = _parse_floats(rgba)
@@ -97,9 +97,9 @@ class Texture(object):
 class Material(object):
     """Material description."""
 
-    def __init__(self, name=None, color=None, texture=None):
+    def __init__(self, name=None, colour=None, texture=None):
         self.name = name
-        self.color = color
+        self.colour = colour
         self.texture = texture
 
 

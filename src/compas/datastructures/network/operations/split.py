@@ -61,7 +61,7 @@ def network_split_edge(network, u, v, t=0.5):
                 'end'  : network.vertex_coordinates(v, 'xy'),
                 'arrow': 'end',
                 'width': 4.0,
-                'color': '#00ff00'
+                'colour': '#00ff00'
             })
 
         plotter = NetworkPlotter(network)
@@ -71,7 +71,7 @@ def network_split_edge(network, u, v, t=0.5):
         plotter.draw_vertices(
             radius=0.2,
             text={key: key for key in network.vertices()},
-            facecolor={key: '#ff0000' for key in (a, b, c, d)}
+            facecolour={key: '#ff0000' for key in (a, b, c, d)}
         )
         plotter.draw_edges()
 
@@ -135,16 +135,16 @@ if __name__ == "__main__":
             'end'  : network.vertex_coordinates(v, 'xy'),
             'arrow': 'end',
             'width': 4.0,
-            'color': '#00ff00'
+            'colour': '#00ff00'
         })
 
     plotter = NetworkPlotter(network)
 
     plotter.draw_vertices(radius=0.2,
-                          facecolor={key: '#ff0000' for key in (a, b, c, d)},
+                          facecolour={key: '#ff0000' for key in (a, b, c, d)},
                           text={key: key for key in network.vertices()})
 
-    plotter.draw_edges(color={(u, v): '#cccccc' for u, v in network.edges()})
+    plotter.draw_edges(colour={(u, v): '#cccccc' for u, v in network.edges()})
 
     plotter.draw_lines(lines)
 

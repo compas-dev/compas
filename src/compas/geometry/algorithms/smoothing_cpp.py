@@ -146,7 +146,7 @@ if __name__ == "__main__":
         lines.append({
             'start': mesh.vertex_coordinates(u, 'xy'),
             'end'  : mesh.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
+            'colour': '#cccccc',
             'width': 0.5
         })
 
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     # draw the vertices and edges in the starting configuration
     # and pause for a second before starting the dynamic visualization
 
-    plotter.draw_vertices(facecolor={key: '#000000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2})
+    plotter.draw_vertices(facecolour={key: '#000000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2})
     plotter.draw_edges()
 
     plotter.update(pause=0.5)

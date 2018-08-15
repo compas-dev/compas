@@ -286,7 +286,7 @@ if __name__ == '__main__':
         points.append({
             'pos'   : xyz,
             'name'  : 'heightfield',
-            'color' : (0, 255, 0),
+            'colour' : (0, 255, 0),
         })
 
     compas_rhino.xdraw_points(points, layer='Layer 01', clear=True, redraw=True)

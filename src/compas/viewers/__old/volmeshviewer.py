@@ -35,19 +35,19 @@ class VolMeshViewer(Viewer):
             for fkey in self.volmesh.cell_halffaces(ckey):
                 vkeys       = self.volmesh.halfface_vertices(fkey, ordered=True)
                 points      = [self.volmesh.vertex_coordinates(vkey) for vkey in vkeys]
-                color_front = (0.7, 0.7, 0.7, 1.0)
-                color_back  = (0.0, 0.0, 0.0, 1.0)
+                colour_front = (0.7, 0.7, 0.7, 1.0)
+                colour_back  = (0.0, 0.0, 0.0, 1.0)
                 polygons.append({
                     'points'      : points,
-                    'color.front' : color_front,
-                    'color.back'  : color_back
+                    'colour.front' : colour_front,
+                    'colour.back'  : colour_back
                 })
         lines = []
         for u, v in self.volmesh.edges():
             lines.append({
                 'start': self.volmesh.vertex_coordinates(u),
                 'end'  : self.volmesh.vertex_coordinates(v),
-                'color': (0.1, 0.1, 0.1),
+                'colour': (0.1, 0.1, 0.1),
                 'width': 3.
             })
         points = []
@@ -55,7 +55,7 @@ class VolMeshViewer(Viewer):
             points.append({
                 'pos'   : self.volmesh.vertex_coordinates(u),
                 'size'  : 10.,
-                'color' : (0.0, 1.0, 0.0),
+                'colour' : (0.0, 1.0, 0.0),
             })
         xdraw_polygons(polygons)
         xdraw_lines(lines)

@@ -138,13 +138,13 @@ def depth_first_tree(adjacency, root):
 
         ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
 
-        edgecolor = {}
+        edgecolour = {}
         edgewidth = {}
 
         for u, v in pairwise(paths[0]):
             if not mesh.has_edge(u, v):
                 u, v = v, u
-            edgecolor[(u, v)] = '#ff0000'
+            edgecolour[(u, v)] = '#ff0000'
             edgewidth[(u, v)] = 3.0
 
         for path in paths[1:]:
@@ -152,13 +152,13 @@ def depth_first_tree(adjacency, root):
             for u, v in pairwise([parent] + path):
                 if not mesh.has_edge(u, v):
                     u, v = v, u
-                edgecolor[(u, v)] = '#00ff00'
+                edgecolour[(u, v)] = '#00ff00'
                 edgewidth[(u, v)] = 3.0
 
         plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-        plotter.draw_vertices(text='key', facecolor={root: '#ff0000'}, radius=0.2)
-        plotter.draw_edges(color=edgecolor, width=edgewidth)
+        plotter.draw_vertices(text='key', facecolour={root: '#ff0000'}, radius=0.2)
+        plotter.draw_edges(colour=edgecolour, width=edgewidth)
 
         plotter.show()
 
@@ -363,12 +363,12 @@ def shortest_path(adjacency, root, goal):
 
         plotter.draw_vertices(
             text={key: key for key in path},
-            facecolor={key: '#ff0000' for key in (path[0], path[-1])},
+            facecolour={key: '#ff0000' for key in (path[0], path[-1])},
             radius=0.15
         )
 
         plotter.draw_edges(
-            color={(u, v): '#ff0000' for u, v in edges},
+            colour={(u, v): '#ff0000' for u, v in edges},
             width={(u, v): 2.0 for u, v in edges}
         )
 
@@ -429,12 +429,12 @@ def dijkstra_distances(adjacency, weight, target):
 
         dmax = max(distances.values())
 
-        facecolor = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}
+        facecolour = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}
         text = {key: '{:.1f}'.format(distances[key]) for key in network.vertices()}
 
         plotter.draw_vertices(
             text=text,
-            facecolor=facecolor,
+            facecolour=facecolour,
             radius=0.15
         )
         plotter.draw_edges()
@@ -523,12 +523,12 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
         plotter.draw_vertices(
             text={key: key for key in path},
-            facecolor={key: '#ff0000' for key in (path[0], path[-1])},
+            facecolour={key: '#ff0000' for key in (path[0], path[-1])},
             radius=0.15
         )
 
         plotter.draw_edges(
-            color={(u, v): '#ff0000' for u, v in edges},
+            colour={(u, v): '#ff0000' for u, v in edges},
             width={(u, v): 2.0 for u, v in edges},
             text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}
         )
@@ -571,12 +571,12 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
         plotter.draw_vertices(
             text={key: key for key in path},
-            facecolor={key: '#ff0000' for key in (path[0], path[-1])},
+            facecolour={key: '#ff0000' for key in (path[0], path[-1])},
             radius=0.15
         )
 
         plotter.draw_edges(
-            color={(u, v): '#ff0000' for u, v in edges},
+            colour={(u, v): '#ff0000' for u, v in edges},
             width={(u, v): 2.0 for u, v in edges},
             text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}
         )
@@ -649,13 +649,13 @@ if __name__ == '__main__':
 
         ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
 
-        edgecolor = {}
+        edgecolour = {}
         edgewidth = {}
 
         for u, v in pairwise(paths[0]):
             if not mesh.has_edge(u, v):
                 u, v = v, u
-            edgecolor[(u, v)] = '#ff0000'
+            edgecolour[(u, v)] = '#ff0000'
             edgewidth[(u, v)] = 5.0
 
         for path in paths[1:]:
@@ -663,13 +663,13 @@ if __name__ == '__main__':
             for u, v in pairwise([parent] + path):
                 if not mesh.has_edge(u, v):
                     u, v = v, u
-                edgecolor[(u, v)] = '#00ff00'
+                edgecolour[(u, v)] = '#00ff00'
                 edgewidth[(u, v)] = 5.0
 
         plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-        plotter.draw_vertices(text='key', facecolor={key: '#ff0000' for key in (root, )}, radius=0.2)
-        plotter.draw_edges(color=edgecolor, width=edgewidth)
+        plotter.draw_vertices(text='key', facecolour={key: '#ff0000' for key in (root, )}, radius=0.2)
+        plotter.draw_edges(colour=edgecolour, width=edgewidth)
 
         plotter.show()
 
@@ -708,12 +708,12 @@ if __name__ == '__main__':
 
         plotter.draw_vertices(
             text={key: key for key in network.vertices()},
-            facecolor={key: '#ff0000' for key in (path[0], path[-1])},
+            facecolour={key: '#ff0000' for key in (path[0], path[-1])},
             radius=0.15
         )
 
         plotter.draw_edges(
-            color={(u, v): '#ff0000' for u, v in edges},
+            colour={(u, v): '#ff0000' for u, v in edges},
             width={(u, v): 5.0 for u, v in edges}
         )
 
@@ -746,12 +746,12 @@ if __name__ == '__main__':
 
         dmax = max(distances.values())
 
-        facecolor = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}
+        facecolour = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}
         text = {key: '{:.1f}'.format(distances[key]) for key in network.vertices()}
 
         plotter.draw_vertices(
             text=text,
-            facecolor=facecolor,
+            facecolour=facecolour,
             radius=0.15
         )
         plotter.draw_edges()
@@ -804,21 +804,21 @@ if __name__ == '__main__':
                     u, v = v, u
                 edges.append([u, v])
 
-            vertexcolor = {}
-            vertexcolor[start] = '#00ff00'
-            vertexcolor[end] = '#00ff00'
-            vertexcolor[via] = '#0000ff'
+            vertexcolour = {}
+            vertexcolour[start] = '#00ff00'
+            vertexcolour[end] = '#00ff00'
+            vertexcolour[via] = '#0000ff'
 
             plotter.clear_vertices()
             plotter.clear_edges()
 
             plotter.draw_vertices(text={key: key for key in (start, via, end)},
-                                  textcolor={key: '#ffffff' for key in path[1:-1]},
-                                  facecolor=vertexcolor,
+                                  textcolour={key: '#ffffff' for key in path[1:-1]},
+                                  facecolour=vertexcolour,
                                   radius=0.15,
                                   picker=10)
 
-            plotter.draw_edges(color={(u, v): '#ff0000' for u, v in edges},
+            plotter.draw_edges(colour={(u, v): '#ff0000' for u, v in edges},
                                width={(u, v): 4.0 for u, v in edges},
                                text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()},
                                fontsize=4.0)

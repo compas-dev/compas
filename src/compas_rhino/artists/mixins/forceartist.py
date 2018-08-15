@@ -34,11 +34,11 @@ class ForceArtist(object):
     def clear_residuals(self):
         compas_rhino.delete_objects_by_name(name='{}.residual.*'.format(self.datastructure.name))
 
-    def draw_loads(self, color=None, scale=1.0, tol=1e-6):
+    def draw_loads(self, colour=None, scale=1.0, tol=1e-6):
         if not scale:
             self.clear_loads()
             return
-        color = color or (255, 255, 0)
+        colour = colour or (255, 255, 0)
         lines = []
         for key, attr in self.datastructure.vertices(True):
             p = sqrt(attr['px'] ** 2 + attr['py'] ** 2 + attr['pz'] ** 2)
@@ -50,17 +50,17 @@ class ForceArtist(object):
                 'start': sp,
                 'end'  : ep,
                 'name' : '{}.load.{}:{:.3f}'.format(self.datastructure.name, key, p),
-                'color': color,
+                'colour': colour,
                 'arrow': 'end'
             })
         self.clear_loads()
         compas_rhino.xdraw_lines(lines, layer=self.layer)
 
-    def draw_reactions(self, color=None, scale=1.0, tol=1e-6, identifier='is_support'):
+    def draw_reactions(self, colour=None, scale=1.0, tol=1e-6, identifier='is_support'):
         if not scale:
             self.clear_reactions()
             return
-        color = color or (0, 255, 0)
+        colour = colour or (0, 255, 0)
         lines = []
         for key, attr in self.datastructure.vertices(True):
             if not attr[identifier]:
@@ -74,17 +74,17 @@ class ForceArtist(object):
                 'start': sp,
                 'end'  : ep,
                 'name' : '{}.reaction.{}:{:.3f}'.format(self.datastructure.name, key, r),
-                'color': color,
+                'colour': colour,
                 'arrow': 'end'
             })
         self.clear_reactions()
         compas_rhino.xdraw_lines(lines, layer=self.layer)
 
-    def draw_residuals(self, color=None, scale=1.0, tol=1e-6, identifier='is_support'):
+    def draw_residuals(self, colour=None, scale=1.0, tol=1e-6, identifier='is_support'):
         if not scale:
             self.clear_residuals()
             return
-        color = color or (0, 255, 255)
+        colour = colour or (0, 255, 255)
         lines = []
         for key, attr in self.datastructure.vertices(True):
             if attr[identifier]:
@@ -98,7 +98,7 @@ class ForceArtist(object):
                 'start': sp,
                 'end'  : ep,
                 'name' : '{}.residual.{}:{:.3f}'.format(self.datastructure.name, key, r),
-                'color': color,
+                'colour': colour,
                 'arrow': 'end'
             })
         self.clear_residuals()
@@ -136,8 +136,8 @@ if __name__ == "__main__":
 #                                  clear_layer=False,
 #                                  scale=1.0,
 #                                  attr_name='f',
-#                                  color_tension=(255, 0, 0),
-#                                  color_compression=(0, 0, 255)):
+#                                  colour_tension=(255, 0, 0),
+#                                  colour_compression=(0, 0, 255)):
 #     """Display the axial forces in the edges of a network.
 
 #     Parameters:
@@ -158,11 +158,11 @@ if __name__ == "__main__":
 #         attr_name (str): Optional.
 #             The name of the edge attribute storing the force value.
 #             Default is ``'f'``.
-#         color_tension (tuple): Optional.
-#             The color to use for tension forces.
+#         colour_tension (tuple): Optional.
+#             The colour to use for tension forces.
 #             Default is ``(255, 0, 0)``.
-#         color_compression (tuple): Optional.
-#             The color to use for compression forces.
+#         colour_compression (tuple): Optional.
+#             The colour to use for compression forces.
 #             Default is ``(0, 0, 255)``.
 
 #     Example:
@@ -201,7 +201,7 @@ if __name__ == "__main__":
 #         start  = network.vertex_coordinates(u)
 #         end    = network.vertex_coordinates(v)
 #         force  = attr['f']
-#         color  = color_tension if force > 0.0 else color_compression
+#         colour  = colour_tension if force > 0.0 else colour_compression
 #         radius = scale * ((force ** 2) ** 0.5 / 3.14159) ** 0.5
 #         name   = '{0}.force:axial.{1}-{2}'.format(network.attributes['name'], u, v)
 
@@ -212,7 +212,7 @@ if __name__ == "__main__":
 #             'start' : start,
 #             'end'   : end,
 #             'name'  : name,
-#             'color' : color,
+#             'colour' : colour,
 #             'radius': radius,
 #         })
 
@@ -224,7 +224,7 @@ if __name__ == "__main__":
 #                                     layer=None,
 #                                     clear_layer=False,
 #                                     scale=1.0,
-#                                     color=(0, 255, 0),
+#                                     colour=(0, 255, 0),
 #                                     attr_name='is_anchor'):
 
 #     tol = compas_rhino.get_tolerance()
@@ -255,7 +255,7 @@ if __name__ == "__main__":
 #             'start': start,
 #             'end'  : end,
 #             'name' : name,
-#             'color': color,
+#             'colour': colour,
 #             'arrow': arrow,
 #         })
 
@@ -267,7 +267,7 @@ if __name__ == "__main__":
 #                                     layer=None,
 #                                     clear_layer=False,
 #                                     scale=1.0,
-#                                     color=(0, 255, 255),
+#                                     colour=(0, 255, 255),
 #                                     attr_name='is_anchor'):
 
 #     tol = compas_rhino.get_tolerance()
@@ -298,7 +298,7 @@ if __name__ == "__main__":
 #             'start' : start,
 #             'end'   : end,
 #             'name'  : name,
-#             'color' : color,
+#             'colour' : colour,
 #             'arrow' : arrow,
 #         })
 
@@ -310,7 +310,7 @@ if __name__ == "__main__":
 #                                layer=None,
 #                                clear_layer=False,
 #                                scale=1.0,
-#                                color=(0, 255, 0)):
+#                                colour=(0, 255, 0)):
 
 #     tol = compas_rhino.get_tolerance()
 #     guids = compas_rhino.get_objects(name='{0}.force:selfweight.*'.format(network.attributes['name']))
@@ -336,7 +336,7 @@ if __name__ == "__main__":
 #             'start': start,
 #             'end'  : end,
 #             'name' : name,
-#             'color': color,
+#             'colour': colour,
 #             'arrow': arrow,
 #         })
 
@@ -348,7 +348,7 @@ if __name__ == "__main__":
 #                                   layer=None,
 #                                   clear_layer=False,
 #                                   scale=1.0,
-#                                   color=(0, 0, 255)):
+#                                   colour=(0, 0, 255)):
 
 #     tol = compas_rhino.get_tolerance()
 #     guids = compas_rhino.get_objects(name='{0}.force:load.*'.format(network.attributes['name']))
@@ -374,7 +374,7 @@ if __name__ == "__main__":
 #             'start': start,
 #             'end'  : end,
 #             'name' : name,
-#             'color': color,
+#             'colour': colour,
 #             'arrow': arrow,
 #         })
 

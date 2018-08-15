@@ -187,7 +187,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
             lines.append({
                 'start': network.vertex_coordinates(u, 'xy'),
                 'end'  : network.vertex_coordinates(v, 'xy'),
-                'color': '#cccccc',
+                'colour': '#cccccc',
                 'width': 1.0
             })
 
@@ -203,7 +203,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
             attr['z'] = xyz[index, 2]
 
         plotter.draw_vertices(
-            facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+            facecolour={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
         plotter.draw_edges()
         plotter.show()
 
@@ -410,14 +410,14 @@ if __name__ == "__main__":
         lines.append({
             'start': mesh.vertex_coordinates(u, 'xy'),
             'end'  : mesh.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
+            'colour': '#cccccc',
             'width': 0.5
         })
 
     plotter = MeshPlotter(mesh, figsize=(10, 7), fontsize=6)
 
     plotter.draw_lines(lines)
-    plotter.draw_vertices(facecolor={key: '#000000' for key in mesh.vertices_where({'is_fixed': True})})
+    plotter.draw_vertices(facecolour={key: '#000000' for key in mesh.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
     plotter.update(pause=1.0)
@@ -450,12 +450,12 @@ if __name__ == "__main__":
     plotter.clear_edges()
 
     plotter.draw_vertices(
-        facecolor={key: '#000000' for key in mesh.vertices_where({'is_fixed': True})}
+        facecolour={key: '#000000' for key in mesh.vertices_where({'is_fixed': True})}
     )
 
     plotter.draw_edges(
         text={(u, v): '{:.0f}'.format(attr['f']) for u, v, attr in mesh.edges(True)},
-        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in mesh.edges(True)},
+        colour={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in mesh.edges(True)},
         width={(u, v): 10 * attr['f'] / fmax for u, v, attr in mesh.edges(True)}
     )
 

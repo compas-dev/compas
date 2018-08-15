@@ -174,7 +174,7 @@ select_file = browse_for_file
 
 def print_display_on(on=True):
     if on:
-        rs.Command('_PrintDisplay State On Color Display Thickness 1 _Enter')
+        rs.Command('_PrintDisplay State On colour Display Thickness 1 _Enter')
     else:
         rs.Command('_PrintDisplay State Off _Enter')
 

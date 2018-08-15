@@ -261,7 +261,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         plotter = MeshPlotter(subd)
 
-        plotter.draw_vertices(facecolor={key: '#ff0000' for key in mesh.vertices()}, radius=0.01)
+        plotter.draw_vertices(facecolour={key: '#ff0000' for key in mesh.vertices()}, radius=0.01)
         plotter.draw_faces()
 
         plotter.show()
@@ -282,7 +282,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         plotter = MeshPlotter(subd)
 
-        plotter.draw_vertices(facecolor={key: '#ff0000' for key in mesh.vertices()}, radius=0.01)
+        plotter.draw_vertices(facecolour={key: '#ff0000' for key in mesh.vertices()}, radius=0.01)
         plotter.draw_faces()
 
         plotter.show()

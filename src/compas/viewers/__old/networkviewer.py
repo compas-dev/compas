@@ -15,8 +15,8 @@ from compas.viewers.viewer import Viewer
 from compas.viewers.core.drawing import xdraw_points
 from compas.viewers.core.drawing import xdraw_lines
 
-from compas.utilities import color_to_colordict
-from compas.utilities import color_to_rgb
+from compas.utilities import colour_to_colourdict
+from compas.utilities import colour_to_rgb
 
 
 __author__     = 'Tom Van Mele'
@@ -65,15 +65,15 @@ class NetworkViewer(Viewer):
 
     def __init__(self, network, width=1280, height=800):
         super(NetworkViewer, self).__init__(width=width, height=height)
-        self.default_vertexcolor = (0, 0, 0)
-        self.default_edgecolor   = (0, 0, 0)
-        self.default_facecolor   = (0, 0, 0)
+        self.default_vertexcolour = (0, 0, 0)
+        self.default_edgecolour   = (0, 0, 0)
+        self.default_facecolour   = (0, 0, 0)
         self.vertices_on = True
         self.edges_on    = True
         self.faces_on    = False
-        self.vertexcolor = None
-        self.edgecolor   = None
-        self.facecolor   = None
+        self.vertexcolour = None
+        self.edgecolour   = None
+        self.facecolour   = None
         self.vertexlabel = None
         self.edgelabel   = None
         self.facelabel   = None
@@ -99,24 +99,24 @@ class NetworkViewer(Viewer):
 
     def display(self):
         points = []
-        vcolor = self.network.attributes['color.vertex']
-        vcolor = vcolor or self.default_vertexcolor
-        vcolor = color_to_rgb(vcolor, True)
+        vcolour = self.network.attributes['colour.vertex']
+        vcolour = vcolour or self.default_vertexcolour
+        vcolour = colour_to_rgb(vcolour, True)
         for key, attr in self.network.vertices(True):
             points.append({
                 'pos'  : (attr['x'], attr['y'], attr['z']),
                 'size' : 6.0,
-                'color': vcolor,
+                'colour': vcolour,
             })
         lines = []
-        ecolor = self.network.attributes['color.vertex']
-        ecolor = ecolor or self.default_edgecolor
-        ecolor = color_to_rgb(ecolor, True)
+        ecolour = self.network.attributes['colour.vertex']
+        ecolour = ecolour or self.default_edgecolour
+        ecolour = colour_to_rgb(ecolour, True)
         for u, v in self.network.edges():
             lines.append({
                 'start': self.network.vertex_coordinates(u),
                 'end'  : self.network.vertex_coordinates(v),
-                'color': ecolor,
+                'colour': ecolour,
                 'width': 1.0
             })
         # loads = []
@@ -132,7 +132,7 @@ class NetworkViewer(Viewer):
         #             loads.append({
         #                 'start': start,
         #                 'end'  : end,
-        #                 'color': (0, 1.0, 0),
+        #                 'colour': (0, 1.0, 0),
         #                 'width': 3.0
         #             })
         xdraw_points(points)

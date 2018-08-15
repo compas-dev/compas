@@ -14,7 +14,7 @@ else:
     from PySide2 import QtWidgets
 
 
-from compas.viewers.core.qcolorbutton import QColorButton
+from compas.viewers.core.qcolourbutton import QcolourButton
 
 
 __author__    = ['Tom Van Mele', ]
@@ -23,17 +23,17 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = ['ColorButton', ]
+__all__ = ['colourButton', ]
 
 
-class ColorButton(object):
+class colourButton(object):
 
-    def __init__(self, text, color=None, size=None, action=None, **kwargs):
+    def __init__(self, text, colour=None, size=None, action=None, **kwargs):
         size = size or (24, 24)
         self.layout = QtWidgets.QHBoxLayout()
-        self.button = QColorButton(color=color, size=size)
+        self.button = QcolourButton(colour=colour, size=size)
         if action:
-            self.button.color_changed.connect(action)
+            self.button.colour_changed.connect(action)
         self.label = QtWidgets.QLabel()
         self.label.setText(text)
         self.layout.addWidget(self.button)

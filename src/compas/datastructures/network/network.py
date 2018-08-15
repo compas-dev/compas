@@ -105,9 +105,9 @@ class Network(FromToJson,
         self._key_to_str = False
         self.attributes = {
             'name'         : 'Network',
-            'color.vertex' : None,
-            'color.edge'   : None,
-            'color.face'   : None,
+            'colour.vertex' : None,
+            'colour.edge'   : None,
+            'colour.face'   : None,
         }
         self.vertex = {}
         self.edge = {}

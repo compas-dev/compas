@@ -80,27 +80,27 @@ class KDTree(object):
         for index, (x, y, z) in enumerate(cloud):
             points.append({
                 'pos'      : [x, y],
-                'facecolor': '#000000',
-                'edgecolor': '#000000',
+                'facecolour': '#000000',
+                'edgecolour': '#000000',
                 'radius'   : 1.0
             })
         points.append({
             'pos'      : point[0:2],
-            'facecolor': '#ff0000',
-            'edgecolor': '#ff0000',
+            'facecolour': '#ff0000',
+            'edgecolour': '#ff0000',
             'radius'   : 5.0
         })
 
         lines = []
         for xyz, label, dist in nnbrs:
-            points[label]['facecolor'] = '#00ff00'
-            points[label]['edgecolor'] = '#00ff00'
+            points[label]['facecolour'] = '#00ff00'
+            points[label]['edgecolour'] = '#00ff00'
             points[label]['radius'] = 3.0
 
             lines.append({
                 'start' : point[0:2],
                 'end'   : xyz[0:2],
-                'color' : '#000000',
+                'colour' : '#000000',
                 'width' : 0.1,
             })
 
@@ -254,27 +254,27 @@ if __name__ == '__main__':
     for index, (x, y, z) in enumerate(cloud):
         points.append({
             'pos'      : [x, y],
-            'facecolor': '#000000',
-            'edgecolor': '#000000',
+            'facecolour': '#000000',
+            'edgecolour': '#000000',
             'radius'   : 1.0
         })
     points.append({
         'pos'      : point[0:2],
-        'facecolor': '#ff0000',
-        'edgecolor': '#ff0000',
+        'facecolour': '#ff0000',
+        'edgecolour': '#ff0000',
         'radius'   : 5.0
     })
 
     lines = []
     for xyz, label, dist in nnbrs:
-        points[label]['facecolor'] = '#00ff00'
-        points[label]['edgecolor'] = '#00ff00'
+        points[label]['facecolour'] = '#00ff00'
+        points[label]['edgecolour'] = '#00ff00'
         points[label]['radius'] = 3.0
 
         lines.append({
             'start' : point[0:2],
             'end'   : xyz[0:2],
-            'color' : '#000000',
+            'colour' : '#000000',
             'width' : 0.1,
         })
 

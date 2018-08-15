@@ -12,7 +12,7 @@ try:
     from System.Windows.Forms import FlowDirection
     from System.Drawing import Point
     from System.Drawing import Size
-    from System.Drawing import Color
+    from System.Drawing import colour
 
 except ImportError:
     import sys
@@ -70,7 +70,7 @@ class MultiPageForm(Form):
 
     def add_page(self, index, name, title, padding=0):
         page = TabPage()
-        page.BackColor = Color.White
+        page.Backcolour = colour.White
         page.Dock = DockStyle.Fill
         page.Padding = Padding(padding)
         page.TabIndex = index

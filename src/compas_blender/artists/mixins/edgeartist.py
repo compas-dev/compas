@@ -43,15 +43,15 @@ class EdgeArtist(object):
                 objects.append(object)
         delete_objects(objects=objects)
 
-    def draw_edges(self, width=0.010, keys=None, color=None):
+    def draw_edges(self, width=0.010, keys=None, colour=None):
         keys = keys or list(self.datastructure.edges())
-        colordict = valuedict(keys, color, self.defaults['color.edge'])
+        colourdict = valuedict(keys, colour, self.defaults['colour.edge'])
         lines = []
         for u, v in keys:
             lines.append({
                 'start': self.datastructure.vertex_coordinates(u),
                 'end': self.datastructure.vertex_coordinates(v),
-                'color': colordict[(u, v)],
+                'colour': colourdict[(u, v)],
                 'name': self.datastructure.edge_name(u, v),
                 'width': width,
                 'layer': self.layer})

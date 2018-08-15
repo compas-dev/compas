@@ -48,23 +48,23 @@ class MeshViewer(Viewer):
         polygons = []
         for fkey in self.mesh.faces():
             points = self.mesh.face_coordinates(fkey)
-            color_front = self.mesh.get_face_attribute(fkey, 'color', (0.8, 0.8, 0.8, 1.0))
-            color_back  = (0.2, 0.2, 0.2, 1.0)
+            colour_front = self.mesh.get_face_attribute(fkey, 'colour', (0.8, 0.8, 0.8, 1.0))
+            colour_back  = (0.2, 0.2, 0.2, 1.0)
             polygons.append({'points': points,
-                             'color.front': color_front,
-                             'color.back' : color_back})
+                             'colour.front': colour_front,
+                             'colour.back' : colour_back})
 
         lines = []
         for u, v in self.mesh.edges():
             lines.append({'start': self.mesh.vertex_coordinates(u),
                           'end'  : self.mesh.vertex_coordinates(v),
-                          'color': (0.1, 0.1, 0.1),
+                          'colour': (0.1, 0.1, 0.1),
                           'width': 1.})
 
         points = []
         for key in self.mesh.vertices():
             points.append({'pos'   : self.mesh.vertex_coordinates(key),
-                           'color' : (0.4, 0.4, 0.4),
+                           'colour' : (0.4, 0.4, 0.4),
                            'size'  : 5.0})
 
         # normals = []
@@ -75,7 +75,7 @@ class MeshViewer(Viewer):
         #     normals.append({
         #         'start' : sp,
         #         'end'   : ep,
-        #         'color' : (0.0, 1.0, 0.0),
+        #         'colour' : (0.0, 1.0, 0.0),
         #         'width' : 2.0
         #     })
 

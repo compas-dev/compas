@@ -86,13 +86,13 @@ class Axes3D(object):
 
     """
 
-    def __init__(self, origin, vectors, colors=None):
+    def __init__(self, origin, vectors, colours=None):
         """Initialises the Axes3D object"""
         self.origin = asarray(origin)
         self.vectors = asarray(vectors)
-        if not colors:
-            colors = ('r', 'g', 'b')
-        self.colors = colors
+        if not colours:
+            colours = ('r', 'g', 'b')
+        self.colours = colours
 
     def plot(self, axes):
         """Plots the axes object
@@ -109,21 +109,21 @@ class Axes3D(object):
             [o[0, 0], o[0, 0] + xyz[0, 0]],
             [o[0, 1], o[0, 1] + xyz[0, 1]],
             [o[0, 2], o[0, 2] + xyz[0, 2]],
-            '{0}-'.format(self.colors[0]),
+            '{0}-'.format(self.colours[0]),
             linewidth=3
         )
         axes.plot(
             [o[0, 0], o[0, 0] + xyz[1, 0]],
             [o[0, 1], o[0, 1] + xyz[1, 1]],
             [o[0, 2], o[0, 2] + xyz[1, 2]],
-            '{0}-'.format(self.colors[1]),
+            '{0}-'.format(self.colours[1]),
             linewidth=3
         )
         axes.plot(
             [o[0, 0], o[0, 0] + xyz[2, 0]],
             [o[0, 1], o[0, 1] + xyz[2, 1]],
             [o[0, 2], o[0, 2] + xyz[2, 2]],
-            '{0}-'.format(self.colors[2]),
+            '{0}-'.format(self.colours[2]),
             linewidth=3
         )
 
@@ -157,7 +157,7 @@ class Box(object):
         assert_axes_dimension(axes, 3)
         rec = [[self.corners[index] for index in face] for face in self.faces]
         rec_coll = Poly3DCollection(rec)
-        rec_coll.set_facecolors([(1.0, 0.0, 0.0) for face in self.faces])
+        rec_coll.set_facecolours([(1.0, 0.0, 0.0) for face in self.faces])
         rec_coll.set_alpha(0.2)
         axes.add_collection3d(rec_coll)
 
@@ -174,7 +174,7 @@ class Cloud2D(object):
     def plot(self, axes):
         x = self.cloud[:, 0]
         y = self.cloud[:, 1]
-        axes.plot(x, y, 'o', color=(1.0, 1.0, 1.0))
+        axes.plot(x, y, 'o', colour=(1.0, 1.0, 1.0))
 
 
 class Cloud3D(object):
@@ -190,7 +190,7 @@ class Cloud3D(object):
         x = self.cloud[:, 0]
         y = self.cloud[:, 1]
         z = self.cloud[:, 2]
-        axes.plot(x, y, z, 'o', color=(0.7, 0.7, 0.7))
+        axes.plot(x, y, z, 'o', colour=(0.7, 0.7, 0.7))
 
 
 class Hull(object):
@@ -202,7 +202,7 @@ class Hull(object):
     def plot(self, axes):
         tri = [[self.vertices[index] for index in face] for face in self.faces]
         tri_coll = Poly3DCollection(tri)
-        tri_coll.set_facecolors([(0.0, 1.0, 0.0) for face in self.faces])
+        tri_coll.set_facecolours([(0.0, 1.0, 0.0) for face in self.faces])
         axes.add_collection3d(tri_coll)
 
 

@@ -29,7 +29,7 @@ q        = network.get_edges_attribute('q', 1.0)
 artist = NetworkArtist(network, layer='Network')
 
 artist.clear_layer()
-artist.draw_edges(color='#cccccc')
+artist.draw_edges(colour='#cccccc')
 artist.redraw()
 
 xyz = fd_cpp(vertices, edges, fixed, q, loads)
@@ -39,6 +39,6 @@ for key, attr in network.vertices(True):
     attr['y'] = xyz[key][1]
     attr['z'] = xyz[key][2]
 
-artist.draw_vertices(color={key: '#ff0000' for key in network.leaves()})
-artist.draw_edges(color='#000000')
+artist.draw_vertices(colour={key: '#ff0000' for key in network.leaves()})
+artist.draw_edges(colour='#000000')
 artist.redraw()

@@ -36,7 +36,7 @@ class MogaPlotter(object):
         self.fit_names = []
         self.pop = {}
         self.generation = 0
-        self.color_dict = {0: 'r', 1: 'y', 2: 'g', 3: 'c', 4: 'b', 5: 'k'}
+        self.colour_dict = {0: 'r', 1: 'y', 2: 'g', 3: 'c', 4: 'b', 5: 'k'}
 
         self.number_size = 15
         self.lable_size = 15
@@ -103,20 +103,20 @@ class MogaPlotter(object):
                             x = self.conversion_functions[f1](x)
                             y = self.conversion_functions[f2](y)
                         if self.pop['pf'][i] <= 5:
-                            color = self.color_dict[self.pop['pf'][i]]
+                            colour = self.colour_dict[self.pop['pf'][i]]
                         else:
-                            color = '0.9'
+                            colour = '0.9'
                         if self.pop['pf'][i] == 0:
                             size = self.pareto_size
                             if number:
                                 ax.text(x + (a * 0.2), y + (a_ * 0.2), str(i),
                                         verticalalignment='top', horizontalalignment='right',
-                                        color=color, fontsize=size)
+                                        colour=colour, fontsize=size)
                         else:
                             size = self.dominated_size
 
-                        plt.plot(x, y, color=color, markersize=size, marker='o')
-                        # plt.annotate(str(i),xy=(x,y),color=color,fontsize=10)
+                        plt.plot(x, y, colour=colour, markersize=size, marker='o')
+                        # plt.annotate(str(i),xy=(x,y),colour=colour,fontsize=10)
 
                     if self.fixed_individuals:
                         for i in range(len(self.fixed_individuals)):
@@ -125,11 +125,11 @@ class MogaPlotter(object):
                             if self.conversion_functions:
                                 x = self.conversion_functions[f1](x)
                                 y = self.conversion_functions[f2](y)
-                            color = '0.1'
+                            colour = '0.1'
                             size = self.pareto_size
                             ax.text(x + (a * 0.2), y + (a_ * 0.2), self.fixed_individuals['labels'][i],
-                                    verticalalignment='top', horizontalalignment='right', color=color, fontsize=size)
-                            plt.plot(x, y, color=color, markersize=size, marker='o')
+                                    verticalalignment='top', horizontalalignment='right', colour=colour, fontsize=size)
+                            plt.plot(x, y, colour=colour, markersize=size, marker='o')
 
                     plt.xlabel(self.fit_names[f1], fontsize=self.lable_size)
                     plt.ylabel(self.fit_names[f2], fontsize=self.lable_size)

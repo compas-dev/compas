@@ -20,46 +20,46 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = ['QColorButton', ]
+__all__ = ['QcolourButton', ]
 
 
-class QColorButton(QtWidgets.QPushButton):
-    """Custom Qt Widget to show a chosen color.
+class QcolourButton(QtWidgets.QPushButton):
+    """Custom Qt Widget to show a chosen colour.
     """
 
-    color_changed = QtCore.Signal(str)
+    colour_changed = QtCore.Signal(str)
 
-    def __init__(self, color=None, size=None, **kwargs):
-        super(QColorButton, self).__init__(**kwargs)
+    def __init__(self, colour=None, size=None, **kwargs):
+        super(QcolourButton, self).__init__(**kwargs)
 
-        self._color = color
+        self._colour = colour
         self._size = size
 
         self.setFixedSize(self._size[0], self._size[1])
         self.setFlat(False)
-        self.setStyleSheet("border: none; background-color: %s;" % self._color)
-        self.pressed.connect(self.pick_color)
+        self.setStyleSheet("border: none; background-colour: %s;" % self._colour)
+        self.pressed.connect(self.pick_colour)
 
-    def set_color(self, color):
-        if color != self._color:
-            self._color = color
-            self.color_changed.emit(color)
-        self.setStyleSheet("border: none; background-color: %s;" % self._color)
+    def set_colour(self, colour):
+        if colour != self._colour:
+            self._colour = colour
+            self.colour_changed.emit(colour)
+        self.setStyleSheet("border: none; background-colour: %s;" % self._colour)
 
-    def color(self):
-        return self._color
+    def colour(self):
+        return self._colour
 
-    def pick_color(self):
-        """Show color-picker dialog to select color.
+    def pick_colour(self):
+        """Show colour-picker dialog to select colour.
         """
-        color = QtWidgets.QColorDialog.getColor(initial=QtGui.QColor(self._color))
-        if color.isValid():
-            self.set_color(color.name())
+        colour = QtWidgets.QcolourDialog.getcolour(initial=QtGui.Qcolour(self._colour))
+        if colour.isValid():
+            self.set_colour(colour.name())
 
     # def mousePressEvent(self, e):
     #     # if e.button() == QtCore.Qt.RightButton:
-    #     #     self.setColor(None)
-    #     return super(QColorButton, self).mousePressEvent(e)
+    #     #     self.setcolour(None)
+    #     return super(QcolourButton, self).mousePressEvent(e)
 
 
 # ==============================================================================

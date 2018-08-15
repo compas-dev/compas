@@ -50,8 +50,8 @@ class Viewer(object):
         Distance of the far clipping plane. Default is `1000.0`.
     fov : float
         Field of view. Default is `50.0`.
-    clear_color : 4-tuple of float
-        A sequence of 4 floats defining the background color of the scene.
+    clear_colour : 4-tuple of float
+        A sequence of 4 floats defining the background colour of the scene.
         Default is `(0.9, 0.9, 0.9, 1.0)`.
     grid_on : bool
         Grid on or off.
@@ -107,7 +107,7 @@ class Viewer(object):
         self.near         = 0.1
         self.far          = 1000.0
         self.fov          = 50.0
-        self.clear_color  = (0.90, 0.90, 0.90, 1.)
+        self.clear_colour  = (0.90, 0.90, 0.90, 1.)
         self.grid_on      = kwargs.get('grid_on', True)
         self.axes_on      = kwargs.get('axes_on', True)
         self.mouse        = Mouse(self)
@@ -127,7 +127,7 @@ class Viewer(object):
                                int((glutGet(GLUT_SCREEN_HEIGHT) - self.height) * 0.5))
         glutCreateWindow(str.encode(self.title))
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
-        glClearColor(*self.clear_color)
+        glClearcolour(*self.clear_colour)
         # callback registration
         glutDisplayFunc(self._display_callback)
         glutReshapeFunc(self._reshape_callback)
@@ -206,7 +206,7 @@ class Viewer(object):
         no parameters. The entire normal plane region should be redisplayed in
         response to the callback (this includes ancillary buffers if your
         program depends on their state)."""
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glClear(GL_colour_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self._display()
         self.display()
         for f in self.displayfuncs:

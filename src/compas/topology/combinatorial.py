@@ -13,12 +13,12 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'vertex_coloring',
+    'vertex_colouring',
 ]
 
 
-def vertex_coloring(adjacency):
-    """Color the vertices of a network such that no two colors are adjacent.
+def vertex_colouring(adjacency):
+    """colour the vertices of a network such that no two colours are adjacent.
 
     Parameters
     ----------
@@ -31,8 +31,8 @@ def vertex_coloring(adjacency):
 
     References
     ----------
-    .. [1] Chu-Carroll, M. *Graph Coloring Algorithms*.
-           Available at: http://scienceblogs.com/goodmath/2007/06/28/graph-coloring-algorithms-1/.
+    .. [1] Chu-Carroll, M. *Graph colouring Algorithms*.
+           Available at: http://scienceblogs.com/goodmath/2007/06/28/graph-colouring-algorithms-1/.
 
     Warning
     -------
@@ -46,38 +46,38 @@ def vertex_coloring(adjacency):
         import compas
         from compas.datastructures import Network
         from compas.plotters import NetworkPlotter
-        from compas.topology import vertex_coloring
+        from compas.topology import vertex_colouring
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-        key_color = vertex_coloring(network.adjacency)
-        colors = ['#ff0000', '#00ff00', '#0000ff']
+        key_colour = vertex_colouring(network.adjacency)
+        colours = ['#ff0000', '#00ff00', '#0000ff']
 
         plotter = NetworkPlotter(network)
 
-        plotter.draw_vertices(facecolor={key: colors[key_color[key]] for key in network.vertices()})
+        plotter.draw_vertices(facecolour={key: colours[key_colour[key]] for key in network.vertices()})
         plotter.draw_edges()
 
         plotter.show()
 
     """
-    key_to_color = {}
+    key_to_colour = {}
     key_to_degree = {key: len(adjacency[key]) for key in adjacency}
     vertices = sorted(adjacency.keys(), key=lambda key: key_to_degree[key])
-    uncolored = deque(vertices[::-1])
-    current_color = 0
-    while uncolored:
-        a = uncolored.popleft()
-        key_to_color[a] = current_color
-        colored_with_current = [a]
-        for b in uncolored:
-            if not any(b in adjacency[key] for key in colored_with_current):
-                key_to_color[b] = current_color
-                colored_with_current.append(b)
-        for key in colored_with_current[1:]:
-            uncolored.remove(key)
-        current_color += 1
-    return key_to_color
+    uncoloured = deque(vertices[::-1])
+    current_colour = 0
+    while uncoloured:
+        a = uncoloured.popleft()
+        key_to_colour[a] = current_colour
+        coloured_with_current = [a]
+        for b in uncoloured:
+            if not any(b in adjacency[key] for key in coloured_with_current):
+                key_to_colour[b] = current_colour
+                coloured_with_current.append(b)
+        for key in coloured_with_current[1:]:
+            uncoloured.remove(key)
+        current_colour += 1
+    return key_to_colour
 
 
 def connected_components(adjacency):
@@ -152,13 +152,13 @@ if __name__ == "__main__":
     print(network_is_connected(network))
     print(components)
 
-    key_color = vertex_coloring(network.adjacency)
+    key_colour = vertex_colouring(network.adjacency)
 
-    colors = ['#ff0000', '#00ff00', '#0000ff']
+    colours = ['#ff0000', '#00ff00', '#0000ff']
 
     plotter = NetworkPlotter(network, figsize=(10, 7))
 
-    plotter.draw_vertices(facecolor={key: colors[key_color[key]] for key in network.vertices()})
+    plotter.draw_vertices(facecolour={key: colours[key_colour[key]] for key in network.vertices()})
     plotter.draw_edges()
 
     plotter.show()

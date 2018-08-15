@@ -116,9 +116,9 @@ def volmesh_from_wireframe(cls, edges):
 def volmesh_draw(volmesh,
                  layer=None,
                  clear_layer=False,
-                 vertexcolor=None,
-                 edgecolor=None,
-                 facecolor=None):
+                 vertexcolour=None,
+                 edgecolour=None,
+                 facecolour=None):
     """Draw a volmesh.
 
     Parameters
@@ -130,24 +130,24 @@ def volmesh_draw(volmesh,
         Default is to draw in the current layer.
     clear_layer : bool (False)
         Clear the current layer.
-    vertexcolor : str, tuple, list, dict (None)
-        The vertex color specification.
-        Default is to use the color of the parent layer.
-    edgecolor : str, tuple, list, dict (None)
-        The edge color specification.
-        Default is to use the color of the parent layer.
-    facecolor : str, tuple, list, dict (None)
-        The face color specification.
-        Default is to use the color of the parent layer.
+    vertexcolour : str, tuple, list, dict (None)
+        The vertex colour specification.
+        Default is to use the colour of the parent layer.
+    edgecolour : str, tuple, list, dict (None)
+        The edge colour specification.
+        Default is to use the colour of the parent layer.
+    facecolour : str, tuple, list, dict (None)
+        The face colour specification.
+        Default is to use the colour of the parent layer.
 
     Examples
     --------
     >>> volmesh_draw(volmesh)
     >>> volmesh_draw(volmesh, layer='SomeLayer')
     >>> volmesh_draw(volmesh, clear_layer=True)
-    >>> volmesh_draw(volmesh, vertexcolor='#ff0000')
-    >>> volmesh_draw(volmesh, edgecolor=(0, 255, 0))
-    >>> volmesh_draw(volmesh, facecolor={key: (0.0, 0.0, 0.5) for key in volmesh.faces()})
+    >>> volmesh_draw(volmesh, vertexcolour='#ff0000')
+    >>> volmesh_draw(volmesh, edgecolour=(0, 255, 0))
+    >>> volmesh_draw(volmesh, facecolour={key: (0.0, 0.0, 0.5) for key in volmesh.faces()})
 
     See Also
     --------
@@ -159,15 +159,15 @@ def volmesh_draw(volmesh,
     if clear_layer:
         artist.clear_layer()
     artist.clear()
-    artist.draw_vertices(color=vertexcolor)
-    artist.draw_edges(color=edgecolor)
-    artist.draw_faces(color=facecolor)
+    artist.draw_vertices(colour=vertexcolour)
+    artist.draw_edges(colour=edgecolour)
+    artist.draw_faces(colour=facecolour)
     artist.redraw()
 
 
 def volmesh_draw_vertices(volmesh,
                           keys=None,
-                          color=None,
+                          colour=None,
                           layer=None,
                           clear_layer=False,
                           redraw=True):
@@ -180,13 +180,13 @@ def volmesh_draw_vertices(volmesh,
     keys : list (None)
         A list of vertex keys identifying which vertices to draw.
         Default is to draw all vertices.
-    color : str, tuple, dict (None)
-        The color specififcation for the vertices.
-        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-        To apply the same color to all vertices, provide a single color specification.
-        Individual colors can be assigned using a dictionary of key-color pairs.
-        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).
-        Default is use the color of the parent layer.
+    colour : str, tuple, dict (None)
+        The colour specififcation for the vertices.
+        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
+        To apply the same colour to all vertices, provide a single colour specification.
+        Individual colours can be assigned using a dictionary of key-colour pairs.
+        Missing keys will be assigned the default vertex colour (``self.defaults['vertex.colour']``).
+        Default is use the colour of the parent layer.
     layer : str (None)
         The layer in which the vertices are drawn.
         Default is to draw in the current layer.
@@ -199,9 +199,9 @@ def volmesh_draw_vertices(volmesh,
     --------
     >>> volmesh_draw_vertices(volmesh)
     >>> volmesh_draw_vertices(volmesh, keys=volmesh.vertices_on_boundary())
-    >>> volmesh_draw_vertices(volmesh, color='#00ff00')
-    >>> color = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.vertices()}
-    >>> volmesh_draw_vertices(volmesh, color=color)
+    >>> volmesh_draw_vertices(volmesh, colour='#00ff00')
+    >>> colour = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.vertices()}
+    >>> volmesh_draw_vertices(volmesh, colour=colour)
 
     See Also
     --------
@@ -213,14 +213,14 @@ def volmesh_draw_vertices(volmesh,
     if clear_layer:
         artist.clear_layer()
     artist.clear_vertices()
-    artist.draw_vertices(color=color)
+    artist.draw_vertices(colour=colour)
     if redraw:
         artist.redraw()
 
 
 def volmesh_draw_edges(volmesh,
                        keys=None,
-                       color=None,
+                       colour=None,
                        layer=None,
                        clear_layer=False,
                        redraw=True):
@@ -233,13 +233,13 @@ def volmesh_draw_edges(volmesh,
     keys : list (None)
         A list of edge keys identifying which edges to draw.
         Default is to draw all edges.
-    color : str, tuple, dict (None)
-        The color specififcation for the edges.
-        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-        To apply the same color to all edges, provide a single color specification.
-        Individual colors can be assigned using a dictionary of key-color pairs.
-        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).
-        Default is use the color of the parent layer.
+    colour : str, tuple, dict (None)
+        The colour specififcation for the edges.
+        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
+        To apply the same colour to all edges, provide a single colour specification.
+        Individual colours can be assigned using a dictionary of key-colour pairs.
+        Missing keys will be assigned the default vertex colour (``self.defaults['vertex.colour']``).
+        Default is use the colour of the parent layer.
     layer : str (None)
         The layer in which the edges are drawn.
         Default is to draw in the current layer.
@@ -252,9 +252,9 @@ def volmesh_draw_edges(volmesh,
     --------
     >>> volmesh_draw_edges(volmesh)
     >>> volmesh_draw_edges(volmesh, keys=volmesh.edges_on_boundary())
-    >>> volmesh_draw_edges(volmesh, color='#00ff00')
-    >>> color = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.edges()}
-    >>> volmesh_draw_edges(volmesh, color=color)
+    >>> volmesh_draw_edges(volmesh, colour='#00ff00')
+    >>> colour = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.edges()}
+    >>> volmesh_draw_edges(volmesh, colour=colour)
 
     See Also
     --------
@@ -266,14 +266,14 @@ def volmesh_draw_edges(volmesh,
     if clear_layer:
         artist.clear_layer()
     artist.clear_edges()
-    artist.draw_edges(color=color)
+    artist.draw_edges(colour=colour)
     if redraw:
         artist.redraw()
 
 
 def volmesh_draw_faces(volmesh,
                        keys=None,
-                       color=None,
+                       colour=None,
                        layer=None,
                        clear_layer=False,
                        redraw=True):
@@ -286,13 +286,13 @@ def volmesh_draw_faces(volmesh,
     keys : list (None)
         A list of edge keys identifying which faces to draw.
         Default is to draw all faces.
-    color : str, tuple, dict (None)
-        The color specififcation for the faces.
-        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-        To apply the same color to all faces, provide a single color specification.
-        Individual colors can be assigned using a dictionary of key-color pairs.
-        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).
-        Default is use the color of the parent layer.
+    colour : str, tuple, dict (None)
+        The colour specififcation for the faces.
+        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
+        To apply the same colour to all faces, provide a single colour specification.
+        Individual colours can be assigned using a dictionary of key-colour pairs.
+        Missing keys will be assigned the default vertex colour (``self.defaults['vertex.colour']``).
+        Default is use the colour of the parent layer.
     layer : str (None)
         The layer in which the faces are drawn.
         Default is to draw in the current layer.
@@ -305,9 +305,9 @@ def volmesh_draw_faces(volmesh,
     --------
     >>> volmesh_draw_faces(volmesh)
     >>> volmesh_draw_faces(volmesh, keys=volmesh.faces_on_boundary())
-    >>> volmesh_draw_faces(volmesh, color='#00ff00')
-    >>> color = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.faces()}
-    >>> volmesh_draw_faces(volmesh, color=color)
+    >>> volmesh_draw_faces(volmesh, colour='#00ff00')
+    >>> colour = {key: (('#ff0000') if volmesh.vertex_is_on_boundary(key) else ('#00ff00')) for key in volmesh.faces()}
+    >>> volmesh_draw_faces(volmesh, colour=colour)
 
     See Also
     --------
@@ -319,7 +319,7 @@ def volmesh_draw_faces(volmesh,
     if clear_layer:
         artist.clear_layer()
     artist.clear_faces()
-    artist.draw_faces(color=color)
+    artist.draw_faces(colour=colour)
     if redraw:
         artist.redraw()
 

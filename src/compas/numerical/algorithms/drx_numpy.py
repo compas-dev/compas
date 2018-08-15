@@ -466,11 +466,11 @@ if __name__ == "__main__":
     #     lines.append({
     #         'start': network.vertex_coordinates(u, 'xy'),
     #         'end'  : network.vertex_coordinates(v, 'xy'),
-    #         'color': '#cccccc'
+    #         'colour': '#cccccc'
     #     })
 
     # plotter = NetworkPlotter(network, figsize=(10, 7))
-    # plotter.draw_vertices(facecolor={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
+    # plotter.draw_vertices(facecolour={key: '#ff0000' for key in network.vertices_where({'is_fixed': True})})
     # plotter.draw_lines(lines)
     # plotter.draw_edges()
 
@@ -521,11 +521,11 @@ if __name__ == "__main__":
     #     lines.append({
     #         'start': network.vertex_coordinates(u, 'xy'),
     #         'end'  : network.vertex_coordinates(v, 'xy'),
-    #         'color': '#cccccc'
+    #         'colour': '#cccccc'
     #     })
 
     # plotter = NetworkPlotter(network, figsize=(10, 7))
-    # plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in network.vertices_where({'is_fixed': True})})
+    # plotter.draw_vertices(radius=0.005, facecolour={i: '#ff0000' for i in network.vertices_where({'is_fixed': True})})
     # plotter.draw_lines(lines)
     # plotter.draw_edges()
 

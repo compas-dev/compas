@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function
 
 from compas.files import URDF
 
-from .geometry import Box, Capsule, Color, Cylinder, Geometry, Material, MeshDescriptor, Origin, Sphere, Texture
+from .geometry import Box, Capsule, colour, Cylinder, Geometry, Material, MeshDescriptor, Origin, Sphere, Texture
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
@@ -130,5 +130,5 @@ URDF.add_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collisi
 URDF.add_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule')
 
 URDF.add_parser(Material, 'robot/link/visual/material')
-URDF.add_parser(Color, 'robot/link/visual/material/color')
+URDF.add_parser(colour, 'robot/link/visual/material/colour')
 URDF.add_parser(Texture, 'robot/link/visual/material/texture')
