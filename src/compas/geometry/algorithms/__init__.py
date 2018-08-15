@@ -14,6 +14,7 @@ from .planarisation import *
 from .purging import *
 from .smoothing import *
 from .smoothing_cpp import *
+from .offset import *
 
 from . import bbox
 from . import bbox_numpy
@@ -29,6 +30,7 @@ from . import planarisation
 from . import purging
 from . import smoothing
 from . import smoothing_cpp
+from . import offset
 
 __all__ = []
 
@@ -43,3 +45,4 @@ __all__ += parallelisation.__all__
 __all__ += planarisation.__all__
 __all__ += purging.__all__
 __all__ += smoothing.__all__ + smoothing_cpp.__all__
+__all__ += offset.__all__
