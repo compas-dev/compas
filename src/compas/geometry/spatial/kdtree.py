@@ -22,7 +22,7 @@ Node = collections.namedtuple("Node", 'point axis label left right')
 
 
 class KDTree(object):
-    """A tree for nearest neighbour search in a k-dimensional space.
+    """A tree for nearest neighbor search in a k-dimensional space.
 
     Parameters
     ----------
@@ -45,8 +45,8 @@ class KDTree(object):
     ----------
     .. [1] Wikipedia. *k-d tree*.
            Available at: https://en.wikipedia.org/wiki/K-d_tree.
-    .. [2] Dell'Amico, M. *KD-Tree for nearest neighbour search in a K-dimensional space (Python recipe)*.
-           Available at: http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbour-search-in-a-k-dimensional-space/.
+    .. [2] Dell'Amico, M. *KD-Tree for nearest neighbor search in a K-dimensional space (Python recipe)*.
+           Available at: http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space/.
 
     Examples
     --------
