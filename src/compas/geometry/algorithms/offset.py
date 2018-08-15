@@ -2,6 +2,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import math
+
+from copy import deepcopy
+
 from compas.geometry.basic import scale_vector
 from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import add_vectors
@@ -13,6 +17,7 @@ from compas.geometry.average import centroid_points
 from compas.geometry.intersections import intersection_line_line
 
 from compas.geometry.normals import normal_polygon
+from compas.geometry.normals import normal_triangle
 
 
 __author__    = ['Tom Van Mele', ]
