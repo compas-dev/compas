@@ -604,7 +604,7 @@ class MOGA(object):
     def calculate_crowding_distance(self):
         """This function calculates the crowding distance for all inividuals in the population.
         The crowding distance computes the volume of the hypercube that surrounds each individual
-        and whose boundaries are determined by their closest neighbors in the objective space. The
+        and whose boundaries are determined by their closest neighbours in the objective space. The
         crowdng distance is used by NSGA-II to better distribute the population allong the Pareto
         front and avoid crowded areas, thus better representing the variety of solutions in the front.
         """
