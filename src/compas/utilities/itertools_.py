@@ -97,7 +97,7 @@ def quantify(iterable, pred=bool):
 def padnone(iterable):
     """Returns the sequence elements and then returns None indefinitely.
 
-    Useful for emulating the behaviour of the built-in map() function.
+    Useful for emulating the behavior of the built-in map() function.
     """
     return chain(iterable, repeat(None))
 
