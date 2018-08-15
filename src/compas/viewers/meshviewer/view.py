@@ -78,20 +78,20 @@ class View(GLWidget):
         return flist(face[::-1] for face in self.mesh.faces)
 
     @property
-    def array_vertices_colour(self):
-        return flist(hex_to_rgb(self.settings['vertices.colour']) for key in self.mesh.vertices)
+    def array_vertices_color(self):
+        return flist(hex_to_rgb(self.settings['vertices.color']) for key in self.mesh.vertices)
 
     @property
-    def array_edges_colour(self):
-        return flist(hex_to_rgb(self.settings['edges.colour']) for key in self.mesh.vertices)
+    def array_edges_color(self):
+        return flist(hex_to_rgb(self.settings['edges.color']) for key in self.mesh.vertices)
 
     @property
-    def array_faces_colour_front(self):
-        return flist(hex_to_rgb(self.settings['faces.colour:front']) for key in self.mesh.xyz)
+    def array_faces_color_front(self):
+        return flist(hex_to_rgb(self.settings['faces.color:front']) for key in self.mesh.xyz)
 
     @property
-    def array_faces_colour_back(self):
-        return flist(hex_to_rgb(self.settings['faces.colour:back']) for key in self.mesh.xyz)
+    def array_faces_color_back(self):
+        return flist(hex_to_rgb(self.settings['faces.color:back']) for key in self.mesh.xyz)
 
     # ==========================================================================
     # CAD
@@ -132,10 +132,10 @@ class View(GLWidget):
             'edges'            : self.make_index_buffer(self.array_edges),
             'faces:front'      : self.make_index_buffer(self.array_faces_front),
             'faces:back'       : self.make_index_buffer(self.array_faces_back),
-            'vertices.colour'   : self.make_vertex_buffer(self.array_vertices_colour, dynamic=True),
-            'edges.colour'      : self.make_vertex_buffer(self.array_edges_colour, dynamic=True),
-            'faces.colour:front': self.make_vertex_buffer(self.array_faces_colour_front, dynamic=True),
-            'faces.colour:back' : self.make_vertex_buffer(self.array_faces_colour_back, dynamic=True),
+            'vertices.color'   : self.make_vertex_buffer(self.array_vertices_color, dynamic=True),
+            'edges.color'      : self.make_vertex_buffer(self.array_edges_color, dynamic=True),
+            'faces.color:front': self.make_vertex_buffer(self.array_faces_color_front, dynamic=True),
+            'faces.color:back' : self.make_vertex_buffer(self.array_faces_color_back, dynamic=True),
         }
         self.n = len(self.array_xyz)
         self.v = len(self.array_vertices)
@@ -147,40 +147,40 @@ class View(GLWidget):
             return
 
         glEnableClientState(GL_VERTEX_ARRAY)
-        glEnableClientState(GL_colour_ARRAY)
+        glEnableClientState(GL_COLOR_ARRAY)
 
         glBindBuffer(GL_ARRAY_BUFFER, self.buffers['xyz'])
         glVertexPointer(3, GL_FLOAT, 0, None)
 
         if self.settings['faces.on']:
-            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.colour:front'])
-            glcolourPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:front'])
+            glColorPointer(3, GL_FLOAT, 0, None)
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:front'])
             glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
 
-            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.colour:back'])
-            glcolourPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['faces.color:back'])
+            glColorPointer(3, GL_FLOAT, 0, None)
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['faces:back'])
             glDrawElements(GL_TRIANGLES, self.f, GL_UNSIGNED_INT, None)
 
         if self.settings['edges.on']:
             glLineWidth(self.settings['edges.width:value'])
-            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['edges.colour'])
-            glcolourPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['edges.color'])
+            glColorPointer(3, GL_FLOAT, 0, None)
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['edges'])
             glDrawElements(GL_LINES, self.e, GL_UNSIGNED_INT, None)
 
         if self.settings['vertices.on']:
             glPointSize(self.settings['vertices.size:value'])
-            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['vertices.colour'])
-            glcolourPointer(3, GL_FLOAT, 0, None)
+            glBindBuffer(GL_ARRAY_BUFFER, self.buffers['vertices.color'])
+            glColorPointer(3, GL_FLOAT, 0, None)
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffers['vertices'])
             glDrawElements(GL_POINTS, self.v, GL_UNSIGNED_INT, None)
 
         if self.settings['normals.on']:
             pass
 
-        glDisableClientState(GL_colour_ARRAY)
+        glDisableClientState(GL_COLOR_ARRAY)
         glDisableClientState(GL_VERTEX_ARRAY)
 
 

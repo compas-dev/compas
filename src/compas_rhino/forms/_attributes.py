@@ -24,7 +24,7 @@ try:
     from System.Windows.Forms import DataGridViewContentAlignment
     from System.Drawing import Point
     from System.Drawing import Size
-    from System.Drawing import colour
+    from System.Drawing import Color
     from System.Drawing import Font
     from System.Drawing import FontStyle
 
@@ -66,8 +66,8 @@ class AttributesForm(Form):
         table.Columns[0].Name = 'Key'
         table.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable
         table.Columns[0].ReadOnly = True
-        table.Columns[0].DefaultCellStyle.SelectionBackcolour = colour.FromArgb(238, 238, 238)
-        table.Columns[0].DefaultCellStyle.Backcolour = colour.FromArgb(238, 238, 238)
+        table.Columns[0].DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 238, 238)
+        table.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(238, 238, 238)
         for i in range(len(self.names)):
             column = table.Columns[i + 1]
             column.Name = self.names[i]
@@ -156,8 +156,8 @@ class AttributesForm(Form):
 #             table.Columns[0].Name = 'Key'
 #             table.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable
 #             table.Columns[0].ReadOnly = True
-#             table.Columns[0].DefaultCellStyle.SelectionBackcolour = colour.FromArgb(238, 238, 238)
-#             table.Columns[0].DefaultCellStyle.Backcolour = colour.FromArgb(238, 238, 238)
+#             table.Columns[0].DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 238, 238)
+#             table.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(238, 238, 238)
 #             table.Columns[1].Name = 'Value'
 #             table.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable
 #             keys = sorted(settings.keys())
@@ -216,37 +216,37 @@ def make_table(name, autosize=True):
     table.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
     table.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
     # back
-    table.Backcolour = colour.White
-    table.Backgroundcolour = colour.White
+    table.BackColor = Color.White
+    table.BackgroundColor = Color.White
     # border
     # table.BorderStyle = BorderStyle.None
     table.CellBorderStyle = DataGridViewCellBorderStyle.Single
     # column header
     table.ColumnHeadersVisible = True
-    table.ColumnHeadersDefaultCellStyle.Backcolour = colour.FromArgb(238, 238, 238)
+    table.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(238, 238, 238)
     table.ColumnHeadersDefaultCellStyle.Font = Font(table.Font, FontStyle.Bold)
-    table.ColumnHeadersDefaultCellStyle.Forecolour = colour.Black
+    table.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black
     table.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single
     # default cell
-    table.DefaultCellStyle.SelectionBackcolour = colour.White
-    table.DefaultCellStyle.SelectionForecolour = colour.Black
+    table.DefaultCellStyle.SelectionBackColor = Color.White
+    table.DefaultCellStyle.SelectionForeColor = Color.Black
     # dock
     if autosize:
         table.Dock = System.Windows.Forms.DockStyle.Fill
     # enable
     table.EnableHeadersVisualStyles = False
     # grid
-    table.Gridcolour = colour.FromArgb(200, 200, 200)
+    table.GridColor = Color.FromArgb(200, 200, 200)
     # select
     table.MultiSelect = False
     # name
     table.Name = name
     # row header
     table.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single
-    table.RowHeadersDefaultCellStyle.Backcolour = colour.FromArgb(240, 240, 240)
-    table.RowHeadersDefaultCellStyle.Forecolour = colour.Empty
-    table.RowHeadersDefaultCellStyle.SelectionBackcolour = colour.Empty
-    table.RowHeadersDefaultCellStyle.SelectionForecolour = colour.Empty
+    table.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240)
+    table.RowHeadersDefaultCellStyle.ForeColor = Color.Empty
+    table.RowHeadersDefaultCellStyle.SelectionBackColor = Color.Empty
+    table.RowHeadersDefaultCellStyle.SelectionForeColor = Color.Empty
     table.RowHeadersVisible = False
     # scrolling
     # table.ScrollBars = ScrollBars.None
@@ -259,7 +259,7 @@ def make_table(name, autosize=True):
 
 def make_page(name, title, index, padding=0):
     page = TabPage()
-    page.Backcolour = colour.White
+    page.BackColor = Color.White
     page.Dock = DockStyle.Fill
     page.Padding = Padding(padding)
     page.TabIndex = index

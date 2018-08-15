@@ -24,10 +24,10 @@ __all__ = ['MultiMeshViewer', ]
 class MultiMeshViewer(Viewer):
     """"""
 
-    def __init__(self, meshes, colours, width=1440, height=900):
+    def __init__(self, meshes, colors, width=1440, height=900):
         super(MultiMeshViewer, self).__init__(width=width, height=height)
         self.meshes = meshes
-        self.colours = colours
+        self.colors = colors
 
     def display(self):
         for i in range(len(self.meshes)):
@@ -35,17 +35,17 @@ class MultiMeshViewer(Viewer):
 
             polygons = []
             for fkey in mesh.faces():
-                colour_front = self.colours[i]
-                colour_back  = (0.2, 0.2, 0.2, 1.0)
+                color_front = self.colors[i]
+                color_back  = (0.2, 0.2, 0.2, 1.0)
                 polygons.append({'points': mesh.face_coordinates(fkey),
-                                 'colour.front': colour_front,
-                                 'colour.back': colour_back})
+                                 'color.front': color_front,
+                                 'color.back': color_back})
 
             lines = []
             for u, v in mesh.wireframe():
                 lines.append({'start': mesh.vertex_coordinates(u),
                               'end': mesh.vertex_coordinates(v),
-                              'colour': (0.1, 0.1, 0.1),
+                              'color': (0.1, 0.1, 0.1),
                               'width': 1.})
 
             xdraw_polygons(polygons)

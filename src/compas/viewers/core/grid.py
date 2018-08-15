@@ -23,15 +23,15 @@ __all__ = ['Grid', ]
 
 class Grid(object):
     """"""
-    def __init__(self, x=10, y=10, linewidth=1, colour=(0.9, 0.9, 0.9), dotted=False):
+    def __init__(self, x=10, y=10, linewidth=1, color=(0.9, 0.9, 0.9), dotted=False):
         self.xlim = -x, x
         self.ylim = -y, y
         self.linewidth = linewidth
-        self.colour = colour
+        self.color = color
         self.dotted = dotted
 
     def draw(self):
-        glcolour3f(*self.colour)
+        glColor3f(*self.color)
         glLineWidth(self.linewidth)
 
         if self.dotted:
@@ -42,27 +42,27 @@ class Grid(object):
 
         for i in range(self.xlim[0], self.xlim[1] + 1):
             if i == 0:
-                glcolour3f(*self.colour)
+                glColor3f(*self.color)
                 glVertex3f(i, self.ylim[0], 0)
                 glVertex3f(i, 0, 0)
-                glcolour3f(0.0, 1.0, 0.0)
+                glColor3f(0.0, 1.0, 0.0)
                 glVertex3f(i, 0, 0)
                 glVertex3f(i, self.ylim[1], 0)
             else:
-                glcolour3f(*self.colour)
+                glColor3f(*self.color)
                 glVertex3f(i, self.ylim[0], 0)
                 glVertex3f(i, self.ylim[1], 0)
 
         for i in range(self.ylim[0], self.ylim[1] + 1):
             if i == 0:
-                glcolour3f(*self.colour)
+                glColor3f(*self.color)
                 glVertex3f(self.xlim[0], i, 0)
                 glVertex3f(0, i, 0)
-                glcolour3f(1.0, 0.0, 0.0)
+                glColor3f(1.0, 0.0, 0.0)
                 glVertex3f(0, i, 0)
                 glVertex3f(self.xlim[1], i, 0)
             else:
-                glcolour3f(*self.colour)
+                glColor3f(*self.color)
                 glVertex3f(self.xlim[0], i, 0)
                 glVertex3f(self.xlim[1], i, 0)
 

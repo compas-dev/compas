@@ -19,12 +19,12 @@ __all__ = [
     'i_to_black',
     'rgb_to_hex',
     'hex_to_rgb',
-    'colour_to_colourdict',
-    'colour_to_rgb',
+    'color_to_colordict',
+    'color_to_rgb',
     'rgb_to_rgb',
-    'is_colour_rgb',
-    'is_colour_hex',
-    'is_colour_light'
+    'is_color_rgb',
+    'is_color_hex',
+    'is_color_light'
 ]
 
 
@@ -36,7 +36,7 @@ except Exception:
     HEX_DEC = {v: int(v, 16) for v in [x + y for x in BASE16 for y in BASE16]}
 
 
-class colour(object):
+class Color(object):
     """"""
 
     def __init__(self):
@@ -119,15 +119,15 @@ def i_to_black(i):
 # see: http://stackoverflow.com/questions/4296249/how-do-i-convert-a-hex-triplet-to-an-rgb-tuple-and-back
 
 
-def is_colour_rgb(colour):
-    if isinstance(colour, (tuple, list)):
-        return len(colour) == 3
+def is_color_rgb(color):
+    if isinstance(color, (tuple, list)):
+        return len(color) == 3
     return False
 
 
-def is_colour_hex(colour):
-    if isinstance(colour, str):
-        match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', colour)
+def is_color_hex(color):
+    if isinstance(color, str):
+        match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
         if match:
             return True
         return False
@@ -166,53 +166,53 @@ def hex_to_rgb(value, normalize=False):
     return r, g, b
 
 
-def colour_to_colourdict(colour, keys, default=None, colourformat='hex', normalize=False):
-    colour = colour or default
+def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=False):
+    color = color or default
 
-    if colour is None:
+    if color is None:
         return {key: None for key in keys}
 
     # if input is hex
     # and output should be rgb
-    if isinstance(colour, str):
-        if colourformat == 'rgb':
-            colour = hex_to_rgb(colour, normalize=normalize)
-        return {key: colour for key in keys}
+    if isinstance(color, str):
+        if colorformat == 'rgb':
+            color = hex_to_rgb(color, normalize=normalize)
+        return {key: color for key in keys}
 
     # if input is rgb
     # and output should be hex
-    if isinstance(colour, (tuple, list)) and len(colour) == 3:
-        if colourformat == 'hex':
-            colour = rgb_to_hex(colour)
-        return {key: colour for key in keys}
+    if isinstance(color, (tuple, list)) and len(color) == 3:
+        if colorformat == 'hex':
+            color = rgb_to_hex(color)
+        return {key: color for key in keys}
 
-    if isinstance(colour, dict):
-        for k, c in colour.items():
+    if isinstance(color, dict):
+        for k, c in color.items():
 
             # if input is hex
             # and output should be rgb
             if isinstance(c, str):
-                if colourformat == 'rgb':
-                    colour[k] = hex_to_rgb(c)
+                if colorformat == 'rgb':
+                    color[k] = hex_to_rgb(c)
 
             # if input is rgb
             # and output should be hex
             if isinstance(c, (tuple, list)) and len(c) == 3:
-                if colourformat == 'hex':
-                    colour[k] = rgb_to_hex(c)
+                if colorformat == 'hex':
+                    color[k] = rgb_to_hex(c)
 
-        return {key: (default if key not in colour else colour[key]) for key in keys}
+        return {key: (default if key not in color else color[key]) for key in keys}
 
-    raise Exception('This is not a valid colour format: {0}'.format(type(colour)))
+    raise Exception('This is not a valid color format: {0}'.format(type(color)))
 
 
-def colour_to_rgb(colour, normalize=False):
-    if isinstance(colour, str):
-        r, g, b = hex_to_rgb(colour)
-    elif isinstance(colour, int):
-        r, g, b = i_to_rgb(colour)
+def color_to_rgb(color, normalize=False):
+    if isinstance(color, str):
+        r, g, b = hex_to_rgb(color)
+    elif isinstance(color, int):
+        r, g, b = i_to_rgb(color)
     else:
-        r, g, b = colour
+        r, g, b = color
     if not normalize:
         return r, g, b
     if isinstance(r, float):
@@ -220,11 +220,11 @@ def colour_to_rgb(colour, normalize=False):
     return r / 255., g / 255., b / 255.
 
 
-def is_colour_light(colour):
-    if is_colour_hex(colour):
-        rgb = hex_to_rgb(colour)
+def is_color_light(color):
+    if is_color_hex(color):
+        rgb = hex_to_rgb(color)
     else:
-        rgb = colour
+        rgb = color
     r, g, b = rgb_to_rgb(rgb)
     r = r / 255.0
     g = g / 255.0
@@ -249,4 +249,4 @@ if __name__ == '__main__':
     print(rgb_to_hex(1.0, 1.0, 1.0))
     print(rgb_to_hex(255, 255, 255))
     print(rgb_to_hex(255., 255., 255.0))
-    print(is_colour_hex('#000'))
+    print(is_color_hex('#000'))

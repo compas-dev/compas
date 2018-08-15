@@ -59,7 +59,7 @@ def mesh_dual(mesh, cls=None):
             lines.append({
                 'start': mesh.vertex_coordinates(u, 'xy'),
                 'end'  : mesh.vertex_coordinates(v, 'xy'),
-                'colour': '#cccccc',
+                'color': '#cccccc',
                 'width': 1.0
             })
 
@@ -67,7 +67,7 @@ def mesh_dual(mesh, cls=None):
 
         plotter.draw_lines(lines)
 
-        plotter.draw_vertices(facecolour='#eeeeee', edgecolour='#000000', radius=0.2, text='key')
+        plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.2, text='key')
         plotter.draw_edges()
 
         plotter.show()
@@ -146,21 +146,21 @@ def network_dual(network, cls=None):
                 lines.append({
                     'start': network.vertex_coordinates(u, 'xy'),
                     'end': network.vertex_coordinates(v, 'xy'),
-                    'colour': '#cccccc'
+                    'color': '#cccccc'
                 })
 
             points = []
             for key in network.vertices():
                 points.append({
                     'pos': network.vertex_coordinates(key, 'xy'),
-                    'facecolour': '#ff0000',
-                    'edgecolour': '#000000',
+                    'facecolor': '#ff0000',
+                    'edgecolor': '#000000',
                     'radius': 0.075,
                 })
 
             plotter.draw_lines(lines)
             plotter.draw_points(points)
-            plotter.draw_vertices(radius=0.15, facecolour='#ffffff', edgecolour='#444444', text={key: key for key in network.vertices()})
+            plotter.draw_vertices(radius=0.15, facecolor='#ffffff', edgecolor='#444444', text={key: key for key in network.vertices()})
             plotter.draw_edges()
 
             plotter.show()
@@ -240,13 +240,13 @@ def network_find_faces(network, breakpoints=None):
 
             plotter.draw_vertices(
                 radius=0.075,
-                facecolour={key: '#cccccc' for key in network.leaves()}
+                facecolor={key: '#cccccc' for key in network.leaves()}
             )
             plotter.draw_edges(
-                colour={(u, v): '#cccccc' for u, v in network.edges()}
+                color={(u, v): '#cccccc' for u, v in network.edges()}
             )
             plotter.draw_faces(
-                facecolour={fkey: '#eeeeee' for fkey in network.faces()},
+                facecolor={fkey: '#eeeeee' for fkey in network.faces()},
                 text={fkey: fkey for fkey in network.faces()}
             )
 
@@ -270,13 +270,13 @@ def network_find_faces(network, breakpoints=None):
 
             plotter.draw_vertices(
                 radius=0.075,
-                facecolour={key: '#cccccc' for key in network.leaves()}
+                facecolor={key: '#cccccc' for key in network.leaves()}
             )
             plotter.draw_edges(
-                colour={(u, v): '#cccccc' for u, v in network.edges()}
+                color={(u, v): '#cccccc' for u, v in network.edges()}
             )
             plotter.draw_faces(
-                facecolour={fkey: '#eeeeee' for fkey in network.faces()},
+                facecolor={fkey: '#eeeeee' for fkey in network.faces()},
                 text={fkey: fkey for fkey in network.faces()}
             )
 
@@ -468,15 +468,15 @@ if __name__ == '__main__':
         lines.append({
             'start': mesh.vertex_coordinates(u, 'xy'),
             'end'  : mesh.vertex_coordinates(v, 'xy'),
-            'colour': '#cccccc',
+            'color': '#cccccc',
             'width': 0.5
         })
 
     plotter = MeshPlotter(dual, figsize=(10, 7))
 
     plotter.draw_lines(lines)
-    plotter.draw_vertices(facecolour='#eeeeee', edgecolour='#000000', radius=0.05)
-    plotter.draw_faces(facecolour='#eeeeee', edgecolour='#eeeeee', text='key')
+    plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.05)
+    plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text='key')
     plotter.draw_edges()
 
     plotter.show()

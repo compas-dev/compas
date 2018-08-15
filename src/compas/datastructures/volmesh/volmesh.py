@@ -125,11 +125,11 @@ class VolMesh(FromToData,
         self.edge     = {}
         self.attributes = {
             'name'                : 'VolMesh',
-            'colour.vertex'        : (255, 255, 255),
-            'colour.edge'          : (0, 0, 0),
-            'colour.face'          : (200, 200, 200),
-            'colour.normal:vertex' : (0, 255, 0),
-            'colour.normal:face'   : (0, 255, 0),
+            'color.vertex'        : (255, 255, 255),
+            'color.edge'          : (0, 0, 0),
+            'color.face'          : (200, 200, 200),
+            'color.normal:vertex' : (0, 255, 0),
+            'color.normal:face'   : (0, 255, 0),
         }
         self.default_vertex_attributes = {
             'x': 0.0,
@@ -167,21 +167,21 @@ under construction
         self.attributes['name'] = value
 
     @property
-    def colour(self):
+    def color(self):
         return dict(
             (key[6:], self.attributes[key])
-            for key in self.attributes if key.startswith('colour.')
+            for key in self.attributes if key.startswith('color.')
         )
 
-    @colour.setter
-    def colour(self, value):
+    @color.setter
+    def color(self, value):
         try:
             value[0]
             value[1]
             value[1][2]
         except Exception:
             return
-        self.attributes['colour.{0}'.format(value[0])] = value[1]
+        self.attributes['color.{0}'.format(value[0])] = value[1]
 
     @property
     def data(self):
@@ -884,9 +884,9 @@ if __name__ == '__main__':
     viewer.grid_on = False
     viewer.axes_on = False
 
-    viewer.axes.x_colour = (0.1, 0.1, 0.1)
-    viewer.axes.y_colour = (0.1, 0.1, 0.1)
-    viewer.axes.z_colour = (0.1, 0.1, 0.1)
+    viewer.axes.x_color = (0.1, 0.1, 0.1)
+    viewer.axes.y_color = (0.1, 0.1, 0.1)
+    viewer.axes.z_color = (0.1, 0.1, 0.1)
 
     viewer.setup()
 

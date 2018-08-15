@@ -98,11 +98,11 @@ class Controller(core.controller.Controller):
     settings['normals.scale:step'] = 1
     settings['normals.scale:scale'] = 0.1
 
-    settings['vertices.colour'] = '#0092d2'
-    settings['edges.colour'] = '#666666'
-    settings['faces.colour:front'] = '#cccccc'
-    settings['faces.colour:back'] = '#ff5e99'
-    settings['normals.colour'] = '#0092d2'
+    settings['vertices.color'] = '#0092d2'
+    settings['edges.color'] = '#666666'
+    settings['faces.color:front'] = '#cccccc'
+    settings['faces.color:back'] = '#ff5e99'
+    settings['normals.color'] = '#0092d2'
 
     settings['vertices.on'] = True
     settings['edges.on'] = True
@@ -299,36 +299,36 @@ class Controller(core.controller.Controller):
         self.view.updateGL()
 
     # ==========================================================================
-    # colour
+    # color
     # ==========================================================================
 
-    def change_vertices_colour(self, colour):
-        self.settings['vertices.colour'] = colour
-        self.view.update_vertex_buffer('vertices.colour', self.view.array_vertices_colour)
+    def change_vertices_color(self, color):
+        self.settings['vertices.color'] = color
+        self.view.update_vertex_buffer('vertices.color', self.view.array_vertices_color)
         self.view.updateGL()
         self.app.main.activateWindow()
 
-    def change_edges_colour(self, colour):
-        self.settings['edges.colour'] = colour
-        self.view.update_vertex_buffer('edges.colour', self.view.array_edges_colour)
+    def change_edges_color(self, color):
+        self.settings['edges.color'] = color
+        self.view.update_vertex_buffer('edges.color', self.view.array_edges_color)
         self.view.updateGL()
         self.app.main.activateWindow()
 
-    def change_faces_colour_front(self, colour):
-        self.settings['faces.colour:front'] = colour
-        self.view.update_vertex_buffer('faces.colour:front', self.view.array_faces_colour_front)
+    def change_faces_color_front(self, color):
+        self.settings['faces.color:front'] = color
+        self.view.update_vertex_buffer('faces.color:front', self.view.array_faces_color_front)
         self.view.updateGL()
         self.app.main.activateWindow()
 
-    def change_faces_colour_back(self, colour):
-        self.settings['faces.colour:back'] = colour
-        self.view.update_vertex_buffer('faces.colour:back', self.view.array_faces_colour_back)
+    def change_faces_color_back(self, color):
+        self.settings['faces.color:back'] = color
+        self.view.update_vertex_buffer('faces.color:back', self.view.array_faces_color_back)
         self.view.updateGL()
         self.app.main.activateWindow()
 
-    def change_normals_colour(self, colour):
-        self.settings['normals.colour'] = colour
-        self.view.update_vertex_buffer('normals.colour', self.view.array_normals_colour)
+    def change_normals_color(self, color):
+        self.settings['normals.color'] = color
+        self.view.update_vertex_buffer('normals.color', self.view.array_normals_color)
         self.view.updateGL()
         self.app.main.activateWindow()
 

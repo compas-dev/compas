@@ -43,7 +43,7 @@ objects
 
     Functions prefixed with ``get_`` imply that guids are obtained by applying some
     kind of filter. For example, get all lines with a specified naming pattern, on a
-    specific layer, or with a specific colour.
+    specific layer, or with a specific color.
 
     Functions prefixed with ``select_`` imply that guids are obtained by manual
     selection.
@@ -71,8 +71,8 @@ objects
     get_meshes
     get_mesh_face_vertices
     get_mesh_vertex_coordinates
-    get_mesh_vertex_colours
-    set_mesh_vertex_colours
+    get_mesh_vertex_colors
+    set_mesh_vertex_colors
     get_mesh_vertices_and_faces
     get_mesh_vertex_index
     get_mesh_face_index

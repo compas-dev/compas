@@ -147,7 +147,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
             lines.append({
                 'start': network.vertex_coordinates(u, 'xy'),
                 'end'  : network.vertex_coordinates(v, 'xy'),
-                'colour': '#cccccc',
+                'color': '#cccccc',
                 'width': 0.5
             })
 
@@ -156,7 +156,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         # run the dynamic relaxation
         # update vertices and edges
         # visualize the final geometry
-        # colour the edges according to the size of the forces
+        # color the edges according to the size of the forces
         # set the width of the edges proportional to the internal forces
 
         xyz, q, f, l, r = dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
@@ -177,12 +177,12 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         plotter.clear_edges()
 
         plotter.draw_vertices(
-            facecolour={key: '#000000' for key in network.vertices_where({'is_fixed': True})}
+            facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})}
         )
 
         plotter.draw_edges(
             text={(u, v): '{:.0f}'.format(attr['f']) for u, v, attr in network.edges(True)},
-            colour={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
+            color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
             width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)}
         )
 
@@ -411,7 +411,7 @@ if __name__ == "__main__":
         lines.append({
             'start': network.vertex_coordinates(u, 'xy'),
             'end'  : network.vertex_coordinates(v, 'xy'),
-            'colour': '#cccccc',
+            'color': '#cccccc',
             'width': 0.5
         })
 
@@ -420,7 +420,7 @@ if __name__ == "__main__":
     # draw the vertices and edges in the starting configuration
     # and pause for a second before starting the dynamic visualization
 
-    plotter.draw_vertices(facecolour={key: '#000000' for key in network.vertices_where({'is_fixed': True})})
+    plotter.draw_vertices(facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})})
     plotter.draw_edges()
 
     plotter.update(pause=1.0)
@@ -442,7 +442,7 @@ if __name__ == "__main__":
         attr['l'] = l[index]
 
     # visualize the final geometry
-    # colour the edges according to the size of the forces
+    # color the edges according to the size of the forces
     # set the width of the edges proportional to the internal forces
 
     fmax = max(network.get_edges_attribute('f'))
@@ -451,12 +451,12 @@ if __name__ == "__main__":
     plotter.clear_edges()
 
     plotter.draw_vertices(
-        facecolour={key: '#000000' for key in network.vertices_where({'is_fixed': True})}
+        facecolor={key: '#000000' for key in network.vertices_where({'is_fixed': True})}
     )
 
     plotter.draw_edges(
         text={(u, v): '{:.0f}'.format(attr['f']) for u, v, attr in network.edges(True)},
-        colour={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
+        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in network.edges(True)},
         width={(u, v): 10 * attr['f'] / fmax for u, v, attr in network.edges(True)}
     )
 

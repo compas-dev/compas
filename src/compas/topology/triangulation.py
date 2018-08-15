@@ -272,9 +272,9 @@ def voronoi_from_delaunay(delaunay):
 
         plotter.draw_vertices(
             radius=0.075,
-            facecolour={key: '#0092d2' for key in delaunay.vertices() if key not in delaunay.vertices_on_boundary()})
+            facecolor={key: '#0092d2' for key in delaunay.vertices() if key not in delaunay.vertices_on_boundary()})
 
-        plotter.draw_edges(colour='#cccccc')
+        plotter.draw_edges(color='#cccccc')
 
         plotter.show()
 
@@ -598,9 +598,9 @@ if __name__ == "__main__":
 
         plotter.draw_vertices(
             radius=0.075,
-            facecolour={key: '#0092d2' for key in mesh.vertices() if key not in mesh.vertices_on_boundary()})
+            facecolor={key: '#0092d2' for key in mesh.vertices() if key not in mesh.vertices_on_boundary()})
 
-        plotter.draw_edges(colour='#cccccc')
+        plotter.draw_edges(color='#cccccc')
 
         plotter.show()
 

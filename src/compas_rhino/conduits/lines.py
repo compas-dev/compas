@@ -10,7 +10,7 @@ try:
     from Rhino.Geometry import Line
 
     from System.Collections.Generic import List
-    from System.Drawing.colour import FromArgb
+    from System.Drawing.Color import FromArgb
 
 except ImportError:
     compas.raise_if_ironpython()
@@ -35,13 +35,13 @@ class LinesConduit(Conduit):
     thickness : list of int, optional
         The thickness of the individual lines.
         Default is ``1.0`` for all lines.
-    colour : list of str or 3-tuple, optional
-        The colours of the faces.
+    color : list of str or 3-tuple, optional
+        The colors of the faces.
         Default is ``(255, 255, 255)`` for all lines.
 
     Attributes
     ----------
-    colour
+    color
     thickness
     lines : list
         A list of start-end point pairs that define the lines.
@@ -76,15 +76,15 @@ class LinesConduit(Conduit):
             del conduit
 
     """
-    def __init__(self, lines, thickness=None, colour=None, **kwargs):
+    def __init__(self, lines, thickness=None, color=None, **kwargs):
         super(LinesConduit, self).__init__(**kwargs)
         self._default_thickness = 1.0
-        self._default_colour = FromArgb(255, 255, 255)
+        self._default_color = FromArgb(255, 255, 255)
         self._thickness = None
-        self._colour = None
+        self._color = None
         self.lines = lines or []
         self.thickness = thickness
-        self.colour = colour
+        self.color = color
 
     @property
     def thickness(self):
@@ -110,53 +110,53 @@ class LinesConduit(Conduit):
             self._thickness = thickness
 
     @property
-    def colour(self):
-        """list : Individual line colours.
+    def color(self):
+        """list : Individual line colors.
 
         Parameters
         ----------
-        colour : list of str or 3-tuple
-            The colour specification of each line in hex or RGB(255) format.
+        color : list of str or 3-tuple
+            The color specification of each line in hex or RGB(255) format.
 
         """
-        return self._colours
+        return self._colors
     
-    @colour.setter
-    def colour(self, colour):
-        if colour:
-            colour[:] = [FromArgb(* colour_to_rgb(c)) for c in colour]
+    @color.setter
+    def color(self, color):
+        if color:
+            color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
             l = len(self.lines)
-            c = len(colour)
+            c = len(color)
             if c < l:
-                colour += [self._default_colour for i in range(l - c)]
+                color += [self._default_color for i in range(l - c)]
             elif c > l:
-                colour[:] = colour[:l]
-            self._colour = colour
+                color[:] = color[:l]
+            self._color = color
 
     def DrawForeground(self, e):
-        if self.colour:
+        if self.color:
             draw = e.Display.DrawLine
             if self.thickness:
                 for i, (start, end) in enumerate(self.lines):
-                    draw(Point3d(*start), Point3d(*end), self.colour[i], self.thickness[i])
+                    draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
             else:
                 for i, (start, end) in enumerate(self.lines):
-                    draw(Point3d(*start), Point3d(*end), self.colour[i], self._default_thickness)
+                    draw(Point3d(*start), Point3d(*end), self.color[i], self._default_thickness)
 
         elif self.thickness:
             draw = e.Display.DrawLine
-            if self.colour:
+            if self.color:
                 for i, (start, end) in enumerate(self.lines):
-                    draw(Point3d(*start), Point3d(*end), self.colour[i], self.thickness[i])
+                    draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
             else:
                 for i, (start, end) in enumerate(self.lines):
-                    draw(Point3d(*start), Point3d(*end), self._default_colour, self.thickness[i])
+                    draw(Point3d(*start), Point3d(*end), self._default_color, self.thickness[i])
 
         else:
             lines = List[Line](len(self.lines))
             for start, end in self.lines:
                 lines.Add(Line(Point3d(*start), Point3d(*end)))
-            e.Display.DrawLines(lines, self._default_colour, self._default_thickness)
+            e.Display.DrawLines(lines, self._default_color, self._default_thickness)
 
 
 # ==============================================================================

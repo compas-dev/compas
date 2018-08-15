@@ -59,12 +59,12 @@ class FaceNetwork(FaceHelpers,
         plotter = FaceNetworkPlotter(network)
 
         plotter.draw_vertices(
-            facecolour={key: '#ff0000' for key in network.leaves()},
+            facecolor={key: '#ff0000' for key in network.leaves()},
             radius=0.2,
             text={key: key for key in network.vertices()}
         )
 
-        plotter.draw_faces(facecolour='#eeeeee', edgecolour='#eeeeee')
+        plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee')
         plotter.draw_edges()
 
         plotter.show()
@@ -787,12 +787,12 @@ if __name__ == '__main__':
     plotter.defaults['vertex.fontsize'] = 8.0
 
     plotter.draw_vertices(
-        facecolour={key: '#ff0000' for key in network.leaves()},
+        facecolor={key: '#ff0000' for key in network.leaves()},
         radius=0.2,
         text={key: key for key in network.vertices()}
     )
 
-    plotter.draw_faces(text={key: str(key) for key in network.faces()}, facecolour='#eeeeee', edgecolour='#eeeeee')
-    plotter.draw_edges(colour={uv: '#ff0000' for uv in network.edges_on_boundary()})
+    plotter.draw_faces(text={key: str(key) for key in network.faces()}, facecolor='#eeeeee', edgecolor='#eeeeee')
+    plotter.draw_edges(color={uv: '#ff0000' for uv in network.edges_on_boundary()})
 
     plotter.show()

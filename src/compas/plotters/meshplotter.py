@@ -11,7 +11,7 @@ from matplotlib.patches import Circle
 from matplotlib.patches import Polygon
 
 from compas.utilities import valuedict
-from compas.utilities import colour_to_rgb
+from compas.utilities import color_to_rgb
 from compas.utilities import pairwise
 
 from compas.plotters.plotter import Plotter
@@ -90,21 +90,21 @@ class MeshPlotter(Plotter):
         self.facecollection = None
         self.defaults = {
             'vertex.radius'    : 0.1,
-            'vertex.facecolour' : '#ffffff',
-            'vertex.edgecolour' : '#000000',
+            'vertex.facecolor' : '#ffffff',
+            'vertex.edgecolor' : '#000000',
             'vertex.edgewidth' : 0.5,
-            'vertex.textcolour' : '#000000',
+            'vertex.textcolor' : '#000000',
             'vertex.fontsize'  : kwargs.get('fontsize', 10),
 
             'edge.width'    : 1.0,
-            'edge.colour'    : '#000000',
-            'edge.textcolour': '#000000',
+            'edge.color'    : '#000000',
+            'edge.textcolor': '#000000',
             'edge.fontsize' : kwargs.get('fontsize', 10),
 
-            'face.facecolour' : '#eeeeee',
-            'face.edgecolour' : '#000000',
+            'face.facecolor' : '#eeeeee',
+            'face.edgecolor' : '#000000',
             'face.edgewidth' : 0.1,
-            'face.textcolour' : '#000000',
+            'face.textcolor' : '#000000',
             'face.fontsize' : kwargs.get('fontsize', 10),
         }
 
@@ -118,10 +118,10 @@ class MeshPlotter(Plotter):
                       keys=None,
                       radius=None,
                       text=None,
-                      facecolour=None,
-                      edgecolour=None,
+                      facecolor=None,
+                      edgecolor=None,
                       edgewidth=None,
-                      textcolour=None,
+                      textcolor=None,
                       fontsize=None,
                       picker=None):
         """Draws the mesh vertices.
@@ -134,14 +134,14 @@ class MeshPlotter(Plotter):
             A list of radii for the vertices.
         text : list
             Strings to be displayed on the vertices.
-        facecolour : list
-            colour for the vertex circle fill.
-        edgecolour : list
-            colour for the vertex circle edge.
+        facecolor : list
+            Color for the vertex circle fill.
+        edgecolor : list
+            Color for the vertex circle edge.
         edgewidth : list
             Width for the vertex circle edge.
-        textcolour : list
-            colour for the text to be displayed on the vertices.
+        textcolor : list
+            Color for the text to be displayed on the vertices.
         fontsize : list
             Font size for the text to be displayed on the vertices.
 
@@ -168,10 +168,10 @@ class MeshPlotter(Plotter):
 
         radiusdict    = valuedict(keys, radius, self.defaults['vertex.radius'])
         textdict      = valuedict(keys, text, '')
-        facecolourdict = valuedict(keys, facecolour, self.defaults['vertex.facecolour'])
-        edgecolourdict = valuedict(keys, edgecolour, self.defaults['vertex.edgecolour'])
+        facecolordict = valuedict(keys, facecolor, self.defaults['vertex.facecolor'])
+        edgecolordict = valuedict(keys, edgecolor, self.defaults['vertex.edgecolor'])
         edgewidthdict = valuedict(keys, edgewidth, self.defaults['vertex.edgewidth'])
-        textcolourdict = valuedict(keys, textcolour, self.defaults['vertex.textcolour'])
+        textcolordict = valuedict(keys, textcolor, self.defaults['vertex.textcolor'])
         fontsizedict  = valuedict(keys, fontsize, self.defaults['vertex.fontsize'])
 
         points = []
@@ -180,10 +180,10 @@ class MeshPlotter(Plotter):
                 'pos'      : self.mesh.vertex_coordinates(key, 'xy'),
                 'radius'   : radiusdict[key],
                 'text'     : textdict[key],
-                'facecolour': facecolourdict[key],
-                'edgecolour': edgecolourdict[key],
+                'facecolor': facecolordict[key],
+                'edgecolor': edgecolordict[key],
                 'edgewidth': edgewidthdict[key],
-                'textcolour': textcolourdict[key],
+                'textcolor': textcolordict[key],
                 'fontsize' : fontsizedict[key]
             })
 
@@ -209,7 +209,7 @@ class MeshPlotter(Plotter):
             circles.append(Circle(c, r))
         self.vertexcollection.set_paths(circles)
 
-    def draw_as_lines(self, colour=None, width=None):
+    def draw_as_lines(self, color=None, width=None):
         # if len(args) > 0:
         #     return super(MeshPlotter, self).draw_lines(*args, **kwargs)
         lines = []
@@ -217,7 +217,7 @@ class MeshPlotter(Plotter):
             lines.append({
                 'start' : self.mesh.vertex_coordinates(u, 'xy'),
                 'end'   : self.mesh.vertex_coordinates(v, 'xy'),
-                'colour' : colour,
+                'color' : color,
                 'width' : width,
             })
         return super(MeshPlotter, self).draw_lines(lines)
@@ -225,9 +225,9 @@ class MeshPlotter(Plotter):
     def draw_edges(self,
                    keys=None,
                    width=None,
-                   colour=None,
+                   color=None,
                    text=None,
-                   textcolour=None,
+                   textcolor=None,
                    fontsize=None):
         """Draws the mesh edges.
 
@@ -237,12 +237,12 @@ class MeshPlotter(Plotter):
             The keys of the edges to plot.
         width : list
             Width of the mesh edges.
-        colour : list
-            colour for the edge lines.
+        color : list
+            Color for the edge lines.
         text : list
             Strings to be displayed on the edges.
-        textcolour : list
-            colour for the text to be displayed on the edges.
+        textcolor : list
+            Color for the text to be displayed on the edges.
         fontsize : list
             Font size for the text to be displayed on the edges.
 
@@ -262,9 +262,9 @@ class MeshPlotter(Plotter):
             pass
 
         widthdict     = valuedict(keys, width, self.defaults['edge.width'])
-        colourdict     = valuedict(keys, colour, self.defaults['edge.colour'])
+        colordict     = valuedict(keys, color, self.defaults['edge.color'])
         textdict      = valuedict(keys, text, '')
-        textcolourdict = valuedict(keys, textcolour, self.defaults['edge.textcolour'])
+        textcolordict = valuedict(keys, textcolor, self.defaults['edge.textcolor'])
         fontsizedict  = valuedict(keys, fontsize, self.defaults['edge.fontsize'])
 
         lines = []
@@ -273,9 +273,9 @@ class MeshPlotter(Plotter):
                 'start'    : self.mesh.vertex_coordinates(u, 'xy'),
                 'end'      : self.mesh.vertex_coordinates(v, 'xy'),
                 'width'    : widthdict[(u, v)],
-                'colour'    : colourdict[(u, v)],
+                'color'    : colordict[(u, v)],
                 'text'     : textdict[(u, v)],
-                'textcolour': textcolourdict[(u, v)],
+                'textcolor': textcolordict[(u, v)],
                 'fontsize' : fontsizedict[(u, v)]
             })
 
@@ -295,7 +295,7 @@ class MeshPlotter(Plotter):
             segments.append([self.mesh.vertex_coordinates(u, 'xy'), self.mesh.vertex_coordinates(v, 'xy')])
         self.edgecollection.set_segments(segments)
 
-    def highlight_path(self, path, edgecolour=None, edgetext=None, edgewidth=None):
+    def highlight_path(self, path, edgecolor=None, edgetext=None, edgewidth=None):
         lines = []
         for u, v in pairwise(path):
             sp = self.mesh.vertex_coordinates(u, 'xy')
@@ -304,17 +304,17 @@ class MeshPlotter(Plotter):
                 'start' : sp,
                 'end'   : ep,
                 'width' : edgewidth or self.defaults.get('edge.width', 2.0),
-                'colour' : edgecolour or self.defaults.get('edge.colour', '#ff0000')
+                'color' : edgecolor or self.defaults.get('edge.color', '#ff0000')
             })
         self.draw_lines(lines)
 
     def draw_faces(self,
                    keys=None,
                    text=None,
-                   facecolour=None,
-                   edgecolour=None,
+                   facecolor=None,
+                   edgecolor=None,
                    edgewidth=None,
-                   textcolour=None,
+                   textcolor=None,
                    fontsize=None):
         """Draws the mesh faces.
 
@@ -324,14 +324,14 @@ class MeshPlotter(Plotter):
             The keys of the edges to plot.
         text : list
             Strings to be displayed on the edges.
-        facecolour : list
-            colour for the face fill.
-        edgecolour : list
-            colour for the face edge.
+        facecolor : list
+            Color for the face fill.
+        edgecolor : list
+            Color for the face edge.
         edgewidth : list
             Width for the face edge.
-        textcolour : list
-            colour for the text to be displayed on the edges.
+        textcolor : list
+            Color for the text to be displayed on the edges.
         fontsize : list
             Font size for the text to be displayed on the edges.
 
@@ -350,10 +350,10 @@ class MeshPlotter(Plotter):
             pass
 
         textdict      = valuedict(keys, text, '')
-        facecolourdict = valuedict(keys, facecolour, self.defaults['face.facecolour'])
-        edgecolourdict = valuedict(keys, edgecolour, self.defaults['face.edgecolour'])
+        facecolordict = valuedict(keys, facecolor, self.defaults['face.facecolor'])
+        edgecolordict = valuedict(keys, edgecolor, self.defaults['face.edgecolor'])
         edgewidthdict = valuedict(keys, edgewidth, self.defaults['face.edgewidth'])
-        textcolourdict = valuedict(keys, textcolour, self.defaults['face.textcolour'])
+        textcolordict = valuedict(keys, textcolor, self.defaults['face.textcolor'])
         fontsizedict  = valuedict(keys, fontsize, self.defaults['face.fontsize'])
 
         polygons = []
@@ -361,10 +361,10 @@ class MeshPlotter(Plotter):
             polygons.append({
                 'points'   : self.mesh.face_coordinates(key, 'xy'),
                 'text'     : textdict[key],
-                'facecolour': facecolourdict[key],
-                'edgecolour': edgecolourdict[key],
+                'facecolor': facecolordict[key],
+                'edgecolor': edgecolordict[key],
                 'edgewidth': edgewidthdict[key],
-                'textcolour': textcolourdict[key],
+                'textcolor': textcolordict[key],
                 'fontsize' : fontsizedict[key]
             })
 
@@ -377,17 +377,17 @@ class MeshPlotter(Plotter):
         if self.facecollection:
             self.facecollection.remove()
 
-    def update_faces(self, facecolour=None):
+    def update_faces(self, facecolor=None):
         """Updates the plotter face collection based on the mesh."""
-        facecolour = valuedict(self.mesh.faces(), facecolour, self.defaults['face.facecolour'])
+        facecolor = valuedict(self.mesh.faces(), facecolor, self.defaults['face.facecolor'])
         polygons = []
-        facecolours = []
+        facecolors = []
         for fkey in self.mesh.faces():
             points = self.mesh.face_coordinates(fkey, 'xy')
             polygons.append(Polygon(points))
-            facecolours.append(colour_to_rgb(facecolour[fkey], normalize=True))
+            facecolors.append(color_to_rgb(facecolor[fkey], normalize=True))
         self.facecollection.set_paths(polygons)
-        self.facecollection.set_facecolour(facecolours)
+        self.facecollection.set_facecolor(facecolors)
 
 
 # ==============================================================================

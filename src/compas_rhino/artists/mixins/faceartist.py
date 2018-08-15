@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas
 
-from compas.utilities import colour_to_colourdict
+from compas.utilities import color_to_colordict
 
 import compas_rhino
 
@@ -67,7 +67,7 @@ class FaceArtist(object):
                 guids.append(guid)
         compas_rhino.delete_objects(guids)
 
-    def draw_faces(self, fkeys=None, colour=None, join_faces=False):
+    def draw_faces(self, fkeys=None, color=None, join_faces=False):
         """Draw a selection of faces.
 
         Parameters
@@ -75,16 +75,16 @@ class FaceArtist(object):
         fkeys : list
             A list of face keys identifying which faces to draw.
             The default is ``None``, in which case all faces are drawn.
-        colour : str, tuple, dict
-            The colour specififcation for the faces.
-            colours should be specified in the form of a string (hex colours) or
+        color : str, tuple, dict
+            The color specififcation for the faces.
+            Colors should be specified in the form of a string (hex colors) or
             as a tuple of RGB components.
-            To apply the same colour to all faces, provide a single colour
-            specification. Individual colours can be assigned using a dictionary
-            of key-colour pairs. Missing keys will be assigned the default face
-            colour (``self.defaults['face.colour']``).
+            To apply the same color to all faces, provide a single color
+            specification. Individual colors can be assigned using a dictionary
+            of key-color pairs. Missing keys will be assigned the default face
+            color (``self.defaults['face.color']``).
             The default is ``None``, in which case all faces are assigned the
-            default face colour.
+            default face color.
 
         Notes
         -----
@@ -94,17 +94,17 @@ class FaceArtist(object):
 
         """
         fkeys = fkeys or list(self.datastructure.faces())
-        colourdict = colour_to_colourdict(colour,
+        colordict = color_to_colordict(color,
                                        fkeys,
-                                       default=self.datastructure.attributes.get('colour.face'),
-                                       colourformat='rgb',
+                                       default=self.datastructure.attributes.get('color.face'),
+                                       colorformat='rgb',
                                        normalize=False)
         faces = []
         for fkey in fkeys:
             faces.append({
                 'points': self.datastructure.face_coordinates(fkey),
                 'name'  : self.datastructure.face_name(fkey),
-                'colour' : colourdict[fkey],
+                'color' : colordict[fkey],
                 'layer' : self.datastructure.get_face_attribute(fkey, 'layer', None)
             })
 
@@ -116,7 +116,7 @@ class FaceArtist(object):
         rs.ObjectName(guid, '{}.mesh'.format(self.datastructure.name))
         return guid
 
-    def draw_facelabels(self, text=None, colour=None):
+    def draw_facelabels(self, text=None, color=None):
         """Draw labels for a selection of faces.
 
         Parameters
@@ -124,15 +124,15 @@ class FaceArtist(object):
         text : dict
             A dictionary of face labels as key-text pairs.
             The default value is ``None``, in which case every face will be labelled with its key.
-        colour : str, tuple, dict
-            The colour sepcification of the labels.
-            String values are interpreted as hex colours (e.g. ``'#ff0000'`` for red).
+        color : str, tuple, dict
+            The color sepcification of the labels.
+            String values are interpreted as hex colors (e.g. ``'#ff0000'`` for red).
             Tuples are interpreted as RGB component specifications (e.g. ``(255, 0, 0) for red``.
             If a dictionary of specififcations is provided, the keys of the
-            should refer to face keys and the values should be colour
+            should refer to face keys and the values should be color
             specifications in the form of strings or tuples.
             The default value is ``None``, in which case the labels are assigned
-            the default face colour (``self.datastructure.attributes['colour.face']``).
+            the default face color (``self.datastructure.attributes['color.face']``).
 
         Notes
         -----
@@ -148,10 +148,10 @@ class FaceArtist(object):
         else:
             raise NotImplementedError
 
-        colourdict = colour_to_colourdict(colour,
+        colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.datastructure.attributes.get('colour.face'),
-                                       colourformat='rgb',
+                                       default=self.datastructure.attributes.get('color.face'),
+                                       colorformat='rgb',
                                        normalize=False)
 
         labels = []
@@ -159,7 +159,7 @@ class FaceArtist(object):
             labels.append({
                 'pos'   : self.datastructure.face_center(key),
                 'name'  : "{}.face.label.{}".format(self.datastructure.name, key),
-                'colour' : colourdict[key],
+                'color' : colordict[key],
                 'text'  : textdict[key],
                 'layer' : self.datastructure.get_face_attribute(key, 'layer', None)
             })

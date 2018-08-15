@@ -31,14 +31,14 @@ class VertexModifier(object):
 
     @staticmethod
     def move_vertex(self, key, constraint=None, allow_off=None):
-        colour = Rhino.ApplicationSettings.AppearanceSettings.Feedbackcolour
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
         nbrs  = [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbours(key)]
         nbrs  = [Point3d(*xyz) for xyz in nbrs]
 
         def OnDynamicDraw(sender, e):
             for ep in nbrs:
                 sp = e.CurrentPoint
-                e.Display.DrawDottedLine(sp, ep, colour)
+                e.Display.DrawDottedLine(sp, ep, color)
 
         gp = Rhino.Input.Custom.GetPoint()
         gp.SetCommandPrompt('Point to move to?')

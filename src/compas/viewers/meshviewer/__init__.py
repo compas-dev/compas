@@ -179,28 +179,28 @@ CONFIG = {
                     'text' : None,
                     'items': [
                         {
-                            'type'  : 'colourbutton',
-                            'text'  : 'colour vertices',
-                            'value' : Controller.settings['vertices.colour'],
-                            'action': 'change_vertices_colour',
+                            'type'  : 'colorbutton',
+                            'text'  : 'color vertices',
+                            'value' : Controller.settings['vertices.color'],
+                            'action': 'change_vertices_color',
                         },
                         {
-                            'type'  : 'colourbutton',
-                            'text'  : 'colour edges',
-                            'value' : Controller.settings['edges.colour'],
-                            'action': 'change_edges_colour',
+                            'type'  : 'colorbutton',
+                            'text'  : 'color edges',
+                            'value' : Controller.settings['edges.color'],
+                            'action': 'change_edges_color',
                         },
                         {
-                            'type'  : 'colourbutton',
-                            'text'  : 'colour faces (front)',
-                            'value' : Controller.settings['faces.colour:front'],
-                            'action': 'change_faces_colour_front',
+                            'type'  : 'colorbutton',
+                            'text'  : 'color faces (front)',
+                            'value' : Controller.settings['faces.color:front'],
+                            'action': 'change_faces_color_front',
                         },
                         {
-                            'type'  : 'colourbutton',
-                            'text'  : 'colour faces (back)',
-                            'value' : Controller.settings['faces.colour:back'],
-                            'action': 'change_faces_colour_back',
+                            'type'  : 'colorbutton',
+                            'text'  : 'color faces (back)',
+                            'value' : Controller.settings['faces.color:back'],
+                            'action': 'change_faces_color_back',
                         },
                     ]
                 },
@@ -302,8 +302,8 @@ QDockWidget#Sidebar {}
 QDockWidget#Console {}
 
 QDockWidget#Console QPlainTextEdit {
-background-colour: #222222;
-colour: #eeeeee;
+background-color: #222222;
+color: #eeeeee;
 border-top: 8px solid #cccccc;
 border-left: 1px solid #cccccc;
 border-right: 1px solid #cccccc;

@@ -30,8 +30,8 @@ class GaPlotter(object):
         boundaries: dict
             This dictionary contains all the max and min bounds for each optimization variable.
             ``boundaries[index] = [min,max]``.
-        colour_dict: dict
-            Index to colour dictionary.
+        color_dict: dict
+            Index to color dictionary.
         conversion_function: function
             If a function ``foo(x)`` is given, the fitness values will be displayed not as
             originally used during optimization, but as the output of ``foo(x)``. This is
@@ -64,7 +64,7 @@ class GaPlotter(object):
             The number of tics in the x axis or vertical lines in the visualization.
         """
         # self.boundaries = {}
-        self.colour_dict = {0: 'r', 1: 'y', 2: 'g', 3: 'c', 4: 'b', 5: 'k'}
+        self.color_dict = {0: 'r', 1: 'y', 2: 'g', 3: 'c', 4: 'b', 5: 'k'}
         self.conversion_function = None
         self.generation = 0
         self.fit_name = []
@@ -197,11 +197,11 @@ class GaPlotter(object):
         if not self.xticks:
             self.find_tick_size()
 
-        plt.plot(min_list, colour='black', lw=2, label='Minimum')
+        plt.plot(min_list, color='black', lw=2, label='Minimum')
         if self.plot_max:
-            plt.plot(max_list, colour='black', lw=1, label='Maximum')
+            plt.plot(max_list, color='black', lw=1, label='Maximum')
         if self.plot_avg:
-            plt.plot(avg_list, colour='red' , lw=1, label='Average')
+            plt.plot(avg_list, color='red' , lw=1, label='Average')
         plt.minorticks_on()
 
         plt.xlim((-self.xticks / 2.0, self.num_gen - self.start_from_gen))
@@ -222,9 +222,9 @@ class GaPlotter(object):
         print ('y_min', y_min)
 
         if self.min_fit:
-            plt.axhline(self.min_fit, colour='red', ls=':', lw=0.5)
+            plt.axhline(self.min_fit, color='red', ls=':', lw=0.5)
             string = self.fit_type + ' fit'
-            plt.text(-self.xticks / 20, self.min_fit, string, horizontalalignment='right', colour='red')
+            plt.text(-self.xticks / 20, self.min_fit, string, horizontalalignment='right', color='red')
             # self.min_fit,self.num_gen-self.start_from_gen
             if self.min_fit < min(min_list):
                 y_min = self.min_fit

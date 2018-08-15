@@ -10,7 +10,7 @@ try:
     import System
     from System.Drawing import Size
     from System.Drawing import Point
-    from System.Drawing import colour
+    from System.Drawing import Color
     from System.Windows.Forms import TextBox
     from System.Windows.Forms import TrackBar
 
@@ -93,8 +93,8 @@ if __name__ == '__main__':
             self.normal   = Point3d(0, 0, 1) - self.base
             self.height   = 30
             self.plane    = Plane(self.base, self.normal)
-            self.colour    = colour.FromArgb(255, 0, 0)
-            self.material = DisplayMaterial(self.colour)
+            self.color    = Color.FromArgb(255, 0, 0)
+            self.material = DisplayMaterial(self.color)
 
         def DrawForeground(self, e):
             radius   = self.slider.trackbar.Value

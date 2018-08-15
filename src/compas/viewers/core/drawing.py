@@ -47,43 +47,43 @@ __all__ = [
 
 def draw_arrays(vertices, arrays):
     glEnableClientState(GL_VERTEX_ARRAY)
-    glEnableClientState(GL_colour_ARRAY)
+    glEnableClientState(GL_COLOR_ARRAY)
 
     # vertex coordinates flattened
     glVertexPointer(3, GL_FLOAT, 0, vertices)
 
-    for primitive, indices, colours, flag_on in arrays:
+    for primitive, indices, colors, flag_on in arrays:
         # primitive => GL_POINTS, GL_LINES, GL_TRIANGLES, GL_QUADS
-        # colours => RGB colours flattened
+        # colors => RGB colors flattened
         # indices => element vertex indices flattened
         # flag_on => True or False
         if not flag_on:
             continue
 
-        glcolourPointer(3, GL_FLOAT, 0, colours)
+        glColorPointer(3, GL_FLOAT, 0, colors)
         glDrawElements(primitive, len(indices), GL_UNSIGNED_INT, indices)
 
-    glDisableClientState(GL_colour_ARRAY)
+    glDisableClientState(GL_COLOR_ARRAY)
     glDisableClientState(GL_VERTEX_ARRAY)
 
 
-def draw_triangle_array(vertices, indices, colours):
+def draw_triangle_array(vertices, indices, colors):
     glEnableClientState(GL_VERTEX_ARRAY)
-    glEnableClientState(GL_colour_ARRAY)
+    glEnableClientState(GL_COLOR_ARRAY)
     glVertexPointer(3, GL_FLOAT, 0, vertices)
-    glcolourPointer(3, GL_FLOAT, 0, colours)
+    glColorPointer(3, GL_FLOAT, 0, colors)
     glDrawElements(GL_TRIANGLES, len(indices), GL_UNSIGNED_INT, indices)
-    glDisableClientState(GL_colour_ARRAY)
+    glDisableClientState(GL_COLOR_ARRAY)
     glDisableClientState(GL_VERTEX_ARRAY)
 
 
-def draw_line_array(vertices, indices, colours):
+def draw_line_array(vertices, indices, colors):
     glEnableClientState(GL_VERTEX_ARRAY)
-    glEnableClientState(GL_colour_ARRAY)
+    glEnableClientState(GL_COLOR_ARRAY)
     glVertexPointer(3, GL_FLOAT, 0, vertices)
-    glcolourPointer(3, GL_FLOAT, 0, colours)
+    glColorPointer(3, GL_FLOAT, 0, colors)
     glDrawElements(GL_LINES, len(indices), GL_UNSIGNED_INT, indices)
-    glDisableClientState(GL_colour_ARRAY)
+    glDisableClientState(GL_COLOR_ARRAY)
     glDisableClientState(GL_VERTEX_ARRAY)
 
 
@@ -111,14 +111,14 @@ def draw_line_array(vertices, indices, colours):
 
 # def _make_faces_list(self, key_xyz):
 #     faces = []
-#     front = hex_to_rgb(self.settings['faces.colour:front'])
+#     front = hex_to_rgb(self.settings['faces.color:front'])
 #     front = list(front) + [1.0]
-#     back  = hex_to_rgb(self.settings['faces.colour:back'])
+#     back  = hex_to_rgb(self.settings['faces.color:back'])
 #     back  = list(back) + [1.0]
 #     for fkey in self.mesh.faces():
 #         faces.append({'points'      : [key_xyz[key] for key in self.mesh.face_vertices(fkey)],
-#                       'colour.front' : front,
-#                       'colour.back'  : back})
+#                       'color.front' : front,
+#                       'color.back'  : back})
 #     self.view.faces = glGenLists(1)
 #     glNewList(self.view.faces, GL_COMPILE)
 #     xdraw_polygons(faces)
@@ -126,12 +126,12 @@ def draw_line_array(vertices, indices, colours):
 
 # def _make_edges_list(self, key_xyz):
 #     lines = []
-#     colour = hex_to_rgb(self.settings['edges.colour'])
+#     color = hex_to_rgb(self.settings['edges.color'])
 #     width = self.settings['edges.width']
 #     for u, v in self.mesh.edges():
 #         lines.append({'start' : key_xyz[u],
 #                       'end'   : key_xyz[v],
-#                       'colour' : colour,
+#                       'color' : color,
 #                       'width' : width})
 #     self.view.edges = glGenLists(1)
 #     glNewList(self.view.edges, GL_COMPILE)
@@ -140,11 +140,11 @@ def draw_line_array(vertices, indices, colours):
 
 # def _make_vertices_list(self, key_xyz):
 #     points = []
-#     colour = hex_to_rgb(self.settings['vertices.colour'])
+#     color = hex_to_rgb(self.settings['vertices.color'])
 #     size = self.settings['vertices.size']
 #     for key in self.mesh.vertices():
 #         points.append({'pos'   : key_xyz[key],
-#                        'colour' : colour,
+#                        'color' : color,
 #                        'size'  : size})
 #     self.view.vertices = glGenLists(1)
 #     glNewList(self.view.vertices, GL_COMPILE)
@@ -157,9 +157,9 @@ def draw_line_array(vertices, indices, colours):
 # ==============================================================================
 
 
-def draw_points(points, colour=None, size=1):
-    colour = colour if colour else (0.0, 0.0, 0.0)
-    glcolour3f(*colour)
+def draw_points(points, color=None, size=1):
+    color = color if color else (0.0, 0.0, 0.0)
+    glColor3f(*color)
     glPointSize(size)
     glBegin(GL_POINTS)
     for x, y, z in iter(points):
@@ -167,9 +167,9 @@ def draw_points(points, colour=None, size=1):
     glEnd()
 
 
-def draw_lines(lines, colour=None, linewidth=1):
-    colour = colour if colour else (0.0, 0.0, 0.0)
-    glcolour3f(*colour)
+def draw_lines(lines, color=None, linewidth=1):
+    color = color if color else (0.0, 0.0, 0.0)
+    glColor3f(*color)
     glLineWidth(linewidth)
     glBegin(GL_LINES)
     for a, b in iter(lines):
@@ -178,9 +178,9 @@ def draw_lines(lines, colour=None, linewidth=1):
     glEnd()
 
 
-def draw_faces(faces, colour=None):
-    colour = colour if colour else (1.0, 0.0, 0.0, 0.5)
-    glcolour4f(*colour)
+def draw_faces(faces, color=None):
+    color = color if color else (1.0, 0.0, 0.0, 0.5)
+    glColor4f(*color)
     for face in faces:
         glBegin(GL_POLYGON)
         for xyz in face:
@@ -191,12 +191,12 @@ def draw_faces(faces, colour=None):
 def draw_sphere(r=1.0):
     slices = 17
     stacks = 17
-    glcolour4f(0.8, 0.8, 0.8, 0.5)
+    glColor4f(0.8, 0.8, 0.8, 0.5)
     glLineWidth(0.1)
     glutWireSphere(r, slices, stacks)
 
 
-def draw_circle(circle, colour=None, n=100):
+def draw_circle(circle, color=None, n=100):
     (center, normal), radius = circle
     cx, cy, cz = center
     a, b, c = normal
@@ -207,10 +207,10 @@ def draw_circle(circle, colour=None, n=100):
 
     uvw = [normalize_vector(u), normalize_vector(v), normalize_vector(w)]
 
-    colour = colour if colour else (1.0, 0.0, 0.0, 0.5)
+    color = color if color else (1.0, 0.0, 0.0, 0.5)
     sector = 2 * pi  / n
 
-    glcolour4f(*colour)
+    glColor4f(*color)
 
     glBegin(GL_POLYGON)
     for i in range(n):
@@ -241,9 +241,9 @@ def draw_circle(circle, colour=None, n=100):
 def xdraw_points(points):
     for attr in points:
         pos   = attr['pos']
-        colour = attr['colour']
+        color = attr['color']
         size  = attr['size']
-        glcolour3f(*colour)
+        glColor3f(*color)
         glPointSize(size)
         glBegin(GL_POINTS)
         glVertex3f(*pos)
@@ -255,9 +255,9 @@ def xdraw_lines(lines):
     for attr in lines:
         start = attr['start']
         end   = attr['end']
-        colour = attr['colour']
+        color = attr['color']
         width = attr['width']
-        glcolour3f(*colour)
+        glColor3f(*color)
         glLineWidth(width)
         glBegin(GL_LINES)
         glVertex3f(*start)
@@ -268,34 +268,34 @@ def xdraw_lines(lines):
 def xdraw_polygons(polygons):
     for attr in polygons:
         points      = attr['points']
-        colour_front = attr['colour.front']
-        colour_back  = attr['colour.back']
-        colour_wires = attr.get('colour.wires', (0.0, 0.0, 0.0, 1.0))
+        color_front = attr['color.front']
+        color_back  = attr['color.back']
+        color_wires = attr.get('color.wires', (0.0, 0.0, 0.0, 1.0))
         wires_on    = attr.get('wires_on', False)
         # front faces
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-        glcolour4f(*colour_front)
+        glColor4f(*color_front)
         glBegin(GL_POLYGON)
         for xyz in points:
             glVertex3f(*xyz)
         glEnd()
         if wires_on:
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-            glcolour4f(*colour_wires)
+            glColor4f(*color_wires)
             glBegin(GL_POLYGON)
             for xyz in points:
                 glVertex3f(*xyz)
             glEnd()
         # back faces
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-        glcolour4f(*colour_back)
+        glColor4f(*color_back)
         glBegin(GL_POLYGON)
         for xyz in points[::-1]:
             glVertex3f(*xyz)
         glEnd()
         if wires_on:
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-            glcolour4f(*colour_wires)
+            glColor4f(*color_wires)
             glBegin(GL_POLYGON)
             for xyz in points[::-1]:
                 glVertex3f(*xyz)
@@ -306,9 +306,9 @@ def xdraw_texts(texts):
     for attr in texts:
         text  = attr['text']
         pos   = attr['pos']
-        colour = attr['colour']
+        color = attr['color']
         shift = attr['shift']
-        glcolour4f(colour[0], colour[1], colour[2], colour[3])
+        glColor4f(color[0], color[1], color[2], color[3])
         glRasterPos3f(pos[0] + shift[0], pos[1] + shift[1], pos[2] + shift[2])
         font = GLUT_BITMAP_HELVETICA_18
         for char in text:
@@ -319,7 +319,7 @@ def xdraw_spheres(spheres):
     for attr in spheres:
         glPushMatrix()
         glTranslatef(* attr['pos'])
-        glcolour3f(* attr['colour'])
+        glColor3f(* attr['color'])
         glutSolidSphere(attr['size'], 24, 24)
         glPopMatrix()
 
@@ -327,8 +327,8 @@ def xdraw_spheres(spheres):
 def xdraw_cylinders(cylinders):
     for attr in cylinders:
         points = [attr['start'], attr['start'], attr['end'], attr['end']]
-        colours = [attr['colour'], attr['colour'], attr['colour'], attr['colour']]
-        glePolyCylinder(points, colours, attr['width'])
+        colors = [attr['color'], attr['color'], attr['color'], attr['color']]
+        glePolyCylinder(points, colors, attr['width'])
 
 
 # ==============================================================================

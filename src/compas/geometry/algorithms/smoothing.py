@@ -78,7 +78,7 @@ def smooth_centroid(vertices,
             lines.append({
                 'start': mesh.vertex_coordinates(u, 'xy'),
                 'end'  : mesh.vertex_coordinates(v, 'xy'),
-                'colour': '#cccccc',
+                'color': '#cccccc',
                 'width': 1.0,
             })
 
@@ -92,7 +92,7 @@ def smooth_centroid(vertices,
         plotter = MeshPlotter(mesh)
 
         plotter.draw_lines(lines)
-        plotter.draw_vertices(facecolour={key: '#ff0000' for key in fixed}, radius=0.05)
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed}, radius=0.05)
         plotter.draw_edges()
 
         plotter.show()
@@ -187,7 +187,7 @@ def smooth_centerofmass(vertices,
             lines.append({
                 'start': mesh.vertex_coordinates(u, 'xy'),
                 'end'  : mesh.vertex_coordinates(v, 'xy'),
-                'colour': '#cccccc',
+                'color': '#cccccc',
                 'width': 1.0,
             })
 
@@ -201,7 +201,7 @@ def smooth_centerofmass(vertices,
         plotter = MeshPlotter(mesh)
 
         plotter.draw_lines(lines)
-        plotter.draw_vertices(facecolour={key: '#ff0000' for key in fixed})
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
         plotter.draw_edges()
 
         plotter.show()
@@ -295,7 +295,7 @@ def smooth_area(vertices,
             lines.append({
                 'start': mesh.vertex_coordinates(u, 'xy'),
                 'end'  : mesh.vertex_coordinates(v, 'xy'),
-                'colour': '#cccccc',
+                'color': '#cccccc',
                 'width': 1.0,
             })
 
@@ -309,7 +309,7 @@ def smooth_area(vertices,
         plotter = MeshPlotter(mesh)
 
         plotter.draw_lines(lines)
-        plotter.draw_vertices(facecolour={key: '#ff0000' for key in fixed})
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
         plotter.draw_edges()
 
         plotter.show()
@@ -409,7 +409,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
 
         plotter = MeshPlotter(mesh)
 
-        plotter.draw_vertices(facecolour={key: '#ff0000' for key in fixed})
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
         plotter.draw_faces()
         plotter.draw_edges()
 
@@ -487,7 +487,7 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
 
         plotter = MeshPlotter(mesh)
 
-        plotter.draw_vertices(facecolour={key: '#ff0000' for key in fixed})
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
         plotter.draw_faces()
         plotter.draw_edges()
 
@@ -565,7 +565,7 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
 
         plotter = MeshPlotter(mesh)
 
-        plotter.draw_vertices(facecolour={key: '#ff0000' for key in fixed})
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
         plotter.draw_faces()
         plotter.draw_edges()
 
@@ -667,7 +667,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
 
         plotter = NetworkPlotter(network)
 
-        plotter.draw_vertices(facecolour={key: '#ff0000' for key in fixed})
+        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
         plotter.draw_edges()
 
         plotter.show()
@@ -723,7 +723,7 @@ if __name__ == "__main__":
         lines.append({
             'start': mesh.vertex_coordinates(u, 'xy'),
             'end'  : mesh.vertex_coordinates(v, 'xy'),
-            'colour': '#cccccc',
+            'color': '#cccccc',
             'width': 1.0,
         })
 
@@ -737,7 +737,7 @@ if __name__ == "__main__":
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
     plotter.draw_lines(lines)
-    plotter.draw_vertices(facecolour={key: '#ff0000' for key in fixed})
+    plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
     plotter.draw_edges()
 
     plotter.show()

@@ -53,7 +53,7 @@ class GLWidget(QOpenGLWidget):
 
         self.camera = Camera(self)
         self.mouse = Mouse(self)
-        self.clear_colour = QtGui.Qcolour.fromRgb(255, 255, 255)
+        self.clear_color = QtGui.QColor.fromRgb(255, 255, 255)
         self.display_lists = []
         self.buffers = []
 
@@ -103,7 +103,7 @@ class GLWidget(QOpenGLWidget):
     def initializeGL(self):
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
 
-        self.qglClearcolour(self.clear_colour)
+        self.qglClearColor(self.clear_color)
 
         glCullFace(GL_BACK)
         glShadeModel(GL_SMOOTH)
@@ -129,7 +129,7 @@ class GLWidget(QOpenGLWidget):
     # ==========================================================================
 
     # https://stackoverflow.com/questions/35854076/pyqt5-opengl-4-1-core-profile-invalid-frame-buffer-operation-mac-os
-    # https://stackoverflow.com/questions/11089561/opengl-invalid-framebuffer-operation-after-glcleargl-colour-buffer-bit
+    # https://stackoverflow.com/questions/11089561/opengl-invalid-framebuffer-operation-after-glcleargl-color-buffer-bit
     # https://www.khronos.org/registry/OpenGL-Refpages/es2.0/xhtml/glCheckFramebufferStatus.xml
 
     def paintGL(self):
@@ -138,7 +138,7 @@ class GLWidget(QOpenGLWidget):
         if glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE:
             return
 
-        glClear(GL_colour_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glPushAttrib(GL_POLYGON_BIT)
 
         self.camera.aim()

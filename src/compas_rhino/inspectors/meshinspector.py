@@ -12,7 +12,7 @@ from compas.geometry import subtract_vectors
 try:
     from Rhino.Geometry import Point3d
 
-    from System.Drawing.colour import FromArgb
+    from System.Drawing.Color import FromArgb
 
 except ImportError:
     import sys
@@ -31,14 +31,14 @@ __all__ = ['MeshVertexInspector', ]
 
 class MeshVertexInspector(Conduit):
     """"""
-    def __init__(self, mesh, tol=0.1, dotcolour=None, textcolour=None, **kwargs):
+    def __init__(self, mesh, tol=0.1, dotcolor=None, textcolor=None, **kwargs):
         super(MeshVertexInspector, self).__init__(**kwargs)
         self.mesh      = mesh
         self.tol       = tol
-        dotcolour       = dotcolour or (255, 0, 0)
-        textcolour      = textcolour or (0, 0, 0)
-        self.dotcolour  = FromArgb(*dotcolour)
-        self.textcolour = FromArgb(*textcolour)
+        dotcolor       = dotcolor or (255, 0, 0)
+        textcolor      = textcolor or (0, 0, 0)
+        self.dotcolor  = FromArgb(*dotcolor)
+        self.textcolor = FromArgb(*textcolor)
         self.mouse     = Mouse(self)
 
     def enable(self):
@@ -62,7 +62,7 @@ class MeshVertexInspector(Conduit):
             l    = length_vector(cross_vectors(v01, v02))
             if l12 == 0.0 or (l / l12) < self.tol:
                 point = Point3d(*p0)
-                e.Display.DrawDot(point, text, self.dotcolour, self.textcolour)
+                e.Display.DrawDot(point, text, self.dotcolor, self.textcolor)
                 break
 
 

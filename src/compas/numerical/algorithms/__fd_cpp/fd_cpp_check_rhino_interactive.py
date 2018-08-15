@@ -4,7 +4,7 @@ from __future__ import division
 
 import Rhino
 
-from System.Drawing.colour import FromArgb
+from System.Drawing.Color import FromArgb
 
 from Rhino.Geometry import Point3d
 from Rhino.Geometry import Line
@@ -34,7 +34,7 @@ q        = network.get_edges_attribute('q', 1.0)
 artist = NetworkArtist(network, layer='Network')
 
 artist.clear_layer()
-artist.draw_edges(colour='#cccccc')
+artist.draw_edges(color='#cccccc')
 artist.redraw()
 
 xyz = fd_cpp(vertices, edges, fixed, q, loads)
@@ -44,8 +44,8 @@ for key, attr in network.vertices(True):
     attr['y'] = xyz[key][1]
     attr['z'] = xyz[key][2]
 
-artist.draw_vertices(colour={key: '#ff0000' for key in network.leaves()})
-artist.draw_edges(colour='#000000')
+artist.draw_vertices(color={key: '#ff0000' for key in network.leaves()})
+artist.draw_edges(color='#000000')
 artist.redraw()
 
 # select and drag one of the anchors
@@ -60,7 +60,7 @@ ep[2] += 1
 
 vertical = Line(Point3d(*sp), Point3d(*ep))
 
-colour = FromArgb(255, 255, 255)
+color = FromArgb(255, 255, 255)
 
 
 def OnDynamicDraw(sender, e):
@@ -68,7 +68,7 @@ def OnDynamicDraw(sender, e):
     xyz[move] = list(e.CurrentPoint)
     xyz = fd_cpp(xyz, edges, fixed, q, loads)
     for u, v in edges:
-        e.Display.DrawLine(Point3d(* xyz[u]), Point3d(* xyz[v]), colour)
+        e.Display.DrawLine(Point3d(* xyz[u]), Point3d(* xyz[v]), color)
 
 
 gp = Rhino.Input.Custom.GetPoint()
@@ -86,6 +86,6 @@ if gp.CommandResult() == Rhino.Commands.Result.Success:
         attr['y'] = xyz[key][1]
         attr['z'] = xyz[key][2]
 
-    artist.draw_vertices(colour={key: '#ff0000' for key in network.leaves()})
-    artist.draw_edges(colour='#000000')
+    artist.draw_vertices(color={key: '#ff0000' for key in network.leaves()})
+    artist.draw_edges(color='#000000')
     artist.redraw()

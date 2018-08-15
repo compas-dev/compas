@@ -43,15 +43,15 @@ class FaceArtist(object):
                 objects.append(object)
         delete_objects(objects=objects)
 
-    def draw_faces(self, fkeys=None, colour=None, alpha=0.5):
+    def draw_faces(self, fkeys=None, color=None, alpha=0.5):
         fkeys = fkeys or list(self.datastructure.faces())
-        colourdict = valuedict(fkeys, colour, self.defaults['colour.face'])
+        colordict = valuedict(fkeys, color, self.defaults['color.face'])
         faces = []
         for fkey in fkeys:
             faces.append({
                 'name': self.datastructure.face_name(fkey),
                 'points': self.datastructure.face_coordinates(fkey),
-                'colour': colourdict[fkey],
+                'color': colordict[fkey],
                 'layer': self.layer})
         return xdraw_faces(faces, alpha=alpha)
 

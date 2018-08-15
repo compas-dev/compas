@@ -9,7 +9,7 @@ try:
     from System.Collections.Generic import List
     from System.Enum import ToObject
     from System.Array import CreateInstance
-    from System.Drawing import colour
+    from System.Drawing import Color
 
     from Rhino.Geometry import Point3d
     from Rhino.Geometry import Vector3d
@@ -176,7 +176,7 @@ def xdraw_spheres(spheres):
 
 
 def xdraw_mesh(vertices, faces, vertex_normals=None, texture_coordinates=None,
-               vertex_colours=None):
+               vertex_colors=None):
     """Draw mesh in Grasshopper.
     """
 
@@ -203,12 +203,12 @@ def xdraw_mesh(vertices, faces, vertex_normals=None, texture_coordinates=None,
             tcs[i] = Point2f(tc[0], tc[1])
         mesh.TextureCoordinates.SetTextureCoordinates(tcs)
 
-    if vertex_colours:
-        count = len(vertex_colours)
-        colours = CreateInstance(colour, count)
-        for i, colour in enumerate(vertex_colours):
-            colours[i] = rs.coercecolour(colour)
-        mesh.Vertexcolours.Setcolours(colours)
+    if vertex_colors:
+        count = len(vertex_colors)
+        colors = CreateInstance(Color, count)
+        for i, color in enumerate(vertex_colors):
+            colors[i] = rs.coercecolor(color)
+        mesh.VertexColors.SetColors(colors)
 
     return mesh
 

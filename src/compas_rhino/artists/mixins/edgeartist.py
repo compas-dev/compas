@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.utilities import colour_to_colourdict
+from compas.utilities import color_to_colordict
 
 import compas_rhino
 
@@ -60,7 +60,7 @@ class EdgeArtist(object):
                 guids.append(guid)
         compas_rhino.delete_objects(guids)
 
-    def draw_edges(self, keys=None, colour=None):
+    def draw_edges(self, keys=None, color=None):
         """Draw a selection of edges.
 
         Parameters
@@ -68,16 +68,16 @@ class EdgeArtist(object):
         keys : list
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is ``None``, in which case all edges are drawn.
-        colour : str, tuple, dict
-            The colour specififcation for the edges.
-            colours should be specified in the form of a string (hex colours) or
+        color : str, tuple, dict
+            The color specififcation for the edges.
+            Colors should be specified in the form of a string (hex colors) or
             as a tuple of RGB components.
-            To apply the same colour to all edges, provide a single colour
-            specification. Individual colours can be assigned using a dictionary
-            of key-colour pairs. Missing keys will be assigned the default face
-            colour (``self.datastructure.attributes['edge.colour']``).
+            To apply the same color to all edges, provide a single color
+            specification. Individual colors can be assigned using a dictionary
+            of key-color pairs. Missing keys will be assigned the default face
+            color (``self.datastructure.attributes['edge.color']``).
             The default is ``None``, in which case all edges are assigned the
-            default edge colour.
+            default edge color.
 
         Notes
         -----
@@ -87,23 +87,23 @@ class EdgeArtist(object):
 
         """
         keys = keys or list(self.datastructure.edges())
-        colourdict = colour_to_colourdict(colour,
+        colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.datastructure.attributes.get('colour.edge'),
-                                       colourformat='rgb',
+                                       default=self.datastructure.attributes.get('color.edge'),
+                                       colorformat='rgb',
                                        normalize=False)
         lines = []
         for u, v in keys:
             lines.append({
                 'start': self.datastructure.vertex_coordinates(u),
                 'end'  : self.datastructure.vertex_coordinates(v),
-                'colour': colourdict[(u, v)],
+                'color': colordict[(u, v)],
                 'name' : self.datastructure.edge_name(u, v),
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
         return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
-    def draw_edgelabels(self, text=None, colour=None):
+    def draw_edgelabels(self, text=None, color=None):
         """Draw labels for a selection of edges.
 
         Parameters
@@ -111,15 +111,15 @@ class EdgeArtist(object):
         text : dict
             A dictionary of edge labels as key-text pairs.
             The default value is ``None``, in which case every edge will be labelled with its key.
-        colour : str, tuple, dict
-            The colour sepcification of the labels.
-            String values are interpreted as hex colours (e.g. ``'#ff0000'`` for red).
+        color : str, tuple, dict
+            The color sepcification of the labels.
+            String values are interpreted as hex colors (e.g. ``'#ff0000'`` for red).
             Tuples are interpreted as RGB component specifications (e.g. ``(255, 0, 0) for red``.
-            Individual colours can be assigned using a dictionary
-            of key-colour pairs. Missing keys will be assigned the default face
-            colour (``self.datastructure.attributes['edge.colour']``).
+            Individual colors can be assigned using a dictionary
+            of key-color pairs. Missing keys will be assigned the default face
+            color (``self.datastructure.attributes['edge.color']``).
             The default is ``None``, in which case all edges are assigned the
-            default edge colour.
+            default edge color.
 
         Notes
         -----
@@ -134,10 +134,10 @@ class EdgeArtist(object):
         else:
             raise NotImplementedError
 
-        colourdict = colour_to_colourdict(colour,
+        colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.datastructure.attributes.get('colour.edge'),
-                                       colourformat='rgb',
+                                       default=self.datastructure.attributes.get('color.edge'),
+                                       colorformat='rgb',
                                        normalize=False)
         labels = []
 
@@ -145,7 +145,7 @@ class EdgeArtist(object):
             labels.append({
                 'pos'  : self.datastructure.edge_midpoint(u, v),
                 'name' : self.datastructure.edge_label_name(u, v),
-                'colour': colourdict[(u, v)],
+                'color': colordict[(u, v)],
                 'text' : textdict[(u, v)],
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })

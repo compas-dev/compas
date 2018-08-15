@@ -43,15 +43,15 @@ class VertexArtist(object):
                 objects.append(object)
         delete_objects(objects=objects)
 
-    def draw_vertices(self, radius=0.010, keys=None, colour=None):
+    def draw_vertices(self, radius=0.010, keys=None, color=None):
         keys = keys or list(self.datastructure.vertices())
-        colourdict = valuedict(keys, colour, self.defaults['colour.vertex'])
+        colordict = valuedict(keys, color, self.defaults['color.vertex'])
         points = []
         for key in keys:
             points.append({
                 'pos': self.datastructure.vertex_coordinates(key),
                 'name': self.datastructure.vertex_name(key),
-                'colour': colourdict[key],
+                'color': colordict[key],
                 'layer': self.layer,
                 'radius': radius})
         return xdraw_cubes(points)

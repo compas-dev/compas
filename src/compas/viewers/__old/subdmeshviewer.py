@@ -81,13 +81,13 @@ class SubdMeshViewer(Viewer):
         for u, v in self.mesh.wireframe():
             lines.append({'start' : xyz[u],
                           'end'   : xyz[v],
-                          'colour' : (0.1, 0.1, 0.1),
+                          'color' : (0.1, 0.1, 0.1),
                           'width' : 1.})
 
         points = []
         for key in self.mesh.vertices():
             points.append({'pos'   : xyz[key],
-                           'colour' : (0.0, 1.0, 0.0),
+                           'color' : (0.0, 1.0, 0.0),
                            'size'  : 10.0})
 
         xdraw_lines(lines)
@@ -101,14 +101,14 @@ class SubdMeshViewer(Viewer):
             poly  = []
             for fkey in self.subd.faces():
                 poly.append({'points': self.subd.face_coordinates(fkey),
-                             'colour.front': front,
-                             'colour.back' : back})
+                             'color.front': front,
+                             'color.back' : back})
 
             lines = []
             for u, v in self.subd.wireframe():
                 lines.append({'start': xyz[u],
                               'end'  : xyz[v],
-                              'colour': (0.1, 0.1, 0.1),
+                              'color': (0.1, 0.1, 0.1),
                               'width': 1.})
 
             xdraw_polygons(poly)

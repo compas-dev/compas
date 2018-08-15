@@ -136,9 +136,9 @@ class Mesh(FromToJson,
 
         self.attributes = {
             'name'         : None,
-            'colour.vertex' : None,
-            'colour.edge'   : None,
-            'colour.face'   : None,
+            'color.vertex' : None,
+            'color.edge'   : None,
+            'color.face'   : None,
         }
         self.vertex = {}
         self.halfedge = {}
@@ -952,10 +952,10 @@ class Mesh(FromToJson,
 
             mesh.delete_vertex(17)
 
-            colour = {key: '#ff0000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2}
+            color = {key: '#ff0000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2}
 
             plotter = MeshPlotter(mesh)
-            plotter.draw_vertices(facecolour=colour)
+            plotter.draw_vertices(facecolor=color)
             plotter.draw_faces()
             plotter.show()
 
@@ -977,10 +977,10 @@ class Mesh(FromToJson,
             mesh.delete_vertex(0)
             mesh.cull_vertices()
 
-            colour = {key: '#ff0000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2}
+            color = {key: '#ff0000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2}
 
             plotter = MeshPlotter(mesh)
-            plotter.draw_vertices(facecolour=colour)
+            plotter.draw_vertices(facecolor=color)
             plotter.draw_faces()
             plotter.show()
 
@@ -1529,13 +1529,13 @@ class Mesh(FromToJson,
 
             plotter = MeshPlotter(mesh)
 
-            colour = {nbr: '#cccccc' for nbr in nbrs}
-            colour[key] = '#ff0000'
+            color = {nbr: '#cccccc' for nbr in nbrs}
+            color[key] = '#ff0000'
 
             text = {nbr: str(index) for index, nbr in enumerate(nbrs)}
             text[key] = str(key)
 
-            plotter.draw_vertices(text=text, facecolour=colour)
+            plotter.draw_vertices(text=text, facecolor=color)
             plotter.draw_faces()
             plotter.draw_edges()
 
@@ -1619,13 +1619,13 @@ class Mesh(FromToJson,
 
             plotter = MeshPlotter(mesh)
 
-            colour = {nbr: '#cccccc' for nbr in nbrs}
-            colour[key] = '#ff0000'
+            color = {nbr: '#cccccc' for nbr in nbrs}
+            color[key] = '#ff0000'
 
             text = {nbr: str(index) for index, nbr in enumerate(nbrs)}
             text[key] = str(key)
 
-            plotter.draw_vertices(text=text, facecolour=colour)
+            plotter.draw_vertices(text=text, facecolor=color)
             plotter.draw_faces()
             plotter.draw_edges()
 
@@ -1738,12 +1738,12 @@ class Mesh(FromToJson,
 
             plotter.draw_vertices(
                 text={17: '17'},
-                facecolour={17: '#ff0000'},
+                facecolor={17: '#ff0000'},
                 radius=0.2
             )
             plotter.draw_faces(
                 text={nbr: str(index) for index, nbr in enumerate(nbrs)},
-                facecolour={nbr: '#cccccc' for nbr in nbrs}
+                facecolor={nbr: '#cccccc' for nbr in nbrs}
             )
             plotter.draw_edges()
             plotter.show()
@@ -1916,12 +1916,12 @@ class Mesh(FromToJson,
             text = {nbr: str(nbr) for nbr in nbrs}
             text[key] = str(key)
 
-            colour = {nbr: '#cccccc' for nbr in nbrs}
-            colour[key] = '#ff0000'
+            color = {nbr: '#cccccc' for nbr in nbrs}
+            color[key] = '#ff0000'
 
             plotter = MeshPlotter(mesh)
             plotter.draw_vertices()
-            plotter.draw_faces(text=text, facecolour=colour)
+            plotter.draw_faces(text=text, facecolor=color)
             plotter.draw_edges()
             plotter.show()
 

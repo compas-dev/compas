@@ -18,24 +18,24 @@ __all__ = ['Axes', ]
 
 class Axes(object):
     """"""
-    def __init__(self, x_colour=None, y_colour=None, z_colour=None):
-        self.x_colour = x_colour or (1.0, 0.0, 0.0)
-        self.y_colour = y_colour or (0.0, 1.0, 0.0)
-        self.z_colour = z_colour or (0.0, 0.0, 1.0)
+    def __init__(self, x_color=None, y_color=None, z_color=None):
+        self.x_color = x_color or (1.0, 0.0, 0.0)
+        self.y_color = y_color or (0.0, 1.0, 0.0)
+        self.z_color = z_color or (0.0, 0.0, 1.0)
 
     def draw(self):
-        x_colour = self.x_colour
-        y_colour = self.y_colour
-        z_colour = self.z_colour
+        x_color = self.x_color
+        y_color = self.y_color
+        z_color = self.z_color
         glLineWidth(1)
         glBegin(GL_LINES)
-        glcolour3f(* x_colour)
+        glColor3f(* x_color)
         glVertex3f(0, 0, 0)
         glVertex3f(1, 0, 0)
-        glcolour3f(* y_colour)
+        glColor3f(* y_color)
         glVertex3f(0, 0, 0)
         glVertex3f(0, 1, 0)
-        glcolour3f(* z_colour)
+        glColor3f(* z_color)
         glVertex3f(0, 0, 0)
         glVertex3f(0, 0, 1)
         glEnd()

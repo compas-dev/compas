@@ -10,7 +10,7 @@ try:
     from Rhino.Display.PointStyle import Simple
 
     from System.Collections.Generic import List
-    from System.Drawing.colour import FromArgb
+    from System.Drawing.Color import FromArgb
 
 except ImportError:
     compas.raise_if_ironpython()
@@ -35,14 +35,14 @@ class PointsConduit(Conduit):
     size : list of int, optional
         The size of the points.
         Default is ``3`` for all points.
-    colour : list of str or 3-tuple
-        The individual colours of the points.
+    color : list of str or 3-tuple
+        The individual colors of the points.
         Default is ``(255, 0, 0)`` for all points.
 
     Attributes
     ----------
     size
-    colour
+    color
     points : list of list of float
         
 
@@ -75,15 +75,15 @@ class PointsConduit(Conduit):
             del conduit
 
     """
-    def __init__(self, points, size=None, colour=None, **kwargs):
+    def __init__(self, points, size=None, color=None, **kwargs):
         super(PointsConduit, self).__init__(**kwargs)
         self._default_size = 3
-        self._default_colour = FromArgb(255, 0, 0)
+        self._default_color = FromArgb(255, 0, 0)
         self._size = None
-        self._colour = None
+        self._color = None
         self.points = points or []
         self.size = size
-        self.colour = colour
+        self.color = color
 
     @property
     def size(self):
@@ -109,51 +109,51 @@ class PointsConduit(Conduit):
             self._size = size
 
     @property
-    def colour(self):
-        """list : Individual point colours.
+    def color(self):
+        """list : Individual point colors.
 
         Parameters
         ----------
-        colour : list of str or 3-tuple
-            The colour specification of each point in hex or RGB(255) format.
+        color : list of str or 3-tuple
+            The color specification of each point in hex or RGB(255) format.
 
         """
-        return self._colour
+        return self._color
     
-    @colour.setter
-    def colour(self, colour):
-        if colour:
-            colour[:] = [FromArgb(* colour_to_rgb(c)) for c in colour]
+    @color.setter
+    def color(self, color):
+        if color:
+            color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
             p = len(self.points)
-            c = len(colour)
+            c = len(color)
             if c < f:
-                colour += [self._default_colour for i in range(f - c)]
+                color += [self._default_color for i in range(f - c)]
             elif c > f:
-                colour[:] = colour[:f]
-            self._colour = colour
+                color[:] = color[:f]
+            self._color = color
 
     def DrawForeground(self, e):
-        if self.colour:
+        if self.color:
             draw = e.Display.DrawPoint
             if self.size:
-                for xyz, size, colour in zip(self.points, self.size, self.colour):
-                    draw(Point3d(*xyz), Simple, size, colour)
+                for xyz, size, color in zip(self.points, self.size, self.color):
+                    draw(Point3d(*xyz), Simple, size, color)
             else:
-                for xyz, colour in zip(self.points, self.colour):
-                    draw(Point3d(*xyz), Simple, self._default_size, colour)
+                for xyz, color in zip(self.points, self.color):
+                    draw(Point3d(*xyz), Simple, self._default_size, color)
         elif self.size:
             draw = e.Display.DrawPoint
-            if self.colour:
-                for xyz, size, colour in zip(self.points, self.size, self.colour):
-                    draw(Point3d(*xyz), Simple, size, colour)
+            if self.color:
+                for xyz, size, color in zip(self.points, self.size, self.color):
+                    draw(Point3d(*xyz), Simple, size, color)
             else:
                 for xyz, size in zip(self.points, self.size):
-                    draw(Point3d(*xyz), Simple, size, self._default_colour)
+                    draw(Point3d(*xyz), Simple, size, self._default_color)
         else:
             points = List[Point3d](len(self.points))
             for xyz in self.points:
                 points.Add(Point3d(*xyz))
-            e.Display.DrawPoints(points, Simple, self._default_size, self._default_colour)
+            e.Display.DrawPoints(points, Simple, self._default_size, self._default_color)
 
 
 # ==============================================================================

@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function
 
 from compas.files import URDF
 
-from .geometry import SCALE_FACTOR, colour, Material, Texture
+from .geometry import SCALE_FACTOR, Color, Material, Texture
 
 __all__ = ['Robot']
 
@@ -139,5 +139,5 @@ class Robot(object):
 
 URDF.add_parser(Robot, 'robot')
 URDF.add_parser(Material, 'robot/material')
-URDF.add_parser(colour, 'robot/material/colour')
+URDF.add_parser(Color, 'robot/material/color')
 URDF.add_parser(Texture, 'robot/material/texture')

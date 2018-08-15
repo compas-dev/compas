@@ -9,7 +9,7 @@ try:
     import clr
     from System.Drawing import Size
     from System.Drawing import Point
-    from System.Drawing import colour
+    from System.Drawing import Color
 
     clr.AddReference("System.Windows.Forms.DataVisualization")
     from System.Windows.Forms.DataVisualization import Charting
@@ -43,7 +43,7 @@ class ChartForm(Form):
 
         * name: The name of the series.
         * data: A dictionary with x-y pairs.
-        * colour (optional): A hex colour or an RGB(255) colour specification.
+        * color (optional): A hex color or an RGB(255) color specification.
         * linewidth (optional): The width of the series graph line.
 
     xlimits : 2-tuple
@@ -78,19 +78,19 @@ class ChartForm(Form):
         series = [
             {
                 'name'      : 'series1',
-                'colour'     : (255, 0, 0),
+                'color'     : (255, 0, 0),
                 'linewidth' : 1,
                 'data'      : dict((str(i), random.randint(30, 70)) for i in range(10)),
             },
             {
                 'name'      : 'series2',
-                'colour'     : (0, 255, 0),
+                'color'     : (0, 255, 0),
                 'linewidth' : 1,
                 'data'      : dict((str(i), i ** 2) for i in range(10)),
             },
             {
                 'name'      : 'series3',
-                'colour'     : (0, 0, 255),
+                'color'     : (0, 0, 255),
                 'linewidth' : 1,
                 'data'      : dict((str(i), fib(i)) for i in range(10)),
             },
@@ -132,28 +132,28 @@ class ChartForm(Form):
         x.Minimum = self.xmin
         x.Maximum = self.xmax
         x.Interval = self.xstp
-        x.MajorGrid.Linecolour = colour.White
+        x.MajorGrid.LineColor = Color.White
         x.MajorGrid.LineDashStyle = charting.ChartDashStyle.NotSet
         y = area.AxisY
         y.Minimum = self.ymin
         y.Maximum = self.ymax
         y.Interval = self.ystp
-        y.MajorGrid.Linecolour = colour.Black
+        y.MajorGrid.LineColor = Color.Black
         y.MajorGrid.LineDashStyle = charting.ChartDashStyle.Dash
         for attr in self.series:
             name = attr['name']
-            colour = attr['colour']
+            color = attr['color']
             linewidth = attr['linewidth']
             chart.Series.Add(name)
             series = chart.Series[name]
             series.ChartType = charting.SeriesChartType.Line
-            series.colour = colour.FromArgb(*colour)
+            series.Color = Color.FromArgb(*color)
             series.BorderWidth = linewidth
             keys = sorted(attr['data'].keys(), key=int)
             for key in keys:
                 value = attr['data'][key]
                 series.Points.AddXY(int(key), value)
-        area.Backcolour = colour.White
+        area.BackColor = Color.White
         self.Controls.Add(chart)
 
 
@@ -179,19 +179,19 @@ if __name__ == '__main__':
     series = [
         {
             'name'      : 'series1',
-            'colour'     : (255, 0, 0),
+            'color'     : (255, 0, 0),
             'linewidth' : 1,
             'data'      : dict((str(i), random.randint(30, 70)) for i in range(10)),
         },
         {
             'name'      : 'series2',
-            'colour'     : (0, 255, 0),
+            'color'     : (0, 255, 0),
             'linewidth' : 1,
             'data'      : dict((str(i), i ** 2) for i in range(10)),
         },
         {
             'name'      : 'series3',
-            'colour'     : (0, 0, 255),
+            'color'     : (0, 0, 255),
             'linewidth' : 1,
             'data'      : dict((str(i), fib(i)) for i in range(10)),
         },

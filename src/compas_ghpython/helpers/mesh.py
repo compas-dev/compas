@@ -9,16 +9,16 @@ except ImportError:
 
 from compas.datastructures.mesh import Mesh
 from compas_ghpython.utilities import xdraw_mesh
-from compas.utilities.colours import colour_to_colourdict
+from compas.utilities.colors import color_to_colordict
 
 
 def mesh_draw(mesh, 
               show_faces=False, 
               show_vertices=False, 
               show_edges=False,
-              vertexcolour=None, 
-              edgecolour=None, 
-              facecolour=None):
+              vertexcolor=None, 
+              edgecolor=None, 
+              facecolor=None):
     """
     Draw a mesh object in Grasshopper.
 
@@ -27,46 +27,46 @@ def mesh_draw(mesh,
         show_faces : bool (True) Draw the faces.
         show_vertices : bool (False) Draw the vertices.
         show_edges : bool (False) Draw the edges.
-        vertexcolour (str, tuple, list, dict): Optional. The vertex colour
+        vertexcolor (str, tuple, list, dict): Optional. The vertex color
           specification. Default is ``None``.
-        edgecolour (str, tuple, list, dict): Optional. The edge colour
+        edgecolor (str, tuple, list, dict): Optional. The edge color
           specification. Default is ``None``.
-        facecolour (str, tuple, list, dict): Optional. The face colour
+        facecolor (str, tuple, list, dict): Optional. The face color
           specification. Default is ``None``.
 
     Note:
-        colours can be specified in different ways:
+        Colors can be specified in different ways:
 
-        * str: A hexadecimal colour that will be applied to all elements subject
+        * str: A hexadecimal color that will be applied to all elements subject
           to the specification.
-        * tuple, list: RGB colour that will be applied to all elements subject
+        * tuple, list: RGB color that will be applied to all elements subject
           to the specification.
-        * dict: RGB or hex colour dict with a specification for some or all of
+        * dict: RGB or hex color dict with a specification for some or all of
           the related elements.
 
     Important:
-        RGB colours should specify colour values between 0 and 255.
+        RGB colors should specify color values between 0 and 255.
 
     """
 
-    vertexcolour = colour_to_colourdict(vertexcolour,
+    vertexcolor = color_to_colordict(vertexcolor,
                                      mesh.vertices(),
-                                     default=mesh.attributes['colour.vertex'],
-                                     colourformat='rgb',
+                                     default=mesh.attributes['color.vertex'],
+                                     colorformat='rgb',
                                      normalize=False)
 
     """
-    edgecolour = colour_to_colourdict(edgecolour,
+    edgecolor = color_to_colordict(edgecolor,
                                    mesh.edges(),
-                                   default=mesh.attributes['colour.edge'],
-                                   colourformat='rgb',
+                                   default=mesh.attributes['color.edge'],
+                                   colorformat='rgb',
                                    normalize=False)
     """
 
-    facecolour = colour_to_colourdict(facecolour,
+    facecolor = color_to_colordict(facecolor,
                                    mesh.faces(),
-                                   default=mesh.attributes['colour.face'],
-                                   colourformat='rgb',
+                                   default=mesh.attributes['color.face'],
+                                   colorformat='rgb',
                                    normalize=False)
 
     key_index = {key: index for index, key in enumerate(mesh.vertices())}
@@ -77,13 +77,13 @@ def mesh_draw(mesh,
         face = mesh.face_vertices(fkey)  # ordered=True
         faces.append([key_index[k] for k in face])
 
-    colour = None
+    color = None
 
     if show_faces:
-        colour = facecolour
+        color = facecolor
     if show_edges:
-        colour = edgecolour
+        color = edgecolor
     if show_vertices:
-        colour = vertexcolour
+        color = vertexcolor
 
-    return xdraw_mesh(xyz, faces, vertex_colours=colour)
+    return xdraw_mesh(xyz, faces, vertex_colors=color)

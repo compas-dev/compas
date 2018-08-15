@@ -234,9 +234,9 @@ def mesh_draw(mesh,
               show_faces=True,
               show_vertices=False,
               show_edges=False,
-              vertexcolour=None,
-              edgecolour=None,
-              facecolour=None):
+              vertexcolor=None,
+              edgecolor=None,
+              facecolor=None):
     """
     Draw a mesh object in Rhino.
 
@@ -255,28 +255,28 @@ def mesh_draw(mesh,
         Draw the vertices.
     show_edges : bool (False)
         Draw the edges.
-    vertexcolour : str, tuple, list, dict (None)
-        The vertex colour specification.
-        Default is to use the colour of the parent layer.
-    edgecolour : str, tuple, list, dict (None)
-        The edge colour specification.
-        Default is to use the colour of the parent layer.
-    facecolour : str, tuple, list, dict (None)
-        The face colour specification.
-        Default is to use the colour of the parent layer.
+    vertexcolor : str, tuple, list, dict (None)
+        The vertex color specification.
+        Default is to use the color of the parent layer.
+    edgecolor : str, tuple, list, dict (None)
+        The edge color specification.
+        Default is to use the color of the parent layer.
+    facecolor : str, tuple, list, dict (None)
+        The face color specification.
+        Default is to use the color of the parent layer.
 
     Notes
     -----
-    colours can be specifiedin different ways:
+    Colors can be specifiedin different ways:
 
-    * str: A hexadecimal colour that will be applied to all elements subject to the specification.
-    * tuple, list: RGB colour that will be applied to all elements subject to the specification.
-    * dict: RGB or hex colour dict with a specification for some or all of the related elements.
+    * str: A hexadecimal color that will be applied to all elements subject to the specification.
+    * tuple, list: RGB color that will be applied to all elements subject to the specification.
+    * dict: RGB or hex color dict with a specification for some or all of the related elements.
 
     Notes
     -----
-    RGB colours specified as values between 0 and 255, should be integers.
-    RGB colours specified as values between 0.0 and 1.0, should be floats.
+    RGB colors specified as values between 0 and 255, should be integers.
+    RGB colors specified as values between 0.0 and 1.0, should be floats.
 
     """
     artist = MeshArtist(mesh)
@@ -293,18 +293,18 @@ def mesh_draw(mesh,
         artist.clear_faces()
 
     if show_faces:
-        artist.draw_faces(colour=facecolour)
+        artist.draw_faces(color=facecolor)
     if show_edges:
-        artist.draw_edges(colour=edgecolour)
+        artist.draw_edges(color=edgecolor)
     if show_vertices:
-        artist.draw_vertices(colour=vertexcolour)
+        artist.draw_vertices(color=vertexcolor)
 
     artist.redraw()
 
 
 def mesh_draw_vertices(mesh,
                        keys=None,
-                       colour=None,
+                       color=None,
                        layer=None,
                        clear_layer=False,
                        clear_vertices=False,
@@ -318,13 +318,13 @@ def mesh_draw_vertices(mesh,
     keys : list (None)
         A list of vertex keys identifying which vertices to draw.
         Default is to draw all vertices.
-    colour : str, tuple, dict (None)
-        The colour specififcation for the vertices.
-        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
-        To apply the same colour to all vertices, provide a single colour specification.
-        Individual colours can be assigned using a dictionary of key-colour pairs.
-        Missing keys will be assigned the default vertex colour (``self.defaults['vertex.colour']``).
-        Default is use the colour of the parent layer.
+    color : str, tuple, dict (None)
+        The color specififcation for the vertices.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all vertices, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).
+        Default is use the color of the parent layer.
     layer : str (None)
         The layer in which the vertices are drawn.
         Default is to draw in the current layer.
@@ -353,7 +353,7 @@ def mesh_draw_vertices(mesh,
     if clear_vertices:
         artist.clear_vertices()
 
-    guids = artist.draw_vertices(colour=colour)
+    guids = artist.draw_vertices(color=color)
 
     if redraw:
         artist.redraw()
@@ -363,7 +363,7 @@ def mesh_draw_vertices(mesh,
 
 def mesh_draw_edges(mesh,
                     keys=None,
-                    colour=None,
+                    color=None,
                     layer=None,
                     clear_layer=False,
                     redraw=True):
@@ -374,13 +374,13 @@ def mesh_draw_edges(mesh,
     keys : list
         A list of edge keys (as uv pairs) identifying which edges to draw.
         Default is to draw all edges.
-    colour : str, tuple, dict
-        The colour specififcation for the edges.
-        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
-        To apply the same colour to all faces, provide a single colour specification.
-        Individual colours can be assigned using a dictionary of key-colour pairs.
-        Missing keys will be assigned the default face colour (``self.defaults['face.colour']``).
-        Default is use the colour of the parent layer.
+    color : str, tuple, dict
+        The color specififcation for the edges.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all faces, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default face color (``self.defaults['face.color']``).
+        Default is use the color of the parent layer.
     layer : str (None)
         The layer in which the edges are drawn.
         Default is to draw in the current layer.
@@ -398,10 +398,10 @@ def mesh_draw_edges(mesh,
     Examples
     --------
     >>> mesh_draw_edges(mesh)
-    >>> mesh_draw_edges(mesh, colour='#ff0000')
-    >>> mesh_draw_edges(mesh, colour=(255, 0, 0))
+    >>> mesh_draw_edges(mesh, color='#ff0000')
+    >>> mesh_draw_edges(mesh, color=(255, 0, 0))
     >>> mesh_draw_edges(mesh, keys=mesh.edges_on_boundary())
-    >>> mesh_draw_edges(mesh, colour={(u, v): '#00ff00' for u, v in mesh.edges_on_boundary()})
+    >>> mesh_draw_edges(mesh, color={(u, v): '#00ff00' for u, v in mesh.edges_on_boundary()})
 
     """
     artist = MeshArtist(mesh)
@@ -411,7 +411,7 @@ def mesh_draw_edges(mesh,
         artist.clear_layer()
 
     artist.clear_edges()
-    guids = artist.draw_edges(colour=colour)
+    guids = artist.draw_edges(color=color)
 
     if redraw:
         artist.redraw()
@@ -421,7 +421,7 @@ def mesh_draw_edges(mesh,
 
 def mesh_draw_faces(mesh,
                     keys=None,
-                    colour=None,
+                    color=None,
                     layer=None,
                     clear_layer=False,
                     clear_faces=False,
@@ -434,13 +434,13 @@ def mesh_draw_faces(mesh,
     keys : list (None)
         A list of face keys identifying which faces to draw.
         Default is to draw all faces.
-    colour : str, tuple, dict (None)
-        The colour specififcation for the faces.
-        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
-        To apply the same colour to all faces, provide a single colour specification.
-        Individual colours can be assigned using a dictionary of key-colour pairs.
-        Missing keys will be assigned the default face colour (``self.defaults['face.colour']``).
-        Default is to use the colour of the parent layer.
+    color : str, tuple, dict (None)
+        The color specififcation for the faces.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all faces, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default face color (``self.defaults['face.color']``).
+        Default is to use the color of the parent layer.
     layer : str (None)
         The layer in which the edges are drawn.
         Default is to draw in the current layer.
@@ -471,7 +471,7 @@ def mesh_draw_faces(mesh,
     if clear_faces:
         artist.clear_faces()
     
-    guids = artist.draw_faces(colour=colour)
+    guids = artist.draw_faces(color=color)
 
     if redraw:
         artist.redraw()
@@ -486,7 +486,7 @@ def mesh_draw_faces(mesh,
 def mesh_draw_vertex_labels(mesh,
                             attr_name=None,
                             layer=None,
-                            colour=None,
+                            color=None,
                             formatter=None):
     """Draw labels for the vertices of a mesh.
 
@@ -500,13 +500,13 @@ def mesh_draw_vertex_labels(mesh,
     layer : str (None)
         The layer to draw in.
         Default is to draw in the current layer.
-    colour : str, tuple, list, dict (None)
-        The colour specififcation for the labels.
-        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
-        To apply the same colour to all face labels, provide a single colour specification.
-        Individual colours can be assigned using a dictionary of key-colour pairs.
-        Missing keys will be assigned the default vertex colour (``self.defaults['vertex.colour']``).
-        Default is to inherit colour from the parent layer.
+    color : str, tuple, list, dict (None)
+        The color specififcation for the labels.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all face labels, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).
+        Default is to inherit color from the parent layer.
     formatter : callable (None)
         A formatting function.
         Defaults to the built-in ``str`` function.
@@ -543,11 +543,11 @@ def mesh_draw_vertex_labels(mesh,
     artist = MeshArtist(mesh)
     artist.layer = layer
     artist.clear_vertexlabels()
-    artist.draw_vertexlabels(text=text, colour=colour)
+    artist.draw_vertexlabels(text=text, color=color)
     artist.redraw()
 
 
-def mesh_draw_edge_labels(mesh, attr_name=None, layer=None, colour=None, formatter=None):
+def mesh_draw_edge_labels(mesh, attr_name=None, layer=None, color=None, formatter=None):
     """Display labels for the edges of a mesh.
 
     Parameters
@@ -560,13 +560,13 @@ def mesh_draw_edge_labels(mesh, attr_name=None, layer=None, colour=None, formatt
     layer : str (None)
         The layer to draw in.
         Default is to draw in the current layer.
-    colour : str, tuple, list, dict (None)
-        The colour specififcation for the labels.
-        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
-        To apply the same colour to all face labels, provide a single colour specification.
-        Individual colours can be assigned using a dictionary of key-colour pairs.
-        Missing keys will be assigned the default edge colour (``self.defaults['edge.colour']``).
-        Default is to inherit colour from the parent layer.
+    color : str, tuple, list, dict (None)
+        The color specififcation for the labels.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all face labels, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default edge color (``self.defaults['edge.color']``).
+        Default is to inherit color from the parent layer.
     formatter : callable (None)
         A formatting function.
         Defaults to the built-in ``str`` function.
@@ -604,14 +604,14 @@ def mesh_draw_edge_labels(mesh, attr_name=None, layer=None, colour=None, formatt
     artist = MeshArtist(mesh)
     artist.layer = layer
     artist.clear_edgelabels()
-    artist.draw_edgelabels(text=text, colour=colour)
+    artist.draw_edgelabels(text=text, color=color)
     artist.redraw()
 
 
 def mesh_draw_face_labels(mesh,
                           attr_name=None,
                           layer=None,
-                          colour=None,
+                          color=None,
                           formatter=None):
     """Display labels for the faces of a mesh.
 
@@ -625,13 +625,13 @@ def mesh_draw_face_labels(mesh,
     layer : str (None)
         The layer to draw in.
         Default is to draw in the current layer.
-    colour : str, tuple, list, dict (None)
-        The colour specififcation for the labels.
-        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
-        To apply the same colour to all face labels, provide a single colour specification.
-        Individual colours can be assigned using a dictionary of key-colour pairs.
-        Missing keys will be assigned the default face colour (``self.defaults['face.colour']``).
-        Default is to inherit colour from the parent layer.
+    color : str, tuple, list, dict (None)
+        The color specififcation for the labels.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all face labels, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default face color (``self.defaults['face.color']``).
+        Default is to inherit color from the parent layer.
     formatter : callable (None)
         A formatting function.
         Defaults to the built-in ``str`` function.
@@ -668,7 +668,7 @@ def mesh_draw_face_labels(mesh,
     artist = MeshArtist(mesh)
     artist.layer = layer
     artist.clear_facelabels()
-    artist.draw_facelabels(text=text, colour=colour)
+    artist.draw_facelabels(text=text, color=color)
     artist.redraw()
 
 
@@ -676,7 +676,7 @@ def mesh_draw_face_labels(mesh,
 #                              display=True,
 #                              layer=None,
 #                              scale=1.0,
-#                              colour=(0, 0, 255)):
+#                              color=(0, 0, 255)):
 #     """"""
 #     guids = compas_rhino.get_objects(name='{0}.vertex.normal.*'.format(mesh.attributes['name']))
 #     compas_rhino.delete_objects(guids)
@@ -696,7 +696,7 @@ def mesh_draw_face_labels(mesh,
 #             'start': start,
 #             'end'  : end,
 #             'name' : name,
-#             'colour': colour,
+#             'color': color,
 #             'arrow': 'end',
 #         })
 
@@ -707,7 +707,7 @@ def mesh_draw_face_labels(mesh,
 #                            display=True,
 #                            layer=None,
 #                            scale=1.0,
-#                            colour=(0, 0, 255)):
+#                            color=(0, 0, 255)):
 #     """"""
 #     guids = compas_rhino.get_objects(name='{0}.face.normal.*'.format(mesh.attributes['name']))
 #     compas_rhino.delete_objects(guids)
@@ -727,7 +727,7 @@ def mesh_draw_face_labels(mesh,
 #             'start' : start,
 #             'end'   : end,
 #             'name'  : name,
-#             'colour' : colour,
+#             'color' : color,
 #             'arrow' : 'end',
 #         })
 

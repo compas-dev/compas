@@ -90,8 +90,8 @@ def network_draw(network,
                  clear_layer=False,
                  clear_vertices=True,
                  clear_edges=True,
-                 vertexcolour=None,
-                 edgecolour=None):
+                 vertexcolor=None,
+                 edgecolor=None):
     """Draw a network data structure in Rhino.
 
     Parameters
@@ -103,16 +103,16 @@ def network_draw(network,
         Default is the current layer.
     clear_layer : bool (False)
         Clear the layer.
-    vertexcolour : list, tuple, str, dict (None)
-        The colour specification for the vertices.
-        * list, tuple: rgb colour, with colour specs between 0 and 255 (e.g. ``(255, 0, 0)``).
-        * str: hex colour (e.g. ``'#ff0000'``).
-        * dict: dictionary of hex or rgb colours.
-    edgecolour : list, tuple, str, dict (None)
-        The colour specification for the edges.
-        * list, tuple: rgb colour, with colour specs between 0 and 255 (e.g. ``(255, 0, 0)``).
-        * str: hex colour (e.g. ``'#ff0000'``).
-        * dict: dictionary of hex or rgb colour.
+    vertexcolor : list, tuple, str, dict (None)
+        The color specification for the vertices.
+        * list, tuple: rgb color, with color specs between 0 and 255 (e.g. ``(255, 0, 0)``).
+        * str: hex color (e.g. ``'#ff0000'``).
+        * dict: dictionary of hex or rgb colors.
+    edgecolor : list, tuple, str, dict (None)
+        The color specification for the edges.
+        * list, tuple: rgb color, with color specs between 0 and 255 (e.g. ``(255, 0, 0)``).
+        * str: hex color (e.g. ``'#ff0000'``).
+        * dict: dictionary of hex or rgb color.
 
     Notes
     -----
@@ -143,14 +143,14 @@ def network_draw(network,
     if clear_edges:
         artist.clear_edges()
 
-    artist.draw_vertices(colour=vertexcolour)
-    artist.draw_edges(colour=edgecolour)
+    artist.draw_vertices(color=vertexcolor)
+    artist.draw_edges(color=edgecolor)
     artist.redraw()
 
 
 def network_draw_vertices(network,
                           keys=None,
-                          colour=None,
+                          color=None,
                           layer=None,
                           clear_layer=False,
                           redraw=True):
@@ -161,13 +161,13 @@ def network_draw_vertices(network,
     keys : list (None)
         A list of vertex keys identifying which vertices to draw.
         Default is to draw all vertices.
-    colour : str, tuple, dict (None)
-        The colour specififcation for the vertices.
-        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
-        To apply the same colour to all vertices, provide a single colour specification.
-        Individual colours can be assigned using a dictionary of key-colour pairs.
-        Missing keys will be assigned the default vertex colour (``self.defaults['colour.vertex']``).
-        Default is to inherit the colour from the layer.
+    color : str, tuple, dict (None)
+        The color specififcation for the vertices.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all vertices, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default vertex color (``self.defaults['color.vertex']``).
+        Default is to inherit the color from the layer.
     layer : str (None)
         The layer in which the vertices are drawn.
         Default is to draw in the current layer.
@@ -185,10 +185,10 @@ def network_draw_vertices(network,
     Examples
     --------
     >>> network_draw_vertices(network)
-    >>> network_draw_vertices(network, colour='#ff0000')
-    >>> network_draw_vertices(network, colour=(255, 0, 0))
+    >>> network_draw_vertices(network, color='#ff0000')
+    >>> network_draw_vertices(network, color=(255, 0, 0))
     >>> network_draw_vertices(network, keys=network.vertices_on_boundary())
-    >>> network_draw_vertices(network, colour={(u, v): '#00ff00' for u, v in network.vertices_on_boundary()})
+    >>> network_draw_vertices(network, color={(u, v): '#00ff00' for u, v in network.vertices_on_boundary()})
 
     """
     artist = NetworkArtist(network)
@@ -196,14 +196,14 @@ def network_draw_vertices(network,
     if clear_layer:
         artist.clear_layer()
     artist.clear_vertices()
-    artist.draw_vertices(keys=keys, colour=colour)
+    artist.draw_vertices(keys=keys, color=color)
     if redraw:
         artist.redraw()
 
 
 def network_draw_edges(network,
                        keys=None,
-                       colour=None,
+                       color=None,
                        layer=None,
                        clear_layer=False,
                        redraw=True):
@@ -214,13 +214,13 @@ def network_draw_edges(network,
     keys : list (None)
         A list of edge keys (as uv pairs) identifying which edges to draw.
         Default is to draw all edges.
-    colour : str, tuple, dict (None)
-        The colour specififcation for the edges.
-        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
-        To apply the same colour to all faces, provide a single colour specification.
-        Individual colours can be assigned using a dictionary of key-colour pairs.
-        Missing keys will be assigned the default face colour (``self.defaults['face.colour']``).
-        Default is to inherit colour from the parent layer.
+    color : str, tuple, dict (None)
+        The color specififcation for the edges.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all faces, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default face color (``self.defaults['face.color']``).
+        Default is to inherit color from the parent layer.
     layer : str (None)
         The layer in which the vertices are drawn.
         Default is to draw in the current layer.
@@ -238,10 +238,10 @@ def network_draw_edges(network,
     Examples
     --------
     >>> network_draw_edges(network)
-    >>> network_draw_edges(network, colour='#ff0000')
-    >>> network_draw_edges(network, colour=(255, 0, 0))
+    >>> network_draw_edges(network, color='#ff0000')
+    >>> network_draw_edges(network, color=(255, 0, 0))
     >>> network_draw_edges(network, keys=network.edges_xxx())
-    >>> network_draw_edges(network, colour={(u, v): '#00ff00' for u, v in network.edges_xxx()})
+    >>> network_draw_edges(network, color={(u, v): '#00ff00' for u, v in network.edges_xxx()})
 
     """
     artist = NetworkArtist(network)
@@ -249,7 +249,7 @@ def network_draw_edges(network,
     if clear_layer:
         artist.clear_layer()
     artist.clear_edges()
-    artist.draw_edges(keys=keys, colour=colour)
+    artist.draw_edges(keys=keys, color=color)
     if redraw:
         artist.redraw()
 
@@ -257,7 +257,7 @@ def network_draw_edges(network,
 def network_draw_vertex_labels(network,
                                attr_name=None,
                                layer=None,
-                               colour=None,
+                               color=None,
                                formatter=None):
     """Draw labels for the vertices of the network.
 
@@ -271,13 +271,13 @@ def network_draw_vertex_labels(network,
     layer : str (None)
         The layer to draw in.
         Default is to draw in the current layer.
-    colour : str, tuple, list, dict (None)
-        The colour specififcation for the labels.
-        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
-        To apply the same colour to all face labels, provide a single colour specification.
-        Individual colours can be assigned using a dictionary of key-colour pairs.
-        Missing keys will be assigned the default vertex colour (``self.defaults['vertex.colour']``).
-        Default is to inherit colour from the parent layer.
+    color : str, tuple, list, dict (None)
+        The color specififcation for the labels.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all face labels, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default vertex color (``self.defaults['vertex.color']``).
+        Default is to inherit color from the parent layer.
     formatter : callable (None)
         A formatting function.
         Defaults to the built-in ``str`` function.
@@ -314,14 +314,14 @@ def network_draw_vertex_labels(network,
     artist = NetworkArtist(network)
     artist.layer = layer
     artist.clear_vertexlabels()
-    artist.draw_vertexlabels(text=text, colour=colour)
+    artist.draw_vertexlabels(text=text, color=color)
     artist.redraw()
 
 
 def network_draw_edge_labels(network,
                              text=None,
                              layer=None,
-                             colour=None):
+                             color=None):
     """Draw labels for the edges of a network.
 
     Parameters
@@ -334,13 +334,13 @@ def network_draw_edge_labels(network,
     layer : str (None)
         The layer to draw in.
         Default is to draw in the current layer.
-    colour : str, tuple, list, dict (None)
-        The colour specififcation for the labels.
-        colours should be specified in the form of a string (hex colours) or as a tuple of RGB components.
-        To apply the same colour to all face labels, provide a single colour specification.
-        Individual colours can be assigned using a dictionary of key-colour pairs.
-        Missing keys will be assigned the default edge colour (``self.defaults['edge.colour']``).
-        Default is to inherit colour from the parent layer.
+    color : str, tuple, list, dict (None)
+        The color specififcation for the labels.
+        Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+        To apply the same color to all face labels, provide a single color specification.
+        Individual colors can be assigned using a dictionary of key-color pairs.
+        Missing keys will be assigned the default edge color (``self.defaults['edge.color']``).
+        Default is to inherit color from the parent layer.
     formatter : callable (None)
         A formatting function.
         Defaults to the built-in ``str`` function.
@@ -372,7 +372,7 @@ def network_draw_edge_labels(network,
     artist = NetworkArtist(network)
     artist.layer = layer
     artist.clear_edgelabels()
-    artist.draw_edgelabels(text=text, colour=colour)
+    artist.draw_edgelabels(text=text, color=color)
     artist.redraw()
 
 
@@ -616,7 +616,7 @@ def network_draw_reaction_forces(network, scale=1.0, layer=None, clear_layer=Fal
                 'start': start,
                 'end'  : end,
                 'name' : '{}.reaction.{}'.format(network.name, key),
-                'colour': (0, 255, 0),
+                'color': (0, 255, 0),
                 'arrow': 'end',
             })
     guids = compas_rhino.get_objects(name='{}.reaction.*'.format(network.name))
@@ -635,7 +635,7 @@ def network_draw_loads(network, scale=1.0, layer=None, clear_layer=False):
                 'start': start,
                 'end'  : end,
                 'name' : '{}.load.{}'.format(network.name, key),
-                'colour': (0, 255, 255),
+                'color': (0, 255, 255),
                 'arrow': 'end',
             })
     guids = compas_rhino.get_objects(name='{}.load.*'.format(network.name))
@@ -652,7 +652,7 @@ def network_draw_axial_forces(network, scale=0.1, layer=None, clear_layer=False)
                 'end'   : network.vertex_coordinates(v),
                 'radius': scale * 3.14159 * attr['f'] ** 2,
                 'name'  : '{}.axial.{}-{}'.format(network.name, u, v),
-                'colour' : (255, 0, 0),
+                'color' : (255, 0, 0),
             })
     guids = compas_rhino.get_objects(name='{}.axial.*'.format(network.name))
     compas_rhino.delete_objects(guids)

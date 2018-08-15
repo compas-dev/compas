@@ -17,7 +17,7 @@ else:
     from PySide2 import QtGui
     from PySide2 import QtWidgets
 
-from compas.viewers.core import colourButton
+from compas.viewers.core import ColorButton
 from compas.viewers.core import Slider
 from compas.viewers.core import TextEdit
 
@@ -203,8 +203,8 @@ class App(QtWidgets.QApplication):
             if itype == 'button':
                 self.add_button(item, parent)
                 continue
-            if itype == 'colourbutton':
-                self.add_colourbutton(item, parent)
+            if itype == 'colorbutton':
+                self.add_colorbutton(item, parent)
                 continue
             if itype == 'textedit':
                 self.add_textedit(item, parent)
@@ -269,9 +269,9 @@ class App(QtWidgets.QApplication):
                             getattr(self.controller, item['edit']))
         parent.addLayout(textedit.layout)
 
-    def add_colourbutton(self, item, parent):
-        button = colourButton(item['text'],
-                             colour=item['value'],
+    def add_colorbutton(self, item, parent):
+        button = ColorButton(item['text'],
+                             color=item['value'],
                              size=item.get('size'),
                              action=getattr(self.controller, item.get('action')))
         parent.addLayout(button.layout)

@@ -17,8 +17,8 @@ __all__ = ['ForcePlotterMixin']
 
 class ForcePlotterMixin(object):
 
-    def draw_loads(self, scale=1.0, tol=1e-3, colour=None):
-        colour = colour or '#00ff00'
+    def draw_loads(self, scale=1.0, tol=1e-3, color=None):
+        color = color or '#00ff00'
 
         loads = []
         for key in self.datastructure.vertices():
@@ -34,15 +34,15 @@ class ForcePlotterMixin(object):
             loads.append({
                 'start': sp,
                 'end'  : ep,
-                'colour': colour,
+                'color': color,
                 'arrow': 'end',
                 'width': 2.0,
                 'text' : '{:.1f}'.format(l)
             })
         draw_xlines_xy(loads, self.axes)
 
-    def draw_residuals(self, scale=1.0, tol=1e-3, colour=None, identifier='is_anchor'):
-        colour = colour or '#00ffff'
+    def draw_residuals(self, scale=1.0, tol=1e-3, color=None, identifier='is_anchor'):
+        color = color or '#00ffff'
 
         residuals = []
         for key, attr in self.datastructure.vertices(True):
@@ -62,15 +62,15 @@ class ForcePlotterMixin(object):
             residuals.append({
                 'start': sp,
                 'end'  : ep,
-                'colour': colour,
+                'color': color,
                 'arrow': 'end',
                 'width': 2.0,
                 'text' : '{:.1f}'.format(l)
             })
         draw_xlines_xy(residuals, self.axes)
 
-    def draw_reactions(self, scale=1.0, tol=1e-3, colour=None, identifier='is_anchor'):
-        colour = colour or '#00ff00'
+    def draw_reactions(self, scale=1.0, tol=1e-3, color=None, identifier='is_anchor'):
+        color = color or '#00ff00'
 
         reactions = []
         for key, attr in self.datastructure.vertices(True):
@@ -90,7 +90,7 @@ class ForcePlotterMixin(object):
             reactions.append({
                 'start': sp,
                 'end'  : ep,
-                'colour': colour,
+                'color': color,
                 'arrow': 'end',
                 'width': 2.0,
                 'text' : '{:.1f}'.format(l)

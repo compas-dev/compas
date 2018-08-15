@@ -59,8 +59,8 @@ __all__ = [
     'get_meshes',
     'get_mesh_face_vertices',
     'get_mesh_vertex_coordinates',
-    'get_mesh_vertex_colours',
-    'set_mesh_vertex_colours',
+    'get_mesh_vertex_colors',
+    'set_mesh_vertex_colors',
     'get_mesh_vertices_and_faces',
     'get_mesh_vertex_index',
     'get_mesh_face_index',
@@ -87,12 +87,12 @@ __all__ = [
 # ==============================================================================
 
 
-def get_objects(name=None, colour=None, layer=None, type=None):
+def get_objects(name=None, color=None, layer=None, type=None):
     guids = rs.AllObjects()
     if name:
         guids = list(set(guids) & set(rs.ObjectsByName(name)))
-    if colour:
-        guids = list(set(guids) & set(rs.ObjectsBycolour(colour)))
+    if color:
+        guids = list(set(guids) & set(rs.ObjectsByColor(color)))
     if layer:
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
     if type:
@@ -478,19 +478,19 @@ def get_mesh_vertex_coordinates(guid):
     return vertices
 
 
-def get_mesh_vertex_colours(guid):
-    colours = []
+def get_mesh_vertex_colors(guid):
+    colors = []
     if guid:
-        temp = rs.MeshVertexcolours(guid)
+        temp = rs.MeshVertexColors(guid)
         if temp:
-            colours = map(list, temp)
-    return colours
+            colors = map(list, temp)
+    return colors
 
 
-def set_mesh_vertex_colours(guid, colours):
+def set_mesh_vertex_colors(guid, colors):
     if not guid:
         return
-    return rs.MeshVertexcolours(guid, colours)
+    return rs.MeshVertexColors(guid, colors)
 
 
 def get_mesh_vertices_and_faces(guid):

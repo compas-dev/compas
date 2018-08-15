@@ -7,7 +7,7 @@ from compas_rhino.conduits import Conduit
 
 try:
     from Rhino.Geometry import Point3d
-    from System.Drawing.colour import FromArgb
+    from System.Drawing.Color import FromArgb
 
 except ImportError:
     compas.raise_if_ironpython()
@@ -30,14 +30,14 @@ class LabelsConduit(Conduit):
     labels : list of 2-tuple
         A list of label tuples.
         Each tuple contains a position and text for the label.
-    colour : list of 2-tuple, optional
-        The colours of the labels.
-        Each colour is a tuple with a background colour and a text colour.
+    color : list of 2-tuple, optional
+        The colors of the labels.
+        Each color is a tuple with a background color and a text color.
         Default is ``((0, 0, 0), (255, 255, 255))`` for all labels.
 
     Attributes
     ----------
-    colour
+    color
     labels : list
         A list of label tuples.
         Each tuple contains a position and text for the label.
@@ -70,45 +70,45 @@ class LabelsConduit(Conduit):
             del conduit
 
     """
-    def __init__(self, labels, colour=None, **kwargs):
+    def __init__(self, labels, color=None, **kwargs):
         super(LabelsConduit, self).__init__(**kwargs)
-        self._default_colour = FromArgb(0, 0, 0)
-        self._default_textcolour = FromArgb(255, 255, 255)
-        self._colour = None
+        self._default_color = FromArgb(0, 0, 0)
+        self._default_textcolor = FromArgb(255, 255, 255)
+        self._color = None
         self.labels = labels or []
-        self.colour = colour
+        self.color = color
 
     @property
-    def colour(self):
-        """list : Individual label colours.
+    def color(self):
+        """list : Individual label colors.
 
         Parameters
         ----------
-        colour : list of str or 3-tuple
-            The specification of background and text colour of each face in hex or RGB(255) format.
+        color : list of str or 3-tuple
+            The specification of background and text color of each face in hex or RGB(255) format.
 
         """
-        return self._colours
+        return self._colors
     
-    @colour.setter
-    def colour(self, colour):
-        if colour:
-            colour[:] = [(FromArgb(* colour_to_rgb(bgc)), FromArgb(* colour_to_rgb(tc))) for bgc, tc in colour]
+    @color.setter
+    def color(self, color):
+        if color:
+            color[:] = [(FromArgb(* color_to_rgb(bgc)), FromArgb(* color_to_rgb(tc))) for bgc, tc in color]
             l = len(self.labels)
-            c = len(colour)
+            c = len(color)
             if c < l:
-                colours += [(self._default_colour, self._default_textcolour) for i in range(l - c)]
+                colors += [(self._default_color, self._default_textcolor) for i in range(l - c)]
             elif c > l:
-                colour[:] = colour[:l]
-            self._colour = colour
+                color[:] = color[:l]
+            self._color = color
 
     def DrawForeground(self, e):
         for i, (pos, text) in enumerate(self.labels):
-            if self.colour:
-                colour, textcolour = self.colour[i]
-                e.Display.DrawDot(Point3d(*pos), text, colour, textcolour)
+            if self.color:
+                color, textcolor = self.color[i]
+                e.Display.DrawDot(Point3d(*pos), text, color, textcolor)
             else:
-                e.Display.DrawDot(Point3d(*pos), text, self._default_colour, self._default_textcolour)
+                e.Display.DrawDot(Point3d(*pos), text, self._default_color, self._default_textcolor)
 
 
 # ==============================================================================

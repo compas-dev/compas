@@ -59,36 +59,36 @@ class BlenderMesh(BlenderGeometry):
         faces = self.get_face_vertex_indices()
         return [[list(self.mesh.data.vertices[i].co) for i in face] for face in faces]
 
-    def get_vertex_colours(self):
-        colours = []
+    def get_vertex_colors(self):
+        colors = []
         self.mesh.select = True
-        col = self.mesh.data.vertex_colours.new()
+        col = self.mesh.data.vertex_colors.new()
         vertices = range(len(self.mesh.data.vertices))
         for face in self.mesh.data.polygons:
             for i in face.loop_indices:
                 j = self.mesh.data.loops[i].vertex_index
                 if j in vertices:
                     ind = vertices.index(j)
-                    colours.append(list(col.data[i].colour))
-        return colours
+                    colors.append(list(col.data[i].color))
+        return colors
         
-    def set_vertex_colours(self, vertices, colours):
+    def set_vertex_colors(self, vertices, colors):
         self.mesh.select = True
-        if self.mesh.data.vertex_colours:
-            col = self.mesh.data.vertex_colours.active
+        if self.mesh.data.vertex_colors:
+            col = self.mesh.data.vertex_colors.active
         else:
-            col = self.mesh.data.vertex_colours.new()
+            col = self.mesh.data.vertex_colors.new()
         for face in self.mesh.data.polygons:
             for i in face.loop_indices:
                 j = self.mesh.data.loops[i].vertex_index
                 if j in vertices:
                     ind = vertices.index(j)
-                    col.data[i].colour = colours[ind]
+                    col.data[i].color = colors[ind]
 
-    def unset_vertex_colours(self):
+    def unset_vertex_colors(self):
         vertices = range(len(self.mesh.data.vertices))
-        colours = [[1, 1, 1]] * len(vertices)
-        self.set_vertex_colours(vertices=vertices, colours=colours)
+        colors = [[1, 1, 1]] * len(vertices)
+        self.set_vertex_colors(vertices=vertices, colors=colors)
 
     def get_vertices_and_faces(self):
         vertices = self.get_vertex_coordinates()
@@ -214,9 +214,9 @@ if __name__ == '__main__':
     print(mesh.edge_length(edge=4))
     print(mesh.edge_lengths())
     
-    mesh.set_vertex_colours(vertices=[0, 1], colours=[[1, 0, 0], [0, 0, 1]])
-    print(mesh.get_vertex_colours())
-    mesh.unset_vertex_colours()
+    mesh.set_vertex_colors(vertices=[0, 1], colors=[[1, 0, 0], [0, 0, 1]])
+    print(mesh.get_vertex_colors())
+    mesh.unset_vertex_colors()
     
     X = [[x, y, z + 1] for x, y, z in mesh.get_vertex_coordinates()]
     mesh.update_vertices(X)

@@ -8,7 +8,7 @@ try:
     from vtk import vtkAxesActor
     from vtk import vtkCamera
     from vtk import vtkCellArray
-    from vtk import vtkcolourTransferFunction
+    from vtk import vtkColorTransferFunction
     from vtk import vtkCubeSource
     from vtk import vtkFixedPointVolumeRayCastMapper
     from vtk import vtkGlyph3DMapper
@@ -245,9 +245,9 @@ class VtkViewer(QApplication):
         self.locations = vtkPoints()
         self.bcs       = vtkPolyData()
         self.fixed     = vtkPoints()
-        self.colours    = vtkUnsignedCharArray()
-        self.vcolours   = self.data.get('vertex_colours', None)
-        self.colours.SetNumberOfComponents(3)
+        self.colors    = vtkUnsignedCharArray()
+        self.vcolors   = self.data.get('vertex_colors', None)
+        self.colors.SetNumberOfComponents(3)
 
         if self.data.get('vertices', None):
             for key, vertex in self.data['vertices'].items():
@@ -274,14 +274,14 @@ class VtkViewer(QApplication):
         if self.data.get('voxels', None) is not None:
             self.draw_voxels()
 
-        self.polydata.GetCellData().SetScalars(self.colours)
+        self.polydata.GetCellData().SetScalars(self.colors)
 
-        if self.vcolours:
-            self.vertex_colours = vtkUnsignedCharArray()
-            self.vertex_colours.SetNumberOfComponents(3)
+        if self.vcolors:
+            self.vertex_colors = vtkUnsignedCharArray()
+            self.vertex_colors.SetNumberOfComponents(3)
             for key in self.data['vertices']:
-                self.vertex_colours.InsertNextTypedTuple(self.vcolours.get(key, [200, 200, 200]))
-            self.polydata.GetPointData().SetScalars(self.vertex_colours)
+                self.vertex_colors.InsertNextTypedTuple(self.vcolors.get(key, [200, 200, 200]))
+            self.polydata.GetPointData().SetScalars(self.vertex_colors)
 
         self.draw_axes()
         if not self.show_axes:
@@ -297,7 +297,7 @@ class VtkViewer(QApplication):
             actor.GetProperty().EdgeVisibilityOff()
         else:
             actor.GetProperty().EdgeVisibilityOn()
-        actor.GetProperty().SetEdgecolour([0, 0.5, 0])
+        actor.GetProperty().SetEdgeColor([0, 0.5, 0])
         actor.GetProperty().SetInterpolationToGouraud()
 
         self.main.renderer.AddActor(actor)
@@ -435,7 +435,7 @@ class VtkViewer(QApplication):
 
         actor1 = vtkActor()
         actor1.SetMapper(mapper1)
-        actor1.GetProperty().SetDiffusecolour(0.6, 0.6, 1.0)
+        actor1.GetProperty().SetDiffuseColor(0.6, 0.6, 1.0)
         actor1.GetProperty().SetDiffuse(1.0)
         self.main.renderer.AddActor(actor1)
 
@@ -454,7 +454,7 @@ class VtkViewer(QApplication):
 
             actor2 = vtkActor()
             actor2.SetMapper(mapper2)
-            actor2.GetProperty().SetDiffusecolour(1.0, 0.8, 0.0)
+            actor2.GetProperty().SetDiffuseColor(1.0, 0.8, 0.0)
             actor2.GetProperty().SetDiffuse(1.0)
             self.main.renderer.AddActor(actor2)
 
@@ -477,14 +477,14 @@ class VtkViewer(QApplication):
         self.vertices.Modified()
         self.main.window.Render()
 
-    def update_vertices_colours(self, colours):
+    def update_vertices_colors(self, colors):
 
-        self.vertex_colours = vtkUnsignedCharArray()
-        self.vertex_colours.SetNumberOfComponents(3)
-        colours_ = [colours.get(i, [200, 200, 200]) for i in self.data['vertices'].keys()]
-        for colour in colours_:
-            self.vertex_colours.InsertNextTypedTuple([int(round(i)) for i in colour])
-        self.polydata.GetPointData().SetScalars(self.vertex_colours)
+        self.vertex_colors = vtkUnsignedCharArray()
+        self.vertex_colors.SetNumberOfComponents(3)
+        colors_ = [colors.get(i, [200, 200, 200]) for i in self.data['vertices'].keys()]
+        for color in colors_:
+            self.vertex_colors.InsertNextTypedTuple([int(round(i)) for i in color])
+        self.polydata.GetPointData().SetScalars(self.vertex_colors)
         self.main.window.Render()
 
 
@@ -502,12 +502,12 @@ class VtkViewer(QApplication):
             line.GetPointIds().SetId(0, edge['u'])
             line.GetPointIds().SetId(1, edge['v'])
             edges.InsertNextCell(line)
-            colour = edge.get('colour', [255, 100, 100])
+            color = edge.get('color', [255, 100, 100])
 
             try:
-                self.colours.InsertNextTypedTuple(colour)
+                self.colors.InsertNextTypedTuple(color)
             except Exception:
-                self.colours.InsertNextTupleValue(colour)
+                self.colors.InsertNextTupleValue(color)
 
         self.polydata.SetLines(edges)
 
@@ -537,12 +537,12 @@ class VtkViewer(QApplication):
             for pt in face['vertices']:
                 vil.InsertNextId(pt)
             faces.InsertNextCell(vil)
-            colour = face.get('colour', [150, 255, 150])
+            color = face.get('color', [150, 255, 150])
 
             try:
-                self.colours.InsertNextTypedTuple(colour)
+                self.colors.InsertNextTypedTuple(color)
             except Exception:
-                self.colours.InsertNextTupleValue(colour)
+                self.colors.InsertNextTupleValue(color)
 
         self.polydata.SetPolys(faces)
 
@@ -578,7 +578,7 @@ class VtkViewer(QApplication):
 
         self.block_actor = actor = vtkActor()
         actor.SetMapper(mapper)
-        actor.GetProperty().SetDiffusecolour(0.7, 0.7, 1.0)
+        actor.GetProperty().SetDiffuseColor(0.7, 0.7, 1.0)
         actor.GetProperty().SetDiffuse(1.0)
         actor.GetProperty().EdgeVisibilityOn()
         self.main.renderer.AddActor(actor)
@@ -612,7 +612,7 @@ class VtkViewer(QApplication):
         gradient.AddPoint(1, 0.0)
         gradient.AddPoint(255, 0.2)
 
-        self.cbar = cbar = vtkcolourTransferFunction()
+        self.cbar = cbar = vtkColorTransferFunction()
         cbar.AddRGBPoint(0.0, 0.0, 0.0, 1.0)
         cbar.AddRGBPoint(42.0, 0.0, 0.5, 1.0)
         cbar.AddRGBPoint(84.0, 0.0, 1.0, 0.5)
@@ -622,7 +622,7 @@ class VtkViewer(QApplication):
         cbar.AddRGBPoint(255.0, 1.0, 0.0, 0.0)
 
         self.volprop = volprop = vtkVolumeProperty()
-        volprop.Setcolour(cbar)
+        volprop.SetColor(cbar)
         volprop.SetScalarOpacity(gradient)
         volprop.ShadeOff()
         volprop.SetInterpolationTypeToLinear()
@@ -692,8 +692,8 @@ if __name__ == "__main__":
             6: [+3, +3, 3],
             7: [-3, +3, 3],
         },
-        'vertex_colours': {
-            # turn on vertex colouring by uncommenting
+        'vertex_colors': {
+            # turn on vertex coloring by uncommenting
             0: [255, 0, 255],
             1: [255, 0, 0],
             2: [255, 255, 0],
@@ -704,14 +704,14 @@ if __name__ == "__main__":
             7: [0, 0, 255],
         },
         'edges': [
-            {'u': 0, 'v': 4, 'colour': [0, 0, 0]},
-            {'u': 1, 'v': 5, 'colour': [0, 0, 255]},
-            {'u': 2, 'v': 6, 'colour': [0, 255, 0]},
+            {'u': 0, 'v': 4, 'color': [0, 0, 0]},
+            {'u': 1, 'v': 5, 'color': [0, 0, 255]},
+            {'u': 2, 'v': 6, 'color': [0, 255, 0]},
             {'u': 3, 'v': 7}
         ],
         'faces': {
-            0: {'vertices': [4, 5, 6], 'colour': [250, 150, 150]},
-            1: {'vertices': [6, 7, 4], 'colour': [150, 150, 250]},
+            0: {'vertices': [4, 5, 6], 'color': [250, 150, 150]},
+            1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
         },
         'fixed':
             [0, 1],

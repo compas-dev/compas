@@ -31,7 +31,7 @@ class Modifier(object):
 
     @staticmethod
     def move(self):
-        colour  = Rhino.ApplicationSettings.AppearanceSettings.Feedbackcolour
+        color  = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
         origin = {key: self.vertex_coordinates(key) for key in self.self.vertices()}
         vertex = {key: self.vertex_coordinates(key) for key in self.self.vertices()}
         edges  = self.edges()
@@ -50,7 +50,7 @@ class Modifier(object):
                 ep = vertex[v]
                 sp = Point3d(*sp)
                 ep = Point3d(*ep)
-                e.Display.DrawDottedLine(sp, ep, colour)
+                e.Display.DrawDottedLine(sp, ep, color)
 
         # name = '{0}.*'.format(self.attributes['name'])
         # guids = compas_rhino.get_objects(name=name)

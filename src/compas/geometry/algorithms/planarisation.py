@@ -285,7 +285,7 @@ if __name__ == "__main__":
             dev = mesh_flatness(mesh, maxdev=0.02)
 
             plotter.update_vertices(radius=radius)
-            plotter.update_faces(facecolour={fkey: i_to_rgb(dev[fkey]) for fkey in mesh.faces()})
+            plotter.update_faces(facecolor={fkey: i_to_rgb(dev[fkey]) for fkey in mesh.faces()})
             plotter.update_edges()
             plotter.update()
 

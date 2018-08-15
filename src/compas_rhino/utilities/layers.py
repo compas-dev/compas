@@ -111,11 +111,11 @@ def create_layers_from_dict(layers):
             except TypeError:
                 attr = {}
             attr = attr or {}
-            colour   = attr.get('colour', (0, 0, 0))
+            color   = attr.get('color', (0, 0, 0))
             visible = attr.get('visible', True)
             locked  = attr.get('locked', False)
             if not rs.IsLayer(fullname):
-                rs.AddLayer(fullname, colour, visible, locked)
+                rs.AddLayer(fullname, color, visible, locked)
             if 'layers' in attr :
                 recurse(attr['layers'], fullname)
     rs.EnableRedraw(False)

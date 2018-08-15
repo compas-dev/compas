@@ -27,9 +27,9 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
         self.datastructure = volmesh
         self.layer = layer
         self.defaults = {
-            'colour.vertex': [1, 0, 0],
-            'colour.face': [1, 1, 1],
-            'colour.edge': [0, 0, 1]}
+            'color.vertex': [1, 0, 0],
+            'color.face': [1, 1, 1],
+            'color.edge': [0, 0, 1]}
 
     def redraw(self, timeout=None):
         """Redraw the Blender view."""
