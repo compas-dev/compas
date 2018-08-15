@@ -17,6 +17,11 @@ except ImportError:
     if compas.is_ironpython() and compas.is_windows():
         raise
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
@@ -54,13 +59,27 @@ class BrowserForm(Form):
     """
 
     def __init__(self, url, title='BrowserForm', width=1024, height=786):
-        super(BrowserForm, self).__init__(title, width, height)
+        self._url = None
         self.url = url
         self.FormBorderStyle = FormBorderStyle.Sizable
+        super(BrowserForm, self).__init__(title, width, height)
+
+    @property
+    def url(self):
+        return self._url
+
+    @url.setter
+    def url(self, url):
+        if isinstance(url, Uri):
+            self._url = url
+        elif isinstance(url, basestring):
+            self._url = Uri(url)
+        else:
+            raise NotImplementedError
 
     def init(self):
         self.browser = WebBrowser()
-        self.browser.Url = Uri(self.url)
+        self.browser.Url = self.url
         self.browser.StatusTextChanged += self.on_statustext_changed
         self.browser.Dock = DockStyle.Fill
         self.status_strip = StatusStrip()
