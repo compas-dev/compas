@@ -325,6 +325,9 @@ Algorithms
     mesh_smooth_centroid
     network_parallelise_edges
     network_smooth_centroid
+    offset_line
+    offset_polyline
+    offset_polygon
     oriented_bounding_box_numpy
     oriented_bounding_box_xy_numpy
     planarize_faces
@@ -387,4 +390,3 @@ __all__ += spatial.__all__
 __all__ += xforms.__all__
 
 __all__ += algorithms.__all__
-
