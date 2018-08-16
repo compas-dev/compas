@@ -65,6 +65,8 @@ __all__ = [
     'get_mesh_vertex_index',
     'get_mesh_face_index',
     'get_mesh_edge_index',
+    'select_object',
+    'select_objects',
     'select_point',
     'select_points',
     'select_curve',
@@ -171,6 +173,18 @@ def get_object_attributes_from_name(guids):
             attr = {}
         attrs.append(attr)
     return attrs
+
+
+def select_object(message="Select an object."):
+    return rs.GetObject(message)
+
+
+def select_objects(message='Select objects.'):
+    guids = []
+    temp = rs.GetObjects(message)
+    if temp:
+        return temp
+    return guids
 
 
 # ==============================================================================

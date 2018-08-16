@@ -2,8 +2,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas_rhino.geometry import RhinoGeometry
+import compas
+import compas_rhino
 
+from compas_rhino.geometry import RhinoGeometry
 from compas_rhino.utilities import select_point
 
 try:
@@ -11,9 +13,7 @@ try:
     find_object = sc.doc.Objects.Find
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Tom Van Mele', ]
@@ -29,31 +29,29 @@ class RhinoPoint(RhinoGeometry):
     """"""
 
     def __init__(self, guid):
-        self.guid = guid
-        self.object = RhinoPoint.find(guid)
-        self.geometry = self.object.Geometry
-        self.attributes = self.object.Attributes
-        self.type = self.geometry.ObjectType
+        super(RhinoPoint, self).__init__(guid)
 
     @classmethod
     def from_selection(cls):
-        guid = cls.select()
+        """Create a ``RhinoPoint`` instance from a selected Rhino point.
+
+        Returns
+        -------
+        RhinoPoint
+            A wrapper around the Rhino point object.
+
+        """
+        guid = select_point()
         return cls(guid)
-
-    @staticmethod
-    def select():
-        return select_point()
-
-    @staticmethod
-    def find(guid):
-        return find_object(guid)
 
     @property
     def xyz(self):
+        """list : The XYZ coordinates of the point."""
         loc = self.geometry.Location
         return [loc.X, loc.Y, loc.Z]
 
     def closest_point(self, point, maxdist=None):
+        """"""
         return self.xyz
 
     def closest_points(self, points, maxdist=None):
