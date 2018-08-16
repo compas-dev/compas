@@ -34,12 +34,12 @@ General instructions
 
    There are two options for downloading the main library onto your system.
 
-   a\. *Download a release*
+   a. *Download a release*
 
    Download an archive from https://github.com/compas-dev/compas/releases
    and unpack it into the installation folder.
 
-   b\. *Clone the GitHub repository*
+   b. *Clone the GitHub repository*
 
    From the terminal 
 

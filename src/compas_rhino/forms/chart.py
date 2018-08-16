@@ -45,7 +45,8 @@ class ChartForm(Form):
         * data: A dictionary with x-y pairs.
         * color (optional): A hex color or an RGB(255) color specification.
         * linewidth (optional): The width of the series graph line.
-        * linetype (optional): The visual style of the graph line. Should be one of ``{'solid', 'dotted', 'dashed'}``.
+        * linetype (optional): The visual style of the graph line.
+          Should be one of ``{'solid', 'dotted', 'dashed'}``.
 
     xlimits : 2-tuple
         Minimum and maximum values on the X-axis.
@@ -53,7 +54,8 @@ class ChartForm(Form):
         Size of the steps along the X-axis.
     ylimits : 2-tuple, optional
         Minimum and maximum values on the Y-axis.
-        Default is ``None``, in which case the limits will be computed from the min/max values of the data in the series.
+        Default is ``None``, in which case the limits will be computed from the
+        min/max values of the data in the series.
     ystep : int, optional
         Size of the steps along the Y-axis.
         Default is ``int((ymax - ymin) / 10.)```.
@@ -67,18 +69,9 @@ class ChartForm(Form):
     .. code-block:: python
 
         import random
-        from compas_rhino.forms import ChartForm
 
-        def fib(n, memo={}):
-            if n == 0:
-                return 0
-            if n == 1:
-                return 1
-            if n == 2:
-                return 1
-            if n not in memo:
-                memo[n] = fib(n - 2, memo) + fib(n - 1, memo)
-            return memo[n]
+        from compas.utilities import fibonacci
+        from compas_rhino.forms import ChartForm
 
         series = [
             {
@@ -100,7 +93,7 @@ class ChartForm(Form):
                 'color'     : (0, 0, 255),
                 'linewidth' : 1,
                 'linetype'  : 'dotted',
-                'data'      : dict((str(i), fib(i)) for i in range(10)),
+                'data'      : dict((str(i), fibonacci(i)) for i in range(10)),
             },
         ]
 
@@ -109,24 +102,26 @@ class ChartForm(Form):
 
     """
 
-    def __init__(self, series, xlimits, xstep, ylimits=None, ystep=None, **kwargs):
+    def __init__(self, series, xlimits, xstep, ylimits=None, ystep=None, title='ChartForm', width=800, height=600, **kwargs):
         self.series = series
         self.xmin = xlimits[0]
         self.xmax = xlimits[1]
-        self.xstp = xstep
+        self.xstep = xstep
 
         self.ymin = 0
         self.ymax = 0
-        self.ystp = None
+        self.ystep = None
+
         for attr in series:
             keys = sorted(attr['data'].keys(), key=int)
             values = [attr['data'][key] for key in keys]
             y = map(float, values)
             self.ymin = min(min(y), self.ymin)
             self.ymax = max(max(y), self.ymax)
-        self.ystp = int((self.ymax - self.ymin) / 10.)
 
-        super(ChartForm, self).__init__()
+        self.ystep = int((self.ymax - self.ymin) / 10.)
+
+        super(ChartForm, self).__init__(title, width, height)
 
     @property
     def bgcolour(self):
@@ -137,23 +132,26 @@ class ChartForm(Form):
         pass
 
     def init(self):
-        self.ClientSize = Size(820, 620)
+        # self.ClientSize = Size(820, 620)
+
         charting = Charting
         chart = charting.Chart()
         chart.Location = Point(10, 10)
-        chart.Size = Size(800, 600)
+        chart.Size = Size(self.Width - 40, self.Height - 40)
         chart.ChartAreas.Add('series')
         area = chart.ChartAreas['series']
+
         x = area.AxisX
         x.Minimum = self.xmin
         x.Maximum = self.xmax
-        x.Interval = self.xstp
+        x.Interval = self.xstep
         x.MajorGrid.LineColor = Color.White
         x.MajorGrid.LineDashStyle = charting.ChartDashStyle.NotSet
+
         y = area.AxisY
         y.Minimum = self.ymin
         y.Maximum = self.ymax
-        y.Interval = self.ystp
+        y.Interval = self.ystep
         y.MajorGrid.LineColor = Color.Black
         y.MajorGrid.LineDashStyle = charting.ChartDashStyle.Dash
 
@@ -183,39 +181,28 @@ class ChartForm(Form):
 if __name__ == '__main__':
 
     import random
-
-    def fib(n, memo={}):
-        if n == 0:
-            return 0
-        if n == 1:
-            return 1
-        if n == 2:
-            return 1
-        if n not in memo:
-            memo[n] = fib(n - 2, memo) + fib(n - 1, memo)
-        return memo[n]
+    from compas.utilities import fibonacci
 
     series = [
         {
             'name'      : 'series1',
             'color'     : (255, 0, 0),
             'linewidth' : 1,
-            'data'      : dict((str(i), random.randint(30, 70)) for i in range(10)),
+            'data'      : {str(i): random.randint(30, 70) for i in range(10)},
         },
         {
             'name'      : 'series2',
             'color'     : (0, 255, 0),
             'linewidth' : 1,
-            'data'      : dict((str(i), i ** 2) for i in range(10)),
+            'data'      : {str(i): i ** 2 for i in range(10)},
         },
         {
             'name'      : 'series3',
             'color'     : (0, 0, 255),
             'linewidth' : 1,
-            'data'      : dict((str(i), fib(i)) for i in range(10)),
+            'data'      : {str(i): fibonacci(i) for i in range(10)},
         },
     ]
 
     form = ChartForm(series, (0, 10), 1, width=1600)
-
     form.show()

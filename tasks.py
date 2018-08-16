@@ -13,6 +13,8 @@ try:
     input = raw_input
 except NameError:
     pass
+
+
 BASE_FOLDER = os.path.dirname(__file__)
 
 
