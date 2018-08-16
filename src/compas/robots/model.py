@@ -1,7 +1,9 @@
 from __future__ import absolute_import, division, print_function
 
 from compas.files import URDF
-from compas.geometry import Point, Frame
+from compas.geometry import Point
+from compas.geometry import Vector
+from compas.geometry import Frame
 from compas.geometry import add_vectors
 from compas.geometry.xforms import Transformation
 from compas.geometry.xforms import Rotation
@@ -11,6 +13,7 @@ from compas.datastructures import Mesh as CMesh
 from compas.geometry.transformations import mesh_transform
 from compas.geometry.transformations import mesh_transformed
 from compas.geometry.transformations import transform_vectors
+
 
 # URDF is defined in meters
 # so we scale it all to millimeters
@@ -38,28 +41,35 @@ def _parse_floats(values, scale_factor=None):
 class Origin(Frame):
     """Reference frame represented by an instance of :class:`Frame`."""
 
+    def __init__(self, point, xaxis, yaxis):
+        super(Origin, self).__init__(point, xaxis, yaxis)
+        self.init = None # keep a copy to the initial, none transformed origin
+        self.init_transformation = None
+
     @classmethod
     def from_urdf(cls, attributes, elements, text):
         xyz = _parse_floats(attributes.get('xyz', '0 0 0'), SCALE_FACTOR)
         rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
         return cls.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
-
-    def update(self, parent_origin):
-        """Update the origin based on the parent joint's origin.
-        """
-        parent_rotation = Rotation.from_frame(parent_origin)
-        rotated_point = Point(*self.point)
-        rotated_point.transform(parent_rotation.matrix)
-        rot = Rotation.from_frame(self)
-        pos = add_vectors(parent_origin.point, rotated_point)
-        rot = parent_rotation * rot
-        xaxis, yaxis = rot.basis_vectors
-        self.point = pos
-        self.xaxis = xaxis
-        self.yaxis = yaxis
     
-    @property
-    def transformation(self):
+    def create(self, transformation):
+        # called when created ..
+        self.transform(transformation)
+        self.init = self.copy()
+        self.init_transformation = Transformation.from_frame(self)
+    
+    def reset_transform(self):
+        
+        if self.init:
+            # TODO: Transform back into initial state does not always work...
+            # T = Transformation.from_frame(self.init) * Transformation.from_frame(self).inverse()
+            # self.transform(T)
+            cp = self.init.copy()
+            self.point = cp.point
+            self.xaxis = cp.xaxis
+            self.yaxis = cp.yaxis
+    
+    def calculate_visual_transformation(self): # todo move somewhere else
         """Returns the transformation based on the origin frame.
         """
         # TODO: check why yaxis and zaxis need to be exchanged
@@ -289,13 +299,10 @@ class Link(object):
         self.inertial = inertial
         self.attr = kwargs
         self.joints = []
-        self.position = [0,0,0] # point
-        self.orientation = [0,0,0,1] # quaternion
-
+    
     def create(self, urdf_importer, meshcls, parent_joint=None):
         """Recursive function to create all geometry shapes.
         """
-
         for item in self.visual:
             item.geometry.shape.create(urdf_importer, meshcls)
         for item in self.collision:
@@ -306,47 +313,77 @@ class Link(object):
         if parent_joint:
             
             parent_origin = parent_joint.origin
-            T = parent_origin.transformation
+
+            transformation = Transformation.from_frame(parent_origin)
+            
+            T = parent_origin.calculate_visual_transformation()
 
             for item in self.visual:
                 item.geometry.shape.transform(T)
             
             for item in self.collision:
                 item.geometry.shape.transform(T)
-        else: 
-            parent_origin = Frame.worldXY()
+        
+        else:
+            transformation = Transformation()
         
         for cjoint in self.joints:
-            cjoint.origin.update(parent_origin)
+            cjoint.origin.create(transformation)
             if cjoint.axis:
-                cjoint.axis.update(parent_origin)
+                cjoint.axis.create(transformation)
             clink = cjoint.childlink
             clink.create(urdf_importer, meshcls, cjoint)
-    
-    def set_transforms():
+        
         """
-        if ( visual_node_ )
-        {
-            visual_node_->setPosition( visual_position );
-            visual_node_->setOrientation( visual_orientation );
-        }
-
-        if ( collision_node_ )
-        {
-            collision_node_->setPosition( collision_position );
-            collision_node_->setOrientation( collision_orientation );
-        }
-
-        position_property_->setVector( visual_position );
-        orientation_property_->setQuaternion( visual_orientation );
-
-        if ( axes_ )
-        {
-            axes_->setPosition( visual_position );
-            axes_->setOrientation( visual_orientation );
-        }
-        }
+        else:
+            for cjoint in self.joints:
+                clink = cjoint.childlink
+                clink.create(urdf_importer, meshcls, cjoint)
         """
+            
+    def update(self, joint_state, parent_transformation, reset_transformation):
+        """Recursive function to apply the transformations given by the joint 
+            state.
+        
+        Joint_states are given absolute, so it is necessary to reset the current
+        transformation.
+        """
+        relative_transformation = parent_transformation * reset_transformation
+        
+        for item in self.visual:
+            item.geometry.shape.transform(relative_transformation)
+        for item in self.collision:
+            item.geometry.shape.transform(relative_transformation)
+
+        for joint in self.joints:
+            # 1. Get reset transformation
+            reset_transformation = joint.calculate_reset_transformation()
+            # 2. Reset
+            joint.reset_transform()
+            #joint.transform(reset_transformation) # why does this not work properly....
+            
+            # 3. Calculate transformation
+            if joint.name in joint_state.keys():
+                position = joint_state[joint.name]
+                transformation = joint.calculate_transformation(position)
+                transformation = parent_transformation * transformation
+            else:
+                transformation = parent_transformation
+            
+            # 4. Apply on joint
+            joint.transform(transformation)
+            # 4. Apply function to all children
+            joint.childlink.update(joint_state, transformation, reset_transformation)
+            
+    """
+    def update(self, parent_joint=None):
+
+        #link->getName(), visual_position, visual_orientation, collision_position, collision_orientation
+        #link->setTransforms( visual_position, visual_orientation, collision_position, collision_orientation );
+        # for joint in link.joints:
+            #joint->setTransforms(visual_position, visual_orientation);
+        pass
+    """
 
 class ParentJoint(object):
     """Describes a parent relation between joints."""
@@ -428,32 +465,41 @@ class Axis(object):
     def __init__(self, xyz='0 0 0'):
         # We are not using Vector here because we
         # cannot attach _urdf_source to it due to __slots__
-        #xyz = _parse_floats(xyz, SCALE_FACTOR)
         xyz = _parse_floats(xyz, 1.)
         self.x = xyz[0]
         self.y = xyz[1]
         self.z = xyz[2]
+        self.init = None
     
-    #def transform(self, transformation):
-    #    xyz = transform_vectors([[self.x, self.y, self.z]], transformation.matrix)
-    #    self.x = xyz[0][0]
-    #    self.y = xyz[0][1]
-    #    self.z = xyz[0][2]
-
-    def update(self, parent_origin):
-        """
-        axis_->setPosition( position );
-        axis_->setOrientation( orientation );
-        axis_->setDirection( parent_link_orientation * axis_property_->getVector() );
-        """
-        parent_rotation = Rotation.from_frame(parent_origin)
-        xyz = transform_vectors([[self.x, self.y, self.z]], parent_rotation.matrix)
+    def copy(self):
+        cls = type(self)
+        return cls("%f %f %f" % (self.x, self.y, self.z))
+    
+    def reset_transform(self):
+        if self.init:
+            cp = self.init.copy()
+            self.x = cp.x
+            self.y = cp.y
+            self.z = cp.z
+    
+    def transform(self, transformation):
+        xyz = transform_vectors([[self.x, self.y, self.z]], transformation.matrix)
         self.x = xyz[0][0]
         self.y = xyz[0][1]
         self.z = xyz[0][2]
 
+    def create(self, transformation):
+        """Stores the initial direction of the axis.
 
-    
+        This is called when the robot is created.
+        """
+        self.transform(transformation)
+        self.init = self.copy()
+
+    @property
+    def vector(self):
+        return Vector(self.x, self.y, self.z)
+
     def __str__(self):
         return "[%.3f, %.3f, %.3f]" % (self.x, self.y, self.z)
 
@@ -502,6 +548,47 @@ class Joint(object):
         self.mimic = mimic
         self.attr = kwargs
         self.childlink = None
+
+    @property
+    def current_transformation(self):
+        if self.origin:
+            return Transformation.from_frame(self.origin)
+        else:
+            return Transformation()
+    
+    @property
+    def init_transformation(self):
+        if self.origin:
+            return self.origin.init_transformation.copy()
+            #return Transformation.from_frame(self.origin.init)
+        else:
+            return Transformation()
+
+    def reset_transform(self):
+        if self.origin:
+            self.origin.reset_transform()
+        if self.axis:
+            self.axis.reset_transform()
+
+    def transform(self, transformation):
+        if self.origin:
+            self.origin.transform(transformation)
+        if self.axis:
+            self.axis.transform(transformation)
+    
+    def calculate_transformation(self, position):
+        """Calculates the transformation of the joint based on the position and
+        its type.
+        """
+        if self.type == "revolute":
+            return Rotation.from_axis_and_angle(self.axis.vector, position, self.origin.point)
+        elif self.type == "fixed":
+            return Transformation() # identity matrix
+        else:
+            return NotImplementedError
+    
+    def calculate_reset_transformation(self):
+        return self.init_transformation * self.current_transformation.inverse()
 
 
 class Robot(object):
@@ -632,7 +719,7 @@ class Robot(object):
             return joints
 
         return iter(func(self.root, []))
-
+    
 
 URDF.add_parser(Robot, 'robot')
 URDF.add_parser(Joint, 'robot/joint')
