@@ -140,9 +140,8 @@ class Network(FromToJson,
             dea = '\n'.join(['{0} => {1}'.format(key, value) for key, value in self.default_edge_attributes.items()])
 
         return """
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 {0}
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{7}
 
 - default vertex attributes
 
@@ -158,7 +157,7 @@ class Network(FromToJson,
 - vertex degree min: {3}
 - vertex degree max: {4}
 
-""".format(self.attributes['name'], v, e, dmin, dmax, dva, dea)
+""".format(self.name, v, e, dmin, dmax, dva, dea, "=" * len(self.name))
 
     # --------------------------------------------------------------------------
     # special properties

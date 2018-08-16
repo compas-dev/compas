@@ -18,6 +18,11 @@ except ImportError:
     if compas.is_ironpython() and compas.is_windows():
         raise
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
@@ -62,7 +67,8 @@ class ChartForm(Form):
 
     Other Parameters
     ----------------
-    bgcolour : 
+    bgcolour : str, tuple, System.Drawing.Color
+        The background color of the chart area.
 
     Examples
     --------
@@ -78,21 +84,21 @@ class ChartForm(Form):
                 'name'      : 'series1',
                 'color'     : (255, 0, 0),
                 'linewidth' : 1,
-                'linetype'  : 'dashed',
+                'linestyle' : 'dashed',
                 'data'      : dict((str(i), random.randint(30, 70)) for i in range(10)),
             },
             {
                 'name'      : 'series2',
                 'color'     : (0, 255, 0),
                 'linewidth' : 1,
-                'linetype'  : 'solid',
+                'linestyle' : 'solid',
                 'data'      : dict((str(i), i ** 2) for i in range(10)),
             },
             {
                 'name'      : 'series3',
                 'color'     : (0, 0, 255),
                 'linewidth' : 1,
-                'linetype'  : 'dotted',
+                'linestyle' : 'dotted',
                 'data'      : dict((str(i), fibonacci(i)) for i in range(10)),
             },
         ]
@@ -102,11 +108,24 @@ class ChartForm(Form):
 
     """
 
-    def __init__(self, series, xlimits, xstep, ylimits=None, ystep=None, title='ChartForm', width=800, height=600, **kwargs):
+    def __init__(self, series,
+                 xlimits, xstep,
+                 ylimits=None, ystep=None,
+                 chartsize=(800, 600), padding=(20, 20, 20, 20),
+                 bgcolour=None,
+                 title='ChartForm', **kwargs):
+
+        self._bgcolour = None
+
+        w, h = chartsize
+        self.chartwidth = w
+        self.chartheight = h
+        self.padding = padding
         self.series = series
         self.xmin = xlimits[0]
         self.xmax = xlimits[1]
         self.xstep = xstep
+        self.bgcolour = bgcolour
 
         self.ymin = 0
         self.ymax = 0
@@ -121,7 +140,7 @@ class ChartForm(Form):
 
         self.ystep = int((self.ymax - self.ymin) / 10.)
 
-        super(ChartForm, self).__init__(title, width, height)
+        super(ChartForm, self).__init__(title)
 
     @property
     def bgcolour(self):
@@ -129,15 +148,26 @@ class ChartForm(Form):
 
     @bgcolour.setter
     def bgcolour(self, colour):
-        pass
+        if not colour:
+            self._bgcolour = Color.White
+        elif isinstance(colour, Color):
+            self._bgcolour = colour
+        elif isinstance(colour, basestring):
+            raise NotImplementedError
+        elif isinstance(colour, tuple):
+            self._bgcolour = Color.FromArgb(* colour)
+        else:
+            raise NotImplementedError
 
     def init(self):
-        # self.ClientSize = Size(820, 620)
+        w = self.chartwidth + self.padding[1] + self.padding[3]
+        h = self.chartheight + self.padding[0] + self.padding[2]
+        self.ClientSize = Size(w, h)
 
         charting = Charting
         chart = charting.Chart()
-        chart.Location = Point(10, 10)
-        chart.Size = Size(self.Width - 40, self.Height - 40)
+        chart.Location = Point(self.padding[3], self.padding[0])
+        chart.Size = Size(self.chartwidth, self.chartheight)
         chart.ChartAreas.Add('series')
         area = chart.ChartAreas['series']
 
@@ -152,8 +182,8 @@ class ChartForm(Form):
         y.Minimum = self.ymin
         y.Maximum = self.ymax
         y.Interval = self.ystep
-        y.MajorGrid.LineColor = Color.Black
-        y.MajorGrid.LineDashStyle = charting.ChartDashStyle.Dash
+        y.MajorGrid.LineColor = Color.Gray
+        y.MajorGrid.LineDashStyle = charting.ChartDashStyle.Dot
 
         for attr in self.series:
             name = attr['name']
@@ -169,7 +199,7 @@ class ChartForm(Form):
                 value = attr['data'][key]
                 series.Points.AddXY(int(key), value)
 
-        area.BackColor = Color.White
+        area.BackColor = self.bgcolour
 
         self.Controls.Add(chart)
 
@@ -204,5 +234,5 @@ if __name__ == '__main__':
         },
     ]
 
-    form = ChartForm(series, (0, 10), 1, width=1600)
+    form = ChartForm(series, (0, 10), 1)
     form.show()
