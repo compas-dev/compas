@@ -25,7 +25,6 @@ __all__ = ['Robot', 'Joint', 'Link', 'Inertial', 'Visual', 'Collision',
            'ParentJoint', 'ChildJoint', 'Calibration', 'Dynamics', 'Limit',
            'Axis', 'Mimic', 'SafetyController']
 
-
 def _parse_floats(values, scale_factor=None):
     result = []
 
@@ -37,13 +36,12 @@ def _parse_floats(values, scale_factor=None):
 
     return result
 
-
 class Origin(Frame):
     """Reference frame represented by an instance of :class:`Frame`."""
 
     def __init__(self, point, xaxis, yaxis):
         super(Origin, self).__init__(point, xaxis, yaxis)
-        self.init = None # keep a copy to the initial, none transformed origin
+        self.init = None # keep a copy to the initial, not transformed origin
         self.init_transformation = None
 
     @classmethod
@@ -128,12 +126,16 @@ class Box(object):
         self.size = _parse_floats(size, SCALE_FACTOR)
         self.geometry = None
 
-    def create(self,urdf_importer, meshcls):
+    def create(self, urdf_importer, meshcls):
         pass
     
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
+    
+    def draw(self):
+        if self.geometry:
+            return self.geometry.draw()
 
 
 class Cylinder(object):
@@ -144,12 +146,16 @@ class Cylinder(object):
         self.length = float(length) * SCALE_FACTOR
         self.geometry = None
 
-    def create(self,urdf_importer, meshcls):
+    def create(self, urdf_importer, meshcls):
         pass
     
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
+    
+    def draw(self):
+        if self.geometry:
+            return self.geometry.draw()
 
 
 class Sphere(object):
@@ -159,12 +165,16 @@ class Sphere(object):
         self.radius = float(radius) * SCALE_FACTOR
         self.geometry = None
 
-    def create(self,urdf_importer, meshcls):
+    def create(self, urdf_importer, meshcls):
         pass
     
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
+    
+    def draw(self):
+        if self.geometry:
+            return self.geometry.draw()
 
 
 class Capsule(Cylinder):
@@ -182,6 +192,10 @@ class Capsule(Cylinder):
         if self.geometry:
             self.geometry.transform(transformation)
     
+    def draw(self):
+        if self.geometry:
+            return self.geometry.draw()
+    
 
 class MeshDescriptor(object):
     """Description of a mesh."""
@@ -192,17 +206,25 @@ class MeshDescriptor(object):
         self.geometry = None
 
     def create(self, urdf_importer, meshcls):
+        """Creates the mesh geometry based on the passed urdf_importer and the
+        mesh class.
+
+        """
         self.geometry = urdf_importer.read_mesh_from_resource_file_uri(self.filename, meshcls)
-        self.set_scale()
-        print(self.filename)
+        self.set_scale(SCALE_FACTOR)
+        print("Created mesh from file %s" % self.filename) # TODO: use logging?
     
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
     
-    def set_scale(self):
-        S = Scale([SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR])
+    def set_scale(self, factor):
+        S = Scale([factor, factor, factor])
         self.transform(S)
+    
+    def draw(self):
+        if self.geometry:
+            return self.geometry.draw()
 
 
 class Color(object):
@@ -238,6 +260,9 @@ class Geometry(object):
             raise TypeError(
                 'Geometry must define at least one of: box, cylinder, sphere, capsule, mesh')
 
+    def draw(self):
+        return self.shape.draw()
+
 
 class Visual(object):
     """Visual description of a link.
@@ -257,6 +282,9 @@ class Visual(object):
         self.name = name
         self.material = material
         self.attr = kwargs
+    
+    def draw(self):
+        return self.geometry.draw()
 
 
 class Collision(object):
@@ -275,6 +303,9 @@ class Collision(object):
         self.origin = origin
         self.name = name
         self.attr = kwargs
+    
+    def draw(self):
+        return self.geometry.draw()
 
 
 class Link(object):
@@ -560,7 +591,6 @@ class Joint(object):
     def init_transformation(self):
         if self.origin:
             return self.origin.init_transformation.copy()
-            #return Transformation.from_frame(self.origin.init)
         else:
             return Transformation()
 
@@ -719,6 +749,23 @@ class Robot(object):
             return joints
 
         return iter(func(self.root, []))
+    
+    def draw_visual(self):
+        visual = []
+        for link in self.iter_links():
+            for item in link.visual:
+                visual.append(item.draw())
+        return visual
+    
+    def draw_collision(self):
+        collision = []
+        for link in self.iter_links():
+            for item in link.collision:
+                collision.append(item.draw())
+        return collision
+    
+    def draw(self):
+        return self.draw_visual()
     
 
 URDF.add_parser(Robot, 'robot')
