@@ -5,9 +5,8 @@ CAD configuration
 Rhino
 =====
 
-.. add note about virtual machines
-.. add notes about rhinomac
-.. configuration options for atom
+Once **compas** is installed on your system, a few more steps are required to make it available in Rhino.
+
 
 Requirements
 ------------

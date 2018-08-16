@@ -6,9 +6,6 @@ Requirements
 .. _EPD: https://www.enthought.com/products/epd/
 
 
-Dependencies
-============
-
 To get the most out of **COMPAS**, we recommend installing a scientific Python
 distribution such as `Anaconda`_ or `EPD`_. This will take care of most of the
 (optional) dependencies listed below. However, if you prefer, most of these packages
