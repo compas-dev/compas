@@ -18,7 +18,7 @@ The complete documentation of the compas framework is available here: https://co
 
 **compas** does not yet have an installer or setup script. A detailed description
 of how to get started by cloning the repository and configuring your system
-is available through the documentation: https://compas-dev.github.io/gettingstarted.html
+is available through the documentation: https://compas-dev.github.io/main/gettingstarted.html
 
 In short:
 
@@ -30,27 +30,9 @@ For example, start Python from the command line, and try
 
 ```python
 >>> import compas
->>> compas.verify()
 ```
 
-
-This will produce something like the following:
-
-```
--------------------------------------------------------------------------------
-Checking required packages...
-
-All required packages are installed!
-
-Checking optional packages...
-
-The following optional packages are not installed:
-- pycuda
-- pyopengl
-- pyside
-
--------------------------------------------------------------------------------
-```
+If this does not produce an error, you are good to go!
 
 
 ## Dependencies
