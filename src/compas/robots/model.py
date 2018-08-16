@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function
 
+import os
+
 from compas.files import URDF
 from compas.geometry import Point
 from compas.geometry import Vector
@@ -51,13 +53,11 @@ class Origin(Frame):
         return cls.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
     
     def create(self, transformation):
-        # called when created ..
         self.transform(transformation)
         self.init = self.copy()
         self.init_transformation = Transformation.from_frame(self)
     
     def reset_transform(self):
-        
         if self.init:
             # TODO: Transform back into initial state does not always work...
             # T = Transformation.from_frame(self.init) * Transformation.from_frame(self).inverse()
@@ -67,13 +67,6 @@ class Origin(Frame):
             self.xaxis = cp.xaxis
             self.yaxis = cp.yaxis
     
-    def calculate_visual_transformation(self): # todo move somewhere else
-        """Returns the transformation based on the origin frame.
-        """
-        # TODO: check why yaxis and zaxis need to be exchanged
-        fx = Frame(self.point, self.xaxis, self.zaxis)
-        return Transformation.from_frame(fx)
-
 
 class Mass(object):
     """Represents a value of mass usually related to a link."""
@@ -185,7 +178,7 @@ class Capsule(Cylinder):
         self.length = float(length) * SCALE_FACTOR
         self.geometry = None
 
-    def create(self,urdf_importer, meshcls):
+    def create(self, urdf_importer, meshcls):
         pass
     
     def transform(self, transformation):
@@ -208,7 +201,6 @@ class MeshDescriptor(object):
     def create(self, urdf_importer, meshcls):
         """Creates the mesh geometry based on the passed urdf_importer and the
         mesh class.
-
         """
         self.geometry = urdf_importer.read_mesh_from_resource_file_uri(self.filename, meshcls)
         self.set_scale(SCALE_FACTOR)
@@ -320,6 +312,7 @@ class Link(object):
         inertial: Inertial properties of the link.
         attr: Non-standard attributes.
         joints: A list of joints that are the link's children
+        parentjoint: The reference to a parent joint if it exists
     """
 
     def __init__(self, name, type=None, visual=[], collision=[], inertial=None, **kwargs):
@@ -330,8 +323,9 @@ class Link(object):
         self.inertial = inertial
         self.attr = kwargs
         self.joints = []
+        self.parentjoint = None
     
-    def create(self, urdf_importer, meshcls, parent_joint=None):
+    def create(self, urdf_importer, meshcls, parent_origin):
         """Recursive function to create all geometry shapes.
         """
         for item in self.visual:
@@ -339,38 +333,37 @@ class Link(object):
         for item in self.collision:
             item.geometry.shape.create(urdf_importer, meshcls)
 
-        parent_origin = None
+        transformation = Transformation.from_frame(parent_origin)
 
-        if parent_joint:
-            
-            parent_origin = parent_joint.origin
+        # former DAE files have yaxis and zaxis swapped
+        # TODO: already fix in conversion to obj or in import
+        fx = Frame(parent_origin.point, parent_origin.xaxis, parent_origin.zaxis)
+        transformation_dae = Transformation.from_frame(fx)
+    
+        for item in self.visual:
+            if type(item.geometry.shape) == MeshDescriptor:
+                if os.path.splitext(item.geometry.shape.filename)[1] == ".dae":
+                    item.geometry.shape.transform(transformation_dae)
+                else:
+                    item.geometry.shape.transform(transformation)
+            else:
+                item.geometry.shape.transform(transformation)
 
-            transformation = Transformation.from_frame(parent_origin)
-            
-            T = parent_origin.calculate_visual_transformation()
-
-            for item in self.visual:
-                item.geometry.shape.transform(T)
-            
-            for item in self.collision:
-                item.geometry.shape.transform(T)
-        
-        else:
-            transformation = Transformation()
+        for item in self.collision:
+            if type(item.geometry.shape) == MeshDescriptor:
+                if os.path.splitext(item.geometry.shape.filename)[1] == ".dae":
+                    item.geometry.shape.transform(transformation_dae)
+                else:
+                    item.geometry.shape.transform(transformation)
+            else:
+                item.geometry.shape.transform(transformation)
         
         for cjoint in self.joints:
             cjoint.origin.create(transformation)
             if cjoint.axis:
                 cjoint.axis.create(transformation)
             clink = cjoint.childlink
-            clink.create(urdf_importer, meshcls, cjoint)
-        
-        """
-        else:
-            for cjoint in self.joints:
-                clink = cjoint.childlink
-                clink.create(urdf_importer, meshcls, cjoint)
-        """
+            clink.create(urdf_importer, meshcls, cjoint.origin)
             
     def update(self, joint_state, parent_transformation, reset_transformation):
         """Recursive function to apply the transformations given by the joint 
@@ -406,16 +399,6 @@ class Link(object):
             # 4. Apply function to all children
             joint.childlink.update(joint_state, transformation, reset_transformation)
             
-    """
-    def update(self, parent_joint=None):
-
-        #link->getName(), visual_position, visual_orientation, collision_position, collision_orientation
-        #link->setTransforms( visual_position, visual_orientation, collision_position, collision_orientation );
-        # for joint in link.joints:
-            #joint->setTransforms(visual_position, visual_orientation);
-        pass
-    """
-
 class ParentJoint(object):
     """Describes a parent relation between joints."""
 
@@ -646,6 +629,7 @@ class Robot(object):
         # save tree structure from link and joint lists
         for link in self.links:
             link.joints = self.find_children_joints(link)
+            link.parentjoint = self.find_parent_joint(link)
         for joint in self.joints:
             joint.childlink = self.find_child_link(joint)
 
@@ -749,6 +733,20 @@ class Robot(object):
             return joints
 
         return iter(func(self.root, []))
+    
+    def get_frames(self):
+        frames = []
+        for joint in self.iter_joints():
+            if joint.axis:
+                frames.append(joint.origin.copy())
+        return frames
+    
+    def get_axes(self):
+        axes = []
+        for joint in self.iter_joints():
+            if joint.axis:
+                axes.append(joint.axis.vector())
+        return axes
     
     def draw_visual(self):
         visual = []
