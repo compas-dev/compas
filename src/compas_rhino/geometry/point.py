@@ -38,7 +38,7 @@ class RhinoPoint(RhinoGeometry):
         Returns
         -------
         RhinoPoint
-            A wrapper around the Rhino point object.
+            A convenience wrapper around the Rhino point object.
 
         """
         guid = select_point()
@@ -76,6 +76,28 @@ class RhinoPoint(RhinoGeometry):
         return self.xyz
 
     def closest_points(self, points, maxdist=None):
+        """Find the closest points to a list of test points on the ``RhinoGeometry`` object.
+
+        Parameters
+        ----------
+        points : list of list of float
+            The list of test points.
+        maxdist : float, optional
+            The maximum distance between any of the test points and the corresponding closest points on the ``RhinoGeometry`` object.
+            Default is ``None``.
+
+        Returns
+        -------
+        list of list of float
+            The XYZ coordinates of the closest points.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            #
+
+        """
         return [self.closest_point(point, maxdist) for point in points]
 
     def project_to_curve(self, curve, direction=(0, 0, 1)):

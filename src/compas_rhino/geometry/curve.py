@@ -36,23 +36,57 @@ class RhinoCurve(RhinoGeometry):
 
     @classmethod
     def from_selection(cls):
+        """Create a ``RhinoCurve`` instance from a selected Rhino curve.
+
+        Returns
+        -------
+        RhinoCurve
+            A convenience wrapper around the Rhino curve object.
+
+        """
         guid = select_curve()
         return cls(guid)
 
-    @classmethod
-    def from_points(cls, points, degree=None):
-        points = [list(point) for point in points]
-        if not degree:
-            degree = len(points) - 1
-        guid = rs.AddCurve([Point3d(* point) for point in points], degree)
-        return cls(guid)
+    # @classmethod
+    # def from_points(cls, points, degree=None):
+    #     points = [list(point) for point in points]
+    #     if not degree:
+    #         degree = len(points) - 1
+    #     guid = rs.AddCurve([Point3d(* point) for point in points], degree)
+    #     return cls(guid)
 
     def is_line(self):
+        """Determine if the curve is a line.
+
+        Returns
+        -------
+        bool
+            Tue if the curve is a line.
+            False otherwise.
+
+        Notes
+        -----
+        A curve is a line if it is a linear segment between two points.
+
+        """
         return (rs.IsLine(self.guid) and
                 rs.CurveDegree(self.guid) == 1 and
                 len(rs.CurvePoints(self.guid)) == 2)
 
     def is_polyline(self):
+        """Determine if the curve is a polyline.
+
+        Returns
+        -------
+        bool
+            Tue if the curve is a polyline.
+            False otherwise.
+
+        Notes
+        -----
+        A curve is a polyline if it consists of linear segments between a sequence of points.
+
+        """
         return (rs.IsPolyline(self.guid) and
                 rs.CurveDegree(self.guid) == 1 and
                 len(rs.CurvePoints(self.guid)) > 2)
