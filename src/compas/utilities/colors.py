@@ -4,6 +4,12 @@ from __future__ import division
 
 import re
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
+
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -126,7 +132,7 @@ def is_color_rgb(color):
 
 
 def is_color_hex(color):
-    if isinstance(color, str):
+    if isinstance(color, basestring):
         match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
         if match:
             return True
@@ -174,7 +180,7 @@ def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=F
 
     # if input is hex
     # and output should be rgb
-    if isinstance(color, str):
+    if isinstance(color, basestring):
         if colorformat == 'rgb':
             color = hex_to_rgb(color, normalize=normalize)
         return {key: color for key in keys}
@@ -191,7 +197,7 @@ def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=F
 
             # if input is hex
             # and output should be rgb
-            if isinstance(c, str):
+            if isinstance(c, basestring):
                 if colorformat == 'rgb':
                     color[k] = hex_to_rgb(c)
 
@@ -207,7 +213,7 @@ def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=F
 
 
 def color_to_rgb(color, normalize=False):
-    if isinstance(color, str):
+    if isinstance(color, basestring):
         r, g, b = hex_to_rgb(color)
     elif isinstance(color, int):
         r, g, b = i_to_rgb(color)

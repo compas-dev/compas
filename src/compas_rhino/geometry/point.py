@@ -51,7 +51,28 @@ class RhinoPoint(RhinoGeometry):
         return [loc.X, loc.Y, loc.Z]
 
     def closest_point(self, point, maxdist=None):
-        """"""
+        """Find the closest point on the ``RhinoGeometry`` object to a test point.
+
+        Parameters
+        ----------
+        point : list of float, Rhino.Geometry.Point3d
+            The XYZ coordinates of the test point.
+        maxdist : float, optional
+            The maximum distance between the test point and the closest point on the ``RhinoGeometry`` object.
+            Default is ``None``.
+
+        Returns
+        -------
+        list of float
+            The XYZ coordinates of the closest point.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            #
+
+        """
         return self.xyz
 
     def closest_points(self, points, maxdist=None):

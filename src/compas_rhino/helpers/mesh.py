@@ -4,7 +4,7 @@ from compas.utilities import geometric_key
 
 import compas_rhino
 
-from compas_rhino.geometry.surface import RhinoSurface
+from compas_rhino.geometry import RhinoSurface
 
 from compas_rhino.artists import MeshArtist
 

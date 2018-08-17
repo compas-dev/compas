@@ -2,6 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.utilities import color_to_rgb
+
+try:
+    basestring
+except NameError:
+    basestring = str
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
@@ -9,7 +16,9 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = []
+__all__ = [
+    'RGBColour',
+]
 
 
 class Descriptor(object):
@@ -41,8 +50,28 @@ class Float(Descriptor):
         self.value = float(value)
 
     def __get__(self, instamce, owner):
-        
+        pass
 
+
+class Colour(Descriptor):
+    pass
+
+
+class RGBColour(Descriptor):
+
+    def __init__(self, default, normalize=False, description=""):
+        self.default = default
+        self.normalize = normalize
+        self.description = description
+        self.value = None
+
+    def __get__(self, instance, owner):
+        if self.value is None:
+            return self.default
+        return self.value
+
+    def __set__(self, instance, value):
+        color_to_rgb(value, normalize=self.normalize)
 
 
 # ==============================================================================
