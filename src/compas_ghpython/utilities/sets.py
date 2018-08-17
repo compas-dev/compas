@@ -44,15 +44,16 @@ def list_to_ghtree(alist, none_and_holes=False, base_path=[0]):
 
 def ghtree_to_list(atree):
     """Returns a list representation of a Grasshopper DataTree
-    Example:
 
+    Examples:
         >>> atree=Tree[object]()
         >>> [atree.Add(str("entry: " + str(i)), Path(Array[int]([i]))) for i in range(3)]
         >>> list = ghtree_to_list(atree)
     """
     def extend_at(path, index, simple_input, rest_list):
         target = path[index]
-        if len(rest_list) <= target: rest_list.extend([None]*(target-len(rest_list)+1))
+        if len(rest_list) <= target: 
+            rest_list.extend([None]*(target-len(rest_list)+1))
         if index == path.Length - 1:
             rest_list[target] = list(simple_input)
         else:
