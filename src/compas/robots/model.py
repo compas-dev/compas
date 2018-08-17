@@ -337,6 +337,7 @@ class Link(object):
 
         # former DAE files have yaxis and zaxis swapped
         # TODO: already fix in conversion to obj or in import
+        # TODO: move to mesh importer!
         fx = Frame(parent_origin.point, parent_origin.xaxis, parent_origin.zaxis)
         transformation_dae = Transformation.from_frame(fx)
     
@@ -705,6 +706,14 @@ class Robot(object):
             if str(joint.child) == link.name:
                 return joint
         return None
+    
+    def find_link_by_name(self, name):
+        """Returns the link named name.
+        """
+        for link in self.links:
+            if link.name == name:
+                return link
+        return None
 
     def iter_links(self):
         """Returns an iterator over the links that starts with the root link.
@@ -735,17 +744,19 @@ class Robot(object):
         return iter(func(self.root, []))
     
     def get_frames(self):
+        """Returns only the frames of links that have a visual node.
+        """
         frames = []
-        for joint in self.iter_joints():
-            if joint.axis:
-                frames.append(joint.origin.copy())
+        for link in self.iter_links():
+            if len(link.visual):
+                frames.append(link.parentjoint.origin.copy())
         return frames
     
     def get_axes(self):
         axes = []
         for joint in self.iter_joints():
             if joint.axis:
-                axes.append(joint.axis.vector())
+                axes.append(joint.axis.vector)
         return axes
     
     def draw_visual(self):
