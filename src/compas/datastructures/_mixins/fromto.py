@@ -1,4 +1,13 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import json
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 
 __author__    = ['Tom Van Mele', ]
@@ -67,14 +76,13 @@ class FromToData(object):
 class FromToJson(object):
 
     @classmethod
-    def from_json(cls, f):
+    def from_json(cls, filepath):
         """Construct a datastructure from structured data contained in a json file.
 
         Parameters
         ----------
-        f : str, file
-            The json file.
-            This can be a file path or an open file object.
+        filepath : str
+            The path to the json file.
 
         Returns
         -------
@@ -91,44 +99,27 @@ class FromToJson(object):
         * :meth:`to_json`
 
         """
-        if isinstance(f, file):
-            data = json.load(f)
-        else:
-            with open(f, 'r') as fp:
-                data = json.load(fp)
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
         graph = cls()
         graph.data = data
         return graph
 
-    def to_json(self, f=None):
+    def to_json(self, filepath):
         """Serialise the structured data representing the data structure to json.
 
         Parameters
         ----------
-        f : str, file (None)
-            The json file.
-            This can be a file path or an open file object.
-
-        Returns
-        -------
-        str
-            The json string if no file path is provided.
-        None
-            Otherwise
+        filepath : str
+            The path to the json file.
 
         See Also
         --------
         * :meth:`from_json`
 
         """
-        if not f:
-            return json.dumps(self.data)
-        else:
-            if isinstance(f, file):
-                json.dump(self.data, f)
-            else:
-                with open(f, 'w+') as fp:
-                    json.dump(self.data, fp)
+        with open(filepath, 'w+') as fp:
+            json.dump(self.data, fp)
 
 
 # ==============================================================================
