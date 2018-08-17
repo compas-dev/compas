@@ -12,6 +12,7 @@ __all__ = [
     'ghtree_to_list',
 ]
 
+
 def list_to_ghtree(alist, none_and_holes=False, base_path=[0]):
     """Transforms nestings of lists or tuples to a Grasshopper DataTree.
 
@@ -48,7 +49,7 @@ def ghtree_to_list(atree):
     Examples:
         >>> atree=Tree[object]()
         >>> [atree.Add(str("entry: " + str(i)), Path(Array[int]([i]))) for i in range(3)]
-        >>> list = ghtree_to_list(atree)
+        >>> alist = ghtree_to_list(atree)
     """
     def extend_at(path, index, simple_input, rest_list):
         target = path[index]
@@ -61,9 +62,8 @@ def ghtree_to_list(atree):
             extend_at(path, index+1, simple_input, rest_list[target])
     
     all = []
-    
+
     for i in range(atree.BranchCount):
         path = atree.Path(i)
         extend_at(path, 0, atree.Branch(path), all)
     return all
-
