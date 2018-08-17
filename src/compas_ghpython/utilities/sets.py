@@ -9,6 +9,7 @@ except ImportError:
 
 __all__ = [
     'list_to_ghtree',
+    'ghtree_to_list',
 ]
 
 def list_to_ghtree(alist, none_and_holes=False, base_path=[0]):
