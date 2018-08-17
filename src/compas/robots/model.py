@@ -392,6 +392,7 @@ class Link(object):
                 position = joint_state[joint.name]
                 transformation = joint.calculate_transformation(position)
                 transformation = parent_transformation * transformation
+                joint.position = position
             else:
                 transformation = parent_transformation
             
@@ -563,6 +564,7 @@ class Joint(object):
         self.mimic = mimic
         self.attr = kwargs
         self.childlink = None
+        self.position = 0 # the position of the joint
 
     @property
     def current_transformation(self):
