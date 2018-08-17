@@ -61,9 +61,8 @@ def ghtree_to_list(atree):
             if rest_list[target] is None: 
                 rest_list[target] = []
             extend_at(path, index+1, simple_input, rest_list[target])
-    
+            
     all = []
-
     for i in range(atree.BranchCount):
         path = atree.Path(i)
         extend_at(path, 0, atree.Branch(path), all)
