@@ -58,7 +58,8 @@ def ghtree_to_list(atree):
         if index == path.Length - 1:
             rest_list[target] = list(simple_input)
         else:
-            if rest_list[target] is None: rest_list[target] = []
+            if rest_list[target] is None: 
+                rest_list[target] = []
             extend_at(path, index+1, simple_input, rest_list[target])
     
     all = []
