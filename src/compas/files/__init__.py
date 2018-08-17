@@ -18,15 +18,7 @@ amf
 dxf
 ===
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    DXF
-    DXFReader
-    DXFParser
-    DXFComposer
-    DXFWriter
+*Under construction...*
 
 
 las
@@ -45,8 +37,6 @@ obj
     OBJ
     OBJReader
     OBJParser
-    OBJComposer
-    OBJWriter
 
 
 ply
@@ -56,7 +46,9 @@ ply
     :toctree: generated/
     :nosignatures:
 
-    PLYreader
+    PLY
+    PLYReader
+    PLYParser
 
 
 stl
@@ -66,8 +58,9 @@ stl
     :toctree: generated/
     :nosignatures:
 
+    STL
     STLReader
-    parse_stl_data
+    STLParser
 
 
 urdf
@@ -81,6 +74,8 @@ urdf
 
 """
 from __future__ import absolute_import
+
+# todo: provide support for file-like object, string/stream, or filepath (not url)
 
 from .amf  import *
 from .dxf  import *

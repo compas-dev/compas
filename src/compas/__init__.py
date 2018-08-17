@@ -53,39 +53,39 @@ def get(filename):
         return "https://raw.githubusercontent.com/compas-dev/compas/develop/data/{}".format(filename)
 
 
-# def get_bunny():
-#     import urllib
-#     import tarfile
-#     bunny = os.path.abspath(os.path.join(DATA, 'bunny/reconstruction/bun_zipper.ply'))
-#     if not os.path.exists(bunny):
-#         url = 'http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz'
-#         print('Getting the bunny from {} ...'.format(url))
-#         print('This will take a few seconds...')
-#         destination = os.path.abspath(os.path.join(DATA, 'bunny.tar.gz'))
-#         urllib.urlretrieve(url, destination)
-#         with tarfile.open(destination) as file:
-#             file.extractall(DATA)
-#         os.remove(destination)
-#         print('Got it!\n')
-#     return bunny
+def get_bunny():
+    import urllib
+    import tarfile
+    bunny = os.path.abspath(os.path.join(DATA, 'bunny/reconstruction/bun_zipper.ply'))
+    if not os.path.exists(bunny):
+        url = 'http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz'
+        print('Getting the bunny from {} ...'.format(url))
+        print('This will take a few seconds...')
+        destination = os.path.abspath(os.path.join(DATA, 'bunny.tar.gz'))
+        urllib.urlretrieve(url, destination)
+        with tarfile.open(destination) as file:
+            file.extractall(DATA)
+        os.remove(destination)
+        print('Got it!\n')
+    return bunny
 
 
-# def get_armadillo():
-#     import urllib
-#     import gzip
-#     import shutil
-#     armadillo = os.path.abspath(os.path.join(DATA, 'armadillo/Armadillo.ply'))
-#     if not os.path.exists(armadillo):
-#         url = 'http://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz'
-#         print('Getting the armadillo from {} ...'.format(url))
-#         print('This will take a few seconds...')
-#         destination = os.path.abspath(os.path.join(DATA, 'Armadillo.ply.gz'))
-#         urllib.urlretrieve(url, destination)
-#         with gzip.open(destination, 'rb') as ifile, open(armadillo, 'wb+') as ofile:
-#             shutil.copyfileobj(ifile, ofile)
-#         os.remove(destination)
-#         print('Got it!\n')
-#     return armadillo
+def get_armadillo():
+    import urllib
+    import gzip
+    import shutil
+    armadillo = os.path.abspath(os.path.join(DATA, 'armadillo/Armadillo.ply'))
+    if not os.path.exists(armadillo):
+        url = 'http://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz'
+        print('Getting the armadillo from {} ...'.format(url))
+        print('This will take a few seconds...')
+        destination = os.path.abspath(os.path.join(DATA, 'Armadillo.ply.gz'))
+        urllib.urlretrieve(url, destination)
+        with gzip.open(destination, 'rb') as ifile, open(armadillo, 'wb+') as ofile:
+            shutil.copyfileobj(ifile, ofile)
+        os.remove(destination)
+        print('Got it!\n')
+    return armadillo
 
 
 def is_windows():

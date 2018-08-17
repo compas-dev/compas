@@ -9,13 +9,7 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = [
-    'DXF',
-    'DXFReader',
-    'DXFParser',
-    'DXFComposer',
-    'DXFWriter',
-]
+__all__ = []
 
 
 class DXF(object):
@@ -29,14 +23,9 @@ class DXF(object):
 
     """
 
-    def __init__(self):
-        pass
-
-    def read(self):
-        pass
-
-    def write(self):
-        pass
+    def __init__(self, filepath, precision=None):
+        self.reader = DXFReader(filepath)
+        self.parser = DXFParser(self.reader, precision=precision)
 
 
 class DXFReader(object):
@@ -44,6 +33,7 @@ class DXFReader(object):
 
     def __init__(self, filepath):
         self.filepath = filepath
+        self.read()
 
     def read(self):
         with open(self.filepath, 'rb') as fp:
@@ -52,15 +42,15 @@ class DXFReader(object):
 
 
 class DXFParser(object):
-    pass
+    """"""
 
+    def __init__(self, reader, precision):
+        self.reader = reader
+        self.precision = precision
+        self.parse()
 
-class DXFComposer(object):
-    pass
-
-
-class DXFWriter(object):
-    pass
+    def parse(self):
+        pass
 
 
 # ==============================================================================
