@@ -109,7 +109,7 @@ class Link(object):
         inertial: Inertial properties of the link.
         attr: Non-standard attributes.
         joints: A list of joints that are the link's children
-        parentjoint: The reference to a parent joint if it exists
+        parent_joint: The reference to a parent joint if it exists
     """
 
     def __init__(self, name, type=None, visual=[], collision=[], inertial=None, **kwargs):
@@ -120,7 +120,7 @@ class Link(object):
         self.inertial = inertial
         self.attr = kwargs
         self.joints = []
-        self.parentjoint = None
+        self.parent_joint = None
 
     def create(self, urdf_importer, meshcls, parent_origin):
         """Recursive function to create all geometry shapes.
@@ -160,7 +160,7 @@ class Link(object):
             cjoint.origin.create(transformation)
             if cjoint.axis:
                 cjoint.axis.create(transformation)
-            clink = cjoint.childlink
+            clink = cjoint.child_link
             clink.create(urdf_importer, meshcls, cjoint.origin)
 
     def update(self, joint_state, parent_transformation, reset_transformation):
@@ -196,7 +196,7 @@ class Link(object):
             # 4. Apply on joint
             joint.transform(transformation)
             # 4. Apply function to all children
-            joint.childlink.update(joint_state, transformation, reset_transformation)
+            joint.child_link.update(joint_state, transformation, reset_transformation)
 
 
 

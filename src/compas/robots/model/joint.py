@@ -153,7 +153,7 @@ class Joint(object):
         safety_controller: Safety controller properties.
         mimic: Used to specify that the defined joint mimics another existing joint.
         attr: Non-standard attributes.
-        childlink: the joint's child link
+        child_link: the joint's child link
     """
     SUPPORTED_TYPES = ('revolute', 'continuous', 'prismatic',
                        'fixed', 'floating', 'planar')
@@ -174,7 +174,7 @@ class Joint(object):
         self.safety_controller = safety_controller
         self.mimic = mimic
         self.attr = kwargs
-        self.childlink = None
+        self.child_link = None
         self.position = 0  # the position of the joint
 
     @property

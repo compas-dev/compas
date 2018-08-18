@@ -32,9 +32,9 @@ class Robot(object):
         # save tree structure from link and joint lists
         for link in self.links:
             link.joints = self.find_children_joints(link)
-            link.parentjoint = self.find_parent_joint(link)
+            link.parent_joint = self.find_parent_joint(link)
         for joint in self.joints:
-            joint.childlink = self.find_child_link(joint)
+            joint.child_link = self.find_child_link(joint)
 
     @property
     def root(self):
@@ -124,7 +124,7 @@ class Robot(object):
 
         def func(cjoints, links):
             for j in cjoints:
-                link = j.childlink
+                link = j.child_link
                 links.append(link)
                 links += func(link.joints, [])
             return links
@@ -140,7 +140,7 @@ class Robot(object):
             cjoints = clink.joints
             joints += cjoints
             for j in cjoints:
-                joints += func(j.childlink, [])
+                joints += func(j.child_link, [])
             return joints
 
         return iter(func(self.root, []))
@@ -151,7 +151,7 @@ class Robot(object):
         frames = []
         for link in self.iter_links():
             if len(link.visual):
-                frames.append(link.parentjoint.origin.copy())
+                frames.append(link.parent_joint.origin.copy())
         return frames
 
     def get_axes(self):
