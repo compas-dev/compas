@@ -497,7 +497,7 @@ class Point(object):
             False, otherwise.
 
         """
-        return is_point_in_triangle(self, triangle)        
+        return is_point_in_triangle(self, triangle)
 
     def in_polygon(self, polygon):
         """Determine if the point lies in the given polygon.
@@ -517,7 +517,6 @@ class Point(object):
         if is_polygon_convex_xy(polygon):
             return is_point_in_convex_polygon_xy(self, polygon)
         return is_point_in_polygon_xy(self, polygon)
-
 
     def in_circle(self, circle):
         """Determine if the point lies on the given polyline.

@@ -84,7 +84,7 @@ class Rotation(Transformation):
         R.matrix[0][1], R.matrix[1][1], R.matrix[2][1] = yaxis
         R.matrix[0][2], R.matrix[1][2], R.matrix[2][2] = zaxis
         return R
-    
+
     @classmethod
     def from_frame(cls, frame):
         """Computes a change of basis transformation from world XY to frame.

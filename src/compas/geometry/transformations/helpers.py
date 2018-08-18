@@ -52,6 +52,7 @@ __all__ = [
 
 ]
 
+
 def transform_points(points, T):
     return dehomogenize(multiply_matrices(homogenize(points, w=1.0), transpose_matrix(T)))
 
@@ -276,30 +277,28 @@ def inverse(M):
 
     """
     def matrix_minor(m, i, j):
-        return [row[:j] + row[j+1:] for row in (m[:i]+m[i+1:])]
+        return [row[:j] + row[j + 1:] for row in (m[:i] + m[i + 1:])]
 
     detM = determinant(M)  # raises ValueError if matrix is not squared
 
     if detM == 0:
         ValueError("The matrix is singular.")
 
-    dim = len(M)
-
     if len(M) == 2:
-        return [[M[1][1]/detM, -1*M[0][1]/detM],
-                [-1*M[1][0]/detM, M[0][0]/detM]]
+        return [[M[1][1] / detM, -1 * M[0][1] / detM],
+                [-1 * M[1][0] / detM, M[0][0] / detM]]
     else:
         cofactors = []
         for r in range(len(M)):
             cofactor_row = []
             for c in range(len(M)):
                 minor = matrix_minor(M, r, c)
-                cofactor_row.append(((-1)**(r+c)) * determinant(minor))
+                cofactor_row.append(((-1) ** (r + c)) * determinant(minor))
             cofactors.append(cofactor_row)
         cofactors = transpose_matrix(cofactors)
         for r in range(len(cofactors)):
             for c in range(len(cofactors)):
-                cofactors[r][c] = cofactors[r][c]/detM
+                cofactors[r][c] = cofactors[r][c] / detM
         return cofactors
 
 
@@ -429,7 +428,7 @@ def compose_matrix(scale=None, shear=None, angles=None,
                    translation=None, perspective=None):
     """Calculates a matrix from the components of scale, shear, euler_angles,
     translation and perspective.
-    
+
     Parameters
     ----------
     scale : :obj:`list` of :obj:`float`
