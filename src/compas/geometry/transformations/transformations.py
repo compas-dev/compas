@@ -14,12 +14,18 @@ from compas.geometry.basic import add_vectors_xy
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import subtract_vectors_xy
 from compas.geometry.basic import dot_vectors
+from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import vector_component
 from compas.geometry.basic import vector_component_xy
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import multiply_matrix_vector
 
 from compas.geometry.distance import closest_point_on_plane
+from compas.geometry.distance import closest_point_on_line
+from compas.geometry.distance import closest_point_on_line_xy
+
+from compas.geometry.intersections import intersection_line_plane
+from compas.geometry.intersections import intersection_line_triangle
 
 from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
@@ -58,6 +64,9 @@ __all__ = [
     'project_points_plane',
     'project_points_line',
     'project_points_line_xy',
+
+    'reflect_line_plane',
+    'reflect_line_triangle',
 ]
 
 
@@ -67,10 +76,48 @@ __all__ = [
 
 
 def translate_points(points, vector):
+    """Translate points.
+
+    Parameters
+    ----------
+    points : list of point
+        A list of points.
+    vector : vector
+        A translation vector.
+
+    Returns
+    -------
+    list of point
+        The translated points.
+
+    Examples
+    --------
+    >>> 
+
+    """
     return [add_vectors(point, vector) for point in points]
 
 
 def translate_points_xy(points, vector):
+    """Translate points and in the XY plane.
+
+    Parameters
+    ----------
+    points : list of point
+        A list of points.
+    vector : vector
+        A translation vector.
+
+    Returns
+    -------
+    list of point
+        The translated points in the XY plane (Z=0).
+
+    Examples
+    --------
+    >>> 
+
+    """
     return [add_vectors_xy(point, vector) for point in points]
 
 
@@ -80,11 +127,49 @@ def translate_points_xy(points, vector):
 
 
 def scale_points(points, scale):
+    """Scale points.
+
+    Parameters
+    ----------
+    points : list of point
+        A list of points.
+    scale : float
+        A scaling factor.
+
+    Returns
+    -------
+    list of point
+        The scaled points.
+
+    Examples
+    --------
+    >>> 
+
+    """
     T = matrix_from_scale_factors([scale, scale, scale])
     return transform_points(points, T)
 
 
 def scale_points_xy(points, scale):
+    """Scale points in the XY plane.
+
+    Parameters
+    ----------
+    points : list of point
+        A list of points.
+    scale : float
+        A scaling factor.
+
+    Returns
+    -------
+    list of point
+        The scaled points in the XY plane (Z=0).
+
+    Examples
+    --------
+    >>> 
+
+    """
     T = matrix_from_scale_factors([scale, scale, 0])
     return transform_points(points, T)
 
@@ -114,6 +199,10 @@ def rotate_points(points, angle, axis=None, origin=None):
     -------
     list of point
         The rotated points
+
+    Examples
+    --------
+    >>>
 
     Notes
     -----
@@ -151,7 +240,11 @@ def rotate_points_xy(points, angle, origin=None):
     Returns
     -------
     list
-        The rotated points in the XY plane.
+        The rotated points in the XY plane (Z=0).
+
+    Examples
+    --------
+    >>>
 
     """
     if not origin:
@@ -177,19 +270,26 @@ def rotate_points_xy(points, angle, origin=None):
 def mirror_vector_vector(v1, v2):
     """Mirrors vector about vector.
 
-    Parameters:
-        v1 (tuple, list, Vector): The vector.
-        v2 (tuple, list, Vector): The normalized vector as mirror axis
+    Parameters
+    ----------
+    v1 : list of float
+        The vector.
+    v2 : list of float
+        The normalized vector as mirror axis
 
-    Returns:
-        Tuple: mirrored vector
+    Returns
+    -------
+    list of float
+        The mirrored vector.
 
-    Notes:
-        For more info, see [1]_.
+    Notes
+    -----
+    For more info, see [1]_.
 
-    References:
-        .. [1] Math Stack Exchange. *How to get a reflection vector?*
-               Available at: https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector.
+    References
+    ----------
+    .. [1] Math Stack Exchange. *How to get a reflection vector?*
+           Available at: https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector.
 
     """
     return subtract_vectors(v1, scale_vector(v2, 2 * dot_vectors(v1, v2)))
@@ -198,9 +298,17 @@ def mirror_vector_vector(v1, v2):
 def mirror_point_point(point, mirror):
     """Mirror a point about a point.
 
-    Parameters:
-        point (sequence of float): XYZ coordinates of the point to mirror.
-        mirror (sequence of float): XYZ coordinates of the mirror point.
+    Parameters
+    ----------
+    point : list of float
+        XYZ coordinates of the point to mirror.
+    mirror : list of float
+        XYZ coordinates of the mirror point.
+
+    Returns
+    -------
+    list of float
+        The mirrored point.
 
     """
     return add_vectors(mirror, subtract_vectors(mirror, point))
@@ -209,83 +317,218 @@ def mirror_point_point(point, mirror):
 def mirror_point_point_xy(point, mirror):
     """Mirror a point about a point.
 
-    Parameters:
-        point (sequence of float): XY coordinates of the point to mirror.
-        mirror (sequence of float): XY coordinates of the mirror point.
+    Parameters
+    ----------
+    point : list of float
+        XY(Z) coordinates of the point to mirror.
+    mirror : list of float
+        XY(Z) coordinates of the mirror point.
+
+    Returns
+    -------
+    list of float
+        The mirrored point, with Z=0.
 
     """
     return add_vectors_xy(mirror, subtract_vectors_xy(mirror, point))
 
 
 def mirror_points_point(points, mirror):
-    """Mirror multiple points about a point."""
+    """Mirror multiple points about a point.
+
+    Parameters
+    ----------
+    points : list of list of float
+        List of points.
+    mirror : list of float
+       The mirror point.
+
+    Returns
+    -------
+    list of list float
+        The mirrored points, with Z=0.
+
+    """
     return [mirror_point_point(point, mirror) for point in points]
 
 
 def mirror_points_point_xy(points, mirror):
-    """Mirror multiple points about a point."""
+    """Mirror multiple points about a point.
+
+    Parameters
+    ----------
+    points : list of list of float
+        List of points with XY(Z) coordinates.
+    mirror : list of float
+       The XY(Z) coordinates of the mirror point.
+
+    Returns
+    -------
+    list of list float
+        The mirrored points, with Z=0.
+
+    """
     return [mirror_point_point_xy(point, mirror) for point in points]
 
 
 def mirror_point_line(point, line):
-    pass
+    """Mirror a point about a line.
+
+    Parameters
+    ----------
+    point : list of float
+        XYZ coordinates of the point to mirror.
+    line : tuple
+        Two points defining the mirror line.
+
+    Returns
+    -------
+    list of float
+        The mirrored point.
+
+    """
+    closest = closest_point_on_line(point, line)
+    return add_vectors(closest, subtract_vectors(closest, point))
 
 
 def mirror_point_line_xy(point, line):
-    pass
+    """Mirror a point about a line.
+
+    Parameters
+    ----------
+    point : list of float
+        XY(Z) coordinates of the point to mirror.
+    line : tuple
+        Two points defining the line.
+        XY(Z) coordinates of the two points defining the mirror line.
+
+    Returns
+    -------
+    list of float
+        The mirrored point, with Z=0.
+
+    """
+    closest = closest_point_on_line_xy(point, line)
+    return add_vectors_xy(closest, subtract_vectors_xy(closest, point))
 
 
 def mirror_points_line(points, line):
-    pass
+    """Mirror a point about a line.
+
+    Parameters
+    ----------
+    points : list of point
+        List of points to mirror.
+    line : tuple
+        Two points defining the mirror line.
+
+    Returns
+    -------
+    list of point
+        The mirrored points.
+
+    """
+    return [closest_point_on_line(point, line) for point in points]
 
 
 def mirror_points_line_xy(point, line):
-    pass
+    """Mirror a point about a line.
+
+    Parameters
+    ----------
+    points : list of point
+        List of points to mirror.
+    line : tuple
+        Two points defining the mirror line.
+
+    Returns
+    -------
+    list of point
+        The mirrored points.
+
+    """
+    return [closest_point_on_line_xy(point, line) for point in points]
 
 
 def mirror_point_plane(point, plane):
-    """Mirror a point about a plane."""
-    p1 = closest_point_on_plane(point, plane)
-    vec = subtract_vectors(p1, point)
-    return add_vectors(p1, vec)
+    """Mirror a point about a plane.
+
+    Parameters
+    ----------
+    point : list of float
+        XYZ coordinates of mirror point.
+    plane : tuple
+        Base point and normal defining the mirror plane.
+
+    Returns
+    -------
+    list of float
+        XYZ coordinates of the mirrored point.
+
+    """
+    closest = closest_point_on_plane(point, plane)
+    return add_vectors(closest, subtract_vectors(closest, point))
 
 
 def mirror_points_plane(points, plane):
-    """Mirror multiple points about a plane."""
+    """Mirror a point about a plane.
+
+    Parameters
+    ----------
+    points : list of point
+        List of points to mirror.
+    plane : tuple
+        Base point and normal defining the mirror plane.
+
+    Returns
+    -------
+    list of point
+        The mirrored points.
+
+    """
     return [mirror_point_plane(point, plane) for point in points]
 
 
 # ==============================================================================
 # project
+# specify orhtogonal
+# add perspective
 # ==============================================================================
 
 
 def project_point_plane(point, plane):
     """Project a point onto a plane.
 
-    Parameters:
-        point (sequence of float): XYZ coordinates of the original point.
-        plane (tuple): Base poin.t and normal vector defining the plane
+    Parameters
+    ----------
+    point : list of float
+        XYZ coordinates of the point.
+    plane : tuple
+        Base point and normal vector defining the projection plane.
 
-    Returns:
-        list: XYZ coordinates of the projected point.
+    Returns
+    -------
+    list
+        XYZ coordinates of the projected point.
 
-    Notes:
-        The projection is in the direction perpendicular to the plane.
-        The projected point is thus the closest point on the plane to the original
-        point [1]_.
+    Notes
+    -----
+    The projection is in the direction perpendicular to the plane.
+    The projected point is thus the closest point on the plane to the original
+    point [1]_.
 
-    References:
-        .. [1] Math Stack Exchange. *Project a point in 3D on a given plane*.
-               Available at: https://math.stackexchange.com/questions/444968/project-a-point-in-3d-on-a-given-plane.
+    References
+    ----------
+    .. [1] Math Stack Exchange. *Project a point in 3D on a given plane*.
+           Available at: https://math.stackexchange.com/questions/444968/project-a-point-in-3d-on-a-given-plane.
 
-    Examples:
-
-        >>> from compas.geometry import project_point_plane
-        >>> point = [3.0, 3.0, 3.0]
-        >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])  # the XY plane
-        >>> project_point_plane(point, plane)
-        [3.0, 3.0, 3.0]
+    Examples
+    --------
+    >>> from compas.geometry import project_point_plane
+    >>> point = [3.0, 3.0, 3.0]
+    >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])  # the XY plane
+    >>> project_point_plane(point, plane)
+    [3.0, 3.0, 3.0]
 
     """
     base, normal = plane
@@ -298,15 +541,21 @@ def project_point_plane(point, plane):
 def project_points_plane(points, plane):
     """Project multiple points onto a plane.
 
-    Parameters:
-        points (sequence of sequence of float): Cloud of XYZ coordinates.
-        plane (tuple): Base point and normal vector defining the projection plane.
+    Parameters
+    ----------
+    points : list of point
+        List of points.
+    plane : tuple
+        Base point and normal vector defining the projection plane.
 
-    Returns:
-        list of list: The XYZ coordinates of the projected points.
+    Returns
+    -------
+    list of point
+        The projected points.
 
-    See Also:
-        :func:`project_point_plane`
+    See Also
+    --------
+    :func:`project_point_plane`
 
     """
     return [project_point_plane(point, plane) for point in points]
@@ -315,19 +564,26 @@ def project_points_plane(points, plane):
 def project_point_line(point, line):
     """Project a point onto a line.
 
-    Parameters:
-        point (sequence of float): XYZ coordinates.
-        line (tuple): Two points defining a line.
+    Parameters
+    ----------
+    point : list of float
+        XYZ coordinates of the point.
+    line : tuple
+        Two points defining the projection line.
 
-    Returns:
-        list: XYZ coordinates of the projected point.
+    Returns
+    -------
+    list
+        XYZ coordinates of the projected point.
 
-    Notes:
-        For more info, see [1]_.
+    Notes
+    -----
+    For more info, see [1]_.
 
-    References:
-        .. [1] Wiki Books. *Linear Algebra/Orthogonal Projection Onto a Line*.
-               Available at: https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line.
+    References
+    ----------
+    .. [1] Wiki Books. *Linear Algebra/Orthogonal Projection Onto a Line*.
+           Available at: https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line.
 
     """
     a, b = line
@@ -339,21 +595,28 @@ def project_point_line(point, line):
 
 
 def project_point_line_xy(point, line):
-    """Project a point onto a line.
+    """Project a point onto a line in the XY plane.
 
-    Parameters:
-        point (sequence of float): XY coordinates.
-        line (tuple): Two points defining a line.
+    Parameters
+    ----------
+    point : list of float
+        XY(Z) coordinates of the point.
+    line : tuple
+        Two points defining the projection line.
 
-    Returns:
-        list: XY coordinates of the projected point.
+    Returns
+    -------
+    list
+        XYZ coordinates of the projected point, with Z=0.
 
-    Notes:
-        For more info, see [1]_.
+    Notes
+    -----
+    For more info, see [1]_.
 
-    References:
-        .. [1] Wiki Books. *Linear Algebra/Orthogonal Projection Onto a Line*.
-               Available at: https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line.
+    References
+    ----------
+    .. [1] Wiki Books. *Linear Algebra/Orthogonal Projection Onto a Line*.
+           Available at: https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line.
 
     """
     a, b = line
@@ -364,13 +627,172 @@ def project_point_line_xy(point, line):
 
 
 def project_points_line(points, line):
-    """Project multiple points onto a line."""
+    """Project points onto a line.
+
+    Parameters
+    ----------
+    points : list of point
+        XYZ coordinates of the points.
+    line : tuple
+        Two points defining the projection line.
+
+    Returns
+    -------
+    list of point
+        XYZ coordinates of the projected points.
+
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Wiki Books. *Linear Algebra/Orthogonal Projection Onto a Line*.
+           Available at: https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line.
+
+    """
     return [project_point_line(point, line) for point in points]
 
 
 def project_points_line_xy(points, line):
-    """Project multiple points onto a line."""
+    """Project points onto a line in the XY plane.
+
+    Parameters
+    ----------
+    point : list of float
+        XY(Z) coordinates of the point.
+    line : tuple
+        Two points defining the projection line.
+
+    Returns
+    -------
+    list
+        XYZ coordinates of the projected point, with Z=0.
+
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Wiki Books. *Linear Algebra/Orthogonal Projection Onto a Line*.
+           Available at: https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line.
+
+    """
     return [project_point_line_xy(point, line) for point in points]
+
+
+# ==============================================================================
+# reflection
+# ==============================================================================
+
+
+def reflect_line_plane(line, plane, tol=1e-6):
+    """Bounce a line of a reflection plane.
+
+    Parameters
+    ----------
+    line : tuple
+        Two points defining the line.
+    plane : tuple
+        Base point and normal vector of the plane.
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-6``.
+
+    Returns
+    -------
+    tuple
+        The reflected line defined by the intersection point of the line and plane
+        and the mirrored start point of the line with respect to a line perpendicular
+        to the plane through the intersection.
+
+    Notes
+    -----
+    The direction of the line and plane are important.
+    The line is only reflected if it points towards the front of the plane.
+    This is true if the dot product of the direction vector of the line and the
+    normal vector of the plane is smaller than zero.
+
+    Examples
+    --------
+    >>> plane = [0, 0, 0], [0, 1, 0]
+    >>> line = [-1, 1, 0], [-0.5, 0.5, 0]
+    >>> reflect_line_plane(line, plane)
+    ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
+
+    """
+    x = intersection_line_plane(line, plane, tol=tol)
+    if not x:
+        return
+
+    a, b = line
+    o, n = plane
+    ab = subtract_vectors(b, a)
+
+    if dot_vectors(ab, n) > 0:
+        # the line does not point towards the front of the plane
+        return
+
+    mirror = x, add_vectors(x, n)
+    return x, mirror_point_line(a, mirror)
+
+
+def reflect_line_triangle(line, triangle, tol=1e-6):
+    """Bounce a line of a reflection triangle.
+
+    Parameters
+    ----------
+    line : tuple
+        Two points defining the line.
+    triangle : tuple
+        The triangle vertices.
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-6``.
+
+    Returns
+    -------
+    tuple
+        The reflected line defined by the intersection point of the line and triangle
+        and the mirrored start point of the line with respect to a line perpendicular
+        to the triangle through the intersection.
+
+    Notes
+    -----
+    The direction of the line and triangle are important.
+    The line is only reflected if it points towards the front of the triangle.
+    This is true if the dot product of the direction vector of the line and the
+    normal vector of the triangle is smaller than zero.
+
+    Examples
+    --------
+    >>> triangle = [1.0, 0, 0], [-1.0, 0, 0], [0, 0, 1.0]
+    >>> line = [-1, 1, 0], [-0.5, 0.5, 0]
+    >>> reflect_line_triangle(line, triangle)
+    ([0.0, 0.0, 0], [1.0, 1.0, 0])
+
+    """
+    x = intersection_line_triangle(line, triangle, tol=tol)
+    if not x:
+        return
+
+    a, b = line
+    t1, t2, t3 = triangle
+    ab = subtract_vectors(b, a)
+    n = cross_vectors(subtract_vectors(t2, t1), subtract_vectors(t3, t1))
+
+    if dot_vectors(ab, n) > 0:
+        # the line does not point towards the front of the triangle
+        return
+
+    mirror = x, add_vectors(x, n)
+    return x, mirror_point_line(a, mirror)
+
+
+# ==============================================================================
+# shear
+# ==============================================================================
 
 
 # ==============================================================================
@@ -379,33 +801,43 @@ def project_points_line_xy(points, line):
 
 if __name__ == "__main__":
 
-    from numpy import array
-    from numpy import vstack
+    # from numpy import array
+    # from numpy import vstack
 
-    from numpy.random import randint
+    # from numpy.random import randint
 
-    import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
 
-    n = 200
+    # n = 200
 
-    points = randint(0, high=100, size=(n, 3)).astype(float)
-    points = vstack((points, array([[0, 0, 0], [100, 0, 0]], dtype=float).reshape((-1, 3))))
+    # points = randint(0, high=100, size=(n, 3)).astype(float)
+    # points = vstack((points, array([[0, 0, 0], [100, 0, 0]], dtype=float).reshape((-1, 3))))
 
-    a = math.pi / randint(1, high=8)
+    # a = math.pi / randint(1, high=8)
 
-    R = matrix_from_axis_and_angle([0, 0, 1], a, point=[0, 0, 0], rtype='array')
+    # R = matrix_from_axis_and_angle([0, 0, 1], a, point=[0, 0, 0], rtype='array')
 
-    points_ = transform_numpy(points, R)
+    # points_ = transform_points_numpy(points, R)
 
-    plt.plot(points[:, 0], points[:, 1], 'bo')
-    plt.plot(points_[:, 0], points_[:, 1], 'ro')
+    # plt.plot(points[:, 0], points[:, 1], 'bo')
+    # plt.plot(points_[:, 0], points_[:, 1], 'ro')
 
-    plt.plot(points[-2:, 0], points[-2:, 1], 'b-', label='before')
-    plt.plot(points_[-2:, 0], points_[-2:, 1], 'r-', label='after')
+    # plt.plot(points[-2:, 0], points[-2:, 1], 'b-', label='before')
+    # plt.plot(points_[-2:, 0], points_[-2:, 1], 'r-', label='after')
 
-    plt.legend(title='Rotation {0}'.format(180 * a / math.pi), fancybox=True)
+    # plt.legend(title='Rotation {0}'.format(180 * a / math.pi), fancybox=True)
 
-    ax = plt.gca()
-    ax.set_aspect('equal')
+    # ax = plt.gca()
+    # ax.set_aspect('equal')
 
-    plt.show()
+    # plt.show()
+
+    plane = [0, 0, 0], [0, 1, 0]
+    triangle = [1.0, 0, 0], [-1.0, 0, 0], [0, 0, 1.0]
+
+    line = [-1, 1, 0], [-0.5, 0.5, 0]
+
+    # line = reflect_line_plane(line, plane)
+    line = reflect_line_triangle(line, triangle)
+
+    print(line)

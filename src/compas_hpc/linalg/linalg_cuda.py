@@ -20,6 +20,7 @@ except:
 try:
     import pycuda
     import pycuda.autoinit
+    has_pycuda = True
 except:
     has_pycuda = None
 

@@ -3,7 +3,7 @@
 compas.viewers
 ********************************************************************************
 
-.. module:: compas.viewers
+.. currentmodule:: compas.viewers
 
 This package wraps `PyOpenGL`_ and `PySide`_ to provide three-dimensional
 viewers with basic visualization and user interaction capabilities.
@@ -23,14 +23,7 @@ Classes
     MeshViewer
 
 """
-
-from compas.viewers import viewer
-from compas.viewers import meshviewer
-
-try:
-    from compas.viewers import vtkviewer
-except:
-    pass
+from __future__ import absolute_import
 
 from .core import *
 from .viewer import *
@@ -38,6 +31,14 @@ from .meshviewer import *
 
 try:
     from .vtkviewer import *
+except:
+    pass
+
+from . import viewer
+from . import meshviewer
+
+try:
+    from . import vtkviewer
 except:
     pass
 

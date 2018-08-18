@@ -10,9 +10,8 @@ from copy import deepcopy
 from ast import literal_eval
 
 from compas.files import OBJ
-from compas.files import PLYreader
-from compas.files import STLReader
-from compas.files import parse_stl_data
+from compas.files import PLY
+from compas.files import STL
 
 from compas.utilities import pairwise
 from compas.utilities import window
@@ -309,8 +308,8 @@ class Mesh(FromToJson,
             'max_int_key' : self._max_int_key,
             'max_int_fkey': self._max_int_fkey,
         }
-        with open(filepath, 'wb+') as file:
-            pickle.dump(data, file, protocol=pickle.HIGHEST_PROTOCOL)
+        with open(filepath, 'wb+') as fo:
+            pickle.dump(data, fo, protocol=pickle.HIGHEST_PROTOCOL)
 
     def dumps(self):
         data = {
@@ -328,8 +327,9 @@ class Mesh(FromToJson,
         return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
 
     def load(self, filepath):
-        with open(filepath, 'rb') as file:
-            data = pickle.load(file)
+        with open(filepath, 'rb') as fo:
+            data = pickle.load(fo)
+
         self.attributes = data['attributes']
         self.default_vertex_attributes = data['dva']
         self.default_edge_attributes = data['dea']
@@ -343,6 +343,7 @@ class Mesh(FromToJson,
 
     def loads(self, s):
         data = pickle.loads(s)
+
         self.attributes = data['attributes']
         self.default_vertex_attributes = data['dva']
         self.default_edge_attributes = data['dea']
@@ -393,18 +394,12 @@ class Mesh(FromToJson,
         obj = OBJ(filepath)
         vertices = obj.parser.vertices
         faces    = obj.parser.faces
+        edges    = obj.parser.lines
         if faces:
-            mesh = cls()
-            for x, y, z in vertices:
-                mesh.add_vertex(x=x, y=y, z=z)
-            for face in faces:
-                mesh.add_face(face)
-        else:
-            edges = obj.parser.lines
-            if edges:
-                lines = [(vertices[u], vertices[v], 0) for u, v in edges]
-                mesh = cls.from_lines(lines)
-        return mesh
+            return cls.from_vertices_and_faces(vertices, faces)
+        if edges:
+            lines = [(vertices[u], vertices[v], 0) for u, v in edges]
+            return cls.from_lines(lines)
 
     @classmethod
     def from_ply(cls, filepath):
@@ -433,18 +428,17 @@ class Mesh(FromToJson,
         >>> mesh = Mesh.from_obj(compas.get('bunny.ply'))
 
         """
-        reader = PLYreader(filepath)
-        reader.read()
-        vertices = [(vertex['x'], vertex['y'], vertex['z']) for vertex in reader.vertices]
-        faces = [face['vertex_indices'] for face in reader.faces]
+        ply = PLY(filepath)
+        vertices = ply.parser.vertices
+        faces    = ply.parser.faces
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
     @classmethod
     def from_stl(cls, filepath):
-        reader = STLReader(filepath)
-        reader.read()
-        vertices, faces = parse_stl_data(reader.facets)
+        stl = STL(filepath)
+        vertices = stl.parser.vertices
+        faces = stl.parser.faces
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
@@ -1788,7 +1782,7 @@ class Mesh(FromToJson,
 
         """
         if directed:
-            return u in self.edge and v in self.edge[u]
+            return (u, v) in self.edgedata
         else:
             return u in self.halfedge and v in self.halfedge[u]
 
@@ -2689,18 +2683,20 @@ if __name__ == '__main__':
     import compas
     from compas.plotters import MeshPlotter
 
-    mesh = Mesh()
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    a = mesh.add_vertex(x=0, y=0)
-    b = mesh.add_vertex(x=0.5, y=0.1)
-    c = mesh.add_vertex(x=1, y=0)
-    d = mesh.add_vertex(x=0.9, y=0.5)
-    e = mesh.add_vertex(x=0.9, y=1)
-    f = mesh.add_vertex(x=0.5, y=1)
-    g = mesh.add_vertex(x=0, y=1)
-    h = mesh.add_vertex(x=0, y=0.5)
+    # mesh = Mesh()
 
-    mesh.add_face([a, b, c, d, e, f, g, h])
+    # a = mesh.add_vertex(x=0, y=0)
+    # b = mesh.add_vertex(x=0.5, y=0.1)
+    # c = mesh.add_vertex(x=1, y=0)
+    # d = mesh.add_vertex(x=0.9, y=0.5)
+    # e = mesh.add_vertex(x=0.9, y=1)
+    # f = mesh.add_vertex(x=0.5, y=1)
+    # g = mesh.add_vertex(x=0, y=1)
+    # h = mesh.add_vertex(x=0, y=0.5)
+
+    # mesh.add_face([a, b, c, d, e, f, g, h])
 
     plotter = MeshPlotter(mesh)
 

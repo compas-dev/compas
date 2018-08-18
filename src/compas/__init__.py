@@ -3,7 +3,7 @@
 compas
 ********************************************************************************
 
-.. module:: compas
+.. currentmodule:: compas
 
 
 .. toctree::
@@ -39,7 +39,9 @@ __version__   = '0.2.7'
 PY3 = sys.version_info.major == 3
 
 HERE = os.path.dirname(__file__)
+HOME = os.path.abspath(os.path.join(HERE, '../..'))
 DATA = os.path.abspath(os.path.join(HERE, '../../data'))
+TEMP = os.path.abspath(os.path.join(HERE, '../../temp'))
 
 
 def get(filename):
@@ -51,48 +53,64 @@ def get(filename):
         return "https://raw.githubusercontent.com/compas-dev/compas/develop/data/{}".format(filename)
 
 
-# def get_bunny():
-#     import urllib
-#     import tarfile
-#     bunny = os.path.abspath(os.path.join(DATA, 'bunny/reconstruction/bun_zipper.ply'))
-#     if not os.path.exists(bunny):
-#         url = 'http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz'
-#         print('Getting the bunny from {} ...'.format(url))
-#         print('This will take a few seconds...')
-#         destination = os.path.abspath(os.path.join(DATA, 'bunny.tar.gz'))
-#         urllib.urlretrieve(url, destination)
-#         with tarfile.open(destination) as file:
-#             file.extractall(DATA)
-#         os.remove(destination)
-#         print('Got it!\n')
-#     return bunny
+def get_bunny():
+    import urllib
+    import tarfile
+    bunny = os.path.abspath(os.path.join(DATA, 'bunny/reconstruction/bun_zipper.ply'))
+    if not os.path.exists(bunny):
+        url = 'http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz'
+        print('Getting the bunny from {} ...'.format(url))
+        print('This will take a few seconds...')
+        destination = os.path.abspath(os.path.join(DATA, 'bunny.tar.gz'))
+        urllib.urlretrieve(url, destination)
+        with tarfile.open(destination) as file:
+            file.extractall(DATA)
+        os.remove(destination)
+        print('Got it!\n')
+    return bunny
 
 
-# def get_armadillo():
-#     import urllib
-#     import gzip
-#     import shutil
-#     armadillo = os.path.abspath(os.path.join(DATA, 'armadillo/Armadillo.ply'))
-#     if not os.path.exists(armadillo):
-#         url = 'http://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz'
-#         print('Getting the armadillo from {} ...'.format(url))
-#         print('This will take a few seconds...')
-#         destination = os.path.abspath(os.path.join(DATA, 'Armadillo.ply.gz'))
-#         urllib.urlretrieve(url, destination)
-#         with gzip.open(destination, 'rb') as ifile, open(armadillo, 'wb+') as ofile:
-#             shutil.copyfileobj(ifile, ofile)
-#         os.remove(destination)
-#         print('Got it!\n')
-#     return armadillo
+def get_armadillo():
+    import urllib
+    import gzip
+    import shutil
+    armadillo = os.path.abspath(os.path.join(DATA, 'armadillo/Armadillo.ply'))
+    if not os.path.exists(armadillo):
+        url = 'http://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz'
+        print('Getting the armadillo from {} ...'.format(url))
+        print('This will take a few seconds...')
+        destination = os.path.abspath(os.path.join(DATA, 'Armadillo.ply.gz'))
+        urllib.urlretrieve(url, destination)
+        with gzip.open(destination, 'rb') as ifile, open(armadillo, 'wb+') as ofile:
+            shutil.copyfileobj(ifile, ofile)
+        os.remove(destination)
+        print('Got it!\n')
+    return armadillo
+
+
+def is_windows():
+    return os.name == 'nt'
+
+
+def is_linux():
+    return os.name == 'posix'
+
+
+def is_mono():
+    return 'mono' in sys.version.lower()
+
+
+def is_ironpython():
+    return 'ironpython' in sys.version.lower()
 
 
 def raise_if_not_ironpython():
-    if 'ironpython' not in sys.version.lower():
+    if not is_ironpython():
         raise
 
 
 def raise_if_ironpython():
-    if 'ironpython' in sys.version.lower():
+    if is_ironpython():
         raise
 
 

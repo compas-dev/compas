@@ -2,7 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+import compas_rhino
+
 from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.utilities import select_surface
 
 from compas.geometry import subtract_vectors
 
@@ -15,9 +19,7 @@ try:
     find_object = sc.doc.Objects.Find
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Tom Van Mele', ]
@@ -32,16 +34,13 @@ __all__ = ['RhinoSurface', ]
 class RhinoSurface(RhinoGeometry):
     """"""
 
-    def __init__(self, guid=None):
-        self.guid = guid
-        self.surface = RhinoSurface.find(guid)
-        self.geometry = self.surface.Geometry
-        self.attributes = self.surface.Attributes
-        self.otype = self.geometry.ObjectType
+    def __init__(self, guid):
+        super(RhinoSurface, self).__init__(guid)
 
-    @staticmethod
-    def find(guid):
-        return find_object(guid)
+    @classmethod
+    def from_selection(cls):
+        guid = select_surface()
+        return cls(guid)
 
     def space(self, density=10):
         """"""
@@ -275,11 +274,7 @@ class RhinoSurface(RhinoGeometry):
 
 if __name__ == '__main__':
 
-    import compas_rhino
-
-    guid = compas_rhino.select_surface()
-
-    surface = RhinoSurface(guid)
+    surface = RhinoSurface.from_selection()
 
     points = []
     for xyz in surface.heightfield():

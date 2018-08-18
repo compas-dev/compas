@@ -2,9 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
 import compas_rhino
 
 from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.utilities import select_curve
 
 try:
     import Rhino
@@ -13,12 +15,8 @@ try:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
 
-    find_object = sc.doc.Objects.Find
-
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Tom Van Mele', ]
@@ -34,45 +32,61 @@ class RhinoCurve(RhinoGeometry):
     """"""
 
     def __init__(self, guid):
-        self.guid = guid
-        self.object = RhinoCurve.find(self.guid)
-        self.geometry = self.object.Geometry
-        self.attributes = self.object.Attributes
-        self.otype = self.geometry.ObjectType
-
-    @staticmethod
-    def find(guid):
-        return find_object(guid)
+        super(RhinoCurve, self).__init__(guid)
 
     @classmethod
-    def from_points(cls, points, degree=None):
-        points = [list(point) for point in points]
-        if not degree:
-            degree = len(points) - 1
-        guid = rs.AddCurve([Point3d(* point) for point in points], degree)
+    def from_selection(cls):
+        """Create a ``RhinoCurve`` instance from a selected Rhino curve.
+
+        Returns
+        -------
+        RhinoCurve
+            A convenience wrapper around the Rhino curve object.
+
+        """
+        guid = select_curve()
         return cls(guid)
 
-    def delete(self):
-        compas_rhino.delete_object(self.guid)
-
-    def hide(self):
-        return rs.HideObject(self.guid)
-
-    def show(self):
-        return rs.ShowObject(self.guid)
-
-    def select(self):
-        return rs.SelectObject(self.guid)
-
-    def unselect(self):
-        return rs.UnselectObject(self.guid)
+    # @classmethod
+    # def from_points(cls, points, degree=None):
+    #     points = [list(point) for point in points]
+    #     if not degree:
+    #         degree = len(points) - 1
+    #     guid = rs.AddCurve([Point3d(* point) for point in points], degree)
+    #     return cls(guid)
 
     def is_line(self):
+        """Determine if the curve is a line.
+
+        Returns
+        -------
+        bool
+            Tue if the curve is a line.
+            False otherwise.
+
+        Notes
+        -----
+        A curve is a line if it is a linear segment between two points.
+
+        """
         return (rs.IsLine(self.guid) and
                 rs.CurveDegree(self.guid) == 1 and
                 len(rs.CurvePoints(self.guid)) == 2)
 
     def is_polyline(self):
+        """Determine if the curve is a polyline.
+
+        Returns
+        -------
+        bool
+            Tue if the curve is a polyline.
+            False otherwise.
+
+        Notes
+        -----
+        A curve is a polyline if it consists of linear segments between a sequence of points.
+
+        """
         return (rs.IsPolyline(self.guid) and
                 rs.CurveDegree(self.guid) == 1 and
                 len(rs.CurvePoints(self.guid)) > 2)

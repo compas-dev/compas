@@ -72,14 +72,7 @@ class Network(FromToJson,
         of edge attributes.
     halfedge : dict of dict
         A half-edge dictionary, which keeps track of
-        undirected adjacencies. If the network is planar, the halfedges point
-        at entries in the face dictionary.
-    face : dict
-        The face dictionary. If the network is planar, this dictionary
-        is populated by a face finding algorithm. Each key represents a face
-        and points to its corresponding vertex cycle.
-    facedata : dict
-        Face attributes.
+        undirected adjacencies.
     attributes : dict
         A dictionary of miscellaneous information about the network.
 
@@ -147,9 +140,8 @@ class Network(FromToJson,
             dea = '\n'.join(['{0} => {1}'.format(key, value) for key, value in self.default_edge_attributes.items()])
 
         return """
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 {0}
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{7}
 
 - default vertex attributes
 
@@ -165,7 +157,7 @@ class Network(FromToJson,
 - vertex degree min: {3}
 - vertex degree max: {4}
 
-""".format(self.attributes['name'], v, e, dmin, dmax, dva, dea)
+""".format(self.name, v, e, dmin, dmax, dva, dea, "=" * len(self.name))
 
     # --------------------------------------------------------------------------
     # special properties

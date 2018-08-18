@@ -1,12 +1,17 @@
 """
 ********************************************************************************
-helpers
+compas_rhino.helpers
 ********************************************************************************
 
-.. module:: compas_rhino.helpers
+.. currentmodule:: compas_rhino.helpers
 
 
-Helpers make it easier to work with datastructures in Rhino.
+This package contains helpers for working with COMPAS data structures in Rhino.
+
+
+.. deprecated:: 0.2.0
+
+    Use artists, selectors, inspectors and modifiers instead.
 
 
 mesh

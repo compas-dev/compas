@@ -13,21 +13,39 @@ __all__ = []
 
 
 class AMF(object):
-    """File format for additive manufacturing processes.
+    """AMFer file format.
 
     See Also
     --------
-    * https://en.wikipedia.org/wiki/Additive_Manufacturing_File_Format
+    * http://www.asprs.org/wp-content/uploads/2010/12/AMF_1_4_r13.pdf
+
 
     """
+    def __init__(self, filepath, precision=None):
+        self.reader = AMFReader(filepath)
+        self.parser = AMFParser(self.reader, precision=precision)
 
-    def __init__(self):
-        pass
+
+class AMFReader(object):
+    """"""
+
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.read()
 
     def read(self):
         pass
 
-    def write(self):
+
+class AMFParser(object):
+    """"""
+
+    def __init__(self, reader, precision):
+        self.reader = reader
+        self.precision = precision
+        self.parse()
+
+    def parse(self):
         pass
 
 

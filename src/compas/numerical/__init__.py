@@ -3,11 +3,10 @@
 compas.numerical
 ********************************************************************************
 
-.. module:: compas.numerical
+.. currentmodule:: compas.numerical
 
-This package implements numerical solvers and methods for form finding
-and analysis of structures. The array and matrix-based implementations are built
-around `NumPy`_ and `SciPy`_.
+This package implements numerical solvers and algorithms.
+The array and matrix-based implementations are built around `NumPy`_ and `SciPy`_.
 
 .. _NumPy: http://www.numpy.org/
 .. _SciPy: https://www.scipy.org/
@@ -23,8 +22,11 @@ Algorithms
     dr
     dr_numpy
     drx_numpy
+    fd_cpp
     fd_numpy
     pca_numpy
+    topop2d_numpy
+    topop3d_numpy
 
 
 Solvers

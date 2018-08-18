@@ -3,7 +3,7 @@
 compas.geometry
 ********************************************************************************
 
-.. module:: compas.geometry
+.. currentmodule:: compas.geometry
 
 This package provides functionality for working with geometry independent of CAD software.
 The package defines geometric primitives, basic geometry functions, and an implementation
@@ -14,6 +14,8 @@ primitives and objects as input parameters. These primitives and objects may be 
 into those functions as instances of the corresponding classes defined in :mod:`compas.geometry.objects`
 or as an equivalent representation using (combinations of) built-in Python objects.
 The following table defines those representations.
+
+.. rst-class:: table table-responsive table-bordered
 
 =========== ====================================================================
 parameter   representation
@@ -245,6 +247,8 @@ Transformations
     project_points_line
     project_points_line_xy
     project_points_plane
+    reflect_line_plane
+    reflect_line_triangle
     rotate_points
     rotate_points_xy
     scale_points
@@ -262,8 +266,6 @@ Objects
     Vector
     Point
     Line
-    Segment
-    Ray
     Polyline
     Polygon
     Plane
@@ -295,9 +297,6 @@ Spatial
     :nosignatures:
 
     KDTree
-    RTree
-    QuadTree
-    OcTree
 
 
 Algorithms
@@ -323,10 +322,12 @@ Algorithms
     mesh_flatness
     mesh_isolines_numpy
     mesh_planarize_faces
-    mesh_planarize_faces_shapeop
     mesh_smooth_centroid
     network_parallelise_edges
     network_smooth_centroid
+    offset_line
+    offset_polyline
+    offset_polygon
     oriented_bounding_box_numpy
     oriented_bounding_box_xy_numpy
     planarize_faces
@@ -389,4 +390,3 @@ __all__ += spatial.__all__
 __all__ += xforms.__all__
 
 __all__ += algorithms.__all__
-

@@ -21,8 +21,6 @@ __all__ = [
     'OBJ',
     'OBJReader',
     'OBJParser',
-    'OBJComposer',
-    'OBJWriter',
 ]
 
 
@@ -51,12 +49,6 @@ class OBJReader(object):
 
     Attributes
     ----------
-    filepath : str
-        Path to the file.
-    remote : bool
-        Is the file on a remote location.
-    content : iter
-        The contents of the file, line by line.
     vertices : list
         Vertex coordinates.
     weights : list
@@ -91,7 +83,6 @@ class OBJReader(object):
 
     def __init__(self, filepath):
         self.filepath = filepath
-        self.remote = filepath.startswith('http')
         self.content = None
         # vertex data
         self.vertices = []
@@ -124,7 +115,7 @@ class OBJReader(object):
         self.post()
 
     def open(self):
-        if self.remote:
+        if self.filepath.startswith('http'):
             resp = urllib2.urlopen(self.filepath)
             self.content = iter(resp.read().decode('utf-8').split('\n'))
         else:
@@ -348,24 +339,6 @@ class OBJParser(object):
         self.polylines = [[index_index[index] for index in line] for line in self.reader.lines if len(line) > 2]
         self.faces     = [[index_index[index] for index in face] for face in self.reader.faces]
         self.groups    = self.reader.groups
-
-
-class OBJComposer(object):
-    """"""
-    def __init__(self):
-        pass
-
-    def compose(self):
-        pass
-
-
-class OBJWriter(object):
-    """"""
-    def __init__(self):
-        pass
-
-    def write(self):
-        pass
 
 
 # ==============================================================================

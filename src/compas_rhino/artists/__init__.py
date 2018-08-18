@@ -1,3 +1,22 @@
+"""
+********************************************************************************
+compas_rhino.artists
+********************************************************************************
+
+.. currentmodule:: compas_rhino.artists
+
+
+Artists for visualising (painting) COMPAS data structures in Rhino.
+
+
+.. autosummary::
+    :toctree: generated/
+
+    MeshArtist
+    NetworkArtist
+    VolMeshArtist
+
+"""
 from __future__ import absolute_import
 
 from .meshartist import *

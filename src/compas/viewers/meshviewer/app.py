@@ -72,7 +72,7 @@ if __name__ == '__main__':
 
     import compas
     from compas.datastructures import Mesh
-    from compas.geometry import transform
+    from compas.geometry import transform_points
     from compas.geometry import matrix_from_translation
 
 
@@ -81,7 +81,7 @@ if __name__ == '__main__':
         def apply_xform(self, M):
             key_index = self.key_index()
             points = self.get_vertices_attributes('xyz')
-            points = transform(points, M)
+            points = transform_points(points, M)
             for key, attr in self.vertices(True):
                 index = key_index[key]
                 x, y, z = points[index]

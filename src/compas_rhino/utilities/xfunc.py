@@ -15,7 +15,7 @@ try:
     from System.Diagnostics import Process
 
 except ImportError:
-    compas.raise_if_not_ironpython()
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Tom Van Mele', ]
@@ -28,11 +28,17 @@ __all__ = ['XFunc', 'DataDecoder', 'DataEncoder', ]
 
 
 WRAPPER = """
+import os
 import sys
 import importlib
 
 import json
-import cStringIO
+
+try:
+    from cStringIO import StringIO
+except Exception:
+    from io import StringIO
+
 import cProfile
 import pstats
 import traceback
@@ -72,7 +78,7 @@ try:
 
     profile.disable()
 
-    stream = cStringIO.StringIO()
+    stream = StringIO()
     stats  = pstats.Stats(profile, stream=stream)
     # stats.strip_dirs()
     stats.sort_stats(1)
@@ -164,7 +170,7 @@ class XFunc(object):
         import compas
         import compas_rhino
 
-        from compas_rhino.helpers import MeshArtist
+        from compas_rhino import MeshArtist
         from compas.datastructures import Mesh
         from compas.utilities import XFunc
 

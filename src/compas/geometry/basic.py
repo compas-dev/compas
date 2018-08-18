@@ -955,7 +955,7 @@ def transpose_matrix(M):
         The result matrix.
 
     """
-    return list(map(list, zip(*M)))
+    return list(zip(* list(M)))
 
 
 def multiply_matrices(A, B):
@@ -1004,7 +1004,7 @@ def multiply_matrices(A, B):
         raise Exception('Row length in matrix B is inconsistent.')
     if not all([len(row) == n for row in A]):
         raise Exception('Matrix shapes are not compatible.')
-    B = list(zip(*B))
+    B = list(zip(* list(B)))
     return [[dot_vectors(row, col) for col in B] for row in A]
 
 

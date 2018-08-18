@@ -290,6 +290,8 @@ class NetworkPlotter(Plotter):
 
 if __name__ == "__main__":
 
+    import seaborn
+
     import compas
 
     from compas.datastructures import Network

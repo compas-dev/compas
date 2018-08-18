@@ -1,4 +1,13 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import json
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 
 __author__    = ['Tom Van Mele', ]
@@ -96,29 +105,21 @@ class FromToJson(object):
         graph.data = data
         return graph
 
-    def to_json(self, filepath=None):
+    def to_json(self, filepath):
         """Serialise the structured data representing the data structure to json.
 
         Parameters
         ----------
-        filepath : str (None)
+        filepath : str
             The path to the json file.
-
-        Returns
-        -------
-        str
-            The json string if no file path is provided.
 
         See Also
         --------
         * :meth:`from_json`
 
         """
-        if not filepath:
-            return json.dumps(self.data)
-        else:
-            with open(filepath, 'w+') as fp:
-                json.dump(self.data, fp)
+        with open(filepath, 'w+') as fp:
+            json.dump(self.data, fp)
 
 
 # ==============================================================================

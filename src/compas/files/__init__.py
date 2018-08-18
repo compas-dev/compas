@@ -3,7 +3,7 @@
 compas.files
 ********************************************************************************
 
-.. module:: compas.files
+.. currentmodule:: compas.files
 
 This package provides support for file types related to geometry definition,
 manufacturing processes, CAD interoperability, robot models, ...
@@ -18,15 +18,7 @@ amf
 dxf
 ===
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    DXF
-    DXFReader
-    DXFParser
-    DXFComposer
-    DXFWriter
+*Under construction...*
 
 
 las
@@ -45,8 +37,6 @@ obj
     OBJ
     OBJReader
     OBJParser
-    OBJComposer
-    OBJWriter
 
 
 ply
@@ -56,13 +46,22 @@ ply
     :toctree: generated/
     :nosignatures:
 
-    PLYreader
+    PLY
+    PLYReader
+    PLYParser
 
 
 stl
 ===
 
-*Under construction...*
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    STL
+    STLReader
+    STLParser
+
 
 urdf
 ====
@@ -74,6 +73,9 @@ urdf
     URDF
 
 """
+from __future__ import absolute_import
+
+# todo: provide support for file-like object, string/stream, or filepath (not url)
 
 from .amf  import *
 from .dxf  import *
@@ -83,12 +85,20 @@ from .ply  import *
 from .stl  import *
 from .urdf import *
 
-from .amf  import __all__ as a
-from .dxf  import __all__ as b
-from .las  import __all__ as c
-from .obj  import __all__ as d
-from .ply  import __all__ as e
-from .stl  import __all__ as f
-from .urdf import __all__ as g
+from . import amf
+from . import dxf
+from . import las
+from . import obj
+from . import ply
+from . import stl
+from . import urdf
 
-__all__ = a + b + c + d + e + f + g
+__all__ = []
+
+__all__ += amf.__all__
+__all__ += dxf.__all__
+__all__ += las.__all__
+__all__ += obj.__all__
+__all__ += ply.__all__
+__all__ += stl.__all__
+__all__ += urdf.__all__

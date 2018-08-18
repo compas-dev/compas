@@ -13,25 +13,17 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
-    'parse_stl_data',
-    'STLReader'
+    'STL',
+    'STLReader',
+    'STLParser',
 ]
 
 
-def parse_stl_data(facets, header=None):
-    gkey_index = {}
-    vertices = []
-    faces = []
-    for facet in facets:
-        face = []
-        for xyz in facet['vertices']:
-            gkey = geometric_key(xyz)
-            if gkey not in gkey_index:
-                gkey_index[gkey] = len(vertices)
-                vertices.append(xyz)
-            face.append(gkey_index[gkey])
-        faces.append(face)
-    return vertices, faces
+class STL(object):
+
+    def __init__(self, filepath, precision=None):
+        self.reader = STLReader(filepath)
+        self.parser = STLParser(self.reader, precision=precision)
 
 
 class STLReader(object):
@@ -48,6 +40,7 @@ class STLReader(object):
         self.file = None
         self.header = None
         self.facets = []
+        self.read()
 
     def read(self):
         is_binary = False
@@ -215,6 +208,34 @@ class STLReader(object):
             facets.append(self.read_facet_binary())
         return facets
 
+
+class STLParser(object):
+    """"""
+
+    def __init__(self, reader, precision):
+        self.precision = precision if precision is not None else '3f'
+        self.reader    = reader
+        self.vertices  = None
+        self.faces     = None
+        self.parse()
+
+    def parse(self):
+        gkey_index = {}
+        vertices = []
+        faces = []
+        for facet in self.reader.facets:
+            face = []
+            for xyz in facet['vertices']:
+                gkey = geometric_key(xyz)
+                if gkey not in gkey_index:
+                    gkey_index[gkey] = len(vertices)
+                    vertices.append(xyz)
+                face.append(gkey_index[gkey])
+            faces.append(face)
+        self.vertices = vertices
+        self.faces = faces
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -230,12 +251,9 @@ if __name__ == "__main__":
 
     filepath = os.path.join(compas.DATA, 'cube_ascii.stl')
 
-    reader = STLReader(filepath)
-    reader.read()
+    stl = STL(filepath)
 
-    vertices, faces = parse_stl_data(reader.facets)
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
 
     viewer = MeshViewer()
     viewer.mesh = mesh

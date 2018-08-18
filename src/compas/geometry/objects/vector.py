@@ -8,6 +8,8 @@ from math import sqrt
 from math import pi
 
 from compas.geometry.basic import length_vector
+from compas.geometry.basic import cross_vectors
+from compas.geometry.basic import subtract_vectors
 
 from compas.geometry.transformations import transform_vectors
 
@@ -529,6 +531,10 @@ if __name__ == '__main__':
 
     u = Vector(0.0, 0.0, 1.0)
     v = Vector(1.0, 0.0, 0.0)
+
+    w = Vector.from_start_end(u, v)
+
+    print(w)
 
     M = matrix_from_axis_and_angle(v, pi / 4)
 

@@ -1,5 +1,10 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import time
 
+import compas
 import compas_rhino
 
 from compas_rhino.artists.mixins import VertexArtist
@@ -10,9 +15,7 @@ try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__    = ['Tom Van Mele', ]
@@ -25,22 +28,77 @@ __all__ = ['MeshArtist']
 
 
 class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
-    """"""
+    """A mesh artist defines functionality for visualising COMPAS meshes in Rhino.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A COMPAS mesh.
+    layer : str, optional
+        The name of the layer that will contain the mesh.
+
+    Attributes
+    ----------
+    defaults : dict
+        Default settings for color, scale, tolerance, ...
+
+    Examples
+    --------
+    .. code-block:: python
+        
+        import compas
+        from compas.datastructures import Mesh
+        from compas_rhino.artists import MeshArtist
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+        artist = MeshArtist(mesh, layer='COMPAS::MeshArtist')
+        artist.clear_layer()
+        artist.draw_faces(join_faces=True)
+        artist.draw_vertices(color={key: '#ff0000' for key in mesh.vertices_on_boundary()})
+        artist.draw_edges()
+        artist.redraw()
+
+    """
 
     def __init__(self, mesh, layer=None):
-        self.datastructure = mesh
+        self.mesh = mesh
         self.layer = layer
+        self.defaults = {
+            'color.vertex' : (255, 0, 0),
+            'color.face'   : (255, 255, 255),
+            'color.edge'   : (0, 0, 0),
+        }
 
     @property
     def layer(self):
+        """str: The layer that contains the mesh."""
         return self.datastructure.attributes.get('layer')
 
     @layer.setter
     def layer(self, value):
         self.datastructure.attributes['layer'] = value
 
+    @property
+    def mesh(self):
+        """compas.datastructures.Mesh: The mesh that should be painted."""
+        return self.datastructure
+
+    @mesh.setter
+    def mesh(self, mesh):
+        self.datastructure = mesh
+
     def redraw(self, timeout=None):
-        """Redraw the Rhino view."""
+        """Redraw the Rhino view.
+
+        Parameters
+        ----------
+        timeout : float, optional
+            The amount of time the artist waits before updating the Rhino view.
+            The time should be specified in seconds.
+            Default is ``None``.
+
+        """
         if timeout:
             time.sleep(timeout)
         rs.EnableRedraw(True)
@@ -54,6 +112,8 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
             compas_rhino.clear_current_layer()
 
     def clear(self):
+        """Clear the vertices, faces and edges of the mesh, without clearing the
+        other elements in the layer."""
         self.clear_vertices()
         self.clear_faces()
         self.clear_edges()
