@@ -162,14 +162,16 @@ class Robot(object):
         """Iterator over the chain of links between a pair of start and end links.
 
         Args:
-            link_start_name: Name of the starting link of the chain, or `None` to start at root.
-            link_end_name: Name of the final link of the chain, or `None` to end at the deepest link.
+            link_start_name: Name of the starting link of the chain,
+                or ``None`` to start at root.
+            link_end_name: Name of the final link of the chain,
+                or ``None`` to try to identify the last link.
 
         Returns:
             Iterator of the chain of links.
 
         .. note::
-            This method differs from `iter_links` in that it returns the chain respecting
+            This method differs from :meth:`iter_links` in that it returns the chain respecting
             the tree structure, hence if one link branches into two or more joints, only the
             branch matching the end link will be returned.
         """
@@ -180,11 +182,13 @@ class Robot(object):
                 yield link
 
     def iter_chain(self, start=None, end=None):
-        """Iterator over the chain of all elements between a pair of start and end element.
+        """Iterator over the chain of all elements between a pair of start and end elements.
 
         Args:
-            start: Name of the starting link of the chain, or `None` to start at the root link.
-            end: Name of the final link of the chain, or `None` the try to identify the last link.
+            start: Name of the starting element of the chain,
+                or ``None`` to start at the root link.
+            end: Name of the final element of the chain,
+                or ``None`` to try to identify the last element.
 
         Returns:
             Iterator of the chain of links and joints.
@@ -206,13 +210,16 @@ class Robot(object):
         shortest_chain = shortest_path(self._adjacency, start, end)
 
         if not shortest_chain:
-            raise Exception('No chain found between the specified links')
+            raise Exception('No chain found between the specified element')
 
         for name in shortest_chain:
             yield name
 
     def get_frames(self):
-        """Returns only the frames of links that have a visual node.
+        """Get the frames of links that have a visual node.
+
+        Returns:
+            list: List of :class:`compas.geometry.Frame` of all links with a visual representation.
         """
         frames = []
         for link in self.iter_links():
@@ -221,6 +228,11 @@ class Robot(object):
         return frames
 
     def get_axes(self):
+        """Get axes of all joints.
+
+        Returns:
+            list: Axis vectors of all joints.
+        """
         axes = []
         for joint in self.iter_joints():
             if joint.axis:
