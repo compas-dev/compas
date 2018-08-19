@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function
 
 from compas.files import URDF
+from compas.topology import shortest_path
 
 from .geometry import SCALE_FACTOR, Color, Material, Texture
 
@@ -8,11 +9,11 @@ __all__ = ['Robot']
 
 
 class Robot(object):
-    """Robot is the root of the model.
+    """Robot is the root element of the model.
 
-    Robot instances are the root node in a urdf structure representing an entire robot.
+    Instances of this class represent an entire robot as defined in an URDF structure.
 
-    In line with URDF limitations, only urdf structures can be represented by this
+    In line with URDF limitations, only tree structures can be represented by this
     model, ruling out all parallel robots.
 
     Attributes:
@@ -20,6 +21,7 @@ class Robot(object):
         joints: List of joint elements.
         links: List of links of the robot.
         materials: List of global materials.
+        root: Root link of the model.
         attr: Non-standard attributes.
     """
 
@@ -29,19 +31,31 @@ class Robot(object):
         self.links = links
         self.materials = materials
         self.attr = kwargs
-        # save tree structure from link and joint lists
+        self.root = None
+        self._rebuild_tree()
+
+    def _rebuild_tree(self):
+        """Store tree structure from link and joint lists."""
+        self._adjacency = dict()
+        self._links = dict()
+        self._joints = dict()
+
         for link in self.links:
             link.joints = self.find_children_joints(link)
             link.parent_joint = self.find_parent_joint(link)
-        for joint in self.joints:
-            joint.child_link = self.find_child_link(joint)
 
-    @property
-    def root(self):
-        if len(self.links):
-            return self.find_root_link()
-        else:
-            return None
+            self._links[link.name] = link
+            self._adjacency[link.name] = [joint.name for joint in link.joints]
+
+            if not link.parent_joint:
+                self.root = link
+
+        for joint in self.joints:
+            child_name = joint.child.link
+            joint.child_link = self.get_link_by_name(child_name)
+
+            self._joints[joint.name] = joint
+            self._adjacency[joint.name] = [child_name]
 
     @classmethod
     def from_urdf_file(cls, file):
@@ -67,23 +81,6 @@ class Robot(object):
         """
         return URDF.from_string(text)
 
-    def find_root_link(self):
-        """Returns the robot's root link.
-
-        Raises:
-            Exception: If the root link of the robot could not be found.
-        """
-        # search the link, which is never child for a joint
-        for link in self.links:
-            found = False
-            for joint in self.joints:
-                if str(joint.child) == link.name:
-                    found = True
-                    break
-            if not found:
-                return link
-        raise Exception("Root link not found. Something wrong with URDF?")
-
     def find_children_joints(self, link):
         """Returns a list of all children joints of the link.
         """
@@ -93,14 +90,6 @@ class Robot(object):
                 joints.append(joint)
         return joints
 
-    def find_child_link(self, joint):
-        """Returns the child link of the joint or None if not found.
-        """
-        for link in self.links:
-            if link.name == joint.child.link:
-                return link
-        return None
-
     def find_parent_joint(self, link):
         """Returns the parent joint of the link or None if not found.
         """
@@ -109,18 +98,34 @@ class Robot(object):
                 return joint
         return None
 
-    def find_link_by_name(self, name):
-        """Returns the link named name.
+    def get_link_by_name(self, name):
+        """Get a link in a robot model matching by its name.
+
+        Args:
+            name: link name.
+
+        Returns:
+            A link instance.
         """
-        for link in self.links:
-            if link.name == name:
-                return link
-        return None
+        return self._links.get(name, None)
+
+    def get_joint_by_name(self, name):
+        """Get a joint in a robot model matching by its name.
+
+        Args:
+            name: joint name.
+
+        Returns:
+            A joint instance.
+        """
+        return self._joints.get(name, None)
 
     def iter_links(self):
-        """Returns an iterator over the links that starts with the root link.
+        """Iterator over the links that starts with the root link.
+
+        Returns:
+            Iterator of all links starting at root.
         """
-        root = self.root
 
         def func(cjoints, links):
             for j in cjoints:
@@ -129,11 +134,14 @@ class Robot(object):
                 links += func(link.joints, [])
             return links
 
-        return iter(func(root.joints, [root]))
+        return iter(func(self.root.joints, [self.root]))
 
     def iter_joints(self):
-        """Returns an iterator over the joints that starts with the root link's
+        """Iterator over the joints that starts with the root link's
             children joints.
+
+        Returns:
+            Iterator of all joints starting at root.
         """
 
         def func(clink, joints):
@@ -144,6 +152,59 @@ class Robot(object):
             return joints
 
         return iter(func(self.root, []))
+
+    def iter_link_chain(self, link_start_name=None, link_end_name=None):
+        """Iterator over the chain of links between a pair of start and end links.
+
+        Args:
+            link_start_name: Name of the starting link of the chain, or `None` to start at root.
+            link_end_name: Name of the final link of the chain, or `None` to end at the deepest link.
+
+        Returns:
+            Iterator of the chain of links.
+
+        .. note::
+            This method differs from `iter_links` in that it returns the chain respecting
+            the tree structure, hence if one link branches into two or more joints, only the
+            branch matching the end link will be returned.
+        """
+        chain = self.iter_chain(link_start_name, link_end_name)
+        for link in map(self.get_link_by_name, chain):
+            # If None, it's not a link
+            if link:
+                yield link
+
+    def iter_chain(self, start=None, end=None):
+        """Iterator over the chain of all elements between a pair of start and end element.
+
+        Args:
+            start: Name of the starting link of the chain, or `None` to start at the root link.
+            end: Name of the final link of the chain, or `None` the try to identify the last link.
+
+        Returns:
+            Iterator of the chain of links and joints.
+        """
+        if not start:
+            if not self.root:
+                raise Exception('No root link found')
+
+            start = self.root.name
+
+        if not end:
+            # Normally URDF will contain the end links at the end
+            # so we break out faster by reversing the list
+            for link in reversed(self.links):
+                if not link.joints:
+                    end = link.name
+                    break
+
+        shortest_chain = shortest_path(self._adjacency, start, end)
+
+        if not shortest_chain:
+            raise Exception('No chain found between the specified links')
+
+        for name in shortest_chain:
+            yield name
 
     def get_frames(self):
         """Returns only the frames of links that have a visual node.
