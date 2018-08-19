@@ -101,22 +101,13 @@ def xdraw_faces(faces, srf=None, u=10, v=10, trim=True, tangency=True,
     for f in iter(faces):
         points = f['points']
         corners = [Point3d(*point) for point in points]
-        pcurve = PolylineCurve(corners)
-        geo = List[GeometryBase](1)
-        geo.Add(pcurve)
-        p = len(points)
-        if p == 4:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
-                                               Point3d(*points[1]),
-                                               Point3d(*points[2]),
-                                               TOL)
-        elif p == 5:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
-                                               Point3d(*points[1]),
-                                               Point3d(*points[2]),
-                                               Point3d(*points[3]),
-                                               TOL)
+        if len(points) in [3, 4]:
+            args = corners + [TOL]
+            brep = Brep.CreateFromCornerPoints(*args)
         else:
+            pcurve = PolylineCurve(corners)
+            geo = List[GeometryBase](1)
+            geo.Add(pcurve)
             brep = Brep.CreatePatch(geo, u, v, TOL)
         if not brep:
             continue
