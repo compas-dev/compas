@@ -18,7 +18,7 @@ __all__ = [
 
 
 def random_name(n=17):
-    return ''.join(random.choice(string.lowercase) for _ in range(n))
+    return ''.join(random.choice(string.ascii_lowercase) for _ in range(n))
 
 
 # ==============================================================================
