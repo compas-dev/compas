@@ -1,4 +1,6 @@
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from compas.files import URDF
 from compas.geometry import Vector
@@ -6,7 +8,9 @@ from compas.geometry.transformations import transform_vectors
 from compas.geometry.xforms import Rotation
 from compas.geometry.xforms import Transformation
 
-from .geometry import SCALE_FACTOR, Origin, _parse_floats
+from .geometry import SCALE_FACTOR
+from .geometry import Origin
+from .geometry import _parse_floats
 
 __all__ = ['Joint', 'ParentJoint', 'ChildJoint', 'Calibration',
            'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']

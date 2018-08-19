@@ -1,11 +1,23 @@
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import os
+
 from compas.files import URDF
 from compas.geometry import Frame
 from compas.geometry.xforms import Transformation
 
-from .geometry import Box, Capsule, Color, Cylinder, Geometry, Material, MeshDescriptor, Origin, Sphere, Texture
+from .geometry import Box
+from .geometry import Capsule
+from .geometry import Color
+from .geometry import Cylinder
+from .geometry import Geometry
+from .geometry import Material
+from .geometry import MeshDescriptor
+from .geometry import Origin
+from .geometry import Sphere
+from .geometry import Texture
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
