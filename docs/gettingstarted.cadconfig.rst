@@ -11,7 +11,7 @@ Once **compas** is installed on your system, a few more steps are required to ma
 Requirements
 ------------
 
-* `IronPython 2.7.5 <http://ironpython.codeplex.com/releases/view/169382>`_
+* `IronPython 2.7.5 <https://github.com/IronLanguages/main/releases/tag/ipy-2.7.5>`_
 * `Rhino3D <https://www.rhino3d.com/download>`_
 
 
@@ -24,7 +24,7 @@ In Rhino 5 this bundled IronPython is a beta version.
 You should install your own version of IronPython such that everything works properly.
 
 .. note::
-    
+
     Install IronPython 2.7.5, and not the latest version of IronPython.
     Rhino doesn't like it...
 
