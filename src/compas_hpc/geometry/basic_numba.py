@@ -57,7 +57,7 @@ __all__ = [
     'dot_vectors_xy_numba',
     'vector_component_numba',
     'vector_component_xy_numba',
-    'orthonormalise_vectors_numba',
+    'orthonormalize_vectors_numba',
     'plane_from_points_numba',
     'circle_from_points_numba',
     'circle_from_points_xy_numba',
@@ -335,7 +335,7 @@ def normalize_vector_numba(a):
     Returns
     -------
     array
-        The normalised vector.
+        The normalized vector.
 
     """
 
@@ -360,7 +360,7 @@ def normalize_vector_xy_numba(a):
     Returns
     -------
     array
-        The normalised vector in the XY-plane (Z = 0.0).
+        The normalized vector in the XY-plane (Z = 0.0).
 
     """
 
@@ -384,7 +384,7 @@ def normalize_vectors_numba(a):
     Returns
     -------
     array
-        The normalised vectors.
+        The normalized vectors.
 
     """
 
@@ -408,7 +408,7 @@ def normalize_vectors_xy_numba(a):
     Returns
     -------
     array
-        The normalised vectors in the XY plane.
+        The normalized vectors in the XY plane.
 
     """
 
@@ -828,7 +828,7 @@ def vector_component_xy_numba(u, v):
 # ==============================================================================
 
 @jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
-def orthonormalise_vectors_numba(a):
+def orthonormalize_vectors_numba(a):
 
     """ Orthonomalise a set of vectors using the Gram-Schmidt process.
 
@@ -899,7 +899,7 @@ def circle_from_points_numba(a, b, c):
     Returns
     -------
     array
-        (xyz, r, normal) x, y, z centre, radius, nx, ny, nz normal.
+        (xyz, r, normal) x, y, z center, radius, nx, ny, nz normal.
 
     """
 
@@ -918,12 +918,12 @@ def circle_from_points_numba(a, b, c):
     w[0, :] = scale_vector_numba(a, A)
     w[1, :] = scale_vector_numba(b, B)
     w[2, :] = scale_vector_numba(c, C)
-    centre = sum_vectors_numba(w, axis=0)
+    center = sum_vectors_numba(w, axis=0)
     cr = array([
-        centre[0],
-        centre[1],
-        centre[2],
-        length_vector_numba(subtract_vectors_numba(a, centre)),
+        center[0],
+        center[1],
+        center[2],
+        length_vector_numba(subtract_vectors_numba(a, center)),
         normal[0],
         normal[1],
         normal[2]])
@@ -947,7 +947,7 @@ def circle_from_points_xy_numba(u, v, w):
     Returns
     -------
     array
-        (x, y, z, r) where x, y, z are coords of the centre point and r the radius.
+        (x, y, z, r) where x, y, z are coords of the center point and r the radius.
 
    """
 
@@ -961,10 +961,10 @@ def circle_from_points_xy_numba(u, v, w):
     e = a * (ax + bx) + b * (ay + by)
     f = c * (ax + cx) + d * (ay + cy)
     g = 2 * (a * (cy - by) - b * (cx - bx))
-    centrex = (d * e - b * f) / g
-    centrey = (a * f - c * e) / g
-    radius = sqrt((ax - centrex)**2 + (ay - centrey)**2)
-    return array([centrex, centrey, 0.0, radius])
+    centerx = (d * e - b * f) / g
+    centery = (a * f - c * e) / g
+    radius = sqrt((ax - centerx)**2 + (ay - centery)**2)
+    return array([centerx, centery, 0.0, radius])
 
 
 # ==============================================================================
@@ -1027,7 +1027,7 @@ if __name__ == "__main__":
         # a = vector_component_xy_numba(u, v)
 
 
-        # a = orthonormalise_vectors_numba(c)
+        # a = orthonormalize_vectors_numba(c)
         # a = plane_from_points_numba(u, v, w)
         # a = circle_from_points_numba(u, v, w)
         # a = circle_from_points_xy_numba(u, v, w)

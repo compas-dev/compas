@@ -690,7 +690,7 @@ if __name__ == "__main__":
         plotter.update(pause=0.001)
 
     vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
+    adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
 
     smooth_centroid(vertices,
                     adjacency,

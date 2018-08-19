@@ -52,7 +52,7 @@ class Frame(object):
 
     Notes
     -----
-    All input vectors are orthonormalised when creating a frame, with the first
+    All input vectors are orthonormalized when creating a frame, with the first
     vector as starting point.
 
     """

@@ -51,9 +51,9 @@ class App(QtWidgets.QApplication):
         self.main.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.main.setCentralWidget(self.view)
         self.main.setContentsMargins(0, 0, 0, 0)
-        self.centre()
+        self.center()
 
-    def centre(self):
+    def center(self):
         w = 1440
         h = 900
         self.main.resize(w, h)

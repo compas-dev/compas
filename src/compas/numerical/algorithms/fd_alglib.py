@@ -45,7 +45,7 @@ def mesh_fd_alglib(mesh, density=1.0, kmax=10):
 
     selfweight = _selfweight_calculator(mesh, density=density)
 
-    adjacency = {key_index[key]: [key_index[nbr] for nbr in mesh.vertex_neighbours(key)] for key in mesh.vertices()}
+    adjacency = {key_index[key]: [key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()}
 
     ij_q = {uv: mesh.get_edge_attribute(uv, 'q', 1.0) for uv in mesh.edges()}
     ij_q.update({(v, u): q for (u, v), q in ij_q.items()})

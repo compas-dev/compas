@@ -368,7 +368,7 @@ class Vector(object):
         pass
 
     @staticmethod
-    def orthonormalise_vectors(vectors):
+    def orthonormalize_vectors(vectors):
         pass
 
     # ==========================================================================

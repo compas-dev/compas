@@ -80,7 +80,7 @@ __all__ = [
 # ==============================================================================
 # Extended drawing
 #
-# these functions are optimised for speed,
+# these functions are optimized for speed,
 # but potential error checking has been removed
 # perhaps a good middle ground would be better...
 # ==============================================================================

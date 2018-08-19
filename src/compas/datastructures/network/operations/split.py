@@ -36,7 +36,7 @@ def network_split_edge(network, u, v, t=0.5):
     ValueError
         If `t` is not `0 <= t <= 1`.
     Exception
-        If `u` and `v` are not neighbours.
+        If `u` and `v` are not neighbors.
 
     Examples
     --------

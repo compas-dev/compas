@@ -24,7 +24,7 @@ def trimesh_swap_edge(self, u, v, allow_boundary=True):
         None
 
     Raises:
-        ValueError: If `u` and `v` are not neighbours.
+        ValueError: If `u` and `v` are not neighbors.
         TriMeshError: If one of the half-edges does not exist.
     """
 

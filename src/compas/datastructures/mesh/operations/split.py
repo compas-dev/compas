@@ -43,7 +43,7 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     Raises
     ------
     ValueError
-        If u and v are not neighbours.
+        If u and v are not neighbors.
 
     """
     if t <= 0.0:
@@ -202,7 +202,7 @@ def mesh_split_face(mesh, fkey, u, v):
     j = face.index(v)
 
     if i + 1 == j:
-        raise ValueError('The split vertices are neighbours.')
+        raise ValueError('The split vertices are neighbors.')
 
     if j > i:
         f = face[i:j + 1]

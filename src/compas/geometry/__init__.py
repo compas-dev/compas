@@ -29,7 +29,7 @@ polyline    :obj:`list` of points.
 polygon     :obj:`list` of points.
 plane       2-:obj:`tuple` of origin (point) and normal (vector).
 frame       3-:obj:`tuple` of origin (point), U axis (vector) and V axis (vector).
-circle      3-:obj:`tuple` of centre (point), normal (vector) and radius (float).
+circle      3-:obj:`tuple` of center (point), normal (vector) and radius (float).
 =========== ====================================================================
 
 .. note::
@@ -81,7 +81,7 @@ Basic
     normalize_vector_xy
     normalize_vectors
     normalize_vectors_xy
-    orthonormalise_vectors
+    orthonormalize_vectors
     power_vector
     power_vectors
     scale_vector
@@ -155,6 +155,8 @@ Average
     midpoint_line_xy
     midpoint_point_point
     midpoint_point_point_xy
+    tween_points
+    tween_points_distance
 
 Normals
 -------
