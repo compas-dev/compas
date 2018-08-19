@@ -12,12 +12,12 @@ from .geometry import SCALE_FACTOR
 from .geometry import Origin
 from .geometry import _parse_floats
 
-__all__ = ['Joint', 'ParentJoint', 'ChildJoint', 'Calibration',
+__all__ = ['Joint', 'ParentLink', 'ChildLink', 'Calibration',
            'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']
 
 
-class ParentJoint(object):
-    """Describes a parent relation between joints."""
+class ParentLink(object):
+    """Describes a parent relation between a joint its parent link."""
 
     def __init__(self, link):
         self.link = link
@@ -26,8 +26,8 @@ class ParentJoint(object):
         return str(self.link)
 
 
-class ChildJoint(object):
-    """Describes a child relation between joints."""
+class ChildLink(object):
+    """Describes a child relation between a joint and its child link."""
 
     def __init__(self, link):
         self.link = link
@@ -168,8 +168,8 @@ class Joint(object):
 
         self.name = name
         self.type = type
-        self.parent = parent
-        self.child = child
+        self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
+        self.child = child if isinstance(child, ChildLink) else ChildLink(child)
         self.origin = origin
         self.axis = axis
         self.calibration = calibration
@@ -223,8 +223,8 @@ class Joint(object):
 
 
 URDF.add_parser(Joint, 'robot/joint')
-URDF.add_parser(ParentJoint, 'robot/joint/parent')
-URDF.add_parser(ChildJoint, 'robot/joint/child')
+URDF.add_parser(ParentLink, 'robot/joint/parent')
+URDF.add_parser(ChildLink, 'robot/joint/child')
 URDF.add_parser(Calibration, 'robot/joint/calibration')
 URDF.add_parser(Dynamics, 'robot/joint/dynamics')
 URDF.add_parser(Limit, 'robot/joint/limit')

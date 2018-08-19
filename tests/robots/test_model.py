@@ -2,7 +2,12 @@ import os
 
 import pytest
 
-from compas.robots import Robot, Box, Cylinder, Sphere
+from compas.robots import Box
+from compas.robots import Cylinder
+from compas.robots import Joint
+from compas.robots import Link
+from compas.robots import Robot
+from compas.robots import Sphere
 
 BASE_FOLDER = os.path.dirname(__file__)
 
@@ -22,6 +27,29 @@ def ur5_file():
     return os.path.join(BASE_FOLDER, 'fixtures', 'ur5.xacro')
 
 
+@pytest.fixture
+def ur5():
+    """Return a UR5 created programatically instead of from a file."""
+    return Robot('ur5',
+                 joints=[
+                     Joint('shoulder_pan_joint', 'revolute', 'base_link', 'shoulder_link'),
+                     Joint('shoulder_lift_joint', 'revolute', 'shoulder_link', 'upper_arm_link'),
+                     Joint('elbow_joint', 'revolute', 'upper_arm_link', 'forearm_link'),
+                     Joint('wrist_1_joint', 'revolute', 'forearm_link', 'wrist_1_link'),
+                     Joint('wrist_2_joint', 'revolute', 'wrist_1_link', 'wrist_2_link'),
+                     Joint('wrist_3_joint', 'revolute', 'wrist_2_link', 'wrist_3_link'),
+                 ], links=[
+                     Link('base_link'),
+                     Link('shoulder_link'),
+                     Link('upper_arm_link'),
+                     Link('forearm_link'),
+                     Link('wrist_1_link'),
+                     Link('wrist_2_link'),
+                     Link('wrist_3_link'),
+                 ]
+                 )
+
+
 def test_ur5_urdf(ur5_file):
     r = Robot.from_urdf_file(ur5_file)
     assert r.name == 'ur5'
@@ -32,6 +60,28 @@ def test_root_urdf_attributes():
     r = Robot.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"></robot>""")
     assert r.name == 'panda'
+
+
+def test_programatic_model(ur5):
+    chain = list(ur5.iter_chain('base_link', 'wrist_3_link'))
+    expected_chain = [
+        'base_link',
+        'shoulder_pan_joint',
+        'shoulder_link',
+        'shoulder_lift_joint',
+        'upper_arm_link',
+        'elbow_joint',
+        'forearm_link',
+        'wrist_1_joint',
+        'wrist_1_link',
+        'wrist_2_joint',
+        'wrist_2_link',
+        'wrist_3_joint',
+        'wrist_3_link'
+    ]
+
+    assert ur5.name == 'ur5'
+    assert chain == expected_chain
 
 
 def test_robot_material_attributes():
