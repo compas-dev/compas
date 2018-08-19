@@ -175,7 +175,7 @@ def xdraw_spheres(spheres):
     return rg_sheres
 
 
-def xdraw_mesh(vertices, faces, vertex_normals=None, texture_coordinates=None,
+def xdraw_mesh(vertices, faces, name=None, vertex_normals=None, texture_coordinates=None,
                vertex_colors=None):
     """Draw mesh in Grasshopper.
     """

@@ -1,5 +1,5 @@
-from math import atan2
 from math import acos
+from math import atan2
 
 from compas_blender.utilities import delete_object
 from compas_blender.utilities import deselect_all_objects
@@ -8,6 +8,7 @@ from compas_blender.utilities import set_objects_show_name
 
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
+from compas.utilities import random_name
 
 try:
     import bpy
@@ -349,22 +350,23 @@ def xdraw_lines(lines):
     return _link_objects(objects)
 
 
-def xdraw_mesh(name, vertices=[], edges=[], faces=[], layer=0, color=[1, 1, 1], alpha=1, wire=True):
+def xdraw_mesh(vertices=[], faces=[], edges=[], name=None, color=[1, 1, 1], layer=0, alpha=1, wire=True):
     """ Draws a Blender mesh.
 
     Parameters:
-        name (str): Blender mesh name.
         vertices (list): Vertices co-ordinates.
-        edges (list): Edge vertex indices.
         faces (list): Face vertex indices.
-        layer (int): Layer number.
+        edges (list): Edge vertex indices.
+        name (str): Blender mesh name. If ``None``, it defaults to a randomly generated name.
         color (list): Material color.
+        layer (int): Layer number.
         alpha (float): Alpha [0, 1].
         wire (bool): Show wires for faces.
 
     Returns:
         obj: Created Blender mesh object.
     """
+    name = name or random_name()
     mesh = bpy.data.meshes.new(name)
     mesh.from_pydata(vertices, edges, faces)
     mesh.update(calc_edges=True)

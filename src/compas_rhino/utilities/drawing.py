@@ -106,7 +106,7 @@ def wrap_xdrawfunc(f):
                 clear_layer(layer)
 
         rs.EnableRedraw(False)
-        res = f(*args)
+        res = f(*args, **kwargs)
 
         if redraw:
             rs.EnableRedraw(True)
@@ -523,7 +523,7 @@ def xdraw_spheres(spheres):
 
 
 @wrap_xdrawfunc
-def xdraw_mesh(vertices, faces, color, name):
+def xdraw_mesh(vertices, faces, name=None, color=None):
     guid = rs.AddMesh(vertices, faces)
     if color:
         rs.ObjectColor(guid, color)
