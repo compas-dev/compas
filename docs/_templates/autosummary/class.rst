@@ -14,7 +14,7 @@
    .. rubric:: Methods
 
    .. autosummary::
-      :toctree: /generated
+      :toctree:
 
    {% for item in methods %}
       ~{{ name }}.{{ item }}
