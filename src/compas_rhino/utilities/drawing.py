@@ -119,7 +119,7 @@ def wrap_xdrawfunc(f):
 
 
 @wrap_xdrawfunc
-def xdraw_labels(labels):
+def xdraw_labels(labels, **kwargs):
     """Draw labels as text dots and optionally set individual name and color."""
     guids = []
     for l in iter(labels):
@@ -146,7 +146,7 @@ def xdraw_labels(labels):
 
 
 @wrap_xdrawfunc
-def xdraw_points(points):
+def xdraw_points(points, **kwargs):
     """Draw points and optionally set individual name, layer, and color properties.
     """
     guids = []
@@ -178,7 +178,7 @@ def xdraw_points(points):
 
 
 @wrap_xdrawfunc
-def xdraw_lines(lines):
+def xdraw_lines(lines, **kwargs):
     """Draw lines and optionally set individual name, color, arrow, layer, and
     width properties.
     """
@@ -221,7 +221,7 @@ def xdraw_lines(lines):
 
 
 @wrap_xdrawfunc
-def xdraw_geodesics(geodesics):
+def xdraw_geodesics(geodesics, **kwargs):
     """Draw geodesic lines on specified surfaces, and optionally set individual
     name, color, arrow, and layer properties.
     """
@@ -262,7 +262,7 @@ def xdraw_geodesics(geodesics):
 
 
 @wrap_xdrawfunc
-def xdraw_polylines(polylines):
+def xdraw_polylines(polylines, **kwargs):
     """Draw polylines, and optionally set individual name, color, arrow, and
     layer properties.
     """
@@ -302,7 +302,7 @@ def xdraw_polylines(polylines):
 
 
 @wrap_xdrawfunc
-def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0):
+def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, **kwargs):
     """Draw polygonal faces as Breps, and optionally set individual name, color,
     and layer properties.
     """
@@ -356,7 +356,7 @@ def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0
 
 
 @wrap_xdrawfunc
-def xdraw_cylinders(cylinders, cap=False):
+def xdraw_cylinders(cylinders, cap=False, **kwargs):
     guids = []
     for c in iter(cylinders):
         start  = c['start']
@@ -402,7 +402,7 @@ def xdraw_cylinders(cylinders, cap=False):
 
 
 @wrap_xdrawfunc
-def xdraw_pipes(pipes, cap=2, fit=1.0):
+def xdraw_pipes(pipes, cap=2, fit=1.0, **kwargs):
     guids = []
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
@@ -444,7 +444,7 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
 
 
 # @wrap_xdrawfunc
-# def xdraw_forces(forces, color):
+# def xdraw_forces(forces, color, **kwargs):
 #     guids = []
 #     for c in iter(cylinders):
 #         start  = c['start']
@@ -490,7 +490,7 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
 
 
 @wrap_xdrawfunc
-def xdraw_spheres(spheres):
+def xdraw_spheres(spheres, **kwargs):
     guids = []
     for s in iter(spheres):
         pos    = s['pos']
@@ -523,7 +523,7 @@ def xdraw_spheres(spheres):
 
 
 @wrap_xdrawfunc
-def xdraw_mesh(vertices, faces, name=None, color=None):
+def xdraw_mesh(vertices, faces, name=None, color=None, **kwargs):
     guid = rs.AddMesh(vertices, faces)
     if color:
         rs.ObjectColor(guid, color)
@@ -533,7 +533,7 @@ def xdraw_mesh(vertices, faces, name=None, color=None):
 
 
 @wrap_xdrawfunc
-def xdraw_faces(faces):
+def xdraw_faces(faces, **kwargs):
     guids = []
     for face in iter(faces):
         points = face['points']
@@ -551,7 +551,7 @@ def xdraw_faces(faces):
         else:
             mfaces = _face_to_max_quad(points, range(v))
 
-        guid = xdraw_mesh(points, mfaces, color, name, clear=False, redraw=False, layer=None)
+        guid = xdraw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
         guids.append(guid)
 
     return guids

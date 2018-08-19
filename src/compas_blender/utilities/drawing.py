@@ -194,7 +194,7 @@ def draw_plane(Lx=1, Ly=1, dx=0.5, dy=0.5, name='plane', layer=0, color=[1, 1, 1
                     faces.extend([[face[0], face[1], face[2]], [face[2], face[3], face[0]]])
                 elif bracing == 'diagonals-left':
                     faces.extend([[face[1], face[2], face[3]], [face[3], face[0], face[1]]])
-    bmesh = xdraw_mesh(name, vertices=vertices, faces=faces, layer=layer, color=color, wire=wire)
+    bmesh = xdraw_mesh(name=name, vertices=vertices, faces=faces, layer=layer, color=color, wire=wire)
     material = create_material(color=color)
     bmesh.data.materials.append(material)
     bmesh.select = False
