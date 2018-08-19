@@ -124,7 +124,7 @@ class Sphere(object):
             return self.geometry.draw()
 
 
-class Capsule(Cylinder):
+class Capsule(object):
     """3D shape primitive representing a capsule."""
 
     def __init__(self, radius, length):
