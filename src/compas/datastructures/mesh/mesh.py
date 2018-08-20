@@ -657,8 +657,9 @@ class Mesh(FromToJson,
         >>>
 
         """
+        key_index = self.key_index()
         vertices = [self.vertex_coordinates(key) for key in self.vertices()]
-        faces = [self.face_vertices(fkey) for fkey in self.faces()]
+        faces = [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
         return vertices, faces
 
     # --------------------------------------------------------------------------
@@ -1232,6 +1233,10 @@ class Mesh(FromToJson,
             return False
 
         for key in self.vertices():
+
+            if list(self.halfedge[key].values()).count(None) > 1:
+                return False
+
             nbrs = self.vertex_neighbors(key, ordered=True)
 
             if not nbrs:
@@ -2683,7 +2688,23 @@ if __name__ == '__main__':
     import compas
     from compas.plotters import MeshPlotter
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    # mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    vertices = [
+        [0, 0, 0],
+        [1, 1, 0],
+        [1, -1, 0],
+        [-1, -1, 0],
+        [-1, 1, 0]
+    ]
+    faces = [
+        [0, 2, 1],
+        [0, 4, 3]
+    ]
+
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+    print(mesh.is_manifold())
 
     # mesh = Mesh()
 

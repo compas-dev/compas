@@ -1,11 +1,9 @@
 ********************************************************************************
-Reference
+Working with datastructures
 ********************************************************************************
 
-.. toctree::
-    :maxdepth: 1
+:author:`Tom Van Mele <van.mele@arch.ethz.ch>`
 
-    reference/compas
-    reference/compas_blender
-    reference/compas_ghpython
-    reference/compas_rhino
+:mod:`compas.datastructures`
+
+
