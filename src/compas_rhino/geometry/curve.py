@@ -1,17 +1,22 @@
-from compas.cad import CurveGeometryInterface
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+import compas
+import compas_rhino
+
+from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.utilities import select_curve
 
 try:
+    import Rhino
     from Rhino.Geometry import Point3d
 
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
 
-    find_object = sc.doc.Objects.Find
-
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Tom Van Mele', ]
@@ -23,41 +28,93 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = ['RhinoCurve', ]
 
 
-class RhinoCurve(CurveGeometryInterface):
+class RhinoCurve(RhinoGeometry):
     """"""
 
     def __init__(self, guid):
-        self.guid = guid
-        self.curve = RhinoCurve.find(self.guid)
-        self.geometry = self.curve.Geometry
-        self.attributes = self.curve.Attributes
-        self.otype = self.geometry.ObjectType
+        super(RhinoCurve, self).__init__(guid)
 
-    @staticmethod
-    def find(guid):
-        return find_object(guid)
+    @classmethod
+    def from_selection(cls):
+        """Create a ``RhinoCurve`` instance from a selected Rhino curve.
 
-    def hide(self):
-        return rs.HideObject(self.guid)
+        Returns
+        -------
+        RhinoCurve
+            A convenience wrapper around the Rhino curve object.
 
-    def show(self):
-        return rs.ShowObject(self.guid)
+        """
+        guid = select_curve()
+        return cls(guid)
 
-    def select(self):
-        return rs.SelectObject(self.guid)
-
-    def unselect(self):
-        return rs.UnselectObject(self.guid)
+    # @classmethod
+    # def from_points(cls, points, degree=None):
+    #     points = [list(point) for point in points]
+    #     if not degree:
+    #         degree = len(points) - 1
+    #     guid = rs.AddCurve([Point3d(* point) for point in points], degree)
+    #     return cls(guid)
 
     def is_line(self):
+        """Determine if the curve is a line.
+
+        Returns
+        -------
+        bool
+            Tue if the curve is a line.
+            False otherwise.
+
+        Notes
+        -----
+        A curve is a line if it is a linear segment between two points.
+
+        """
         return (rs.IsLine(self.guid) and
                 rs.CurveDegree(self.guid) == 1 and
                 len(rs.CurvePoints(self.guid)) == 2)
 
     def is_polyline(self):
+        """Determine if the curve is a polyline.
+
+        Returns
+        -------
+        bool
+            Tue if the curve is a polyline.
+            False otherwise.
+
+        Notes
+        -----
+        A curve is a polyline if it consists of linear segments between a sequence of points.
+
+        """
         return (rs.IsPolyline(self.guid) and
                 rs.CurveDegree(self.guid) == 1 and
                 len(rs.CurvePoints(self.guid)) > 2)
+
+    def control_points(self):
+        return self.object.GetGrips()
+
+    def control_point_coordinates(self):
+        return [control.CurrentLocation for control in self.control_points()]
+
+    def control_points_on(self):
+        self.object.GripsOn = True
+        sc.doc.Views.Redraw()
+
+    def control_points_off(self):
+        self.object.GripsOn = False
+        sc.doc.Views.Redraw()
+
+    def select_control_point(self):
+        self.control_points_on()
+        rc, grip = Rhino.Input.RhinoGet.GetGrip("Select control point.")
+        if rc != Rhino.Commands.Result.Success:
+            return
+        if grip.OwnerId != self.guid:
+            return
+        grip.Select(True, True)
+        sc.doc.Views.Redraw()
+        return grip
 
     def space(self, density):
         space = []
@@ -133,10 +190,13 @@ class RhinoCurve(CurveGeometryInterface):
         rs.EnableRedraw(True)
         return points
 
-    def closest_point(self, point, maxdist=None):
+    def closest_point(self, point, maxdist=None, return_param=False):
         maxdist = maxdist or 0.0
         rc, t = self.geometry.ClosestPoint(Point3d(*point), maxdist)
-        return list(self.geometry.PointAt(t))
+        x, y, z = list(self.geometry.PointAt(t))
+        if not return_param:
+            return x, y, z
+        return x, y, z, t
 
     def closest_points(self, points, maxdist=None):
         return [self.closest_point(point, maxdist) for point in points]

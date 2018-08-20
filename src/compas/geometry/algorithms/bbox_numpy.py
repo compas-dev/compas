@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+
 try:
     from numpy import array
     from numpy import asarray
@@ -11,10 +13,9 @@ try:
     from numpy import ptp
 
     from scipy.spatial import ConvexHull
+
 except ImportError:
-    import sys
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 from compas.geometry import local_axes
 from compas.geometry import local_coords_numpy
@@ -64,8 +65,8 @@ def oriented_bounding_box_numpy(points):
         from compas.plotters import Cloud3D
         from compas.plotters import Box
         from compas.plotters import create_axes_3d
-        from compas.geometry import rotation_matrix
-        from compas.geometry import transform
+        from compas.geometry import matrix_from_axis_and_angle
+        from compas.geometry import transform_points
         from compas.geometry import oriented_bounding_box_numpy
 
         clouds = []
@@ -100,8 +101,8 @@ def oriented_bounding_box_numpy(points):
                 cloud[:, 2] *= 6.0
                 cloud[:, 2] += 3.0
 
-            R = rotation_matrix(a, d)
-            cloud[:] = transform(cloud, R)
+            R = matrix_from_axis_and_angle(d, a)
+            cloud[:] = transform_points(cloud, R)
 
             clouds.append(cloud.tolist())
 

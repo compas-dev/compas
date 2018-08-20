@@ -1,14 +1,13 @@
 """
-.. _compas_blender.ui:
-
 ********************************************************************************
-ui
+compas_blender.ui
 ********************************************************************************
 
-.. module:: compas_blender.ui
+.. currentmodule:: compas_blender.ui
 
 
 """
+from __future__ import absolute_import
 
 from .bui import *
 from .button import *

@@ -11,6 +11,9 @@ from compas.geometry.basic import length_vector
 from compas.geometry.basic import length_vector_xy
 from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import cross_vectors
+from compas.geometry.basic import vector_from_points
+from compas.geometry.basic import scale_vector
+from compas.geometry.distance import distance_point_point
 
 
 __author__    = ['Tom Van Mele', ]
@@ -28,7 +31,9 @@ __all__ = [
     'midpoint_line_xy',
     'center_of_mass_polygon',
     'center_of_mass_polygon_xy',
-    'center_of_mass_polyhedron'
+    'center_of_mass_polyhedron',
+    'tween_points',
+    'tween_points_distance'
 ]
 
 
@@ -320,6 +325,64 @@ def center_of_mass_polyhedron(polyhedron):
     z *= d
 
     return x, y, z
+
+
+def tween_points(points1, points2, num):
+    """Compute the interpolated points between two sets of points.
+
+    Parameters
+    ----------
+    points1 : list
+        The first set of points
+    points2 : list
+        The second set of points
+    num : int
+        The number of interpolated sets to return
+    Returns
+    -------
+    list
+        Nested list of points
+
+    """
+    tweens = []
+    for j in range(num - 1):
+        tween = []
+        for i in range(len(points1)):
+            tween.append(add_vectors(points1[i], scale_vector(vector_from_points(points1[i], points2[i]), 1 / (num / (j + 1)))))
+        tweens.append(tween)
+    return tweens
+
+
+def tween_points_distance(points1, points2, dist, index=None):
+    """Compute an interpolated set of points between two sets of points, at
+    a given distance.
+
+    Parameters
+    ----------
+    points1 : list
+        The first set of points
+    points2 : list
+        The second set of points
+    dist : float
+        The distance from the first set to the second at which to compute the
+        interpolated set.
+    index: int
+        The index of the point in the first set from which to calculate the
+        distance to the second set. If no value is given, the first point will be used.
+    Returns
+    -------
+    list
+        List of points
+
+    """
+    if not index:
+        index = 0
+    d = distance_point_point(points1[index], points2[index])
+    scale = float(dist) / d
+    tweens = []
+    for i in range(len(points1)):
+        tweens.append(add_vectors(points1[i], scale_vector(vector_from_points(points1[i], points2[i]), scale)))
+    return tweens
 
 
 # ==============================================================================

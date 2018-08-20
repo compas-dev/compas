@@ -5,6 +5,8 @@ from __future__ import division
 from math import cos
 from math import pi
 
+from compas.datastructures import Mesh
+
 from compas.geometry import centroid_points
 
 
@@ -23,6 +25,37 @@ __all__ = [
     'mesh_subdivide_doosabin',
     'trimesh_subdivide_loop',
 ]
+
+
+class SubdMesh(Mesh):
+
+    # def vertex_coordinates(self, key):
+    #     return self.vertex[key]
+
+    def add_vertex(self, x, y, z):
+        key = self._max_int_key = self._max_int_key + 1
+
+        if key not in self.vertex:
+            self.vertex[key] = {}
+            self.halfedge[key] = {}
+            self.edge[key] = {}
+
+        self.vertex[key] = dict(x=x, y=y, z=z)
+
+        return key
+
+    def add_face(self, vertices):
+        fkey = self._max_int_fkey = self._max_int_fkey + 1
+
+        self.face[fkey] = vertices
+        self.facedata[fkey] = {}
+
+        for u, v in self._cycle_keys(vertices):
+            self.halfedge[u][v] = fkey
+            if u not in self.halfedge[v]:
+                self.halfedge[v][u] = None
+
+        return fkey
 
 
 # distinguish between subd of meshes with and without boundary
@@ -107,7 +140,7 @@ def mesh_subdivide_quad(mesh, k=1):
     for _ in range(k):
         subd = mesh.copy()
 
-        for u, v in list(subd.halfedges()):
+        for u, v in list(subd.edges()):
             subd.split_edge(u, v, allow_boundary=True)
 
         for fkey in mesh.faces():
@@ -161,7 +194,7 @@ def mesh_subdivide_corner(mesh, k=1):
         subd = mesh.copy()
 
         # split every edge
-        for u, v in list(subd.halfedges()):
+        for u, v in list(subd.edges()):
             subd.split_edge(u, v, allow_boundary=True)
 
         # create 4 new faces for every old face
@@ -307,7 +340,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         edgepoints = []
 
-        for u, v in list(subd.halfedges()):
+        for u, v in list(subd.edges()):
 
             w = subd.split_edge(u, v, allow_boundary=True)
 
@@ -341,7 +374,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         key_xyz = {key: subd.vertex_coordinates(key) for key in subd.vertex}
 
-        # move each edge point to the average of the neighbouring centroids and
+        # move each edge point to the average of the neighboring centroids and
         # the original end points
 
         for w in edgepoints:
@@ -351,8 +384,8 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
             subd.vertex[w]['y'] = y
             subd.vertex[w]['z'] = z
 
-        # move each vertex to the weighted average of itself, the neighbouring
-        # centroids and the neighbouring mipoints
+        # move each vertex to the weighted average of itself, the neighboring
+        # centroids and the neighboring mipoints
 
         for key in mesh.vertices():
             if key in fixed:
@@ -411,52 +444,56 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
     fixed = set(fixed)
 
-    cls = type(mesh)
+    # cls = type(mesh)
 
     for _ in range(k):
         old_xyz      = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
         fkey_old_new = {fkey: {} for fkey in mesh.faces()}
 
-        subd = cls()
+        # subd = cls()
+        subd = SubdMesh()
 
         for fkey in mesh.faces():
             vertices = mesh.face_vertices(fkey)
             n = len(vertices)
 
+            face = []
+
             for i in range(n):
                 old = vertices[i]
-                c = [0, 0, 0]
+
+                cx, cy, cz = 0, 0, 0
 
                 for j in range(n):
-                    xyz = old_xyz[vertices[j]]
+                    x, y, z = old_xyz[vertices[j]]
 
                     if i == j:
                         alpha = (n + 5.) / (4. * n)
                     else:
                         alpha = (3. + 2. * cos(2. * pi * (i - j) / n)) / (4. * n)
 
-                    c[0] += alpha * xyz[0]
-                    c[1] += alpha * xyz[1]
-                    c[2] += alpha * xyz[2]
+                    cx += alpha * x
+                    cy += alpha * y
+                    cz += alpha * z
 
-                new = subd.add_vertex(x=c[0], y=c[1], z=c[2])
+                # fkey_old_new[fkey][old] = subd.add_vertex(x=cx, y=cy, z=cz)
+                new = subd.add_vertex(cx, cy, cz)
                 fkey_old_new[fkey][old] = new
 
-        for fkey in mesh.faces():
-            vertices = mesh.face_vertices(fkey)
-            old_new = fkey_old_new[fkey]
-            subd.add_face([old_new[key] for key in vertices])
+                face.append(new)
+
+            subd.add_face(face)
+
+        # for fkey in mesh.faces():
+        #     subd.add_face([fkey_old_new[fkey][key] for key in mesh.face_vertices(fkey)])
+
+        boundary = set(mesh.vertices_on_boundary())
 
         for key in mesh.vertices():
-            if mesh.is_vertex_on_boundary(key):
+            if key in boundary:
                 continue
 
-            face = []
-
-            for fkey in mesh.vertex_faces(key, ordered=True):
-
-                if fkey is not None:
-                    face.append(fkey_old_new[fkey][key])
+            face = [fkey_old_new[fkey][key] for fkey in mesh.vertex_faces(key, ordered=True) if fkey is not None]
 
             subd.add_face(face[::-1])
 
@@ -469,17 +506,19 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
                 edges.add((u, v))
                 edges.add((v, u))
+
                 uv_fkey = mesh.halfedge[u][v]
                 vu_fkey = mesh.halfedge[v][u]
 
                 if uv_fkey is None or vu_fkey is None:
                     continue
 
-                face = []
-                face.append(fkey_old_new[uv_fkey][u])
-                face.append(fkey_old_new[vu_fkey][u])
-                face.append(fkey_old_new[vu_fkey][v])
-                face.append(fkey_old_new[uv_fkey][v])
+                face = [
+                    fkey_old_new[uv_fkey][u],
+                    fkey_old_new[vu_fkey][u],
+                    fkey_old_new[vu_fkey][v],
+                    fkey_old_new[uv_fkey][v]
+                ]
                 subd.add_face(face)
 
         mesh = subd
@@ -541,7 +580,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
         edgepoints    = {}
 
         for key in subd:
-            nbrs = subd.vertex_neighbours(key)
+            nbrs = subd.vertex_neighbors(key)
             n = len(nbrs)
 
             if n == 3:
@@ -592,25 +631,21 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
 if __name__ == "__main__":
 
+    from functools import partial
+
+    import compas
+
     from compas.datastructures import Mesh
+    from compas.utilities import print_profile
+    from compas.viewers import MeshViewer
 
-    from compas.topology import mesh_subdivide_catmullclark
-    from compas.geometry import Polyhedron
-    from compas.viewers import SubdMeshViewer
+    mesh = Mesh.from_polyhedron(6)
+    fixed = [mesh.get_any_vertex()]
+    print(fixed)
 
-    cube = Polyhedron.generate(6)
+    subdivide = partial(mesh_subdivide_quad)
+    subd = subdivide(mesh, k=4)
 
-    mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
-
-    viewer = SubdMeshViewer(mesh, subdfunc=mesh_subdivide_catmullclark, width=1440, height=900)
-
-    viewer.axes_on = False
-    viewer.grid_on = False
-
-    for _ in range(10):
-       viewer.camera.zoom_in()
-
-    viewer.subdivide(k=4)
-
-    viewer.setup()
+    viewer = MeshViewer()
+    viewer.mesh = subd
     viewer.show()

@@ -3,7 +3,7 @@
 compas.com
 ********************************************************************************
 
-.. module:: compas.com
+.. currentmodule:: compas.com
 
 :mod:`compas.com` provides functionality for communicating with external software.
 
@@ -36,13 +36,7 @@ ssh
     :toctree: generated/
     :nosignatures:
 
-    connect_to_server
-    local_command
-    receive_file
-    send_file
-    send_folder
-    sync_folder
-    server_command
+    SSH
 
 """
 
@@ -61,6 +55,6 @@ from .rhino import *
 
 from .matlab_ import __all__ as a
 from .ssh import __all__ as b
-from .rhino import __all__ as b
+from .rhino import __all__ as c
 
-__all__ = a + b
+__all__ = a + b + c

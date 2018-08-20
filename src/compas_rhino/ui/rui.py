@@ -198,7 +198,7 @@ def get_macros(controller, instance_name):
     methods = get_public_methods(controller)
     macros  = []
     for n, o in methods:
-        annotations = get_parsed_object_comments(o, separator='=>', )
+        annotations = get_parsed_object_comments(o, separator='=>')
         name        = annotations.get('name') or n
         script      = annotations.get('script') or '-_RunPythonScript ({0}.{1}())'.format(instance_name, name)
         tooltip     = annotations.get('tooltip')
@@ -279,9 +279,9 @@ class Rui(object):
 
     def write(self):
         root = ET.tostring(self.root)
-        xml = minidom.parseString(root).toprettyxml(indent="    ")
+        xml = minidom.parseString(root).toprettyxml(indent="  ")
         xml = '\n'.join([line for line in xml.split('\n') if line.strip()])
-        with open(self.filepath, 'wb+') as fh:
+        with open(self.filepath, 'w+') as fh:
             fh.write(xml.encode('utf-8'))
 
     # --------------------------------------------------------------------------
@@ -433,16 +433,17 @@ def compile_rui(oclass, opath, rui_config='rui_config.json'):
         The module path of the controller class.
     rui_config : str, optional
         The path of the configuration file.
-        Defaults to ``'rui_config.json'``
+        Default is ``'rui_config.json'``
+
+    Returns
+    -------
+    None
 
     Examples
     --------
-    * :download:`fofin_controller.py </../../examples/workshops/acadia2017/fofin_controller.py>`
-    * :download:`fofin_config.json </../../examples/workshops/acadia2017/fofin_config.json>`
+    .. code-block:: python
 
-    .. literalinclude:: /../../examples/workshops/acadia2017/fofin_controller.py
-
-    .. literalinclude:: /../../examples/workshops/acadia2017/fofin_config.json
+        #
 
     """
 

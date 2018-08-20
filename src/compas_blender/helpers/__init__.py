@@ -1,11 +1,9 @@
 """
-.. _compas_blender.helpers:
-
 ********************************************************************************
-helpers
+compas_blender.helpers
 ********************************************************************************
 
-.. module:: compas_blender.helpers
+.. currentmodule:: compas_blender.helpers
 
 
 Helpers make it easier to work with datastructures in Blender.
@@ -37,15 +35,18 @@ volmesh
 
 
 """
+from __future__ import absolute_import
 
 from .mesh import *
 from .network import *
 from .volmesh import *
-from .artists import *
 
-from .mesh import __all__ as a
-from .network import __all__ as b
-from .volmesh import __all__ as c
-from .artists import __all__ as d
+from . import mesh
+from . import network
+from . import volmesh
 
-__all__ = a + b + c + d
+__all__ = []
+
+__all__ += mesh.__all__
+__all__ += network.__all__
+__all__ += volmesh.__all__

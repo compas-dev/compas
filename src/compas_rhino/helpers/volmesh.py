@@ -3,17 +3,20 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.utilities import geometric_key
-from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
-from compas_rhino.helpers.selectors import VertexSelector
-from compas_rhino.helpers.selectors import EdgeSelector
-from compas_rhino.helpers.selectors import FaceSelector
+
+from compas_rhino.artists import VolMeshArtist
+
+from compas_rhino.selectors import VertexSelector
+from compas_rhino.selectors import EdgeSelector
+from compas_rhino.selectors import FaceSelector
 
 try:
     import Rhino
     import scriptcontext as sc
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 
@@ -148,7 +151,7 @@ def volmesh_draw(volmesh,
 
     See Also
     --------
-    * compas_rhino.helpers.VolMeshArtist
+    * compas_rhino.VolMeshArtist
 
     """
     artist = VolMeshArtist(volmesh)
@@ -202,7 +205,7 @@ def volmesh_draw_vertices(volmesh,
 
     See Also
     --------
-    * compas_rhino.helpers.VolMeshArtist
+    * compas_rhino.VolMeshArtist
 
     """
     artist = VolMeshArtist(volmesh)
@@ -255,7 +258,7 @@ def volmesh_draw_edges(volmesh,
 
     See Also
     --------
-    * compas_rhino.helpers.VolMeshArtist
+    * compas_rhino.VolMeshArtist
 
     """
     artist = VolMeshArtist(volmesh)
@@ -308,7 +311,7 @@ def volmesh_draw_faces(volmesh,
 
     See Also
     --------
-    * compas_rhino.helpers.VolMeshArtist
+    * compas_rhino.VolMeshArtist
 
     """
     artist = VolMeshArtist(volmesh)
@@ -423,9 +426,9 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import VolMesh
-    from compas_rhino.helpers import volmesh_draw
-    from compas_rhino.helpers import volmesh_select_vertex
-    # from compas_rhino.helpers import volmesh_move_vertex
+    from compas_rhino import volmesh_draw
+    from compas_rhino import volmesh_select_vertex
+    # from compas_rhino import volmesh_move_vertex
 
     volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 

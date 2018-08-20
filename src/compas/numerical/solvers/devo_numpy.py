@@ -2,15 +2,19 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import sys
+import compas
 
 try:
     from numpy import array
+    from numpy import argsort
     from numpy import argmin
     from numpy import delete
     from numpy import eye
+    from numpy import floor
+    from numpy import max
     from numpy import min
     from numpy import newaxis
+    from numpy import ones
     from numpy import reshape
     from numpy import tile
     from numpy import where
@@ -18,19 +22,18 @@ try:
     from numpy.random import choice
     from numpy.random import rand
 
+    from matplotlib import pyplot as plt
+
     from scipy.optimize import fmin_l_bfgs_b
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 from time import time
 
-import json
-
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
+__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'liew@arch.ethz.ch'
 
@@ -40,26 +43,25 @@ __all__ = [
 ]
 
 
-def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vectored=False, F=0.8, CR=0.9, polish=False,
-               args=(), callback=None, **kwargs):
-    """Call the Differential Evolution solver.
+def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, CR=0.5, polish=False, args=(),
+               plot=False, frange=[], printout=10, **kwargs):
+
+    """ Call the Differential Evolution solver.
 
     Parameters
     ----------
     fn : obj
-        The function to evaluate and minimise.
+        The function to evaluate and minimize.
     bounds : list
         Lower and upper bounds for each DoF [[lb, ub], ...].
     population : int
-        Number of agents in the population.
+        Number of starting agents in the population.
     generations : int
         Number of cross-over cycles/steps to perform.
     limit : float
-        Value of the objective function for which to terminate optimisation.
-    results : str
-        Where to store results files.
-    vectored : bool
-        Vectored function output.
+        Value of the objective function to terminate optimisation.
+    elites : float
+        Fraction of elite agents kept.
     F : float
         Differential evolution parameter.
     CR : float
@@ -68,52 +70,49 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
         Polish the final result with L-BFGS-B.
     args : seq
         Sequence of optional arguments to pass to fn.
-    callback : obj
-        Callback function for each generation.
+    plot : bool
+        Plot progress.
+    frange : list
+        Minimum and maximum f value to plot.
+    printout : int
+        Print progress to screen.
 
     Returns
     -------
     float
         Optimal value of objective function.
     list
-        Values that give the optimum (minimised) function.
-
-    Notes
-    -----
-    fn must return vectorised output for input (k, population) if vectored is True.
+        Values that give the optimum (minimized) function.
 
     """
+
     tic = time()
 
     # Heading
 
-    print('\n' + '-' * 50)
-    print('Differential Evolution started')
-    print('-' * 50)
+    if printout:
+        print('\n' + '-' * 50)
+        print('Differential Evolution started')
+        print('-' * 50)
 
-    # Setup bounds
+    # Bounds
 
     k = len(bounds)
     bounds = array(bounds)
-    b_max = bounds[:, 1][:, newaxis]
-    b_min = bounds[:, 0][:, newaxis]
-    lb = tile(b_min, (1, population))
-    ub = tile(b_max, (1, population))
+    lb = tile(bounds[:, 0][:, newaxis], (1, population))
+    ub = tile(bounds[:, 1][:, newaxis], (1, population))
 
-    # Setup population
+    # Population
 
     agents = (rand(k, population) * (ub - lb) + lb)
     candidates = tile(array(range(population)), (1, population))
     candidates = reshape(delete(candidates, where(eye(population).ravel() == 1)), (population, population - 1))
 
-    # Initial conditions
+    # Initial
 
-    if vectored:
-        f = fn(agents, *args)
-    else:
-        f = zeros(population)
-        for i in range(population):
-            f[i] = fn(agents[:, i], *args)
+    f = zeros(population)
+    for i in range(population):
+        f[i] = fn(agents[:, i], *args)
     fopt = min(f)
 
     ac = zeros((k, population))
@@ -121,20 +120,87 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
     cc = zeros((k, population))
 
     ts = 0
-    print('\nGeneration: {0}  fopt: {1:.5g}'.format(ts, fopt))
+    switch = 1
 
-    # Start evolution
+    if printout:
+        print('Generation: {0}  fopt: {1:.5g}'.format(ts, fopt))
+
+    # Set-up plot
+
+    if plot:
+
+        fmin = frange[0] if frange[0] else 0
+        fmax = frange[1] if frange[1] else max(fopt)
+        ydiv = 100
+        dc = 1. / population
+        data = ones((ydiv + 1, generations + 1, 3))
+        yticks = list(range(0, ydiv + 1, int(ydiv * 0.1)))
+        ylabels = ['{0:.1f}'.format(i * (fmax - fmin) * 0.1 + fmin) for i in range(11)]
+        aspect = generations / ydiv
+
+        plt.plot([generations * 0.5] * 2, [0, ydiv], ':k')
+        plt.yticks(yticks, ylabels, rotation='horizontal')
+        plt.ylabel('Value')
+        plt.xlabel('Generations')
+        plt.ion()
+
+    # Evolution
 
     while ts < generations + 1:
 
-        if callback:
-            callback(ts, f, **kwargs)
+        # Elites
+
+        if (ts > generations * 0.5) and switch:
+            switch = 0
+
+            elite_agents = argsort(f)[:int(floor(elites * population))]
+            population = len(elite_agents)
+            candidates = tile(array(range(population)), (1, population))
+            candidates = reshape(delete(candidates, where(eye(population).ravel() == 1)), (population, population - 1))
+
+            f = f[elite_agents]
+            ac = ac[:, elite_agents]
+            bc = bc[:, elite_agents]
+            cc = cc[:, elite_agents]
+            agents = agents[:, elite_agents]
+
+            lb = lb[:, elite_agents]
+            ub = ub[:, elite_agents]
+
+        # Update plot
+
+        if plot:
+
+            fsc = (f - fmin) / (fmax - fmin)
+            fsc[fsc > 1] = 1
+            fsc *= ydiv
+            fbin = floor(fsc).astype(int)
+            for i in fbin:
+                if data[i, ts, 0] == 1:
+                    data[i, ts, :] = 0.9 - dc
+                else:
+                    data[i, ts, :] -= dc
+            data[data < 0] = 0
+            data[min(fbin), ts, :] = [1, 0, 0]
+            data[max(fbin), ts, :] = [0, 0, 1]
+
+            if ts % 10 == 0:
+                plt.imshow(data, origin='lower', aspect=aspect)
+                plt.plot([generations * 0.5] * 2, [0, ydiv], ':k')
+                plt.yticks(yticks, ylabels, rotation='horizontal')
+                plt.ylabel('Value')
+                plt.xlabel('Generations')
+                plt.pause(0.001)
+
+        # Pick candidates
 
         for i in range(population):
             inds = candidates[i, choice(population - 1, 3, replace=False)]
             ac[:, i] = agents[:, inds[0]]
             bc[:, i] = agents[:, inds[1]]
             cc[:, i] = agents[:, inds[2]]
+
+        # Update agents
 
         ind = rand(k, population) < CR
         agents_ = ind * (ac + F * (bc - cc)) + ~ind * agents
@@ -143,12 +209,11 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
         agents_[log_lb] = lb[log_lb]
         agents_[log_ub] = ub[log_ub]
 
-        if vectored:
-            f_ = fn(agents_, *args)
-        else:
-            f_ = zeros(population)
-            for i in range(population):
-                f_[i] = fn(agents_[:, i], *args)
+        # Update f values
+
+        f_ = zeros(population)
+        for i in range(population):
+            f_[i] = fn(agents_[:, i], *args)
 
         log = where((f - f_) > 0)[0]
         agents[:, log] = agents_[:, log]
@@ -156,69 +221,40 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
         fopt = min(f)
         xopt = agents[:, argmin(f)]
 
+        # Reset
+
         ts += 1
         ac *= 0
         bc *= 0
         cc *= 0
 
+        if printout and (ts % printout == 0):
+            print('Generation: {0}  fopt: {1:.5g}'.format(ts, fopt))
+
+        # Limit check
+
         if fopt < limit:
             break
 
-        print('Generation: {0}  fopt: {1:.5g}'.format(ts, fopt))
-
-        # Save generation
-
-        if results:
-
-            fnm = '{0}generation_{1:0>5}_population.pop'.format(results, ts - 1)
-            with open(fnm, 'w') as f:
-
-                f.write('Generation\n')
-                f.write('{0}\n\n'.format(ts - 1))
-
-                f.write('Number of individuals per generation\n')
-                f.write('{0}\n\n'.format(population))
-
-                f.write('Population scaled variables\n')
-                for i in range(population):
-                    entry = [str(i)] + [str(j) for j in list(agents[:, i])]
-                    f.write(', '.join(entry) + '\n')
-
-                f.write('\nPopulation fitness value\n')
-                for i in range(population):
-                    f.write('{0}, {1}\n'.format(i, f[i]))
-
-                f.write('\n')
-
-    # L-BFGS-B polish
+    # L-BFGS-B
 
     if polish:
         opt = fmin_l_bfgs_b(fn, xopt, args=args, approx_grad=1, bounds=bounds, iprint=1, pgtol=10**(-6), factr=10000,
-                            maxfun=10**5, maxiter=10**5, maxls=100)
+                            maxfun=10**5, maxiter=10**5, maxls=200)
         xopt = opt[0]
         fopt = opt[1]
 
-    # Save parameters
-
-    if results:
-
-        parameters = {
-            'num_pop': population,
-            'min_fit': limit,
-            'fit_type': 'min',
-            'end_gen': ts - 1,
-            'num_gen': generations - 1,
-            'start_from_gen': 0}
-
-        with open('{0}parameters.json'.format(results), 'w+') as fp:
-            json.dump(parameters, fp)
-
     # Summary
 
-    print('\n' + '-' * 50)
-    print('Differential Evolution finished : {0:.4g} s'.format(time() - tic))
-    print('fopt: {0:.3g}'.format(fopt))
-    print('-' * 50)
+    if printout:
+        print('\n' + '-' * 50)
+        print('Differential Evolution finished : {0:.4g} s'.format(time() - tic))
+        print('fopt: {0:.5g}'.format(fopt))
+        print('-' * 50)
+
+    if plot:
+        plt.ioff()
+        plt.show()
 
     return fopt, list(xopt)
 
@@ -229,8 +265,6 @@ def devo_numpy(fn, bounds, population, generations, limit=0, results=None, vecto
 
 if __name__ == "__main__":
 
-    from compas.plotters.evoplotter import EvoPlotter
-
     def fn(u, *args):
         # Booth's function, fopt=0, uopt=(1, 3)
         x = u[0]
@@ -238,11 +272,5 @@ if __name__ == "__main__":
         z = (x + 2 * y - 7)**2 + (2 * x + y - 5)**2
         return z
 
-    def callback(ts, f, evoplotter):
-        evoplotter.update_points(generation=ts, values=f)
-        evoplotter.update_lines(generation=ts, values=f)
-
-    evoplotter = EvoPlotter(generations=50, fmax=30, xaxis_div=25, yaxis_div=10, pointsize=0.1)
-
     bounds = [(-10, 10), (-15, 15)]
-    devo_numpy(fn, bounds, population=20, generations=50, polish=False, callback=callback, evoplotter=evoplotter)
+    devo_numpy(fn=fn, bounds=bounds, population=100, generations=100, polish=False, plot=True, frange=[0, 100])

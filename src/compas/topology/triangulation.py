@@ -4,6 +4,8 @@ from __future__ import division
 
 import random
 
+from compas.utilities import flatten
+
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import add_vectors
@@ -289,18 +291,6 @@ def voronoi_from_delaunay(delaunay):
     return voronoi
 
 
-def voronoi_from_points(points):
-    pass
-
-
-def voronoi_from_points_numpy(points):
-    from numpy import asarray
-    from scipy.spatial import Voronoi
-    points = asarray(points)
-    voronoi = Voronoi(points)
-    return voronoi
-
-
 def trimesh_remesh(mesh,
                    target,
                    kmax=100,
@@ -466,7 +456,7 @@ def trimesh_remesh(mesh,
         if count == 1:
             visited = set()
 
-            for u, v in list(mesh.halfedges()):
+            for u, v in list(mesh.edges()):
                 if u in visited or v in visited:
                     continue
                 if mesh.edge_length(u, v) <= lmax + dlmax:
@@ -484,7 +474,7 @@ def trimesh_remesh(mesh,
         elif count == 2:
             visited = set()
 
-            for u, v in list(mesh.halfedges()):
+            for u, v in list(mesh.edges()):
                 if u in visited or v in visited:
                     continue
                 if mesh.edge_length(u, v) >= lmin - dlmin:
@@ -503,7 +493,7 @@ def trimesh_remesh(mesh,
         elif count == 3:
             visited = set()
 
-            for u, v in list(mesh.halfedges()):
+            for u, v in list(mesh.edges()):
                 if u in visited or v in visited:
                     continue
 
@@ -559,7 +549,7 @@ def trimesh_remesh(mesh,
         # smoothen
         if smooth:
             if allow_boundary_split:
-                boundary  = set(mesh.vertices_on_boundary())
+                boundary = set(mesh.vertices_on_boundary())
 
             mesh_smooth_area(mesh, fixed=fixed.union(boundary), kmax=1)
 
@@ -574,7 +564,7 @@ def trimesh_remesh(mesh,
 
 if __name__ == "__main__":
 
-    testrun = 4
+    testrun = 2
 
     if testrun == 1:
         from compas.datastructures import Mesh
@@ -669,70 +659,3 @@ if __name__ == "__main__":
         plotter.draw_faces()
 
         plotter.show()
-
-    if testrun == 4:
-        from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
-        from compas.geometry import closest_point_on_line_xy
-
-        mesh = Mesh()
-
-        mesh.add_vertex(x=0, y=0)
-        mesh.add_vertex(x=1.5, y=0)
-        mesh.add_vertex(x=1, y=1)
-        mesh.add_vertex(x=0, y=2)
-
-        mesh.add_face([0, 1, 2, 3])
-
-        sites = mesh.get_vertices_attributes('xy')
-        voronoi = voronoi_from_points_numpy(sites)
-
-        points = []
-        for xy in voronoi.vertices:
-            points.append({
-                'pos'       : xy,
-                'radius'    : 0.02,
-                'facecolor' : '#ff0000',
-                'edgecolor' : '#ffffff',
-            })
-
-        lines = []
-        arrows = []
-        for (a, b), (c, d) in zip(voronoi.ridge_vertices, voronoi.ridge_points):
-            if a > -1 and b > -1:
-                lines.append({
-                    'start' : voronoi.vertices[a],
-                    'end'   : voronoi.vertices[b],
-                    'width' : 1.0,
-                    'color' : '#ff0000',
-                })
-            elif a == -1:
-                sp = voronoi.vertices[b]
-                ep = closest_point_on_line_xy(sp, (voronoi.points[c], voronoi.points[d]))
-                arrows.append({
-                    'start' : sp,
-                    'end'   : ep,
-                    'width' : 1.0,
-                    'color' : '#00ff00',
-                    'arrow' : 'end'
-                })
-            else:
-                sp = voronoi.vertices[a]
-                ep = closest_point_on_line_xy(sp, (voronoi.points[c], voronoi.points[d]))
-                arrows.append({
-                    'start' : sp,
-                    'end'   : ep,
-                    'width' : 1.0,
-                    'color' : '#00ff00',
-                    'arrow' : 'end'
-                })
-
-
-        plotter = MeshPlotter(mesh, figsize=(10, 7))
-        plotter.draw_points(points)
-        plotter.draw_lines(lines)
-        plotter.draw_arrows(arrows)
-        plotter.draw_vertices(radius=0.02)
-        plotter.draw_faces()
-        plotter.show()
-

@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
+import compas
 
 from functools import wraps
 
@@ -32,8 +33,8 @@ try:
     from scipy.sparse.linalg import spsolve
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
+
 else:
     old_settings = seterr(all='ignore')
 
@@ -276,7 +277,7 @@ def rref(A, tol=None):
     -------
     array
         RREF of A.
-    
+
     Notes
     -----
     A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the
@@ -448,7 +449,7 @@ def memoize(f):
 
 
 def _chofactor(A):
-    """Returns the Cholesky factorisation/decomposition matrix.
+    r"""Returns the Cholesky factorisation/decomposition matrix.
 
     Parameters
     ----------
@@ -481,7 +482,7 @@ def _chofactor(A):
 
 
 def _lufactorized(A):
-    """Return a function for solving a sparse linear system (LU decomposition).
+    r"""Return a function for solving a sparse linear system (LU decomposition).
 
     Parameters
     ----------
@@ -597,7 +598,7 @@ def normalizerow(A, do_nan_to_num=True):
     Returns
     -------
     array
-        Matrix of normalised row vectors (m x n).
+        Matrix of normalized row vectors (m x n).
 
     Notes
     -----
@@ -658,7 +659,7 @@ def rot90(vectors, axes):
 # ==============================================================================
 
 def solve_with_known(A, b, x, known):
-    """Solve a system of linear equations with part of solution known.
+    r"""Solve a system of linear equations with part of solution known.
 
     Parameters
     ----------
@@ -707,7 +708,7 @@ def solve_with_known(A, b, x, known):
 
 
 def spsolve_with_known(A, b, x, known):
-    """Solve (sparse) a system of linear equations with part of solution known.
+    r"""Solve (sparse) a system of linear equations with part of solution known.
 
     Parameters
     ----------

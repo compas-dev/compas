@@ -90,7 +90,7 @@ planets_speed = [
     5.430 * kilo,  # neptune
 ]
 
-planets_colour = [
+planets_color = [
     [0.3, 0.3, 0.3],  # mercury
     [1.0, 0.8, 0.0],  # venus
     [0.0, 0.0, 1.0],  # earth
@@ -119,7 +119,7 @@ n = 8
 spheres = []
 for c, name in enumerate(planets_name):
     location = planets_distance[c] / giga
-    spheres.append({'name': name, 'radius': scale, 'pos': [0, location, 0], 'color': planets_colour[c]})
+    spheres.append({'name': name, 'radius': scale, 'pos': [0, location, 0], 'color': planets_color[c]})
 planets = xdraw_spheres(spheres)
 set_objects_show_name(objects=planets)
 

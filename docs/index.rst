@@ -3,13 +3,16 @@ The main library of COMPAS
 ********************************************************************************
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :titlesonly:
 
    overview
+   gettingstarted
    examples
    tutorial
-   python
+   notes
    reference
+   contributions
+   devguide
    citing
-   releases
+   license

@@ -56,8 +56,8 @@ def convex_hull(points):
         import random
 
         from compas.geometry import distance_point_point
-        from compas.cad.rhino.helpers.mesh import draw_mesh
-        from compas.datastructures.mesh import Mesh
+        from compas.datastructures import Mesh
+        from compas_rhino import MeshArtist
 
         radius = 5
         origin = (0., 0., 0.)
@@ -76,10 +76,11 @@ def convex_hull(points):
 
         mesh = Mesh.from_vertices_and_faces(points, faces)
 
-        draw_mesh(mesh,
-                    show_faces = True,
-                    show_vertices = False,
-                    show_edges = False)
+        artist = MeshArtist(mesh)
+
+        artist.clear()
+        artist.draw_faces()
+        artist.redraw()
 
     """
     def _normal_face(face):
@@ -117,7 +118,7 @@ def convex_hull(points):
     return hull
 
 
-def convex_hull_xy(points):
+def convex_hull_xy(points, strict=False):
     """Computes the convex hull of a set of 2D points.
 
     Parameters
@@ -150,7 +151,6 @@ def convex_hull_xy(points):
         v = subtract_vectors(b, o)
         return cross_vectors_xy(u, v)[2]
 
-
     # Sort the points lexicographically (tuples are compared lexicographically).
     # Remove duplicates to detect the case we have just one unique point.
     points = sorted(set(map(tuple, points)))
@@ -162,15 +162,23 @@ def convex_hull_xy(points):
     # Build lower hull
     lower = []
     for p in points:
-        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
-            lower.pop()
+        if strict:
+            while len(lower) >= 2 and cross(lower[-2], lower[-1], p) < 0:
+                lower.pop()
+        else:
+            while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
+                lower.pop()
         lower.append(p)
 
     # Build upper hull
     upper = []
     for p in reversed(points):
-        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
-            upper.pop()
+        if strict:
+            while len(upper) >= 2 and cross(upper[-2], upper[-1], p) < 0:
+                upper.pop()
+        else:
+            while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
+                upper.pop()
         upper.append(p)
 
     # Concatenation of the lower and upper hulls gives the convex hull.

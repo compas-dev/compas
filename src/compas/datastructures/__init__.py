@@ -3,7 +3,7 @@
 compas.datastructures
 ********************************************************************************
 
-.. module:: compas.datastructures
+.. currentmodule:: compas.datastructures
 
 This package defines a mesh datastructure, a network, and a cellular mesh.
 
@@ -15,12 +15,6 @@ The mesh is implemented as a half-edge datastructure.
 It is meant for the representation of polygonal *"surface"* meshes. A mesh can be
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
-
-.. unified face orientation => consistent/compatible cycle directions
-.. vertex => neighbours => halfedges => faces (optionally ordered around vertex)
-.. face => vertices => halfedges => neighbours
-.. vertex => connectivity, area, normal, laplacian, ...
-.. face => area, normal, ...
 
 .. autosummary::
     :toctree: generated/
@@ -36,12 +30,6 @@ The network is a connectivity graph.
 It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
-
-.. vertex => neighbours, laplacian
-.. edge =>
-
-.. form := network => ordering of neighbours is enough to construct dual
-.. force := mesh => with faces constructed from the ordering ov neighbours
 
 .. autosummary::
     :toctree: generated/
@@ -63,16 +51,6 @@ be used for the representation of subdivided/partitioned polyhedra.
     :nosignatures:
 
     VolMesh
-
-
-.. Assembly
-.. ========
-
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
-
-..     Assembly
 
 """
 

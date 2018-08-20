@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from itertools import islice
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
@@ -76,7 +77,7 @@ def bounding_box_xy(points):
         #
 
     """
-    x, y = zip(*points)[:2]
+    x, y = islice(zip(*points), 2)
     min_x = min(x)
     max_x = max(x)
     min_y = min(y)

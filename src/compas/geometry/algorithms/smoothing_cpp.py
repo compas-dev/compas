@@ -2,22 +2,19 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
 import os
 
 try:
     import ctypes
     from ctypes import *
 
-    from compas.interop.core.cpp.xdarray import Array1D
-    from compas.interop.core.cpp.xdarray import Array2D
+    from compas.interop.cpp.xdarray import Array1D
+    from compas.interop.cpp.xdarray import Array2D
 
-except ImportError:
-    import sys
-    if 'ironpython' not in sys.version.lower():
-        raise
+except (ImportError, SystemError):
+    compas.raise_if_not_ironpython()
 
-
-# from compas.topology import adjacency_from_edges
 
 HERE = os.path.dirname(__file__)
 
@@ -59,14 +56,14 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
 
     v = len(vertices)
     nbrs = [len(adjacency[i]) for i in range(v)]
-    neighbours = [adjacency[i] + [0] * (10 - nbrs[i]) for i in range(v)]
+    neighbors = [adjacency[i] + [0] * (10 - nbrs[i]) for i in range(v)]
     # --------------------------------------------------------------------------
     # call
     # --------------------------------------------------------------------------
     c_nbrs = Array1D(nbrs, 'int')
     c_fixed = Array1D(fixed, 'int')
     c_vertices = Array2D(vertices, 'double')
-    c_neighbours = Array2D(neighbours, 'int')
+    c_neighbors = Array2D(neighbors, 'int')
     c_callback = CFUNCTYPE(None, c_int)
 
     def wrapper(k):
@@ -77,7 +74,7 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
         c_nbrs.ctype,
         c_fixed.ctype,
         c_vertices.ctype,
-        c_neighbours.ctype,
+        c_neighbors.ctype,
         c_int,
         c_callback
     ]
@@ -87,7 +84,7 @@ def smooth_centroid_cpp(vertices, adjacency, fixed, kmax=100, callback=None, cal
         c_nbrs.cdata,
         c_fixed.cdata,
         c_vertices.cdata,
-        c_neighbours.cdata,
+        c_neighbors.cdata,
         c_int(kmax),
         c_callback(wrapper)
     )
@@ -104,7 +101,6 @@ if __name__ == "__main__":
     import compas
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
-    from compas.geometry import smooth_centroid_cpp
 
     kmax = 50
 
@@ -116,7 +112,7 @@ if __name__ == "__main__":
     # extract numerical data from the datastructure
 
     vertices  = mesh.get_vertices_attributes(('x', 'y', 'z'))
-    adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
+    adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
     fixed     = [int(mesh.vertex_degree(key) == 2) for key in mesh.vertices()]
 
     slider = list(mesh.vertices_where({'x': (-0.1, 0.1), 'y': (9.9, 10.1)}))[0]

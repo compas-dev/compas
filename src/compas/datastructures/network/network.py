@@ -72,14 +72,7 @@ class Network(FromToJson,
         of edge attributes.
     halfedge : dict of dict
         A half-edge dictionary, which keeps track of
-        undirected adjacencies. If the network is planar, the halfedges point
-        at entries in the face dictionary.
-    face : dict
-        The face dictionary. If the network is planar, this dictionary
-        is populated by a face finding algorithm. Each key represents a face
-        and points to its corresponding vertex cycle.
-    facedata : dict
-        Face attributes.
+        undirected adjacencies.
     attributes : dict
         A dictionary of miscellaneous information about the network.
 
@@ -147,9 +140,8 @@ class Network(FromToJson,
             dea = '\n'.join(['{0} => {1}'.format(key, value) for key, value in self.default_edge_attributes.items()])
 
         return """
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-network: {0}
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{0}
+{7}
 
 - default vertex attributes
 
@@ -165,7 +157,7 @@ network: {0}
 - vertex degree min: {3}
 - vertex degree max: {4}
 
-""".format(self.attributes['name'], v, e, dmin, dmax, dva, dea)
+""".format(self.name, v, e, dmin, dmax, dva, dea, "=" * len(self.name))
 
     # --------------------------------------------------------------------------
     # special properties
@@ -328,6 +320,10 @@ network: {0}
             network.add_edge(u, v)
         return network
 
+    @classmethod
+    def from_grid(cls, xlim, ylim):
+        pass
+
     # --------------------------------------------------------------------------
     # converters
     # --------------------------------------------------------------------------
@@ -346,6 +342,11 @@ network: {0}
         vertices  = [self.vertex_coordinates(key) for key in self.vertices()]
         edges     = [(key_index[u], key_index[v]) for u, v in self.edges()]
         return vertices, edges
+
+    def to_points_and_lines(self):
+        points = [self.vertex_coordinates(key) for key in self.vertices()]
+        lines = [self.edge_coordinates(u, v) for u, v in self.edges()]
+        return points, lines
 
     # --------------------------------------------------------------------------
     # helpers
@@ -476,7 +477,7 @@ network: {0}
     # --------------------------------------------------------------------------
 
     def delete_vertex(self, key):
-        for nbr in self.vertex_neighbours(key):
+        for nbr in self.vertex_neighbors(key):
             del self.halfedge[key][nbr]
             del self.halfedge[nbr][key]
             if key in self.edge and nbr in self.edge[key]:
@@ -592,13 +593,13 @@ network: {0}
     def is_vertex_connected(self, key):
         return self.vertex_degree(key) > 0
 
-    def vertex_neighbours(self, key):
-        """Return the neighbours of a vertex."""
+    def vertex_neighbors(self, key):
+        """Return the neighbors of a vertex."""
         return list(self.halfedge[key])
 
-    def vertex_neighbourhood(self, key, ring=1):
-        """Return the vertices in the neighbourhood of a vertex."""
-        nbrs = set(self.vertex_neighbours(key))
+    def vertex_neighborhood(self, key, ring=1):
+        """Return the vertices in the neighborhood of a vertex."""
+        nbrs = set(self.vertex_neighbors(key))
 
         i = 1
         while True:
@@ -607,7 +608,7 @@ network: {0}
 
             temp = []
             for key in nbrs:
-                temp += self.vertex_neighbours(key)
+                temp += self.vertex_neighbors(key)
 
             nbrs.update(temp)
 
@@ -615,30 +616,30 @@ network: {0}
 
         return nbrs
 
-    def vertex_neighbours_out(self, key):
-        """Return the outgoing neighbours of a vertex."""
+    def vertex_neighbors_out(self, key):
+        """Return the outgoing neighbors of a vertex."""
         return list(self.edge[key])
 
-    def vertex_neighbours_in(self, key):
-        """Return the incoming neighbours of a vertex."""
+    def vertex_neighbors_in(self, key):
+        """Return the incoming neighbors of a vertex."""
         return list(set(self.halfedge[key]) - set(self.edge[key]))
 
     def vertex_degree(self, key):
-        """Return the number of neighbours of a vertex."""
-        return len(self.vertex_neighbours(key))
+        """Return the number of neighbors of a vertex."""
+        return len(self.vertex_neighbors(key))
 
     def vertex_degree_out(self, key):
-        """Return the number of outgoing neighbours of a vertex."""
-        return len(self.vertex_neighbours_out(key))
+        """Return the number of outgoing neighbors of a vertex."""
+        return len(self.vertex_neighbors_out(key))
 
     def vertex_degree_in(self, key):
-        """Return the numer of incoming neighbours of a vertex."""
-        return len(self.vertex_neighbours_in(key))
+        """Return the numer of incoming neighbors of a vertex."""
+        return len(self.vertex_neighbors_in(key))
 
     def vertex_connected_edges(self, key):
         """Return the edges connected to a vertex."""
         edges = []
-        for nbr in self.vertex_neighbours(key):
+        for nbr in self.vertex_neighbors(key):
             if nbr in self.edge[key]:
                 edges.append((key, nbr))
             else:
@@ -652,17 +653,16 @@ network: {0}
     def has_edge(self, u, v, directed=True):
         if directed:
             return u in self.edge and v in self.edge[u]
-        else:
-            return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])
+        return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])
 
     def edge_connected_edges(self, u, v):
         edges = []
-        for nbr in self.vertex_neighbours(u):
+        for nbr in self.vertex_neighbors(u):
             if nbr in self.edge[u]:
                 edges.append((u, nbr))
             else:
                 edges.append((nbr, u))
-        for nbr in self.vertex_neighbours(v):
+        for nbr in self.vertex_neighbors(v):
             if nbr in self.edge[v]:
                 edges.append((v, nbr))
             else:
@@ -678,13 +678,13 @@ network: {0}
         return [self.vertex[key][axis] for axis in axes]
 
     def vertex_laplacian(self, key):
-        """Return the vector from the vertex to the centroid of its 1-ring neighbourhood."""
-        c = centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbours(key)])
+        """Return the vector from the vertex to the centroid of its 1-ring neighborhood."""
+        c = centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbors(key)])
         p = self.vertex_coordinates(key)
         return subtract_vectors(c, p)
 
-    def vertex_neighbourhood_centroid(self, key):
-        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbours(key)])
+    def vertex_neighborhood_centroid(self, key):
+        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbors(key)])
 
     # --------------------------------------------------------------------------
     # edge geometry
@@ -711,16 +711,17 @@ network: {0}
 
 if __name__ == '__main__':
 
-    import compas
     from compas.plotters import NetworkPlotter
 
     network = Network.from_obj(compas.get('lines.obj'))
 
-    plotter = NetworkPlotter(network)
+    plotter = NetworkPlotter(network, figsize=(10, 7))
+
+    plotter.defaults['vertex.fontsize'] = 8
 
     network.delete_vertex(17)
 
-    plotter.draw_vertices(text='key')
+    plotter.draw_vertices(text='key', radius=0.2)
     plotter.draw_edges()
 
     plotter.show()

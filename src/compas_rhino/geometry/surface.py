@@ -1,4 +1,12 @@
-from compas.cad import SurfaceGeometryInterface
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+import compas
+import compas_rhino
+
+from compas_rhino.geometry import RhinoGeometry
+
 from compas.geometry import subtract_vectors
 
 try:
@@ -10,9 +18,7 @@ try:
     find_object = sc.doc.Objects.Find
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Tom Van Mele', ]
@@ -24,19 +30,16 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = ['RhinoSurface', ]
 
 
-class RhinoSurface(SurfaceGeometryInterface):
+class RhinoSurface(RhinoGeometry):
     """"""
 
-    def __init__(self, guid=None):
-        self.guid = guid
-        self.surface = RhinoSurface.find(guid)
-        self.geometry = self.surface.Geometry
-        self.attributes = self.surface.Attributes
-        self.otype = self.geometry.ObjectType
+    def __init__(self, guid):
+        super(RhinoSurface, self).__init__(guid)
 
-    @staticmethod
-    def find(guid):
-        return find_object(guid)
+    @classmethod
+    def from_selection(cls):
+        guid = compas_rhino.select_surface()
+        return cls(guid)
 
     def space(self, density=10):
         """"""
@@ -214,25 +217,18 @@ class RhinoSurface(SurfaceGeometryInterface):
         curves = rs.ExplodeCurves(border, delete_input=True)
         return curves
 
-    # def project_point(self, point, direction=(0, 0, 1)):
-    #     ppoints = rs.ProjectPointToSurface(point, self.guid, direction)
-    #     if not ppoints:
-    #         raise Exception('Could not project point to surface.')
-    #     ppoint = ppoints[0]
+    def project_point(self, point, direction=(0, 0, 1)):
+        projections = rs.ProjectPointToSurface(point, self.guid, direction)
+        if not projections:
+            return self.closest_point(point)
+        return list(projections[0])
 
-    # def project_points(self, points, direction=(0, 0, 1), include_none=True):
-    #     projections = rs.ProjectPointToSurface(points, self.guid, direction)
-    #     print projections
-    #     return map(list, projections)
-    #     # projections = []
-    #     # for point in points:
-    #     #     ppoints = rs.ProjectPointToSurface(point, self.guid, direction)
-    #     #     if not ppoints:
-    #     #         print ppoints
-    #     #         raise Exception('Could not project point to surface.')
-    #     #     ppoint = ppoints[0]
-    #     #     projections.append(list(ppoint))
-    #     # return projections
+    def project_points(self, points, direction=(0, 0, 1), include_none=True):
+        projections = rs.ProjectPointToSurface(points, self.guid, direction)
+        if not projections:
+            return self.closest_points(points)
+        projections[:] = [self.closest_point(point) if not point else point for point in projections]
+        return map(list, projections)
 
     def closest_point(self, point, maxdist=None):
         point = self.geometry.ClosestPoint(Point3d(*point))
@@ -277,11 +273,7 @@ class RhinoSurface(SurfaceGeometryInterface):
 
 if __name__ == '__main__':
 
-    import compas_rhino
-
-    guid = compas_rhino.select_surface()
-
-    surface = RhinoSurface(guid)
+    surface = RhinoSurface.from_selection()
 
     points = []
     for xyz in surface.heightfield():

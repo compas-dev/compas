@@ -26,7 +26,7 @@ __all__ = [
 
 
 def network_join_edges(network, key):
-    nbrs = network.vertex_neighbours(key)
+    nbrs = network.vertex_neighbors(key)
     if len(nbrs) != 2:
         return
     a, b = nbrs

@@ -1,11 +1,9 @@
 """
-.. _compas_blender.geometry:
-
 ********************************************************************************
-geometry
+compas_blender.geometry
 ********************************************************************************
 
-.. module:: compas_blender.geometry
+.. currentmodule:: compas_blender.geometry
 
 
 Object-oriented wrappers for native Blender geometry.
@@ -20,10 +18,17 @@ Object-oriented wrappers for native Blender geometry.
     BlenderSurface
 
 """
+from __future__ import absolute_import
+
+
+class BlenderGeometry(object):
+    pass
+
 
 from .point import BlenderPoint
 from .curve import BlenderCurve
 from .mesh import BlenderMesh
 from .surface import BlenderSurface
+
 
 __all__ = ['BlenderPoint', 'BlenderCurve', 'BlenderMesh', 'BlenderSurface', ]

@@ -49,7 +49,8 @@ def ga(fit_function,
        num_gen=100,
        num_pop=100,
        num_elite=10,
-       mutation_probability=0.004,
+       mutation_probability=0.01,
+       n_cross=1,
        num_bin_dig=None,
        num_pop_init=None,
        num_gen_init_pop=None,
@@ -59,7 +60,8 @@ def ga(fit_function,
        fargs=None,
        fkwargs=None,
        output_path=None,
-       input_path=None):
+       input_path=None,
+       print_refresh=1):
 
     """Genetic Algorithm optimisation.
 
@@ -85,8 +87,9 @@ def ga(fit_function,
     num_elite : int, optional [10]
         The number of individuals in the elite population. Must be an even number.
     mutation_probablity : float, optional [0.001]
-        Float from 0 to 1. If 0 is used, none of the genes in each individuals
-        chromosome will be mutated. If 1 is used, all of them will mutate.
+        Float from 0 to 1. Percentage of genes that will be mutated.
+    n_cross: int, optional [1]
+        Number of crossover points used in the crossover operator.
     num_bin_dig : list, optional [None]
         Number of genes used to codify each variable. Must be a ``num_var`` long
         list of intergers. If None is given, each variable will be coded with a
@@ -112,6 +115,8 @@ def ga(fit_function,
         Path for the optimization result files.
     input_path : str, optional [None]
         Path to the fitness function file.
+    print_refresh : int
+        Print current generation summary every ``print_refresh`` generations.
 
     Returns
     -------
@@ -194,6 +199,7 @@ def ga(fit_function,
     ga_.num_elite            = num_elite
     ga_.num_var              = num_var
     ga_.mutation_probability = mutation_probability
+    ga_.ncross               = n_cross
     ga_.start_from_gen       = start_from_gen
     ga_.min_fit              = min_fit
     ga_.boundaries           = boundaries
@@ -205,7 +211,8 @@ def ga(fit_function,
     ga_.fit_function         = fit_function
     ga_.output_path          = output_path or ''
     ga_.input_path           = input_path or ''
-    ga_.ga_optimise()
+    ga_.print_refresh        = print_refresh
+    ga_.ga_optimize()
     return ga_
 
 
@@ -238,7 +245,7 @@ class GA(object):
         "min" for minimization and "max" for maximization.
     input_path: str
         Path to the fitness function file.
-    kwargs : dict
+    fkwargs : dict
         This dictionary will be passed as a keyword argument to all fitness functions.
         It can be used to pass required data, objects, that are not related to the
         optimmization variables but are required to run the fitness function.
@@ -289,7 +296,7 @@ class GA(object):
     def __init__(self):
         """ Initializes the GA object."""
 
-        self.kwargs = {}
+        self.fkwargs = {}
         self.fargs = {}
         self.best_fit = None
         self.best_individual_index = None
@@ -305,6 +312,7 @@ class GA(object):
         self.min_fit = None
         self.min_fit_flag = False
         self.mutation_probability = 0
+        self.n_cross = 1
         self.num_bin_dig = 0
         self.num_elite = 0
         self.num_gen = 0
@@ -316,8 +324,9 @@ class GA(object):
         self.output_path = []
         self.start_from_gen = False
         self.total_bin_dig = 0
-        self.check_diversity = True
+        self.check_diversity = False
         self.ind_fit_dict = {}
+        self.print_refresh = 1
 
     def __str__(self):
         """Compile a summary of the GA."""
@@ -326,7 +335,7 @@ class GA(object):
         num_gen = self.num_gen
         num_pop = self.num_pop
         num_var = self.num_var
-        best = self.best_individual_index
+        best = self.best_individual_index, self.current_pop['scaled'][self.best_individual_index]
         try:
             fit = self.current_pop['fit_value'][self.best_individual_index]
         except(Exception):
@@ -337,7 +346,7 @@ class GA(object):
         """Print a summary of the GA."""
         print(self)
 
-    def ga_optimise(self):
+    def ga_optimize(self):
         """ This is the main optimization function, this function permorms the GA optimization,
         performing all genetic operators.
         """
@@ -377,16 +386,31 @@ class GA(object):
                 self.update_min_fit_flag()
             else:
                 self.get_best_fit()
-            print('generation ', generation, ' best fit ', self.best_fit, 'min fit', self.min_fit)
+            if generation % self.print_refresh == 0:
+                print('generation ', generation, ' best fit ', self.best_fit, 'min fit', self.min_fit)
+
+            #####################################################################
+            # print ('before')
+            # for i in range(len(self.current_pop['binary'])):
+            #     print (i, self.current_pop['binary'][i], self.current_pop['fit_value'][i])
+            #####################################################################
+
             if self.check_diversity:
                 print('num repeated individuals', self.check_pop_diversity())
             if generation < self.num_gen - 1 and self.min_fit_flag is False:
                 self.elite_pop = self.select_elite_pop(self.current_pop)
                 self.tournament_selection()  # n-e
                 self.create_mating_pool()  # n-e
-                self.simple_crossover()  # n-e
+                self.npoint_crossover()  # n-e
                 self.random_mutation()  # n-e
                 self.add_elite_to_current()  # n
+
+                #####################################################################
+                # print ('after')
+                # for i in range(len(self.current_pop['binary'])):
+                #     print (i, self.current_pop['binary'][i], self.current_pop['binary'][i] in self.elite_pop['binary'])
+                # print ()
+                #####################################################################
             else:
                 self.end_gen = generation
                 self.get_best_individual_index()
@@ -398,7 +422,7 @@ class GA(object):
         chromo = ''.join(str(y) for x in self.current_pop['binary'][index] for y in x)
         fit = self.ind_fit_dict.setdefault(chromo, None)
         if not fit:
-            fit = self.fit_function(self.current_pop['scaled'][index], *self.fargs, **self.kwargs)
+            fit = self.fit_function(self.current_pop['scaled'][index], *self.fargs, **self.fkwargs)
             self.ind_fit_dict[chromo] = fit
         return fit
 
@@ -477,12 +501,12 @@ class GA(object):
         pop_a = []
         pop_b = []
         indices = range(self.num_pop)
-        for i in range((self.num_pop - self.num_elite)):
-            u, v = random.sample(indices, 2)
-            pop_a.append(u)
-            pop_b.append(v)
-        # pop_a = random.sample(indices,self.num_pop-self.num_elite)
-        # pop_b = random.sample(indices,self.num_pop-self.num_elite)
+        # for i in range((self.num_pop - self.num_elite)):
+        #     u, v = random.sample(indices, 2)
+        #     pop_a.append(u)
+        #     pop_b.append(v)
+        pop_a = random.sample(indices,self.num_pop-self.num_elite)
+        pop_b = random.sample(indices,self.num_pop-self.num_elite)
         self.mp_indices = []
         for i in range(self.num_pop - self.num_elite):
             fit_a = self.current_pop['fit_value'][pop_a[i]]
@@ -497,6 +521,10 @@ class GA(object):
                     self.mp_indices.append(pop_a[i])
                 else:
                     self.mp_indices.append(pop_b[i])
+        # print (pop_a, 'tournament pop_a')
+        # print (pop_b, 'tournament pop_a')
+        # print()
+        # print (self.mp_indices, 'tournament winners')
 
     def select_elite_pop(self, pop, num_elite=None):
         """Saves the elite population in the elite population dictionary
@@ -547,9 +575,9 @@ class GA(object):
         """
         l_ = []
         if reverse:
-            x = str('-inf')
+            x = float('-inf')
         else:
-            x = str('inf')
+            x = float('inf')
         for i in l:
             if i in l_:
                 l_.append(x)
@@ -568,6 +596,8 @@ class GA(object):
         for i in range(int((self.num_pop - self.num_elite) / 2)):
             chrom_a = []
             chrom_b = []
+            # print (i, ' ',self.mp_indices[i], self.mp_indices[i + (int((self.num_pop - self.num_elite) / 2))], '       mp individual ab')
+            # print (i + (int((self.num_pop - self.num_elite) / 2)), ' ', self.mp_indices[i + (int((self.num_pop - self.num_elite) / 2))], self.mp_indices[i], '       mp individual ba')
             for j in range(self.num_var):
                 chrom_a += self.current_pop['binary'][self.mp_indices[i]][j]
                 chrom_b += self.current_pop['binary'][self.mp_indices[i + (int((self.num_pop - self.num_elite) / 2))]][j]
@@ -583,6 +613,7 @@ class GA(object):
         self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(int((self.num_pop - self.num_elite) / 2)):
             cross = random.randint(1, self.total_bin_dig - 1)
+            # print (j, cross, 'crossover point')
             a = self.mating_pool_a[j]
             b = self.mating_pool_b[j]
             c = a[:cross] + b[cross:]
@@ -591,6 +622,30 @@ class GA(object):
             for i in range(self.num_var):
                 variable_a = c[:self.num_bin_dig[i]]
                 variable_b = d[:self.num_bin_dig[i]]
+                del c[:self.num_bin_dig[i]]
+                del d[:self.num_bin_dig[i]]
+                self.current_pop['binary'][j][i] = variable_a
+                self.current_pop['binary'][j + (int((self.num_pop - self.num_elite) / 2))][i] = variable_b
+
+    def npoint_crossover(self):
+        """Performs the n-point crossover operator. Individuals in ``GA.mating_pool_a`` are
+        combined with individuals in ``GA.mating_pool_b`` using ne, randomly selected
+        crossover points.
+        """
+        self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
+        self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
+        for j in range(int((self.num_pop - self.num_elite) / 2)):
+            a = self.mating_pool_a[j]
+            b = self.mating_pool_b[j]
+            cross_list = sorted(random.sample(range(1, self.total_bin_dig - 1), self.n_cross))
+            for cross in cross_list:
+                c = a[:cross] + b[cross:]
+                d = b[:cross] + a[cross:]
+                a = d
+                b = c
+            for i in range(self.num_var):
+                variable_a = a[:self.num_bin_dig[i]]
+                variable_b = b[:self.num_bin_dig[i]]
                 self.current_pop['binary'][j][i] = variable_a
                 self.current_pop['binary'][j + (int((self.num_pop - self.num_elite) / 2))][i] = variable_b
 
@@ -621,9 +676,8 @@ class GA(object):
         binary_pop: dict
             The binary population dictionary.
         """
-        binary_pop = {}
+        binary_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for i in range(self.num_pop):
-            binary_pop[i] = {}
             for j in range(self.num_var):
                 bin_list = []
                 temp_bin = bin(decoded_pop[i][j])[2:]
@@ -698,7 +752,7 @@ class GA(object):
             The generation number.
         """
         filename  = 'generation_' + "%05d" % generation + '_population' + ".txt"
-        pf_file  = open(self.output_path + (str(filename)), "wb")
+        pf_file  = open(self.output_path + (str(filename)), "w")
         pf_file.write('Generation \n')
         pf_file.write(str(generation) + '\n')
         pf_file.write('\n')
@@ -774,7 +828,7 @@ class GA(object):
         """
         data = self.make_ga_input_data()
         filename = self.fit_name + '.json'
-        with open(self.output_path + filename, 'wb+') as fh:
+        with open(self.output_path + filename, 'w') as fh:
             json.dump(data, fh)
 
     def update_min_fit_flag(self):
@@ -815,14 +869,14 @@ class GA(object):
         """
         # file_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': [],
         #              'pf': []}
-        filename  = 'generation_' + "%05d" % gen + '_population' + ".pop"
+        filename  = 'generation_' + "%05d" % gen + '_population' + ".txt"
         filename = self.input_path + filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
         pf_file.close()
-
-        file_pop  = {'scaled': [[[]] * self.num_var for i in range(self.num_pop)]}
-        file_pop  = {'fit_value': [[[]] * self.num_var for i in range(self.num_pop)]}
+        file_pop = {}
+        file_pop['scaled'] = [[[]] * self.num_var for i in range(self.num_pop)]
+        file_pop['fit_value'] = [[[]] * self.num_var for i in range(self.num_pop)]
 
         for i in range(self.num_pop):
             line_scaled = lines[i + 7]
@@ -863,29 +917,30 @@ if __name__ == '__main__':
 
     import os
     import compas
-    from compas.plotters.gaplotter import Ga_Plotter
+    from compas.plotters.gaplotter import visualize_evolution
     from math import cos
     from math import pi
 
     def rastrigin(X):
         a = 10
         fit = a * 2 + sum([(x ** 2 - a * cos(2 * pi * x)) for x in X])
-        # print(fit)
         return fit
 
     def foo(X):
         fit = sum(X)
+        # print ('fit', fit, X)
         return fit
 
-    fit_function = foo
+    fit_function = rastrigin
+    # fit_function = foo
     fit_type = 'min'
-    num_var = 300
-    # boundaries = [(-5.12, 5.12)] * num_var
-    boundaries = [(0, 5)] * num_var
+    num_var = 2
+    boundaries = [(-5.12, 5.12)] * num_var
+    # boundaries = [(1, 5)] * num_var
 
-    num_bin_dig  = [8] * num_var
+    num_bin_dig  = [40] * num_var
     output_path = os.path.join(compas.TEMP, 'ga_out/')
-    min_fit = 0.0001  # num_var * boundaries[0][0]
+    min_fit = 0.000001  # num_var * boundaries[0][0]
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -895,12 +950,12 @@ if __name__ == '__main__':
              num_var,
              boundaries,
              num_gen=100,
-             num_pop=30,
-             num_elite=2,
+             num_pop=100,
+             num_elite=20,
              num_bin_dig=num_bin_dig,
              output_path=output_path,
-             min_fit=min_fit)
-    print (ga_.mutation_probability)
-    plt = Ga_Plotter()
-    plt.input_path = ga_.output_path
-    plt.draw_ga_evolution(make_pdf=False, show_plot=True)
+             min_fit=min_fit,
+             mutation_probability=0.03,
+             n_cross=2)
+
+    visualize_evolution(ga_.output_path)

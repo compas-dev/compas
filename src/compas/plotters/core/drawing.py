@@ -334,7 +334,7 @@ def draw_xpoints_xy(points, axes):
         ecolor    = point.get('edgecolor') or '#000000'
         lwidth    = point.get('edgewidth') or 1.0
         textcolor = point.get('textcolor') or '#000000'
-        fontsize  = point.get('fontsize') or 24
+        fontsize  = point.get('fontsize') or 12
         circles.append(Circle(pos[0:2], radius=radius))
         facecolors.append(color_to_rgb(fcolor, normalize=True))
         edgecolors.append(color_to_rgb(ecolor, normalize=True))
@@ -499,7 +499,7 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
         color     = line.get('color', '#000000')
         text      = line.get('text', None)
         textcolor = line.get('textcolor') or '#000000'
-        fontsize  = line.get('fontsize') or 24
+        fontsize  = line.get('fontsize') or 6
         fromto.append((sp[0:2], ep[0:2]))
         widths.append(width)
         colors.append(color_to_rgb(color, normalize=True))

@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
+import compas
 
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
@@ -22,8 +23,7 @@ try:
     from scipy.sparse import vstack as svstack
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 
 __author__    = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']
@@ -94,7 +94,7 @@ def adjacency_matrix(adjacency, rtype='array'):
     return _return_matrix(A, rtype)
 
 
-def face_matrix(face_vertices, rtype='array'):
+def face_matrix(face_vertices, rtype='array', normalize=False):
     """Creates a face-vertex adjacency matrix.
 
     Parameters
@@ -110,8 +110,11 @@ def face_matrix(face_vertices, rtype='array'):
         Constructed face matrix.
 
     """
-    f = array([(i, j, 1) for i, vertices in enumerate(face_vertices) for j in vertices])
-    F = coo_matrix((f[:, 2], (f[:, 0], f[:, 1]))).asfptype()
+    if normalize:
+        f = array([(i, j, 1.0 / len(vertices)) for i, vertices in enumerate(face_vertices) for j in vertices])
+    else:
+        f = array([(i, j, 1.0) for i, vertices in enumerate(face_vertices) for j in vertices])
+    F = coo_matrix((f[:, 2], (f[:, 0].astype(int), f[:, 1].astype(int))))
     return _return_matrix(F, rtype)
 
 
@@ -344,7 +347,7 @@ def mass_matrix(Ct, ks, q=0, c=1, tiled=True):
     """
     m = c * abs(Ct).dot(ks + q)
     if tiled:
-        return tile(m, (1, 3))
+        return tile(m.reshape((-1, 1)), (1, 3))
     return m
 
 
@@ -373,7 +376,7 @@ def network_adjacency_matrix(network, rtype='array'):
 
     """
     key_index = network.key_index()
-    adjacency = [[key_index[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()]
+    adjacency = [[key_index[nbr] for nbr in network.vertex_neighbors(key)] for key in network.vertices()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
@@ -394,7 +397,7 @@ def network_degree_matrix(network, rtype='array'):
 
     """
     key_index = network.key_index()
-    adjacency = [[key_index[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()]
+    adjacency = [[key_index[nbr] for nbr in network.vertex_neighbors(key)] for key in network.vertices()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
@@ -484,7 +487,7 @@ def mesh_adjacency_matrix(mesh, rtype='array'):
 
     """
     key_index = mesh.key_index()
-    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbours(key)] for key in mesh.vertices()]
+    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
@@ -526,7 +529,7 @@ def mesh_degree_matrix(mesh, rtype='array'):
 
     """
     key_index = mesh.key_index()
-    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbours(key)] for key in mesh.vertices()]
+    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
@@ -554,7 +557,7 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
         rows.append(r)
         cols.append(r)
         # provide anchor clause?
-        nbrs = mesh.vertex_neighbours(key)
+        nbrs = mesh.vertex_neighbors(key)
         w = len(nbrs)
         d = - 1. / w
         for nbr in nbrs:
@@ -666,7 +669,7 @@ def trimesh_cotangent_laplacian_matrix(mesh):
 
     """
     # minus sum of the adjacent weights on the diagonal
-    # cotangent weights on the neighbours
+    # cotangent weights on the neighbors
     key_index = mesh.key_index()
     n = mesh.number_of_vertices()
     data = []
@@ -686,7 +689,7 @@ def trimesh_cotangent_laplacian_matrix(mesh):
         cols.append(i)
     L = coo_matrix((data, (rows, cols)), shape=(n, n))
     L = L.tocsr()
-    # subtract from the diagonal the sum of the weights of the neighbours of the
+    # subtract from the diagonal the sum of the weights of the neighbors of the
     # vertices corresponding to the diagonal entries.
     L = L - spdiags(L * ones(n), 0, n, n)
     L = L.tocsr()

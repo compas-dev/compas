@@ -6,12 +6,29 @@ import os
 import sys
 import json
 
+import compas
+
+from compas.utilities import DataEncoder
+from compas.utilities import DataDecoder
+
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
 try:
     from subprocess import Popen
     from subprocess import PIPE
+
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
+
+    # try:
+    #     from System.Diagnostics import Process
+
+    # except ImportError:
+    #     compas.raise_if_ironpython()
+
 
 
 __author__     = ['Tom Van Mele', ]
@@ -20,7 +37,7 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['XFunc', 'DataEncoder', 'DataDecoder']
+__all__ = ['XFunc', ]
 
 
 WRAPPER = """
@@ -29,6 +46,11 @@ import sys
 import importlib
 
 import json
+
+try:
+    import cPickle as pickle
+except Exception:
+    import pickle
 
 try:
     from cStringIO import StringIO
@@ -42,14 +64,17 @@ import traceback
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
 
+basedir    = sys.argv[1]
+funcname   = sys.argv[2]
+ipath      = sys.argv[3]
+opath      = sys.argv[4]
+serializer = sys.argv[5]
 
-basedir  = sys.argv[1]
-funcname = sys.argv[2]
-ipath    = sys.argv[3]
-opath    = sys.argv[4]
-
-with open(ipath, 'r') as fp:
-    idict = json.load(fp, cls=DataDecoder)
+with open(ipath, 'r') as fo:
+    if serializer == 'json':
+        idict = json.load(fo, cls=DataDecoder)
+    else:
+        idict = pickle.load(fo)
 
 try:
     args   = idict['args']
@@ -75,7 +100,7 @@ try:
 
     stream = StringIO()
     stats  = pstats.Stats(profile, stream=stream)
-    stats.strip_dirs()
+    # stats.strip_dirs()
     stats.sort_stats(1)
     stats.print_stats(20)
 
@@ -91,63 +116,13 @@ else:
     odict['data']       = r
     odict['profile']    = stream.getvalue()
 
-with open(opath, 'w+') as fp:
-    json.dump(odict, fp, cls=DataEncoder)
+with open(opath, 'w+') as fo:
+    if serializer == 'json':
+        json.dump(odict, fo, cls=DataEncoder)
+    else:
+        pickle.dump(odict, fo, protocol=pickle.HIGHEST_PROTOCOL)
 
 """
-
-
-# def test_xfunc(numiter=100, pause=0.1, ds=None):
-#     if ds:
-#         print(ds)
-#     for k in range(numiter):
-#         print(k)
-#         time.sleep(pause)
-#     return ds
-
-
-class DataEncoder(json.JSONEncoder):
-    """Dump"""
-
-    def default(self, o):
-        from compas.datastructures import Datastructure
-
-        if isinstance(o, Datastructure):
-            print(type(o))
-            return {
-                'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
-                'value': o.to_data()
-            }
-
-        try:
-            import numpy as np
-        except ImportError:
-            return super(DataEncoder, self).default(o)
-
-        if isinstance(o, np.ndarray):
-            return o.tolist()
-
-        return super(DataEncoder, self).default(o)
-
-
-class DataDecoder(json.JSONDecoder):
-    """Load"""
-
-    def __init__(self, *args, **kwargs):
-        super(DataDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)
-
-    def object_hook(self, o):
-        if 'dtype' not in o:
-            return o
-
-        dtype = o['dtype']
-
-        # if this doesn't work
-        # raise an Error explaining the required encoding
-        module, attr = dtype.split('/')
-        cls = getattr(__import__(module, fromlist=[attr]), attr)
-
-        return cls.from_data(o['value'])
 
 
 class XFunc(object):
@@ -177,6 +152,17 @@ class XFunc(object):
     callback_args : tuple, optional
         Additional parameter for the callback function.
         Default is ``None``.
+    python : str, optional
+        The Python executable.
+        This can be a path to a specific executable (e.g. ``'/opt/local/bin/python'``)
+        or the name of an executable registered on the system ``PATH`` (e.g. ``'pythonw'``).
+        Default is ``'pythonw'``.
+    paths : list, optional
+        A list of paths to be added to the ``PYTHONPATH`` by the subprocess.
+        Default is ``None``.
+    serializer : {'json', 'pickle'}, optional
+        The serialisation mechnanism to be used to pass data between the caller and the subprocess.
+        Default is ``'json'``.
 
     Attributes
     ----------
@@ -198,15 +184,16 @@ class XFunc(object):
 
     Notes
     -----
-    ...
+    To use the Python executable of a virtual environment, simply assign the path
+    to that executable to the ``python`` parameter. For example
 
-    References
-    ----------
-    ...
+    .. code-block:: python
+
+        fd_numpy = XFunc('compas.numerical.fd_numpy', python='/Users/brg/environments/py2/python')
 
     Examples
     --------
-    `compas.numerical` provides an implementation of the Force Desnity Method that
+    `compas.numerical` provides an implementation of the Force Density Method that
     is based on Numpy and Scipy. This implementation is not directly available in
     Rhino because Numpy and Scipy are not available for IronPython.
 
@@ -221,6 +208,9 @@ class XFunc(object):
         from compas_rhino.helpers import MeshArtist
         from compas.datastructures import Mesh
         from compas.utilities import XFunc
+
+        # make the function available as a wrapped function with the same call signature and return value as the original.
+        fd_numpy = XFunc('compas.numerical.fd_numpy')
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -237,7 +227,7 @@ class XFunc(object):
         q         = mesh.get_edges_attribute('q', 1.0)
         loads     = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
 
-        xyz, q, f, l, r = XFunc('compas.numerical.fd_numpy')(vertices, edges, fixed, q, loads)
+        xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
 
         for key, attr in mesh.vertices(True):
             attr['x'] = xyz[key][0]
@@ -251,43 +241,26 @@ class XFunc(object):
     """
 
     def __init__(self, funcname, basedir='.', tmpdir='.', delete_files=True,
-                 verbose=True, callback=None, callback_args=None, python='pythonw'):
-        self._basedir      = None
-        self._tmpdir       = None
-        self._callback     = None
-        self._python       = None
-        self.funcname      = funcname
-        self.basedir       = basedir
-        self.tmpdir        = tmpdir
-        self.delete_files  = delete_files
-        self.verbose       = verbose
-        self.callback      = callback
-        self.callback_args = callback_args
-        self.python        = python
-        self.data          = None
-        self.profile       = None
-        self.error         = None
-
-    def __call__(self, *args, **kwargs):
-        """Make a call to the wrapped function.
-
-        Parameters
-        ----------
-        args : list
-            Positional arguments to be passed to the wrapped function.
-            Default is ``[]``.
-        kwargs : dict
-            Named arguments to be passed to the wrapped function.
-            Default is ``{}``.
-
-        Returns
-        -------
-        object
-            The data returned by the wrapped call.
-            This is ``None`` if something went wrong.
-
-        """
-        return self._xecute(*args, **kwargs)
+                 verbose=True, callback=None, callback_args=None, python='pythonw',
+                 paths=None, serializer='json'):
+        self._basedir       = None
+        self._tmpdir        = None
+        self._callback      = None
+        self._python        = None
+        self._serializer    = None
+        self.funcname       = funcname
+        self.basedir        = basedir
+        self.tmpdir         = tmpdir
+        self.delete_files   = delete_files
+        self.verbose        = verbose
+        self.callback       = callback
+        self.callback_args  = callback_args
+        self.python         = python
+        self.paths          = paths or []
+        self.serializer     = serializer
+        self.data           = None
+        self.profile        = None
+        self.error          = None
 
     @property
     def basedir(self):
@@ -296,7 +269,7 @@ class XFunc(object):
     @basedir.setter
     def basedir(self, basedir):
         if not os.path.isdir(basedir):
-            raise Exception('basedir is not a directory: %s' % basedir)
+            raise Exception("basedir is not a directory: %s" % basedir)
         self._basedir = os.path.abspath(basedir)
 
     @property
@@ -306,9 +279,9 @@ class XFunc(object):
     @tmpdir.setter
     def tmpdir(self, tmpdir):
         if not os.path.isdir(tmpdir):
-            raise Exception('tmpdir is not a directory: %s' % tmpdir)
+            raise Exception("tmpdir is not a directory: %s" % tmpdir)
         if not os.access(tmpdir, os.W_OK):
-            raise Exception('you do not have write access to tmpdir')
+            raise Exception("You do not have write access to 'tmpdir'. Please set the 'tmpdir' attribute to a different directory.")
         self._tmpdir = os.path.abspath(tmpdir)
 
     @property
@@ -331,6 +304,17 @@ class XFunc(object):
         self._python = python
 
     @property
+    def serializer(self):
+        """{'json', 'pickle'}: Which serialisation mechanism to use."""
+        return self._serializer
+
+    @serializer.setter
+    def serializer(self, serializer):
+        if not serializer in ('json', 'pickle'):
+            raise Exception("*serializer* should be one of {'json', 'pickle'}.")
+        self._serializer = serializer
+
+    @property
     def ipath(self):
         return os.path.join(self.tmpdir, '%s.in' % self.funcname)
 
@@ -338,17 +322,40 @@ class XFunc(object):
     def opath(self):
         return os.path.join(self.tmpdir, '%s.out' % self.funcname)
 
-    def _xecute(self, *args, **kwargs):
-        """Execute a function with optional positional and named arguments.
+    def __call__(self, *args, **kwargs):
+        """Make a call to the wrapped function.
+
+        Parameters
+        ----------
+        args : list
+            Positional arguments to be passed to the wrapped function.
+            Default is ``[]``.
+        kwargs : dict
+            Named arguments to be passed to the wrapped function.
+            Default is ``{}``.
+
+        Returns
+        -------
+        result: object or None
+            The data returned by the wrapped call.
+            The type of the return value depends on the implementation of the wrapped function.
+            If something went wrong the value is ``None``.
+            In this case, check the ``error`` attribute for more information.
+
         """
         idict = {'args': args, 'kwargs': kwargs}
 
-        with open(self.ipath, 'w+') as fh:
-            json.dump(idict, fh, cls=DataEncoder)
+        with open(self.ipath, 'w+') as fo:
+            if self.serializer == 'json':
+                json.dump(idict, fo, cls=DataEncoder)
+            else:
+                pickle.dump(idict, fo, protocol=pickle.HIGHEST_PROTOCOL)
 
         with open(self.opath, 'w+') as fh:
             fh.write('')
 
+        # this part is different on Mono
+        # ----------------------------------------------------------------------
         process_args = [self.python,
                         '-u',
                         '-c',
@@ -356,7 +363,8 @@ class XFunc(object):
                         self.basedir,
                         self.funcname,
                         self.ipath,
-                        self.opath]
+                        self.opath,
+                        self.serializer]
 
         process = Popen(process_args, stderr=PIPE, stdout=PIPE)
 
@@ -366,9 +374,36 @@ class XFunc(object):
                 self.callback(line, self.callback_args)
             if self.verbose:
                 print(line)
+        # ----------------------------------------------------------------------
+        # end of part
+        # p = Process()
+        # p.StartInfo.UseShellExecute = False
+        # p.StartInfo.RedirectStandardOutput = True
+        # p.StartInfo.RedirectStandardError = True
+        # p.StartInfo.FileName = self.python
+        # p.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4}'.format(WRAPPER,
+        #                                                              self.basedir,
+        #                                                              self.funcname,
+        #                                                              self.ipath,
+        #                                                              self.opath)
+        # p.Start()
+        # p.WaitForExit()
 
-        with open(self.opath, 'r') as fh:
-            odict = json.load(fh, cls=DataDecoder)
+        # while True:
+        #     line = p.StandardOutput.ReadLine()
+        #     if not line:
+        #         break
+        #     line = line.strip()
+        #     if self.verbose:
+        #         print(line)
+
+        # stderr = p.StandardError.ReadToEnd()
+
+        with open(self.opath, 'r') as fo:
+            if self.serializer == 'json':
+                odict = json.load(fo, cls=DataDecoder)
+            else:
+                odict = pickle.load(fo)
 
             self.data    = odict['data']
             self.profile = odict['profile']
@@ -397,11 +432,12 @@ class XFunc(object):
 if __name__ == '__main__':
 
     import compas
-    import compas_rhino
 
     from compas.datastructures import Mesh
+    from compas.plotters import MeshPlotter
     from compas.utilities import XFunc
-    from compas_rhino.helpers import MeshArtist
+
+    fd_numpy = XFunc('compas.numerical.fd_numpy', delete_files=True, serializer='json')
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -411,18 +447,20 @@ if __name__ == '__main__':
     q        = mesh.get_edges_attribute('q', 1.0)
     loads    = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
 
-    xyz, q, f, l, r = XFunc('compas.numerical.fd_numpy')(vertices, edges, fixed, q, loads)
+    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
+
+    print(type(xyz))
 
     for key, attr in mesh.vertices(True):
         attr['x'] = xyz[key][0]
         attr['y'] = xyz[key][1]
         attr['z'] = xyz[key][2]
 
-    artist = MeshArtist(mesh)
+    plotter = MeshPlotter(mesh)
+    plotter.draw_vertices()
+    plotter.draw_faces()
+    plotter.draw_edges()
+    plotter.show()
 
-    artist.clear()
+    print(fd_numpy.profile)
 
-    artist.draw_vertices()
-    artist.draw_edges()
-
-    artist.redraw()

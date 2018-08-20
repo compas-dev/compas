@@ -2,13 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+
 try:
     from numpy import asarray
     from scipy.spatial import ConvexHull
+
 except ImportError:
-    import sys
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 
 __author__     = ['Matthias Rippmann <rippmann@ethz.ch>']
@@ -186,10 +187,8 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-    viewer = MeshViewer(mesh)
+    viewer = MeshViewer()
 
-    viewer.axes_on = False
-    viewer.grid_on = False
+    viewer.mesh = mesh
 
-    viewer.setup()
     viewer.show()

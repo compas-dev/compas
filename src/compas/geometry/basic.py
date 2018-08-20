@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import sqrt
+from math import fabs
 from random import sample
 
 
@@ -13,6 +14,7 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
+    'allclose',
     'add_vectors',
     'add_vectors_xy',
     'sum_vectors',
@@ -36,7 +38,9 @@ __all__ = [
     'normalize_vector_xy',
     'normalize_vectors',
     'normalize_vectors_xy',
-    'orthonormalise_vectors',
+    'homogenize_vectors',
+    'dehomogenize_vectors',
+    'orthonormalize_vectors',
     'power_vector',
     'power_vectors',
     'scale_vector',
@@ -59,6 +63,17 @@ __all__ = [
     'pointcloud',
     'pointcloud_xy'
 ]
+
+
+def allclose(l1, l2, tol=1e-05):
+    """Returns True if two lists are element-wise equal within a tolerance.
+
+    The function is similar to NumPy's *allclose* function.
+    """
+    for a, b in zip(l1, l2):
+        if fabs(a - b) > tol:
+            return False
+    return True
 
 
 # ==============================================================================
@@ -344,7 +359,7 @@ def normalize_vector(vector):
     Returns
     -------
     list
-        The normalised vector.
+        The normalized vector.
 
     Examples
     --------
@@ -392,7 +407,7 @@ def normalize_vectors(vectors):
     Returns
     -------
     list
-        The normalised vectors.
+        The normalized vectors.
 
     Examples
     --------
@@ -413,7 +428,7 @@ def normalize_vectors_xy(vectors):
     Returns
     -------
     list
-        The normalised vectors in the XY plane.
+        The normalized vectors in the XY plane.
 
     Examples
     --------
@@ -940,7 +955,7 @@ def transpose_matrix(M):
         The result matrix.
 
     """
-    return zip(*M)
+    return list(map(list, zip(* list(M))))
 
 
 def multiply_matrices(A, B):
@@ -989,7 +1004,7 @@ def multiply_matrices(A, B):
         raise Exception('Row length in matrix B is inconsistent.')
     if not all([len(row) == n for row in A]):
         raise Exception('Matrix shapes are not compatible.')
-    B = list(zip(*B))
+    B = list(zip(* list(B)))
     return [[dot_vectors(row, col) for col in B] for row in A]
 
 
@@ -1043,13 +1058,66 @@ def multiply_matrix_vector(A, b):
 # ==============================================================================
 
 
-def orthonormalise_vectors(vectors):
-    """Orthonormalise a set of vectors.
+def homogenize_vectors(vectors, w=1.0):
+    """Homogenise a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+    w : float, optional
+        Homogenisation parameter.
+        Defaults to ``1.0``.
+
+    Returns
+    -------
+    list
+        Homogenised vectors.
+
+    Examples
+    --------
+    >>> vectors = [[1.0, 0.0, 0.0]]
+    >>> homogenize(vectors)
+    [[1.0, 0.0, 0.0, 1.0]]
+
+    Notes
+    -----
+    Vectors described by XYZ components are homogenised by appending a homogenisation
+    parameter to the components, and by dividing each component by that parameter.
+    Homogenisatioon of vectors is often used in relation to transformations.
+
+    """
+    return [[x / w, y / w, z / w, w] for x, y, z in vectors]
+
+
+def dehomogenize_vectors(vectors):
+    """Dehomogenise a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+
+    Returns
+    -------
+    list
+        Dehomogenised vectors.
+
+    Examples
+    --------
+    >>>
+
+    """
+    return [[x * w, y * w, z * w] for x, y, z, w in vectors]
+
+
+def orthonormalize_vectors(vectors):
+    """Orthonormalize a set of vectors.
 
     Parameters
     ----------
     vectors : list of list
-        The set of vectors to othonormalise.
+        The set of vectors to othonormalize.
 
     Returns
     -------
@@ -1065,7 +1133,7 @@ def orthonormalise_vectors(vectors):
 
     Examples
     --------
-    >>> orthonormalise_vectors([[1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+    >>> orthonormalize_vectors([[1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
     [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
 
     """

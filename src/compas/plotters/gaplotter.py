@@ -14,7 +14,10 @@ __license__    = 'MIT License'
 __email__      = 'mtomas@ethz.ch'
 
 
-class Ga_Plotter(object):
+__all__ = ['GaPlotter']
+
+
+class GaPlotter(object):
     """This class is to be used for the visualization of the optimization performed by the
     ``compas_ga.ga`` function. The function ``draw_ga_evolution`` produces a PDF that shows the
     minimum, maximum and average fitness value of the genetic population per generation.
@@ -80,6 +83,9 @@ class Ga_Plotter(object):
         self.xticks = None
         self.y_bounds = {'y_min': None, 'y_max': None}
         self.y_caps = {'y_min': float('-inf'), 'y_max': float('inf')}
+        self.plot_avg = True
+        self.plot_max = True
+        self.loc_dict = {'min': 1, 'max': 4}
 
     def get_ga_input_from_file(self):
         files = os.listdir(self.input_path)
@@ -168,9 +174,14 @@ class Ga_Plotter(object):
                     min_ = self.conversion_function(min_)
                     max_ = self.conversion_function(max_)
                     avg_ = self.conversion_function(avg_)
-                min_list.append(min_)
-                max_list.append(max_)
-                avg_list.append(avg_)
+                if self.fit_type == 'max':
+                    min_list.append(max_)
+                    max_list.append(min_)
+                    avg_list.append(avg_)
+                else:
+                    min_list.append(min_)
+                    max_list.append(max_)
+                    avg_list.append(avg_)
             except Exception:
                 if self.generation == 0:
                     raise ValueError('population files not found')
@@ -186,29 +197,29 @@ class Ga_Plotter(object):
         if not self.xticks:
             self.find_tick_size()
 
-        if self.fit_type == 'max':
-            plt.plot(min_list, color='black', lw=1, label='Minimum')
-            plt.plot(max_list, color='black', lw=2, label='Maximum')
-            loc = 4
-
-        else:
-            plt.plot(min_list, color='black', lw=2, label='Minimum')
+        plt.plot(min_list, color='black', lw=2, label='Minimum')
+        if self.plot_max:
             plt.plot(max_list, color='black', lw=1, label='Maximum')
-            loc = 1
-        plt.plot(avg_list, color='red' , lw=1, label='Average')
+        if self.plot_avg:
+            plt.plot(avg_list, color='red' , lw=1, label='Average')
         plt.minorticks_on()
 
         plt.xlim((-self.xticks / 2.0, self.num_gen - self.start_from_gen))
 
-        if self.y_bounds['y_min']:
-            y_min = self.y_bounds['y_min']
-        else:
-            y_min = min(min_list)
-
         if self.y_bounds['y_max']:
             y_max = self.y_bounds['y_max']
+            y_min = self.y_bounds['y_min']
         else:
-            y_max = max(max_list)
+            if self.plot_max:
+                full_list = min_list + max_list
+            elif self.plot_avg:
+                full_list = min_list + avg_list
+            else:
+                full_list = min_list
+            y_min = min(full_list)
+            y_max = max(full_list)
+        print ('y_max', y_max)
+        print ('y_min', y_min)
 
         if self.min_fit:
             plt.axhline(self.min_fit, color='red', ls=':', lw=0.5)
@@ -227,7 +238,7 @@ class Ga_Plotter(object):
         x = range(0, len(labels) * self.xticks, self.xticks)
         plt.xticks(x, labels)
         plt.grid(True)
-        plt.legend(loc=loc)
+        plt.legend(loc=self.loc_dict[self.fit_type])
         if make_pdf:
             plt.savefig(self.output_path + self.fit_name + '_evolution.pdf')
         if show_plot:
@@ -235,18 +246,34 @@ class Ga_Plotter(object):
         print('Evolution visualisation complete')
 
 
-def visualize_evolution(input_path, output_path, make_pdf=True, show_plot=False,
-                        start_from_gen=0, conversion_function=None):
-    vis = Ga_Plotter()
+def visualize_evolution(input_path,
+                        output_path=None,
+                        make_pdf=False,
+                        show_plot=True,
+                        start_from_gen=0,
+                        conversion_function=None,
+                        y_bounds=[None, None],
+                        plot_avg=True,
+                        plot_max=True):
+    vis = GaPlotter()
     vis.input_path = input_path
     vis.output_path = output_path
     vis.conversion_function = conversion_function
     vis.start_from_gen = 0
+    vis.y_bounds = {'y_min': y_bounds[0], 'y_max': y_bounds[1]}
+    vis.plot_avg = plot_avg
+    vis.plot_max = plot_max
     vis.draw_ga_evolution(make_pdf=make_pdf, show_plot=show_plot)
 
 
-if __name__ == '__main__':
-    input_path = '../_scripts/out/'
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    import compas
+    input_path = os.path.join(compas.TEMP, 'ga_out/')
     output_path = input_path
-    visualize_evolution(input_path, output_path, make_pdf=True, show_plot=True,
+    visualize_evolution(input_path, output_path, make_pdf=False, show_plot=True,
                         start_from_gen=0, conversion_function=None)
