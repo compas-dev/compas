@@ -9,7 +9,7 @@ The main library of COMPAS
    overview
    examples
    gettingstarted
-   tutorial
+   tutorials
    cookbook
    notes
    tools

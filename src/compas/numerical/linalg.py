@@ -598,7 +598,7 @@ def normalizerow(A, do_nan_to_num=True):
     Returns
     -------
     array
-        Matrix of normalised row vectors (m x n).
+        Matrix of normalized row vectors (m x n).
 
     Notes
     -----

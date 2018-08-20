@@ -376,7 +376,7 @@ def network_adjacency_matrix(network, rtype='array'):
 
     """
     key_index = network.key_index()
-    adjacency = [[key_index[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()]
+    adjacency = [[key_index[nbr] for nbr in network.vertex_neighbors(key)] for key in network.vertices()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
@@ -397,7 +397,7 @@ def network_degree_matrix(network, rtype='array'):
 
     """
     key_index = network.key_index()
-    adjacency = [[key_index[nbr] for nbr in network.vertex_neighbours(key)] for key in network.vertices()]
+    adjacency = [[key_index[nbr] for nbr in network.vertex_neighbors(key)] for key in network.vertices()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
@@ -487,7 +487,7 @@ def mesh_adjacency_matrix(mesh, rtype='array'):
 
     """
     key_index = mesh.key_index()
-    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbours(key)] for key in mesh.vertices()]
+    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
@@ -529,7 +529,7 @@ def mesh_degree_matrix(mesh, rtype='array'):
 
     """
     key_index = mesh.key_index()
-    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbours(key)] for key in mesh.vertices()]
+    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
@@ -557,7 +557,7 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
         rows.append(r)
         cols.append(r)
         # provide anchor clause?
-        nbrs = mesh.vertex_neighbours(key)
+        nbrs = mesh.vertex_neighbors(key)
         w = len(nbrs)
         d = - 1. / w
         for nbr in nbrs:
@@ -669,7 +669,7 @@ def trimesh_cotangent_laplacian_matrix(mesh):
 
     """
     # minus sum of the adjacent weights on the diagonal
-    # cotangent weights on the neighbours
+    # cotangent weights on the neighbors
     key_index = mesh.key_index()
     n = mesh.number_of_vertices()
     data = []
@@ -689,7 +689,7 @@ def trimesh_cotangent_laplacian_matrix(mesh):
         cols.append(i)
     L = coo_matrix((data, (rows, cols)), shape=(n, n))
     L = L.tocsr()
-    # subtract from the diagonal the sum of the weights of the neighbours of the
+    # subtract from the diagonal the sum of the weights of the neighbors of the
     # vertices corresponding to the diagonal entries.
     L = L - spdiags(L * ones(n), 0, n, n)
     L = L.tocsr()

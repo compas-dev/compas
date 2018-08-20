@@ -72,7 +72,7 @@ def mesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
         An edge can only be collapsed if the collapse is `legal`. A collapse is
         legal if it meets the following requirements:
 
-            * any vertex `w` that is a neighbour of both `u` and `v` is a face
+            * any vertex `w` that is a neighbor of both `u` and `v` is a face
               of the mesh
             * `u` and `v` are not on the boundary
             * ...
@@ -90,7 +90,7 @@ def mesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
         None
 
     Raises:
-        ValueError: If `u` and `v` are not neighbours.
+        ValueError: If `u` and `v` are not neighbors.
 
     """
     if t < 0.0:
@@ -192,7 +192,7 @@ def mesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
             del self.halfedge[v][u]
             self.halfedge[a][u] = fkey
 
-    # V neighbours and halfedges coming into V
+    # V neighbors and halfedges coming into V
     for nbr, fkey in list(self.halfedge[v].items()):
 
         if fkey is None:
@@ -239,7 +239,7 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
     An edge can only be collapsed if the collapse is `legal`. A collapse is
     legal if it meets the following requirements:
 
-        * any vertex `w` that is a neighbour of both `u` and `v` is a face
+        * any vertex `w` that is a neighbor of both `u` and `v` is a face
           of the mesh
         * `u` and `v` are not on the boundary
         * ...
@@ -265,7 +265,7 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
     Raises
     ------
     ValueError
-        If `u` and `v` are not neighbours.
+        If `u` and `v` are not neighbors.
 
     Examples
     --------
@@ -309,7 +309,7 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
         mesh.collapse_edge_tri(30, 31)
         mesh.collapse_edge_tri(30, 22)
 
-        points = mesh.get_vertices_attributes('xyz', keys=mesh.vertex_neighbours(30))
+        points = mesh.get_vertices_attributes('xyz', keys=mesh.vertex_neighbors(30))
         x, y, z = centroid_points(points)
 
         mesh.set_vertex_attributes(30, ('x', 'y', 'z'), (x, y, z))
@@ -383,7 +383,7 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
             del self.vertex[o]
             del self.halfedge[v][o]
 
-    # neighbourhood of V
+    # neighborhood of V
     for nbr, fkey in list(self.halfedge[v].items()):
 
         if fkey is None:

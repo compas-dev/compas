@@ -441,8 +441,8 @@ class FaceNetwork(FaceHelpers,
     # vertex topology
     # --------------------------------------------------------------------------
 
-    def vertex_neighbours(self, key, ordered=False):
-        """Return the neighbours of a vertex."""
+    def vertex_neighbors(self, key, ordered=False):
+        """Return the neighbors of a vertex."""
 
         temp = list(self.halfedge[key])
 
@@ -485,7 +485,7 @@ class FaceNetwork(FaceHelpers,
             faces = list(self.halfedge[key].values())
 
         else:
-            nbrs = self.vertex_neighbours(key, ordered=True)
+            nbrs = self.vertex_neighbors(key, ordered=True)
 
             # if len(nbrs) == 1:
             #     nbr = nbrs[0]
@@ -536,8 +536,8 @@ class FaceNetwork(FaceHelpers,
         vertices = self.face_vertices(fkey)
         return window(vertices + vertices[0:2], 3)
 
-    def face_neighbours(self, fkey):
-        """Return the neighbours of a face across its edges."""
+    def face_neighbors(self, fkey):
+        """Return the neighbors of a face across its edges."""
         nbrs = []
         for u, v in self.face_halfedges(fkey):
             nbr = self.halfedge[v][u]
@@ -545,8 +545,8 @@ class FaceNetwork(FaceHelpers,
                 nbrs.append(nbr)
         return nbrs
 
-    def face_vertex_neighbours(self, fkey):
-        """Return the neighbours of a face across its corners."""
+    def face_vertex_neighbors(self, fkey):
+        """Return the neighbors of a face across its corners."""
         nbrs = []
         for u, v in self.face_halfedges(fkey):
             nbr = self.halfedge[v][u]
@@ -555,8 +555,8 @@ class FaceNetwork(FaceHelpers,
                 nbrs.append(self.halfedge[w][u])
         return nbrs
 
-    def face_neighbourhood(self, fkey):
-        """Return the neighbours of a face across both edges and corners."""
+    def face_neighborhood(self, fkey):
+        """Return the neighbors of a face across both edges and corners."""
         nbrs = []
         for u, v in self.face_halfedges(fkey):
             nbr = self.halfedge[v][u]
@@ -659,7 +659,7 @@ class FaceNetwork(FaceHelpers,
     # name it as such
     def vertex_normal(self, key):
         """Return the normal vector at the vertex as the weighted average of the
-        normals of the neighbouring faces."""
+        normals of the neighboring faces."""
         vectors = [self.face_normal(fkey) for fkey in self.vertex_faces(key) if fkey is not None]
         return normalize_vector(centroid_points(vectors))
 
@@ -671,9 +671,9 @@ class FaceNetwork(FaceHelpers,
         """Return the coordinates of the vertices of a face."""
         return [self.vertex_coordinates(key, axes=axes) for key in self.face_vertices(fkey)]
 
-    def face_normal(self, fkey, normalised=True):
+    def face_normal(self, fkey, normalized=True):
         """Return the normal of a face."""
-        return normal_polygon(self.face_coordinates(fkey), normalised=normalised)
+        return normal_polygon(self.face_coordinates(fkey), normalized=normalized)
 
     def face_centroid(self, fkey):
         """Return the location of the centroid of a face."""

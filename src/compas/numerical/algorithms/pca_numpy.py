@@ -126,7 +126,7 @@ def pca_numpy(data):
 
     # eigenvectors
     # ------------
-    # note: the eigenvectors are normalised
+    # note: the eigenvectors are normalized
     # note: vT is exactly what it says it will be => the transposed eigenvectors
     # => take the rows of vT, or the columns of v
     # the right-singular vectors of C (the columns of V or the rows of Vt)

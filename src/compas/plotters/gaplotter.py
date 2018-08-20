@@ -255,7 +255,7 @@ def visualize_evolution(input_path,
                         y_bounds=[None, None],
                         plot_avg=True,
                         plot_max=True):
-    vis = Ga_Plotter()
+    vis = GaPlotter()
     vis.input_path = input_path
     vis.output_path = output_path
     vis.conversion_function = conversion_function

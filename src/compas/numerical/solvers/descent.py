@@ -46,7 +46,7 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
     x0 : array-like
         n x 1 starting guess of x.
     fn : obj
-        The objective function to minimise.
+        The objective function to minimize.
     iterations : int
         Maximum number of iterations.
     gtol : float

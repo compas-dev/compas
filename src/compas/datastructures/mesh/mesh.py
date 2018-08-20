@@ -117,11 +117,11 @@ class Mesh(FromToJson,
     halfedge : dict
         The half-edge dictionary.
         Every key in the dictionary corresponds to a vertex of the mesh.
-        With every key corresponds a dictionary of neighbours pointing to face keys.
+        With every key corresponds a dictionary of neighbors pointing to face keys.
     edge : dict
         The edge dictionary.
         Every key in the dictionary corresponds to a vertex.
-        With every key corresponds a dictionary of neighbours pointing to attribute dictionaries.
+        With every key corresponds a dictionary of neighbors pointing to attribute dictionaries.
     attributes : dict
         General mesh attributes.
 
@@ -657,8 +657,9 @@ class Mesh(FromToJson,
         >>>
 
         """
+        key_index = self.key_index()
         vertices = [self.vertex_coordinates(key) for key in self.vertices()]
-        faces = [self.face_vertices(fkey) for fkey in self.faces()]
+        faces = [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
         return vertices, faces
 
     # --------------------------------------------------------------------------
@@ -977,7 +978,7 @@ class Mesh(FromToJson,
             plotter.show()
 
         """
-        nbrs = self.vertex_neighbours(key)
+        nbrs = self.vertex_neighbors(key)
         for nbr in nbrs:
             fkey = self.halfedge[key][nbr]
             if fkey is None:
@@ -988,7 +989,7 @@ class Mesh(FromToJson,
         for nbr in nbrs:
             del self.halfedge[nbr][key]
         for nbr in nbrs:
-            for n in self.vertex_neighbours(nbr):
+            for n in self.vertex_neighbors(nbr):
                 if self.halfedge[nbr][n] is None and self.halfedge[n][nbr] is None:
                     del self.halfedge[nbr][n]
                     del self.halfedge[n][nbr]
@@ -1232,7 +1233,11 @@ class Mesh(FromToJson,
             return False
 
         for key in self.vertices():
-            nbrs = self.vertex_neighbours(key, ordered=True)
+
+            if list(self.halfedge[key].values()).count(None) > 1:
+                return False
+
+            nbrs = self.vertex_neighbors(key, ordered=True)
 
             if not nbrs:
                 return False
@@ -1479,27 +1484,27 @@ class Mesh(FromToJson,
                 return True
         return False
 
-    def vertex_neighbours(self, key, ordered=False):
-        """Return the neighbours of a vertex.
+    def vertex_neighbors(self, key, ordered=False):
+        """Return the neighbors of a vertex.
 
         Parameters
         ----------
         key : hashable
             The identifier of the vertex.
         ordered : bool, optional
-            Return the neighbours in the cycling order of the faces.
+            Return the neighbors in the cycling order of the faces.
             Default is false.
 
         Returns
         -------
         list
-            The list of neighbouring vertices.
+            The list of neighboring vertices.
             If the vertex lies on the boundary of the mesh,
             an ordered list always starts and ends with with boundary vertices.
 
         Note
         ----
-        Due to the nature of the ordering algorithm, the neighbours cycle around
+        Due to the nature of the ordering algorithm, the neighbors cycle around
         the node in the opposite direction as the cycling direction of the faces.
         For some algorithms this produces the expected results. For others it doesn't.
         For example, a dual mesh constructed relying on these conventions will have
@@ -1517,7 +1522,7 @@ class Mesh(FromToJson,
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
             key = 17
-            nbrs = mesh.vertex_neighbours(key, ordered=True)
+            nbrs = mesh.vertex_neighbors(key, ordered=True)
 
             plotter = MeshPlotter(mesh)
 
@@ -1546,7 +1551,7 @@ class Mesh(FromToJson,
         if len(temp) == 1:
             return temp
 
-        # if one of the neighbours points to the *outside* face
+        # if one of the neighbors points to the *outside* face
         # start there
         # otherwise the starting point can be random
         start = temp[0]
@@ -1576,24 +1581,24 @@ class Mesh(FromToJson,
 
         return nbrs
 
-    def vertex_neighbourhood(self, key, ring=1):
-        """Return the vertices in the neighbourhood of a vertex.
+    def vertex_neighborhood(self, key, ring=1):
+        """Return the vertices in the neighborhood of a vertex.
 
         Parameters
         ----------
         key : hashable
             The identifier of the vertex.
         ring : int, optional
-            The number of neighbourhood rings to include. Default is ``1``.
+            The number of neighborhood rings to include. Default is ``1``.
 
         Returns
         -------
         list
-            The vertices in the neighbourhood.
+            The vertices in the neighborhood.
 
         Note
         ----
-        The vertices in the neighbourhood are unordered.
+        The vertices in the neighborhood are unordered.
 
         Example
         -------
@@ -1607,7 +1612,7 @@ class Mesh(FromToJson,
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
             key = 17
-            nbrs = mesh.vertex_neighbourhood(key, ring=2)
+            nbrs = mesh.vertex_neighborhood(key, ring=2)
 
             plotter = MeshPlotter(mesh)
 
@@ -1624,7 +1629,7 @@ class Mesh(FromToJson,
             plotter.show()
 
         """
-        nbrs = set(self.vertex_neighbours(key))
+        nbrs = set(self.vertex_neighbors(key))
 
         i = 1
         while True:
@@ -1633,7 +1638,7 @@ class Mesh(FromToJson,
 
             temp = []
             for key in nbrs:
-                temp += self.vertex_neighbours(key)
+                temp += self.vertex_neighbors(key)
 
             nbrs.update(temp)
 
@@ -1642,7 +1647,7 @@ class Mesh(FromToJson,
         return nbrs
 
     def vertex_degree(self, key):
-        """Count the neighbours of a vertex.
+        """Count the neighbors of a vertex.
 
         Parameters
         ----------
@@ -1655,7 +1660,7 @@ class Mesh(FromToJson,
             The degree of the vertex.
 
         """
-        return len(self.vertex_neighbours(key))
+        return len(self.vertex_neighbors(key))
 
     def vertex_min_degree(self):
         """Compute the minimum degree of all vertices.
@@ -1745,7 +1750,7 @@ class Mesh(FromToJson,
             faces = list(self.halfedge[key].values())
 
         else:
-            nbrs = self.vertex_neighbours(key, ordered=True)
+            nbrs = self.vertex_neighbors(key, ordered=True)
             faces = [self.halfedge[key][n] for n in nbrs]
 
         if include_none:
@@ -1878,8 +1883,8 @@ class Mesh(FromToJson,
         vertices = self.face_vertices(fkey)
         return list(window(vertices + vertices[0:2], 3))
 
-    def face_neighbours(self, fkey):
-        """Return the neighbours of a face across its edges.
+    def face_neighbors(self, fkey):
+        """Return the neighbors of a face across its edges.
 
         Parameters
         ----------
@@ -1889,7 +1894,7 @@ class Mesh(FromToJson,
         Returns
         -------
         list
-            The identifiers of the neighbouring faces.
+            The identifiers of the neighboring faces.
 
         Example
         -------
@@ -1903,7 +1908,7 @@ class Mesh(FromToJson,
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
             key = 12
-            nbrs = mesh.face_neighbours(key)
+            nbrs = mesh.face_neighbors(key)
 
             text = {nbr: str(nbr) for nbr in nbrs}
             text[key] = str(key)
@@ -1926,7 +1931,7 @@ class Mesh(FromToJson,
         return nbrs
 
     def face_degree(self, fkey):
-        """Count the neighbours of a face.
+        """Count the neighbors of a face.
 
         Parameters
         ----------
@@ -1939,7 +1944,7 @@ class Mesh(FromToJson,
             The count.
 
         """
-        return len(self.face_neighbours(fkey))
+        return len(self.face_neighbors(fkey))
 
     def face_min_degree(self):
         """Compute the minimum degree of all faces.
@@ -2139,7 +2144,7 @@ class Mesh(FromToJson,
         return 0.25 * area
 
     def vertex_laplacian(self, key):
-        """Compute the vector from a vertex to the centroid of its neighbours.
+        """Compute the vector from a vertex to the centroid of its neighbors.
 
         Parameters
         ----------
@@ -2152,12 +2157,12 @@ class Mesh(FromToJson,
             The components of the vector.
 
         """
-        c = self.vertex_neighbourhood_centroid(key)
+        c = self.vertex_neighborhood_centroid(key)
         p = self.vertex_coordinates(key)
         return subtract_vectors(c, p)
 
-    def vertex_neighbourhood_centroid(self, key):
-        """Compute the centroid of the neighbours of a vertex.
+    def vertex_neighborhood_centroid(self, key):
+        """Compute the centroid of the neighbors of a vertex.
 
         Parameters
         ----------
@@ -2170,11 +2175,11 @@ class Mesh(FromToJson,
             The coordinates of the centroid.
 
         """
-        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbours(key)])
+        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbors(key)])
 
     def vertex_normal(self, key):
         """Return the normal vector at the vertex as the weighted average of the
-        normals of the neighbouring faces."""
+        normals of the neighboring faces."""
         vectors = [self.face_normal(fkey) for fkey in self.vertex_faces(key) if fkey is not None]
         return normalize_vector(centroid_points(vectors))
 
@@ -2683,7 +2688,23 @@ if __name__ == '__main__':
     import compas
     from compas.plotters import MeshPlotter
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    # mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    vertices = [
+        [0, 0, 0],
+        [1, 1, 0],
+        [1, -1, 0],
+        [-1, -1, 0],
+        [-1, 1, 0]
+    ]
+    faces = [
+        [0, 2, 1],
+        [0, 4, 3]
+    ]
+
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+    print(mesh.is_manifold())
 
     # mesh = Mesh()
 

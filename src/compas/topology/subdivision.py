@@ -374,7 +374,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         key_xyz = {key: subd.vertex_coordinates(key) for key in subd.vertex}
 
-        # move each edge point to the average of the neighbouring centroids and
+        # move each edge point to the average of the neighboring centroids and
         # the original end points
 
         for w in edgepoints:
@@ -384,8 +384,8 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
             subd.vertex[w]['y'] = y
             subd.vertex[w]['z'] = z
 
-        # move each vertex to the weighted average of itself, the neighbouring
-        # centroids and the neighbouring mipoints
+        # move each vertex to the weighted average of itself, the neighboring
+        # centroids and the neighboring mipoints
 
         for key in mesh.vertices():
             if key in fixed:
@@ -580,7 +580,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
         edgepoints    = {}
 
         for key in subd:
-            nbrs = subd.vertex_neighbours(key)
+            nbrs = subd.vertex_neighbors(key)
             n = len(nbrs)
 
             if n == 3:

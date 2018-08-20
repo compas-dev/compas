@@ -51,7 +51,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
     Parameters
     ----------
     fn : obj
-        The function to evaluate and minimise.
+        The function to evaluate and minimize.
     bounds : list
         Lower and upper bounds for each DoF [[lb, ub], ...].
     population : int
@@ -82,7 +82,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
     float
         Optimal value of objective function.
     list
-        Values that give the optimum (minimised) function.
+        Values that give the optimum (minimized) function.
 
     """
 

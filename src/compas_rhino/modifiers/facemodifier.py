@@ -32,7 +32,7 @@ class FaceModifier(object):
     @staticmethod
     def move_face(self, key, constraint=None, allow_off=None):
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        nbrs  = [self.face_coordinates(nbr) for nbr in self.face_neighbours(key)]
+        nbrs  = [self.face_coordinates(nbr) for nbr in self.face_neighbors(key)]
         nbrs  = [Point3d(*xyz) for xyz in nbrs]
 
         def OnDynamicDraw(sender, e):

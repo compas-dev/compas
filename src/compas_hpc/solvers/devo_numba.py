@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -59,7 +58,7 @@ def devo_numba(bounds, population, generations, printout):
     Returns
     -------
     array
-        Values that give the optimum (minimised) function.
+        Values that give the optimum (minimized) function.
 
     """
 

@@ -11,13 +11,16 @@ from compas.datastructures.mesh import Mesh
 from compas_ghpython.utilities import xdraw_mesh
 from compas.utilities.colors import color_to_colordict
 
+__all__ = [
+    'mesh_draw'
+]
 
-def mesh_draw(mesh, 
-              show_faces=False, 
-              show_vertices=False, 
+def mesh_draw(mesh,
+              show_faces=False,
+              show_vertices=False,
               show_edges=False,
-              vertexcolor=None, 
-              edgecolor=None, 
+              vertexcolor=None,
+              edgecolor=None,
               facecolor=None):
     """
     Draw a mesh object in Grasshopper.

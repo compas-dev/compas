@@ -40,7 +40,7 @@ __all__ = [
     'normalize_vectors_xy',
     'homogenize_vectors',
     'dehomogenize_vectors',
-    'orthonormalise_vectors',
+    'orthonormalize_vectors',
     'power_vector',
     'power_vectors',
     'scale_vector',
@@ -359,7 +359,7 @@ def normalize_vector(vector):
     Returns
     -------
     list
-        The normalised vector.
+        The normalized vector.
 
     Examples
     --------
@@ -407,7 +407,7 @@ def normalize_vectors(vectors):
     Returns
     -------
     list
-        The normalised vectors.
+        The normalized vectors.
 
     Examples
     --------
@@ -428,7 +428,7 @@ def normalize_vectors_xy(vectors):
     Returns
     -------
     list
-        The normalised vectors in the XY plane.
+        The normalized vectors in the XY plane.
 
     Examples
     --------
@@ -955,7 +955,7 @@ def transpose_matrix(M):
         The result matrix.
 
     """
-    return list(zip(* list(M)))
+    return list(list(item) for item in zip(* list(M)))
 
 
 def multiply_matrices(A, B):
@@ -1111,13 +1111,13 @@ def dehomogenize_vectors(vectors):
     return [[x * w, y * w, z * w] for x, y, z, w in vectors]
 
 
-def orthonormalise_vectors(vectors):
-    """Orthonormalise a set of vectors.
+def orthonormalize_vectors(vectors):
+    """Orthonormalize a set of vectors.
 
     Parameters
     ----------
     vectors : list of list
-        The set of vectors to othonormalise.
+        The set of vectors to othonormalize.
 
     Returns
     -------
@@ -1133,7 +1133,7 @@ def orthonormalise_vectors(vectors):
 
     Examples
     --------
-    >>> orthonormalise_vectors([[1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+    >>> orthonormalize_vectors([[1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
     [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
 
     """

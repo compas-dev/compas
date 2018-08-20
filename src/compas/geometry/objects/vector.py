@@ -368,7 +368,7 @@ class Vector(object):
         pass
 
     @staticmethod
-    def orthonormalise_vectors(vectors):
+    def orthonormalize_vectors(vectors):
         pass
 
     # ==========================================================================
@@ -394,7 +394,7 @@ class Vector(object):
 
         """
         cls = type(self)
-        return cls(self.x, self.y, self.z, self.w, self.precision)
+        return cls(self.x, self.y, self.z, self.precision)
 
     # ==========================================================================
     # methods
