@@ -95,6 +95,12 @@ class Transformation(object):
             return True
         except BaseException:
             raise TypeError("Wrong input type.")
+    
+    def copy(self):
+        """Returns a copy of the transformation.
+        """
+        cls = type(self)
+        return cls.from_matrix(self.matrix)
 
     def __repr__(self):
         s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10)

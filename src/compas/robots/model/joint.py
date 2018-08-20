@@ -1,15 +1,23 @@
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from compas.files import URDF
+from compas.geometry import Vector
+from compas.geometry.transformations import transform_vectors
+from compas.geometry.xforms import Rotation
+from compas.geometry.xforms import Transformation
 
-from .geometry import SCALE_FACTOR, Origin, _parse_floats
+from .geometry import SCALE_FACTOR
+from .geometry import Origin
+from .geometry import _parse_floats
 
-__all__ = ['Joint', 'ParentJoint', 'ChildJoint', 'Calibration',
+__all__ = ['Joint', 'ParentLink', 'ChildLink', 'Calibration',
            'Dynamics', 'Limit', 'Axis', 'Mimic', 'SafetyController']
 
 
-class ParentJoint(object):
-    """Describes a parent relation between joints."""
+class ParentLink(object):
+    """Describes a parent relation between a joint its parent link."""
 
     def __init__(self, link):
         self.link = link
@@ -18,8 +26,8 @@ class ParentJoint(object):
         return str(self.link)
 
 
-class ChildJoint(object):
-    """Describes a child relation between joints."""
+class ChildLink(object):
+    """Describes a child relation between a joint and its child link."""
 
     def __init__(self, link):
         self.link = link
@@ -88,10 +96,43 @@ class Axis(object):
     def __init__(self, xyz='0 0 0'):
         # We are not using Vector here because we
         # cannot attach _urdf_source to it due to __slots__
-        xyz = _parse_floats(xyz, SCALE_FACTOR)
+        xyz = _parse_floats(xyz, 1.)
         self.x = xyz[0]
         self.y = xyz[1]
         self.z = xyz[2]
+        self.init = None
+
+    def copy(self):
+        cls = type(self)
+        return cls("%f %f %f" % (self.x, self.y, self.z))
+
+    def reset_transform(self):
+        if self.init:
+            cp = self.init.copy()
+            self.x = cp.x
+            self.y = cp.y
+            self.z = cp.z
+
+    def transform(self, transformation):
+        xyz = transform_vectors(
+            [[self.x, self.y, self.z]], transformation.matrix)
+        self.x = xyz[0][0]
+        self.y = xyz[0][1]
+        self.z = xyz[0][2]
+
+    def create(self, transformation):
+        """Stores the initial direction of the axis.
+         This is called when the robot is created.
+        """
+        self.transform(transformation)
+        self.init = self.copy()
+
+    @property
+    def vector(self):
+        return Vector(self.x, self.y, self.z)
+
+    def __str__(self):
+        return "[%.3f, %.3f, %.3f]" % (self.x, self.y, self.z)
 
 
 class Joint(object):
@@ -116,7 +157,7 @@ class Joint(object):
         safety_controller: Safety controller properties.
         mimic: Used to specify that the defined joint mimics another existing joint.
         attr: Non-standard attributes.
-        childlink: the joint's child link
+        child_link: the joint's child link
     """
     SUPPORTED_TYPES = ('revolute', 'continuous', 'prismatic',
                        'fixed', 'floating', 'planar')
@@ -127,8 +168,8 @@ class Joint(object):
 
         self.name = name
         self.type = type
-        self.parent = parent
-        self.child = child
+        self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
+        self.child = child if isinstance(child, ChildLink) else ChildLink(child)
         self.origin = origin
         self.axis = axis
         self.calibration = calibration
@@ -137,12 +178,53 @@ class Joint(object):
         self.safety_controller = safety_controller
         self.mimic = mimic
         self.attr = kwargs
-        self.childlink = None
+        self.child_link = None
+        self.position = 0  # the position of the joint
+
+    @property
+    def current_transformation(self):
+        if self.origin:
+            return Transformation.from_frame(self.origin)
+        else:
+            return Transformation()
+
+    @property
+    def init_transformation(self):
+        if self.origin:
+            return self.origin.init_transformation.copy()
+        else:
+            return Transformation()
+
+    def reset_transform(self):
+        if self.origin:
+            self.origin.reset_transform()
+        if self.axis:
+            self.axis.reset_transform()
+
+    def transform(self, transformation):
+        if self.origin:
+            self.origin.transform(transformation)
+        if self.axis:
+            self.axis.transform(transformation)
+
+    def calculate_transformation(self, position):
+        """Calculates the transformation of the joint based on the position and
+        its type.
+        """
+        if self.type == "revolute":
+            return Rotation.from_axis_and_angle(self.axis.vector, position, self.origin.point)
+        elif self.type == "fixed":
+            return Transformation() # identity matrix
+        else:
+            return NotImplementedError
+
+    def calculate_reset_transformation(self):
+        return self.init_transformation * self.current_transformation.inverse()
 
 
 URDF.add_parser(Joint, 'robot/joint')
-URDF.add_parser(ParentJoint, 'robot/joint/parent')
-URDF.add_parser(ChildJoint, 'robot/joint/child')
+URDF.add_parser(ParentLink, 'robot/joint/parent')
+URDF.add_parser(ChildLink, 'robot/joint/child')
 URDF.add_parser(Calibration, 'robot/joint/calibration')
 URDF.add_parser(Dynamics, 'robot/joint/dynamics')
 URDF.add_parser(Limit, 'robot/joint/limit')
