@@ -657,8 +657,9 @@ class Mesh(FromToJson,
         >>>
 
         """
+        key_index = self.key_index()
         vertices = [self.vertex_coordinates(key) for key in self.vertices()]
-        faces = [self.face_vertices(fkey) for fkey in self.faces()]
+        faces = [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
         return vertices, faces
 
     # --------------------------------------------------------------------------
