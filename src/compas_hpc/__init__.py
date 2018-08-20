@@ -116,7 +116,7 @@ basic
     dot_vectors_xy_numba
     vector_component_numba
     vector_component_xy_numba
-    orthonormalise_vectors_numba
+    orthonormalize_vectors_numba
     plane_from_points_numba
     circle_from_points_numba
     circle_from_points_xy_numba

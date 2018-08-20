@@ -40,7 +40,7 @@ double length_vector_squared(gsl_vector *u)
 }
 
 
-void normalise_vector(gsl_vector *u)
+void normalize_vector(gsl_vector *u)
 {
     gsl_vector_scale(u, 1./length_vector(u));
 }

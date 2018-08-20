@@ -477,7 +477,7 @@ class Network(FromToJson,
     # --------------------------------------------------------------------------
 
     def delete_vertex(self, key):
-        for nbr in self.vertex_neighbours(key):
+        for nbr in self.vertex_neighbors(key):
             del self.halfedge[key][nbr]
             del self.halfedge[nbr][key]
             if key in self.edge and nbr in self.edge[key]:
@@ -593,13 +593,13 @@ class Network(FromToJson,
     def is_vertex_connected(self, key):
         return self.vertex_degree(key) > 0
 
-    def vertex_neighbours(self, key):
-        """Return the neighbours of a vertex."""
+    def vertex_neighbors(self, key):
+        """Return the neighbors of a vertex."""
         return list(self.halfedge[key])
 
-    def vertex_neighbourhood(self, key, ring=1):
-        """Return the vertices in the neighbourhood of a vertex."""
-        nbrs = set(self.vertex_neighbours(key))
+    def vertex_neighborhood(self, key, ring=1):
+        """Return the vertices in the neighborhood of a vertex."""
+        nbrs = set(self.vertex_neighbors(key))
 
         i = 1
         while True:
@@ -608,7 +608,7 @@ class Network(FromToJson,
 
             temp = []
             for key in nbrs:
-                temp += self.vertex_neighbours(key)
+                temp += self.vertex_neighbors(key)
 
             nbrs.update(temp)
 
@@ -616,30 +616,30 @@ class Network(FromToJson,
 
         return nbrs
 
-    def vertex_neighbours_out(self, key):
-        """Return the outgoing neighbours of a vertex."""
+    def vertex_neighbors_out(self, key):
+        """Return the outgoing neighbors of a vertex."""
         return list(self.edge[key])
 
-    def vertex_neighbours_in(self, key):
-        """Return the incoming neighbours of a vertex."""
+    def vertex_neighbors_in(self, key):
+        """Return the incoming neighbors of a vertex."""
         return list(set(self.halfedge[key]) - set(self.edge[key]))
 
     def vertex_degree(self, key):
-        """Return the number of neighbours of a vertex."""
-        return len(self.vertex_neighbours(key))
+        """Return the number of neighbors of a vertex."""
+        return len(self.vertex_neighbors(key))
 
     def vertex_degree_out(self, key):
-        """Return the number of outgoing neighbours of a vertex."""
-        return len(self.vertex_neighbours_out(key))
+        """Return the number of outgoing neighbors of a vertex."""
+        return len(self.vertex_neighbors_out(key))
 
     def vertex_degree_in(self, key):
-        """Return the numer of incoming neighbours of a vertex."""
-        return len(self.vertex_neighbours_in(key))
+        """Return the numer of incoming neighbors of a vertex."""
+        return len(self.vertex_neighbors_in(key))
 
     def vertex_connected_edges(self, key):
         """Return the edges connected to a vertex."""
         edges = []
-        for nbr in self.vertex_neighbours(key):
+        for nbr in self.vertex_neighbors(key):
             if nbr in self.edge[key]:
                 edges.append((key, nbr))
             else:
@@ -657,12 +657,12 @@ class Network(FromToJson,
 
     def edge_connected_edges(self, u, v):
         edges = []
-        for nbr in self.vertex_neighbours(u):
+        for nbr in self.vertex_neighbors(u):
             if nbr in self.edge[u]:
                 edges.append((u, nbr))
             else:
                 edges.append((nbr, u))
-        for nbr in self.vertex_neighbours(v):
+        for nbr in self.vertex_neighbors(v):
             if nbr in self.edge[v]:
                 edges.append((v, nbr))
             else:
@@ -678,13 +678,13 @@ class Network(FromToJson,
         return [self.vertex[key][axis] for axis in axes]
 
     def vertex_laplacian(self, key):
-        """Return the vector from the vertex to the centroid of its 1-ring neighbourhood."""
-        c = centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbours(key)])
+        """Return the vector from the vertex to the centroid of its 1-ring neighborhood."""
+        c = centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbors(key)])
         p = self.vertex_coordinates(key)
         return subtract_vectors(c, p)
 
-    def vertex_neighbourhood_centroid(self, key):
-        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbours(key)])
+    def vertex_neighborhood_centroid(self, key):
+        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbors(key)])
 
     # --------------------------------------------------------------------------
     # edge geometry

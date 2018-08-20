@@ -32,7 +32,7 @@ class VertexModifier(object):
     @staticmethod
     def move_vertex(self, key, constraint=None, allow_off=None):
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        nbrs  = [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbours(key)]
+        nbrs  = [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)]
         nbrs  = [Point3d(*xyz) for xyz in nbrs]
 
         def OnDynamicDraw(sender, e):

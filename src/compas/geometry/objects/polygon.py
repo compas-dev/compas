@@ -150,7 +150,7 @@ class Polygon(object):
     #     a, b, c = self.normal
     #     u = 1.0, 0.0, - a / c
     #     v = 0.0, 1.0, - b / c
-    #     u, v = orthonormalise_vectors([u, v])
+    #     u, v = orthonormalize_vectors([u, v])
     #     u = Vector(*u)
     #     v = Vector(*v)
     #     u.unitize()

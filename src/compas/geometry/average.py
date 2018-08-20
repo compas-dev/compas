@@ -32,8 +32,8 @@ __all__ = [
     'center_of_mass_polygon',
     'center_of_mass_polygon_xy',
     'center_of_mass_polyhedron',
-    'tween_pts',
-    'tween_pts_dist'
+    'tween_points',
+    'tween_points_distance'
 ]
 
 
@@ -327,14 +327,14 @@ def center_of_mass_polyhedron(polyhedron):
     return x, y, z
 
 
-def tween_pts(pts, pts_, num):
+def tween_points(points1, points2, num):
     """Compute the interpolated points between two sets of points.
 
     Parameters
     ----------
-    pts : list
+    points1 : list
         The first set of points
-    pts_ : list
+    points2 : list
         The second set of points
     num : int
         The number of interpolated sets to return
@@ -344,24 +344,24 @@ def tween_pts(pts, pts_, num):
         Nested list of points
 
     """
-    ptlist = []
+    tweens = []
     for j in range(num - 1):
-        tpts = []
-        for i in range(len(pts)):
-            tpts.append(add_vectors(pts[i], scale_vector(vector_from_points(pts[i], pts_[i]), 1 / (num / (j + 1)))))
-        ptlist.append(tpts)
-    return ptlist
+        tween = []
+        for i in range(len(points1)):
+            tween.append(add_vectors(points1[i], scale_vector(vector_from_points(points1[i], points2[i]), 1 / (num / (j + 1)))))
+        tweens.append(tween)
+    return tweens
 
 
-def tween_pts_dist(pts, pts_, dist, index=None):
+def tween_points_distance(points1, points2, dist, index=None):
     """Compute an interpolated set of points between two sets of points, at
     a given distance.
 
     Parameters
     ----------
-    pts : list
+    points1 : list
         The first set of points
-    pts_ : list
+    points2 : list
         The second set of points
     dist : float
         The distance from the first set to the second at which to compute the
@@ -377,12 +377,13 @@ def tween_pts_dist(pts, pts_, dist, index=None):
     """
     if not index:
         index = 0
-    d = distance_point_point(pts[index], pts_[index])
+    d = distance_point_point(points1[index], points2[index])
     scale = float(dist) / d
-    tpts = []
-    for i in range(len(pts)):
-        tpts.append(add_vectors(pts[i], scale_vector(vector_from_points(pts[i], pts_[i]), scale)))
-    return tpts
+    tweens = []
+    for i in range(len(points1)):
+        tweens.append(add_vectors(points1[i], scale_vector(vector_from_points(points1[i], points2[i]), scale)))
+    return tweens
+
 
 # ==============================================================================
 # Main

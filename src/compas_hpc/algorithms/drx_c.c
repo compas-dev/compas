@@ -178,8 +178,8 @@ void drx_solver_c(
                 add_vectors(Kx, Ky, Mc);
                 cross_vectors(Mc, Qa, ua);
                 cross_vectors(Mc, Qb, ub);
-                normalise_vector(ua);
-                normalise_vector(ub);
+                normalize_vector(ua);
+                normalize_vector(ub);
                 cross_vectors(Qa, ua, c1);
                 cross_vectors(Qb, ub, c2);
 
