@@ -127,3 +127,5 @@ docs/__build
 
 *.pickle
 
+.DS_Store
+
