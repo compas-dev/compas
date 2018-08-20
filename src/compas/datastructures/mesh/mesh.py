@@ -153,7 +153,7 @@ class Mesh(FromToJson,
     # --------------------------------------------------------------------------
 
     def __str__(self):
-        """Compile a summary of the mesh."""
+        """Generate a readable representation of the data of the mesh."""
         return json.dumps(self.data, sort_keys=True, indent=4)
 
     def summary(self):

@@ -43,6 +43,18 @@ __email__      = '<vanmelet@ethz.ch>'
 __all__ = ['Network', ]
 
 
+TPL = """
+================================================================================
+Network summary
+================================================================================
+
+- name: {}
+- vertices: {}
+- edges: {}
+- vertex degree: {}/{}
+
+"""
+
 class Network(FromToJson,
               FromToData,
               EdgeGeometry,
@@ -122,42 +134,20 @@ class Network(FromToJson,
     # --------------------------------------------------------------------------
 
     def __str__(self):
-        """"""
-        v = self.number_of_vertices()
-        e = self.number_of_edges()
+        """Generate a readable representation of the data of the mesh."""
+        return json.dumps(self.data, sort_keys=True, indent=4)
 
-        dmin = 0 if not self.vertex else min(self.vertex_degree(key) for key in self.vertices())
-        dmax = 0 if not self.vertex else max(self.vertex_degree(key) for key in self.vertices())
+    def summary(self):
+        """Print a summary of the mesh."""
+        numv = self.number_of_vertices()
+        nume = self.number_of_edges()
 
-        if not self.default_vertex_attributes:
-            dva = None
-        else:
-            dva = '\n'.join(['{0} => {1}'.format(key, value) for key, value in self.default_vertex_attributes.items()])
+        vmin = self.vertex_min_degree()
+        vmax = self.vertex_max_degree()
 
-        if not self.default_edge_attributes:
-            dea = None
-        else:
-            dea = '\n'.join(['{0} => {1}'.format(key, value) for key, value in self.default_edge_attributes.items()])
+        s = TPL.format(self.name, numv, nume, vmin, vmax)
 
-        return """
-{0}
-{7}
-
-- default vertex attributes
-
-{5}
-
-- default edge attributes
-
-{6}
-
-- number of vertices: {1}
-- number of edges: {2}
-
-- vertex degree min: {3}
-- vertex degree max: {4}
-
-""".format(self.name, v, e, dmin, dmax, dva, dea, "=" * len(self.name))
+        print(s)
 
     # --------------------------------------------------------------------------
     # special properties
