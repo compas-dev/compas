@@ -211,9 +211,25 @@ class RhinoSurface(RhinoGeometry):
 
         return curvature
 
-    def borders(self):
-        """"""
-        border = rs.DuplicateSurfaceBorder(self.guid, type=1)
+    def borders(self, type=1):
+        """Duplicate the borders of the surface.
+
+        Parameters
+        ----------
+        type : {0, 1, 2}
+            The type of border.
+
+            * 0: All borders
+            * 1: The exterior borders.
+            * 2: The interior borders.
+
+        Returns
+        -------
+        list
+            The GUIDs of the extracted border curves.
+
+        """
+        border = rs.DuplicateSurfaceBorder(self.guid, type=type)
         curves = rs.ExplodeCurves(border, delete_input=True)
         return curves
 
