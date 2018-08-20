@@ -7,13 +7,12 @@ The main library of COMPAS
    :titlesonly:
 
    overview
-   examples
    gettingstarted
+   examples
    tutorials
-   cookbook
    notes
-   tools
    reference
+   contributions
    devguide
    citing
    license
