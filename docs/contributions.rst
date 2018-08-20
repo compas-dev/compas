@@ -1,11 +1,12 @@
-Contributor's Guide
-===================
+********************************************************************************
+Contributions
+********************************************************************************
 
 Contributions are always welcome and greatly appreciated!
 
 
 Code contributions
-------------------
+==================
 
 We love pull requests from everyone! Here's a quick guide to improve the code:
 
@@ -46,7 +47,7 @@ command line to ease recurring operations:
 
 
 Documentation improvements
---------------------------
+==========================
 
 We could always use more documentation, whether as part of the
 introduction/examples/usage documentation or API documentation in docstrings.
@@ -60,19 +61,18 @@ Once you made the documentation changes locally, run the documentation generatio
 
 
 Bug reports
------------
+===========
 
 When `reporting a bug <https://github.com/compas-dev/compas/issues>`_
 please include:
 
     * Operating system name and version.
-    * ROS version.
     * Any details about your local setup that might be helpful in troubleshooting.
     * Detailed steps to reproduce the bug.
 
 
 Feature requests and feedback
------------------------------
+=============================
 
 The best way to send feedback is to file an issue on
 `Github <https://github.com/compas-dev/compas/issues>`_. If you are proposing a feature:

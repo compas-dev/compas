@@ -9,7 +9,7 @@ The main library of COMPAS
    overview
    gettingstarted
    examples
-   tutorials
+   tutorial
    notes
    reference
    contributions
