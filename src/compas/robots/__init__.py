@@ -78,8 +78,8 @@ The joint describes the kinematics and dynamics of the robot's joint.
     :toctree: generated/
     :nosignatures:
 
-    ParentJoint
-    ChildJoint
+    ParentLink
+    ChildLink
     Calibration
     Dynamics
     Limit
