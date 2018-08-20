@@ -54,9 +54,9 @@ __all__ = [
 def xdraw_frame(frame):
     """Draw frame.
     """
-    pt = Point3d(*frame.point)
-    xaxis = Vector3d(*frame.xaxis)
-    yaxis = Vector3d(*frame.yaxis)
+    pt = Point3d(*iter(frame.point))
+    xaxis = Vector3d(*iter(frame.xaxis))
+    yaxis = Vector3d(*iter(frame.yaxis))
     return Plane(pt, xaxis, yaxis)
 
 
