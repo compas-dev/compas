@@ -58,7 +58,7 @@ class Origin(Frame):
     def reset_transform(self):
         if self.init:
             # TODO: Transform back into initial state does not always work...
-            # T = Transformation.from_frame(self.init) * Transformation.from_frame(self).inverse()
+            # T = init_transformation * Transformation.from_frame(self).inverse()
             # self.transform(T)
             cp = self.init.copy()
             self.point = cp.point
