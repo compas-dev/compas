@@ -76,6 +76,9 @@ class Vector(object):
         self.y = y
         self.z = z
         self.precision = precision
+        #self._w = 0
+        #self.w = 0
+
 
     # ==========================================================================
     # factory
@@ -394,7 +397,8 @@ class Vector(object):
 
         """
         cls = type(self)
-        return cls(self.x, self.y, self.z, self.w, self.precision)
+        #return cls(self.x, self.y, self.z, self.w, self.precision)
+        return cls(self.x, self.y, self.z, self.precision)
 
     # ==========================================================================
     # methods
