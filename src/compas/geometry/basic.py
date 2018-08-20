@@ -955,7 +955,7 @@ def transpose_matrix(M):
         The result matrix.
 
     """
-    return list(list(item) for item in zip(* list(M)))
+    return list(map(list, zip(* list(M))))
 
 
 def multiply_matrices(A, B):

@@ -17,7 +17,11 @@ class MatlabEngineError(Exception):
     def __init__(self, message=None):
         if not message:
             message = """Could not start the Matlab engine.
-Note that the Matlab engine for Python is only available since R2014b.
+
+Note that the Matlab engine is only available since R2014b.
+
+Python 3 is only supported since R2017b...
+
 For older versions of Matlab, use *MatlabProcess* instead.
 On Windows, *MatlabClient* is also available.
 See <https://ch.mathworks.com/help/matlab/matlab-engine-for-python.html?s_tid=gn_loc_drop>

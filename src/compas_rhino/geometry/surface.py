@@ -6,7 +6,6 @@ import compas
 import compas_rhino
 
 from compas_rhino.geometry import RhinoGeometry
-from compas_rhino.utilities import select_surface
 
 from compas.geometry import subtract_vectors
 
@@ -39,7 +38,7 @@ class RhinoSurface(RhinoGeometry):
 
     @classmethod
     def from_selection(cls):
-        guid = select_surface()
+        guid = compas_rhino.select_surface()
         return cls(guid)
 
     def space(self, density=10):
