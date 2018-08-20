@@ -8,10 +8,10 @@ from compas.topology import delaunay_from_points
 from compas_rhino.artists import MeshArtist
 
 
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
+__author__    = 'Matthias Rippmann'
 __copyright__ = 'Copyright 2017, BRG - ETH Zurich',
 __license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
+__email__     = 'rippmann@arch.ethz.ch'
 
 
 # select the points

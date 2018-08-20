@@ -105,7 +105,6 @@ ENV/
 # ------------------------------------------------------------------------------
 
 docs/__build/
-docs/_images/*.gif
 docs/reference/generated/
 
 *.3dmbak
@@ -125,7 +124,6 @@ data/bunny
 
 docs/reference/generated/
 docs/__build
-*.gif
 
 *.pickle
 
