@@ -60,6 +60,11 @@ def fn(dofs, *args):
     return 1000 * mean(normrow(X - Xt[ind, :]))
 
 
+def callback(ts, f, evoplotter):
+    evoplotter.update_points(generation=ts, values=f)
+    evoplotter.update_lines(generation=ts, values=f)
+
+
 clear_layer(layer=0)
 
 # Beam input
@@ -91,15 +96,15 @@ Xt = array(blendercurve.divide(number_of_segments=mi))
 vertices = [list(Xi) for Xi in list(Xt[:mi:div, :])]
 edges = [[i, i + 1] for i in range(m)]
 network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-network.update_default_vertex_attributes({'EIx': E*I, 'EIy': E*I})
+network.update_default_vertex_attributes({'EIx': E * I, 'EIy': E * I})
 network.update_default_edge_attributes({'E': E, 'A': A, 'l0': ds})
 network.set_vertices_attributes([0, 1, m - 1, m], {'B': [0, 0, 0]})
 network.beams = {'beam': {'nodes': list(range(network.number_of_vertices()))}}
 
 # Manual
 
-#dofs = 0, 0, 45 * deg, 0.6, 0, 155 * deg
-#Xs = update(dofs=dofs, network=network, tol=tol, plot=True, Xt=Xt, ds=ds)
+# dofs = 0, 0, 45 * deg, 0.6, 0, 155 * deg
+# Xs = update(dofs=dofs, network=network, tol=tol, plot=True, Xt=Xt, ds=ds)
 
 # Optimise
 
@@ -116,13 +121,18 @@ bounds = [(xa - du, xa + du), (za - du, za + du), (r1 - dr, r1 + dr),
 args = network, Xt, tol, ds
 
 
-def callback(ts, f, evoplotter):
-    evoplotter.update_points(generation=ts, values=f)
-    evoplotter.update_lines(generation=ts, values=f)
+evoplotter = EvoPlotter(generations=generations,
+                        fmax=20,
+                        xaxis_div=generations,
+                        yaxis_div=10,
+                        pointsize=0.1)
 
-evoplotter = EvoPlotter(generations=generations, fmax=20, xaxis_div=generations, yaxis_div=10, pointsize=0.1)
-    
-fopt, uopt = devo_numpy(fn=fn, bounds=bounds, population=20, generations=generations, args=args, callback=callback, 
+fopt, uopt = devo_numpy(fn=fn,
+                        bounds=bounds,
+                        population=20,
+                        generations=generations,
+                        args=args,
+                        callback=callback,
                         evoplotter=evoplotter)
 
 # Plot

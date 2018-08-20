@@ -1,9 +1,9 @@
 """A dynamic relaxation example comparing NumPy with Numba."""
 
+import compas_blender
+
 from compas_blender.geometry import BlenderMesh
 from compas_blender.helpers import network_from_bmesh
-from compas_blender.utilities import clear_layer
-from compas_blender.utilities import draw_plane
 
 from compas.numerical import drx_numpy
 from compas.hpc import drx_numba
@@ -23,17 +23,17 @@ data = {'numpy': [], 'numba': [], 'nodes': []}
 
 for m in range(10, 71, 5):
 
-    clear_layer(layer=0)
+    compas_blender.clear_layer(layer=0)
 
     # Set-up Network
 
-    bmesh = draw_plane(dx=1/m, dy=1/m)
+    bmesh = compas_blender.draw_plane(dx=1 / m, dy=1 / m)
     blendermesh = BlenderMesh(object=bmesh)
 
     network = network_from_bmesh(bmesh=bmesh)
     Pz = 100 / network.number_of_vertices()
     network.update_default_vertex_attributes({'B': [0, 0, 1], 'P': [0, 0, Pz]})
-    network.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't', 'l0': 1/m})
+    network.update_default_edge_attributes({'E': 10, 'tA': 1, 'ct': 't', 'l0': 1 / m})
     corners = [key for key in network.vertices() if network.vertex_degree(key) == 2]
     network.set_vertices_attributes(corners, {'B': [0, 0, 0]})
 

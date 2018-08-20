@@ -15,7 +15,7 @@ __license__   = 'MIT License'
 __email__     = 'van.mele@arch.ethz.ch'
 
 
-mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+mesh = Mesh.from_obj(compas.get('faces.obj'))
 
 u = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2][0]
 
@@ -31,7 +31,7 @@ plotter.draw_edges()
 mesh_quads_to_triangles(mesh)
 
 while True:
-    nbrs = mesh.vertex_neighbours(u, ordered=True)
+    nbrs = mesh.vertex_neighbors(u, ordered=True)
 
     if not nbrs:
         break

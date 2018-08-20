@@ -33,15 +33,15 @@ mesh = Mesh.from_ply(compas.get_bunny())
 mesh.cull_vertices()
 
 # get any vertex of the mesh
-# and its neighbours
+# and its neighbors
 
 v1 = mesh.get_any_vertex()
 
-nbrs = mesh.vertex_neighbours(v1, ordered=True)
+nbrs = mesh.vertex_neighbors(v1, ordered=True)
 
 # make a quad containing:
-# one of the neighbours
-# and the CCW and CW neighbours of that neighbour, respectively
+# one of the neighbors
+# and the CCW and CW neighbors of that neighbor, respectively
 # and set them as anchors
 
 v2 = nbrs[0]
@@ -66,7 +66,7 @@ for key in mesh.vertices():
     cols.append(r)
 
     if key not in anchors:
-        nbrs = mesh.vertex_neighbours(key)
+        nbrs = mesh.vertex_neighbors(key)
         w = len(nbrs)
         d = - 1. / w
 
@@ -115,7 +115,7 @@ for key, attr in mesh.vertices(True):
 
 lines = []
 
-for u, v in mesh.wireframe():
+for u, v in mesh.edges():
     if u == v1 and v == v2:
         continue
     if u == v2 and v == v1:
