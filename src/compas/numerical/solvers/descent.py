@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
+import compas
 
 try:
     from numpy import array
@@ -19,8 +20,8 @@ try:
     from numpy import zeros
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
+
 else:
     eps = finfo(float64).eps
     e = sqrt(eps)
@@ -45,7 +46,7 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
     x0 : array-like
         n x 1 starting guess of x.
     fn : obj
-        The objective function to minimise.
+        The objective function to minimize.
     iterations : int
         Maximum number of iterations.
     gtol : float

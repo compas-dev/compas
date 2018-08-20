@@ -1,11 +1,9 @@
 """
-.. _compas.utilities:
-
 ********************************************************************************
-utilities
+compas.utilities
 ********************************************************************************
 
-.. module:: compas.utilities
+.. currentmodule:: compas.utilities
 
 
 .. combine all decorators
@@ -49,6 +47,16 @@ datetime
 
 
 .. timestamp
+
+
+decorators
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    memoize
 
 
 itertools
@@ -136,26 +144,7 @@ xfunc
     XFunc
 
 """
-
-
-def is_list_of_int():
-    pass
-
-
-def is_list_of_float():
-    pass
-
-
-def is_list_of_str():
-    pass
-
-
-def is_list_of_list():
-    pass
-
-
-def is_list_of_dict():
-    pass
+from __future__ import absolute_import
 
 
 def valuedict(keys, value, default):
@@ -171,9 +160,12 @@ def valuedict(keys, value, default):
 
 
 from .animation import *
-from .datetime_ import *
-from .itertools_ import *
+from .coercing import *
 from .colors import *
+from .datetime_ import *
+from .decorators import *
+from .encoders import *
+from .itertools_ import *
 from .maps import *
 from .mixing import *
 from .names import *
@@ -181,17 +173,27 @@ from .profiling import *
 from .sorting import *
 from .xfunc import *
 from .xscript import *
+from .functions import *
 
-from .animation import __all__ as a
-from .datetime_ import __all__ as b
-from .itertools_ import __all__ as c
-from .colors import __all__ as d
-from .maps import __all__ as e
-from .mixing import __all__ as f
-from .names import __all__ as g
-from .profiling import __all__ as h
-from .sorting import __all__ as i
-from .xfunc import __all__ as j
-from .xscript import __all__ as k
+from . import animation
+from . import coercing
+from . import colors
+from . import datetime_
+from . import decorators
+from . import encoders
+from . import itertools_
+from . import maps
+from . import mixing
+from . import names
+from . import profiling
+from . import sorting
+from . import xfunc
+from . import xscript
+from . import functions
 
-__all__ = a + b + c + d + e + f + g + h + i + j + k
+__all__  = []
+__all__ += animation.__all__ + coercing.__all__ + colors.__all__
+__all__ += datetime_.__all__ + decorators.__all__ + encoders.__all__
+__all__ += itertools_.__all__ + maps.__all__ + mixing.__all__ + names.__all__
+__all__ += profiling.__all__ + sorting.__all__ + xfunc.__all__ + xscript.__all__
+__all__ += functions.__all__

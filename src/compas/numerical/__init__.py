@@ -1,14 +1,12 @@
-""".. _compas.numerical:
-
+"""
 ********************************************************************************
-numerical
+compas.numerical
 ********************************************************************************
 
-.. module:: compas.numerical
+.. currentmodule:: compas.numerical
 
-This package implements numerical solvers and methods for form finding
-and analysis of structures. The array and matrix-based implementations are built
-around `NumPy`_ and `SciPy`_.
+This package implements numerical solvers and algorithms.
+The array and matrix-based implementations are built around `NumPy`_ and `SciPy`_.
 
 .. _NumPy: http://www.numpy.org/
 .. _SciPy: https://www.scipy.org/
@@ -24,8 +22,11 @@ Algorithms
     dr
     dr_numpy
     drx_numpy
+    fd_cpp
     fd_numpy
     pca_numpy
+    topop2d_numpy
+    topop3d_numpy
 
 
 Solvers
@@ -115,6 +116,7 @@ Utilities
 
 
 """
+from __future__ import absolute_import
 
 from .linalg import *
 from .matrices import *
@@ -124,12 +126,12 @@ from .utilities import *
 from .solvers import *
 from .algorithms import *
 
-from .linalg import __all__ as a
-from .matrices import __all__ as b
-from .operators import __all__ as c
-from .utilities import __all__ as d
+from . import linalg
+from . import matrices
+from . import operators
+from . import utilities
 
-from .solvers import __all__ as e
-from .algorithms import __all__ as f
+from . import solvers
+from . import algorithms
 
-__all__ = a + b + c + d + e + f
+__all__ = linalg.__all__ + matrices.__all__ + operators.__all__ + utilities.__all__ + solvers.__all__ + algorithms.__all__

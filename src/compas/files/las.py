@@ -21,7 +21,32 @@ class LAS(object):
 
 
     """
-    pass
+    def __init__(self, filepath, precision=None):
+        self.reader = LASReader(filepath)
+        self.parser = LASParser(self.reader, precision=precision)
+
+
+class LASReader(object):
+    """"""
+
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.read()
+
+    def read(self):
+        pass
+
+
+class LASParser(object):
+    """"""
+
+    def __init__(self, reader, precision):
+        self.reader = reader
+        self.precision = precision
+        self.parse()
+
+    def parse(self):
+        pass
 
 
 # ==============================================================================

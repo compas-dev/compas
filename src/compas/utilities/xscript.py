@@ -53,7 +53,7 @@ __all__ = [
 #         odict['error']      = None
 #         odict['profile']    = stream.getvalue()
 #         odict['iterations'] = None
-#     except:
+#     except Exception:
 #         odict = {}
 #         odict['data']       = None
 #         odict['error']      = traceback.format_exc()

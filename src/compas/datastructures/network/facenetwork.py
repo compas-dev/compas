@@ -52,7 +52,7 @@ class FaceNetwork(FaceHelpers,
         from compas.topology import network_find_faces
         from compas.plotters import FaceNetworkPlotter
 
-        network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
+        network = FaceNetwork.from_obj(compas.get('lines.obj'))
 
         network_find_faces(network, breakpoints=network.leaves())
 
@@ -208,7 +208,6 @@ class FaceNetwork(FaceHelpers,
     # constructors
     # --------------------------------------------------------------------------
 
-    # add edge support
     @classmethod
     def from_obj(cls, filepath, **kwargs):
         """Initialise a network from the data described in an obj file.
@@ -235,6 +234,44 @@ class FaceNetwork(FaceHelpers,
             network.add_edge(u, v)
         for face in faces:
             network.add_face(face)
+        return network
+
+    @classmethod
+    def from_vertices_and_faces(cls, vertices, faces):
+        """Construct a mesh object from a list of vertices and faces.
+
+        Parameters
+        ----------
+        vertices : list
+            A list of vertices, represented by their XYZ coordinates.
+        faces : list
+            A list of faces.
+            Each face is a list of indices referencing the list of vertex coordinates.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+
+        Examples
+        --------
+        >>> import compas
+        >>> from compas.datastructures import Mesh
+        >>> vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]
+        >>> faces = [[0, 1, 2]]
+        >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+        """
+        network = cls()
+        for x, y, z in iter(vertices):
+            network.add_vertex(x=x, y=y, z=z)
+        for face in iter(faces):
+            keys = []
+            for u, v in pairwise(face + face[0:1]):
+                if not network.has_edge(u, v, directed=False):
+                    u, v = network.add_edge(u, v)
+                keys.append(u)
+            network.add_face(keys)
         return network
 
     # --------------------------------------------------------------------------
@@ -327,6 +364,40 @@ class FaceNetwork(FaceHelpers,
 
         return fkey
 
+    def delete_face(self, fkey):
+        """Delete a face from the mesh object.
+
+        Parameters
+        ----------
+        fkey : hashable
+            The identifier of the face.
+
+        Examples
+        --------
+        .. plot::
+            :include-source:
+
+            import compas
+            from compas.datastructures import Mesh
+            from compas.plotters import MeshPlotter
+
+            mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+            mesh.delete_face(12)
+
+            plotter = MeshPlotter(mesh)
+            plotter.draw_vertices()
+            plotter.draw_faces()
+            plotter.show()
+
+        """
+        for u, v in self.face_halfedges(fkey):
+            self.halfedge[u][v] = None
+            if self.halfedge[v][u] is None:
+                del self.halfedge[u][v]
+                del self.halfedge[v][u]
+        del self.face[fkey]
+
     # --------------------------------------------------------------------------
     # info
     # --------------------------------------------------------------------------
@@ -370,8 +441,8 @@ class FaceNetwork(FaceHelpers,
     # vertex topology
     # --------------------------------------------------------------------------
 
-    def vertex_neighbours(self, key, ordered=False):
-        """Return the neighbours of a vertex."""
+    def vertex_neighbors(self, key, ordered=False):
+        """Return the neighbors of a vertex."""
 
         temp = list(self.halfedge[key])
 
@@ -391,7 +462,7 @@ class FaceNetwork(FaceHelpers,
 
         fkey = self.halfedge[start][key]
         nbrs = [start]
-        count = 1000
+        count = 10000
 
         while count:
             count -= 1
@@ -414,7 +485,7 @@ class FaceNetwork(FaceHelpers,
             faces = list(self.halfedge[key].values())
 
         else:
-            nbrs = self.vertex_neighbours(key, ordered=True)
+            nbrs = self.vertex_neighbors(key, ordered=True)
 
             # if len(nbrs) == 1:
             #     nbr = nbrs[0]
@@ -465,8 +536,8 @@ class FaceNetwork(FaceHelpers,
         vertices = self.face_vertices(fkey)
         return window(vertices + vertices[0:2], 3)
 
-    def face_neighbours(self, fkey):
-        """Return the neighbours of a face across its edges."""
+    def face_neighbors(self, fkey):
+        """Return the neighbors of a face across its edges."""
         nbrs = []
         for u, v in self.face_halfedges(fkey):
             nbr = self.halfedge[v][u]
@@ -474,8 +545,8 @@ class FaceNetwork(FaceHelpers,
                 nbrs.append(nbr)
         return nbrs
 
-    def face_vertex_neighbours(self, fkey):
-        """Return the neighbours of a face across its corners."""
+    def face_vertex_neighbors(self, fkey):
+        """Return the neighbors of a face across its corners."""
         nbrs = []
         for u, v in self.face_halfedges(fkey):
             nbr = self.halfedge[v][u]
@@ -484,8 +555,8 @@ class FaceNetwork(FaceHelpers,
                 nbrs.append(self.halfedge[w][u])
         return nbrs
 
-    def face_neighbourhood(self, fkey):
-        """Return the neighbours of a face across both edges and corners."""
+    def face_neighborhood(self, fkey):
+        """Return the neighbors of a face across both edges and corners."""
         nbrs = []
         for u, v in self.face_halfedges(fkey):
             nbr = self.halfedge[v][u]
@@ -588,7 +659,7 @@ class FaceNetwork(FaceHelpers,
     # name it as such
     def vertex_normal(self, key):
         """Return the normal vector at the vertex as the weighted average of the
-        normals of the neighbouring faces."""
+        normals of the neighboring faces."""
         vectors = [self.face_normal(fkey) for fkey in self.vertex_faces(key) if fkey is not None]
         return normalize_vector(centroid_points(vectors))
 
@@ -600,9 +671,9 @@ class FaceNetwork(FaceHelpers,
         """Return the coordinates of the vertices of a face."""
         return [self.vertex_coordinates(key, axes=axes) for key in self.face_vertices(fkey)]
 
-    def face_normal(self, fkey, normalised=True):
+    def face_normal(self, fkey, normalized=True):
         """Return the normal of a face."""
-        return normal_polygon(self.face_coordinates(fkey), normalised=normalised)
+        return normal_polygon(self.face_coordinates(fkey), normalized=normalized)
 
     def face_centroid(self, fkey):
         """Return the location of the centroid of a face."""
@@ -674,15 +745,25 @@ class FaceNetwork(FaceHelpers,
 
     def faces_on_boundary(self):
         """Return the faces on the boundary."""
-        faces = {}
-        for key, nbrs in iter(self.halfedge.items()):
-            for nbr, fkey in iter(nbrs.items()):
-                if fkey is None:
-                    faces[self.halfedge[nbr][key]] = 1
-        return faces.keys()
+        boundary = []
+        for fkey in self.faces():
+            vertices = self.face_vertices(fkey)
+            for u, v in pairwise(vertices + vertices[0:1]):
+                if not self.has_edge(u, v, directed=False):
+                    boundary.append(fkey)
+                    break
+        return boundary
 
     def edges_on_boundary(self):
-        return [(u, v) for u, v in self.edges() if self.is_edge_naked(u, v)]
+        edges = []
+        for fkey in self.faces_on_boundary():
+            vertices = self.face_vertices(fkey)
+            for u, v in pairwise(vertices + vertices[0:1]):
+                if self.has_edge(u, v):
+                    edges.append((u, v))
+                elif self.has_edge(v, u):
+                    edges.append((v, u))
+        return edges
 
 
 # ==============================================================================
@@ -692,11 +773,12 @@ class FaceNetwork(FaceHelpers,
 if __name__ == '__main__':
 
     import compas
+
     from compas.datastructures import FaceNetwork
     from compas.topology import network_find_faces
     from compas.plotters import FaceNetworkPlotter
 
-    network = FaceNetwork.from_obj(compas.get_data('lines.obj'))
+    network = FaceNetwork.from_obj(compas.get('lines.obj'))
 
     network_find_faces(network, breakpoints=network.leaves())
 
@@ -710,7 +792,7 @@ if __name__ == '__main__':
         text={key: key for key in network.vertices()}
     )
 
-    plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee')
-    plotter.draw_edges()
+    plotter.draw_faces(text={key: str(key) for key in network.faces()}, facecolor='#eeeeee', edgecolor='#eeeeee')
+    plotter.draw_edges(color={uv: '#ff0000' for uv in network.edges_on_boundary()})
 
     plotter.show()

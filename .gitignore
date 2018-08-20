@@ -104,7 +104,11 @@ ENV/
 # compas
 # ------------------------------------------------------------------------------
 
+docs/__build/
+docs/reference/generated/
+
 *.3dmbak
+*.rhl
 
 libs/**
 !libs/PLACEHOLDER
@@ -113,8 +117,15 @@ temp/**
 !temp/PLACEHOLDER
 
 src/.build/**
-*.rhl
 
-samples/bunny
+data/bunny
 *.ply
 *.tar.gz
+
+docs/reference/generated/
+docs/__build
+
+*.pickle
+
+.DS_Store
+

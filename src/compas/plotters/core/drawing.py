@@ -64,35 +64,64 @@ def create_axes_xy(figsize=(8.0, 6.0),
                    xlabel=None,
                    ylabel=None,
                    fontname='Times New Roman',
-                   fontsize=10.0,
+                   fontsize=10,
                    grid=True,
                    xlim=None,
                    ylim=None,
                    ticklength=20,
-                   tickfontsize=10.0,
+                   tickfontsize=10,
                    xscale='linear',
                    yscale='linear',
                    bgcolor='#ffffff'):
     """Initialises plot axes object for matplotlib plotting.
 
-    Parameters:
-        figsize (tuple): (horizontal, vertical) size of the figure.
-        dpi (int): resolution of the plot.
-        xlabel (str): Label for the x-axis.
-        ylabel (str): Label for the y-axis.
-        fontname (str): Fontname of the main labels and text.
-        fontsize (int): Fontsize of the main labels and text.
-        grid (boolean): Display grid.
-        xlim (tuple): Limits of the X-axis.
-        ylim (tuple) : Limits of the Y-axis.
-        ticklength (float): length of the ticks.
-        tickfontsize (int): Fontsize of the ticks.
-        xscale (str): normal 'linear' or logarithmic 'log' x axis.
-        yscale (str): normal 'linear' or logarithmic 'log' y axis.
-        bgcolor (str, list): background color in hex or rgb.
+    Parameters
+    ----------
+    figsize : 2-tuple of float, optional
+        Size of the figure.
+        Default is ``(8.0, 6.0)``
+    dpi : int, optional
+        Resolution of the plot.
+        Default is ``100``.
+    xlabel : str, optional
+        Label for the x-axis.
+        Default is ``None``.
+    ylabel : str, optional
+        Label for the y-axis.
+        Default is ``None``.
+    fontname : str, optional
+        Fontname of the main labels and text.
+        Default is ``'Times New Roman'``.
+    fontsize : int, optional
+        Fontsize of the main labels and text.
+        Default is ``10``.
+    grid : bool, optional
+        Display grid.
+        Default is ``False``.
+    xlim : 2-tuple, optional
+        Limits of the X-axis.
+        Default is ``None``.
+    ylim : 2-tuple, optional
+        Limits of the Y-axis.
+        Default is ``None``.
+    ticklength : float, optional
+        Length of the ticks.
+        Default is ``20``.
+    tickfontsize : int, optional
+        Fontsize of the ticks.
+        Default is ``10``.
+    xscale : {'linear', 'log'}
+        Scale of the X axis.
+    yscale : {'linear', 'log'}
+        Scale of the Y axis.
+    bgcolor : str or list, optional
+        Background color as hex string or rgb tuple.
+        Default is white.
 
-    Returns:
-        object: Matplotlib axes.
+    Returns
+    -------
+    object
+        Matplotlib axes.
 
     """
     # mpl.rcParams['figure.figsize'] = figsize
@@ -136,21 +165,47 @@ def create_axes_3d(size=(10, 7),
                    angle=(30, 45)):
     """Initialises plot axes object for matplotlib plotting.
 
-    Parameters:
-        size (tuple): (horizontal, vertical) size of the figure.
-        xlabel (str): Label for the x-axis.
-        ylabel (str): Label for the y-axis.
-        zlabel (str): Label for the z-axis.
-        fontname (str): Fontname of the main labels and text.
-        fontsize (int): Fontsize of the main labels and text.
-        grid (boolean): Display grid.
-        limits (dic): Axis limits and tick spacing.
-        ticklength (float): length of the ticks.
-        tickfontsize (int): Fontsize of the ticks.
-        angle (tuple): elev and azim angles for 3D plots.
+    Parameters
+    ----------
+    size : 2-tuple of float, optinoal
+        Size of the figure.
+        Default is ``(10.0, 7.0)``.
+    xlabel : str, optional
+        Label for the x-axis.
+        Default is ``'$x$'``.
+    ylabel : str, optional
+        Label for the y-axis.
+        Default is ``'$y$'``.
+    zlabel : str, optional
+        Label for the z-axis.
+        Default is ``'$z$'``.
+    fontname : str, optional
+        Fontname of the main labels and text.
+        Default is ``'Times New Roman'``.
+    fontsize : int, optional
+        Fontsize of the main labels and text.
+        Default is ``10``.
+    grid : bool, optional
+        Display grid.
+        Default is ``False``.
+    limits : dict, optional
+        Axis limits and tick spacing.
+        Default is ``None``.
+    ticklength : float, optional
+        Length of the ticks.
+        Default is ``20``.
+    tickfontsize : int, optional
+        Fontsize of the ticks.
+        Default is ``15``.
+    angle : 2-tuple of float
+        Elevation and azimuth angles for 3D plots.
+        Default is ``'30.0, 45.0'``.
 
-    Returns:
-        object: Matplotlib axes.
+    Returns
+    -------
+    object
+        Matplotlib axes.
+
     """
     fig = plt.figure(facecolor='white', figsize=size)
     axes = fig.add_subplot('111', projection='3d', aspect='equal')
@@ -184,13 +239,29 @@ def draw_points_xy(points,
                    radius=1.0):
     """Creates an XY point collection and adds it to the axis.
 
-    Parameters:
-        points (list): List of (X, Y) points.
-        axes (object): Matplotlib axes.
-        facecolor (str, list): Color for the vertex circle fill in hex or rgb.
-        edgecolor (str, list): Color for the vertex circle edge in hex or rgb.
-        linewidth (float, list): Width for the vertex circle edge.
-        radius (float, list): The radii for the vertices.
+    Parameters
+    ----------
+    points : list
+        XY(Z) coordinates of the points.
+    axes : object
+        Matplotlib axes.
+    facecolor : str or list, optional
+        Color of the point face.
+        Default is white.
+    edgecolor : str or list, optional
+        Color of the point edge.
+        Default is black.
+    linewidth : float or list, optional
+        Width of the point edge.
+        Default is ``0.5``.
+    radius : float or list, optional
+        The radius of the points.
+        Default is ``1.0``.
+
+    Returns
+    -------
+    object
+        A collection of points.
 
     """
     p = len(points)
@@ -220,17 +291,36 @@ def draw_points_xy(points,
         zorder=ZORDER_POINTS
     )
     axes.add_collection(coll)
+    return coll
 
 
 def draw_xpoints_xy(points, axes):
     """Creates an XY point collection and adds it to the axis.
 
-    Parameters:
-        points (list): List of dictionaries containing the point properties.
-        axes (object): Matplotlib axes.
+    Parameters
+    ----------
+    points : list of dict
+        List of dictionaries containing the point properties.
+        Each point is represented by a circle with a given radius.
+        The following properties of the circle can be specified in the point dict.
 
-    Returns:
-        object: The matplotlib point collection object.
+        * pos (list): XY(Z) coordinates
+        * radius (float, optional): the radius of the circle. Default is 0.1.
+        * text (str, optional): the text of the label. Default is None.
+        * facecolor (rgb or hex color, optional): The color of the face of the circle. Default is white.
+        * edgecolor (rgb or hex color, optional): The color of the edge of the cicrle. Default is black.
+        * edgewidth (float, optional): The width of the edge of the circle. Default is 1.0.
+        * textcolor (rgb or hex color, optional): Color of the text label. Default is black.
+        * fontsize (int, optional): Font size of the text label. Default is 12.
+
+    axes : object
+        Matplotlib axes.
+
+    Returns
+    -------
+    object
+        The matplotlib point collection object.
+
     """
     circles = []
     facecolors = []
@@ -244,8 +334,8 @@ def draw_xpoints_xy(points, axes):
         ecolor    = point.get('edgecolor') or '#000000'
         lwidth    = point.get('edgewidth') or 1.0
         textcolor = point.get('textcolor') or '#000000'
-        fontsize  = point.get('fontsize') or 24
-        circles.append(Circle(pos, radius=radius))
+        fontsize  = point.get('fontsize') or 12
+        circles.append(Circle(pos[0:2], radius=radius))
         facecolors.append(color_to_rgb(fcolor, normalize=True))
         edgecolors.append(color_to_rgb(ecolor, normalize=True))
         linewidths.append(lwidth)
@@ -278,11 +368,23 @@ def draw_points_3d(points,
                    edgecolor='#000000'):
     """Creates a 3D point collection and adds it to the axis.
 
-    Parameters:
-        points (list): List of (X, Y, Z) points.
-        axes (object): Matplotlib axes.
-        facecolor (str, list): Color for the vertex circle fill in hex or rgb.
-        edgecolor (str, list): Color for the vertex circle edge in hex or rgb.
+    Parameters
+    ----------
+    points : list
+        XYZ coordinates of the points.
+    axes : object
+        Matplotlib axes.
+    facecolor : str or list, optional
+        Color of the face of the points.
+        Default is white.
+    edgecolor : str or list, optional
+        Color of the edge of the points.
+        Default is black.
+
+    Returns
+    -------
+    object
+        The matplotlib point collection object.
 
     """
     p = len(points)
@@ -294,7 +396,8 @@ def draw_points_3d(points,
     x = points[:, 0]
     y = points[:, 1]
     z = points[:, 2]
-    axes.plot(x, y, z, 'o', color=(1.0, 1.0, 1.0))
+    coll, _ = axes.plot(x, y, z, 'o', color=(1.0, 1.0, 1.0))
+    return coll
 
 
 # ==============================================================================
@@ -310,13 +413,29 @@ def draw_lines_xy(lines,
                   alpha=1.0):
     """Creates an XY line collection and adds it to the axis.
 
-    Parameters:
-        lines (list): List of ((X1, Y1), (X2, X2)) lines.
-        axes (object): Matplotlib axes.
-        linewidth (float, list): Width for the lines.
-        linestyle (str, list): Matplotlib line style strings.
-        color (str, list): Color for the lines in hex or rgb.
-        alpha (float, list): 0.0 for transparent through 1.0  for opaque.
+    Parameters
+    ----------
+    lines : list
+        List of ((X1, Y1), (X2, X2)) lines.
+    axes : object
+        Matplotlib axes.
+    linewidth : float or list of float, optional
+        Width of the lines.
+        Default is ``1.0``.
+    linestyle : str or list of str, optional
+        Matplotlib line style strings.
+        Default is ``'-'``.
+    color : str or list of str, optional
+        Color of the lines.
+        Default is black.
+    alpha : float or list of float, optional
+        Opacity of the lines.
+        Default is ``1.0``.
+
+    Returns
+    -------
+    object
+        The matplotlib point collection object.
 
     """
     l = len(lines)
@@ -327,7 +446,7 @@ def draw_lines_xy(lines,
         color = [color] * l
     # --------------------------------------------------------------------------
     coll = LineCollection(
-        lines,
+        [(start[0:2], end[0:2]) for start, end in lines],
         linewidths=linewidth,
         colors=color,
         linestyle=linestyle,
@@ -335,20 +454,40 @@ def draw_lines_xy(lines,
         zorder=ZORDER_LINES
     )
     axes.add_collection(coll)
+    return coll
 
 
 def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
     """Creates an XY line collection and adds it to the axis.
 
-    Parameters:
-        lines (list): List of dictionaries containing the line properties.
-        axes (object): Matplotlib axes.
-        alpha (float, list): 0.0 for transparent through 1.0  for opaque.
-        linestyle (str, list): Matplotlib line style strings.
+    Parameters
+    ----------
+    lines : list
+        List of dictionaries containing the line properties.
+        The following properties of a line can be specified in the dict.
 
+        * start (list): XY(Z) coordinates of the start point.
+        * end (list): XY(Z) coordinatesof the end point.
+        * width (float, optional): The width of the line. Default is ``1.0``.
+        * color (rgb tuple or hex string, optional): The color of the line. Default is black.
+        * text (str, optional): The text of the label. Default is ``None``.
+        * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+        * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
 
-    Returns:
-        object: The matplotlib line collection object.
+    axes : object
+        Matplotlib axes.
+    alpha : float, optional
+        Opacity of the lines.
+        Default is ``1.0``.
+    linestyle : str, optional
+        Matplotlib line style strings.
+        Default is ``'solid'``.
+
+    Returns
+    -------
+    object
+        The matplotlib line collection object.
+
     """
     fromto  = []
     widths  = []
@@ -360,8 +499,8 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
         color     = line.get('color', '#000000')
         text      = line.get('text', None)
         textcolor = line.get('textcolor') or '#000000'
-        fontsize  = line.get('fontsize') or 24
-        fromto.append((sp, ep))
+        fontsize  = line.get('fontsize') or 6
+        fromto.append((sp[0:2], ep[0:2]))
         widths.append(width)
         colors.append(color_to_rgb(color, normalize=True))
         if text:
@@ -394,12 +533,26 @@ def draw_lines_3d(lines,
                   color='#000000'):
     """Creates an 3D line collection and adds it to the axis.
 
-    Parameters:
-        lines (list): List of ((X1, Y1, Z1), (X2, X2, Z2)) lines.
-        axes (object): Matplotlib axes.
-        linewidth (float, list): Width for the lines.
-        linestyle (str, list): Matplotlib line style strings.
-        color (str, list): Color for the lines in hex or rgb.
+    Parameters
+    ----------
+    lines : list
+        Pairs of XYZ coordinates defining start and end points of the lines.
+    axes : object
+        Matplotlib axes.
+    linewidth : float or list of float, optional
+        Width for the lines.
+        Default is ``1.0``.
+    linestyle : str, optional
+        Matplotlib line style strings.
+        Default is ``'solid'``.
+    color : str or list of str, optional
+        Color of the lines.
+        Default is black.
+
+    Returns
+    -------
+    object
+        The matplotlib line collection object.
 
     """
     l = len(lines)
@@ -408,7 +561,7 @@ def draw_lines_3d(lines,
         linewidth = [linewidth] * l
     if isinstance(color, basestring):
         color = [color] * l
-    # --------------------------------------------------------------------------
+
     coll = Line3DCollection(
         lines,
         linewidths=linewidth,
@@ -417,6 +570,7 @@ def draw_lines_3d(lines,
         zorder=ZORDER_LINES
     )
     axes.add_collection(coll)
+    return coll
 
 
 # ==============================================================================
@@ -427,9 +581,22 @@ def draw_lines_3d(lines,
 def draw_xarrows_xy(lines, axes):
     """Creates an XY arrow collection and adds it to the axis.
 
-    Parameters:
-        lines (list): List of dictionaries containing the arrow line properties.
-        axes (object): Matplotlib axes.
+    Parameters
+    ----------
+    lines : list of dict
+        List of dictionaries containing the arrow line properties.
+        The following properties of an arrow can be specified in the dict.
+
+        * start (list): XY(Z) coordinates of the starting point.
+        * end (list): XY(Z) coordinates of the end point.
+        * text (str, optional): The text of the label. Default is ``None``.
+        * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+        * fontsize (int, optional): The size of the font of the label text. Default is ```6``.
+        * color (rgb tuple or hex string, optional): Color of the arrow. Default is black.
+        * width (float): Width of the arrow. Default is ``1.0``.
+
+    axes : object
+        Matplotlib axes.
 
     """
     arrowprops = {
@@ -449,8 +616,8 @@ def draw_xarrows_xy(lines, axes):
         arrowprops['linewidth'] = line.get('width', 1.0)
         axes.annotate(
             '',
-            xy=ep,
-            xytext=sp,
+            xy=ep[0:2],
+            xytext=sp[0:2],
             arrowprops=arrowprops,
             zorder=ZORDER_LINES,
         )
@@ -475,9 +642,12 @@ def draw_xarrows_xy(lines, axes):
 def draw_xlabels_xy(labels, axes):
     """Creates a label collection and adds it to the axis.
 
-    Parameters:
-        labels (list): List of dictionaries containing the label properties.
-        axes (object): Matplotlib axes.
+    Parameters
+    ----------
+    labels : list of dict
+        List of dictionaries containing the label properties.
+    axes : object
+        Matplotlib axes.
 
     """
     for label in labels:
@@ -511,12 +681,28 @@ def draw_xlabels_xy(labels, axes):
 def draw_xpolygons_xy(polygons, axes):
     """Creates a polygon collection and adds it to the axis.
 
-    Parameters:
-        polygons (list): List of dictionaries containing the polygon properties.
-        axes (object): Matplotlib axes.
+    Parameters
+    ----------
+    polygons : list of dict
+        List of dictionaries containing the polygon properties.
+        The following properties can be specified in the dict.
 
-    Returns:
-        object: The matplotlib polygon collection object.
+        * points (list): XY(Z) coordinates of the polygon vertices.
+        * text (str, optional): The text of the label. Default is ``None``.
+        * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+        * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
+        * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
+        * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
+        * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
+
+    axes : object
+        Matplotlib axes.
+
+    Returns
+    -------
+    object
+        The matplotlib polygon collection object.
+
     """
     facecolors = []
     edgecolors = []
@@ -529,7 +715,7 @@ def draw_xpolygons_xy(polygons, axes):
         facecolors.append(color_to_rgb(attr.get('facecolor', '#ffffff'), normalize=True))
         edgecolors.append(color_to_rgb(attr.get('edgecolor', '#000000'), normalize=True))
         linewidths.append(attr.get('edgewidth', 1.0))
-        patches.append(Polygon(points))
+        patches.append(Polygon([point[0:2] for point in points]))
         if text:
             c = centroid_points_xy(points)
             axes.text(

@@ -76,7 +76,7 @@ class VolMesh(FromToData,
         the cell dictionary. The key is the unique identifier of the cell, and
         the value id itself a dictionary. The keys of this dictionary correspond
         to the vertices that make up the cell. The values are again dictionaries.
-        Each key in the latter dictionary is a neighbour of the previous vertex.
+        Each key in the latter dictionary is a neighbor of the previous vertex.
         Together they form a halfedge of the cell, pointing at one of the cell's
         halffaces.
         ``self.cell[ckey][u][v] -> fkey``
@@ -85,9 +85,9 @@ class VolMesh(FromToData,
         ``self.halfface[fkey] -> vertex cycle``
     plane : dict
         The planes of the volmesh. Every plane is uniquely defined by three
-        neighbouring vertices of the volmesh in a specific order. At the first level,
+        neighboring vertices of the volmesh in a specific order. At the first level,
         each vertex in the plane dict points at a new dictionary. This keys of this
-        dictionary are the (undirected) neighbours of the previous vertex. The values
+        dictionary are the (undirected) neighbors of the previous vertex. The values
         are again dictionaries. In combination with the first two keys, the keys
         of the latter identify oriented faces (planes) of the volmesh, finally
         pointing at the cells of the volmesh.
@@ -602,7 +602,7 @@ under construction
     # vertex topology
     # --------------------------------------------------------------------------
 
-    def vertex_neighbours(self, vkey):
+    def vertex_neighbors(self, vkey):
         return self.plane[vkey].keys()
 
     # --------------------------------------------------------------------------
@@ -641,7 +641,7 @@ under construction
     # cell topology
     # --------------------------------------------------------------------------
 
-    def cell_neighbours(self, ckey):
+    def cell_neighbors(self, ckey):
         nbrs = []
         for fkey in self.cell_halffaces(ckey):
             u   = self.halfface[fkey].iterkeys().next()
@@ -652,7 +652,7 @@ under construction
                 nbrs.append(nbr)
         return nbrs
 
-    def cell_vertex_neighbours(self, ckey):
+    def cell_vertex_neighbors(self, ckey):
         raise NotImplementedError
 
     def cell_halffaces(self, ckey):
@@ -873,7 +873,7 @@ if __name__ == '__main__':
     import compas
     from compas.viewers import VolMeshViewer
 
-    mesh = VolMesh.from_obj(compas.get_data('boxes.obj'))
+    mesh = VolMesh.from_obj(compas.get('boxes.obj'))
 
     mesh.scale(0.5)
 

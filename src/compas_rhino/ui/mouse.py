@@ -2,9 +2,10 @@ from __future__ import print_function
 
 try:
     from Rhino.UI import MouseCallback
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
     class MouseCallback(object):
@@ -22,8 +23,9 @@ __all__ = ['Mouse', ]
 
 class Mouse(MouseCallback):
     """"""
-    def __init__(self):
+    def __init__(self, parent=None):
         super(Mouse, self).__init__()
+        self.parent = parent
         self.x  = None  # x-coordinate of 2D point in the viewport
         self.y  = None  # y-coordinate of 2D point in the viewport
         self.p1 = None  # start of the frustum line in world coordinates

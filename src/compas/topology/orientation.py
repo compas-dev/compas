@@ -40,7 +40,7 @@ def face_adjacency(xyz, faces):
             from compas.geometry import KDTree
 
             tree = KDTree(points)
-            closest = [tree.nearest_neighbours(point, 10) for point in points]
+            closest = [tree.nearest_neighbors(point, 10) for point in points]
             closest = [[index for _, index, _ in nnbrs] for nnbrs in closest]
 
         else:
@@ -107,7 +107,7 @@ def mesh_face_adjacency(mesh):
     Returns
     -------
     dict
-        A dictionary mapping face identifiers (keys) to lists of neighbouring faces.
+        A dictionary mapping face identifiers (keys) to lists of neighboring faces.
 
     Notes
     -----
@@ -135,7 +135,7 @@ def mesh_face_adjacency(mesh):
             from compas.geometry import KDTree
 
             tree = KDTree(points)
-            closest = [tree.nearest_neighbours(point, 10) for point in points]
+            closest = [tree.nearest_neighbors(point, 10) for point in points]
             closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
 
         else:
@@ -153,7 +153,7 @@ def mesh_face_adjacency(mesh):
 
             closest = []
             for i, point in enumerate(points):
-                sphere = Sphere(Point3d(* point), 2.0)
+                sphere = Sphere(Point3d(* point), 4.0)
                 data = []
                 tree.Search(sphere, callback, data)
                 closest.append(data)
@@ -203,9 +203,9 @@ def unify_cycles(vertices, faces, root=0):
                 i = faces[node].index(u)
                 j = faces[node].index(v)
                 if i == j - 1 or (j == 0 and u == faces[node][-1]):
-                    # if the traversal of a neighbouring halfedge
+                    # if the traversal of a neighboring halfedge
                     # is in the same direction
-                    # flip the neighbour
+                    # flip the neighbor
                     faces[nbr][:] = faces[nbr][::-1]
                     return
 
@@ -239,9 +239,9 @@ def mesh_unify_cycles(mesh, root=None):
                 i = mesh.face[node].index(u)
                 j = mesh.face[node].index(v)
                 if i == j - 1 or (j == 0 and u == mesh.face[node][-1]):
-                    # if the traversal of a neighbouring halfedge
+                    # if the traversal of a neighboring halfedge
                     # is in the same direction
-                    # flip the neighbour
+                    # flip the neighbor
                     mesh.face[nbr][:] = mesh.face[nbr][::-1]
                     return
 
@@ -295,6 +295,6 @@ if __name__ == "__main__":
 
     from compas.datastructures.mesh import Mesh
 
-    mesh = Mesh.from_obj(compas.get_data('faces_big.obj'))
+    mesh = Mesh.from_obj(compas.get('faces_big.obj'))
 
     mesh_unify_cycles(mesh)

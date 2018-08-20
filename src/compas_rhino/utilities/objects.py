@@ -1,3 +1,5 @@
+from ast import literal_eval
+
 try:
     import System
     import Rhino
@@ -5,12 +7,17 @@ try:
     import scriptcontext as sc
 
     find_object = sc.doc.Objects.Find
-    purge_object = sc.doc.Objects.Purge
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
+
+else:
+    try:
+        purge_object = sc.doc.Objects.Purge
+    except AttributeError:
+        purge_object = None
 
 
 __author__     = ['Tom Van Mele', ]
@@ -27,11 +34,15 @@ __email__      = 'vanmelet@ethz.ch'
 
 __all__ = [
     'get_objects',
+    'get_object_layers',
+    'get_object_types',
     'get_object_names',
+    'get_object_name',
     'get_object_attributes',
     'get_object_attributes_from_name',
     'delete_object',
     'delete_objects',
+    'delete_objects_by_name',
     'purge_objects',
     'is_curve_line',
     'is_curve_polyline',
@@ -54,6 +65,8 @@ __all__ = [
     'get_mesh_vertex_index',
     'get_mesh_face_index',
     'get_mesh_edge_index',
+    'select_object',
+    'select_objects',
     'select_point',
     'select_points',
     'select_curve',
@@ -76,7 +89,7 @@ __all__ = [
 # ==============================================================================
 
 
-def get_objects(name=None, color=None, layer=None):
+def get_objects(name=None, color=None, layer=None, type=None):
     guids = rs.AllObjects()
     if name:
         guids = list(set(guids) & set(rs.ObjectsByName(name)))
@@ -84,18 +97,20 @@ def get_objects(name=None, color=None, layer=None):
         guids = list(set(guids) & set(rs.ObjectsByColor(color)))
     if layer:
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+    if type:
+        guids = list(set(guids) & set(rs))
     return guids
 
 
 def delete_object(guid, purge=True):
-    if purge:
-        purge_object(guid)
+    if purge and purge_object:
+        purge_objects([guid])
     else:
-        rs.DeleteObject(guid)
+        delete_objects([guid], purge)
 
 
 def delete_objects(guids, purge=True):
-    if purge:
+    if purge and purge_object:
         purge_objects(guids)
     else:
         for guid in guids:
@@ -104,7 +119,14 @@ def delete_objects(guids, purge=True):
         rs.DeleteObjects(guids)
 
 
+def delete_objects_by_name(name, purge=True):
+    guids = get_objects(name)
+    delete_objects(guids, purge=purge)
+
+
 def purge_objects(guids):
+    if not purge_object:
+        raise RuntimeError('Cannot purge outside Rhino script context')
     for guid in guids:
         if rs.IsObjectHidden(guid):
             rs.ShowObject(guid)
@@ -113,32 +135,56 @@ def purge_objects(guids):
     sc.doc.Views.Redraw()
 
 
+def get_object_layers(guids):
+    return [rs.ObjectLayer(guid) for guid in guids]
+
+
+def get_object_types(guids):
+    return [rs.ObjectType(guid) for guid in guids]
+
+
 def get_object_names(guids):
     return [rs.ObjectName(guid) for guid in guids]
 
 
+def get_object_name(guid):
+    return rs.ObjectName(guid)
+
+
 def get_object_attributes(guids):
-    raise NotImplementedError
+    attrs = []
+    for guid in guids:
+        o = find_object(guid)
+        u = o.Attributes.UserDictionary
+        a = {}
+        if u.Count:
+            for key in u.Keys:
+                a[key] = u.Item[key]
+        attrs.append(a)
+    return attrs
 
 
-# use ast for this
-# ast.literal_eval
-# @see: https://docs.python.org/2/library/ast.html#ast.literal_eval
-def get_object_attributes_from_name(name, separator=';', assignment=':'):
-    attr  = {}
-    if name:
-        name = name.lstrip('{')
-        name = name.rstrip('}')
-        parts = name.split(separator)
-        for part in parts:
-            pair = part.split(assignment)
-            if len(pair) == 2:
-                key, value = pair
-                try:
-                    attr[eval(key)] = eval(value)
-                except:
-                    pass
-    return attr
+def get_object_attributes_from_name(guids):
+    attrs = []
+    for name in get_object_names(guids):
+        try:
+            attr = literal_eval(name)
+        except (ValueError, TypeError):
+            attr = {}
+        attrs.append(attr)
+    return attrs
+
+
+def select_object(message="Select an object."):
+    return rs.GetObject(message)
+
+
+def select_objects(message='Select objects.'):
+    guids = []
+    temp = rs.GetObjects(message)
+    if temp:
+        return temp
+    return guids
 
 
 # ==============================================================================
@@ -148,6 +194,7 @@ def get_object_attributes_from_name(name, separator=';', assignment=':'):
 
 def select_point(message='Select a point.'):
     return rs.GetObject(message, filter=rs.filter.point)
+
 
 def select_points(message='Select points.'):
     guids = []

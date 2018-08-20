@@ -4,26 +4,27 @@ from compas.utilities import geometric_key
 
 import compas_rhino
 
-from compas_rhino.geometry.surface import RhinoSurface
+from compas_rhino.geometry import RhinoSurface
 
-from compas_rhino.helpers.artists import MeshArtist
+from compas_rhino.artists import MeshArtist
 
-from compas_rhino.helpers.modifiers import Modifier
-from compas_rhino.helpers.modifiers import VertexModifier
-from compas_rhino.helpers.modifiers import EdgeModifier
-from compas_rhino.helpers.modifiers import FaceModifier
+from compas_rhino.modifiers import Modifier
+from compas_rhino.modifiers import VertexModifier
+from compas_rhino.modifiers import EdgeModifier
+from compas_rhino.modifiers import FaceModifier
 
-from compas_rhino.helpers.selectors import VertexSelector
-from compas_rhino.helpers.selectors import EdgeSelector
-from compas_rhino.helpers.selectors import FaceSelector
+from compas_rhino.selectors import VertexSelector
+from compas_rhino.selectors import EdgeSelector
+from compas_rhino.selectors import FaceSelector
 
 try:
     import Rhino
     import scriptcontext as sc
     import rhinoscriptsyntax as rs
+
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
+    import sys
+    if 'ironpython' in sys.version.lower():
         raise
 
 
@@ -1038,11 +1039,11 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Mesh
-    from compas_rhino.helpers import mesh_draw
-    from compas_rhino.helpers import mesh_select_vertex
-    from compas_rhino.helpers import mesh_move_vertex
+    from compas_rhino import mesh_draw
+    from compas_rhino import mesh_select_vertex
+    from compas_rhino import mesh_move_vertex
 
-    mesh = Mesh.from_obj(compas.get_data('faces_big.obj'))
+    mesh = Mesh.from_obj(compas.get_data('quadmesh_planar.obj'))
 
     mesh_draw(mesh, layer='test', clear_layer=True)
 

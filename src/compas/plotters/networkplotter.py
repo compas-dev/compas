@@ -81,7 +81,7 @@ class NetworkPlotter(Plotter):
         """Initialises a network plotter object"""
         super(NetworkPlotter, self).__init__(**kwargs)
         self.title = 'NetworkPlotter'
-        self.network = network
+        self.datastructure = network
         self.vertexcollection = None
         self.edgecollection = None
         self.defaults = {
@@ -112,6 +112,19 @@ class NetworkPlotter(Plotter):
         """Clears the network object edges."""
         if self.edgecollection:
             self.edgecollection.remove()
+
+    def draw_as_lines(self, color=None, width=None):
+        # if len(args) > 0:
+        #     return super(MeshPlotter, self).draw_lines(*args, **kwargs)
+        lines = []
+        for u, v in self.datastructure.edges():
+            lines.append({
+                'start' : self.datastructure.vertex_coordinates(u, 'xy'),
+                'end'   : self.datastructure.vertex_coordinates(v, 'xy'),
+                'color' : color,
+                'width' : width,
+            })
+        return super(NetworkPlotter, self).draw_lines(lines)
 
     def draw_vertices(self,
                       keys=None,
@@ -150,19 +163,19 @@ class NetworkPlotter(Plotter):
             The matplotlib point collection object.
 
         """
-        keys = keys or list(self.network.vertices())
+        keys = keys or list(self.datastructure.vertices())
 
         if text == 'key':
-            text = {key: str(key) for key in self.network.vertices()}
+            text = {key: str(key) for key in self.datastructure.vertices()}
         elif text == 'index':
-            text = {key: str(index) for index, key in enumerate(self.network.vertices())}
+            text = {key: str(index) for index, key in enumerate(self.datastructure.vertices())}
         elif isinstance(text, basestring):
-            if text in self.network.default_vertex_attributes:
-                default = self.network.default_vertex_attributes[text]
+            if text in self.datastructure.default_vertex_attributes:
+                default = self.datastructure.default_vertex_attributes[text]
                 if isinstance(default, float):
-                    text = {key: '{:.1f}'.format(attr[text]) for key, attr in self.network.vertices(True)}
+                    text = {key: '{:.1f}'.format(attr[text]) for key, attr in self.datastructure.vertices(True)}
                 else:
-                    text = {key: str(attr[text]) for key, attr in self.network.vertices(True)}
+                    text = {key: str(attr[text]) for key, attr in self.datastructure.vertices(True)}
         else:
             pass
 
@@ -177,7 +190,7 @@ class NetworkPlotter(Plotter):
         points = []
         for key in keys:
             points.append({
-                'pos'      : self.network.vertex_coordinates(key, 'xy'),
+                'pos'      : self.datastructure.vertex_coordinates(key, 'xy'),
                 'radius'   : radiusdict[key],
                 'text'     : textdict[key],
                 'facecolor': facecolordict[key],
@@ -197,8 +210,8 @@ class NetworkPlotter(Plotter):
     def update_vertices(self, radius=0.1):
         """Updates the plotter vertex collection based on the network."""
         circles = []
-        for key in self.network.vertices():
-            center = self.network.vertex_coordinates(key, 'xy')
+        for key in self.datastructure.vertices():
+            center = self.datastructure.vertex_coordinates(key, 'xy')
             circles.append(Circle(center, radius))
         self.vertexcollection.set_paths(circles)
 
@@ -232,12 +245,12 @@ class NetworkPlotter(Plotter):
             The matplotlib line collection object.
 
         """
-        keys = keys or list(self.network.edges())
+        keys = keys or list(self.datastructure.edges())
 
         if text == 'key':
-            text = {(u, v): '{}-{}'.format(u, v) for u, v in self.network.edges()}
+            text = {(u, v): '{}-{}'.format(u, v) for u, v in self.datastructure.edges()}
         elif text == 'index':
-            text = {(u, v): str(index) for index, (u, v) in enumerate(self.network.edges())}
+            text = {(u, v): str(index) for index, (u, v) in enumerate(self.datastructure.edges())}
         else:
             pass
 
@@ -250,8 +263,8 @@ class NetworkPlotter(Plotter):
         lines = []
         for u, v in keys:
             lines.append({
-                'start'    : self.network.vertex_coordinates(u, 'xy'),
-                'end'      : self.network.vertex_coordinates(v, 'xy'),
+                'start'    : self.datastructure.vertex_coordinates(u, 'xy'),
+                'end'      : self.datastructure.vertex_coordinates(v, 'xy'),
                 'width'    : widthdict[(u, v)],
                 'color'    : colordict[(u, v)],
                 'text'     : textdict[(u, v)],
@@ -266,8 +279,8 @@ class NetworkPlotter(Plotter):
     def update_edges(self):
         """Updates the plotter edge collection based on the network."""
         segments = []
-        for u, v in self.network.edges():
-            segments.append([self.network.vertex_coordinates(u, 'xy'), self.network.vertex_coordinates(v, 'xy')])
+        for u, v in self.datastructure.edges():
+            segments.append([self.datastructure.vertex_coordinates(u, 'xy'), self.datastructure.vertex_coordinates(v, 'xy')])
         self.edgecollection.set_segments(segments)
 
 
@@ -276,6 +289,8 @@ class NetworkPlotter(Plotter):
 # ==============================================================================
 
 if __name__ == "__main__":
+
+    import seaborn
 
     import compas
 

@@ -1,10 +1,9 @@
-""".. _compas.viewers:
-
+"""
 ********************************************************************************
-viewers
+compas.viewers
 ********************************************************************************
 
-.. module:: compas.viewers
+.. currentmodule:: compas.viewers
 
 This package wraps `PyOpenGL`_ and `PySide`_ to provide three-dimensional
 viewers with basic visualization and user interaction capabilities.
@@ -21,22 +20,33 @@ Classes
     :nosignatures:
 
     Viewer
-    NetworkViewer
     MeshViewer
-    VolMeshViewer
 
 """
+from __future__ import absolute_import
 
 from .core import *
 from .viewer import *
-from .networkviewer import *
 from .meshviewer import *
-from .volmeshviewer import *
 
+try:
+    from .vtkviewer import *
+except:
+    pass
 
-from .viewer import __all__ as b
-from .networkviewer import __all__ as c
-from .meshviewer import __all__ as d
-from .volmeshviewer import __all__ as e
+from . import viewer
+from . import meshviewer
 
-__all__ = b + c + d + e
+try:
+    from . import vtkviewer
+except:
+    pass
+
+__all__ = []
+__all__ += viewer.__all__
+__all__ += meshviewer.__all__
+
+try:
+    __all__ += vtkviewer.__all__
+except:
+    pass

@@ -1,7 +1,6 @@
-from compas.cad import CurveGeometryInterface
-
 from compas.geometry import add_vectors
 
+from compas_blender.geometry import BlenderGeometry
 from compas_blender.utilities import select_curve
 
 try:
@@ -20,7 +19,7 @@ __email__      = 'liew@arch.ethz.ch'
 __all__ = ['BlenderCurve']
 
 
-class BlenderCurve(CurveGeometryInterface):
+class BlenderCurve(BlenderGeometry):
     """"""
 
     def __init__(self, object):

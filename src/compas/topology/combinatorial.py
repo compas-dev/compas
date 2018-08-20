@@ -48,7 +48,7 @@ def vertex_coloring(adjacency):
         from compas.plotters import NetworkPlotter
         from compas.topology import vertex_coloring
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
         key_color = vertex_coloring(network.adjacency)
         colors = ['#ff0000', '#00ff00', '#0000ff']

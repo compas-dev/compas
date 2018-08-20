@@ -3,16 +3,21 @@ from __future__ import division
 from __future__ import print_function
 
 import os
-import ctypes
 import compas
 
-from compas.interop.core.cpp.xdarray import Array2D
-from compas.interop.core.cpp.xdarray import Array1D
+try:
+    import ctypes
+
+    from compas.interop.cpp.xdarray import Array2D
+    from compas.interop.cpp.xdarray import Array1D
+
+except (ImportError, SystemError):
+    compas.raise_if_not_ironpython()
 
 HERE = os.path.dirname(__file__)
 
-SO = os.path.join(HERE, '_fd_cpp', 'fd.so')
-DLL = os.path.join(HERE, '_fd_cpp', 'fd.dll')
+SO = os.path.join(HERE, '__fd_cpp', 'fd.so')
+DLL = os.path.join(HERE, '__fd_cpp', 'fd.dll')
 
 
 __author__    = ['Tom Van Mele', ]

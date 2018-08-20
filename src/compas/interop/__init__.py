@@ -1,14 +1,11 @@
 """
-.. _compas.interop:
-
 ********************************************************************************
-interop
+compas.interop
 ********************************************************************************
 
-.. module:: compas.interop
+.. currentmodule:: compas.interop
 
-This package includes utility functions for seamless integration of C
-and C++ code, and wrappers for external libraries.
+This package includes utility functions for seamless integration of C, C++ and Fortran code.
 
 .. warning::
 
@@ -16,30 +13,36 @@ and C++ code, and wrappers for external libraries.
     For now, don't use it for anything important :)
 
 
-ShapeOp
+C++
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    cpp.xdarray.Array1D
+    cpp.xdarray.Array2D
+    cpp.xdarray.Array3D
+    cpp.xdarray.shape
+    cpp.xdarray.zeros
+    cpp.xdarray.ones
+    cpp.xdarray.eye
+
+
+CSharp
+======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+
+Fortran
 =======
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
-
-    shapeop.ShapeOpSolver
-
-
-Core
-====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    core.cpp.xdarray.Array1D
-    core.cpp.xdarray.Array2D
-    core.cpp.xdarray.Array3D
-    core.cpp.xdarray.shape
-    core.cpp.xdarray.zeros
-    core.cpp.xdarray.ones
-    core.cpp.xdarray.eye
 
 """
 

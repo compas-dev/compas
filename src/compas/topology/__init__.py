@@ -1,11 +1,9 @@
 """
-.. _compas.topology:
-
 ********************************************************************************
-topology
+compas.topology
 ********************************************************************************
 
-.. module:: compas.topology
+.. currentmodule:: compas.topology
 
 
 combinatorial

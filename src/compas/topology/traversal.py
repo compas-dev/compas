@@ -36,7 +36,7 @@ def depth_first_ordering(adjacency, root):
     ----------
     adjacency : dict
         An adjacency dictionary. Each key represents a vertex
-        and maps to a list of neighbouring vertex keys.
+        and maps to a list of neighboring vertex keys.
     root : str
         The vertex from which to start the depth-first search.
 
@@ -55,13 +55,13 @@ def depth_first_ordering(adjacency, root):
 
     Initially only the root element is on the stack. While there are still
     elements on the stack, the node on top of the stack is 'popped off' and if
-    this node was not already visited, its neighbours are added to the stack if
+    this node was not already visited, its neighbors are added to the stack if
     they hadn't already been visited themselves.
 
     Since the last element on top of the stack is always popped off, the
     algorithm goes deeper and deeper in the datastructure, until it reaches a
-    node without (unvisited) neighbours and then backtracks. Once a new node
-    with unvisited neighbours is found, there too it will go as deep as possible
+    node without (unvisited) neighbors and then backtracks. Once a new node
+    with unvisited neighbors is found, there too it will go as deep as possible
     before backtracking again, and so on. Once there are no more nodes on the
     stack, the entire structure has been traversed.
 
@@ -73,7 +73,7 @@ def depth_first_ordering(adjacency, root):
     >>> import compas
     >>> from compas.datastructures import Network
     >>> from compas.topology import depth_first_search as dfs
-    >>> network = Network.from_obj(compas.get_data('lines.obj'))
+    >>> network = Network.from_obj(compas.get('lines.obj'))
     >>> print(dfs(network, network.get_any_vertex()))
 
     See Also
@@ -211,7 +211,7 @@ def breadth_first_ordering(adjacency, root):
     ----------
     adjacency : dict
         An adjacency dictionary. Each key represents a vertex
-        and maps to a list of neighbouring vertex keys.
+        and maps to a list of neighboring vertex keys.
     root : str
         The vertex from which to start the breadth-first search.
 
@@ -226,11 +226,11 @@ def breadth_first_ordering(adjacency, root):
     The principle of a queue is FIFO. In Python, a deque is ideal for removing elements
     from the beginning, i.e. from the 'left'.
 
-    In a breadth-first search, all unvisited neighbours of a node are visited
-    first. When a neighbour is visited, its univisited neighbours are added to
+    In a breadth-first search, all unvisited neighbors of a node are visited
+    first. When a neighbor is visited, its univisited neighbors are added to
     the list of nodes to visit.
 
-    By appending the neighbours to the end of the list of nodes to visit,
+    By appending the neighbors to the end of the list of nodes to visit,
     and by visiting the nodes at the start of the list first, the network is
     traversed in *breadth-first* order.
 
@@ -342,9 +342,9 @@ def shortest_path(adjacency, root, goal):
         from compas.topology import shortest_path
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-        adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
 
         start = 21
         end = 2
@@ -388,7 +388,7 @@ def dijkstra_distances(adjacency, weight, target):
     ----------
     adjacency : dict
         An adjacency dictionary. Each key represents a vertex
-        and maps to a list of neighbouring vertex keys.
+        and maps to a list of neighboring vertex keys.
     weight : dict
         A dictionary of edge weights.
     target : str
@@ -414,9 +414,9 @@ def dijkstra_distances(adjacency, weight, target):
         from compas.plotters import NetworkPlotter
         from compas.utilities import i_to_red
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-        adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
 
         weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
         weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
@@ -469,7 +469,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
     ----------
     adjacency : dict
         An adjacency dictionary. Each key represents a vertex
-        and maps to a list of neighbouring vertex keys.
+        and maps to a list of neighboring vertex keys.
     weight : dict
         A dictionary of edge weights.
     source : str
@@ -499,9 +499,9 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
         from compas.topology import dijkstra_path
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-        adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
 
         weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
         weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
@@ -544,9 +544,9 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
         from compas.topology import dijkstra_path
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-        adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
 
         weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
         weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
@@ -687,9 +687,9 @@ if __name__ == '__main__':
         from compas.topology import shortest_path
         from compas.plotters import NetworkPlotter
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-        adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
 
         start = 21
         end = 22
@@ -731,9 +731,9 @@ if __name__ == '__main__':
         from compas.plotters import NetworkPlotter
         from compas.utilities import i_to_red
 
-        network = Network.from_obj(compas.get_data('grid_irregular.obj'))
+        network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-        adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
 
         weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
         weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
@@ -772,7 +772,7 @@ if __name__ == '__main__':
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-        adjacency = {key: network.vertex_neighbours(key) for key in network.vertices()}
+        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
 
         weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
         weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})

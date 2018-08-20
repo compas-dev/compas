@@ -1,8 +1,7 @@
-from compas.cad import MeshGeometryInterface
-
 from compas.geometry import add_vectors
 from compas.geometry import distance_point_point
 
+from compas_blender.geometry import BlenderGeometry
 from compas_blender.utilities import select_mesh
 
 try:
@@ -20,7 +19,7 @@ __email__      = 'liew@arch.ethz.ch'
 __all__ = ['BlenderMesh']
 
 
-class BlenderMesh(MeshGeometryInterface):
+class BlenderMesh(BlenderGeometry):
     """"""
 
     def __init__(self, object):
@@ -103,21 +102,21 @@ class BlenderMesh(MeshGeometryInterface):
         # User must be in object mode, with vertex selected from edit mode.
         try:
             return mesh.get_vertex_indices()[0]
-        except:
+        except Exception:
             return None
 
     def get_face_index(self):
         # User must be in object mode, with face selected from edit mode.
         try:
             return mesh.get_face_indices()[0]
-        except:
+        except Exception:
             return None
 
     def get_edge_index(self):
         # User must be in object mode, with edge selected from edit mode.
         try:
             return mesh.get_edge_indices()[0]
-        except:
+        except Exception:
             return None
 
     def get_vertex_face_indices(self):

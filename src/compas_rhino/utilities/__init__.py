@@ -1,11 +1,9 @@
 """
-.. _compas_rhino.utilities:
-
 ********************************************************************************
-utilities
+compas_rhino.utilities
 ********************************************************************************
 
-.. module:: compas_rhino.utilities
+.. currentmodule:: compas_rhino.utilities
 
 
 This package contains many convenience functions for working and interacting
@@ -146,11 +144,8 @@ geometry
 
     uv_points_from_surface
 
-
 """
-
-
-
+from __future__ import absolute_import
 
 from .document import *
 from .layers import *
@@ -158,12 +153,22 @@ from .objects import *
 from .misc import *
 from .drawing import *
 from .geometry import *
+from .xfunc import *
 
-from .document import __all__ as a
-from .layers import __all__ as b
-from .objects import __all__ as c
-from .misc import __all__ as d
-from .drawing import __all__ as e
-from .geometry import __all__ as f
+from . import document
+from . import layers
+from . import objects
+from . import misc
+from . import drawing
+from . import geometry
+from . import xfunc
 
-__all__ = a + b + c + d + e + f
+__all__ = []
+
+__all__ += document.__all__
+__all__ += layers.__all__
+__all__ += objects.__all__
+__all__ += misc.__all__
+__all__ += drawing.__all__
+__all__ += geometry.__all__
+__all__ += xfunc.__all__

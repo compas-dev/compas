@@ -21,19 +21,21 @@ __all__ = [
 
 class Axes2D(object):
     """Definition of a 2D Axes object.
+
     Parameters
     ----------
-    origin : tuple, list
+    origin : tuple or list
         X and Y coordinates for the origin.
     vectors : list
         The X and Y axes.
 
     Attributes
     ----------
-    origin : tuple, list
+    origin : tuple or list
         X and Y coordinates for the origin.
     vectors : list
         The X and Y axes.
+
     """
 
     def __init__(self, origin, vectors):
@@ -48,6 +50,7 @@ class Axes2D(object):
         ----------
         axes : object
             The matplotlib axes object.
+
         """
         assert_axes_dimension(axes, 2)
         o = self.origin
@@ -66,19 +69,21 @@ class Axes2D(object):
 
 class Axes3D(object):
     """Definition of a 3D Axes object.
+
     Parameters
     ----------
-    origin : tuple, list
+    origin : tuple or list
         X, Y and Z coordinates for the origin.
     vectors : list
         The X, Y and Z axes.
 
     Attributes
     ----------
-    origin : tuple, list
+    origin : tuple or list
         X, Y and Z coordinates for the origin.
     vectors : list
         The X, Y and Z axes.
+
     """
 
     def __init__(self, origin, vectors, colors=None):
@@ -185,7 +190,7 @@ class Cloud3D(object):
         x = self.cloud[:, 0]
         y = self.cloud[:, 1]
         z = self.cloud[:, 2]
-        axes.plot(x, y, z, 'o', color=(1.0, 1.0, 1.0))
+        axes.plot(x, y, z, 'o', color=(0.7, 0.7, 0.7))
 
 
 class Hull(object):

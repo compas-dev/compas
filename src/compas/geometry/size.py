@@ -13,8 +13,8 @@ from compas.geometry.basic import dot_vectors
 from compas.geometry.average import centroid_points
 from compas.geometry.average import centroid_points_xy
 
-from compas.geometry.orientation import normal_triangle
-from compas.geometry.orientation import normal_triangle_xy
+from compas.geometry.normals import normal_triangle
+from compas.geometry.normals import normal_triangle_xy
 
 
 __author__    = ['Tom Van Mele', ]
@@ -139,7 +139,7 @@ def volume_polyhedron(polyhedron):
     """
     V = 0
     for fkey in polyhedron.face:
-        vertices = polyhedron.face_vertices(fkey, ordered=True)
+        vertices = polyhedron.face_vertices(fkey)
         if len(vertices) == 3:
             faces = [vertices]
         else:

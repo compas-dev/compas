@@ -13,7 +13,7 @@ from compas.utilities import geometric_key
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
-__version__    = '0.1'
+__version__    = '0.3.0'
 __date__       = 'Mar 31, 2015'
 
 
@@ -21,8 +21,6 @@ __all__ = [
     'OBJ',
     'OBJReader',
     'OBJParser',
-    'OBJComposer',
-    'OBJWriter',
 ]
 
 
@@ -34,8 +32,8 @@ class OBJ(object):
     * http://paulbourke.net/dataformats/obj/
 
     """
-    def __init__(self, filepath, remote=False, precision=None):
-        self.reader = OBJReader(filepath, remote=remote)
+    def __init__(self, filepath, precision=None):
+        self.reader = OBJReader(filepath)
         self.parser = OBJParser(self.reader, precision=precision)
 
 
@@ -51,12 +49,6 @@ class OBJReader(object):
 
     Attributes
     ----------
-    filepath : str
-        Path to the file.
-    remote : bool
-        Is the file on a remote location.
-    content : iter
-        The contents of the file, line by line.
     vertices : list
         Vertex coordinates.
     weights : list
@@ -89,9 +81,8 @@ class OBJReader(object):
 
     """
 
-    def __init__(self, filepath, remote=False):
+    def __init__(self, filepath):
         self.filepath = filepath
-        self.remote = remote
         self.content = None
         # vertex data
         self.vertices = []
@@ -124,9 +115,9 @@ class OBJReader(object):
         self.post()
 
     def open(self):
-        if self.remote:
+        if self.filepath.startswith('http'):
             resp = urllib2.urlopen(self.filepath)
-            self.content = iter(resp.readlines())
+            self.content = iter(resp.read().decode('utf-8').split('\n'))
         else:
             with open(self.filepath, 'r') as fh:
                 self.content = iter(fh.readlines())
@@ -350,24 +341,6 @@ class OBJParser(object):
         self.groups    = self.reader.groups
 
 
-class OBJComposer(object):
-    """"""
-    def __init__(self):
-        pass
-
-    def compose(self):
-        pass
-
-
-class OBJWriter(object):
-    """"""
-    def __init__(self):
-        pass
-
-    def write(self):
-        pass
-
-
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -376,7 +349,7 @@ if __name__ == '__main__':
 
     import compas
 
-    obj = OBJ(compas.get_data('faces.obj'))
+    obj = OBJ(compas.get('faces.obj'))
 
     print(obj.parser.vertices)
     print(obj.parser.lines)

@@ -4,6 +4,8 @@ from __future__ import division
 
 import random
 
+from compas.utilities import flatten
+
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import add_vectors
@@ -56,8 +58,9 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
     Returns
     -------
-    Mesh
-        A mesh object.
+    list
+        The faces of the triangulation.
+        Each face is a triplet of indices referring to the list of point coordinates.
 
     Notes
     -----
@@ -453,7 +456,7 @@ def trimesh_remesh(mesh,
         if count == 1:
             visited = set()
 
-            for u, v in list(mesh.halfedges()):
+            for u, v in list(mesh.edges()):
                 if u in visited or v in visited:
                     continue
                 if mesh.edge_length(u, v) <= lmax + dlmax:
@@ -471,7 +474,7 @@ def trimesh_remesh(mesh,
         elif count == 2:
             visited = set()
 
-            for u, v in list(mesh.halfedges()):
+            for u, v in list(mesh.edges()):
                 if u in visited or v in visited:
                     continue
                 if mesh.edge_length(u, v) >= lmin - dlmin:
@@ -490,7 +493,7 @@ def trimesh_remesh(mesh,
         elif count == 3:
             visited = set()
 
-            for u, v in list(mesh.halfedges()):
+            for u, v in list(mesh.edges()):
                 if u in visited or v in visited:
                     continue
 
@@ -546,7 +549,7 @@ def trimesh_remesh(mesh,
         # smoothen
         if smooth:
             if allow_boundary_split:
-                boundary  = set(mesh.vertices_on_boundary())
+                boundary = set(mesh.vertices_on_boundary())
 
             mesh_smooth_area(mesh, fixed=fixed.union(boundary), kmax=1)
 
@@ -637,4 +640,22 @@ if __name__ == "__main__":
 
         plotter.update_edges()
         plotter.update(pause=2.0)
+        plotter.show()
+
+    if testrun == 3:
+        from compas.geometry import pointcloud_xy
+        from compas.datastructures import Mesh
+        from compas.topology import delaunay_from_points
+        from compas.plotters import MeshPlotter
+
+        points = pointcloud_xy(10, (0, 10))
+        faces = delaunay_from_points(points)
+
+        delaunay = Mesh.from_vertices_and_faces(points, faces)
+
+        plotter = MeshPlotter(delaunay)
+
+        plotter.draw_vertices(radius=0.1)
+        plotter.draw_faces()
+
         plotter.show()

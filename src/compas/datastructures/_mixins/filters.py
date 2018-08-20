@@ -34,23 +34,44 @@ class VertexFilter(object):
             The next vertex and its attributes, if ``data=True``.
 
         """
-        # turn this inside out
         for key, attr in self.vertices(True):
             is_match = True
+
             for name, value in conditions.items():
-                if name not in attr:
-                    is_match = False
-                    break
-                if isinstance(value, (tuple, list)):
-                    minval, maxval = value
-                    if attr[name] < minval or attr[name] > maxval:
-                        is_match = False
-                        break
+                method = getattr(self, name, None)
+
+                if callable(method):
+                    val = method(key)
+
+                    if isinstance(value, (tuple, list)):
+                        minval, maxval = value
+
+                        if val < minval or val > maxval:
+                            is_match = False
+                            break
+                    else:
+                        if value != val:
+                            is_match = False
+                            break
+
                 else:
-                    if value != attr[name]:
+                    if name not in attr:
                         is_match = False
                         break
+
+                    if isinstance(value, (tuple, list)):
+                        minval, maxval = value
+
+                        if attr[name] < minval or attr[name] > maxval:
+                            is_match = False
+                            break
+                    else:
+                        if value != attr[name]:
+                            is_match = False
+                            break
+
             if is_match:
+
                 if data:
                     yield key, attr
                 else:
@@ -59,7 +80,7 @@ class VertexFilter(object):
 
 class EdgeFilter(object):
 
-    def edges_where(self, conditions):
+    def edges_where(self, conditions, data=False):
         """Get edges for which a certain condition or set of conditions is true.
 
         Parameters
@@ -75,31 +96,95 @@ class EdgeFilter(object):
             A list of edge keys that satisfy the condition(s).
 
         """
-        keys = []
         for u, v, attr in self.edges(True):
             is_match = True
+
             for name, value in conditions.items():
-                if name not in attr:
-                    is_match = False
-                    break
-                if isinstance(value, (tuple, list)):
-                    minval, maxval = value
-                    if attr[name] < minval or attr[name] > maxval:
-                        is_match = False
-                        break
+                method = getattr(self, name, None)
+
+                if callable(method):
+                    val = method(u, v)
+
+                    if isinstance(value, (tuple, list)):
+                        minval, maxval = value
+
+                        if val < minval or val > maxval:
+                            is_match = False
+                            break
+                    else:
+                        if value != val:
+                            is_match = False
+                            break
+
                 else:
-                    if value != attr[name]:
+                    if name not in attr:
                         is_match = False
                         break
+
+                    if isinstance(value, (tuple, list)):
+                        minval, maxval = value
+
+                        if attr[name] < minval or attr[name] > maxval:
+                            is_match = False
+                            break
+                    else:
+                        if value != attr[name]:
+                            is_match = False
+                            break
+
             if is_match:
-                keys.append((u, v))
-        return keys
+
+                if data:
+                    yield u, v, attr
+                else:
+                    yield u, v
 
 
 class FaceFilter(object):
 
-    def faces_where(self, conditions):
-        raise NotImplementedError
+    def faces_where(self, conditions, data=False):
+        for fkey, attr in self.faces(True):
+            is_match = True
+
+            for name, value in conditions.items():
+                method = getattr(self, name, None)
+
+                if callable(method):
+                    val = method(fkey)
+
+                    if isinstance(value, (tuple, list)):
+                        minval, maxval = value
+
+                        if val < minval or val > maxval:
+                            is_match = False
+                            break
+                    else:
+                        if value != val:
+                            is_match = False
+                            break
+
+                else:
+                    if name not in attr:
+                        is_match = False
+                        break
+
+                    if isinstance(value, (tuple, list)):
+                        minval, maxval = value
+
+                        if attr[name] < minval or attr[name] > maxval:
+                            is_match = False
+                            break
+                    else:
+                        if value != attr[name]:
+                            is_match = False
+                            break
+
+            if is_match:
+
+                if data:
+                    yield fkey, attr
+                else:
+                    yield fkey
 
 
 # ==============================================================================

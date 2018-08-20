@@ -1,11 +1,9 @@
 """
-.. compas_rhino.conduits:
-
 ********************************************************************************
-conduits
+compas_rhino.conduits
 ********************************************************************************
 
-.. module:: compas_rhino.conduits
+.. currentmodule:: compas_rhino.conduits
 
 
 Definition of display conduits.
@@ -17,15 +15,16 @@ Definition of display conduits.
     FacesConduit
     LabelsConduit
     LinesConduit
-    MeshConduit
     PointsConduit
-    SplinesConduit
 
 """
 
 from __future__ import print_function
+from __future__ import absolute_import
 
 from contextlib import contextmanager
+
+import compas
 
 try:
     import Rhino
@@ -33,9 +32,7 @@ try:
     from Rhino.Display import DisplayConduit
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
+    compas.raise_if_ironpython()
 
     class DisplayConduit(object):
         pass
@@ -72,15 +69,19 @@ class Conduit(DisplayConduit):
 from .faces import *
 from .labels import *
 from .lines import *
-from .mesh import *
 from .points import *
-from .splines import *
+# from .splines import *
 
-from .faces import __all__ as a
-from .labels import __all__ as b
-from .lines import __all__ as c
-from .mesh import __all__ as d
-from .points import __all__ as f
-from .splines import __all__ as g
+from . import faces
+from . import labels
+from . import lines
+from . import points
+# from . import splines
 
-__all__ = a + b + c + d + f + g
+__all__ = []
+
+__all__ += faces.__all__
+__all__ += labels.__all__
+__all__ += lines.__all__
+__all__ += points.__all__
+# __all__ += splines.__all__

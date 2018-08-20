@@ -4,14 +4,14 @@ from __future__ import division
 
 import compas_rhino
 
-from compas_rhino.helpers.artists import NetworkArtist
+from compas_rhino.artists import NetworkArtist
 
-from compas_rhino.helpers.modifiers import Modifier
-from compas_rhino.helpers.modifiers import VertexModifier
-from compas_rhino.helpers.modifiers import EdgeModifier
+from compas_rhino.modifiers import Modifier
+from compas_rhino.modifiers import VertexModifier
+from compas_rhino.modifiers import EdgeModifier
 
-from compas_rhino.helpers.selectors import VertexSelector
-from compas_rhino.helpers.selectors import EdgeSelector
+from compas_rhino.selectors import VertexSelector
+from compas_rhino.selectors import EdgeSelector
 
 
 __author__    = 'Tom Van Mele'
@@ -667,11 +667,11 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Network
-    from compas_rhino.helpers import network_draw
-    from compas_rhino.helpers import network_select_vertex
-    from compas_rhino.helpers import network_move_vertex
+    from compas_rhino import network_draw
+    from compas_rhino import network_select_vertex
+    from compas_rhino import network_move_vertex
 
-    network = Network.from_obj(compas.get_data('lines.obj'))
+    network = Network.from_obj(compas.get('lines.obj'))
 
     network_draw(network, layer='test', clear_layer=True)
 

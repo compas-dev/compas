@@ -1,5 +1,4 @@
-from compas.cad import PointGeometryInterface
-
+from compas_blender.geometry import BlenderGeometry
 from compas_blender.utilities import select_point
 
 
@@ -12,7 +11,7 @@ __email__      = 'liew@arch.ethz.ch'
 __all__ = ['BlenderPoint']
 
 
-class BlenderPoint(PointGeometryInterface):
+class BlenderPoint(BlenderGeometry):
     """"""
 
     def __init__(self, object):

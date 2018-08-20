@@ -2,16 +2,19 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.geometry.basic import cross_vectors
+
+from compas.geometry.average import centroid_points
+from compas.geometry.average import center_of_mass_polygon
+
+from compas.geometry.size import area_polygon
+
+from compas.geometry.queries import is_coplanar
+from compas.geometry.queries import is_polygon_convex
+
 from compas.geometry.objects import Point
 from compas.geometry.objects import Vector
 from compas.geometry.objects import Line
-
-from compas.geometry import area_polygon
-from compas.geometry import cross_vectors
-from compas.geometry import centroid_points
-from compas.geometry import center_of_mass_polygon
-from compas.geometry import is_coplanar
-from compas.geometry import is_polygon_convex
 
 
 __author__     = ['Tom Van Mele', ]
@@ -30,27 +33,24 @@ class Polygon(object):
     exterior. The boundary does not intersect itself, and is described by an
     ordered set of of points.
 
-    Notes:
-        All ``Polygon`` objects are considered closed. Therefore the first and
-        last element in the list of points are not the same. The existence of the
-        closing edge is implied.
+    Parameters
+    ----------
+    points : list of point
+        An ordered list of points.
 
-    Parameters:
-        points (sequence): A sequence of XYZ coordinates.
+    Examples
+    --------
+    >>> polygon = Polygon([[0,0,0], [1,0,0], [1,1,0], [0,1,0]])
+    >>> polygon.centroid
+    [0.5, 0.5, 0.0]
+    >>> polygon.area
+    1.0
 
-    Attributes:
-        points (list): A list of ``Point`` objects.
-        lines (list): A list of ``Line`` objects.
-        length (float): The total length of the boundary.
-        centroid (Point): A ``Point`` object at the location of the centroid.
-        area (float): The size of the area enclosed by the boundary.
-
-    Examples:
-        >>> polygon = Polygon([[0,0,0], [1,0,0], [1,1,0], [0,1,0]])
-        >>> polygon.centroid
-        [0.5, 0.5, 0.0]
-        >>> polygon.area
-        1.0
+    Notes
+    -----
+    All ``Polygon`` objects are considered closed. Therefore the first and
+    last element in the list of points are not the same. The existence of the
+    closing edge is implied.
 
     """
     def __init__(self, points):
@@ -70,14 +70,7 @@ class Polygon(object):
 
     @property
     def points(self):
-        """The points of the polygon.
-
-        Parameters:
-            points (sequence): A sequence of XYZ coordinates.
-
-        Returns:
-            list: A list of ``Point`` objects.
-        """
+        """list of Point: The points of the polygon."""
         return self._points
 
     @points.setter
@@ -89,39 +82,37 @@ class Polygon(object):
 
     @property
     def lines(self):
-        """The lines of the polyline.
-
-        Parameters:
-            None
-
-        Returns:
-            list: A list of ``Line`` objects.
-        """
+        """list of Line: The lines of the polyline."""
         return self._lines
 
     @property
     def p(self):
-        """The number of points."""
+        """int: The number of points."""
         return self._p
 
     @property
     def l(self):
-        """The number of lines."""
+        """int: The number of lines."""
         return self._l
 
     @property
     def length(self):
-        """The length of the boundary."""
+        """float: The length of the boundary."""
         return sum([line.length for line in self.lines])
 
     @property
     def centroid(self):
-        """The centroid of the polygon."""
+        """int: The centroid of the polygon."""
         return Point(* centroid_points(self.points))
 
     @property
+    def center(self):
+        """Point: The center (of mass) of the polygon."""
+        return Point(* center_of_mass_polygon(self.points))
+
+    @property
     def normal(self):
-        """The (average) normal of the polygon."""
+        """Vector: The (average) normal of the polygon."""
         o = self.center
         points = self.points
         a2 = 0
@@ -138,50 +129,50 @@ class Polygon(object):
         n = Vector(* n)
         return n
 
-    @property
-    def tangent(self):
-        """The (average) tangent plane."""
-        o = self.center
-        a, b, c = self.normal
-        d = - (a * o.x + b * o.y + c * o.z)
-        return a, b, c, d
+    # @property
+    # def tangent(self):
+    #     """The (average) tangent plane."""
+    #     o = self.center
+    #     a, b, c = self.normal
+    #     d = - (a * o.x + b * o.y + c * o.z)
+    #     return a, b, c, d
 
-    @property
-    def frame(self):
-        """The local coordinate frame."""
-        o  = self.center
-        w  = self.normal
-        p  = self.points[0]
-        u  = Vector.from_start_end(o, p)
-        u.unitize()
-        v = Vector.cross(w, u)
-        return o, u, v, w
+    # @property
+    # def frame(self):
+    #     """The local coordinate frame."""
+    #     o  = self.center
+    #     w  = self.normal
+    #     p  = self.points[0]
+    #     u  = Vector.from_start_end(o, p)
+    #     u.unitize()
+    #     v = Vector.cross(w, u)
 
-    @property
-    def center(self):
-        """The center (of mass) of the polygon."""
-        return Point(* center_of_mass_polygon(self.points))
+    #     a, b, c = self.normal
+    #     u = 1.0, 0.0, - a / c
+    #     v = 0.0, 1.0, - b / c
+    #     u, v = orthonormalize_vectors([u, v])
+    #     u = Vector(*u)
+    #     v = Vector(*v)
+    #     u.unitize()
+    #     v.unitize()
+    #     return self.point, u, v
+
+    #     return o, u, v, w
 
     @property
     def area(self):
-        """The area of the polygon.
-
-        The area is computed as the sum of the areas of the triangles formed
-        by each of the lines of the boundary and the centroid.
-        """
+        """float: The area of the polygon."""
         return area_polygon(self.points)
-
-    @property
-    def is_convex(self):
-        return is_polygon_convex(self.points)
-
-    @property
-    def is_coplanar(self):
-        return is_coplanar(self.points)
 
     # ==========================================================================
     # representation
     # ==========================================================================
+
+    def __repr__(self):
+        return 'Polygon({0})'.format(", ".join(map(lambda point: format(point, ""), self.points)))
+
+    def __len__(self):
+        return self.p
 
     # ==========================================================================
     # access
@@ -206,6 +197,9 @@ class Polygon(object):
     # comparison
     # ==========================================================================
 
+    def __eq__(self, other):
+        raise NotImplementedError
+
     # ==========================================================================
     # operators
     # ==========================================================================
@@ -215,12 +209,84 @@ class Polygon(object):
     # ==========================================================================
 
     # ==========================================================================
+    # helpers
+    # ==========================================================================
+
+    def copy(self):
+        """Make a copy of this ``Polygon``.
+
+        Returns
+        -------
+        Polygon
+            The copy.
+
+        """
+        cls = type(self)
+        return cls([point.copy() for point in self.points])
+
+    # ==========================================================================
     # methods
     # ==========================================================================
+
+    def is_convex(self):
+        """Determine if the polygon is convex.
+
+        Returns
+        -------
+        bool
+            True if the polygon is convex.
+            False otherwise.
+
+        """
+        return is_polygon_convex(self.points)
+
+    def is_planar(self):
+        """Determine if the polygon is planar.
+
+        Returns
+        -------
+        bool
+            True if all points of the polygon lie in one plane.
+            False otherwise.
+
+        """
+        return is_coplanar(self.points)
 
     # ==========================================================================
     # transformations
     # ==========================================================================
+
+    def transform(self, matrix):
+        """Transform this ``Polygon`` using a given transformation matrix.
+
+        Parameters
+        ----------
+        matrix : list of list
+            The transformation matrix.
+
+        """
+        for index, point in enumerate(transform_points(self.points, matrix)):
+            self.points[index].x = point[0]
+            self.points[index].y = point[1]
+            self.points[index].z = point[2]
+
+    def transformed(self, matrix):
+        """Return a transformed copy of this ``Polygon`` using a given transformation matrix.
+
+        Parameters
+        ----------
+        matrix : list of list
+            The transformation matrix.
+
+        Returns
+        -------
+        Polygon
+            The transformed copy.
+
+        """
+        polygon = self.copy()
+        polygon.transform(matrix)
+        return polygon
 
 
 # ==============================================================================
@@ -229,14 +295,13 @@ class Polygon(object):
 
 if __name__ == '__main__':
 
+    from compas.plotters import Plotter
+
     polygon = Polygon([[1, 1, 0], [0, 1, 0], [0, 0, 0], [1, 0, 0]])
 
-    print(polygon.centroid)
-    print(polygon.center)
-    print(polygon.area)
-    print(polygon.length)
-    print(polygon.normal)
-    print(polygon.frame)
+    for point in polygon.points:
+        print(point[0:2])
 
-    print(polygon.is_convex)
-    print(polygon.is_coplanar)
+    plotter = Plotter(figsize=(10, 7))
+    plotter.draw_polygons([{'points': polygon.points}])
+    plotter.show()
