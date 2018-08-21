@@ -9,7 +9,6 @@ Tutorial
     tutorial/datastructures
     tutorial/files
     tutorial/geometry
-    tutorial/interop
     tutorial/numerical
     tutorial/plotters
     tutorial/robots
