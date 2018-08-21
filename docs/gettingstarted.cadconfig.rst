@@ -111,7 +111,7 @@ the shape of a droplet.
 
     from compas.datastructures import Mesh
     from compas.topology import mesh_subdivide
-    from compas_rhino.helpers import MeshArtist
+    from compas_rhino.artists import MeshArtist
 
     mesh = Mesh.from_polyhedron(6)
     subd = mesh_subdivide(mesh, scheme='catmullclark', k=3, fixed=[mesh.get_any_vertex()])

@@ -57,9 +57,9 @@ Below is an example from the API reference.
 
     from compas.datastructures import Mesh
     from compas.utilities import XFunc
-    from compas_rhino.helpers import MeshArtist
+    from compas_rhino.artists import MeshArtist
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    mesh = Mesh.from_obj('https://u.nu/faces')
 
     vertices = mesh.get_vertices_attributes('xyz')
     edges    = list(mesh.edges())

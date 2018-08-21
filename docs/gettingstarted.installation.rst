@@ -9,7 +9,7 @@ a setup script. The following instructions will guide you through the installati
 procedure for the main library.
 
 .. note::
-    
+
     The instructions are just guidelines. If you know what you are doing,
     feel free to do things differently.
 
@@ -41,7 +41,7 @@ General instructions
 
    b. *Clone the GitHub repository*
 
-   From the terminal 
+   From the terminal
 
    .. code-block:: none
 
@@ -88,7 +88,7 @@ General instructions
 
    Operating system-specific instructions for this step can be found below:
 
-   * `Unix`_ 
+   * `Unix`_
    * `Windows`_
 
 
@@ -131,7 +131,7 @@ General instructions
 
         >>> import compas
         >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+        >>> mesh = Mesh.from_obj('https://u.nu/faces')
         >>> print(mesh)
 
 
@@ -141,12 +141,12 @@ On Unix (Linux, OSX)
 ====================
 
 Open Terminal to edit your system variables in ``.bash_profile``::
-    
+
     $ cd ~
     $ nano .bash_profile
 
 .. note::
-    
+
     You may be prompted for the administrator password.
     Characters will not appear while you are typing.
 
