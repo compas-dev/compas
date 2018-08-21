@@ -8,10 +8,11 @@ The main library of COMPAS
 
    overview
    gettingstarted
+   environments
    examples
    tutorial
    notes
-   reference
+   api
    contributions
    devguide
    citing

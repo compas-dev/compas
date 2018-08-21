@@ -510,7 +510,7 @@ but uses :func:`compas.geometry.smooth_centroid_cpp` to make things a bit simple
     from compas.datastructures import Mesh
     from compas.geometry import smooth_centroid_cpp
 
-    from compas_rhino.helpers import MeshArtist
+    from compas_rhino.artists import MeshArtist
 
     kmax = 50
 

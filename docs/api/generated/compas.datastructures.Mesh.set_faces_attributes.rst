@@ -1,0 +1,8 @@
+.. rst-class:: detail
+
+Mesh.set_faces_attributes
+===============================================
+
+.. currentmodule:: compas.datastructures
+
+.. automethod:: Mesh.set_faces_attributes
