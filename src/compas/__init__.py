@@ -198,7 +198,7 @@ def requirements():
             print(line.strip())
 
 
-def install_for_rhino_on_windows(version='5.0'):
+def install_for_rhino(version='5.0'):
     compaspath = os.path.abspath(os.path.join(HERE, '../'))
     appdata = os.getenv('APPDATA')
 
@@ -254,7 +254,7 @@ def install_for_rhino_on_windows(version='5.0'):
     tree.write(xmlpath)
 
 
-def install_package_for_rhino_on_windows(name):
+def install_package_for_rhino(name):
     pass
 
 
@@ -270,6 +270,6 @@ __all__ = [
     'requirements',
     'raise_if_ironpython',
     'raise_if_not_ironpython',
-    'install_for_rhino_on_windows',
-    'install_package_for_rhino_on_windows',
+    'install_for_rhino',
+    'install_package_for_rhino',
 ]

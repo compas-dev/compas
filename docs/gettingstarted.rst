@@ -25,13 +25,11 @@ Start Python from the command line and run the following:
     >>> import compas_ghpython
 
 Optionally, you can also install from source.
-Check the `Develper Guide <https://compas-dev.github.io/main/devguide.html>`_ for more info.
+Check the `Developer Guide <https://compas-dev.github.io/main/devguide.html>`_ for more info.
 
 
 First Steps
 ===========
-
-Some useful resources for further exploration:
 
 * https://compas-dev.github.io/main/examples.html
 * https://compas-dev.github.io/main/tutorial.html
