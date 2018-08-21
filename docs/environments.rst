@@ -80,7 +80,7 @@ In the Rhino Python Editor, go to::
 
 and add the path to ``compas``.
 
-.. figure:: /_images/rhino_paths.*
+.. figure:: /_images/rhino_compaspath.*
      :figclass: figure
      :class: figure-img img-fluid
 
