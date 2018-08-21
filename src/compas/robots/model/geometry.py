@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.files import URDF
+from compas.utilities.colors import hex_to_rgb
 from compas.geometry import Frame
 from compas.geometry.xforms import Scale
 from compas.geometry.xforms import Transformation
@@ -23,6 +24,25 @@ __all__ = ['Geometry',
            'Origin'
 ]
 
+# Copied from https://github.com/ubernostrum/webcolors/blob/master/webcolors.py
+HTML4_NAMES_TO_HEX = {
+    u'aqua': u'#00ffff',
+    u'black': u'#000000',
+    u'blue': u'#0000ff',
+    u'fuchsia': u'#ff00ff',
+    u'green': u'#008000',
+    u'gray': u'#808080',
+    u'lime': u'#00ff00',
+    u'maroon': u'#800000',
+    u'navy': u'#000080',
+    u'olive': u'#808000',
+    u'purple': u'#800080',
+    u'red': u'#ff0000',
+    u'silver': u'#c0c0c0',
+    u'teal': u'#008080',
+    u'white': u'#ffffff',
+    u'yellow': u'#ffff00',
+}
 
 def _parse_floats(values, scale_factor=None):
     result = []
@@ -79,6 +99,9 @@ class Box(object):
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
+    
+    def set_color(self, color_rgba):
+        pass
 
     def draw(self):
         if self.geometry:
@@ -99,6 +122,9 @@ class Cylinder(object):
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
+    
+    def set_color(self, color_rgba):
+        pass
 
     def draw(self):
         if self.geometry:
@@ -118,6 +144,9 @@ class Sphere(object):
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
+    
+    def set_color(self, color_rgba):
+        pass
 
     def draw(self):
         if self.geometry:
@@ -138,6 +167,9 @@ class Capsule(object):
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
+    
+    def set_color(self, color_rgba):
+        pass
 
     def draw(self):
         if self.geometry:
@@ -163,6 +195,10 @@ class MeshDescriptor(object):
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
+    
+    def set_color(self, color_rgba):
+        if self.geometry:
+            self.geometry.set_color(color_rgba)
 
     def set_scale(self, factor):
         S = Scale([factor, factor, factor])
@@ -194,6 +230,15 @@ class Material(object):
         self.name = name
         self.color = color
         self.texture = texture
+
+    def get_color(self):
+        if self.name:
+            if self.name in HTML4_NAMES_TO_HEX:
+                r, g, b = hex_to_rgb(HTML4_NAMES_TO_HEX[self.name])
+                return [r/255., g/255., b/255., 1.]
+        if self.color:
+            return self.color.rgba
+        return None
 
 
 class Geometry(object):
