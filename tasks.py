@@ -82,7 +82,7 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
     folders = []
 
     if docs:
-        folders.append('docs/reference/generated')
+        folders.append('docs/api/generated')
 
     folders.append('dist/')
 

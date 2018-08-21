@@ -105,7 +105,7 @@ ENV/
 # ------------------------------------------------------------------------------
 
 docs/__build/
-docs/reference/generated/
+docs/api/generated/
 
 *.3dmbak
 *.rhl
@@ -122,7 +122,7 @@ data/bunny
 *.ply
 *.tar.gz
 
-docs/reference/generated/
+docs/api/generated/
 docs/__build
 
 *.pickle
