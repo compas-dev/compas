@@ -16,7 +16,7 @@ We love pull requests from everyone! Here's a quick guide to improve the code:
 
 ::
 
-    pip install -r requirements-dev.txt
+    $ pip install -r requirements-dev.txt
 
 4. Make sure all tests pass:
 
@@ -29,7 +29,7 @@ We love pull requests from everyone! Here's a quick guide to improve the code:
 
 ::
 
-    invoke test
+    $ invoke test
 
 7. Add yourself to ``authors.rst``.
 8. Commit your changes and push your branch to GitHub.
@@ -57,7 +57,7 @@ and use `Sphinx <http://sphinx-doc.org/index.html>`_ to generate the HTML output
 
 Once you made the documentation changes locally, run the documentation generation::
 
-    invoke docs
+    $ invoke docs
 
 
 Bug reports

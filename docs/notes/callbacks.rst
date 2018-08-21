@@ -69,14 +69,14 @@ For example, from :mod:`compas.geometry`, an code snippet visualising the progre
 of an iterative smoothing algorithm (:func:`compas.geometry.mesh_smooth_centroid`).
 
 .. code-block:: python
-    
+
     import compas
 
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
     from compas.geometry import mesh_smooth_centroid
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    mesh = Mesh.from_obj('https://u.nu/faces')
 
     fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
@@ -113,7 +113,7 @@ of an iterative smoothing algorithm (:func:`compas.geometry.mesh_smooth_centroid
 We use a mesh plotter as visualisation tool.
 
 .. code-block:: python
-    
+
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
 
@@ -121,7 +121,7 @@ First, as a reference, we plot a set of lines corresponding to the original
 configuration of the mesh.
 
 .. code-block:: python
-    
+
     lines = []
     for u, v in mesh.edges():
         lines.append({
@@ -158,7 +158,7 @@ current iteration as firs and second parameter, and then any additional paramete
 that were passed to the algorithm.
 
 .. code-block:: python
-    
+
     def callback(mesh, k, args):
         print(k)
         plotter.update_vertices()
@@ -172,7 +172,7 @@ that were passed to the algorithm.
 Finally, we make sure that the plotting window remains active and visible.
 
 .. code-block:: python
-    
+
     plotter.show()
 
 
