@@ -45,7 +45,7 @@ Some useful resources for first explorations:
 
 * https://compas-dev.github.io/main/examples.html
 * https://compas-dev.github.io/main/tutorial.html
-* https://compas-dev.github.io/main/reference.html
+* https://compas-dev.github.io/main/api.html
 
 
 ## Questions and feedback
