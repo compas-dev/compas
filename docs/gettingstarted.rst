@@ -5,7 +5,7 @@ Getting started
 Installation
 ============
 
-The recommended way to install **COMPAS** is to use `Anaconda/conda<https://conda.io/docs/>`_::
+The recommended way to install **COMPAS** is to use `Anaconda/conda <https://conda.io/docs/>`_::
 
     $ conda config --add channels conda-forge
     $ conda install COMPAS
@@ -25,7 +25,7 @@ Start Python from the command line and run the following:
     >>> import compas_ghpython
 
 Optionally, you can also install from source.
-Check the `Develper Guide<https://compas-dev.github.io/main/devguide.html>`_ for more info.
+Check the `Develper Guide <https://compas-dev.github.io/main/devguide.html>`_ for more info.
 
 
 First Steps
