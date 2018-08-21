@@ -2,28 +2,32 @@
 Environments
 ********************************************************************************
 
+.. warning::
+
+    Under construction...
+
+
+The core functionality of **COMPAS** is completely independent of CAD tools and
+can be used from the terminal, in standalone scripts, apps, or with the plotters 
+and viewers that are shipped with the main library.
+
+In addition, **COMPAS** can be easily used in CAD software using the corresponding
+CAD packages. Currently, Rhino, Blender, and Grasshopper are supported.
+The Blender Python API is based on CPython. **COMPAS** is thus (almost) natively
+supported. Rhino and Grasshopper, on the other hand, are based on DotNet and IronPython.
+Therefore, even though most of **COMPAS** is compatible with IronPython,
+a few more configuration steps are required to get started there.
+
+
 Working in Rhino
 ================
-
-.. note::
-
-    We are working on an automated version of the steps described in this section.
-    Should be available soon...
-
 
 IronPython
 ----------
 
-Rhino uses IronPython to interpret your Python scripts.
-It ships with its own version of IronPython, and in Rhino 5 this bundled version is a beta version.
-You should install your own version of IronPython such that everything works properly.
-
-.. note::
-
-    Install `IronPython 2.7.5 <https://github.com/IronLanguages/main/releases/tag/ipy-2.7.5>`_,
-    and not the latest version of IronPython.
-    Rhino doesn't like it...
-
+Unfortunately, Rhino 5 ships with a beta version of IronPython, which results in
+a few errors here and there. We recommend that you install your own version of
+IronPython such that everything works properly.
 
 To check your IronPython version in Rhino, go to the PythonScript Editor::
 
@@ -51,6 +55,14 @@ This will display something like::
 If the ``releaselevel`` is not ``'final'``,
 install `IronPython 2.7.5 <https://github.com/IronLanguages/main/releases/tag/ipy-2.7.5>`_
 and let Rhino know where it is by adding it to the Rhino Python Editor search paths.
+
+.. note::
+
+    Install `IronPython 2.7.5 <https://github.com/IronLanguages/main/releases/tag/ipy-2.7.5>`_,
+    and not the latest version of IronPython.
+    Rhino doesn't like it...
+
+
 In the Rhino Python Editor, go to::
 
     Tools > Options
