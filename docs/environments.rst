@@ -19,6 +19,14 @@ Therefore, even though most of **COMPAS** is compatible with IronPython,
 a few more configuration steps are required to get started there.
 
 
+.. probably we will end up having the same instructions for all CAD environments
+.. because they all ship with their own version of Python
+.. and need to be made aware of the locally installed site packages
+.. and thus of Python
+.. Rhino requires the additional explanation of XFuncs
+.. Grasshopper of its typical quirks
+
+
 Working in Rhino
 ================
 

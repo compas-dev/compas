@@ -2,8 +2,11 @@
 Working with datastructures
 ********************************************************************************
 
-:author:`Tom Van Mele <van.mele@arch.ethz.ch>`
-
 :mod:`compas.datastructures`
 
+.. toctree::
+    :maxdepth: 1
+    :titlesonly:
+    :glob:
 
+    datastructures.*
