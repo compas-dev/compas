@@ -9,6 +9,7 @@ from numpy import isnan
 from numpy import mean
 from numpy import sin
 from numpy import sqrt
+from numpy import sum
 from numpy import zeros
 
 from numba import guvectorize
@@ -212,9 +213,11 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
     fry = zeros(n)
     frz = zeros(n)
     Rn  = zeros(n)
+    Una = zeros(n)
 
     res = 1000 * tol
     ts, Uo = 0, 0
+
     while (ts <= steps) and (res > tol):
 
         for i in range(m):
@@ -294,7 +297,6 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
         frx *= 0
         fry *= 0
         frz *= 0
-        Un = 0.
 
         for i in range(nv):
             frx[rows[i]] += vals[i] * fx[cols[i]]
@@ -310,7 +312,9 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
             V[i, 0] += Rx / Mi
             V[i, 1] += Ry / Mi
             V[i, 2] += Rz / Mi
-            Un += Mi * (V[i, 0]**2 + V[i, 1]**2 + V[i, 2]**2)
+            Una[i] = Mi * (V[i, 0]**2 + V[i, 1]**2 + V[i, 2]**2)
+
+        Un = sum(Una)
 
         if Un < Uo:
             V *= 0
@@ -344,7 +348,7 @@ if __name__ == "__main__":
     from compas.viewers import VtkViewer
 
 
-    m = 100
+    m = 150
     p = [(i / m - 0.5) * 5 for i in range(m + 1)]
     vertices = [[xi, yi, 0] for yi in p for xi in p]
     edges = []

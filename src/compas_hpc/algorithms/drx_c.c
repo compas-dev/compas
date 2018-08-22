@@ -13,44 +13,45 @@
 
 
 void drx_solver_c(
-    double tol,
-    int steps,
-    int summary,
-    int m,
-    int n,
-    int *u,
-    int *v,
-    double *X,
-    double *f0,
-    double *l0,
-    double *k0,
-    int *ind_c,
-    int *ind_t,
-    int ind_c_n,
-    int ind_t_n,
-    double *B,
-    double *P,
-    double *S,
-    int *rows,
-    int *cols,
-    double *vals,
-    int nv,
-    double *M,
-    double factor,
-    double *V,
-    int *inds,
-    int *indi,
-    int *indf,
-    double *EIx,
-    double *EIy,
-    int beams,
-    int nb)
+    double tol,    // Tolerance value.
+    int steps,     // Maximum number of steps.
+    int summary,   // Print summary at end (1:yes or 0:no).
+    int m,         // Number of elements.
+    int n,         // Number of nodes.
+    int *u,        // Element start node.
+    int *v,        // Element end node.
+    double *X,     // Nodal co-ordinates.
+    double *f0,    // Initial edge forces.
+    double *l0,    // Initial edge lengths.
+    double *k0,    // Initial edge axial stiffnesses.
+    int *ind_c,    // Indices of compression only edges.
+    int *ind_t,    // Indices of tension only edges.
+    int ind_c_n,   // Length of ind_c.
+    int ind_t_n,   // Length of ind_t.
+    double *B,     // Constraint conditions Bx, By, Bz.
+    double *P,     // Nodal loads Px, Py, Pz.
+    double *S,     // Shear forces Sx, Sy, Sz.
+    int *rows,     // Rows of Ct.
+    int *cols,     // Columns of Ct.
+    double *vals,  // Values of Ct.
+    int nv,        // Length of rows/cols/vals.
+    double *M,     // Mass matrix.
+    double factor, // Convergence factor.
+    double *V,     // Nodal velocities Vx, Vy, Vz.
+    int *inds,     // Indices of beam element start nodes.
+    int *indi,     // Indices of beam element intermediate nodes.
+    int *indf,     // Indices of beam element finish nodes beams.
+    double *EIx,   // Nodal EIx flexural stiffnesses.
+    double *EIy,   // Nodal EIy flexural stiffnesses.
+    int beams,     // Includes beams:1 or not:0.
+    int nb)        // Length of inds/indi/indf.
 
     {
 
     int i;
     int j;
     int k;
+    int ts;
 
     double f[m];
     double fx[m];
@@ -59,6 +60,19 @@ void drx_solver_c(
     double frx[n];
     double fry[n];
     double frz[n];
+    double l;
+    double Mi;
+    double q;
+    double res;
+    double Rx;
+    double Ry;
+    double Rz;
+    double Rn;
+    double Uo;
+    double Un;
+    double xd;
+    double yd;
+    double zd;
 
     gsl_vector *Xs = gsl_vector_alloc(3);
     gsl_vector *Xi = gsl_vector_alloc(3);
@@ -80,23 +94,23 @@ void drx_solver_c(
     gsl_vector *c1 = gsl_vector_alloc(3);
     gsl_vector *c2 = gsl_vector_alloc(3);
 
-    int    ts = 0;
-    double Uo = 0.;
-    double res = 1000. * tol;
+    ts  = 0;
+    Uo  = 0.;
+    res = 1000. * tol;
 
     while (ts <= steps && res > tol)
     {
+        #pragma omp parallel for private(i,j,k,xd,yd,zd,l,q)
         for (i = 0; i < m; i++)
         {
             j = 3 * v[i];
             k = 3 * u[i];
-            double xd = X[j + 0] - X[k + 0];
-            double yd = X[j + 1] - X[k + 1];
-            double zd = X[j + 2] - X[k + 2];
-            double l  = gsl_hypot3(xd, yd, zd);
-
+            xd = X[j + 0] - X[k + 0];
+            yd = X[j + 1] - X[k + 1];
+            zd = X[j + 2] - X[k + 2];
+            l  = gsl_hypot3(xd, yd, zd);
             f[i] = f0[i] + k0[i] * (l - l0[i]);
-            double q = f[i] / l;
+            q = f[i] / l;
             fx[i] = xd * q;
             fy[i] = yd * q;
             fz[i] = zd * q;
@@ -104,6 +118,7 @@ void drx_solver_c(
 
         if (ind_t_n > 0)
         {
+            #pragma omp parallel for private(i)
             for (i = 0; i < ind_t_n; i++)
             {
                 if (f[i] < 0)
@@ -117,6 +132,7 @@ void drx_solver_c(
 
         if (ind_c_n > 0)
         {
+            #pragma omp parallel for private(i)
             for (i = 0; i < ind_c_n; i++)
             {
                 if (f[i] > 0)
@@ -213,6 +229,7 @@ void drx_solver_c(
             }
         }
 
+        #pragma omp parallel for private(i)
         for (i = 0; i < n; i++)
         {
             frx[i] = 0;
@@ -227,17 +244,18 @@ void drx_solver_c(
             frz[rows[i]] += vals[i] * fz[cols[i]];
         }
 
-        double Un = 0.;
-        double Rn = 0.;
+        Un = 0.;
+        Rn = 0.;
 
+        #pragma omp parallel for private(i,j,Rx,Ry,Rz,Mi) reduction(+:Un,Rn)
         for (i = 0; i < n; i++)
         {
             j = 3 * i;
-            double Rx = (P[j + 0] - S[j + 0] - frx[i]) * B[j + 0];
-            double Ry = (P[j + 1] - S[j + 1] - fry[i]) * B[j + 1];
-            double Rz = (P[j + 2] - S[j + 2] - frz[i]) * B[j + 2];
-            double Mi = M[i] * factor;
+            Rx = (P[j + 0] - S[j + 0] - frx[i]) * B[j + 0];
+            Ry = (P[j + 1] - S[j + 1] - fry[i]) * B[j + 1];
+            Rz = (P[j + 2] - S[j + 2] - frz[i]) * B[j + 2];
             Rn += gsl_hypot3(Rx, Ry, Rz);
+            Mi = M[i] * factor;
             V[j + 0] += Rx / Mi;
             V[j + 1] += Ry / Mi;
             V[j + 2] += Rz / Mi;
@@ -246,6 +264,7 @@ void drx_solver_c(
 
         if (Un < Uo)
         {
+            #pragma omp parallel for private(i,j)
             for (i = 0; i < n; i++)
             {
                 j = 3 * i;
@@ -257,6 +276,7 @@ void drx_solver_c(
 
         Uo = Un;
 
+        #pragma omp parallel for private(i,j)
         for (i = 0; i < n; i++)
         {
             j = 3 * i;

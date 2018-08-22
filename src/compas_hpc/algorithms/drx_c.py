@@ -172,7 +172,7 @@ if __name__ == "__main__":
     from compas.viewers import VtkViewer
 
 
-    m = 100
+    m = 150
     p = [(i / m - 0.5) * 5 for i in range(m + 1)]
     vertices = [[xi, yi, 0] for yi in p for xi in p]
     edges = []
