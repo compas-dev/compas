@@ -25,7 +25,6 @@ from __future__ import print_function
 
 import os
 import sys
-from xml.etree import ElementTree as ET
 
 
 __author__    = ['Tom Van Mele', ]
@@ -44,6 +43,7 @@ TEMP = os.path.abspath(os.path.join(HERE, '../../temp'))
 
 
 def get(filename):
+    """"""
     filename = filename.strip('/')
     localpath = os.path.abspath(os.path.join(DATA, filename))
     if os.path.exists(localpath):
@@ -198,66 +198,6 @@ def requirements():
             print(line.strip())
 
 
-def install_for_rhino(version='5.0'):
-    compaspath = os.path.abspath(os.path.join(HERE, '../'))
-    appdata = os.getenv('APPDATA')
-
-    temp = appdata.split(os.path.sep)
-    if 'Roaming' in temp:
-        temp.remove('Roaming')
-        appdata = os.path.join(temp[0], os.path.sep, *temp[1:])
-        # if temp[0].endswith(':'):
-        #     appdata = os.path.join(temp[0], os.path.sep, *temp[1:])
-        # else:
-        #     appdata = os.path.join(*temp)
-
-
-    if version not in ('5.0', '6.0'):
-        version = '5.0'
-
-    xmlpath = os.path.abspath(os.path.join(appdata,
-                                           'Roaming',
-                                           'McNeel',
-                                           'Rhinoceros',
-                                           '{}'.format(version),
-                                           'Plug-ins',
-                                           'IronPython (814d908a-e25c-493d-97e9-ee3861957f49)',
-                                           'settings',
-                                           'settings.xml'))
-
-    if not os.path.exists(xmlpath):
-        raise Exception("The settings file does not exist in this location: {}".format(xmlpath))
-
-    if not os.path.isfile(xmlpath):
-        raise Exception("The settings file is not a file :)")
-        
-    if not os.access(xmlpath, os.W_OK):
-        raise Exception("The settings file is not wrtieable.")
-       
-    tree = ET.parse(xmlpath)
-    root = tree.getroot()
-
-    entries = root.findall(".//entry[@key='SearchPaths']")
-
-    try:
-        searchpathsentry = entries[0]
-    except IndexError:
-        raise Exception("The settings file has no entry 'SearchPaths'.")
-
-    searchpaths = searchpathsentry.text.split(';')
-    searchpaths[:] = [os.path.abspath(path) for path in searchpaths]
-        
-    if compaspath not in searchpaths:
-        searchpaths.append(compaspath)
-
-    searchpathsentry.text = ";".join(searchpaths)
-    tree.write(xmlpath)
-
-
-def install_package_for_rhino(name):
-    pass
-
-
 __all__ = [
     'get',
     'license',
@@ -270,6 +210,4 @@ __all__ = [
     'requirements',
     'raise_if_ironpython',
     'raise_if_not_ironpython',
-    'install_for_rhino',
-    'install_package_for_rhino',
 ]
