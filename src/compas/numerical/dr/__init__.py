@@ -20,7 +20,8 @@ class DynamicRelaxation(object):
 
     Examples
     --------
-    .. code-block:: python
+    .. plot::
+        :include-source:
 
         import random
         import compas
