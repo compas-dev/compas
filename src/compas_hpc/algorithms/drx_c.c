@@ -48,11 +48,16 @@ void drx_solver_c(
 
     {
 
+    int a;
+    int b;
+    int c;
     int i;
     int j;
     int k;
+    int nans[nb];
     int ts;
 
+    double alpha;
     double f[m];
     double fx[m];
     double fy[m];
@@ -60,8 +65,17 @@ void drx_solver_c(
     double frx[n];
     double fry[n];
     double frz[n];
+    double kappa;
     double l;
+    double La;
+    double Lb;
+    double Lc;
+    double LQn;
+    double Lmu;
+    double Lc1;
+    double Lc2;
     double Mi;
+    double Ms;
     double q;
     double res;
     double Rx;
@@ -93,6 +107,8 @@ void drx_solver_c(
     gsl_vector *ub = gsl_vector_alloc(3);
     gsl_vector *c1 = gsl_vector_alloc(3);
     gsl_vector *c2 = gsl_vector_alloc(3);
+    gsl_matrix *Sa = gsl_matrix_alloc(nb, 3);
+    gsl_matrix *Sb = gsl_matrix_alloc(nb, 3);
 
     ts  = 0;
     Uo  = 0.;
@@ -146,6 +162,7 @@ void drx_solver_c(
 
         if (beams)
         {
+            #pragma omp parallel for private(i,j)
             for (i = 0; i < n; i++)
             {
                 j = i * 3;
@@ -156,9 +173,9 @@ void drx_solver_c(
 
             for (i = 0; i < nb; i++)
             {
-                int a = inds[i] * 3;
-                int b = indi[i] * 3;
-                int c = indf[i] * 3;
+                a = inds[i] * 3;
+                b = indi[i] * 3;
+                c = indf[i] * 3;
 
                 vector_from_pointer(&X[a], Xs);
                 vector_from_pointer(&X[b], Xi);
@@ -170,13 +187,13 @@ void drx_solver_c(
                 subtract_vectors(Xf, Xs, mu);
                 scale_vector(mu, 0.5);
 
-                double La  = length_vector(Qa);
-                double Lb  = length_vector(Qb);
-                double Lc  = length_vector(Qc);
-                double LQn = length_vector(Qn);
-                double Lmu = length_vector(mu);
-                double alpha = acos((gsl_pow_2(La) + gsl_pow_2(Lb) - gsl_pow_2(Lc)) / (2. * La * Lb));
-                double kappa = 2. * sin(alpha) / Lc;
+                La  = length_vector(Qa);
+                Lb  = length_vector(Qb);
+                Lc  = length_vector(Qc);
+                LQn = length_vector(Qn);
+                Lmu = length_vector(mu);
+                alpha = acos((gsl_pow_2(La) + gsl_pow_2(Lb) - gsl_pow_2(Lc)) / (2. * La * Lb));
+                kappa = 2. * sin(alpha) / Lc;
 
                 gsl_vector_memcpy(ex, Qn);
                 gsl_vector_memcpy(ez, mu);
@@ -199,33 +216,48 @@ void drx_solver_c(
                 cross_vectors(Qa, ua, c1);
                 cross_vectors(Qb, ub, c2);
 
-                double Lc1 = length_vector(c1);
-                double Lc2 = length_vector(c2);
-                double Ms  = length_vector_squared(Mc);
+                Lc1 = length_vector(c1);
+                Lc2 = length_vector(c2);
+                Ms  = length_vector_squared(Mc);
                 scale_vector(ua, Ms * Lc1 / (La * dot_vectors(Mc, c1)));
                 scale_vector(ub, Ms * Lc2 / (Lb * dot_vectors(Mc, c2)));
 
-                int nans = 0;
-
                 for (j = 0; j < 3; j++)
                 {
-                    if (gsl_isnan(gsl_vector_get(ua, j)) || gsl_isnan(gsl_vector_get(ub, j)))
+                    gsl_matrix_set(Sa, i, j, gsl_vector_get(ua, j));
+                    gsl_matrix_set(Sb, i, j, gsl_vector_get(ub, j));
+                }
+            }
+
+            #pragma omp parallel for private(i,j)
+            for (i = 0; i < nb; i++)
+            {
+                nans[i] = 0;
+                for (j = 0; j < 3; j++)
+                {
+                    if (gsl_isnan(gsl_matrix_get(Sa, i, j)) || gsl_isnan(gsl_matrix_get(Sb, i, j)))
                     {
-                        nans = 1;
+                        nans[i] = 1;
                         break;
                     }
                 }
+            }
 
-                if (nans == 0)
+            for (i = 0; i < nb; i++)
+            {
+                a = inds[i] * 3;
+                b = indi[i] * 3;
+                c = indf[i] * 3;
+
+                if (nans[i] == 0)
                 {
                     for (j = 0; j < 3; j++)
                     {
-                        S[a + j] += gsl_vector_get(ua, j);
-                        S[b + j] -= (gsl_vector_get(ua, j) + gsl_vector_get(ub, j));
-                        S[c + j] += gsl_vector_get(ub, j);
+                        S[a + j] += gsl_matrix_get(Sa, i, j);
+                        S[b + j] -= (gsl_matrix_get(Sa, i, j) + gsl_matrix_get(Sb, i, j));
+                        S[c + j] += gsl_matrix_get(Sb, i, j);
                     }
                 }
-
             }
         }
 
