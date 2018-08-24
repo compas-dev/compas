@@ -3,5 +3,6 @@ networkx
 numba
 numpy
 PyOpenGL
+PySide2
 scipy
 sympy
