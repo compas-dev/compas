@@ -9,4 +9,4 @@ Working with datastructures
     :titlesonly:
     :glob:
 
-    datastructures.*
+    datastructures.networks.ipynb

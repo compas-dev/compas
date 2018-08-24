@@ -14,8 +14,7 @@ But it can also be installed using `pip`::
 
     $ pip install COMPAS
 
-Once installed, you can verify your setup.
-Start Python from the command line and run the following:
+To verify your setup, start Python from the command line and run the following:
 
 .. code-block:: python
 
@@ -26,7 +25,6 @@ Start Python from the command line and run the following:
 
 Optionally, you can also install from source.
 Check the `Developer Guide <https://compas-dev.github.io/main/devguide.html>`_ for more info.
-
 To install the *bleeding edge version* directly from the GitHub repo
 
 ::

@@ -293,26 +293,16 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
 
         from compas.datastructures import Mesh
         from compas.plotters import MeshPlotter
-
-        from compas.geometry import centroid_points
+        from compas.topology import mesh_quads_to_triangles
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        for fkey in list(mesh.faces()):
-            vertices = mesh.face_vertices(fkey)
-            mesh.split_face(fkey, vertices[0], vertices[2])
+        mesh_quads_to_triangles(mesh)
 
-        mesh.swap_edge_tri(14, 16)
-        mesh.swap_edge_tri(31, 22)
+        mesh.swap_edge_tri(14, 19)
+        mesh.swap_edge_tri(21, 16)
 
-        mesh.collapse_edge_tri(30, 17)
-        mesh.collapse_edge_tri(30, 31)
-        mesh.collapse_edge_tri(30, 22)
-
-        points = mesh.get_vertices_attributes('xyz', keys=mesh.vertex_neighbors(30))
-        x, y, z = centroid_points(points)
-
-        mesh.set_vertex_attributes(30, ('x', 'y', 'z'), (x, y, z))
+        mesh.collapse_edge_tri(21, 15)
 
         plotter = MeshPlotter(mesh)
 

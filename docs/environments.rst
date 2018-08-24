@@ -2,11 +2,6 @@
 Environments
 ********************************************************************************
 
-.. warning::
-
-    Under construction...
-
-
 The core functionality of **COMPAS** is completely independent of CAD tools and
 can be used from the terminal, in standalone scripts, or with the plotters 
 and viewers that are shipped with the main library.
