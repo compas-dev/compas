@@ -299,10 +299,9 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
 
         mesh_quads_to_triangles(mesh)
 
-        mesh.swap_edge_tri(14, 19)
-        mesh.swap_edge_tri(21, 16)
+        u, v = mesh.get_any_edge()
 
-        mesh.collapse_edge_tri(21, 15)
+        mesh.collapse_edge_tri(u, v)
 
         plotter = MeshPlotter(mesh)
 
