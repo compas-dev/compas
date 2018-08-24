@@ -18,18 +18,28 @@ __all__ = []
 
 
 def install(version='5.0'):
+    """Install COMPAS for Rhino by adding the path to COMPAS to the Rhino Python search paths.
+
+    Parameters
+    ----------
+    version : {'5.0', '6.0'}
+        The version number of Rhino.
+
+    Examples
+    --------
+    .. code-block:: python
+        
+        >>> import compas_rhino
+        >>> compas_rhino.install('5.0')
+
+    .. code-block:: python
+        
+        $ python -m compas_rhino.install '5.0'
+
+    """
     compaspath = os.path.abspath(os.path.join(compas.HERE, '../'))
     appdata = os.getenv('APPDATA')
     filename = 'settings.xml'
-
-    # temp = appdata.split(os.path.sep)
-    # if 'Roaming' in temp:
-    #     temp.remove('Roaming')
-    #     appdata = os.path.join(temp[0], os.path.sep, *temp[1:])
-    #     # if temp[0].endswith(':'):
-    #     #     appdata = os.path.join(temp[0], os.path.sep, *temp[1:])
-    #     # else:
-    #     #     appdata = os.path.join(*temp)
 
     if version not in ('5.0', '6.0'):
         version = '5.0'
