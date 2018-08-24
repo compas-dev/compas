@@ -51,7 +51,7 @@ def vertex_coloring(adjacency):
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
         key_color = vertex_coloring(network.adjacency)
-        colors = ['#ff0000', '#00ff00', '#0000ff']
+        colors = ['#ff0000', #00ff00', '#0000ff', '#ffff00', '#00ffff']
 
         plotter = NetworkPlotter(network)
 
