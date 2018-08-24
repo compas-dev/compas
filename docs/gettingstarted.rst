@@ -27,6 +27,12 @@ Start Python from the command line and run the following:
 Optionally, you can also install from source.
 Check the `Developer Guide <https://compas-dev.github.io/main/devguide.html>`_ for more info.
 
+To install the *bleeding edge version* directly from the GitHub repo
+
+::
+
+    $ pip install git+https://github.com/compas-dev/compas.git
+
 
 First Steps
 ===========
