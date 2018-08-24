@@ -2,5 +2,7 @@ matplotlib
 networkx
 numba
 numpy
+planarity
+PyOpenGL
 scipy
 sympy

@@ -85,8 +85,8 @@ class DynamicRelaxation(object):
             attr['z'] = xyz[index][2]
 
         for index, (u, v, attr) in enumerate(mesh.edges(True)):
-            attr['f'] = f[index][0]
-            attr['l'] = l[index][0]
+            attr['f'] = f[index]
+            attr['l'] = l[index]
 
         fmax = max(mesh.get_edges_attribute('f'))
 
