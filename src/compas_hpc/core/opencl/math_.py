@@ -547,8 +547,8 @@ def tanh_cl(a):
 
 if __name__ == "__main__":
 
-    from compas.hpc import give_cl
-    from compas.hpc import get_cl
+    from compas_hpc import give_cl
+    from compas_hpc import get_cl
 
     from numpy import pi
 
