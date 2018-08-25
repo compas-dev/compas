@@ -1,23 +1,22 @@
 ********************************************************************************
-Working with networks
+Networks
 ********************************************************************************
 
-COMPAS networks are simple edge graphs: they consist of vertices connected by edges.
+**COMPAS** networks are simple edge graphs: they consist of vertices connected by edges.
 Not all vertices have to be connected by edges.
 A network without edges is a valid network.
-In fact, even a network without vertices and edges is a valid network, albeit a quite pointless one.
+In fact, even a network without vertices is a valid network, albeit a quite pointless one.
 
 Edges have a direction.
 There can only be one edge between two vertices in a particular direction.
 However, there can be two edges between two vertices in opposite direction.
-
 Vertices can be connected to themseleves.
 
 
 Making a network
 ================
 
-.. code-block:: python
+.. ipython:: python
 
     import compas
     from compas.datastructures import Network
@@ -28,7 +27,7 @@ Making a network
 Adding vertices and edges
 =========================
 
-.. code-block:: python
+.. ipython:: python
 
     a = network.add_vertex()
     b = network.add_vertex(x=1.0)
@@ -51,7 +50,6 @@ The number is always the highest number used so far, plus one.
 
 Other types keys may be specified as well, as long as their value is *hashable*.
 
-.. code-block:: python
+.. ipython:: python
 
     print(a, type(a))
-    # 0 <class 'int'>

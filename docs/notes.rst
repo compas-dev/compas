@@ -1,10 +1,10 @@
 ********************************************************************************
-Working with datastructures
+Notes
 ********************************************************************************
 
 .. toctree::
-    :maxdepth: 1
-    :titlesonly:
-    :glob:
+   :maxdepth: 1
+   :titlesonly:
+   :glob:
 
-    datastructures/*
+   notes/*

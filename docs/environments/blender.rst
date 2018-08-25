@@ -1,10 +1,7 @@
 ********************************************************************************
-Working with datastructures
+Working in Blender
 ********************************************************************************
 
-.. toctree::
-    :maxdepth: 1
-    :titlesonly:
-    :glob:
+.. warning::
 
-    datastructures/*
+    Under oncstruction...
