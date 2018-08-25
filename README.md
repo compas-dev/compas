@@ -23,7 +23,7 @@ But it can also be installed using `pip`:
 
     $ pip install COMPAS
 
-Once installed, you can verify your setup. Start Python from the command line and run the following:
+To verify your setup, start Python from the command line and run the following:
 
 ```python
 

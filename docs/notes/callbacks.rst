@@ -2,7 +2,7 @@
 Using callbacks
 ********************************************************************************
 
-**compas** implements a *callback* mechanism that provides a consistent way to
+**COMPAS** implements a *callback* mechanism that provides a consistent way to
 customise algorithms, apply constraints, visualise progress of iterative algorithms, ...
 
 .. note::
@@ -58,8 +58,8 @@ the callback has access to the variable ``text``, even though that ariable was d
 in a different context that the one in which the callback is called.
 
 
-Dynamic visualisation
-=====================
+Dynamic plotting
+================
 
 Throughout the main library, callbacks are often used in combination with the plotters
 to visualise intermediate steps of an algorithm, or to visualise the progress of
@@ -181,6 +181,10 @@ The result shpould be something like this.
 .. figure:: /_images/tutorial_callbacks_smoothing.gif
     :figclass: figure
     :class: figure-img img-fluid
+
+
+Dynamic visualisation in Rhino with conduits
+============================================
 
 
 Applying constraints
