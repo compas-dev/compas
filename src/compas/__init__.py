@@ -17,6 +17,8 @@ compas
     compas.robots
     compas.topology
     compas.utilities
+
+..
     compas.viewers
 
 """
