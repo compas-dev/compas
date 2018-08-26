@@ -7,6 +7,8 @@ try:
 except ImportError:
     import urllib2
 
+import requests
+
 from compas.utilities import geometric_key
 
 
@@ -116,8 +118,12 @@ class OBJReader(object):
 
     def open(self):
         if self.filepath.startswith('http'):
-            resp = urllib2.urlopen(self.filepath)
-            self.content = iter(resp.read().decode('utf-8').split('\n'))
+            # replace with requests call
+            # mention to user download
+            # resp = urllib2.urlopen(self.filepath)
+            # self.content = iter(resp.read().decode('utf-8').split('\n'))
+            response = requests.get(self.filepath)
+            self.content = iter(response.text.split('\n'))
         else:
             with open(self.filepath, 'r') as fh:
                 self.content = iter(fh.readlines())

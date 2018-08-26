@@ -441,4 +441,4 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_vertices_and_faces(ply.parser.vertices, ply.parser.faces)
 
-    print(mesh)
+    print(mesh.summary())

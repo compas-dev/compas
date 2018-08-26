@@ -62,6 +62,17 @@ DATA = os.path.abspath(os.path.join(HERE, '../../data'))
 TEMP = os.path.abspath(os.path.join(HERE, '../../temp'))
 
 
+# install the app dirs during general install
+# add data files
+# add config files?
+# download all data to user data dir, unless otherwise specified with localstorage
+# add example scripts from/for docs
+# add template files
+# add other stuff that doesn't go into site packages folder
+def install_appdirs():
+    pass
+
+
 def get(filename):
     """Get the full path to one of the sample data files.
 
@@ -141,17 +152,29 @@ def get_bunny(localstorage=None):
         mesh = Mesh.from_ply(compas.get_bunny())
 
     """
-    import urllib
+    import requests
     import tarfile
     import appdirs
+
+    def absjoin(*paths):
+        return os.path.abspath(os.path.join(*paths))
 
     # bunny.tar.gz, when extracted contains the folders bunny/reconstruction/bun_zipper.ply
 
     if not localstorage:
         localstorage = appdirs.user_data_dir('COMPAS', 'compas-dev', roaming=True)
 
-    bunny = os.path.abspath(os.path.join(localstorage, 'bunny/reconstruction/bun_zipper.ply'))
-    destination = os.path.abspath(os.path.join(localstorage, 'bunny.tar.gz'))
+    if not os.path.exists(localstorage):
+        os.makedirs(localstorage)
+
+    if not os.path.isdir(localstorage):
+        raise Exception('Local storage location does not exist: {}'.format(localstorage))
+
+    if not os.access(localstorage, os.W_OK):
+        raise Exception('Local storage location is not writable: {}'.format(localstorage))
+
+    bunny = absjoin(localstorage, 'bunny/reconstruction/bun_zipper.ply')
+    destination = absjoin(localstorage, 'bunny.tar.gz')
 
     if not os.path.exists(bunny):
         url = 'http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz'
@@ -159,7 +182,12 @@ def get_bunny(localstorage=None):
         print('Getting the bunny from {} ...'.format(url))
         print('This will take a few seconds...')
 
-        urllib.urlretrieve(url, destination)
+        # urllib.urlretrieve(url, destination)
+        response = requests.get(url)
+        response.raise_for_status()
+
+        with open(destination, 'wb+') as fo:
+            fo.write(response.content)
 
         with tarfile.open(destination) as file:
             file.extractall(localstorage)
