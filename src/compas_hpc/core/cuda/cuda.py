@@ -5,8 +5,10 @@ from __future__ import print_function
 
 try:
     from numpy import array
-    from numpy import float32
+    from numpy import ceil
     from numpy import complex64
+    from numpy import float32
+    from numpy import int32
 except:
     pass
 
@@ -14,9 +16,10 @@ try:
     import pycuda
     import pycuda.gpuarray as cuda_array
     import pycuda.autoinit
-#     import pycuda.curandom
+    import pycuda.curandom
+    has_pycuda = True
 except:
-    pass
+    has_pycuda = False
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
@@ -27,15 +30,42 @@ __email__     = 'liew@arch.ethz.ch'
 
 __all__ = [
     'device_cuda',
-#     'rand_cuda',
+    'rand_cuda',
     'give_cuda',
     'get_cuda',
     'ones_cuda',
     'zeros_cuda',
-#     'tile_cuda',
-#     # 'hstack_cuda',
-#     # 'vstack_cuda',
+    # 'tile_cuda',
+    'hstack_cuda',
+    # 'vstack_cuda',
 ]
+
+
+kernel = """
+
+__global__ void hstack_cuda(int m, int n, int o, float *a, float *b, float *c)
+{
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    int idy = blockDim.y * blockIdx.y + threadIdx.y;
+
+    if (idx < n + o && idy < m)
+    {
+        int id  = idy * (n + o) + idx;
+
+        if (idx < m)
+        {
+            c[id] = a[idy * m + idx];
+        }
+        else
+        {
+            c[id] = b[idy * o + (idx - n)];
+        }
+    }
+}
+
+"""
+if has_pycuda:
+    mod = pycuda.compiler.SourceModule(kernel)
 
 
 def device_cuda():
@@ -79,32 +109,32 @@ def device_cuda():
         print('%s: %s' % (attr, value))
 
 
-# def rand_cuda(shape):
+def rand_cuda(shape):
 
-#     """ Create random values in the range [0, 1] as GPUArray.
+    """ Create random values in the range [0, 1] in a GPUArray.
 
-#     Parameters
-#     ----------
-#     shape : tuple
-#         Size of the random array.
+    Parameters
+    ----------
+    shape : tuple
+        Size of the random array.
 
-#     Returns
-#     -------
-#     gpuarray
-#         Random floats from 0 to 1 in GPUArray.
+    Returns
+    -------
+    gpuarray
+        Random floats from 0 to 1 in GPUArray.
 
-#     Examples
-#     --------
-#     >>> a = rand_cuda((2, 2))
-#     array([[ 0.80916596,  0.82687163],
-#            [ 0.03921388,  0.44197764]])
+    Examples
+    --------
+    >>> a = rand_cuda((2, 2))
+    [[ 0.80916596,  0.82687163],
+     [ 0.03921388,  0.44197764]]
 
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
 
-#     """
+    """
 
-#     return pycuda.curandom.rand(shape, float32)
+    return pycuda.curandom.rand(shape, dtype=float32)
 
 
 def give_cuda(a, type='real'):
@@ -284,8 +314,34 @@ def zeros_cuda(shape):
 #     return c
 
 
-# def hstack_cuda():
-#     raise NotImplementedError
+def hstack_cuda(a, b, dim=2):
+
+    """ Stack two GPUArrays horizontally.
+
+    Parameters
+    ----------
+    a : gpuarray
+        First GPUArray.
+    b : gpuarray
+        Second GPUArray.
+
+    Returns
+    -------
+    gpuarray
+        Horizontally stacked GPUArrays.
+
+    """
+
+    m, n = a.shape
+    o  = b.shape[1]
+    nx = int(ceil((n + o) / dim))
+    ny = int(ceil(m / dim))
+
+    func = mod.get_function('hstack_cuda')
+    c = pycuda.gpuarray.empty((m, n + o), dtype=float32)
+    func(int32(m), int32(n), int32(o), a, b, c, block=(dim, dim, 1), grid=(nx, ny, 1))
+
+    return c
 
 
 # def vstack_cuda():
@@ -303,11 +359,14 @@ if __name__ == "__main__":
     # a = give_cuda([1.+1j, 2.+2j, 3.+3j], type='complex')
     # a = get_cuda(a)
     # a = ones_cuda((3, 3))
-    a = zeros_cuda((3, 3))
-#     # a = rand_cuda((2, 2))
-#     # a = tile_cuda(give_cuda([[1, 2], [3, 4]]), (2, 2))
+    # a = zeros_cuda((3, 3))
+    a = rand_cuda((3, 3))
+    b = rand_cuda((3, 4))
+    c = hstack_cuda(a, b)
 
     print(a)
-    print(type(a))
-    print(a.shape)
-    print(a.dtype)
+    print(b)
+    print(c)
+    # print(type(a))
+    # print(a.shape)
+    # print(a.dtype)

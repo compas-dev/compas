@@ -1,600 +1,600 @@
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# from __future__ import absolute_import
+# from __future__ import division
+# from __future__ import print_function
 
-try:
-    import pyopencl as cl
-    import pyopencl.clmath
-    import pyopencl.array as cl_array
-except:
-    pass
+# try:
+#     import pyopencl as cl
+#     import pyopencl.clmath
+#     import pyopencl.array as cl_array
+# except:
+#     pass
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
+# __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+# __copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+# __license__   = 'MIT License'
+# __email__     = 'liew@arch.ethz.ch'
 
 
-__all__ = [
-    'abs_cl',
-    # 'argmax_cl',
-    # 'argmin_cl',
-    'acos_cl',
-    'acosh_cl',
-    'asin_cl',
-    'asinh_cl',
-    'atan_cl',
-    'atan2_cl',
-    'atanh_cl',
-    'ceil_cl',
-    'cos_cl',
-    'cosh_cl',
-    'exp_cl',
-    'floor_cl',
-    'log_cl',
-    'log10_cl',
-    # 'max_cl',
-    # 'min_cl',
-    # 'mean_cl',
-    'maximum_cl',
-    'minimum_cl',
-    'round_cl',
-    'sin_cl',
-    'sinh_cl',
-    'sqrt_cl',
-    'sum_cl',
-    'tan_cl',
-    'tanh_cl',
-]
+# __all__ = [
+#     'abs_cl',
+#     # 'argmax_cl',
+#     # 'argmin_cl',
+#     'acos_cl',
+#     'acosh_cl',
+#     'asin_cl',
+#     'asinh_cl',
+#     'atan_cl',
+#     'atan2_cl',
+#     'atanh_cl',
+#     'ceil_cl',
+#     'cos_cl',
+#     'cosh_cl',
+#     'exp_cl',
+#     'floor_cl',
+#     'log_cl',
+#     'log10_cl',
+#     # 'max_cl',
+#     # 'min_cl',
+#     # 'mean_cl',
+#     'maximum_cl',
+#     'minimum_cl',
+#     'round_cl',
+#     'sin_cl',
+#     'sinh_cl',
+#     'sqrt_cl',
+#     'sum_cl',
+#     'tan_cl',
+#     'tanh_cl',
+# ]
 
 
-def abs_cl(a):
+# def abs_cl(a):
 
-    """ Absolute values of GPUArray elements.
+#     """ Absolute values of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with the elements to take absolute values of.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with the elements to take absolute values of.
 
-    Returns
-    -------
-    gpuarray
-        abs(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         abs(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.fabs(a)
+#     return pyopencl.clmath.fabs(a)
 
 
-def argmax_cl():
-    raise NotImplementedError
+# def argmax_cl():
+#     raise NotImplementedError
 
 
-def argmin_cl():
-    raise NotImplementedError
+# def argmin_cl():
+#     raise NotImplementedError
 
 
-def acos_cl(a):
+# def acos_cl(a):
 
-    """ Trigonometric arccosine of GPUArray elements.
+#     """ Trigonometric arccosine of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        acos(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         acos(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.acos(a)
+#     return pyopencl.clmath.acos(a)
 
 
-def acosh_cl(a):
+# def acosh_cl(a):
 
-    """ Hyperbolic arccosh of GPUArray elements.
+#     """ Hyperbolic arccosh of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        acosh(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         acosh(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.acosh(a)
+#     return pyopencl.clmath.acosh(a)
 
 
-def asin_cl(a):
+# def asin_cl(a):
 
-    """ Trigonometric arcsine of GPUArray elements.
+#     """ Trigonometric arcsine of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        asin(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         asin(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.asin(a)
+#     return pyopencl.clmath.asin(a)
 
 
-def asinh_cl(a):
+# def asinh_cl(a):
 
-    """ Hyperbolic arcsinh of GPUArray elements.
+#     """ Hyperbolic arcsinh of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        asinh(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         asinh(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.asinh(a)
+#     return pyopencl.clmath.asinh(a)
 
 
-def atan_cl(a):
+# def atan_cl(a):
 
-    """ Trigonometric arctangent of GPUArray elements.
+#     """ Trigonometric arctangent of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        atan(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         atan(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.atan(a)
+#     return pyopencl.clmath.atan(a)
 
 
-def atan2_cl(y, x):
+# def atan2_cl(y, x):
 
-    """ Trigonometric arctangent(2) of GPUArray elements.
+#     """ Trigonometric arctangent(2) of GPUArray elements.
 
-    Parameters
-    ----------
-    y : gpuarray
-        GPUArray with elements y.
-    x : gpuarray
-        GPUArray with elements x.
+#     Parameters
+#     ----------
+#     y : gpuarray
+#         GPUArray with elements y.
+#     x : gpuarray
+#         GPUArray with elements x.
 
-    Returns
-    -------
-    gpuarray
-        atan2(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         atan2(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.atan2(y, x)
+#     return pyopencl.clmath.atan2(y, x)
 
 
-def atanh_cl(a):
+# def atanh_cl(a):
 
-    """ Hyperbolic arctanh of GPUArray elements.
+#     """ Hyperbolic arctanh of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        atanh(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         atanh(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.atanh(a)
+#     return pyopencl.clmath.atanh(a)
 
 
-def ceil_cl(a):
+# def ceil_cl(a):
 
-    """ Ceiling of GPUArray elements.
+#     """ Ceiling of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        ceil(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         ceil(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.ceil(a)
+#     return pyopencl.clmath.ceil(a)
 
 
-def cos_cl(a):
+# def cos_cl(a):
 
-    """ Trigonometric cosine of GPUArray elements.
+#     """ Trigonometric cosine of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        cos(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         cos(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.cos(a)
+#     return pyopencl.clmath.cos(a)
 
 
-def cosh_cl(a):
+# def cosh_cl(a):
 
-    """ Hyperbolic cosine of GPUArray elements.
+#     """ Hyperbolic cosine of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        cosh(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         cosh(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.cosh(a)
+#     return pyopencl.clmath.cosh(a)
 
 
-def exp_cl(a):
+# def exp_cl(a):
 
-    """ Exponential of GPUArray elements.
+#     """ Exponential of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        exp(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         exp(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.exp(a)
+#     return pyopencl.clmath.exp(a)
 
 
-def floor_cl(a):
+# def floor_cl(a):
 
-    """ Floor of GPUArray elements.
+#     """ Floor of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        floor(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         floor(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.floor(a)
+#     return pyopencl.clmath.floor(a)
 
 
-def log_cl(a):
+# def log_cl(a):
 
-    """ Natural logarithm of GPUArray elements.
+#     """ Natural logarithm of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        log(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         log(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.log(a)
+#     return pyopencl.clmath.log(a)
 
 
-def log10_cl(a):
+# def log10_cl(a):
 
-    """ Base10 logarithm of GPUArray elements.
+#     """ Base10 logarithm of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        log10(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         log10(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.log10(a)
+#     return pyopencl.clmath.log10(a)
 
 
-def max_cl():
-    raise NotImplementedError
+# def max_cl():
+#     raise NotImplementedError
 
 
-def min_cl():
-    raise NotImplementedError
+# def min_cl():
+#     raise NotImplementedError
 
 
-def maximum_cl(a, b=None):
+# def maximum_cl(a, b=None):
 
-    """ Maximum values of two GPUArrays.
+#     """ Maximum values of two GPUArrays.
 
-    Parameters
-    ----------
-    a : gpuarray
-        First GPUArray.
-    b : gpuarray
-        Second GPUArray.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         First GPUArray.
+#     b : gpuarray
+#         Second GPUArray.
 
-    Returns
-    -------
-    gpuarray
-        Maximum values from both GPArrays, or single value if only one GPUarray.
+#     Returns
+#     -------
+#     gpuarray
+#         Maximum values from both GPArrays, or single value if only one GPUarray.
 
-    """
+#     """
 
-    if b is not None:
-        return cl_array.maximum(a, b)
-    return cl_array.max(a)
+#     if b is not None:
+#         return cl_array.maximum(a, b)
+#     return cl_array.max(a)
 
 
-def minimum_cl(a, b=None):
+# def minimum_cl(a, b=None):
 
-    """ Minimum values of two GPUArrays.
+#     """ Minimum values of two GPUArrays.
 
-    Parameters
-    ----------
-    a : gpuarray
-        First GPUArray.
-    b : gpuarray
-        Second GPUArray.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         First GPUArray.
+#     b : gpuarray
+#         Second GPUArray.
 
-    Returns
-    -------
-    gpuarray
-        Minimum values from both GPArrays, or single value if only one GPUarray.
+#     Returns
+#     -------
+#     gpuarray
+#         Minimum values from both GPArrays, or single value if only one GPUarray.
 
-    """
+#     """
 
-    if b is not None:
-        return cl_array.minimum(a, b)
-    return cl_array.min(a)
+#     if b is not None:
+#         return cl_array.minimum(a, b)
+#     return cl_array.min(a)
 
 
-def mean_cl():
-    raise NotImplementedError
+# def mean_cl():
+#     raise NotImplementedError
 
 
-def round_cl(a):
+# def round_cl(a):
 
-    """ Rounding of GPUArray elements.
+#     """ Rounding of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        round(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         round(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.round(a)
+#     return pyopencl.clmath.round(a)
 
 
-def sin_cl(a):
+# def sin_cl(a):
 
-    """ Trigonometric sine of GPUArray elements.
+#     """ Trigonometric sine of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        sin(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         sin(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.sin(a)
+#     return pyopencl.clmath.sin(a)
 
 
-def sinh_cl(a):
+# def sinh_cl(a):
 
-    """ Hyperbolic sine of GPUArray elements.
+#     """ Hyperbolic sine of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        sinh(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         sinh(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.sinh(a)
+#     return pyopencl.clmath.sinh(a)
 
 
-def sqrt_cl(a):
+# def sqrt_cl(a):
 
-    """ Square-root of GPUArray elements.
+#     """ Square-root of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        sqrt(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         sqrt(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.sqrt(a)
+#     return pyopencl.clmath.sqrt(a)
 
 
-def sum_cl(a, axis=None):
+# def sum_cl(a, axis=None):
 
-    """ Sum of GPUArray elements in a given axis direction or all elements.
+#     """ Sum of GPUArray elements in a given axis direction or all elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
-    axis : int
-        Axis direction to sum through, all if None.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
+#     axis : int
+#         Axis direction to sum through, all if None.
 
-    Returns
-    -------
-    gpuarray
-        GPUArray sum.
+#     Returns
+#     -------
+#     gpuarray
+#         GPUArray sum.
 
-    """
+#     """
 
-    if axis is not None:
-        raise NotImplementedError
-    else:
-        return cl_array.sum(a)
+#     if axis is not None:
+#         raise NotImplementedError
+#     else:
+#         return cl_array.sum(a)
 
 
-def tan_cl(a):
+# def tan_cl(a):
 
-    """ Trigonometric tangent of GPUArray elements.
+#     """ Trigonometric tangent of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        tan(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         tan(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.tan(a)
+#     return pyopencl.clmath.tan(a)
 
 
-def tanh_cl(a):
+# def tanh_cl(a):
 
-    """ Hyperbolic tangent of GPUArray elements.
+#     """ Hyperbolic tangent of GPUArray elements.
 
-    Parameters
-    ----------
-    a : gpuarray
-        GPUArray with elements to be operated on.
+#     Parameters
+#     ----------
+#     a : gpuarray
+#         GPUArray with elements to be operated on.
 
-    Returns
-    -------
-    gpuarray
-        tanh(GPUArray)
+#     Returns
+#     -------
+#     gpuarray
+#         tanh(GPUArray)
 
-    """
+#     """
 
-    return pyopencl.clmath.tanh(a)
+#     return pyopencl.clmath.tanh(a)
 
 
-# ==============================================================================
-# Main
-# ==============================================================================
+# # ==============================================================================
+# # Main
+# # ==============================================================================
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    from compas_hpc import give_cl
-    from compas_hpc import get_cl
+#     from compas_hpc import give_cl
+#     from compas_hpc import get_cl
 
-    from numpy import pi
+#     from numpy import pi
 
-    ctx = cl.create_some_context()
-    queue = cl.CommandQueue(ctx)
+#     ctx = cl.create_some_context()
+#     queue = cl.CommandQueue(ctx)
 
-    e_ = give_cl(queue, [1, 2, 3])
-    f_ = give_cl(queue, [3, 2, 1])
+#     e_ = give_cl(queue, [1, 2, 3])
+#     f_ = give_cl(queue, [3, 2, 1])
 
-    a_ = give_cl(queue, [-1, 3, -2])
-    b_ = maximum_cl(e_, f_)
-    c_ = minimum_cl(e_, f_)
+#     a_ = give_cl(queue, [-1, 3, -2])
+#     b_ = maximum_cl(e_, f_)
+#     c_ = minimum_cl(e_, f_)
 
-    print(get_cl(abs_cl(a_)))
-    print(get_cl(b_))
-    print(get_cl(c_))
-    print(get_cl(maximum_cl(e_)))
-    print(get_cl(minimum_cl(e_)))
-    print(get_cl(sum_cl(e_)))
+#     print(get_cl(abs_cl(a_)))
+#     print(get_cl(b_))
+#     print(get_cl(c_))
+#     print(get_cl(maximum_cl(e_)))
+#     print(get_cl(minimum_cl(e_)))
+#     print(get_cl(sum_cl(e_)))
 
-    print(get_cl(acos_cl(give_cl(queue, [0.5, 1.0]))))
-    print(get_cl(acosh_cl(give_cl(queue, [2.0, 1.0]))))
-    print(get_cl(asin_cl(give_cl(queue, [0.5, 1.0]))))
-    print(get_cl(asinh_cl(give_cl(queue, [0.5, 1.0]))))
+#     print(get_cl(acos_cl(give_cl(queue, [0.5, 1.0]))))
+#     print(get_cl(acosh_cl(give_cl(queue, [2.0, 1.0]))))
+#     print(get_cl(asin_cl(give_cl(queue, [0.5, 1.0]))))
+#     print(get_cl(asinh_cl(give_cl(queue, [0.5, 1.0]))))
 
-    print(get_cl(atan_cl(give_cl(queue, [0.5, 1.0]))))
-    print(get_cl(atan2_cl(f_, e_)))
-    print(get_cl(atanh_cl(give_cl(queue, [0.5, 0.7]))))
+#     print(get_cl(atan_cl(give_cl(queue, [0.5, 1.0]))))
+#     print(get_cl(atan2_cl(f_, e_)))
+#     print(get_cl(atanh_cl(give_cl(queue, [0.5, 0.7]))))
 
-    print(get_cl(cos_cl(give_cl(queue, [0, pi / 4]))))
-    print(get_cl(cosh_cl(give_cl(queue, [0, pi / 4]))))
+#     print(get_cl(cos_cl(give_cl(queue, [0, pi / 4]))))
+#     print(get_cl(cosh_cl(give_cl(queue, [0, pi / 4]))))
 
-    print(get_cl(exp_cl(give_cl(queue, [0, 1]))))
+#     print(get_cl(exp_cl(give_cl(queue, [0, 1]))))
 
-    print(get_cl(ceil_cl(give_cl(queue, [0.5, 1.2, 1.9]))))
-    print(get_cl(floor_cl(give_cl(queue, [0.5, 1.2, 1.9]))))
+#     print(get_cl(ceil_cl(give_cl(queue, [0.5, 1.2, 1.9]))))
+#     print(get_cl(floor_cl(give_cl(queue, [0.5, 1.2, 1.9]))))
 
-    print(get_cl(log_cl(give_cl(queue, [1, 10]))))
-    print(get_cl(log10_cl(give_cl(queue, [1, 10]))))
+#     print(get_cl(log_cl(give_cl(queue, [1, 10]))))
+#     print(get_cl(log10_cl(give_cl(queue, [1, 10]))))
 
-    print(get_cl(round_cl(give_cl(queue, [0.5, 1.2, 1.9]))))
+#     print(get_cl(round_cl(give_cl(queue, [0.5, 1.2, 1.9]))))
 
-    print(get_cl(sin_cl(give_cl(queue, [0, pi / 4]))))
-    print(get_cl(sinh_cl(give_cl(queue, [0, pi / 4]))))
+#     print(get_cl(sin_cl(give_cl(queue, [0, pi / 4]))))
+#     print(get_cl(sinh_cl(give_cl(queue, [0, pi / 4]))))
 
-    print(get_cl(sqrt_cl(give_cl(queue, [4, 9]))))
+#     print(get_cl(sqrt_cl(give_cl(queue, [4, 9]))))
 
-    print(get_cl(tan_cl(give_cl(queue, [0, pi / 4]))))
-    print(get_cl(tanh_cl(give_cl(queue, [0, pi / 4]))))
+#     print(get_cl(tan_cl(give_cl(queue, [0, pi / 4]))))
+#     print(get_cl(tanh_cl(give_cl(queue, [0, pi / 4]))))

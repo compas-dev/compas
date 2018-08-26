@@ -13,7 +13,7 @@ except:
 try:
     import pyopencl as cl
     import pyopencl.array as cl_array
-#     import pyopencl.clrandom
+    import pyopencl.clrandom
 except:
     pass
 
@@ -25,36 +25,45 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-#     'rand_cl',
+    'rand_cl',
     'give_cl',
     'get_cl',
     'ones_cl',
     'zeros_cl',
-#     # 'tile_cl',
-#     # 'hstack_cl',
-#     'vstack_cl',
+    # 'tile_cl',
+    # 'hstack_cl',
+    # 'vstack_cl',
 ]
 
 
-# def rand_cl(queue, shape):
+def rand_cl(queue, shape):
 
-#     """ Create random values in the range [0, 1] as GPUArray.
+    """ Create random values in the range [0, 1] in a GPUArray.
 
-#     Parameters
-#     ----------
-#     queue
-#         PyOpenCL queue.
-#     shape : tuple
-#         Size of the random array.
+    Parameters
+    ----------
+    queue
+        PyOpenCL queue.
+    shape : tuple
+        Size of the random array.
 
-#     Returns
-#     -------
-#     gpuarray
-#         Random floats from 0 to 1 in GPUArray.
+    Returns
+    -------
+    gpuarray
+        Random floats from 0 to 1 in GPUArray.
 
-#     """
+    Examples
+    --------
+    >>> a = rand_cl((2, 2))
+    [[ 0.80916596,  0.82687163],
+     [ 0.03921388,  0.44197764]]
 
-#     return pyopencl.clrandom.rand(queue, shape, dtype=float32)
+    >>> type(a)
+    <class 'pyopencl.array.Array'>
+
+    """
+
+    return pyopencl.clrandom.rand(queue, shape, dtype=float32)
 
 
 def give_cl(queue, a, type='real'):
@@ -243,6 +252,8 @@ def zeros_cl(queue, shape):
 
 if __name__ == "__main__":
 
+    # context > device > queue > kernel
+
     ctx   = cl.create_some_context()
     queue = cl.CommandQueue(ctx)
 
@@ -251,6 +262,7 @@ if __name__ == "__main__":
     a = get_cl(a)
     a = ones_cl(queue, (2, 2))
     a = zeros_cl(queue, (2, 2))
+    a = rand_cl(queue, (2, 2))
     # b = give_cl(queue, [3, 4, 5])
 #     c_ = a_ + b_
 #     d_ = a_ - b_
