@@ -1,4 +1,5 @@
 from random import sample
+from random import choice
 
 
 __author__    = ['Tom Van Mele', ]
@@ -96,7 +97,7 @@ class EdgeHelpers(object):
             The identifier of the edge in the form of a pair of vertex identifiers.
 
         """
-        raise NotImplementedError
+        return choice(list(self.edges()))
 
     def edge_name(self, u, v):
         """Get the name of an edge.
@@ -148,7 +149,7 @@ class FaceHelpers(object):
             The identifier of the face.
 
         """
-        return next(iter(self.faces()))
+        return choice(list(self.faces()))
 
     def get_any_face_vertex(self, fkey):
         """Get the identifier of a random vertex of a specific face.

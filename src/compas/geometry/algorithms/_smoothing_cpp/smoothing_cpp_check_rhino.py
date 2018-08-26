@@ -9,7 +9,7 @@ import compas_rhino
 from compas.datastructures import Mesh
 from compas.geometry import smooth_centroid_cpp
 
-from compas_rhino.helpers import MeshArtist
+from compas_rhino.artists import MeshArtist
 from compas_rhino.conduits import PointsConduit
 from compas_rhino.conduits import LinesConduit
 

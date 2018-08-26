@@ -87,6 +87,12 @@ class Visual(object):
 
     def draw(self):
         return self.geometry.draw()
+    
+    def get_color(self):
+        if self.material:
+            return self.material.get_color()
+        else:
+            return None
 
 class Collision(object):
     """Collidable description of a link.
@@ -151,6 +157,11 @@ class Link(object):
         transformation_dae = Transformation.from_frame(fx)
 
         for item in self.visual:
+            # set color
+            color = item.get_color()
+            if color:
+                item.geometry.shape.set_color(color)
+            # transform
             if type(item.geometry.shape) == MeshDescriptor:
                 if os.path.splitext(item.geometry.shape.filename)[1] == ".dae":
                     item.geometry.shape.transform(transformation_dae)
@@ -231,3 +242,5 @@ URDF.add_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/colli
 URDF.add_parser(Material, 'robot/link/visual/material')
 URDF.add_parser(Color, 'robot/link/visual/material/color')
 URDF.add_parser(Texture, 'robot/link/visual/material/texture')
+
+

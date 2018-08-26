@@ -1,9 +1,7 @@
 ********************************************************************************
-Working with datastructures
+Working in Blender
 ********************************************************************************
 
-:author:`Tom Van Mele <van.mele@arch.ethz.ch>`
+.. warning::
 
-:mod:`compas.datastructures`
-
-
+    Under oncstruction...

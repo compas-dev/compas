@@ -114,6 +114,16 @@ def area_triangle_xy(triangle):
 def volume_polyhedron(polyhedron):
     r"""Compute the volume of a polyhedron represented by a closed mesh.
 
+    Parameters
+    ----------
+    polyhedron : tuple
+        The vertices and faces of the polyhedron.
+
+    Returns
+    -------
+    float
+        The volume of the polyhedron.
+
     Notes
     -----
     This implementation is based on the divergence theorem, the fact that the
@@ -137,19 +147,21 @@ def volume_polyhedron(polyhedron):
            Available at: http://wwwf.imperial.ac.uk/~rn/centroid.pdf
 
     """
+    xyz, faces = polyhedron
+
     V = 0
-    for fkey in polyhedron.face:
-        vertices = polyhedron.face_vertices(fkey)
+    for vertices in faces:
         if len(vertices) == 3:
-            faces = [vertices]
+            triangles = [vertices]
         else:
-            faces = []
+            triangles = []
             for i in range(1, len(vertices) - 1):
-                faces.append(vertices[0:1] + vertices[i:i + 2])
-        for face in faces:
-            a  = polyhedron.vertex_coordinates(face[0])
-            b  = polyhedron.vertex_coordinates(face[1])
-            c  = polyhedron.vertex_coordinates(face[2])
+                triangles.append(vertices[0:1] + vertices[i:i + 2])
+
+        for u, v, w in triangles:
+            a  = xyz[u]
+            b  = xyz[v]
+            c  = xyz[w]
             ab = subtract_vectors(b, a)
             ac = subtract_vectors(c, a)
             n  = cross_vectors(ab, ac)

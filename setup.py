@@ -80,12 +80,12 @@ setup(
     extras_require=optional_requirements,
 
     entry_points={
-        'console_scripts': [],
+        'console_scripts': ['install_compas_rhino=compas_rhino.install:install'],
     },
 
     ext_modules=[],
 
-    cmdclass={
-        'install': PostInstallCommand,
-    }
+    # cmdclass={
+    #     'install': PostInstallCommand,
+    # }
 )

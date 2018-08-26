@@ -21,7 +21,7 @@ version          = '.'.join(release.split('.')[0:2])
 master_doc       = 'index'
 source_suffix    = ['.rst', ]
 templates_path   = ['_templates', ]
-exclude_patterns = ['_build', ]
+exclude_patterns = ['__build', '**.ipynb_checkpoints']
 
 pygments_style   = 'sphinx'
 show_authors     = True
@@ -40,6 +40,8 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'matplotlib.sphinxext.plot_directive',
+    'IPython.sphinxext.ipython_console_highlighting',
+    'IPython.sphinxext.ipython_directive',
     # 'plotfigure',
 ]
 

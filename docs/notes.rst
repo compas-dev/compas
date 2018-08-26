@@ -1,11 +1,10 @@
 ********************************************************************************
-Reference
+Notes
 ********************************************************************************
 
 .. toctree::
-    :maxdepth: 1
+   :maxdepth: 1
+   :titlesonly:
+   :glob:
 
-    reference/compas
-    reference/compas_blender
-    reference/compas_ghpython
-    reference/compas_rhino
+   notes/*

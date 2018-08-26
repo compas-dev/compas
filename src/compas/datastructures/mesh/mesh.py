@@ -153,7 +153,7 @@ class Mesh(FromToJson,
     # --------------------------------------------------------------------------
 
     def __str__(self):
-        """Compile a summary of the mesh."""
+        """Generate a readable representation of the data of the mesh."""
         return json.dumps(self.data, sort_keys=True, indent=4)
 
     def summary(self):
@@ -2370,6 +2370,49 @@ class Mesh(FromToJson,
                 break
 
         return vertices
+
+    def vertices_on_boundaries(self):
+        """Find the vertices on all boundaries of the mesh.
+
+        Returns
+        -------
+        list of list
+            A list of vertex keys per boundary.
+
+        Examples
+        --------
+        >>>
+
+        """
+        vertices_set = set()
+        for key, nbrs in iter(self.halfedge.items()):
+            for nbr, face in iter(nbrs.items()):
+                if face is None:
+                    vertices_set.add(key)
+                    vertices_set.add(nbr)
+
+        vertices_all = list(vertices_set)
+        boundaries = []
+
+        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices_all], key=lambda x: (x[1][1], x[1][0]))[0][0]
+
+        while vertices_all:
+            vertices = []
+            start = key
+            while 1:
+                for nbr, fkey in iter(self.halfedge[key].items()):
+                    if fkey is None:
+                        vertices.append(nbr)
+                        key = nbr
+                        break
+                if key == start:
+                    boundaries.append(vertices)
+                    vertices_all = [x for x in vertices_all if x not in vertices]
+                    break
+            if vertices_all:
+                key = vertices_all[0]            
+
+        return boundaries
 
     def faces_on_boundary(self):
         """Find the faces on the boundary.

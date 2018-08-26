@@ -2,13 +2,11 @@
 Contributions
 ********************************************************************************
 
-Contributions are always welcome and greatly appreciated!
-
-
 Code contributions
 ==================
 
-We love pull requests from everyone! Here's a quick guide to improve the code:
+We accept code contributions through pull requests.
+In short, this is how that works.
 
 1. Fork `the repository <https://github.com/compas-dev/compas>`_ and clone the fork.
 2. Create a virtual environment using your tool of choice (e.g. ``virtualenv``, ``conda``, etc).
@@ -16,20 +14,23 @@ We love pull requests from everyone! Here's a quick guide to improve the code:
 
 ::
 
-    pip install -r requirements-dev.txt
+    $ pip install -r requirements-dev.txt
+
 
 4. Make sure all tests pass:
 
 ::
 
-    invoke test
+    $ invoke test
+
 
 5. Start making your changes to the **master** branch (or branch off of it).
 6. Make sure all tests still pass:
 
 ::
 
-    invoke test
+    $ invoke test
+
 
 7. Add yourself to ``authors.rst``.
 8. Commit your changes and push your branch to GitHub.
@@ -44,20 +45,6 @@ command line to ease recurring operations:
 * ``invoke docs``: Generate documentation.
 * ``invoke test``: Run all tests and checks in one swift command.
 * ``invoke``: Show available tasks.
-
-
-Documentation improvements
-==========================
-
-We could always use more documentation, whether as part of the
-introduction/examples/usage documentation or API documentation in docstrings.
-
-Documentation is written in `reStructuredText <http://docutils.sourceforge.net/rst.html>`_
-and use `Sphinx <http://sphinx-doc.org/index.html>`_ to generate the HTML output.
-
-Once you made the documentation changes locally, run the documentation generation::
-
-    invoke docs
 
 
 Bug reports
@@ -75,7 +62,8 @@ Feature requests and feedback
 =============================
 
 The best way to send feedback is to file an issue on
-`Github <https://github.com/compas-dev/compas/issues>`_. If you are proposing a feature:
+`Github <https://github.com/compas-dev/compas/issues>`_.
+If you are proposing a feature:
 
 * Explain in detail how it would work.
 * Keep the scope as narrow as possible, to make it easier to implement.

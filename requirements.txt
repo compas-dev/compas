@@ -1,6 +1,10 @@
+appdirs
 matplotlib
 networkx
 numba
 numpy
+Pillow
+PyOpenGL
+PySide2
 scipy
 sympy
