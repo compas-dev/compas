@@ -37,7 +37,7 @@ __all__ = [
     'zeros_cuda',
     # 'tile_cuda',
     'hstack_cuda',
-    # 'vstack_cuda',
+    'vstack_cuda',
 ]
 
 
@@ -52,13 +52,34 @@ __global__ void hstack_cuda(int m, int n, int o, float *a, float *b, float *c)
     {
         int id  = idy * (n + o) + idx;
 
-        if (idx < m)
+        if (idx < n)
         {
-            c[id] = a[idy * m + idx];
+            c[id] = a[idy * n + idx];
         }
         else
         {
             c[id] = b[idy * o + (idx - n)];
+        }
+    }
+}
+
+
+__global__ void vstack_cuda(int m, int n, int o, float *a, float *b, float *c)
+{
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    int idy = blockDim.y * blockIdx.y + threadIdx.y;
+
+    if (idx < n && idy < m + o)
+    {
+        int id  = idy * n + idx;
+
+        if (idy < m)
+        {
+            c[id] = a[idy * n + idx];
+        }
+        else
+        {
+            c[id] = b[(idy - m) * n + idx];
         }
     }
 }
@@ -344,8 +365,34 @@ def hstack_cuda(a, b, dim=2):
     return c
 
 
-# def vstack_cuda():
-#     raise NotImplementedError
+def vstack_cuda(a, b, dim=2):
+
+    """ Stack two GPUArrays vertically.
+
+    Parameters
+    ----------
+    a : gpuarray
+        First GPUArray.
+    b : gpuarray
+        Second GPUArray.
+
+    Returns
+    -------
+    gpuarray
+        Vertically stacked GPUArrays.
+
+    """
+
+    m, n = a.shape
+    o  = b.shape[0]
+    nx = int(ceil(n / dim))
+    ny = int(ceil((m + o) / dim))
+
+    func = mod.get_function('vstack_cuda')
+    c = pycuda.gpuarray.empty((m + o, n), dtype=float32)
+    func(int32(m), int32(n), int32(o), a, b, c, block=(dim, dim, 1), grid=(nx, ny, 1))
+
+    return c
 
 
 # ==============================================================================
@@ -360,9 +407,9 @@ if __name__ == "__main__":
     # a = get_cuda(a)
     # a = ones_cuda((3, 3))
     # a = zeros_cuda((3, 3))
-    a = rand_cuda((3, 3))
-    b = rand_cuda((3, 4))
-    c = hstack_cuda(a, b)
+    a = rand_cuda((1, 3))
+    b = rand_cuda((4, 3))
+    c = vstack_cuda(a, b)
 
     print(a)
     print(b)

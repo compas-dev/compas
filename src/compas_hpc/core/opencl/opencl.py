@@ -204,23 +204,23 @@ def zeros_cl(queue, shape):
     return cl_array.zeros(queue, shape, dtype=float32)
 
 
-# # def hstack_cl(a):
+def hstack_cl(a):
 
-# #     """ Horizontally stack GPUArrays.
+    """ Horizontally stack GPUArrays.
 
-# #     Parameters
-# #     ----------
-# #     a : list
-# #         List of GPUArrays.
+    Parameters
+    ----------
+    a : list
+        List of GPUArrays.
 
-# #     Returns
-# #     -------
-# #     gpuarray
-# #         Horizontally stack GPUArrays.
+    Returns
+    -------
+    gpuarray
+        Horizontally stack GPUArrays.
 
-# #     """
+    """
 
-# #     return cl_array.concatenate(a, axis=1)
+    pass
 
 
 # def vstack_cl(a):
@@ -261,15 +261,9 @@ if __name__ == "__main__":
     # a = give_cl(queue, [1.+1j, 2.+2j, 3.+3j], type='complex')
     a = get_cl(a)
     a = ones_cl(queue, (2, 2))
-    a = zeros_cl(queue, (2, 2))
-    a = rand_cl(queue, (2, 2))
-    # b = give_cl(queue, [3, 4, 5])
-#     c_ = a_ + b_
-#     d_ = a_ - b_
-#     e_ = a_ * b_
-#     f_ = a_ / b_
-#     g_ = a_**3
-#     # h_ = vstack_cl([z_, o_, z_])
+    b = zeros_cl(queue, (2, 2))
+    c = rand_cl(queue, (2, 2))
+    # d = hstack_cl([a, b, c])
 #     # g_ = hstack_cl([z_, o_, z_])
 
 #     print(get_cl(z_))
@@ -284,10 +278,10 @@ if __name__ == "__main__":
 #     # print(get_cl(g_))
 #     print(get_cl(rand_cl(queue, (2, 2))))
 
-    print(a)
-    print(type(a))
-    print(a.shape)
-    print(a.dtype)
+    # print(a)
+    # print(b)
+    # print(c)
+    # print(d)
 
 
 
@@ -297,6 +291,27 @@ if __name__ == "__main__":
 
 
 
+
+    ctx = cl.create_some_context()
+    queue = cl.CommandQueue(ctx)
+
+    a = rand_cl(queue, (3, 1))
+    b = rand_cl(queue, (3, 3))
+    c = cl_array.zeros(queue, (3, 4), dtype=float32)
+
+    kernel = cl.Program(ctx, """
+
+    __kernel void hstack_cl(__global float *a, __global float *b, __global float *c)
+        {
+            int gid = get_global_id(0);
+
+            c[gid] = gid;
+        }
+    """).build()
+
+    kernel.hstack_cl(queue, (c.size,), None, a.data, b.data, c.data)
+
+    print(c.get())
 
 
 

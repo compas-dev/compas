@@ -32,16 +32,17 @@
 
 int main()
 {
-// cl_device_id device_id = NULL;
+    cl_device_id *devices;
 // cl_context context = NULL;
 // cl_command_queue command_queue = NULL;
 // cl_mem memobj = NULL;
 // cl_program program = NULL;
 // cl_kernel kernel = NULL;
-// cl_platform_id platform_id = NULL;
-// cl_uint ret_num_devices;
-// cl_uint ret_num_platforms;
-// cl_int ret;
+    cl_platform_id platform = NULL;
+    cl_uint num_devices = 0;
+
+    char dname[40];
+    int i;
 
 // char string[MEM_SIZE];
 
@@ -60,9 +61,18 @@ int main()
 // source_size = fread(source_str, 1, MAX_SOURCE_SIZE, fp);
 // fclose(fp);
 
-// /* Get Platform and Device Info */
-// ret = clGetPlatformIDs(1, &platform_id, &ret_num_platforms);
-// ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &device_id, &ret_num_devices);
+    clGetPlatformIDs(1, &platform, NULL);
+
+    clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 10, NULL, &num_devices);
+    devices = (cl_device_id*) malloc(sizeof(cl_device_id) * num_devices);
+    clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, num_devices, devices, NULL);
+
+    for (i = 0; i < num_devices; i++)
+    {
+        clGetDeviceInfo(devices[i], CL_DEVICE_NAME, sizeof(dname), &dname, NULL);
+
+        printf("Device:%i - %s\n", i, dname);
+    }
 
 // /* Create OpenCL context */
 // context = clCreateContext(NULL, 1, &device_id, NULL, NULL, &ret);
