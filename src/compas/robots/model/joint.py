@@ -312,6 +312,12 @@ class Joint(object):
 
     def is_configurable(self):
         return self.type != Joint.FIXED
+    
+    def scale(self, factor):
+        self.origin.scale(factor)
+        if self.type in [Joint.PLANAR, Joint.PRISMATIC]:
+            self.limit = self.limit.scale(factor)
+
 
 
 URDF.add_parser(Joint, 'robot/joint')

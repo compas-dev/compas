@@ -41,6 +41,7 @@ class Robot(object):
         self.materials = materials
         self.attr = kwargs
         self.root = None
+        self.scale_factor = 1.
         self._rebuild_tree()
 
     def _rebuild_tree(self):
@@ -320,6 +321,13 @@ class Robot(object):
 
     def draw(self):
         return self.draw_visual()
+    
+    def scale(self, factor):
+        names = self.get_configurable_joint_names()
+        # bring to init configuration
+        self.update(names, [0] * len(names), collision=True)
+        self.root.scale(factor)
+        self.scale_factor *= factor
 
 
 URDF.add_parser(Robot, 'robot')

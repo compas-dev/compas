@@ -38,7 +38,6 @@ class Inertia(object):
     """
 
     def __init__(self, ixx=0., ixy=0., ixz=0., iyy=0., iyz=0., izz=0.):
-        # TODO: Check if we need unit conversion here (m to mm?)
         self.ixx = float(ixx)
         self.ixy = float(ixy)
         self.ixz = float(ixz)
@@ -210,6 +209,18 @@ class Link(object):
             joint.transform(transformation)
             # 4. Apply function to all children in the chain
             joint.child_link.update(joint_state, transformation, reset_transformation, collision)
+    
+    def scale(self, factor):
+        from compas.geometry import Scale
+        S = Scale([factor, factor, factor])
+        for item in self.visual:
+            item.geometry.shape.transform(S)
+        for item in self.collision:
+            item.geometry.shape.transform(S)
+        for joint in self.joints:
+            joint.scale(factor)
+            joint.child_link.scale(factor)
+
 
 
 URDF.add_parser(Link, 'robot/link')
