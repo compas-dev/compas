@@ -227,7 +227,7 @@ class Robot(object):
             urdf_importer (:class:`UrdfImporter`):
             meshcls (class): ...
         """
-        self.root.create(urdf_importer, meshcls, Frame.worldXY())
+        self.root.create(urdf_importer, meshcls)
 
     def update(self, names, positions, collision=False):
         """Updates the joints and link geometries.
