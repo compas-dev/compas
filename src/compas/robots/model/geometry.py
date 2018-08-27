@@ -2,15 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.files import URDF
 from compas.utilities.colors import hex_to_rgb
 from compas.geometry import Frame
-from compas.geometry.xforms import Scale
-from compas.geometry.xforms import Transformation
-
-# URDF is defined in meters
-# so we scale it all to millimeters
-SCALE_FACTOR = 1000
+from compas.geometry import Transformation
 
 __all__ = ['Geometry',
            'Box',
@@ -22,7 +16,7 @@ __all__ = ['Geometry',
            'Texture',
            'Material',
            'Origin'
-]
+           ]
 
 # Copied from https://github.com/ubernostrum/webcolors/blob/master/webcolors.py
 HTML4_NAMES_TO_HEX = {
@@ -43,6 +37,7 @@ HTML4_NAMES_TO_HEX = {
     u'white': u'#ffffff',
     u'yellow': u'#ffff00',
 }
+
 
 def _parse_floats(values, scale_factor=None):
     result = []
@@ -66,7 +61,7 @@ class Origin(Frame):
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
-        xyz = _parse_floats(attributes.get('xyz', '0 0 0'), SCALE_FACTOR)
+        xyz = _parse_floats(attributes.get('xyz', '0 0 0'))
         rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
         return cls.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
 
@@ -90,7 +85,7 @@ class Box(object):
     """3D shape primitive representing a box."""
 
     def __init__(self, size):
-        self.size = _parse_floats(size, SCALE_FACTOR)
+        self.size = _parse_floats(size)
         self.geometry = None
 
     def create(self, urdf_importer, meshcls):
@@ -99,7 +94,7 @@ class Box(object):
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
-    
+
     def set_color(self, color_rgba):
         pass
 
@@ -112,8 +107,8 @@ class Cylinder(object):
     """3D shape primitive representing a cylinder."""
 
     def __init__(self, radius, length):
-        self.radius = float(radius) * SCALE_FACTOR
-        self.length = float(length) * SCALE_FACTOR
+        self.radius = float(radius)
+        self.length = float(length)
         self.geometry = None
 
     def create(self, urdf_importer, meshcls):
@@ -122,7 +117,7 @@ class Cylinder(object):
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
-    
+
     def set_color(self, color_rgba):
         pass
 
@@ -135,7 +130,7 @@ class Sphere(object):
     """3D shape primitive representing a sphere."""
 
     def __init__(self, radius):
-        self.radius = float(radius) * SCALE_FACTOR
+        self.radius = float(radius)
         self.geometry = None
 
     def create(self, urdf_importer, meshcls):
@@ -144,7 +139,7 @@ class Sphere(object):
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
-    
+
     def set_color(self, color_rgba):
         pass
 
@@ -157,8 +152,8 @@ class Capsule(object):
     """3D shape primitive representing a capsule."""
 
     def __init__(self, radius, length):
-        self.radius = float(radius) * SCALE_FACTOR
-        self.length = float(length) * SCALE_FACTOR
+        self.radius = float(radius)
+        self.length = float(length)
         self.geometry = None
 
     def create(self, urdf_importer, meshcls):
@@ -167,7 +162,7 @@ class Capsule(object):
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
-    
+
     def set_color(self, color_rgba):
         pass
 
@@ -189,20 +184,15 @@ class MeshDescriptor(object):
         mesh class.
         """
         self.geometry = urdf_importer.read_mesh_from_resource_file_uri(self.filename, meshcls)
-        self.set_scale(SCALE_FACTOR)
-        print("Created mesh from file %s" % self.filename) # TODO: use logging?
+        print("Created mesh from file %s" % self.filename)  # TODO: use logging?
 
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
-    
+
     def set_color(self, color_rgba):
         if self.geometry:
             self.geometry.set_color(color_rgba)
-
-    def set_scale(self, factor):
-        S = Scale([factor, factor, factor])
-        self.transform(S)
 
     def draw(self):
         if self.geometry:

@@ -5,10 +5,13 @@ from __future__ import print_function
 from compas.files import URDF
 from compas.topology import shortest_path
 
-from .geometry import SCALE_FACTOR
+from compas.geometry import Frame
+from compas.geometry import Transformation
+
 from .geometry import Color
 from .geometry import Material
 from .geometry import Texture
+from .joint import Joint
 
 __all__ = ['Robot']
 
@@ -16,10 +19,11 @@ __all__ = ['Robot']
 class Robot(object):
     """Robot is the root element of the model.
 
-    Instances of this class represent an entire robot as defined in an URDF structure.
+    Instances of this class represent an entire robot as defined in an URDF
+    structure.
 
-    In line with URDF limitations, only tree structures can be represented by this
-    model, ruling out all parallel robots.
+    In line with URDF limitations, only tree structures can be represented by
+    this model, ruling out all parallel robots.
 
     Attributes:
         name: Unique name of the robot.
@@ -214,21 +218,82 @@ class Robot(object):
 
         for name in shortest_chain:
             yield name
+    
+    def create(self, urdf_importer, meshcls):
+        """Creates the links' geometry and positions it as defined in the urdf.
+        
+        Args:
+            urdf_importer (:class:`UrdfImporter`):
+            meshcls (class): ...
+        """
+        self.root.create(urdf_importer, meshcls, Frame.worldXY())
 
-    def get_frames(self):
-        """Get the frames of links that have a visual node.
+    def update(self, names, positions, collision=False):
+        """Updates the joints and link geometries.
+
+        Args:
+            names (list of str): a list of the joints names that are updated
+            positions (list_of float): a list of the respective joint positions,
+                in radians and m
+            collision (bool): If collision geometry should be transformed as 
+                well. Defaults to False.
+        """
+        if len(names) != len(positions):
+            return ValueError("len(names): %d is not len(positions) %d" % (len(names), len(positions)))
+        joint_state = dict(zip(names, positions))
+        self.root.update(joint_state, Transformation(), Transformation(), collision)
+    
+    def get_configurable_joints(self):
+        joints = []
+        for joint in self.iter_joints():
+            if joint.is_configurable():
+                joints.append(joint)
+        return joints
+    
+    def get_joint_types(self):
+        types = []
+        for joint in self.get_configurable_joints():
+            types.append(joint.type)
+        return types
+    
+    def get_positions(self):
+        positions = []
+        for joint in self.get_configurable_joints():
+            positions.append(joint.position)
+        return positions
+    
+    def get_configurable_joint_names(self):
+        joints = self.get_configurable_joints()
+        return [j.name for j in joints]
+
+    def get_end_effector_link_name(self):
+        joints = self.get_configurable_joints()
+        clink = joints[-1].child_link
+        for j in clink.joints:
+            if j.type == Joint.FIXED:
+                return j.child 
+        return clink.name
+    
+    def get_base_link_name(self):
+        joints = self.get_configurable_joints()
+        return joints[0].parent.link
+
+    @property
+    def frames(self):
+        """Returns the frames of links that have a visual node.
 
         Returns:
             list: List of :class:`compas.geometry.Frame` of all links with a visual representation.
         """
         frames = []
         for link in self.iter_links():
-            if len(link.visual):
+            if len(link.visual) and link.parent_joint:
                 frames.append(link.parent_joint.origin.copy())
         return frames
 
-    def get_axes(self):
-        """Get axes of all joints.
+    @property
+    def axes(self):
+        """Returns the joints' axes.
 
         Returns:
             list: Axis vectors of all joints.

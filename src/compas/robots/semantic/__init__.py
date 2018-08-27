@@ -1,1 +1,0 @@
-from .semantic import Robot as SrdfRobot

@@ -2,10 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import os
-
 from compas.files import URDF
-from compas.geometry import Frame
 from compas.geometry.xforms import Transformation
 
 from .geometry import Box
@@ -87,12 +84,13 @@ class Visual(object):
 
     def draw(self):
         return self.geometry.draw()
-    
+
     def get_color(self):
         if self.material:
             return self.material.get_color()
         else:
             return None
+
 
 class Collision(object):
     """Collidable description of a link.
@@ -150,34 +148,14 @@ class Link(object):
 
         transformation = Transformation.from_frame(parent_origin)
 
-        # former DAE files have yaxis and zaxis swapped
-        # TODO: already fix in conversion to obj or in import
-        # TODO: move to mesh importer!
-        fx = Frame(parent_origin.point, parent_origin.xaxis, parent_origin.zaxis)
-        transformation_dae = Transformation.from_frame(fx)
-
         for item in self.visual:
-            # set color
             color = item.get_color()
             if color:
                 item.geometry.shape.set_color(color)
-            # transform
-            if type(item.geometry.shape) == MeshDescriptor:
-                if os.path.splitext(item.geometry.shape.filename)[1] == ".dae":
-                    item.geometry.shape.transform(transformation_dae)
-                else:
-                    item.geometry.shape.transform(transformation)
-            else:
-                item.geometry.shape.transform(transformation)
-
+            item.geometry.shape.transform(transformation)
+        
         for item in self.collision:
-            if type(item.geometry.shape) == MeshDescriptor:
-                if os.path.splitext(item.geometry.shape.filename)[1] == ".dae":
-                    item.geometry.shape.transform(transformation_dae)
-                else:
-                    item.geometry.shape.transform(transformation)
-            else:
-                item.geometry.shape.transform(transformation)
+            item.geometry.shape.transform(transformation)
 
         for cjoint in self.joints:
             cjoint.origin.create(transformation)
@@ -186,28 +164,40 @@ class Link(object):
             clink = cjoint.child_link
             clink.create(urdf_importer, meshcls, cjoint.origin)
 
-    def update(self, joint_state, parent_transformation, reset_transformation):
+    def update(self, joint_state, parent_transformation, reset_transformation, collision=False):
         """Recursive function to apply the transformations given by the joint
             state.
 
         Joint_states are given absolute, so it is necessary to reset the current
         transformation.
+
+        Args:
+            joint_state (dict): A dictionary with the joint names as keys and
+                values in radians and m (depending on the joint type)
+            parent_transformation (:class:`Transformation`): The transfomation
+                of the parent joint
+            reset_transformation (:class:`Transformation`): The transfomation
+                to reset the current transformation of the link's geometry.
+            collision (bool): If collision geometry should be transformed as
+                well. Defaults to False.
         """
         relative_transformation = parent_transformation * reset_transformation
 
         for item in self.visual:
             item.geometry.shape.transform(relative_transformation)
-        for item in self.collision:
-            item.geometry.shape.transform(relative_transformation)
+
+        if collision:
+            for item in self.collision:
+                item.geometry.shape.transform(relative_transformation)
 
         for joint in self.joints:
             # 1. Get reset transformation
             reset_transformation = joint.calculate_reset_transformation()
             # 2. Reset
             joint.reset_transform()
-            #joint.transform(reset_transformation) # why does this not work properly....
+            # joint.transform(reset_transformation) # why does this not work properly....
 
-            # 3. Calculate transformation
+            # 3. Calculate transformation for next joints in the chain
             if joint.name in joint_state.keys():
                 position = joint_state[joint.name]
                 transformation = joint.calculate_transformation(position)
@@ -218,9 +208,8 @@ class Link(object):
 
             # 4. Apply on joint
             joint.transform(transformation)
-            # 4. Apply function to all children
-            joint.child_link.update(joint_state, transformation, reset_transformation)
-
+            # 4. Apply function to all children in the chain
+            joint.child_link.update(joint_state, transformation, reset_transformation, collision)
 
 
 URDF.add_parser(Link, 'robot/link')
@@ -242,5 +231,4 @@ URDF.add_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/colli
 URDF.add_parser(Material, 'robot/link/visual/material')
 URDF.add_parser(Color, 'robot/link/visual/material/color')
 URDF.add_parser(Texture, 'robot/link/visual/material/texture')
-
 

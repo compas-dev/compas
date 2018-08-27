@@ -7,8 +7,8 @@ from compas.geometry import Vector
 from compas.geometry.transformations import transform_vectors
 from compas.geometry.xforms import Rotation
 from compas.geometry.xforms import Transformation
+from compas.geometry.xforms import Translation
 
-from .geometry import SCALE_FACTOR
 from .geometry import Origin
 from .geometry import _parse_floats
 
@@ -59,16 +59,21 @@ class Limit(object):
     Attributes:
         effort: Maximum joint effort.
         velocity: Maximum joint velocity.
-        lower: Lower joint limit (radians for revolute joints, millimeter for prismatic joints).
-        upper: Upper joint limit (radians for revolute joints, millimeter for prismatic joints).
+        lower: Lower joint limit (radians for revolute joints, meter for
+            prismatic joints).
+        upper: Upper joint limit (radians for revolute joints, meter for
+            prismatic joints).
     """
 
     def __init__(self, effort=0.0, velocity=0.0, lower=0.0, upper=0.0):
         self.effort = float(effort)
         self.velocity = float(velocity)
-        # TODO: Scale upper/lower limits once this is connected to a joint, if the joint is prismatic
         self.lower = float(lower)
         self.upper = float(upper)
+
+    def scale(self, factor):
+        self.lower *= factor
+        self.upper *= factor
 
 
 class Mimic(object):
@@ -122,7 +127,8 @@ class Axis(object):
 
     def create(self, transformation):
         """Stores the initial direction of the axis.
-         This is called when the robot is created.
+
+        This is called when the robot is created.
         """
         self.transform(transformation)
         self.init = self.copy()
@@ -136,8 +142,8 @@ class Axis(object):
 
 
 class Joint(object):
-    """Representation of the kinematics and dynamics of a
-    joint and its safety limits.
+    """Representation of the kinematics and dynamics of a joint and its safety
+    limits.
 
     Attributes:
         name: Unique name for the joint.
@@ -145,31 +151,46 @@ class Joint(object):
         origin: Transformation from the parent link to the child link frame.
         parent: Name of the parent link.
         child: Name of the child link.
-        axis: Joint axis specified in the joint frame. Represents the axis of rotation
-            for revolute joints, the axis of translation for prismatic joints, and
-            the surface normal for planar joints. The axis is specified in the joint
-            frame of reference.
-        calibration: Reference positions of the joint, used to calibrate the absolute
-            position of the joint.
-        dynamics: Physical properties of the joint. These values are used to specify
-            modeling properties of the joint, particularly useful for simulation.
+        axis: Joint axis specified in the joint frame. Represents the axis of 
+            rotation for revolute joints, the axis of translation for prismatic
+            joints, and the surface normal for planar joints. The axis is 
+            specified in the joint frame of reference.
+        calibration: Reference positions of the joint, used to calibrate the 
+            absolute position of the joint.
+        dynamics: Physical properties of the joint. These values are used to
+            specify modeling properties of the joint, particularly useful for
+            simulation.
         limit: Joint limit properties.
         safety_controller: Safety controller properties.
-        mimic: Used to specify that the defined joint mimics another existing joint.
+        mimic: Used to specify that the defined joint mimics another existing 
+            joint.
         attr: Non-standard attributes.
         child_link: the joint's child link
+        position (float): The current position of the joint. This depends on the 
+            joint type, i.e. for revolute joints, it will be the rotation angle
+            in radians, for prismatic joints the translation in m
     """
-    SUPPORTED_TYPES = ('revolute', 'continuous', 'prismatic',
-                       'fixed', 'floating', 'planar')
+
+    REVOLUTE = 0
+    CONTINUOUS = 1
+    PRISMATIC = 2
+    FIXED = 3
+    FLOATING = 4
+    PLANAR = 5
+
+    SUPPORTED_TYPES = ('revolute', 'continuous', 'prismatic', 'fixed',
+                       'floating', 'planar')
 
     def __init__(self, name, type, parent, child, origin=None, axis=None, calibration=None, dynamics=None, limit=None, safety_controller=None, mimic=None, **kwargs):
         if type not in (Joint.SUPPORTED_TYPES):
             raise ValueError('Unsupported joint type: %s' % type)
 
         self.name = name
-        self.type = type
-        self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
-        self.child = child if isinstance(child, ChildLink) else ChildLink(child)
+        self.type = Joint.SUPPORTED_TYPES.index(type)
+        self.parent = parent if isinstance(
+            parent, ParentLink) else ParentLink(parent)
+        self.child = child if isinstance(
+            child, ChildLink) else ChildLink(child)
         self.origin = origin
         self.axis = axis
         self.calibration = calibration
@@ -179,7 +200,18 @@ class Joint(object):
         self.mimic = mimic
         self.attr = kwargs
         self.child_link = None
-        self.position = 0  # the position of the joint
+        self.position = 0
+
+        switcher = {
+            Joint.REVOLUTE: self.calculate_revolute_transformation,
+            Joint.CONTINUOUS: self.calculate_continous_transformation,
+            Joint.PRISMATIC: self.calculate_prismatic_transformation,
+            Joint.FIXED: self.calculate_fixed_transformation,
+            Joint.FLOATING: self.calculate_floating_transformation,
+            Joint.PLANAR: self.calculate_planar_transformation
+        }
+        # set the transformation function according to the type
+        self.calculate_transformation = switcher.get(self.type)
 
     @property
     def current_transformation(self):
@@ -207,19 +239,79 @@ class Joint(object):
         if self.axis:
             self.axis.transform(transformation)
 
-    def calculate_transformation(self, position):
-        """Calculates the transformation of the joint based on the position and
-        its type.
+    def calculate_revolute_transformation(self, position):
+        """Returns a transformation of a revolute joint.
+
+        A revolute joint rotates about the axis and has a limited range 
+        specified by the upper and lower limits.
+
+        Args:
+            position (float): the angle in radians
         """
-        if self.type == "revolute":
-            return Rotation.from_axis_and_angle(self.axis.vector, position, self.origin.point)
-        elif self.type == "fixed":
-            return Transformation() # identity matrix
-        else:
-            return NotImplementedError
+        position = max(min(position, self.limit.upper), self.limit.lower)
+        return self.calculate_continous_transformation(position)
+
+    def calculate_continous_transformation(self, position):
+        """Returns a transformation of a continous joint.
+
+        A continous joint rotates about the axis and has no upper and lower 
+        limits.
+
+        Args:
+            position (float): the angle in radians
+        """
+        return Rotation.from_axis_and_angle(self.axis.vector, position, self.origin.point)
+
+    def calculate_prismatic_transformation(self, position):
+        """Returns a transformation of a prismatic joint.
+
+        A prismatic joint slides along the axis and has a limited range 
+        specified by the upper and lower limits.
+
+        Args:
+            position (float): the movement in m
+        """
+        position = max(min(position, self.limit.upper), self.limit.lower)
+        return Translation(self.axis.vector * position)
+
+    # does this ever happen?
+    def calculate_fixed_transformation(self, position):
+        """Returns an identity transformation.
+
+        The fixed joint is is not really a joint because it cannot move. All
+        degrees of freedom are locked.
+        """
+        return Transformation()
+
+    def calculate_floating_transformation(self, position):
+        """Returns a transformation of a floating joint.
+
+        A floating joint allows motion for all 6 degrees of freedom.
+        """
+        raise NotImplementedError
+
+    def calculate_planar_transformation(self, position):
+        """Returns a transformation of a planar joint.
+
+        A planar joint allows motion in a plane perpendicular to the axis.
+        """
+        raise NotImplementedError
+
+    def calculate_transformation(self, position):
+        """Returns the transformation of the joint.
+
+        This function is overwitten in the init based on the joint type.
+
+        Args:
+            position (float): radians or m
+        """
+        pass
 
     def calculate_reset_transformation(self):
         return self.init_transformation * self.current_transformation.inverse()
+
+    def is_configurable(self):
+        return self.type != Joint.FIXED
 
 
 URDF.add_parser(Joint, 'robot/joint')
