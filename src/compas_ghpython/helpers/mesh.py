@@ -75,10 +75,11 @@ def mesh_draw(mesh,
     key_index = {key: index for index, key in enumerate(mesh.vertices())}
     xyz = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
     faces = []
-
     for fkey in mesh.face:
         face = mesh.face_vertices(fkey)  # ordered=True
-        faces.append([key_index[k] for k in face])
+        face = [key_index[k] for k in face]
+        if len(face) == len(set(face)): # sometimes vertex keys are not unique
+            faces.append(face)
 
     color = None
 
