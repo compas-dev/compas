@@ -360,13 +360,15 @@ class Mesh(FromToJson,
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_obj(cls, filepath):
+    def from_obj(cls, filepath, precision=None):
         """Construct a mesh object from the data described in an OBJ file.
 
         Parameters
         ----------
         filepath : str
             The path to the file.
+        precision: str, optional
+            The precision of the geometric map that is used to connect the lines.
 
         Returns
         -------
@@ -391,7 +393,7 @@ class Mesh(FromToJson,
         >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         """
-        obj = OBJ(filepath)
+        obj = OBJ(filepath, precision)
         vertices = obj.parser.vertices
         faces    = obj.parser.faces
         edges    = obj.parser.lines
@@ -2410,7 +2412,7 @@ class Mesh(FromToJson,
                     vertices_all = [x for x in vertices_all if x not in vertices]
                     break
             if vertices_all:
-                key = vertices_all[0]            
+                key = vertices_all[0]
 
         return boundaries
 
