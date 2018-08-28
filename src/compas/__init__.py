@@ -49,8 +49,8 @@ import sys
 import appdirs
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
+__author__    = 'Tom Van Mele and many others (see CONTRIBUTORS)'
+__copyright__ = 'Copyright 2014 - 2018 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 __version__   = '0.3.0'
@@ -70,6 +70,7 @@ TEMP = absjoin(HERE, '../../temp')
 
 APPDATA = appdirs.user_data_dir('COMPAS', 'compas-dev', roaming=True)
 APPTEMP = absjoin(APPDATA, 'temp')
+
 
 # install the app dirs during general install
 # add data files
@@ -168,12 +169,6 @@ def get_bunny(localstorage=None):
         from urllib.requests import urlretrieve
     except ImportError:
         from urllib import urlretrieve
-
-
-    def absjoin(*paths):
-        return os.path.abspath(os.path.join(*paths))
-
-    # bunny.tar.gz, when extracted contains the folders bunny/reconstruction/bun_zipper.ply
 
     if not localstorage:
         localstorage = appdirs.user_data_dir('COMPAS', 'compas-dev', roaming=True)
