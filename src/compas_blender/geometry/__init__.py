@@ -31,4 +31,4 @@ from .mesh import BlenderMesh
 from .surface import BlenderSurface
 
 
-__all__ = ['BlenderPoint', 'BlenderCurve', 'BlenderMesh', 'BlenderSurface', ]
+__all__ = ['BlenderPoint', 'BlenderCurve', 'BlenderMesh', 'BlenderSurface']

@@ -21,13 +21,7 @@ from compas.geometry.queries import is_point_in_convex_polygon_xy
 from compas.geometry.transformations import transform_points
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'GNU - General Public License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['Point', ]
+__all__ = ['Point']
 
 
 class Point(object):
@@ -565,7 +559,7 @@ class Point(object):
             The transformation matrix.
 
         """
-        point = transform_points([self, ], matrix)[0]
+        point = transform_points([self], matrix)[0]
         self.x = point[0]
         self.y = point[1]
         self.z = point[2]

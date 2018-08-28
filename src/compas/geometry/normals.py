@@ -12,12 +12,6 @@ from compas.geometry.basic import length_vector_xy
 from compas.geometry.average import centroid_points
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'normal_polygon',
     'normal_triangle',

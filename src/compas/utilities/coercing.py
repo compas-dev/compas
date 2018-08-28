@@ -8,7 +8,7 @@ except NameError:
     basestring = str
 
 
-__author__    = ['Tom Van Mele', ]
+__author__    = ['Tom Van Mele']
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
@@ -106,7 +106,7 @@ def coerce_sequence_of_list(sequence):
     for item in sequence:
         if not isinstance(item, list):
             if not is_item_iterable(item):
-                item = [item, ]
+                item = [item]
             else:
                 item = list(item)
         items.append(item)

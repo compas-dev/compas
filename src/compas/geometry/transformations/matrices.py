@@ -21,12 +21,6 @@ from compas.geometry.transformations import _NEXT_SPEC
 from compas.geometry.transformations import identity_matrix
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'matrix_from_frame',
     'matrix_from_euler_angles',

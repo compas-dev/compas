@@ -27,7 +27,7 @@ from compas.datastructures._mixins import FaceHelpers
 from compas.datastructures._mixins import FaceMappings
 
 
-__all__ = ['FaceNetwork', ]
+__all__ = ['FaceNetwork']
 
 
 class FaceNetwork(FaceHelpers,

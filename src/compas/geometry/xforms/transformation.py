@@ -26,14 +26,7 @@ from compas.geometry.transformations import translation_from_matrix
 from compas.geometry.transformations import decompose_matrix
 
 
-__author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
-__license__ = 'MIT License'
-__email__ = 'rust@arch.ethz.ch'
-
-
-__all__ = [
-    'Transformation',
-]
+__all__ = ['Transformation']
 
 
 class Transformation(object):

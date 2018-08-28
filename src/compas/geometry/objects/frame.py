@@ -26,9 +26,7 @@ from compas.geometry.transformations import inverse
 from compas.geometry.transformations import matrix_from_frame
 
 
-__author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
-__license__ = 'MIT License'
-__email__ = 'rust@arch.ethz.ch'
+__all__ = ['Frame']
 
 
 class Frame(object):

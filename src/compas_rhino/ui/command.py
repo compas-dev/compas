@@ -100,7 +100,7 @@ def command_line_menu(interface):
 if __name__ == "__main__":
 
     interface_3 = {
-        "options" : ["sub_sub_option_1", "sub_sub_option_2", ],
+        "options" : ["sub_sub_option_1", "sub_sub_option_2"],
         "message" : "Select C",
         "default" : "sub_sub_option_1",
         "show"    : "sub_sub_menu",
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     }
 
     interface_2 = {
-        "options" : ["sub_option_1", interface_3, ],
+        "options" : ["sub_option_1", interface_3],
         "message" : "Select B",
         "default" : "sub_option_1",
         "show"    : "sub_menu",

@@ -16,7 +16,7 @@ except ImportError:
         raise
 
 
-__all__ = ['MatlabProcess', ]
+__all__ = ['MatlabProcess']
 
 
 class MatlabProcessError(Exception):

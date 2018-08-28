@@ -12,13 +12,13 @@ from compas.viewers.core.buffers import make_vertex_buffer
 from compas.viewers.core.buffers import make_index_buffer
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
+__author__     = ['Tom Van Mele <vanmelet@ethz.ch>']
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['Grid', ]
+__all__ = ['Grid']
 
 
 class Grid(object):

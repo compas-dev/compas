@@ -18,7 +18,7 @@ __license__    = 'MIT'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['MultiMeshViewer', ]
+__all__ = ['MultiMeshViewer']
 
 
 class MultiMeshViewer(Viewer):

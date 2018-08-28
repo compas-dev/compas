@@ -24,12 +24,6 @@ from compas.geometry.basic import vector_component
 from compas.geometry.basic import vector_component_xy
 
 
-__author__ = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__ = 'MIT License'
-__email__ = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'distance_point_point',
     'distance_point_point_xy',

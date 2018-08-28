@@ -9,7 +9,7 @@ except ImportError:
         raise
 
 
-__author__     = ['Matthias Rippmann', ]
+__author__     = ['Matthias Rippmann']
 __copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'rippmann@ethz.ch'

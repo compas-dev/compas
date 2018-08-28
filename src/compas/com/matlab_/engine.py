@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = ['MatlabEngine', ]
+__all__ = ['MatlabEngine']
 
 
 class MatlabEngineError(Exception):

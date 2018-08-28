@@ -13,12 +13,6 @@ from compas.geometry.algorithms.bestfit import bestfit_plane
 from compas.utilities import window
 
 
-__author__    = 'Tom Van Mele'
-__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__   = 'MIT license'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'flatness',
     'planarize_faces',

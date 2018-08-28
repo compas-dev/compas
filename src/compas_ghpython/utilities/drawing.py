@@ -34,7 +34,7 @@ except ImportError:
     if platform.python_implementation() == 'IronPython':
         raise
 
-__author__ = ['Romana Rust', ]
+__author__ = ['Romana Rust']
 __email__ = 'rust@arch.ethz.ch'
 
 

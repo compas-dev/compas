@@ -9,13 +9,6 @@ from compas.geometry.basic import cross_vectors
 from compas.geometry.average import centroid_points
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
-                  'Matthias Rippmann <rippmann@ethz.ch>']
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = '<vanmelet@ethz.ch>'
-
-
 __all__ = [
     'bestfit_plane',
     'bestfit_plane_numpy',

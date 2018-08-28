@@ -20,7 +20,7 @@ SO = os.path.join(HERE, '__fd_cpp', 'fd.so')
 DLL = os.path.join(HERE, '__fd_cpp', 'fd.dll')
 
 
-__author__    = ['Tom Van Mele', ]
+__author__    = ['Tom Van Mele']
 __copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'

@@ -13,7 +13,7 @@ except ImportError:
         raise
 
 
-__all__ = ['RhinoClient', ]
+__all__ = ['RhinoClient']
 
 
 class RhinoClientError(Exception):

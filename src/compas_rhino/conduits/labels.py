@@ -19,7 +19,7 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['LabelsConduit', ]
+__all__ = ['LabelsConduit']
 
 
 class LabelsConduit(Conduit):

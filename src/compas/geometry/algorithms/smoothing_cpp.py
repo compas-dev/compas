@@ -22,12 +22,6 @@ SO = os.path.join(HERE, '_smoothing_cpp', 'smoothing.so')
 DLL = os.path.join(HERE, '_smoothing_cpp', 'smoothing.dll')
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>']
-__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'smooth_centroid_cpp',
 ]

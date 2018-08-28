@@ -24,12 +24,6 @@ from compas.geometry.angles import angle_vectors
 from compas.geometry.average import center_of_mass_polygon
 
 
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'is_ccw_xy',
     'is_colinear',

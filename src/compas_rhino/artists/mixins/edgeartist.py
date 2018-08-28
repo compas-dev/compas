@@ -7,7 +7,7 @@ from compas.utilities import color_to_colordict
 import compas_rhino
 
 
-__author__    = ['Tom Van Mele', ]
+__author__    = ['Tom Van Mele']
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
