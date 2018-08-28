@@ -4,11 +4,20 @@ from __future__ import division
 
 import os
 import io
-import requests
-
-from PIL import Image
+# import requests
 
 import compas
+
+try:
+    import urllib.request as urllib2
+except ImportError:
+    import urllib2
+
+try:
+    from PIL import Image
+except ImportError:
+    compas.raise_if_not_ironpython()
+
 
 
 __author__    = ['Tom Van Mele', ]
@@ -45,9 +54,12 @@ def download_image_from_remote(source, target, show=False):
         download_image_from_remote(source, target, True)
 
     """
-    response = requests.get(source)
-    response.raise_for_status()
-    image = Image.open(io.BytesIO(response.content))
+    # response = requests.get(source)
+    # response.raise_for_status()    
+
+    response = urllib2.urlopen(source)
+    image = Image.open(io.BytesIO(response.read()))
+
     if show:
         image.show()
     image.save(target)
