@@ -3,9 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-from xml.etree import ElementTree as ET
-
 import compas
+import compas_rhino
 
 
 __author__    = ['Tom Van Mele', ]
@@ -18,7 +17,7 @@ __all__ = []
 
 
 def install(version='5.0'):
-    """Install COMPAS for Rhino by adding the path to COMPAS to the Rhino Python search paths.
+    """Install COMPAS for Rhino.
 
     Parameters
     ----------
@@ -28,61 +27,38 @@ def install(version='5.0'):
     Examples
     --------
     .. code-block:: python
-        
+
         >>> import compas_rhino
         >>> compas_rhino.install('5.0')
 
     .. code-block:: python
-        
-        $ python -m compas_rhino.install '5.0'
+
+        $ python -m compas_rhino.install 5.0
 
     """
-    compaspath = os.path.abspath(os.path.join(compas.HERE, '../'))
-    appdata = os.getenv('APPDATA')
-    filename = 'settings.xml'
 
-    if version not in ('5.0', '6.0'):
-        version = '5.0'
+    print('Installing COMPAS packages to Rhino IronPython lib:')
 
-    if version == '6.0':
-        filename = 'settings-Scheme__Default.xml'
+    base_path = os.path.abspath(os.path.join(
+        os.path.dirname(compas.__file__), '..'))
+    ipylib_path = compas_rhino.get_ironpython_lib_path(version)
 
-    xmlpath = os.path.abspath(os.path.join(appdata,
-                                           'McNeel',
-                                           'Rhinoceros',
-                                           '{}'.format(version),
-                                           'Plug-ins',
-                                           'IronPython (814d908a-e25c-493d-97e9-ee3861957f49)',
-                                           'settings',
-                                           filename))
+    for package in ('compas', 'compas_ghpython', 'compas_rhino'):
+        package_path = os.path.join(base_path, package)
+        symlink_path = os.path.join(ipylib_path, package)
 
-    if not os.path.exists(xmlpath):
-        raise Exception("The settings file does not exist in this location: {}".format(xmlpath))
+        if os.path.exists(symlink_path):
+            raise Exception(
+                'Package "{}" already found in Rhino lib, try uninstalling first'.format(package))
 
-    if not os.path.isfile(xmlpath):
-        raise Exception("The settings file is not a file :)")
-        
-    if not os.access(xmlpath, os.W_OK):
-        raise Exception("The settings file is not wrtieable.")
-       
-    tree = ET.parse(xmlpath)
-    root = tree.getroot()
+        try:
+            compas_rhino.create_symlink(package_path, symlink_path)
+            print('   {}: OK'.format(package))
+        except OSError:
+            raise Exception(
+                'Cannot create symlink, try to run as administrator.')
 
-    entries = root.findall(".//entry[@key='SearchPaths']")
-
-    try:
-        searchpathsentry = entries[0]
-    except IndexError:
-        raise Exception("The settings file has no entry 'SearchPaths'.")
-
-    searchpaths = searchpathsentry.text.split(';')
-    searchpaths[:] = [os.path.abspath(path) for path in searchpaths]
-        
-    if compaspath not in searchpaths:
-        searchpaths.append(compaspath)
-
-    searchpathsentry.text = ";".join(searchpaths)
-    tree.write(xmlpath)
+    print('Completed.')
 
 
 # ==============================================================================
@@ -92,6 +68,9 @@ def install(version='5.0'):
 if __name__ == "__main__":
 
     import sys
+
+    print('\nusage: python -m compas_rhino.install [version]\n')
+    print('  version       Rhino version (5.0 or 6.0)\n')
 
     try:
         version = sys.argv[1]
