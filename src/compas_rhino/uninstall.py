@@ -6,21 +6,14 @@ import os
 
 import compas_rhino
 
-from compas.utilities._os import create_symlink
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
+from compas_rhino.install import INSTALLABLE_PACKAGES
+from compas.utilities._os import remove_symlink
 
 __all__ = []
 
-INSTALLABLE_PACKAGES = ('compas', 'compas_ghpython', 'compas_rhino')
 
-
-def install(version='5.0'):
-    """Install COMPAS for Rhino.
+def uninstall(version='5.0'):
+    """Uninstall COMPAS from Rhino.
 
     Parameters
     ----------
@@ -32,37 +25,33 @@ def install(version='5.0'):
     .. code-block:: python
 
         >>> import compas_rhino
-        >>> compas_rhino.install('5.0')
+        >>> compas_rhino.uninstall('5.0')
 
     .. code-block:: python
 
-        $ python -m compas_rhino.install 5.0
+        $ python -m compas_rhino.uninstall 5.0
 
     """
 
-    print('Installing COMPAS packages to Rhino IronPython lib:')
+    print('Uninstalling COMPAS packages from Rhino IronPython lib:')
 
-    base_path = compas_rhino._get_compas_path()
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
     results = []
     exit_code = 0
 
     for package in INSTALLABLE_PACKAGES:
-        package_path = os.path.join(base_path, package)
         symlink_path = os.path.join(ipylib_path, package)
 
-        if os.path.exists(symlink_path):
-            results.append(
-                (package, 'ERROR: Package "{}" already found in Rhino lib, try uninstalling first'.format(package)))
+        if not os.path.exists(symlink_path):
             continue
 
         try:
-            create_symlink(package_path, symlink_path)
+            remove_symlink(symlink_path)
             results.append((package, 'OK'))
         except OSError:
             results.append(
-                (package, 'Cannot create symlink, try to run as administrator.'))
+                (package, 'Cannot remove symlink, try to run as administrator.'))
 
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))
@@ -81,7 +70,7 @@ if __name__ == "__main__":
 
     import sys
 
-    print('\nusage: python -m compas_rhino.install [version]\n')
+    print('\nusage: python -m compas_rhino.uninstall [version]\n')
     print('  version       Rhino version (5.0 or 6.0)\n')
 
     try:
@@ -94,4 +83,4 @@ if __name__ == "__main__":
         except Exception:
             version = '5.0'
 
-    install(version=version)
+    uninstall(version=version)
