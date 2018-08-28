@@ -11,13 +11,6 @@ except ImportError:
 from compas.utilities import geometric_key
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__version__    = '0.3.0'
-__date__       = 'Mar 31, 2015'
-
-
 __all__ = [
     'OBJ',
     'OBJReader',

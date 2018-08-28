@@ -50,7 +50,7 @@ import appdirs
 
 
 __author__    = 'Tom Van Mele and many others (see CONTRIBUTORS)'
-__copyright__ = 'Copyright 2014 - 2018 - Block Research Group, ETH Zurich'
+__copyright__ = 'Copyright 2014-2018 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 __version__   = '0.3.0'
