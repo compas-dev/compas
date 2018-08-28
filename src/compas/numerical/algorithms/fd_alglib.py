@@ -18,15 +18,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__    = ['Tom Van Mele']
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = [
-    'mesh_fd_alglib',
-]
+__all__ = ['mesh_fd_alglib']
 
 
 def mesh_fd_alglib(mesh, density=1.0, kmax=10):

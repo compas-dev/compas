@@ -22,12 +22,6 @@ from compas.numerical.linalg import normalizerow
 from compas.numerical.linalg import rot90
 
 
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'grad',
     'div',

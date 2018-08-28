@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import sys
+import compas
 
 try:
     from numpy import array
@@ -14,23 +14,13 @@ try:
     from scipy.sparse import diags
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
 
 
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = [
-    'dr_numpy',
-    # 'dr_numpy_xfunc'
-]
+__all__ = ['dr_numpy']
 
 
 K = [

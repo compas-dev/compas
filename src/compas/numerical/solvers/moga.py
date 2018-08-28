@@ -7,15 +7,7 @@ import random
 import json
 
 
-__author__    = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'mtomas@ethz.ch'
-
-
-__all__ = [
-    'moga'
-]
+__all__ = ['moga']
 
 
 TPL = """

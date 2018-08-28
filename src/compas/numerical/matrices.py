@@ -26,12 +26,6 @@ except ImportError:
     compas.raise_if_not_ironpython()
 
 
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'adjacency_matrix',
     'degree_matrix',
