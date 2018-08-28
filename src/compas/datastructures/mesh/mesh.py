@@ -63,12 +63,6 @@ from compas.datastructures.mesh.operations import mesh_split_edge
 from compas.datastructures.mesh.operations import mesh_unweld_vertices
 
 
-__author__     = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = '<vanmelet@ethz.ch>'
-
-
 TPL = """
 ================================================================================
 Mesh summary
