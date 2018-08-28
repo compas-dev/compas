@@ -6,12 +6,6 @@ from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'VertexGeometry',
     'EdgeGeometry',
