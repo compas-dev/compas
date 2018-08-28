@@ -25,29 +25,19 @@ from __future__ import absolute_import
 
 import os
 
+import compas
+
 from .utilities import *
 from . import utilities
 
 __version__ = '0.3.0'
 
 
-def create_symlink(source, link_name):
-    os_symlink = getattr(os, "symlink", None)
-
-    # For Python 2.x on Windows, we need to polyfill os.symlink
-    if not callable(os_symlink) and os.name == "nt":
-        import subprocess
-
-        def symlink_ms(source, link_name):
-            subprocess.check_output(
-                ['mklink', '/D', link_name, source], stderr=subprocess.STDOUT, shell=True)
-
-        os_symlink = symlink_ms
-
-    os_symlink(source, link_name)
+def _get_compas_path():
+    return os.path.abspath(os.path.join(os.path.dirname(compas.__file__), '..'))
 
 
-def get_ironpython_lib_path(version):
+def _get_ironpython_lib_path(version):
     if version not in ('5.0', '6.0'):
         version = '5.0'
 
