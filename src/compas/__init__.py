@@ -46,6 +46,8 @@ from __future__ import print_function
 import os
 import sys
 
+import appdirs
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
@@ -56,11 +58,18 @@ __version__   = '0.3.0'
 
 PY3 = sys.version_info.major == 3
 
-HERE = os.path.dirname(__file__)
-HOME = os.path.abspath(os.path.join(HERE, '../..'))
-DATA = os.path.abspath(os.path.join(HERE, '../../data'))
-TEMP = os.path.abspath(os.path.join(HERE, '../../temp'))
 
+def absjoin(*parts):
+    return os.path.abspath(os.path.join(*parts))
+
+
+HERE = os.path.dirname(__file__)
+HOME = absjoin(HERE, '../..')
+DATA = absjoin(HERE, '../../data')
+TEMP = absjoin(HERE, '../../temp')
+
+APPDATA = appdirs.user_data_dir('COMPAS', 'compas-dev', roaming=True)
+APPTEMP = absjoin(APPDATA, 'temp')
 
 # install the app dirs during general install
 # add data files
@@ -117,6 +126,7 @@ def get(filename):
     """
     filename = filename.strip('/')
     localpath = os.path.abspath(os.path.join(DATA, filename))
+
     if os.path.exists(localpath):
         return localpath
     else:
@@ -152,9 +162,13 @@ def get_bunny(localstorage=None):
         mesh = Mesh.from_ply(compas.get_bunny())
 
     """
-    import requests
     import tarfile
-    import appdirs
+
+    try:
+        from urllib.requests import urlretrieve
+    except ImportError:
+        from urllib import urlretrieve
+
 
     def absjoin(*paths):
         return os.path.abspath(os.path.join(*paths))
@@ -182,12 +196,7 @@ def get_bunny(localstorage=None):
         print('Getting the bunny from {} ...'.format(url))
         print('This will take a few seconds...')
 
-        # urllib.urlretrieve(url, destination)
-        response = requests.get(url)
-        response.raise_for_status()
-
-        with open(destination, 'wb+') as fo:
-            fo.write(response.content)
+        urlretrieve(url, destination)
 
         with tarfile.open(destination) as file:
             file.extractall(localstorage)
@@ -199,22 +208,24 @@ def get_bunny(localstorage=None):
     return bunny
 
 
-def get_armadillo():
-    import urllib
-    import gzip
-    import shutil
-    armadillo = os.path.abspath(os.path.join(DATA, 'armadillo/Armadillo.ply'))
-    if not os.path.exists(armadillo):
-        url = 'http://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz'
-        print('Getting the armadillo from {} ...'.format(url))
-        print('This will take a few seconds...')
-        destination = os.path.abspath(os.path.join(DATA, 'Armadillo.ply.gz'))
-        urllib.urlretrieve(url, destination)
-        with gzip.open(destination, 'rb') as ifile, open(armadillo, 'wb+') as ofile:
-            shutil.copyfileobj(ifile, ofile)
-        os.remove(destination)
-        print('Got it!\n')
-    return armadillo
+# def get_armadillo():
+#     import urllib
+#     import gzip
+#     import shutil
+
+#     armadillo = os.path.abspath(os.path.join(DATA, 'armadillo/Armadillo.ply'))
+
+#     if not os.path.exists(armadillo):
+#         url = 'http://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz'
+#         print('Getting the armadillo from {} ...'.format(url))
+#         print('This will take a few seconds...')
+#         destination = os.path.abspath(os.path.join(DATA, 'Armadillo.ply.gz'))
+#         urllib.urlretrieve(url, destination)
+#         with gzip.open(destination, 'rb') as ifile, open(armadillo, 'wb+') as ofile:
+#             shutil.copyfileobj(ifile, ofile)
+#         os.remove(destination)
+#         print('Got it!\n')
+#     return armadillo
 
 
 def is_windows():
