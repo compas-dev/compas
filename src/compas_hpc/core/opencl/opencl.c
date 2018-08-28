@@ -42,7 +42,11 @@ int main()
     cl_uint num_devices = 0;
 
     char dname[40];
+    char dvendor[40];
+
     int i;
+
+    unsigned long dmemory;
 
 // char string[MEM_SIZE];
 
@@ -70,8 +74,10 @@ int main()
     for (i = 0; i < num_devices; i++)
     {
         clGetDeviceInfo(devices[i], CL_DEVICE_NAME, sizeof(dname), &dname, NULL);
+        clGetDeviceInfo(devices[i], CL_DEVICE_VENDOR, sizeof(dvendor), &dvendor, NULL);
+        clGetDeviceInfo(devices[i], CL_DEVICE_GLOBAL_MEM_SIZE, sizeof(dmemory), &dmemory, NULL);
 
-        printf("Device:%i - %s\n", i, dname);
+        printf("Device:%i - %s (%s) - Memory:%i MB\n", i, dname, dvendor, (int)(dmemory / 1.e6));
     }
 
 // /* Create OpenCL context */

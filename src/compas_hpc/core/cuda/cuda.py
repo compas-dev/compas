@@ -35,7 +35,7 @@ __all__ = [
     'get_cuda',
     'ones_cuda',
     'zeros_cuda',
-    # 'tile_cuda',
+    'tile_cuda',
     'hstack_cuda',
     'vstack_cuda',
 ]
@@ -81,6 +81,20 @@ __global__ void vstack_cuda(int m, int n, int o, float *a, float *b, float *c)
         {
             c[id] = b[(idy - m) * n + idx];
         }
+    }
+}
+
+
+__global__ void tile_cuda(int m, int n, int repx, int repy, float *a, float *b)
+{
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    int idy = blockDim.y * blockIdx.y + threadIdx.y;
+
+    if (idx < (repx * n) && idy < (repy * m))
+    {
+        int id  = idy * (n * repx) + idx;
+
+        b[id] = a[(idy % m) * n + (idx % n)];
     }
 }
 
@@ -290,49 +304,45 @@ def zeros_cuda(shape):
     return cuda_array.zeros(shape, dtype=float32)
 
 
-# def tile_cuda(a, shape):
+def tile_cuda(a, shape, dim=2):
 
-#     """ Horizontally and vertically tile a GPUArray.
+    """ Horizontally and vertically tile a GPUArray.
 
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray to tile.
-#     shape : tuple
-#         Number of vertical and horizontal tiles.
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray to tile.
+    shape : tuple
+        Number of vertical and horizontal tiles.
 
-#     Returns
-#     -------
-#     gpuarray
-#         Tiled GPUArray.
+    Returns
+    -------
+    gpuarray
+        Tiled GPUArray.
 
-#     Notes
-#     -----
-#     - A temporary function, to be made into a kernal.
+    Examples
+    --------
+    >>> a = tile_cuda(give_cuda([[1, 2], [3, 4]]), (2, 2))
+    [[ 1.,  2.,  1.,  2.],
+     [ 3.,  4.,  3.,  4.],
+     [ 1.,  2.,  1.,  2.],
+     [ 3.,  4.,  3.,  4.]]
 
-#     Examples
-#     --------
-#     >>> a = tile_cuda(give_cuda([[1, 2], [3, 4]]), (2, 2))
-#     array([[ 1.,  2.,  1.,  2.],
-#            [ 3.,  4.,  3.,  4.],
-#            [ 1.,  2.,  1.,  2.],
-#            [ 3.,  4.,  3.,  4.]])
+     >>> type(a)
+     <class 'pycuda.gpuarray.GPUArray'>
 
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
+    """
 
-#     """
-#     m, n = a.shape
+    m, n = a.shape
+    repy, repx = shape
+    nx = int(ceil(n * repx / dim))
+    ny = int(ceil(m * repy / dim))
 
-#     b = zeros_cuda((m * shape[0], n))
-#     for i in range(shape[0]):
-#         b[i * m:i * m + m, :] = a
+    func = mod.get_function('tile_cuda')
+    b = pycuda.gpuarray.empty((m * repy, n * repx), dtype=float32)
+    func(int32(m), int32(n), int32(repx), int32(repy), a, b, block=(dim, dim, 1), grid=(nx, ny, 1))
 
-#     c = zeros_cuda((m * shape[0], n * shape[1]))
-#     for i in range(shape[1]):
-#         c[:, i * n:i * n + n] = b
-
-#     return c
+    return b
 
 
 def hstack_cuda(a, b, dim=2):
@@ -407,12 +417,12 @@ if __name__ == "__main__":
     # a = get_cuda(a)
     # a = ones_cuda((3, 3))
     # a = zeros_cuda((3, 3))
-    a = rand_cuda((1, 3))
-    b = rand_cuda((4, 3))
-    c = vstack_cuda(a, b)
+    a = give_cuda([[1, 2, 3], [4, 5, 6]])
+    # b = rand_cuda((4, 3))
+    c = tile_cuda(a, (3, 1))
 
-    print(a)
-    print(b)
+    # print(a)
+    # print(b)
     print(c)
     # print(type(a))
     # print(a.shape)
