@@ -1,39 +1,42 @@
 
 #include <stdio.h>
 
-const int N = 16;
-const int blocksize = 16;
 
-__global__
-void hello(char *a, int *b)
+__global__ void add(float *a, float *b, float *c)
 {
-    a[threadIdx.x] += b[threadIdx.x];
+    int id = threadIdx.x;
+
+    c[id] = a[id] + b[id];
 }
+
 
 int main()
 {
-    char a[N] = "Hello \0\0\0\0\0\0";
-    int b[N] = {15, 10, 6, 0, -11, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    float a[] = {1., 2., 3.};
+    float b[] = {4., 5., 6.};
+    float c[3];
+    float *a_;
+    float *b_;
+    float *c_;
 
-    char *ad;
-    int *bd;
-    const int csize = N*sizeof(char);
-    const int isize = N*sizeof(int);
+    int size = 3 * sizeof(float);
 
-    printf("%s", a);
+    cudaMalloc((void**) &a_, size);
+    cudaMalloc((void**) &b_, size);
+    cudaMalloc((void**) &c_, size);
 
-    cudaMalloc( (void**)&ad, csize );
-    cudaMalloc( (void**)&bd, isize );
-    cudaMemcpy( ad, a, csize, cudaMemcpyHostToDevice );
-    cudaMemcpy( bd, b, isize, cudaMemcpyHostToDevice );
+    cudaMemcpy(a_, a, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(b_, b, size, cudaMemcpyHostToDevice);
 
-    dim3 dimBlock( blocksize, 1 );
-    dim3 dimGrid( 1, 1 );
-    hello<<<dimGrid, dimBlock>>>(ad, bd);
-    cudaMemcpy( a, ad, csize, cudaMemcpyDeviceToHost );
-    cudaFree( ad );
-    cudaFree( bd );
+    dim3 dimGrid(1, 1, 1);
+    dim3 dimBlock(3, 1, 1);
+    add <<< dimGrid, dimBlock >>> (a_, b_, c_);
 
-    printf("%s\n", a);
-    return EXIT_SUCCESS;
+    cudaMemcpy(c, c_, size, cudaMemcpyDeviceToHost);
+
+    cudaFree(a_);
+    cudaFree(b_);
+    cudaFree(c_);
+
+    printf("%f %f %f\n", c[0], c[1], c[2]);
 }

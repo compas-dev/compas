@@ -9,7 +9,7 @@
 #endif
 
 // #define MEM_SIZE (128)
-// #define MAX_SOURCE_SIZE (0x100000)
+#define MAX_SOURCE_SIZE (0x100000)
 
 // __kernel void hello(__global char* string)
 // {
@@ -33,13 +33,14 @@
 int main()
 {
     cl_device_id *devices;
-// cl_context context = NULL;
+    cl_context context = NULL;
 // cl_command_queue command_queue = NULL;
 // cl_mem memobj = NULL;
-// cl_program program = NULL;
+    cl_program program = NULL;
 // cl_kernel kernel = NULL;
     cl_platform_id platform = NULL;
     cl_uint num_devices = 0;
+    cl_uint num_context_devices = 0;
 
     char dname[40];
     char dvendor[40];
@@ -50,20 +51,14 @@ int main()
 
 // char string[MEM_SIZE];
 
-// FILE *fp;
-// char fileName[] = "./hello.cl";
-// char *source_str;
-// size_t source_size;
+    FILE *fp;
+    char *source_buffer;
+    size_t source_size;
 
-// /* Load the source code containing the kernel*/
-// fp = fopen(fileName, "r");
-// if (!fp) {
-// fprintf(stderr, "Failed to load kernel.\n");
-// exit(1);
-// }
-// source_str = (char*)malloc(MAX_SOURCE_SIZE);
-// source_size = fread(source_str, 1, MAX_SOURCE_SIZE, fp);
-// fclose(fp);
+    fp = fopen("./kernel.cl", "r");
+    source_buffer = (char*)malloc(MAX_SOURCE_SIZE);
+    source_size = fread(source_buffer, 1, MAX_SOURCE_SIZE, fp);
+    fclose(fp);
 
     clGetPlatformIDs(1, &platform, NULL);
 
@@ -76,12 +71,12 @@ int main()
         clGetDeviceInfo(devices[i], CL_DEVICE_NAME, sizeof(dname), &dname, NULL);
         clGetDeviceInfo(devices[i], CL_DEVICE_VENDOR, sizeof(dvendor), &dvendor, NULL);
         clGetDeviceInfo(devices[i], CL_DEVICE_GLOBAL_MEM_SIZE, sizeof(dmemory), &dmemory, NULL);
-
         printf("Device:%i - %s (%s) - Memory:%i MB\n", i, dname, dvendor, (int)(dmemory / 1.e6));
     }
 
-// /* Create OpenCL context */
-// context = clCreateContext(NULL, 1, &device_id, NULL, NULL, &ret);
+    context = clCreateContext(NULL, num_devices, devices, NULL, NULL, NULL);
+    clGetContextInfo(context, CL_CONTEXT_NUM_DEVICES, sizeof(num_context_devices), &num_context_devices, NULL);
+    printf("Context - Devices:%i\n", num_context_devices);
 
 // /* Create Command Queue */
 // command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
@@ -89,9 +84,7 @@ int main()
 // /* Create Memory Buffer */
 // memobj = clCreateBuffer(context, CL_MEM_READ_WRITE,MEM_SIZE * sizeof(char), NULL, &ret);
 
-// /* Create Kernel Program from the source */
-// program = clCreateProgramWithSource(context, 1, (const char **)&source_str,
-// (const size_t *)&source_size, &ret);
+    program = clCreateProgramWithSource(context, 1, (const char **)&source_buffer, (const size_t *)&source_size, NULL);
 
 // /* Build Kernel Program */
 // ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
