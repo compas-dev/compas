@@ -12,6 +12,7 @@ from .geometry import Color
 from .geometry import Material
 from .geometry import Texture
 from .joint import Joint
+from .resource_resolvers import DefaultMeshResolver
 
 __all__ = ['Robot']
 
@@ -278,6 +279,47 @@ class Robot(object):
     def get_base_link_name(self):
         joints = self.get_configurable_joints()
         return joints[0].parent.link
+
+    def load_geometry(self, *resource_resolvers, **kwargs):
+        """Load external geometry resources, such as meshes.
+
+        Args:
+            resource_resolvers: List of objects that implement the
+                resource resolution interface and can retrieve external files.
+            force: True if it should force reloading even if the geometry
+                has been loaded already, otherwise False.
+        """
+        force = kwargs.get('force', False)
+
+        resolvers = list(resource_resolvers)
+        resolvers.insert(0, DefaultMeshResolver())
+
+        for link in self.links:
+            for visual in link.visual:
+                shape = visual.geometry.shape
+
+                try:
+                    needs_reload = force or not shape.geometry
+                    if shape.filename and needs_reload:
+                        for resolver in resolvers:
+                            if resolver.can_handle_uri(shape.filename):
+                                shape.geometry = resolver.resolve(shape.filename)
+                                break
+
+                        if not shape.geometry:
+                            raise Exception('Unable to load geometry for {}'.format(shape.filename))
+
+                except AttributeError:
+                    # We just try and see if the object quacks, otherwise move on
+                    # Very pythonic. Much except. Wow.
+                    pass
+
+    def get_visual_meshes(self):
+        for link in self.iter_links():
+            for visual in link.visual:
+                shape = visual.geometry.shape
+                if shape.geometry:
+                    yield shape.geometry
 
     @property
     def frames(self):
