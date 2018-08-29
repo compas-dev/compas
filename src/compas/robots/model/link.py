@@ -150,7 +150,7 @@ class Link(object):
             if color:
                 item.geometry.shape.set_color(color)
             item.geometry.shape.transform(parent_transformation)
-        
+
         for item in self.collision:
             item.geometry.shape.transform(parent_transformation)
 
@@ -162,7 +162,7 @@ class Link(object):
             clink = cjoint.child_link
             clink.create(urdf_importer, meshcls, transformation)
 
-    def update(self, joint_state, parent_transformation, reset_transformation, collision=False):
+    def update(self, joint_state, parent_transformation, reset_transformation, collision=True):
         """Recursive function to apply the transformations given by the joint
             state.
 
@@ -177,7 +177,7 @@ class Link(object):
             reset_transformation (:class:`Transformation`): The transfomation
                 to reset the current transformation of the link's geometry.
             collision (bool): If collision geometry should be transformed as
-                well. Defaults to False.
+                well. Defaults to True.
         """
         relative_transformation = parent_transformation * reset_transformation
 
@@ -208,7 +208,7 @@ class Link(object):
             joint.transform(transformation)
             # 4. Apply function to all children in the chain
             joint.child_link.update(joint_state, transformation, reset_transformation, collision)
-    
+
     def scale(self, factor):
         from compas.geometry import Scale
         S = Scale([factor, factor, factor])
