@@ -191,14 +191,8 @@ class Line(object):
             The transformation matrix.
 
         """
-        point = transform_points([self.point], matrix)[0]
-        normal = transform_vectors([self.normal], matrix)[0]
-        self.point.x = point[0]
-        self.point.y = point[1]
-        self.point.z = point[2]
-        self.normal.x = normal[0]
-        self.normal.y = normal[1]
-        self.normal.z = normal[2]
+        self.start = transform_points([self.start], matrix)[0]
+        self.end = transform_points([self.end], matrix)[0]
 
     def transformed(self, matrix):
         """Return a transformed copy of this ``Line`` using a given transformation matrix.
