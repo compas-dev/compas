@@ -49,7 +49,7 @@ import sys
 import appdirs
 
 
-__author__    = 'Tom Van Mele and many others (see CONTRIBUTORS)'
+__author__    = 'Tom Van Mele and many others (see CONTRIBUTORS.md)'
 __copyright__ = 'Copyright 2014-2018 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
@@ -111,7 +111,7 @@ def get(filename):
     or if you are working directly with the source.
     In all other cases, the function will get the corresponding files direcly from
     the GitHub repo, at https://raw.githubusercontent.com/compas-dev/compas/master/data
-    
+
     Examples
     --------
     The ``compas.get`` function is meant to be used in combination with the static
