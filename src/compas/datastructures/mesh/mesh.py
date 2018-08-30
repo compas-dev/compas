@@ -2727,41 +2727,47 @@ if __name__ == '__main__':
     import compas
     from compas.plotters import MeshPlotter
 
-    # mesh = Mesh.from_obj(compas.get('faces.obj'))
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    vertices = [
-        [0, 0, 0],
-        [1, 1, 0],
-        [1, -1, 0],
-        [-1, -1, 0],
-        [-1, 1, 0]
-    ]
-    faces = [
-        [0, 2, 1],
-        [0, 4, 3]
-    ]
+    # vertices = [
+    #     [0, 0, 0],
+    #     [1, 1, 0],
+    #     [1, -1, 0],
+    #     [-1, -1, 0],
+    #     [-1, 1, 0]
+    # ]
+    # faces = [
+    #     [0, 2, 1],
+    #     [0, 4, 3]
+    # ]
 
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    # mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-    print(mesh.is_manifold())
+    # print(mesh.is_manifold())
 
-    # mesh = Mesh()
+    # # mesh = Mesh()
 
-    # a = mesh.add_vertex(x=0, y=0)
-    # b = mesh.add_vertex(x=0.5, y=0.1)
-    # c = mesh.add_vertex(x=1, y=0)
-    # d = mesh.add_vertex(x=0.9, y=0.5)
-    # e = mesh.add_vertex(x=0.9, y=1)
-    # f = mesh.add_vertex(x=0.5, y=1)
-    # g = mesh.add_vertex(x=0, y=1)
-    # h = mesh.add_vertex(x=0, y=0.5)
+    # # a = mesh.add_vertex(x=0, y=0)
+    # # b = mesh.add_vertex(x=0.5, y=0.1)
+    # # c = mesh.add_vertex(x=1, y=0)
+    # # d = mesh.add_vertex(x=0.9, y=0.5)
+    # # e = mesh.add_vertex(x=0.9, y=1)
+    # # f = mesh.add_vertex(x=0.5, y=1)
+    # # g = mesh.add_vertex(x=0, y=1)
+    # # h = mesh.add_vertex(x=0, y=0.5)
 
-    # mesh.add_face([a, b, c, d, e, f, g, h])
+    # # mesh.add_face([a, b, c, d, e, f, g, h])
 
-    plotter = MeshPlotter(mesh)
+    # plotter = MeshPlotter(mesh)
 
-    plotter.draw_vertices()
-    plotter.draw_edges()
-    plotter.draw_faces()
+    # plotter.draw_vertices()
+    # plotter.draw_edges()
+    # plotter.draw_faces()
 
-    plotter.show()
+    # plotter.show()
+
+    print(mesh.get_vertices_attribute('x'))
+    print(mesh.get_vertices_attributes('xy'))
+
+    print(mesh.get_edges_attribute('q', 1.0))
+    print(mesh.get_edges_attributes('qf', (1.0, 2.0)))
