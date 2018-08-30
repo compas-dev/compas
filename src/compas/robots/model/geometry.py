@@ -39,16 +39,8 @@ HTML4_NAMES_TO_HEX = {
 }
 
 
-def _parse_floats(values, scale_factor=None):
-    result = []
-
-    for i in values.split():
-        val = float(i)
-        if scale_factor:
-            val = val * scale_factor
-        result.append(val)
-
-    return result
+def _parse_floats(values):
+    return [float(i) for i in values.split()]
 
 
 class Origin(Frame):
@@ -63,7 +55,7 @@ class Origin(Frame):
         xyz = _parse_floats(attributes.get('xyz', '0 0 0'))
         rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
         return cls.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
-    
+
     @property
     def init_transformation(self):
         return Transformation.from_frame(self.init)
