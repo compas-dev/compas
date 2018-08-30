@@ -4,18 +4,12 @@ from __future__ import division
 
 import ast
 
+import compas
+
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
-
-
-__author__    = ['Tom Van Mele']
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+    compas.raise_if_ironpython()
 
 
 __all__ = ['VertexSelector']
