@@ -1,18 +1,12 @@
 from __future__ import print_function
 
+import compas
+
 try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
-
-
-__author__     = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+    compas.raise_if_ironpython()
 
 
 __all__ = ['Command', 'CommandLoop', 'command_line_menu']

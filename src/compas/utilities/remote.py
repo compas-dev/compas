@@ -25,7 +25,7 @@ __all__ = []
 
 def download_file_from_remote(source, target):
     """Download a file from a remote source and save it to a local destination.
-    
+
     Parameters
     ----------
     source : str
@@ -37,7 +37,9 @@ def download_file_from_remote(source, target):
     --------
     .. code-block:: python
 
-        from compas.utilities import download_image_from_remote
+        import os
+        import compas
+        from compas.utilities.remote import download_file_from_remote
 
         source = 'https://raw.githubusercontent.com/compas-dev/compas/master/data/faces.obj'
         target = os.path.join(compas.APPDATA, 'data', 'faces.obj')
@@ -76,16 +78,18 @@ def download_image_from_remote(source, target, show=False):
     --------
     .. code-block:: python
 
-        from compas.utilities import download_image_from_remote
+        import os
+        import compas
+        from compas.utilities.remote import download_image_from_remote
 
         source = 'http://block.arch.ethz.ch/brg/images/cache/dsc02360_ni-2_cropped_1528706473_624x351.jpg'
-        target = os.path.join(compas.TEMP, 'theblock.jpg')
+        target = os.path.join(compas.APPDATA, 'data', 'theblock.jpg')
 
-        download_image_from_remote(source, target, True)
+        download_image_from_remote(source, target, show=True)
 
     """
     # response = requests.get(source)
-    # response.raise_for_status()    
+    # response.raise_for_status()
 
     response = urlopen(source)
     image = Image.open(io.BytesIO(response.read()))
@@ -104,7 +108,7 @@ if __name__ == "__main__":
     # source = 'http://block.arch.ethz.ch/brg/images/cache/dsc02360_ni-2_cropped_1528706473_624x351.jpg'
     # target = os.path.join(compas.TEMP, 'theblock.jpg')
 
-    # download_image_from_remote(source, target, True)
+    # download_file_from_remote(source, target, True)
 
     filename = 'faces.obj'
 

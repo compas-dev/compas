@@ -166,7 +166,7 @@ def get_bunny(localstorage=None):
     import tarfile
 
     try:
-        from urllib.requests import urlretrieve
+        from urllib.request import urlretrieve
     except ImportError:
         from urllib import urlretrieve
 

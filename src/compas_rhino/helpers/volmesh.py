@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+
 from compas.utilities import geometric_key
 
 from compas_rhino.artists import VolMeshArtist
@@ -15,9 +17,7 @@ try:
     import scriptcontext as sc
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__    = ['Tom Van Mele']

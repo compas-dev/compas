@@ -1,7 +1,13 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import os
 import sys
 import ast
 import inspect
+
+import compas
 
 from compas_rhino.forms import TextForm
 from compas_rhino.forms import ImageForm
@@ -14,20 +20,12 @@ try:
     from Rhino.UI.Dialogs import ShowMessageBox
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 try:
     basestring
 except NameError:
     basestring = str
-
-
-__author__     = ['Tom Van Mele']
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [

@@ -1,21 +1,15 @@
 from __future__ import print_function
 
+import compas
+
 try:
     from Rhino.UI import MouseCallback
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
     class MouseCallback(object):
         pass
-
-
-__author__     = ['Tom Van Mele']
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = ['Mouse']

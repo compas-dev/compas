@@ -2,6 +2,8 @@ from __future__ import print_function
 
 from functools import wraps
 
+import compas
+
 from compas.geometry import center_of_mass_polygon
 
 from compas_rhino.utilities import create_layers_from_path
@@ -46,21 +48,13 @@ try:
     TOL = sc.doc.ModelAbsoluteTolerance
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 else:
     try:
         find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
     except SystemError:
         find_layer_by_fullpath = None
-
-
-__author__     = ['Tom Van Mele']
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
