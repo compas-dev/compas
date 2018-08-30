@@ -21,12 +21,6 @@ from compas.geometry import mesh_smooth_area
 from compas.topology import mesh_dual
 
 
-__author__    = 'Matthias Rippmann, Tom Van Mele'
-__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__   = 'MIT license'
-__email__     = 'rippmann@ethz.ch, vanmelet@ethz.ch'
-
-
 __all__ = [
     'mesh_quads_to_triangles',
     'delaunay_from_points',
