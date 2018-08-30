@@ -2,21 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+
 from compas_rhino.ui import Mouse
 
 try:
     from System.Drawing import Color
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
-
-
-__author__    = ['Tom Van Mele']
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+    compas.raise_if_ironpython()
 
 
 __all__ = []

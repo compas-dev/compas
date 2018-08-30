@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+
 from compas_rhino.conduits import Conduit
 from compas_rhino.ui.mouse import Mouse
 
@@ -15,9 +17,7 @@ try:
     from System.Drawing.Color import FromArgb
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Tom Van Mele']
