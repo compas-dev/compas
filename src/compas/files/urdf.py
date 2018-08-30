@@ -61,8 +61,18 @@ class GenericUrdfElement(object):
 class URDF(object):
     """Parse and generate URDF files.
 
-    This class abstracts away the underlying XML of the URDF
-    model and represents its as an object graph."""
+    This class abstracts away the underlying XML of the Unified Robot
+    Description Format (`URDF`_) and represents its as an object graph.
+
+    A detailed description of the model is available on the `URDF Model wiki`_.
+
+    This package parses URDF v1.0 according to the `URDF XSD Schema`_.
+
+    .. _URDF: http://wiki.ros.org/urdf
+    .. _URDF Model wiki: http://wiki.ros.org/urdf/XML/model
+    .. _URDF XSD Schema: https://github.com/ros/urdfdom/blob/master/xsd/urdf.xsd
+
+"""
     _parsers = dict()
 
     @classmethod

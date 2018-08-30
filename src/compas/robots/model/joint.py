@@ -152,24 +152,24 @@ class Joint(object):
         origin: Transformation from the parent link to the child link frame.
         parent: Name of the parent link.
         child: Name of the child link.
-        axis: Joint axis specified in the joint frame. Represents the axis of 
+        axis: Joint axis specified in the joint frame. Represents the axis of
             rotation for revolute joints, the axis of translation for prismatic
-            joints, and the surface normal for planar joints. The axis is 
+            joints, and the surface normal for planar joints. The axis is
             specified in the joint frame of reference.
-        calibration: Reference positions of the joint, used to calibrate the 
+        calibration: Reference positions of the joint, used to calibrate the
             absolute position of the joint.
         dynamics: Physical properties of the joint. These values are used to
             specify modeling properties of the joint, particularly useful for
             simulation.
         limit: Joint limit properties.
         safety_controller: Safety controller properties.
-        mimic: Used to specify that the defined joint mimics another existing 
+        mimic: Used to specify that the defined joint mimics another existing
             joint.
         attr: Non-standard attributes.
         child_link: the joint's child link
-        position (float): The current position of the joint. This depends on the 
+        position (float): The current position of the joint. This depends on the
             joint type, i.e. for revolute joints, it will be the rotation angle
-            in radians, for prismatic joints the translation in m
+            in radians, for prismatic joints the translation in meters.
     """
 
     REVOLUTE = 0
@@ -188,10 +188,8 @@ class Joint(object):
 
         self.name = name
         self.type = Joint.SUPPORTED_TYPES.index(type)
-        self.parent = parent if isinstance(
-            parent, ParentLink) else ParentLink(parent)
-        self.child = child if isinstance(
-            child, ChildLink) else ChildLink(child)
+        self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
+        self.child = child if isinstance(child, ChildLink) else ChildLink(child)
         self.origin = origin
         self.axis = axis
         self.calibration = calibration
@@ -243,7 +241,7 @@ class Joint(object):
     def calculate_revolute_transformation(self, position):
         """Returns a transformation of a revolute joint.
 
-        A revolute joint rotates about the axis and has a limited range 
+        A revolute joint rotates about the axis and has a limited range
         specified by the upper and lower limits.
 
         Args:
@@ -255,7 +253,7 @@ class Joint(object):
     def calculate_continous_transformation(self, position):
         """Returns a transformation of a continous joint.
 
-        A continous joint rotates about the axis and has no upper and lower 
+        A continous joint rotates about the axis and has no upper and lower
         limits.
 
         Args:
@@ -266,11 +264,11 @@ class Joint(object):
     def calculate_prismatic_transformation(self, position):
         """Returns a transformation of a prismatic joint.
 
-        A prismatic joint slides along the axis and has a limited range 
+        A prismatic joint slides along the axis and has a limited range
         specified by the upper and lower limits.
 
         Args:
-            position (float): the movement in m
+            position (float): the movement in meters.
         """
         position = max(min(position, self.limit.upper), self.limit.lower)
         return Translation(self.axis.vector * position)
@@ -304,7 +302,7 @@ class Joint(object):
         This function is overwitten in the init based on the joint type.
 
         Args:
-            position (float): radians or m
+            position (float): radians or meters.
         """
         pass
 
@@ -312,8 +310,9 @@ class Joint(object):
         return self.init_transformation * self.current_transformation.inverse()
 
     def is_configurable(self):
+        """Returns ``True`` if the joint can be configured, otherwise ``False``."""
         return self.type != Joint.FIXED
-    
+
     def scale(self, factor):
         self.origin.scale(factor)
         if self.type in [Joint.PLANAR, Joint.PRISMATIC]:

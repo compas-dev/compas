@@ -221,50 +221,50 @@ class Robot(object):
 
         for name in shortest_chain:
             yield name
-    
+
     def create(self, urdf_importer, meshcls):
         """Creates the links' geometry and positions it as defined in the urdf.
-        
+
         Args:
             urdf_importer (:class:`UrdfImporter`):
             meshcls (class): ...
         """
         self.root.create(urdf_importer, meshcls)
 
-    def update(self, names, positions, collision=False):
+    def update(self, names, positions, collision=True):
         """Updates the joints and link geometries.
 
         Args:
             names (list of str): a list of the joints names that are updated
             positions (list_of float): a list of the respective joint positions,
                 in radians and m
-            collision (bool): If collision geometry should be transformed as 
-                well. Defaults to False.
+            collision (bool): If collision geometry should be transformed as
+                well. Defaults to True.
         """
         if len(names) != len(positions):
             return ValueError("len(names): %d is not len(positions) %d" % (len(names), len(positions)))
         joint_state = dict(zip(names, positions))
         self.root.update(joint_state, Transformation(), Transformation(), collision)
-    
+
     def get_configurable_joints(self):
         joints = []
         for joint in self.iter_joints():
             if joint.is_configurable():
                 joints.append(joint)
         return joints
-    
+
     def get_joint_types(self):
         types = []
         for joint in self.get_configurable_joints():
             types.append(joint.type)
         return types
-    
+
     def get_positions(self):
         positions = []
         for joint in self.get_configurable_joints():
             positions.append(joint.position)
         return positions
-    
+
     def get_configurable_joint_names(self):
         joints = self.get_configurable_joints()
         return [j.name for j in joints]
@@ -274,9 +274,9 @@ class Robot(object):
         clink = joints[-1].child_link
         for j in clink.joints:
             if j.type == Joint.FIXED:
-                return j.child 
+                return j.child
         return clink.name
-    
+
     def get_base_link_name(self):
         joints = self.get_configurable_joints()
         return joints[0].parent.link
@@ -364,7 +364,7 @@ class Robot(object):
 
     def draw(self):
         return self.draw_visual()
-    
+
     def scale(self, factor):
         names = self.get_configurable_joint_names()
         # bring to init configuration
