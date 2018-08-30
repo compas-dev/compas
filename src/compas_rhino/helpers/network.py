@@ -14,12 +14,6 @@ from compas_rhino.selectors import VertexSelector
 from compas_rhino.selectors import EdgeSelector
 
 
-__author__    = 'Tom Van Mele'
-__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__   = 'MIT license'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'network_draw',
     'network_draw_vertices',

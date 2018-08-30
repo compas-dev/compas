@@ -1,8 +1,9 @@
 from __future__ import print_function
 
-from compas.utilities import geometric_key
-
+import compas
 import compas_rhino
+
+from compas.utilities import geometric_key
 
 from compas_rhino.geometry import RhinoSurface
 
@@ -23,9 +24,7 @@ try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __author__    = ['Tom Van Mele']
