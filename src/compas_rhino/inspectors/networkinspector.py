@@ -13,7 +13,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__all__ = []
+__all__ = ['NetworkInspector']
 
 
 class NetworkInspector(object):
