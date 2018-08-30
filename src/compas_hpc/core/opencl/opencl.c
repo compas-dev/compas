@@ -34,7 +34,7 @@ int main()
 {
     cl_device_id *devices;
     cl_context context = NULL;
-// cl_command_queue command_queue = NULL;
+    cl_command_queue command_queue = NULL;
 // cl_mem memobj = NULL;
     cl_program program = NULL;
 // cl_kernel kernel = NULL;
@@ -54,6 +54,7 @@ int main()
     FILE *fp;
     char *source_buffer;
     size_t source_size;
+    size_t log_size;
 
     fp = fopen("./kernel.cl", "r");
     source_buffer = (char*)malloc(MAX_SOURCE_SIZE);
@@ -78,28 +79,27 @@ int main()
     clGetContextInfo(context, CL_CONTEXT_NUM_DEVICES, sizeof(num_context_devices), &num_context_devices, NULL);
     printf("Context - Devices:%i\n", num_context_devices);
 
-// /* Create Command Queue */
-// command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
+    command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
 
 // /* Create Memory Buffer */
 // memobj = clCreateBuffer(context, CL_MEM_READ_WRITE,MEM_SIZE * sizeof(char), NULL, &ret);
 
     program = clCreateProgramWithSource(context, 1, (const char **)&source_buffer, (const size_t *)&source_size, NULL);
+    const char options[] = "";
+    clBuildProgram(program, num_devices, devices, options, NULL, NULL);
+    // clGetProgramBuildInfo(program, devices, CL_PROGRAM_BUILD_LOG, 0, NULL, &log_size);
+    // program_log = (char*) calloc(log_size + 1, sizeof(char));
+    // clGetProgramBuildInfo(program, devices, CL_PROGRAM_BUILD_LOG, log_size + 1, program_log, NULL);
+    // printf("%s\n", program_log);
+    // free(program_log);
 
-// /* Build Kernel Program */
-// ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
+    kernel = clCreateKernel(program, "hello", &ret);
 
-// /* Create OpenCL Kernel */
-// kernel = clCreateKernel(program, "hello", &ret);
+    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&memobj);
 
-// /* Set OpenCL Kernel Parameters */
-// ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&memobj);
+    ret = clEnqueueTask(command_queue, kernel, 0, NULL,NULL);
 
-// /* Execute OpenCL Kernel */
-// ret = clEnqueueTask(command_queue, kernel, 0, NULL,NULL);
-
-// /* Copy results from the memory buffer */
-// ret = clEnqueueReadBuffer(command_queue, memobj, CL_TRUE, 0,
+    ret = clEnqueueReadBuffer(command_queue, memobj, CL_TRUE, 0,
 // MEM_SIZE * sizeof(char),string, 0, NULL, NULL);
 
 // /* Display Result */

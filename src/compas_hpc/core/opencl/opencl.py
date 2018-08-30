@@ -255,7 +255,7 @@ if __name__ == "__main__":
     # context > device > queue > kernel
 
     ctx   = cl.create_some_context()
-    queue = cl.CommandQueue(ctx)
+    queue = cl.CommandQueue(ctx)  # need to find the device associated to
 
     a = give_cl(queue, [[1., 2., 3.], [4., 5., 6.]])
     # a = give_cl(queue, [1.+1j, 2.+2j, 3.+3j], type='complex')
