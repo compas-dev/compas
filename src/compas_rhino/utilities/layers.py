@@ -2,6 +2,8 @@ from __future__ import print_function
 
 from collections import deque
 
+import compas
+
 try:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
@@ -9,21 +11,13 @@ try:
     find_object = sc.doc.Objects.Find
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 else:
     try:
         purge_object = sc.doc.Objects.Purge
     except AttributeError:
         purge_object = None
-
-
-__author__     = ['Tom Van Mele']
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -196,6 +190,7 @@ def delete_layers(layers):
 
 
 # ==============================================================================
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":
