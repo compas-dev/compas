@@ -3,10 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 try:
-    from urllib.request import urlopen, urlretrieve
+    from urllib.request import urlopen
 except ImportError:
     from urllib2 import urlopen
-    from urllib import urlretrieve
 
 from compas.utilities import geometric_key
 
