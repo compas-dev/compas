@@ -1,4 +1,3 @@
-appdirs
 matplotlib
 networkx
 numba

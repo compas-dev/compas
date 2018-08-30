@@ -5,9 +5,9 @@ from __future__ import division
 import os
 
 import compas_rhino
+import compas_rhino.install
 
-from compas_rhino.install import INSTALLABLE_PACKAGES
-from compas.utilities._os import remove_symlink
+from compas._os import remove_symlink
 
 __all__ = []
 
@@ -40,7 +40,7 @@ def uninstall(version='5.0'):
     results = []
     exit_code = 0
 
-    for package in INSTALLABLE_PACKAGES:
+    for package in compas_rhino.install.INSTALLABLE_PACKAGES:
         symlink_path = os.path.join(ipylib_path, package)
 
         if not os.path.exists(symlink_path):
