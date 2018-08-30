@@ -7,12 +7,6 @@ from compas.geometry import centroid_points
 from compas.topology import breadth_first_traverse
 
 
-__author__     = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'face_adjacency',
     'mesh_face_adjacency',

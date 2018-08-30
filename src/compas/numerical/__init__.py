@@ -19,8 +19,13 @@ Algorithms
     :toctree: generated/
     :nosignatures:
 
-    dr
-    dr_numpy
+    DynamicRelaxation
+
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     drx_numpy
     fd_cpp
     fd_numpy
@@ -126,6 +131,8 @@ from .utilities import *
 from .solvers import *
 from .algorithms import *
 
+from .dr import *
+
 from . import linalg
 from . import matrices
 from . import operators
@@ -134,4 +141,11 @@ from . import utilities
 from . import solvers
 from . import algorithms
 
-__all__ = linalg.__all__ + matrices.__all__ + operators.__all__ + utilities.__all__ + solvers.__all__ + algorithms.__all__
+from . import dr
+
+__all__ = []
+
+__all__ += linalg.__all__ + matrices.__all__ + operators.__all__ + utilities.__all__
+__all__ += solvers.__all__
+__all__ += algorithms.__all__
+__all__ += dr.__all__

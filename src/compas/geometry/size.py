@@ -17,12 +17,6 @@ from compas.geometry.normals import normal_triangle
 from compas.geometry.normals import normal_triangle_xy
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'area_polygon',
     'area_polygon_xy',

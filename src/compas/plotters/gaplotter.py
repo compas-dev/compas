@@ -8,11 +8,6 @@ import math
 import os
 import matplotlib.pyplot as plt
 
-__author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'mtomas@ethz.ch'
-
 
 __all__ = ['GaPlotter']
 

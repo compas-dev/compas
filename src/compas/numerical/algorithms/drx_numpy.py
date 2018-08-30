@@ -32,15 +32,7 @@ from compas.numerical import uvw_lengths
 from time import time
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
-__all__ = [
-    'drx_numpy'
-]
+__all__ = ['drx_numpy']
 
 
 def drx_numpy(network, factor=1.0, tol=0.1, steps=10000, refresh=100, update=False, callback=None, **kwargs):

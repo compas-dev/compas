@@ -1,0 +1,7 @@
+- Tom Van Mele <<van.mele@arch.ethz.ch>> [@brgcode](https://github.com/brgcode)
+- Andrew Liew <<liew@arch.ethz.ch>> [@andrewtliew](https://github.com/andrewtliew)
+- Tomás Méndez Echenagucia <<mendez@arch.ethz.ch>> [@tmsmendez](https://github.com/tmsmendez)
+- Matthias Rippmann <<rippmann@arch.ethz.ch>> [@Rippmann](https://github.com/Rippmann)
+- Romana Rust <<rust@arch.ethz.ch>> [@romanarust](https://github.com/romanarust)
+- Kathrin Dörfler <<doerfler@arch.ethz.ch>> [@Kathrin3010](https://github.com/Kathrin3010)
+- Gonzalo Casas <<casas@arch.ethz.ch>> [@gonzalocasas](https://github.com/gonzalocasas)

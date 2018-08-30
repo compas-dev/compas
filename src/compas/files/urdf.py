@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 
 from compas.utilities import memoize
 
+
 __all__ = [
     'URDF',
 ]

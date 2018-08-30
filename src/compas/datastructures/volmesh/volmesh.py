@@ -28,12 +28,6 @@ from compas.datastructures._mixins import FromToData
 from compas.datastructures._mixins import FromToJson
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 def center_of_mass(edges, sqrt=sqrt):
     L  = 0
     cx = 0

@@ -5,12 +5,6 @@ from __future__ import division
 import struct
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'PLY',
     'PLYReader',
@@ -441,4 +435,4 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_vertices_and_faces(ply.parser.vertices, ply.parser.faces)
 
-    print(mesh)
+    print(mesh.summary())

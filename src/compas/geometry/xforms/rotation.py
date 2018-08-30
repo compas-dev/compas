@@ -28,14 +28,8 @@ from compas.geometry.transformations import matrix_from_frame
 
 from compas.geometry.xforms import Transformation
 
-__author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
-__license__ = 'MIT License'
-__email__ = 'rust@arch.ethz.ch'
 
-
-__all__ = [
-    'Rotation',
-]
+__all__ = ['Rotation']
 
 
 class Rotation(Transformation):

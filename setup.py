@@ -31,7 +31,9 @@ def read(*names, **kwargs):
 
 long_description = read('README.md')
 requirements = read('requirements.txt').split('\n')
-optional_requirements = {}
+optional_requirements = {
+    
+}
 
 setup(
     name='COMPAS',
@@ -80,12 +82,12 @@ setup(
     extras_require=optional_requirements,
 
     entry_points={
-        'console_scripts': [],
+        'console_scripts': ['install_compas_rhino=compas_rhino.install:install'],
     },
 
     ext_modules=[],
 
-    cmdclass={
-        'install': PostInstallCommand,
-    }
+    # cmdclass={
+    #     'install': PostInstallCommand,
+    # }
 )

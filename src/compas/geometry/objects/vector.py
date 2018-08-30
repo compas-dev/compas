@@ -14,13 +14,7 @@ from compas.geometry.basic import subtract_vectors
 from compas.geometry.transformations import transform_vectors
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['Vector', ]
+__all__ = ['Vector']
 
 
 class Vector(object):
@@ -497,7 +491,7 @@ class Vector(object):
             The transformation matrix.
 
         """
-        point = transform_vectors([self, ], matrix)[0]
+        point = transform_vectors([self], matrix)[0]
         self.x = point[0]
         self.y = point[1]
         self.z = point[2]

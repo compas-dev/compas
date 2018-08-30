@@ -17,7 +17,27 @@ compas
     compas.robots
     compas.topology
     compas.utilities
+
+..
     compas.viewers
+
+
+In addition to the above packages, :mod:`compas` provides the following convenience functions.
+
+.. autosummary::
+    :toctree: generated/
+
+    get
+    get_bunny
+    is_windows
+    is_linux
+    is_mono
+    is_ironpython
+    raise_if_not_ironpython
+    raise_if_ironpython
+    verify
+    installed
+    requirements
 
 """
 
@@ -25,11 +45,12 @@ from __future__ import print_function
 
 import os
 import sys
-from xml.etree import ElementTree as ET
+
+import appdirs
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
+__author__    = 'Tom Van Mele and many others (see CONTRIBUTORS.md)'
+__copyright__ = 'Copyright 2014-2018 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 __version__   = '0.3.0'
@@ -37,54 +58,169 @@ __version__   = '0.3.0'
 
 PY3 = sys.version_info.major == 3
 
+
+def absjoin(*parts):
+    return os.path.abspath(os.path.join(*parts))
+
+
 HERE = os.path.dirname(__file__)
-HOME = os.path.abspath(os.path.join(HERE, '../..'))
-DATA = os.path.abspath(os.path.join(HERE, '../../data'))
-TEMP = os.path.abspath(os.path.join(HERE, '../../temp'))
+HOME = absjoin(HERE, '../..')
+DATA = absjoin(HERE, '../../data')
+TEMP = absjoin(HERE, '../../temp')
+
+APPDATA = appdirs.user_data_dir('COMPAS', 'compas-dev', roaming=True)
+APPTEMP = absjoin(APPDATA, 'temp')
+
+
+# install the app dirs during general install
+# add data files
+# add config files?
+# download all data to user data dir, unless otherwise specified with localstorage
+# add example scripts from/for docs
+# add template files
+# add other stuff that doesn't go into site packages folder
+def install_appdirs():
+    pass
 
 
 def get(filename):
+    """Get the full path to one of the sample data files.
+
+    Parameters
+    ----------
+    filename : str
+        The name of the data file.
+        The following are available.
+
+        * boxes.obj
+        * faces.obj
+        * fink.obj
+        * hypar.obj
+        * lines.obj
+        * saddle.obj
+
+    Returns
+    -------
+    str
+        The full path to the specified file.
+
+    Notes
+    -----
+    The file name should be specified relative to the **COMPAS** sample data folder.
+    This folder is only locally available if you installed **COMPAS** from source,
+    or if you are working directly with the source.
+    In all other cases, the function will get the corresponding files direcly from
+    the GitHub repo, at https://raw.githubusercontent.com/compas-dev/compas/master/data
+
+    Examples
+    --------
+    The ``compas.get`` function is meant to be used in combination with the static
+    constructors of the data structures.
+
+    .. code-block:: python
+
+        import compas
+        from compas.datastructures import Mesh
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    """
     filename = filename.strip('/')
     localpath = os.path.abspath(os.path.join(DATA, filename))
+
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://raw.githubusercontent.com/compas-dev/compas/develop/data/{}".format(filename)
+        return "https://raw.githubusercontent.com/compas-dev/compas/master/data/{}".format(filename)
 
 
-def get_bunny():
-    import urllib
+def get_bunny(localstorage=None):
+    """Get the *Stanford Bunny* directly from the Stanford repository.
+
+    Parameters
+    ----------
+    localstorage : str, optional
+        Path to a local storage folder for saving the downloaded data.
+        Default is ``None``, in which case the data will be stored in a local
+        user data directory. See https://pypi.org/project/appdirs/ for more info.
+
+    Returns
+    -------
+    str
+        Full path to the local file.
+
+    Examples
+    --------
+    The *Stanford Bunny* is a `PLY` file.
+    Therefore, the returned path should be used in combination with the ``PLY``
+    file reader, or with the ``from_ply`` constructor function for meshes.
+
+    .. code-block:: python
+
+        import compas
+        from compas.datastructures import Mesh
+
+        mesh = Mesh.from_ply(compas.get_bunny())
+
+    """
     import tarfile
-    bunny = os.path.abspath(os.path.join(DATA, 'bunny/reconstruction/bun_zipper.ply'))
+
+    try:
+        from urllib.requests import urlretrieve
+    except ImportError:
+        from urllib import urlretrieve
+
+    if not localstorage:
+        localstorage = appdirs.user_data_dir('COMPAS', 'compas-dev', roaming=True)
+
+    if not os.path.exists(localstorage):
+        os.makedirs(localstorage)
+
+    if not os.path.isdir(localstorage):
+        raise Exception('Local storage location does not exist: {}'.format(localstorage))
+
+    if not os.access(localstorage, os.W_OK):
+        raise Exception('Local storage location is not writable: {}'.format(localstorage))
+
+    bunny = absjoin(localstorage, 'bunny/reconstruction/bun_zipper.ply')
+    destination = absjoin(localstorage, 'bunny.tar.gz')
+
     if not os.path.exists(bunny):
         url = 'http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz'
+
         print('Getting the bunny from {} ...'.format(url))
         print('This will take a few seconds...')
-        destination = os.path.abspath(os.path.join(DATA, 'bunny.tar.gz'))
-        urllib.urlretrieve(url, destination)
+
+        urlretrieve(url, destination)
+
         with tarfile.open(destination) as file:
-            file.extractall(DATA)
+            file.extractall(localstorage)
+
         os.remove(destination)
+
         print('Got it!\n')
+
     return bunny
 
 
-def get_armadillo():
-    import urllib
-    import gzip
-    import shutil
-    armadillo = os.path.abspath(os.path.join(DATA, 'armadillo/Armadillo.ply'))
-    if not os.path.exists(armadillo):
-        url = 'http://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz'
-        print('Getting the armadillo from {} ...'.format(url))
-        print('This will take a few seconds...')
-        destination = os.path.abspath(os.path.join(DATA, 'Armadillo.ply.gz'))
-        urllib.urlretrieve(url, destination)
-        with gzip.open(destination, 'rb') as ifile, open(armadillo, 'wb+') as ofile:
-            shutil.copyfileobj(ifile, ofile)
-        os.remove(destination)
-        print('Got it!\n')
-    return armadillo
+# def get_armadillo():
+#     import urllib
+#     import gzip
+#     import shutil
+
+#     armadillo = os.path.abspath(os.path.join(DATA, 'armadillo/Armadillo.ply'))
+
+#     if not os.path.exists(armadillo):
+#         url = 'http://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz'
+#         print('Getting the armadillo from {} ...'.format(url))
+#         print('This will take a few seconds...')
+#         destination = os.path.abspath(os.path.join(DATA, 'Armadillo.ply.gz'))
+#         urllib.urlretrieve(url, destination)
+#         with gzip.open(destination, 'rb') as ifile, open(armadillo, 'wb+') as ofile:
+#             shutil.copyfileobj(ifile, ofile)
+#         os.remove(destination)
+#         print('Got it!\n')
+#     return armadillo
 
 
 def is_windows():
@@ -198,66 +334,6 @@ def requirements():
             print(line.strip())
 
 
-def install_for_rhino(version='5.0'):
-    compaspath = os.path.abspath(os.path.join(HERE, '../'))
-    appdata = os.getenv('APPDATA')
-
-    temp = appdata.split(os.path.sep)
-    if 'Roaming' in temp:
-        temp.remove('Roaming')
-        appdata = os.path.join(temp[0], os.path.sep, *temp[1:])
-        # if temp[0].endswith(':'):
-        #     appdata = os.path.join(temp[0], os.path.sep, *temp[1:])
-        # else:
-        #     appdata = os.path.join(*temp)
-
-
-    if version not in ('5.0', '6.0'):
-        version = '5.0'
-
-    xmlpath = os.path.abspath(os.path.join(appdata,
-                                           'Roaming',
-                                           'McNeel',
-                                           'Rhinoceros',
-                                           '{}'.format(version),
-                                           'Plug-ins',
-                                           'IronPython (814d908a-e25c-493d-97e9-ee3861957f49)',
-                                           'settings',
-                                           'settings.xml'))
-
-    if not os.path.exists(xmlpath):
-        raise Exception("The settings file does not exist in this location: {}".format(xmlpath))
-
-    if not os.path.isfile(xmlpath):
-        raise Exception("The settings file is not a file :)")
-        
-    if not os.access(xmlpath, os.W_OK):
-        raise Exception("The settings file is not wrtieable.")
-       
-    tree = ET.parse(xmlpath)
-    root = tree.getroot()
-
-    entries = root.findall(".//entry[@key='SearchPaths']")
-
-    try:
-        searchpathsentry = entries[0]
-    except IndexError:
-        raise Exception("The settings file has no entry 'SearchPaths'.")
-
-    searchpaths = searchpathsentry.text.split(';')
-    searchpaths[:] = [os.path.abspath(path) for path in searchpaths]
-        
-    if compaspath not in searchpaths:
-        searchpaths.append(compaspath)
-
-    searchpathsentry.text = ";".join(searchpaths)
-    tree.write(xmlpath)
-
-
-def install_package_for_rhino(name):
-    pass
-
-
 __all__ = [
     'get',
     'license',
@@ -270,6 +346,4 @@ __all__ = [
     'requirements',
     'raise_if_ironpython',
     'raise_if_not_ironpython',
-    'install_for_rhino',
-    'install_package_for_rhino',
 ]

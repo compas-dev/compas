@@ -22,12 +22,6 @@ from compas.geometry import local_coords_numpy
 from compas.geometry import global_coords_numpy
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'oriented_bounding_box_numpy',
     'oriented_bounding_box_xy_numpy',

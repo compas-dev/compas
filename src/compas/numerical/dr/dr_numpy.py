@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import sys
+import compas
 
 try:
     from numpy import array
@@ -14,30 +14,20 @@ try:
     from scipy.sparse import diags
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
 
 
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = [
-    'dr_numpy',
-    'dr_numpy_xfunc'
-]
+__all__ = ['dr_numpy']
 
 
 K = [
-    [0.0, ],
-    [0.5, 0.5, ],
-    [0.5, 0.0, 0.5, ],
-    [1.0, 0.0, 0.0, 1.0, ],
+    [0.0],
+    [0.5, 0.5],
+    [0.5, 0.0, 0.5],
+    [1.0, 0.0, 0.0, 1.0],
 ]
 
 
@@ -48,41 +38,41 @@ class Coeff():
         self.b = 0.5 * (1 + self.a)
 
 
-def dr_numpy_xfunc(data):
-    # this makes no sense
-    # the network is not aware of all these attributes
-    # => define a custom network locally that meets the requirements of the algorithm
-    from compas.datastructures import Network
+# def dr_numpy_xfunc(data):
+#     # this makes no sense
+#     # the network is not aware of all these attributes
+#     # => define a custom network locally that meets the requirements of the algorithm
+#     from compas.datastructures import Network
 
-    network = Network.from_data(data)
+#     network = Network.from_data(data)
 
-    vertices = network.get_vertices_attributes(('x', 'y', 'z'))
-    edges    = list(network.edges())
-    fixed    = network.vertices_where({'is_fixed': True})
-    loads    = network.get_vertices_attributes(('px', 'py', 'pz'))
-    qpre     = network.get_edges_attribute('qpre')
-    fpre     = network.get_edges_attribute('fpre')
-    lpre     = network.get_edges_attribute('lpre')
-    linit    = network.get_edges_attribute('linit')
-    E        = network.get_edges_attribute('E')
-    radius   = network.get_edges_attribute('radius')
+#     vertices = network.get_vertices_attributes(('x', 'y', 'z'))
+#     edges    = list(network.edges())
+#     fixed    = network.vertices_where({'is_fixed': True})
+#     loads    = network.get_vertices_attributes(('px', 'py', 'pz'))
+#     qpre     = network.get_edges_attribute('qpre')
+#     fpre     = network.get_edges_attribute('fpre')
+#     lpre     = network.get_edges_attribute('lpre')
+#     linit    = network.get_edges_attribute('linit')
+#     E        = network.get_edges_attribute('E')
+#     radius   = network.get_edges_attribute('radius')
 
-    x, q, f, l, r = dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius)
+#     x, q, f, l, r = dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius)
 
-    for key, attr in network.vertices(True):
-        attr['x']  = x[key, 0]
-        attr['y']  = x[key, 1]
-        attr['z']  = x[key, 2]
-        attr['rx'] = r[key, 0]
-        attr['ry'] = r[key, 1]
-        attr['rz'] = r[key, 2]
+#     for key, attr in network.vertices(True):
+#         attr['x']  = x[key, 0]
+#         attr['y']  = x[key, 1]
+#         attr['z']  = x[key, 2]
+#         attr['rx'] = r[key, 0]
+#         attr['ry'] = r[key, 1]
+#         attr['rz'] = r[key, 2]
 
-    for index, (u, v, attr) in enumerate(network.edges(True)):
-        attr['q'] = f[index, 0]
-        attr['f'] = f[index, 0]
-        attr['l'] = l[index, 0]
+#     for index, (u, v, attr) in enumerate(network.edges(True)):
+#         attr['q'] = f[index, 0]
+#         attr['f'] = f[index, 0]
+#         attr['l'] = l[index, 0]
 
-    return network.to_data()
+#     return network.to_data()
 
 
 def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,

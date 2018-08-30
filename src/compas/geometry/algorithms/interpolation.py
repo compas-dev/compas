@@ -9,12 +9,6 @@ from compas.geometry import sum_vectors
 from compas.utilities import normalize_values
 
 
-__author__    = ['Matthias Rippmann', 'Robin Oval']
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'rippmann@ethz.ch'
-
-
 __all__ = [
     'discrete_coons_patch',
 ]

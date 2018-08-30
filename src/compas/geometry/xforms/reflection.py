@@ -17,14 +17,7 @@ from compas.geometry.basic import normalize_vector
 from compas.geometry.xforms import Transformation
 
 
-__author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
-__license__ = 'MIT License'
-__email__ = 'rust@arch.ethz.ch'
-
-
-__all__ = [
-    'Reflection',
-]
+__all__ = ['Reflection']
 
 
 class Reflection(Transformation):

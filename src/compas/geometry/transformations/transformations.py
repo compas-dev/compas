@@ -39,12 +39,6 @@ from compas.geometry.transformations import matrix_from_scale_factors
 from compas.geometry.transformations import matrix_from_axis_and_angle
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'translate_points',
     'translate_points_xy',

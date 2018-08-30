@@ -15,12 +15,6 @@ from compas.geometry.intersections import intersection_line_line
 from compas.geometry.normals import normal_polygon
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'offset_line',
     'offset_polyline',

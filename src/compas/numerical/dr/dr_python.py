@@ -8,22 +8,14 @@ from compas.geometry import norm_vectors
 from compas.topology import adjacency_from_edges
 
 
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = [
-    'dr',
-]
+__all__ = ['dr_python']
 
 
 K = [
-    [0.0, ],
-    [0.5, 0.5, ],
-    [0.5, 0.0, 0.5, ],
-    [1.0, 0.0, 0.0, 1.0, ],
+    [0.0],
+    [0.5, 0.5],
+    [0.5, 0.0, 0.5],
+    [1.0, 0.0, 0.0, 1.0],
 ]
 
 
@@ -34,8 +26,8 @@ class Coeff():
         self.b = 0.5 * (1 + self.a)
 
 
-def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
-       kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callback=None, callback_args=None):
+def dr_python(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
+              kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callback=None, callback_args=None):
     """Implementation of dynamic relaxation with RK integration scheme in pure Python.
 
     Parameters

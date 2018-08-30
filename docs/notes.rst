@@ -1,9 +1,10 @@
 ********************************************************************************
-Working with datastructures
+Notes
 ********************************************************************************
 
-:author:`Tom Van Mele <van.mele@arch.ethz.ch>`
+.. toctree::
+   :maxdepth: 1
+   :titlesonly:
+   :glob:
 
-:mod:`compas.datastructures`
-
-
+   notes/*

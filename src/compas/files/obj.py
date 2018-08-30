@@ -3,18 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 try:
-    import urllib.request as urllib2
+    from urllib.request import urlopen, urlretrieve
 except ImportError:
-    import urllib2
+    from urllib2 import urlopen
+    from urllib import urlretrieve
 
 from compas.utilities import geometric_key
-
-
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__version__    = '0.3.0'
-__date__       = 'Mar 31, 2015'
 
 
 __all__ = [
@@ -116,7 +110,7 @@ class OBJReader(object):
 
     def open(self):
         if self.filepath.startswith('http'):
-            resp = urllib2.urlopen(self.filepath)
+            resp = urlopen(self.filepath)
             self.content = iter(resp.read().decode('utf-8').split('\n'))
         else:
             with open(self.filepath, 'r') as fh:

@@ -1,12 +1,6 @@
 from copy import deepcopy
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'VertexAttributesManagement',
     'EdgeAttributesManagement',
@@ -21,8 +15,9 @@ class VertexAttributesManagement(object):
 
         Parameters
         ----------
-        attr_dict : dict (None)
+        attr_dict : dict, optional
             A dictionary of attributes with their default values.
+            Defaults to an empty ``dict``.
         kwattr : dict
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
@@ -70,16 +65,10 @@ class VertexAttributesManagement(object):
         ----------
         key : hashable
             The identifier of the vertex.
-        attr_dict : dict (None)
-            A dictionary of attributes as name-value pairs.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Note
-        ----
-        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
-        if they exist.
+        names : list of str
+            A list of attribute names.
+        values : list
+            A list of attribute values.
 
         See Also
         --------
@@ -100,8 +89,7 @@ class VertexAttributesManagement(object):
             The name of the attribute.
         value : object
             The value of the attribute.
-        keys : iterable (None)
-            A list of vertex identifiers.
+        keys : list of hashable, optional
             Defaults to all vertices.
 
         See Also
@@ -111,7 +99,8 @@ class VertexAttributesManagement(object):
         * :meth:`set_vertices_attributes`
 
         """
-        keys = keys or self.vertices()
+        if not keys:
+            keys = self.vertices()
         for key in keys:
             self.vertex[key][name] = value
 
@@ -120,19 +109,13 @@ class VertexAttributesManagement(object):
 
         Parameters
         ----------
-        keys : iterable (None)
+        names : list of str
+            A list of attribute names.
+        values : list
+            A list of attribute values.
+        keys : list of hashable, optional
             A list of vertex identifiers.
             Defaults to all vertices.
-        attr_dict : dict (None)
-            A dictionary of attributes as name-value pairs.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Note
-        ----
-        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
-        if they exist.
 
         See Also
         --------
@@ -153,7 +136,7 @@ class VertexAttributesManagement(object):
             The identifier of the vertex.
         name : str
             The name of the attribute.
-        value : object (None)
+        value : object, optional
             The default value.
 
         Returns
@@ -180,9 +163,9 @@ class VertexAttributesManagement(object):
             The identifier of the vertex.
         names : list
             A list of attribute names.
-        values : list (None)
+        values : list, optional
             A list of default values.
-            Defaults to a list of ``None`` s.
+            Defaults to a list of ``None``.
 
         Returns
         -------
@@ -209,9 +192,10 @@ class VertexAttributesManagement(object):
         ----------
         name : str
             The name of the attribute.
-        value : object (None)
+        value : object, optional
             The default value.
-        keys : list (None)
+            Default is ``None``.
+        keys : list, optional
             A list of identifiers.
             Defaults to all vertices.
 
@@ -238,10 +222,10 @@ class VertexAttributesManagement(object):
         ----------
         names : list
             The names of the attributes.
-        values : list (None)
+        values : list, optional
             A list of default values.
-            Defaults to a list of ``None`` s.
-        keys : list (None)
+            Defaults to a list of ``None``.
+        keys : list, optional
             A list of vertex identifiers.
             Defaults to all vertices.
 
@@ -274,8 +258,9 @@ class EdgeAttributesManagement(object):
 
         Parameters
         ----------
-        attr_dict : dict (None)
+        attr_dict : dict, optional
             A dictionary of attributes with their default values.
+            Defaults to an empty ``dict``.
         kwattr : dict
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
@@ -295,7 +280,7 @@ class EdgeAttributesManagement(object):
             attr.update(self.edge[u][v])
             self.edge[u][v] = attr
 
-    def set_edge_attribute(self, key, name, value, directed=True):
+    def set_edge_attribute(self, key, name, value):
         """Set one attribute of one edge.
 
         Parameters
@@ -307,6 +292,11 @@ class EdgeAttributesManagement(object):
         value : object
             The value of the attribute.
 
+        Raises
+        ------
+        Exception
+            If the edge does not exist in the data structure.
+
         See Also
         --------
         * :meth:`set_edge_attributes`
@@ -315,18 +305,12 @@ class EdgeAttributesManagement(object):
 
         """
         u, v = key
-        if directed:
+        if u in self.edge and v in self.edge[u]:
             self.edge[u][v][name] = value
+        elif v in self.edge and u in self.edge[v]:
+            self.edge[v][u][name] = value
         else:
-            if u in self.edge and v in self.edge[u]:
-                self.edge[u][v][name] = value
-            elif v in self.edge and u in self.edge[v]:
-                self.edge[v][u][name] = value
-            else:
-                if v in self.halfedge[u] or u in self.halfedge[v]:
-                    self.edge[u] = {}
-                    self.edge[u][v] = self.default_edge_attributes.copy()
-                    self.edge[u][v][name] = value
+            raise Exception('The edge does not exist: {}-{}'.format(u, v))
 
     def set_edge_attributes(self, key, names, values):
         """Set multiple attributes of one edge.

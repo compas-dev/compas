@@ -20,13 +20,7 @@ from compas.plotters.core.drawing import draw_xpolygons_xy
 from compas.plotters.core.drawing import draw_xarrows_xy
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = ['Plotter', ]
+__all__ = ['Plotter']
 
 
 class Plotter(object):

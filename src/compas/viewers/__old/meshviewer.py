@@ -20,7 +20,7 @@ __license__    = 'MIT'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['MeshViewer', ]
+__all__ = ['MeshViewer']
 
 
 class MeshViewer(Viewer):

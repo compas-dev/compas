@@ -26,13 +26,6 @@ from compas.utilities import color_to_colordict
 from compas.utilities import color_to_rgb
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
-                  'Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'create_axes_xy',
     'create_axes_3d',

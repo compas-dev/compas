@@ -16,12 +16,6 @@ from compas.geometry.basic import scale_vector
 from compas.geometry.distance import distance_point_point
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'centroid_points',
     'centroid_points_xy',

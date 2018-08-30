@@ -4,7 +4,7 @@ Tutorial
 
 .. toctree::
     :maxdepth: 1
-    :glob:
+    :titlesonly:
 
     tutorial/datastructures
     tutorial/files

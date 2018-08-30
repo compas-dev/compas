@@ -3,13 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
-                  'Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'scalarfield_contours_numpy',
     'mesh_contours_numpy',
