@@ -10,7 +10,7 @@ PY3 = sys.version_info[0] == 3
 system = sys.platform
 
 # IronPython support (OMG)
-if system == 'cli' and os.name == 'nt':
+if 'ironpython' in sys.version.lower() and os.name == 'nt':
     system = 'win32'
 
 
@@ -90,7 +90,7 @@ def user_data_dir(appname=None, appauthor=None, version=None, roaming=False):
     if system == 'win32':
         if appauthor is None:
             appauthor = appname
-        const = roaming and "CSIDL_APPDATA" or "CSIDL_LOCAL_APPDATA"
+        const = "CSIDL_APPDATA" if roaming else "CSIDL_LOCAL_APPDATA"
         path = os.path.normpath(_get_win_folder(const))
         if appname:
             if appauthor is not False:
