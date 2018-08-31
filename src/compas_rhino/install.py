@@ -2,30 +2,32 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import importlib
 import os
+import sys
 
 import compas_rhino
 
-from compas.utilities._os import create_symlink
-
-__author__    = ['Tom Van Mele']
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
+from compas._os import create_symlink
 
 __all__ = []
 
 INSTALLABLE_PACKAGES = ('compas', 'compas_ghpython', 'compas_rhino')
 
 
-def install(version='5.0'):
+def _get_package_path(package):
+    return os.path.abspath(os.path.join(os.path.dirname(package.__file__), '..'))
+
+
+def install(version='5.0', packages=None):
     """Install COMPAS for Rhino.
 
     Parameters
     ----------
     version : {'5.0', '6.0'}
         The version number of Rhino.
+    packages : list of str
+        List of packages to install or None to use default package list.
 
     Examples
     --------
@@ -42,13 +44,13 @@ def install(version='5.0'):
 
     print('Installing COMPAS packages to Rhino IronPython lib:')
 
-    base_path = compas_rhino._get_compas_path()
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
     results = []
     exit_code = 0
 
-    for package in INSTALLABLE_PACKAGES:
+    for package in packages:
+        base_path = _get_package_path(importlib.import_module(package))
         package_path = os.path.join(base_path, package)
         symlink_path = os.path.join(ipylib_path, package)
 
@@ -94,4 +96,4 @@ if __name__ == "__main__":
         except Exception:
             version = '5.0'
 
-    install(version=version)
+    install(version=version, packages=INSTALLABLE_PACKAGES)
