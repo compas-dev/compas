@@ -33,10 +33,6 @@ from . import utilities
 __version__ = '0.3.0'
 
 
-def _get_compas_path():
-    return os.path.abspath(os.path.join(os.path.dirname(compas.__file__), '..'))
-
-
 def _get_ironpython_lib_path(version):
     if version not in ('5.0', '6.0'):
         version = '5.0'
