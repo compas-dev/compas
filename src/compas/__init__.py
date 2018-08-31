@@ -21,24 +21,6 @@ compas
 ..
     compas.viewers
 
-
-In addition to the above packages, :mod:`compas` provides the following convenience functions.
-
-.. autosummary::
-    :toctree: generated/
-
-    get
-    get_bunny
-    is_windows
-    is_linux
-    is_mono
-    is_ironpython
-    raise_if_not_ironpython
-    raise_if_ironpython
-    verify
-    installed
-    requirements
-
 """
 
 from __future__ import print_function
