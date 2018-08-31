@@ -3,22 +3,25 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
+import sys
 
 import compas_rhino
+import compas_rhino.install
 
-from compas_rhino.install import INSTALLABLE_PACKAGES
-from compas.utilities._os import remove_symlink
+from compas._os import remove_symlink
 
 __all__ = []
 
 
-def uninstall(version='5.0'):
+def uninstall(version='5.0', packages=None):
     """Uninstall COMPAS from Rhino.
 
     Parameters
     ----------
     version : {'5.0', '6.0'}
         The version number of Rhino.
+    packages : list of str
+        List of packages to uninstall or None to use default package list.
 
     Examples
     --------
@@ -40,7 +43,7 @@ def uninstall(version='5.0'):
     results = []
     exit_code = 0
 
-    for package in INSTALLABLE_PACKAGES:
+    for package in packages:
         symlink_path = os.path.join(ipylib_path, package)
 
         if not os.path.exists(symlink_path):
@@ -83,4 +86,4 @@ if __name__ == "__main__":
         except Exception:
             version = '5.0'
 
-    uninstall(version=version)
+    uninstall(version=version, packages=compas_rhino.install.INSTALLABLE_PACKAGES)
