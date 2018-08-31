@@ -45,8 +45,7 @@ from __future__ import print_function
 
 import os
 import sys
-
-import appdirs
+import compas._os
 
 
 __author__    = 'Tom Van Mele and many others (see CONTRIBUTORS.md)'
@@ -57,19 +56,13 @@ __version__   = '0.3.0'
 
 
 PY3 = sys.version_info.major == 3
-
-
-def absjoin(*parts):
-    return os.path.abspath(os.path.join(*parts))
-
-
 HERE = os.path.dirname(__file__)
-HOME = absjoin(HERE, '../..')
-DATA = absjoin(HERE, '../../data')
-TEMP = absjoin(HERE, '../../temp')
+HOME = compas._os.absjoin(HERE, '../..')
+DATA = compas._os.absjoin(HERE, '../../data')
+TEMP = compas._os.absjoin(HERE, '../../temp')
 
-APPDATA = appdirs.user_data_dir('COMPAS', 'compas-dev', roaming=True)
-APPTEMP = absjoin(APPDATA, 'temp')
+APPDATA = compas._os.user_data_dir('COMPAS', 'compas-dev', roaming=True)
+APPTEMP = compas._os.absjoin(APPDATA, 'temp')
 
 
 # install the app dirs during general install
@@ -171,7 +164,7 @@ def get_bunny(localstorage=None):
         from urllib import urlretrieve
 
     if not localstorage:
-        localstorage = appdirs.user_data_dir('COMPAS', 'compas-dev', roaming=True)
+        localstorage = APPDATA
 
     if not os.path.exists(localstorage):
         os.makedirs(localstorage)
@@ -182,8 +175,8 @@ def get_bunny(localstorage=None):
     if not os.access(localstorage, os.W_OK):
         raise Exception('Local storage location is not writable: {}'.format(localstorage))
 
-    bunny = absjoin(localstorage, 'bunny/reconstruction/bun_zipper.ply')
-    destination = absjoin(localstorage, 'bunny.tar.gz')
+    bunny = compas._os.absjoin(localstorage, 'bunny/reconstruction/bun_zipper.ply')
+    destination = compas._os.absjoin(localstorage, 'bunny.tar.gz')
 
     if not os.path.exists(bunny):
         url = 'http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz'
@@ -332,7 +325,6 @@ def requirements():
     with open(os.path.join(HERE, '../requirements.txt')) as f:
         for line in f:
             print(line.strip())
-
 
 __all__ = [
     'get',
