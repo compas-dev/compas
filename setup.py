@@ -32,7 +32,9 @@ def read(*names, **kwargs):
 long_description = read('README.md')
 requirements = read('requirements.txt').split('\n')
 optional_requirements = {
-    
+    "viewers"      : ['PyOpenGL', 'PySide2', 'vtk'],
+    "optimisation" : ['cython', 'pyopencl', 'pycuda'],
+    "robotics"     : ['roslibpy']
 }
 
 setup(
