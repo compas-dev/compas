@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.files import URDF
+from compas.files import URDFParser
 from compas.geometry.xforms import Transformation
 
 from .geometry import Box
@@ -15,7 +16,6 @@ from .geometry import MeshDescriptor
 from .geometry import Origin
 from .geometry import Sphere
 from .geometry import Texture
-
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
@@ -223,23 +223,22 @@ class Link(object):
 
 
 
-URDF.add_parser(Link, 'robot/link')
-URDF.add_parser(Inertial, 'robot/link/inertial')
-URDF.add_parser(Mass, 'robot/link/inertial/mass')
-URDF.add_parser(Inertia, 'robot/link/inertial/inertia')
+URDFParser.install_parser(Link, 'robot/link')
+URDFParser.install_parser(Inertial, 'robot/link/inertial')
+URDFParser.install_parser(Mass, 'robot/link/inertial/mass')
+URDFParser.install_parser(Inertia, 'robot/link/inertial/inertia')
 
-URDF.add_parser(Visual, 'robot/link/visual')
-URDF.add_parser(Collision, 'robot/link/collision')
+URDFParser.install_parser(Visual, 'robot/link/visual')
+URDFParser.install_parser(Collision, 'robot/link/collision')
 
-URDF.add_parser(Origin, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin')
-URDF.add_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
-URDF.add_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
-URDF.add_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')
-URDF.add_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder')
-URDF.add_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere')
-URDF.add_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule')
+URDFParser.install_parser(Origin, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin')
+URDFParser.install_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
+URDFParser.install_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
+URDFParser.install_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')
+URDFParser.install_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder')
+URDFParser.install_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere')
+URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule')
 
-URDF.add_parser(Material, 'robot/link/visual/material')
-URDF.add_parser(Color, 'robot/link/visual/material/color')
-URDF.add_parser(Texture, 'robot/link/visual/material/texture')
-
+URDFParser.install_parser(Material, 'robot/link/visual/material')
+URDFParser.install_parser(Color, 'robot/link/visual/material/color')
+URDFParser.install_parser(Texture, 'robot/link/visual/material/texture')

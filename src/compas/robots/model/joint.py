@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.files import URDF
+from compas.files import URDFParser
 from compas.geometry import Vector
 from compas.geometry.transformations import transform_vectors
 from compas.geometry.xforms import Rotation
@@ -320,14 +320,14 @@ class Joint(object):
 
 
 
-URDF.add_parser(Joint, 'robot/joint')
-URDF.add_parser(ParentLink, 'robot/joint/parent')
-URDF.add_parser(ChildLink, 'robot/joint/child')
-URDF.add_parser(Calibration, 'robot/joint/calibration')
-URDF.add_parser(Dynamics, 'robot/joint/dynamics')
-URDF.add_parser(Limit, 'robot/joint/limit')
-URDF.add_parser(Axis, 'robot/joint/axis')
-URDF.add_parser(Mimic, 'robot/joint/mimic')
-URDF.add_parser(SafetyController, 'robot/joint/safety_controller')
+URDFParser.install_parser(Joint, 'robot/joint')
+URDFParser.install_parser(ParentLink, 'robot/joint/parent')
+URDFParser.install_parser(ChildLink, 'robot/joint/child')
+URDFParser.install_parser(Calibration, 'robot/joint/calibration')
+URDFParser.install_parser(Dynamics, 'robot/joint/dynamics')
+URDFParser.install_parser(Limit, 'robot/joint/limit')
+URDFParser.install_parser(Axis, 'robot/joint/axis')
+URDFParser.install_parser(Mimic, 'robot/joint/mimic')
+URDFParser.install_parser(SafetyController, 'robot/joint/safety_controller')
 
-URDF.add_parser(Origin, 'robot/joint/origin')
+URDFParser.install_parser(Origin, 'robot/joint/origin')

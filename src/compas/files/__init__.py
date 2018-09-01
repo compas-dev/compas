@@ -71,6 +71,7 @@ urdf
     :nosignatures:
 
     URDF
+    URDFParser
 
 
 xml

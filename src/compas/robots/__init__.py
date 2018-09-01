@@ -9,9 +9,16 @@ This package provides basic structures and data exchange mechanisms that are
 building blocks for robotics support.
 
 The primary data representation for robot models is based on the Unified Robot Description Format
-(`URDF`_). A detailed description of the model is available on the `URDF Model wiki`_.
+(`URDF`_).
 
-This package parses URDF v1.0 according to the `URDF XSD Schema`_.
+.. note::
+
+    A detailed description of the model is available on the `URDF Model wiki`_.
+    This package parses URDF v1.0 according to the `URDF XSD Schema`_.
+
+    * `URDF`_
+    * `URDF Model wiki`_
+    * `URDF XSD Schema`_
 
 .. _URDF: http://wiki.ros.org/urdf
 .. _URDF Model wiki: http://wiki.ros.org/urdf/XML/model

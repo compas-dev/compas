@@ -23,6 +23,13 @@ class XML(object):
     reader : :class:`XMLReader`
         Reader used to process the XML file or string.
 
+    Examples
+    --------
+    >>> from compas.files import XML
+    >>> xml = XML.from_string("<Main><Title>Test</Title></Main>")
+    >>> xml.root.tag
+    'Main'
+
     """
 
     def __init__(self, reader):
@@ -32,9 +39,6 @@ class XML(object):
     def root(self):
         """Root element of the XML tree."""
         return self.reader.root
-
-    def parse(self):
-        pass
 
     @classmethod
     def from_file(cls, source):
@@ -47,7 +51,6 @@ class XML(object):
 
         """
         return cls(XMLReader.from_file(source))
-        # self.parser = XMLParser(self.reader, precision=precision)
 
     @classmethod
     def from_string(cls, text):

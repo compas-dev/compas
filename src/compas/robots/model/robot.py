@@ -3,17 +3,16 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.files import URDF
-from compas.topology import shortest_path
-
+from compas.files import URDFParser
 from compas.geometry import Frame
 from compas.geometry import Transformation
+from compas.topology import shortest_path
 
 from .geometry import Color
 from .geometry import Material
 from .geometry import Texture
 from .joint import Joint
 from .resource_resolvers import DefaultMeshResolver
-
 
 __all__ = ['Robot']
 
@@ -79,7 +78,8 @@ class Robot(object):
         Returns:
             A robot model instance.
         """
-        return URDF.parse(file)
+        urdf = URDF.from_file(file)
+        return urdf.robot
 
     @classmethod
     def from_urdf_string(cls, text):
@@ -91,7 +91,8 @@ class Robot(object):
         Returns:
             A robot model instance.
         """
-        return URDF.from_string(text)
+        urdf = URDF.from_string(text)
+        return urdf.robot
 
     def find_children_joints(self, link):
         """Returns a list of all children joints of the link.
@@ -373,7 +374,7 @@ class Robot(object):
         self.scale_factor *= factor
 
 
-URDF.add_parser(Robot, 'robot')
-URDF.add_parser(Material, 'robot/material')
-URDF.add_parser(Color, 'robot/material/color')
-URDF.add_parser(Texture, 'robot/material/texture')
+URDFParser.install_parser(Robot, 'robot')
+URDFParser.install_parser(Material, 'robot/material')
+URDFParser.install_parser(Color, 'robot/material/color')
+URDFParser.install_parser(Texture, 'robot/material/texture')
