@@ -37,8 +37,6 @@ class OBJReader(object):
     ----------
     filepath : str
         Path to the file.
-    remote : bool
-        Optional. Is the file on a remote location? Default is ``False``.
 
     Attributes
     ----------
