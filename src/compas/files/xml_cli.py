@@ -39,21 +39,26 @@ from __future__ import division
 
 import xml.etree.ElementTree as ET
 
-import clr
-clr.AddReference('System.Xml')
+import compas
 
-from System.IO import StringReader
-from System.Text.RegularExpressions import Regex
-from System.Text.RegularExpressions import RegexOptions
-from System.Xml import DtdProcessing
-from System.Xml import ValidationType
-from System.Xml import XmlNodeType
-from System.Xml import XmlReader
-from System.Xml import XmlReaderSettings
+try:
+    import clr
+    clr.AddReference('System.Xml')
 
+    from System.IO import StringReader
+    from System.Text.RegularExpressions import Regex
+    from System.Text.RegularExpressions import RegexOptions
+    from System.Xml import DtdProcessing
+    from System.Xml import ValidationType
+    from System.Xml import XmlNodeType
+    from System.Xml import XmlReader
+    from System.Xml import XmlReaderSettings
 
-CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]",
-                     RegexOptions.Compiled)
+    CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]",
+                        RegexOptions.Compiled)
+except ImportError:
+    compas.raise_if_ironpython()
+
 
 __all__ = ['CLRXMLTreeParser']
 
@@ -75,6 +80,9 @@ class CLRXMLTreeParser(ET.XMLParser):
     """
 
     def __init__(self, target=None, validating=False):
+        if not compas.is_ironpython():
+            raise Exception('CLRXMLTreeParser can only be used from IronPython')
+
         settings = XmlReaderSettings()
         settings.IgnoreComments = True
         settings.IgnoreProcessingInstructions = True
