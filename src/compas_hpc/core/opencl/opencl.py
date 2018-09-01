@@ -7,6 +7,7 @@ try:
     from numpy import array
     from numpy import float32
     from numpy import complex64
+    from numpy import uint32
 except:
     pass
 
@@ -30,9 +31,9 @@ __all__ = [
     'get_cl',
     'ones_cl',
     'zeros_cl',
-    # 'tile_cl',
-    # 'hstack_cl',
-    # 'vstack_cl',
+    'tile_cl',
+    'hstack_cl',
+    'vstack_cl',
 ]
 
 
@@ -204,46 +205,144 @@ def zeros_cl(queue, shape):
     return cl_array.zeros(queue, shape, dtype=float32)
 
 
-def hstack_cl(a):
+def tile_cl(queue, a, shape, dim=2):
 
-    """ Horizontally stack GPUArrays.
+    """ Horizontally and vertically tile a GPUArray.
 
     Parameters
     ----------
-    a : list
-        List of GPUArrays.
+    queue
+        PyOpenCL queue.
+    a : gpuarray
+        GPUArray to tile.
+    shape : tuple
+        Number of vertical and horizontal tiles.
 
     Returns
     -------
     gpuarray
-        Horizontally stack GPUArrays.
+        Tiled GPUArray.
 
     """
 
-    pass
+    m, n = a.shape
+    repy, repx = shape
+    b = cl_array.empty(queue, (m * repy, n * repx), dtype=float32)
+
+    kernel = cl.Program(queue.context, """
+
+    __kernel void tile_cl(__global float *a, __global float *b, unsigned m, unsigned n, unsigned repx, unsigned repy)
+    {
+        int idx = get_global_id(0);
+        int idy = get_global_id(1);
+        int id  = idy * (n * repx) + idx;
+
+        b[id] = a[(idy % m) * n + (idx % n)];
+    }
+
+    """).build()
+
+    kernel.tile_cl(queue, (n * repx, m * repy), None, a.data, b.data, uint32(m), uint32(n), uint32(repx), uint32(repy))
+
+    return b.get()
 
 
-# def vstack_cl(a):
+def hstack_cl(queue, a, b, dim=2):
 
-#     """ Vertically stack GPUArrays.
+    """ Stack two GPUArrays horizontally.
 
-#     Parameters
-#     ----------
-#     a : list
-#         List of GPUArrays.
+    Parameters
+    ----------
+    queue
+        PyOpenCL queue.
+    a : gpuarray
+        First GPUArray.
+    b : gpuarray
+        Second GPUArray.
 
-#     Returns
-#     -------
-#     gpuarray
-#         Vertically stack GPUArrays.
+    Returns
+    -------
+    gpuarray
+        Horizontally stacked GPUArrays.
 
-#     """
+    """
 
-#     return cl_array.concatenate(a, axis=0)
+    m, n = a.shape
+    o = b.shape[1]
+    c = cl_array.empty(queue, (m, n + o), dtype=float32)
+
+    kernel = cl.Program(queue.context, """
+
+    __kernel void hstack_cl(__global float *a, __global float *b, __global float *c, unsigned n, unsigned o)
+    {
+        int idx = get_global_id(0);
+        int idy = get_global_id(1);
+        int id  = idy * (n + o) + idx;
+
+        if (idx < n)
+        {
+            c[id] = a[idy * n + idx];
+        }
+        else
+        {
+            c[id] = b[idy * o + (idx - n)];
+        }
+    }
+
+    """).build()
+
+    kernel.hstack_cl(queue, (n + o, m, 1), None, a.data, b.data, c.data, uint32(n), uint32(o))
+
+    return c.get()
 
 
-# def tile_cl():
-#     raise NotImplementedError
+def vstack_cl(queue, a, b, dim=2):
+
+    """ Stack two GPUArrays vertically.
+
+    Parameters
+    ----------
+    queue
+        PyOpenCL queue.
+    a : gpuarray
+        First GPUArray.
+    b : gpuarray
+        Second GPUArray.
+
+    Returns
+    -------
+    gpuarray
+        Vertically stacked GPUArrays.
+
+    """
+
+    m, n = a.shape
+    o = b.shape[0]
+    c = cl_array.empty(queue, (m + o, n), dtype=float32)
+
+    kernel = cl.Program(queue.context, """
+
+    __kernel void vstack_cl(__global float *a, __global float *b, __global float *c, unsigned m, unsigned n, unsigned o)
+    {
+        int idx = get_global_id(0);
+        int idy = get_global_id(1);
+        int id  = idy * n + idx;
+
+        if (idy < m)
+        {
+            c[id] = a[idy * n + idx];
+        }
+        else
+        {
+            c[id] = b[(idy - m) * n + idx];
+        }
+    }
+
+    """).build()
+
+    kernel.vstack_cl(queue, (n, m + o, 1), None, a.data, b.data, c.data, uint32(m), uint32(n), uint32(o))
+
+    return c.get()
 
 
 # ==============================================================================
@@ -252,66 +351,21 @@ def hstack_cl(a):
 
 if __name__ == "__main__":
 
-    # context > device > queue > kernel
-
     ctx   = cl.create_some_context()
-    queue = cl.CommandQueue(ctx)  # need to find the device associated to
+    queue = cl.CommandQueue(ctx)  # need to find the device association
 
     a = give_cl(queue, [[1., 2., 3.], [4., 5., 6.]])
     # a = give_cl(queue, [1.+1j, 2.+2j, 3.+3j], type='complex')
     a = get_cl(a)
     a = ones_cl(queue, (2, 2))
     b = zeros_cl(queue, (2, 2))
-    c = rand_cl(queue, (2, 2))
-    # d = hstack_cl([a, b, c])
-#     # g_ = hstack_cl([z_, o_, z_])
+    c = rand_cl(queue, (1, 3))
+    d = rand_cl(queue, (1, 2))
+    # e = vstack_cl(queue, c, d)
+    e = tile_cl(queue, d, (2, 2))
 
-#     print(get_cl(z_))
-#     print(get_cl(o_))
-#     print(get_cl(c_))
-#     print(get_cl(d_))
-#     print(get_cl(e_))
-#     print(get_cl(f_))
-#     print(get_cl(g_))
-#     print(get_cl(e_ > c_))
-#     # print(get_cl(h_))
-#     # print(get_cl(g_))
-#     print(get_cl(rand_cl(queue, (2, 2))))
-
-    # print(a)
-    # print(b)
-    # print(c)
-    # print(d)
-
-
-
-
-
-
-
-
-
-
-    ctx = cl.create_some_context()
-    queue = cl.CommandQueue(ctx)
-
-    a = rand_cl(queue, (3, 1))
-    b = rand_cl(queue, (3, 3))
-    c = cl_array.zeros(queue, (3, 4), dtype=float32)
-
-    kernel = cl.Program(ctx, """
-
-    __kernel void hstack_cl(__global float *a, __global float *b, __global float *c)
-        {
-            int gid = get_global_id(0);
-
-            c[gid] = gid;
-        }
-    """).build()
-
-    kernel.hstack_cl(queue, (c.size,), None, a.data, b.data, c.data)
-
-    print(c.get())
+    print(d)
+    print(e)
 
 
 
@@ -328,62 +382,11 @@ if __name__ == "__main__":
 
 
 
-# # ==============================================================================
 
-#     # ctx = cl.create_some_context()
-#     # queue = cl.CommandQueue(ctx)
 
-#     # a_ = give_cl(queue, [0, 1, 2])
-#     # b_ = give_cl(queue, [3, 4, 5])
-#     # c_ = cl_array.empty_like(a_)
 
-#     # prg = cl.Program(ctx, """
 
-#     # __kernel void sum(__global const float *a,
 
-#     # __global const float *b, __global float *c)
-#     #     {
-#     #         int gid = get_global_id(0);
-
-#     #         c[gid] = a[gid] + b[gid];
-#     #     }
-#     # """).build()
-
-#     # prg.sum(queue, a_.shape, None, a_.data, b_.data, c_.data)
-
-#     # print((c_).get())
-
-# # ==============================================================================
-
-#     # from numpy import empty
-#     # from numpy import int32
-
-#     # demo_r = empty((3, 5), dtype=int32)
-#     # ctx = cl.create_some_context()
-#     # queue = cl.CommandQueue(ctx)
-
-#     # mf = cl.mem_flags
-#     # demo_buf = cl.Buffer(ctx, mf.WRITE_ONLY, demo_r.nbytes)
-
-#     # prg = cl.Program(ctx,
-#     # """
-#     # __kernel void demo(__global uint *demo)
-#     # {
-#     #     int i;
-#     #     int gid = get_global_id(0);
-
-#     #     for(i = 0; i < 5; i++)
-#     #     {
-#     #         demo[gid*5+i] = i;
-#     #     }
-#     # }""")
-
-#     # prg.build()
-#     # prg.demo(queue, (3,), None, demo_buf)
-#     # cl.enqueue_read_buffer(queue, demo_buf, demo_r).wait()
-
-#     # for res in demo_r:
-#     #     print(res)
 
 
 # # ====================================================================================
