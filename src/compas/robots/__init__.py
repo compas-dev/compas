@@ -94,12 +94,29 @@ The joint describes the kinematics and dynamics of the robot's joint.
     Mimic
     SafetyController
 
+Resources
+=========
+
+Model descriptions usually do not contain embedded geometry information but only
+descriptions for externally hosted resources. For that purpose, this package provides
+loaders.
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    AbstractMeshLoader
+    DefaultMeshLoader
+    GithubPackageMeshLoader
+
 """
 
 from __future__ import absolute_import
 
 from .model import *
+from .resources import *
 
 from . import model
+from . import resources
 
-__all__ = model.__all__
+__all__ = model.__all__ + resources.__all__
