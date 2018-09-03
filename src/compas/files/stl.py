@@ -206,8 +206,8 @@ class STLReader(object):
 class STLParser(object):
     """"""
 
-    def __init__(self, reader, precision):
-        self.precision = precision if precision else '3f'
+    def __init__(self, reader, precision=None):
+        self.precision = precision
         self.reader    = reader
         self.vertices  = None
         self.faces     = None

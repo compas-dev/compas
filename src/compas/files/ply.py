@@ -407,8 +407,8 @@ class PLYReader(object):
 class PLYParser(object):
     """"""
 
-    def __init__(self, reader, precision):
-        self.precision = precision if precision is not None else '3f'
+    def __init__(self, reader, precision=None):
+        self.precision = precision
         self.reader    = reader
         self.vertices  = None
         self.edges     = None

@@ -295,7 +295,7 @@ class OBJReader(object):
 class OBJParser(object):
     """"""
     def __init__(self, reader, precision=None):
-        self.precision = precision if precision is not None else '3f'
+        self.precision = precision
         self.reader    = reader
         self.vertices  = None
         self.weights   = None

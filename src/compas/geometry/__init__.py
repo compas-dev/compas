@@ -241,6 +241,8 @@ Transformations
     :toctree: generated/
     :nosignatures:
 
+    mesh_transform
+    mesh_transformed
     mirror_points_line
     mirror_points_line_xy
     mirror_points_plane
