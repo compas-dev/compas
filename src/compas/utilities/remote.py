@@ -20,7 +20,7 @@ except ImportError:
 
 
 
-__all__ = []
+__all__ = ['download_file_from_remote', 'download_image_from_remote']
 
 
 def download_file_from_remote(source, target):

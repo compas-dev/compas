@@ -207,7 +207,7 @@ class STLParser(object):
     """"""
 
     def __init__(self, reader, precision):
-        self.precision = precision if precision is not None else '3f'
+        self.precision = precision if precision else '3f'
         self.reader    = reader
         self.vertices  = None
         self.faces     = None
@@ -225,6 +225,8 @@ class STLParser(object):
                     gkey_index[gkey] = len(vertices)
                     vertices.append(xyz)
                 face.append(gkey_index[gkey])
+            if face[0] == face[1] or face[0] == face[2]:
+                continue
             faces.append(face)
         self.vertices = vertices
         self.faces = faces
@@ -240,21 +242,24 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas.viewers import MeshViewer
-    from compas.plotters import MeshPlotter
+    # from compas.viewers import MeshViewer
+    # from compas.plotters import MeshPlotter
+    from compas.utilities import download_file_from_remote
 
-    filepath = os.path.join(compas.DATA, 'cube_ascii.stl')
+    import compas_rhino
+    from compas_rhino.artists import MeshArtist
+
+
+    source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
+    filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
+    # download_file_from_remote(source, filepath)
+
+    # filepath = os.path.join(compas.DATA, 'cube_ascii.stl')
 
     stl = STL(filepath)
 
     mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
 
-    viewer = MeshViewer()
-    viewer.mesh = mesh
-    viewer.show()
+    artist = MeshArtist(mesh)
 
-    # plotter = MeshPlotter(mesh)
-    # # plotter.draw_vertices()
-    # plotter.draw_edges()
-    # plotter.draw_faces()
-    # plotter.show()
+    artist.draw()
