@@ -1,8 +1,6 @@
 from __future__ import absolute_import
 
-
-from .dr_python import dr_python
-from .dr_numpy import dr_numpy
+import importlib
 
 
 class NotSupportedError(Exception):
@@ -107,8 +105,8 @@ class DynamicRelaxation(object):
     """
 
     backends = {
-        'python' : dr_python,
-        'numpy'  : dr_numpy
+        'python' : None,
+        'numpy'  : None
     }
 
     def __init__(self, backend='python'):
@@ -123,6 +121,10 @@ class DynamicRelaxation(object):
     def backend(self, backend):
         if backend not in self.backends:
             raise NotSupportedError
+
+        m = importlib.import_module(".dr_{}".format(backend), package="compas.numerical.dr")
+        f = getattr(m, "dr_{}".format(backend))
+        self.backends[backend] = f
         self._backend = backend
 
     @property
@@ -135,4 +137,4 @@ class DynamicRelaxation(object):
                            callback=callback, callback_args=callback_args, **kwargs)
 
 
-__all__ = ['DynamicRelaxation', 'dr_python', 'dr_numpy']
+__all__ = ['DynamicRelaxation']

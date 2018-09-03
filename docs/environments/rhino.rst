@@ -2,6 +2,12 @@
 Working in Rhino
 ********************************************************************************
 
+.. warning::
+
+    All instructions on this page are for Rhino for Windows.
+    The instructions for Rhinomac are coming soon...
+
+
 *Installing* **COMPAS** for Rhino is very simple. Just open the *command prompt*
 and type the following
 
@@ -82,3 +88,11 @@ And add
 .. note::
 
     Restart Rhino and check the version info as before.
+
+
+Using the built-in script editor
+================================
+
+
+Using an external editor
+========================

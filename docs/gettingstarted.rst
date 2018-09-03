@@ -32,6 +32,61 @@ To install the *bleeding edge version* directly from the GitHub repo
     $ pip install git+https://github.com/compas-dev/compas.git
 
 
+Updates
+=======
+
+**COMPAS** is still under very active development, with new versions being released
+frequently. Updating your installation to the latest version is easy.
+
+Using conda
+
+::
+
+    $ conda update COMPAS
+
+
+Using pip
+
+::
+
+    $ pip install COMPAS --upgrade
+
+
+Virtual environments
+====================
+
+One of the reasons to use virtual environments is be able to work with different versions
+of Python and/or different versions and combinations of packages.
+For example, if you have old code that was written for a version of Python or for
+a version of a package that is incompatible with the current or latest version,
+you can use a virtual environment to make sure you can keep running that code
+without constantly having to update your entire development setup.
+
+Create an environment using conda
+
+::
+
+    $ conda create -n OldCode
+
+
+Create an environment with a specific version of Python
+
+::
+
+    $ conda create -n OldCode python=2.7
+
+
+Install **COMPAS** (or other packages) for this environment
+
+::
+
+    $ conda install -n OldCode COMPAS=0.3.0
+
+
+For further instructions about managing virtual environments with conda
+`see the docs <https://conda.io/docs/user-guide/tasks/manage-environments.html>`_.
+
+
 First Steps
 ===========
 

@@ -88,6 +88,10 @@ def mesh_fd_alglib(mesh, density=1.0, kmax=10):
         mesh.set_edge_attributes((u, v), ('q', 'f', 'l'), (q, f, l))
 
 
+def fd_alglib(vertices, edges, fixed, q, loads, **kwargs):
+    pass
+
+
 # ==============================================================================
 # helpers
 # ==============================================================================

@@ -88,6 +88,7 @@ class FaceArtist(object):
 
         """
         fkeys = fkeys or list(self.datastructure.faces())
+        
         colordict = color_to_colordict(color,
                                        fkeys,
                                        default=self.datastructure.attributes.get('color.face'),

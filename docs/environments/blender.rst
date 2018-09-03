@@ -37,6 +37,10 @@ Now configure Blender to use the newly installed environment:
 On Mac
 ======
 
-.. warning::
 
-    Under construction...
+Using the built-in script editor
+================================
+
+
+Using an external editor
+========================
