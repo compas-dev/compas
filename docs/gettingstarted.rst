@@ -55,32 +55,35 @@ Using pip
 Virtual environments
 ====================
 
-One of the reasons to use virtual environments is be able to work with different versions
-of Python and/or different versions and combinations of packages.
-For example, if you have old code that was written for a version of Python or for
-a version of a package that is incompatible with the current or latest version,
-you can use a virtual environment to make sure you can keep running that code
+One of the reasons to use virtual environments is to isolate dependencies, to 
+be able to create a fully reproducible setup, and to be able to work with
+different versions of Python and/or different versions and combinations of 
+packages.
+
+For example, if you work on a project that requires a specific version of Python or
+a specific version of a package that is incompatible with the ones required by another 
+project, you can use environments to make sure both projects can run side-by-side
 without constantly having to update your entire development setup.
 
 Create an environment using conda
 
 ::
 
-    $ conda create -n OldCode
+    $ conda create -n my-project
 
 
 Create an environment with a specific version of Python
 
 ::
 
-    $ conda create -n OldCode python=2.7
+    $ conda create -n my-project python=2.7
 
 
 Install **COMPAS** (or other packages) for this environment
 
 ::
 
-    $ conda install -n OldCode COMPAS=0.3.0
+    $ conda install -n my-project COMPAS=0.3.0
 
 
 For further instructions about managing virtual environments with conda

@@ -225,8 +225,6 @@ class STLParser(object):
                     gkey_index[gkey] = len(vertices)
                     vertices.append(xyz)
                 face.append(gkey_index[gkey])
-            if face[0] == face[1] or face[1] == face[2] or face[2] == face[0]:
-                continue
             faces.append(face)
         self.vertices = vertices
         self.faces = faces
