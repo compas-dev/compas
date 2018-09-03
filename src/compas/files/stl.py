@@ -240,15 +240,9 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    # from compas.viewers import MeshViewer
+    from compas.viewers import MeshViewer
     from compas.utilities import download_file_from_remote
     from compas.topology import connected_components
-
-    from compas_rhino.artists import MeshArtist
-
-    import Rhino.Geometry.Mesh
-    import scriptcontext as sc
-    import rhinoscriptsyntax as rs
 
 
     source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
@@ -256,7 +250,7 @@ if __name__ == "__main__":
 
     download_file_from_remote(source, filepath, overwrite=False)
 
-    stl = STL(filepath, precision='12f')
+    stl = STL(filepath, precision='6f')
 
     mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
 
@@ -282,28 +276,6 @@ if __name__ == "__main__":
 
         meshes.append(Mesh.from_vertices_and_faces(vertices, faces))
 
-    # viewer = MeshViewer()
-    # viewer.mesh = meshes[0]
-    # viewer.show()
-
-    for i, mesh in enumerate(meshes):
-        mesh.name = "{}-{}".format(mesh.name, i)
-        # artist = MeshArtist(mesh, layer=mesh.name)
-        # artist.clear_layer()
-        # artist.draw()
-        rmesh = Rhino.Geometry.Mesh()
-        # rmesh.Vertices.UseDoublePrecisionVertices = True
-
-        for key, attr in mesh.vertices(True):
-            rmesh.Vertices.Add(attr['x'], attr['y'], attr['z'])
-
-        for fkey in mesh.faces():
-            vertices = mesh.face_vertices(fkey)
-            rmesh.Faces.AddFace(*vertices)
-
-        guid = sc.doc.Objects.AddMesh(rmesh)
-        
-        rs.AddLayer(mesh.name)
-
-        rs.ObjectName(guid, mesh.name)
-        rs.ObjectLayer(guid, mesh.name)
+    viewer = MeshViewer()
+    viewer.mesh = meshes[0]
+    viewer.show()
