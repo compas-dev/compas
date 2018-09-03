@@ -220,7 +220,7 @@ class STLParser(object):
         for facet in self.reader.facets:
             face = []
             for xyz in facet['vertices']:
-                gkey = geometric_key(xyz)
+                gkey = geometric_key(xyz, self.precision)
                 if gkey not in gkey_index:
                     gkey_index[gkey] = len(vertices)
                     vertices.append(xyz)
