@@ -84,17 +84,6 @@ class BaseShape(object):
     def __init__(self):
         self.geometry = None
 
-
-class Box(BaseShape):
-    """3D shape primitive representing a box."""
-
-    def __init__(self, size):
-        super(Box, self).__init__()
-        self.size = _parse_floats(size)
-
-    def create(self, urdf_importer, meshcls):
-        pass
-
     def transform(self, transformation):
         if self.geometry:
             self.geometry.transform(transformation)
@@ -105,6 +94,17 @@ class Box(BaseShape):
     def draw(self):
         if self.geometry:
             return self.geometry.draw()
+
+
+class Box(BaseShape):
+    """3D shape primitive representing a box."""
+
+    def __init__(self, size):
+        super(Box, self).__init__()
+        self.size = _parse_floats(size)
+
+    def create(self, urdf_importer, meshcls):
+        pass
 
 
 class Cylinder(BaseShape):
@@ -118,17 +118,6 @@ class Cylinder(BaseShape):
     def create(self, urdf_importer, meshcls):
         pass
 
-    def transform(self, transformation):
-        if self.geometry:
-            self.geometry.transform(transformation)
-
-    def set_color(self, color_rgba):
-        pass
-
-    def draw(self):
-        if self.geometry:
-            return self.geometry.draw()
-
 
 class Sphere(BaseShape):
     """3D shape primitive representing a sphere."""
@@ -139,17 +128,6 @@ class Sphere(BaseShape):
 
     def create(self, urdf_importer, meshcls):
         pass
-
-    def transform(self, transformation):
-        if self.geometry:
-            self.geometry.transform(transformation)
-
-    def set_color(self, color_rgba):
-        pass
-
-    def draw(self):
-        if self.geometry:
-            return self.geometry.draw()
 
 
 class Capsule(BaseShape):
@@ -162,17 +140,6 @@ class Capsule(BaseShape):
 
     def create(self, urdf_importer, meshcls):
         pass
-
-    def transform(self, transformation):
-        if self.geometry:
-            self.geometry.transform(transformation)
-
-    def set_color(self, color_rgba):
-        pass
-
-    def draw(self):
-        if self.geometry:
-            return self.geometry.draw()
 
 
 class MeshDescriptor(BaseShape):
@@ -189,18 +156,6 @@ class MeshDescriptor(BaseShape):
         """
         self.geometry = urdf_importer.read_mesh_from_resource_file_uri(self.filename, meshcls)
         print("Created mesh from file %s" % self.filename)  # TODO: use logging?
-
-    def transform(self, transformation):
-        if self.geometry:
-            self.geometry.transform(transformation)
-
-    def set_color(self, color_rgba):
-        if self.geometry:
-            self.geometry.set_color(color_rgba)
-
-    def draw(self):
-        if self.geometry:
-            return self.geometry.draw()
 
 
 class Color(object):
