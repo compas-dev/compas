@@ -4,5 +4,7 @@ Testing heroku app integration
 
 .. raw:: html
 
-    <iframe src="https://compasapp-test.herokuapp.com/" width="100%" height="960" frameborder="0"></iframe>
+    <div class="embed-responsive embed-responsive-1by1">
+        <iframe src="https://compasapp-test.herokuapp.com/" class="embed-responsive-item"></iframe>
+    </div
 
