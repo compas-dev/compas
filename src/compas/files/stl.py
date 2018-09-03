@@ -225,7 +225,7 @@ class STLParser(object):
                     gkey_index[gkey] = len(vertices)
                     vertices.append(xyz)
                 face.append(gkey_index[gkey])
-            if face[0] == face[1] or face[0] == face[2]:
+            if face[0] == face[1] or face[1] == face[2] or face[2] == face[0]:
                 continue
             faces.append(face)
         self.vertices = vertices
@@ -243,23 +243,69 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
     # from compas.viewers import MeshViewer
-    # from compas.plotters import MeshPlotter
     from compas.utilities import download_file_from_remote
+    from compas.topology import connected_components
 
-    import compas_rhino
     from compas_rhino.artists import MeshArtist
+
+    import Rhino.Geometry.Mesh
+    import scriptcontext as sc
+    import rhinoscriptsyntax as rs
 
 
     source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
     filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
-    # download_file_from_remote(source, filepath)
 
-    # filepath = os.path.join(compas.DATA, 'cube_ascii.stl')
+    download_file_from_remote(source, filepath, overwrite=False)
 
-    stl = STL(filepath)
+    stl = STL(filepath, precision='12f')
 
     mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
 
-    artist = MeshArtist(mesh)
+    vertexgroups = connected_components(mesh.halfedge)
+    facegroups = [[] for _ in range(len(vertexgroups))]
 
-    artist.draw()
+    vertexsets = list(map(set, vertexgroups))
+
+    for fkey in mesh.faces():
+        vertices = set(mesh.face_vertices(fkey))
+
+        for i, vertexset in enumerate(vertexsets):
+            if vertices.issubset(vertexset):
+                facegroups[i].append(fkey)
+                break
+
+    meshes = []
+
+    for vertexgroup, facegroup in zip(vertexgroups, facegroups):
+        key_index = {key: index for index, key in enumerate(vertexgroup)}
+        vertices = mesh.get_vertices_attributes('xyz', keys=vertexgroup)
+        faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in facegroup]
+
+        meshes.append(Mesh.from_vertices_and_faces(vertices, faces))
+
+    # viewer = MeshViewer()
+    # viewer.mesh = meshes[0]
+    # viewer.show()
+
+    for i, mesh in enumerate(meshes):
+        mesh.name = "{}-{}".format(mesh.name, i)
+        # artist = MeshArtist(mesh, layer=mesh.name)
+        # artist.clear_layer()
+        # artist.draw()
+        rmesh = Rhino.Geometry.Mesh()
+        # rmesh.Vertices.UseDoublePrecisionVertices = True
+
+        for key, attr in mesh.vertices(True):
+            rmesh.Vertices.Add(attr['x'], attr['y'], attr['z'])
+
+        for fkey in mesh.faces():
+            vertices = mesh.face_vertices(fkey)
+            rmesh.Faces.AddFace(*vertices)
+
+        guid = sc.doc.Objects.AddMesh(rmesh)
+        
+        rs.AddLayer(mesh.name)
+
+        rs.ObjectName(guid, mesh.name)
+        rs.ObjectLayer(guid, mesh.name)

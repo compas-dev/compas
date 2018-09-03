@@ -23,7 +23,7 @@ except ImportError:
 __all__ = ['download_file_from_remote', 'download_image_from_remote']
 
 
-def download_file_from_remote(source, target):
+def download_file_from_remote(source, target, overwrite=True):
     """Download a file from a remote source and save it to a local destination.
 
     Parameters
@@ -58,7 +58,11 @@ def download_file_from_remote(source, target):
     if not os.access(parent, os.W_OK):
         raise Exception('The target path is not writable: {}'.format(target))
 
-    urlretrieve(source, target)
+    if not os.path.exists(target):
+        urlretrieve(source, target)
+    else:
+        if overwrite:
+            urlretrieve(source, target)
 
 
 def download_image_from_remote(source, target, show=False):

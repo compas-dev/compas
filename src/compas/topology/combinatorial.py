@@ -8,6 +8,9 @@ from compas.topology import breadth_first_traverse
 
 __all__ = [
     'vertex_coloring',
+    'connected_components',
+    'network_is_connected',
+    'mesh_is_connected'
 ]
 
 
@@ -75,6 +78,25 @@ def vertex_coloring(adjacency):
 
 
 def connected_components(adjacency):
+    """Identify the vertices of connected components.
+
+    Parameters
+    ----------
+    adjacency : dict
+        An adjacency dictionary mapping vertex identifiers to neighbours.
+
+    Returns
+    -------
+    list of list of hashable
+        A nested list of vertex identifiers.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        pass
+
+    """
     tovisit = set(adjacency)
     components = []
     while tovisit:
@@ -88,15 +110,17 @@ def connected_components(adjacency):
 def network_is_connected(network):
     """Verify that the mesh is connected.
 
-    A mesh is connected if the following conditions are fulfilled:
-
-    * For every two vertices a path exists connecting them.
-
     Returns
     -------
     bool
         True, if the mesh is connected.
         False, otherwise.
+
+    Notes
+    -----
+    A network is connected if the following conditions are fulfilled:
+
+    * For every two vertices a path exists connecting them.
 
     """
     if not network.vertex:
@@ -110,15 +134,17 @@ def network_is_connected(network):
 def mesh_is_connected(mesh):
     """Verify that the mesh is connected.
 
-    A mesh is connected if the following conditions are fulfilled:
-
-    * For every two vertices a path exists connecting them.
-
     Returns
     -------
     bool
         True, if the mesh is connected.
         False, otherwise.
+
+    Notes
+    -----
+    A mesh is connected if the following conditions are fulfilled:
+
+    * For every two vertices a path exists connecting them.
 
     """
     if not mesh.vertex:
@@ -148,7 +174,7 @@ if __name__ == "__main__":
 
     key_color = vertex_coloring(network.adjacency)
 
-    colors = ['#ff0000', '#00ff00', '#0000ff']
+    colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00']
 
     plotter = NetworkPlotter(network, figsize=(10, 7))
 
