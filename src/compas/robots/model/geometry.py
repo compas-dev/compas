@@ -78,12 +78,19 @@ class Origin(Frame):
         self.point = self.point * factor
         self.init = self.copy()
 
-class Box(object):
+
+class BaseShape(object):
+    """Base class for all 3D shapes."""
+    def __init__(self):
+        self.geometry = None
+
+
+class Box(BaseShape):
     """3D shape primitive representing a box."""
 
     def __init__(self, size):
+        super(Box, self).__init__()
         self.size = _parse_floats(size)
-        self.geometry = None
 
     def create(self, urdf_importer, meshcls):
         pass
@@ -100,13 +107,13 @@ class Box(object):
             return self.geometry.draw()
 
 
-class Cylinder(object):
+class Cylinder(BaseShape):
     """3D shape primitive representing a cylinder."""
 
     def __init__(self, radius, length):
+        super(Cylinder, self).__init__()
         self.radius = float(radius)
         self.length = float(length)
-        self.geometry = None
 
     def create(self, urdf_importer, meshcls):
         pass
@@ -123,12 +130,12 @@ class Cylinder(object):
             return self.geometry.draw()
 
 
-class Sphere(object):
+class Sphere(BaseShape):
     """3D shape primitive representing a sphere."""
 
     def __init__(self, radius):
+        super(Sphere, self).__init__()
         self.radius = float(radius)
-        self.geometry = None
 
     def create(self, urdf_importer, meshcls):
         pass
@@ -145,13 +152,13 @@ class Sphere(object):
             return self.geometry.draw()
 
 
-class Capsule(object):
+class Capsule(BaseShape):
     """3D shape primitive representing a capsule."""
 
     def __init__(self, radius, length):
+        super(Capsule, self).__init__()
         self.radius = float(radius)
         self.length = float(length)
-        self.geometry = None
 
     def create(self, urdf_importer, meshcls):
         pass
@@ -168,13 +175,13 @@ class Capsule(object):
             return self.geometry.draw()
 
 
-class MeshDescriptor(object):
+class MeshDescriptor(BaseShape):
     """Description of a mesh."""
 
     def __init__(self, filename, scale='1.0 1.0 1.0'):
+        super(MeshDescriptor, self).__init__()
         self.filename = filename
         self.scale = _parse_floats(scale)
-        self.geometry = None
 
     def create(self, urdf_importer, meshcls):
         """Creates the mesh geometry based on the passed urdf_importer and the
@@ -229,7 +236,7 @@ class Material(object):
 
 
 class Geometry(object):
-    """Shape of a link."""
+    """Geometrical description of the shape of a link."""
 
     def __init__(self, box=None, cylinder=None, sphere=None, capsule=None, mesh=None, **kwargs):
         self.shape = box or cylinder or sphere or capsule or mesh
@@ -237,6 +244,20 @@ class Geometry(object):
         if not self.shape:
             raise TypeError(
                 'Geometry must define at least one of: box, cylinder, sphere, capsule, mesh')
+
+        if 'geometry' not in dir(self.shape):
+            raise TypeError('Shape implementation does not define a geometry accessor')
+
+    @property
+    def geo(self):
+        """Get geometry associated to this shape.
+
+        Returns
+        -------
+        object
+            Shape's geometry, usually a mesh implementation.
+        """
+        return self.shape.geometry
 
     def draw(self):
         return self.shape.draw()

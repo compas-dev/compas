@@ -296,17 +296,17 @@ class Robot(object):
         """
         force = kwargs.get('force', False)
 
-        resolvers = list(resource_loaders)
-        resolvers.insert(0, DefaultMeshLoader())
+        loaders = list(resource_loaders)
+        loaders.insert(0, DefaultMeshLoader())
 
         for link in self.links:
             for element in itertools.chain(link.collision, link.visual):
                 shape = element.geometry.shape
                 needs_reload = force or not shape.geometry
                 if 'filename' in dir(shape) and needs_reload:
-                    for resolver in resolvers:
-                        if resolver.can_load_mesh(shape.filename):
-                            shape.geometry = resolver.load_mesh(shape.filename)
+                    for loader in loaders:
+                        if loader.can_load_mesh(shape.filename):
+                            shape.geometry = loader.load_mesh(shape.filename)
                             break
 
                     if not shape.geometry:
@@ -315,9 +315,7 @@ class Robot(object):
     def get_visual_meshes(self):
         for link in self.iter_links():
             for visual in link.visual:
-                shape = visual.geometry.shape
-                if shape.geometry:
-                    yield shape.geometry
+                yield visual.geometry.geo
 
     @property
     def frames(self):
