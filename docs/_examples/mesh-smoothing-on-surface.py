@@ -15,8 +15,11 @@ from compas.geometry import smooth_area
 
 import compas_rhino
 
+from compas_rhino.helpers import mesh_from_guid
+
 from compas_rhino.conduits import LinesConduit
 from compas_rhino.geometry import RhinoSurface
+from compas_rhino.artists import MeshArtist
 
 
 __author__    = ['Tom Van Mele', 'Matthias Rippmann']
@@ -29,7 +32,7 @@ __email__     = 'van.mele@arch.ethz.ch'
 # and select a target surface
 
 guid = compas_rhino.select_mesh()
-mesh = compas_rhino.mesh_from_guid(Mesh, guid)
+mesh = mesh_from_guid(Mesh, guid)
 
 guid = compas_rhino.select_surface()
 surf = RhinoSurface(guid)
@@ -86,4 +89,5 @@ for key, attr in mesh.vertices(True):
     attr['y'] = vertices[key][1]
     attr['z'] = vertices[key][2]
 
-compas_rhino.mesh_draw(mesh)
+artist = MeshArtist(mesh, layer='mesh-out')
+artist.draw_faces(join_faces=True)

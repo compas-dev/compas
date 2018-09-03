@@ -8,9 +8,12 @@ from compas.topology import mesh_quads_to_triangles
 
 import compas_rhino
 
+from compas_rhino.helpers import mesh_from_guid
+from compas_rhino.helpers import mesh_identify_vertices
 from compas_rhino.geometry import RhinoMesh
 from compas_rhino.geometry import RhinoCurve
 from compas_rhino.conduits import MeshConduit
+from compas_rhino.artists import MeshArtist
 
 
 __author__    = ['Tom Van Mele', 'Matthias Rippmann']
@@ -46,7 +49,7 @@ points = compas_rhino.get_point_coordinates(guid_points)
 # make a mesh datastructure from the Rhino mesh
 # triangulate the mesh
 
-mesh = compas_rhino.mesh_from_guid(Mesh, guid_target)
+mesh = mesh_from_guid(Mesh, guid_target)
 mesh_quads_to_triangles(mesh)
 
 
@@ -54,7 +57,7 @@ mesh_quads_to_triangles(mesh)
 # by matching the coordinates of the selected points
 # up to a precision
 
-keys  = compas_rhino.mesh_identify_vertices(mesh, points, '1f')
+keys  = mesh_identify_vertices(mesh, points, '1f')
 fixed = set(keys)
 
 
@@ -68,9 +71,11 @@ conduit = MeshConduit(mesh, refreshrate=2)
 
 def callback(mesh, k, args):
     boundary = set(mesh.vertices_on_boundary())
+
     for key, attr in mesh.vertices(data=True):
         if key in fixed:
             continue
+
         if key in boundary:
             x, y, z = border.closest_point(mesh.vertex_coordinates(key))
             attr['x'] = x
@@ -81,6 +86,7 @@ def callback(mesh, k, args):
             attr['x'] = x
             attr['y'] = y
             attr['z'] = z
+
     conduit.redraw(k)
 
 
@@ -101,5 +107,5 @@ with conduit.enabled():
         fixed=fixed,
         callback=callback)
 
-
-compas_rhino.mesh_draw(mesh, layer='remeshed', clear_layer=True)
+artist = MeshArtist(mesh, layer='remeshed')
+artist.draw_faces(join_faces=True)

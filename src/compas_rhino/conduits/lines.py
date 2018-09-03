@@ -113,7 +113,7 @@ class LinesConduit(Conduit):
             The color specification of each line in hex or RGB(255) format.
 
         """
-        return self._colors
+        return self._color
     
     @color.setter
     def color(self, color):
