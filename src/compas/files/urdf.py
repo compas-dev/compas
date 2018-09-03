@@ -1,123 +1,105 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 import inspect
-import xml.etree.ElementTree as ET
 
+from compas.files.xml import XML
 from compas.utilities import memoize
-
 
 __all__ = [
     'URDF',
+    'URDFParser'
 ]
 
 
-@memoize
-def get_metadata(type):
-    metadata = dict()
+class URDF(object):
+    """Parse URDF files.
 
-    if hasattr(type, 'from_urdf'):
-        metadata['from_urdf'] = getattr(type, 'from_urdf')
-    else:
-        argspec = inspect.getargspec(type.__init__)
-        args = {}
+    This class abstracts away the underlying XML of the Unified Robot
+    Description Format (`URDF`_) and represents its as an object graph.
 
-        required = len(argspec.args)
-        if argspec.defaults:
-            required -= len(argspec.defaults)
+    Attributes
+    ----------
+    xml : :class:`XML`
+        Instance of the XML reader/parser class.
+    robot : object
+        Root element of the URDF model, i.e. a robot instance.
 
-        for i in range(1, len(argspec.args)):
-            data = dict(required=i < required)
-            default_index = i - required
+    See Also
+    --------
 
-            if default_index >= 0:
-                default = argspec.defaults[default_index]
-                data['default'] = default
-                data['sequence'] = hasattr(default, '__iter__')
-            else:
-                data['sequence'] = False
+    A detailed description of the model is available on the `URDF Model wiki`_.
+    This package parses URDF v1.0 according to the `URDF XSD Schema`_.
 
-            args[argspec.args[i]] = data
+    * `URDF`_
+    * `URDF Model wiki`_
+    * `URDF XSD Schema`_
 
-        metadata['keywords'] = argspec.keywords is not None
-        metadata['init_args'] = args
+    .. _URDF: http://wiki.ros.org/urdf
+    .. _URDF Model wiki: http://wiki.ros.org/urdf/XML/model
+    .. _URDF XSD Schema: https://github.com/ros/urdfdom/blob/master/xsd/urdf.xsd
 
-    metadata['argument_map'] = getattr(type, 'argument_map', {})
-
-    return metadata
-
-
-class GenericUrdfElement(object):
-    """Generic parser for all URDF elements that are not explicitely supported."""
+    """
+    def __init__(self, xml):
+        self.xml = xml
+        self.robot = URDFParser.parse_element(xml.root, xml.root.tag)
 
     @classmethod
-    def from_urdf(cls, attributes, elements, text):
-        el = GenericUrdfElement()
-        el.attributes = attributes
-        el.elements = elements
-        el.text = text
-        return el
+    def from_file(cls, source):
+        """Parse a URDF file from a file path or file-like object.
+
+        Parameters
+        ----------
+        source : str or file
+            File path or file-like object.
+
+        Examples
+        --------
+
+        >>> from compas.files import URDF
+        >>> urdf = URDF.from_file('/urdf/ur5.urdf')
+        """
+        return cls(XML.from_file(source))
+
+    @classmethod
+    def from_string(cls, text):
+        """Parse URDF from a string.
+
+        Parameters
+        ----------
+        text : :obj:`str`
+            XML string.
+
+        Examples
+        --------
+
+        >>> from compas.files import URDF
+        >>> urdf = URDF.from_string('<robot name="panda"/>')
+        """
+        return cls(XML.from_string(text))
 
 
-class URDF(object):
-    """Parse and generate URDF files.
-
-    This class abstracts away the underlying XML of the URDF
-    model and represents its as an object graph."""
+class URDFParser(object):
+    """Parse URDF elements into an object graph."""
     _parsers = dict()
 
     @classmethod
-    def add_parser(cls, parser_type, *tags):
-        """Append an URDF parser type for a defined tag.
+    def install_parser(cls, parser_type, *tags):
+        """Installs an URDF parser type for a defined tag.
 
-        Args:
-            parser_type: Python class handling URDF parsing of the tag.
-            tags (:obj:`str`): One or more URDF string tag that the parser can parse.
+        Parameters
+        ----------
+        parser_type : type
+            Python class handling URDF parsing of the tag.
+        tags : str
+            One or more URDF string tag that the parser can parse.
         """
         if len(tags) == 0:
             raise ValueError('Must define at least one tag')
 
         for tag in tags:
             cls._parsers[tag] = parser_type
-
-    @classmethod
-    def parse(cls, source):
-        """Construct a Robot model from a URDF file model description.
-
-        Args:
-            source: file name or file object.
-
-        Returns:
-            A robot model instance.
-
-        Examples:
-
-        >>> import compas
-        >>> from compas.files import URDF
-        >>> robot = URDF.parse(compas.get('ur5.urdf'))
-        """
-        tree = ET.parse(source)
-        root = tree.getroot()
-
-        return cls.parse_element(root, root.tag)
-
-    @classmethod
-    def from_string(cls, text):
-        """Construct a Robot model from a URDF description as string.
-
-        Args:
-            text: string containing the XML URDF model.
-
-        Returns:
-            A robot model instance.
-
-        Examples:
-
-        >>> import compas
-        >>> from compas.files import URDF
-        >>> robot = URDF.from_string('<robot name="panda"/>')
-        """
-        root = ET.fromstring(text)
-        return cls.parse_element(root, root.tag)
 
     @classmethod
     def parse_element(cls, element, path=''):
@@ -128,16 +110,21 @@ class URDF(object):
         a generic implementation that relies on conventions
         will be used.
 
-        Args:
-            element: XML Element node.
-            path: Full path to the element.
+        Parameters
+        ----------
+        element :
+            XML Element node.
+        path : str
+            Full path to the element.
 
-        Returns:
+        Returns
+        -------
+        object
             An instance of the model object represented by the given element.
+
         """
         children = [cls.parse_element(child, '/'.join([path, child.tag])) for child in element]
-
-        parser_type = cls._parsers.get(path, None) or GenericUrdfElement
+        parser_type = cls._parsers.get(path, None) or URDFGenericElement
 
         metadata = get_metadata(parser_type)
 
@@ -208,3 +195,51 @@ class URDF(object):
                 result[key] = child
 
         return result
+
+
+class URDFGenericElement(object):
+    """Generic representation for all URDF elements that
+    are not explicitely supported."""
+
+    @classmethod
+    def from_urdf(cls, attributes, elements, text):
+        el = cls()
+        el.attr = attributes
+        el.elements = elements
+        el.text = text
+        return el
+
+
+@memoize
+def get_metadata(type):
+    metadata = dict()
+
+    if hasattr(type, 'from_urdf'):
+        metadata['from_urdf'] = getattr(type, 'from_urdf')
+    else:
+        argspec = inspect.getargspec(type.__init__)
+        args = {}
+
+        required = len(argspec.args)
+        if argspec.defaults:
+            required -= len(argspec.defaults)
+
+        for i in range(1, len(argspec.args)):
+            data = dict(required=i < required)
+            default_index = i - required
+
+            if default_index >= 0:
+                default = argspec.defaults[default_index]
+                data['default'] = default
+                data['sequence'] = hasattr(default, '__iter__')
+            else:
+                data['sequence'] = False
+
+            args[argspec.args[i]] = data
+
+        metadata['keywords'] = argspec.keywords is not None
+        metadata['init_args'] = args
+
+    metadata['argument_map'] = getattr(type, 'argument_map', {})
+
+    return metadata

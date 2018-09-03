@@ -2,14 +2,19 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import itertools
+
 from compas.files import URDF
+from compas.files import URDFParser
+from compas.geometry import Frame
+from compas.geometry import Transformation
+from compas.robots.resources import DefaultMeshLoader
 from compas.topology import shortest_path
 
-from .geometry import SCALE_FACTOR
 from .geometry import Color
 from .geometry import Material
 from .geometry import Texture
-
+from .joint import Joint
 
 __all__ = ['Robot']
 
@@ -17,10 +22,11 @@ __all__ = ['Robot']
 class Robot(object):
     """Robot is the root element of the model.
 
-    Instances of this class represent an entire robot as defined in an URDF structure.
+    Instances of this class represent an entire robot as defined in an URDF
+    structure.
 
-    In line with URDF limitations, only tree structures can be represented by this
-    model, ruling out all parallel robots.
+    In line with URDF limitations, only tree structures can be represented by
+    this model, ruling out all parallel robots.
 
     Attributes:
         name: Unique name of the robot.
@@ -38,6 +44,7 @@ class Robot(object):
         self.materials = materials
         self.attr = kwargs
         self.root = None
+        self.scale_factor = 1.
         self._rebuild_tree()
 
     def _rebuild_tree(self):
@@ -73,7 +80,8 @@ class Robot(object):
         Returns:
             A robot model instance.
         """
-        return URDF.parse(file)
+        urdf = URDF.from_file(file)
+        return urdf.robot
 
     @classmethod
     def from_urdf_string(cls, text):
@@ -85,7 +93,8 @@ class Robot(object):
         Returns:
             A robot model instance.
         """
-        return URDF.from_string(text)
+        urdf = URDF.from_string(text)
+        return urdf.robot
 
     def find_children_joints(self, link):
         """Returns a list of all children joints of the link.
@@ -216,20 +225,93 @@ class Robot(object):
         for name in shortest_chain:
             yield name
 
-    def get_frames(self):
-        """Get the frames of links that have a visual node.
+    def update(self, names, positions, collision=True):
+        """Updates the joints and link geometries.
+
+        Args:
+            names (list of str): a list of the joints names that are updated
+            positions (list_of float): a list of the respective joint positions,
+                in radians and m
+            collision (bool): If collision geometry should be transformed as
+                well. Defaults to True.
+        """
+        if len(names) != len(positions):
+            return ValueError("len(names): %d is not len(positions) %d" % (len(names), len(positions)))
+        joint_state = dict(zip(names, positions))
+        self.root.update(joint_state, Transformation(), Transformation(), collision)
+
+    def get_configurable_joints(self):
+        joints = self.iter_joints()
+        return [joint for joint in joints if joint.is_configurable()]
+
+    def get_joint_types(self):
+        joints = self.get_configurable_joints()
+        return [joint.type for joint in joints]
+
+    def get_positions(self):
+        joints = self.get_configurable_joints()
+        return [j.position for j in joints]
+
+    def get_configurable_joint_names(self):
+        joints = self.get_configurable_joints()
+        return [j.name for j in joints]
+
+    def get_end_effector_link_name(self):
+        joints = self.get_configurable_joints()
+        clink = joints[-1].child_link
+        for j in clink.joints:
+            if j.type == Joint.FIXED:
+                return j.child
+        return clink.name
+
+    def get_base_link_name(self):
+        joints = self.get_configurable_joints()
+        return joints[0].parent.link
+
+    def load_geometry(self, *resource_loaders, **kwargs):
+        """Load external geometry resources, such as meshes.
+
+        Args:
+            resource_loaders: List of objects that implement the
+                resource loading interface (:class:`compas.robots.AbstractMeshLoader`)
+                and can retrieve external geometry.
+            force: True if it should force reloading even if the geometry
+                has been loaded already, otherwise False.
+        """
+        force = kwargs.get('force', False)
+
+        loaders = list(resource_loaders)
+        loaders.insert(0, DefaultMeshLoader())
+
+        for link in self.links:
+            for element in itertools.chain(link.collision, link.visual):
+                shape = element.geometry.shape
+                needs_reload = force or not shape.geometry
+                if 'filename' in dir(shape) and needs_reload:
+                    for loader in loaders:
+                        if loader.can_load_mesh(shape.filename):
+                            shape.geometry = loader.load_mesh(shape.filename)
+                            break
+
+                    if not shape.geometry:
+                        raise Exception('Unable to load geometry for {}'.format(shape.filename))
+
+    @property
+    def frames(self):
+        """Returns the frames of links that have a visual node.
 
         Returns:
             list: List of :class:`compas.geometry.Frame` of all links with a visual representation.
         """
         frames = []
         for link in self.iter_links():
-            if len(link.visual):
+            if len(link.visual) and link.parent_joint:
                 frames.append(link.parent_joint.origin.copy())
         return frames
 
-    def get_axes(self):
-        """Get axes of all joints.
+    @property
+    def axes(self):
+        """Returns the joints' axes.
 
         Returns:
             list: Axis vectors of all joints.
@@ -240,25 +322,23 @@ class Robot(object):
                 axes.append(joint.axis.vector)
         return axes
 
-    def draw_visual(self):
-        visual = []
-        for link in self.iter_links():
-            for item in link.visual:
-                visual.append(item.draw())
-        return visual
+    def scale(self, factor):
+        names = self.get_configurable_joint_names()
+        # bring to init configuration
+        self.update(names, [0] * len(names), collision=True)
+        self.root.scale(factor)
+        self.scale_factor *= factor
 
-    def draw_collision(self):
-        collision = []
-        for link in self.iter_links():
-            for item in link.collision:
-                collision.append(item.draw())
-        return collision
+    def __str__(self):
+        """Generate a readable representation of the robot."""
+        return 'Robot name={}, Links={}, Joints={} ({} configurable)'.format(
+            self.name,
+            len(self.links),
+            len(self.joints),
+            len(self.get_configurable_joints()),
+        )
 
-    def draw(self):
-        return self.draw_visual()
-
-
-URDF.add_parser(Robot, 'robot')
-URDF.add_parser(Material, 'robot/material')
-URDF.add_parser(Color, 'robot/material/color')
-URDF.add_parser(Texture, 'robot/material/texture')
+URDFParser.install_parser(Robot, 'robot')
+URDFParser.install_parser(Material, 'robot/material')
+URDFParser.install_parser(Color, 'robot/material/color')
+URDFParser.install_parser(Texture, 'robot/material/texture')

@@ -9,9 +9,16 @@ This package provides basic structures and data exchange mechanisms that are
 building blocks for robotics support.
 
 The primary data representation for robot models is based on the Unified Robot Description Format
-(`URDF`_). A detailed description of the model is avaible on the `URDF Model wiki`_.
+(`URDF`_).
 
-This package parses URDF v1.0 according to the `URDF XSD Schema`_.
+.. note::
+
+    A detailed description of the model is available on the `URDF Model wiki`_.
+    This package parses URDF v1.0 according to the `URDF XSD Schema`_.
+
+    * `URDF`_
+    * `URDF Model wiki`_
+    * `URDF XSD Schema`_
 
 .. _URDF: http://wiki.ros.org/urdf
 .. _URDF Model wiki: http://wiki.ros.org/urdf/XML/model
@@ -87,12 +94,31 @@ The joint describes the kinematics and dynamics of the robot's joint.
     Mimic
     SafetyController
 
+Resources
+=========
+
+Model descriptions usually do not contain embedded geometry information but only
+descriptions, filenames or URLs for externally hosted resources.
+For that purpose, this package provides various loader classes that help automate
+the processing of these resources.
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    AbstractMeshLoader
+    DefaultMeshLoader
+    GithubPackageMeshLoader
+    LocalPackageMeshLoader
+
 """
 
 from __future__ import absolute_import
 
 from .model import *
+from .resources import *
 
 from . import model
+from . import resources
 
-__all__ = model.__all__
+__all__ = model.__all__ + resources.__all__
