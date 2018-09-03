@@ -18,3 +18,4 @@ The main library of COMPAS
    recipes
    citing
    license
+   test
