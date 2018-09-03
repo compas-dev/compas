@@ -225,15 +225,6 @@ class Robot(object):
         for name in shortest_chain:
             yield name
 
-    def create(self, urdf_importer, meshcls):
-        """Creates the links' geometry and positions it as defined in the urdf.
-
-        Args:
-            urdf_importer (:class:`UrdfImporter`):
-            meshcls (class): ...
-        """
-        self.root.create(urdf_importer, meshcls)
-
     def update(self, names, positions, collision=True):
         """Updates the joints and link geometries.
 
@@ -250,23 +241,16 @@ class Robot(object):
         self.root.update(joint_state, Transformation(), Transformation(), collision)
 
     def get_configurable_joints(self):
-        joints = []
-        for joint in self.iter_joints():
-            if joint.is_configurable():
-                joints.append(joint)
-        return joints
+        joints = self.iter_joints()
+        return [joint for joint in joints if joint.is_configurable()]
 
     def get_joint_types(self):
-        types = []
-        for joint in self.get_configurable_joints():
-            types.append(joint.type)
-        return types
+        joints = self.get_configurable_joints()
+        return [joint.type for joint in joints]
 
     def get_positions(self):
-        positions = []
-        for joint in self.get_configurable_joints():
-            positions.append(joint.position)
-        return positions
+        joints = self.get_configurable_joints()
+        return [j.position for j in joints]
 
     def get_configurable_joint_names(self):
         joints = self.get_configurable_joints()
@@ -312,11 +296,6 @@ class Robot(object):
                     if not shape.geometry:
                         raise Exception('Unable to load geometry for {}'.format(shape.filename))
 
-    def get_visual_meshes(self):
-        for link in self.iter_links():
-            for visual in link.visual:
-                yield visual.geometry.geo
-
     @property
     def frames(self):
         """Returns the frames of links that have a visual node.
@@ -343,23 +322,6 @@ class Robot(object):
                 axes.append(joint.axis.vector)
         return axes
 
-    def draw_visual(self):
-        visual = []
-        for link in self.iter_links():
-            for item in link.visual:
-                visual.append(item.draw())
-        return visual
-
-    def draw_collision(self):
-        collision = []
-        for link in self.iter_links():
-            for item in link.collision:
-                collision.append(item.draw())
-        return collision
-
-    def draw(self):
-        return self.draw_visual()
-
     def scale(self, factor):
         names = self.get_configurable_joint_names()
         # bring to init configuration
@@ -367,6 +329,14 @@ class Robot(object):
         self.root.scale(factor)
         self.scale_factor *= factor
 
+    def __str__(self):
+        """Generate a readable representation of the robot."""
+        return 'Robot name={}, Links={}, Joints={} ({} configurable)'.format(
+            self.name,
+            len(self.links),
+            len(self.joints),
+            len(self.get_configurable_joints()),
+        )
 
 URDFParser.install_parser(Robot, 'robot')
 URDFParser.install_parser(Material, 'robot/material')

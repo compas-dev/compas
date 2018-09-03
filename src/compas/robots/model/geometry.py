@@ -2,9 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.utilities.colors import hex_to_rgb
 from compas.geometry import Frame
 from compas.geometry import Transformation
+from compas.utilities.colors import hex_to_rgb
 
 __all__ = ['Geometry',
            'Box',
@@ -84,17 +84,6 @@ class BaseShape(object):
     def __init__(self):
         self.geometry = None
 
-    def transform(self, transformation):
-        if self.geometry:
-            self.geometry.transform(transformation)
-
-    def set_color(self, color_rgba):
-        pass
-
-    def draw(self):
-        if self.geometry:
-            return self.geometry.draw()
-
 
 class Box(BaseShape):
     """3D shape primitive representing a box."""
@@ -102,9 +91,6 @@ class Box(BaseShape):
     def __init__(self, size):
         super(Box, self).__init__()
         self.size = _parse_floats(size)
-
-    def create(self, urdf_importer, meshcls):
-        pass
 
 
 class Cylinder(BaseShape):
@@ -115,9 +101,6 @@ class Cylinder(BaseShape):
         self.radius = float(radius)
         self.length = float(length)
 
-    def create(self, urdf_importer, meshcls):
-        pass
-
 
 class Sphere(BaseShape):
     """3D shape primitive representing a sphere."""
@@ -125,9 +108,6 @@ class Sphere(BaseShape):
     def __init__(self, radius):
         super(Sphere, self).__init__()
         self.radius = float(radius)
-
-    def create(self, urdf_importer, meshcls):
-        pass
 
 
 class Capsule(BaseShape):
@@ -138,9 +118,6 @@ class Capsule(BaseShape):
         self.radius = float(radius)
         self.length = float(length)
 
-    def create(self, urdf_importer, meshcls):
-        pass
-
 
 class MeshDescriptor(BaseShape):
     """Description of a mesh."""
@@ -149,13 +126,6 @@ class MeshDescriptor(BaseShape):
         super(MeshDescriptor, self).__init__()
         self.filename = filename
         self.scale = _parse_floats(scale)
-
-    def create(self, urdf_importer, meshcls):
-        """Creates the mesh geometry based on the passed urdf_importer and the
-        mesh class.
-        """
-        self.geometry = urdf_importer.read_mesh_from_resource_file_uri(self.filename, meshcls)
-        print("Created mesh from file %s" % self.filename)  # TODO: use logging?
 
 
 class Color(object):
@@ -213,6 +183,3 @@ class Geometry(object):
             Shape's geometry, usually a mesh implementation.
         """
         return self.shape.geometry
-
-    def draw(self):
-        return self.shape.draw()

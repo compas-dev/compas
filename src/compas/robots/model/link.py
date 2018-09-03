@@ -138,31 +138,7 @@ class Link(object):
         self.joints = []
         self.parent_joint = None
 
-    def create(self, urdf_importer, meshcls, parent_transformation=Transformation()):
-        """Recursive function to create all geometry shapes.
-        """
-        for item in self.visual:
-            item.geometry.shape.create(urdf_importer, meshcls)
-        for item in self.collision:
-            item.geometry.shape.create(urdf_importer, meshcls)
-
-        for item in self.visual:
-            color = item.get_color()
-            if color:
-                item.geometry.shape.set_color(color)
-            item.geometry.shape.transform(parent_transformation)
-
-        for item in self.collision:
-            item.geometry.shape.transform(parent_transformation)
-
-        for cjoint in self.joints:
-            cjoint.origin.create(parent_transformation)
-            transformation = Transformation.from_frame(cjoint.origin)
-            if cjoint.axis:
-                cjoint.axis.create(transformation)
-            clink = cjoint.child_link
-            clink.create(urdf_importer, meshcls, transformation)
-
+    # TODO: Check
     def update(self, joint_state, parent_transformation, reset_transformation, collision=True):
         """Recursive function to apply the transformations given by the joint
             state.
@@ -210,6 +186,7 @@ class Link(object):
             # 4. Apply function to all children in the chain
             joint.child_link.update(joint_state, transformation, reset_transformation, collision)
 
+    # TODO: Check
     def scale(self, factor):
         from compas.geometry import Scale
         S = Scale([factor, factor, factor])
