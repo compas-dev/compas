@@ -22,9 +22,11 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
     Attributes
     ----------
     repository : str
-        Repository name including organization, e.g. ``compas-dev/robots``.
+        Repository name including organization,
+        e.g. ``ros-industrial/abb``.
     support_package : str
-        Name of the support package containing URDF, Meshes and additional assets.
+        Name of the support package containing URDF, Meshes
+        and additional assets, e.g. 'abb_irb4400_support'
     branch : str
         Branch name, defaults to ``master``.
     """
@@ -45,15 +47,36 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
                                        self.support_package,
                                        file)
 
-    def open_url(self, file):
-        url = self.build_url(file)
+    def load_urdf(self, file):
+        """Load a URDF file from a Github support package repository.
+
+        Parameters
+        ----------
+        file : str
+            File name. Following convention, the file should reside
+            inside a ``urdf`` folder.
+        """
+        url = self.build_url('urdf/{}'.format(file))
         return urlopen(url)
 
-    def can_handle_url(self, url):
+    def can_load_mesh(self, url):
+        """Determine whether this loader can load a given mesh URL.
+
+        Parameters
+        ----------
+        url : str
+            Mesh URL.
+
+        Returns
+        -------
+        bool
+            ``True`` if the URL uses the ``package://` scheme and the package name
+            matches the specified in the constructor, otherwise ``False``.
+        """
         return url.startswith(self.schema_prefix)
 
-    def resolve(self, url):
-        """Resolves a URL and loads the external mesh.
+    def load_mesh(self, url):
+        """Loads a mesh from a Github repository URL.
 
         Parameters
         ----------

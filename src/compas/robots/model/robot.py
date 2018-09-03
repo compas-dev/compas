@@ -2,17 +2,19 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import itertools
+
 from compas.files import URDF
 from compas.files import URDFParser
 from compas.geometry import Frame
 from compas.geometry import Transformation
+from compas.robots.resources import DefaultMeshLoader
 from compas.topology import shortest_path
 
 from .geometry import Color
 from .geometry import Material
 from .geometry import Texture
 from .joint import Joint
-from .resource_resolvers import DefaultMeshResolver
 
 __all__ = ['Robot']
 
@@ -282,39 +284,33 @@ class Robot(object):
         joints = self.get_configurable_joints()
         return joints[0].parent.link
 
-    def load_geometry(self, *resource_resolvers, **kwargs):
+    def load_geometry(self, *resource_loaders, **kwargs):
         """Load external geometry resources, such as meshes.
 
         Args:
-            resource_resolvers: List of objects that implement the
-                resource resolution interface and can retrieve external files.
+            resource_loaders: List of objects that implement the
+                resource loading interface (:class:`compas.robots.AbstractMeshLoader`)
+                and can retrieve external geometry.
             force: True if it should force reloading even if the geometry
                 has been loaded already, otherwise False.
         """
         force = kwargs.get('force', False)
 
-        resolvers = list(resource_resolvers)
-        resolvers.insert(0, DefaultMeshResolver())
+        resolvers = list(resource_loaders)
+        resolvers.insert(0, DefaultMeshLoader())
 
         for link in self.links:
-            for visual in link.visual:
-                shape = visual.geometry.shape
+            for element in itertools.chain(link.collision, link.visual):
+                shape = element.geometry.shape
+                needs_reload = force or not shape.geometry
+                if 'filename' in dir(shape) and needs_reload:
+                    for resolver in resolvers:
+                        if resolver.can_load_mesh(shape.filename):
+                            shape.geometry = resolver.load_mesh(shape.filename)
+                            break
 
-                try:
-                    needs_reload = force or not shape.geometry
-                    if shape.filename and needs_reload:
-                        for resolver in resolvers:
-                            if resolver.can_handle_uri(shape.filename):
-                                shape.geometry = resolver.resolve(shape.filename)
-                                break
-
-                        if not shape.geometry:
-                            raise Exception('Unable to load geometry for {}'.format(shape.filename))
-
-                except AttributeError:
-                    # We just try and see if the object quacks, otherwise move on
-                    # Very pythonic. Much except. Wow.
-                    pass
+                    if not shape.geometry:
+                        raise Exception('Unable to load geometry for {}'.format(shape.filename))
 
     def get_visual_meshes(self):
         for link in self.iter_links():
