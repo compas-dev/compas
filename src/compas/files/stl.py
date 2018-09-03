@@ -17,7 +17,7 @@ class STL(object):
 
     def __init__(self, filepath, precision=None):
         self.reader = STLReader(filepath)
-        self.parser = STLParser(self.reader, precision)
+        self.parser = STLParser(self.reader, precision=precision)
 
 
 class STLReader(object):
@@ -206,7 +206,7 @@ class STLReader(object):
 class STLParser(object):
     """"""
 
-    def __init__(self, reader, precision):
+    def __init__(self, reader, precision=None):
         self.precision = precision
         self.reader    = reader
         self.vertices  = None
@@ -256,7 +256,7 @@ if __name__ == "__main__":
 
     # filepath = os.path.join(compas.DATA, 'cube_ascii.stl')
 
-    stl = STL(filepath, '9f')
+    stl = STL(filepath)
 
     mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
 
