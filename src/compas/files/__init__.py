@@ -71,6 +71,18 @@ urdf
     :nosignatures:
 
     URDF
+    URDFParser
+
+
+xml
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    XML
+    XMLReader
 
 """
 from __future__ import absolute_import
@@ -84,6 +96,7 @@ from .obj  import *
 from .ply  import *
 from .stl  import *
 from .urdf import *
+from .xml import *
 
 from . import amf
 from . import dxf
@@ -92,6 +105,7 @@ from . import obj
 from . import ply
 from . import stl
 from . import urdf
+from . import xml
 
 __all__ = []
 
@@ -102,3 +116,4 @@ __all__ += obj.__all__
 __all__ += ply.__all__
 __all__ += stl.__all__
 __all__ += urdf.__all__
+__all__ += xml.__all__
