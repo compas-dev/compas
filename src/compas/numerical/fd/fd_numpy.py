@@ -73,7 +73,7 @@ def mesh_fd_numpy(mesh):
         attr['l'] = l[index][0]
 
 
-def fd_numpy(vertices, edges, fixed, q, loads):
+def fd_numpy(vertices, edges, fixed, q, loads, **kwargs):
     """Implementation of the force density method to compute equilibrium of axial force networks.
 
     Parameters

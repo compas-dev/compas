@@ -23,7 +23,7 @@ DLL = os.path.join(HERE, '__fd_cpp', 'fd.dll')
 __all__ = ['fd_cpp']
 
 
-def fd_cpp(vertices, edges, fixed, q, loads):
+def fd_cpp(vertices, edges, fixed, q, loads, **kwargs):
     try:
         lib = ctypes.cdll.LoadLibrary(SO)
     except Exception:
