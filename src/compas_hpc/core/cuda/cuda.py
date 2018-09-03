@@ -304,7 +304,7 @@ def zeros_cuda(shape):
     return cuda_array.zeros(shape, dtype=float32)
 
 
-def tile_cuda(a, shape, dim=2):
+def tile_cuda(a, shape, dim=4):
 
     """ Horizontally and vertically tile a GPUArray.
 
@@ -345,7 +345,7 @@ def tile_cuda(a, shape, dim=2):
     return b
 
 
-def hstack_cuda(a, b, dim=2):
+def hstack_cuda(a, b, dim=4):
 
     """ Stack two GPUArrays horizontally.
 
@@ -375,7 +375,7 @@ def hstack_cuda(a, b, dim=2):
     return c
 
 
-def vstack_cuda(a, b, dim=2):
+def vstack_cuda(a, b, dim=4):
 
     """ Stack two GPUArrays vertically.
 
@@ -411,19 +411,21 @@ def vstack_cuda(a, b, dim=2):
 
 if __name__ == "__main__":
 
+    n = 15000
     # device_cuda()
     # a = give_cuda([[1., 2., 3.], [4., 5., 6.]])
     # a = give_cuda([1.+1j, 2.+2j, 3.+3j], type='complex')
     # a = get_cuda(a)
     # a = ones_cuda((3, 3))
     # a = zeros_cuda((3, 3))
-    a = give_cuda([[1, 2, 3], [4, 5, 6]])
-    # b = rand_cuda((4, 3))
-    c = tile_cuda(a, (3, 1))
+    # a = give_cuda([[1, 2, 3], [4, 5, 6]])
+    a = rand_cuda((n, n))
+    b = rand_cuda((n, n))
+    c = hstack_cuda(a, b, dim=4)
 
     # print(a)
     # print(b)
-    print(c)
+    # print(c)
     # print(type(a))
     # print(a.shape)
     # print(a.dtype)
