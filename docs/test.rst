@@ -14,16 +14,6 @@ Testing heroku app integration
     pass
 
 
-.. code-block:: none
-    
-    $
-
-
-.. code-block:: ruby
-
-    //
-
-
 .. code-block:: c
 
     //
