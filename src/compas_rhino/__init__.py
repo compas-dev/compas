@@ -30,7 +30,7 @@ import compas
 from .utilities import *
 from . import utilities
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 
 
 def _get_ironpython_lib_path(version):
