@@ -40,5 +40,6 @@ Testing heroku app integration
 
 ::
 
-    def function(): pass
+    def function():
+        pass
 
