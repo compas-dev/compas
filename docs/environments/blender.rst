@@ -4,12 +4,13 @@ Working in Blender
 
 Blender ships with its own embedded version of Python but it is relatively
 simple to replace it with the one you have **COMPAS** installed on.
-
 It is recommended to create a new ``conda`` environment to make sure the python
 version matches exactly what Blender expects.
-
 The following instructions are for Blender 2.79 which ships with
 **Pyhton 3.5.3**, for other versions, update the python version accordingly.
+
+On Windows
+==========
 
 Open the command prompt and type the following to install a new python
 environment with **COMPAS**:
@@ -21,9 +22,6 @@ environment with **COMPAS**:
     $ conda config --add channels conda-forge
     $ conda install COMPAS
 
-
-On Windows
-==========
 
 Now configure Blender to use the newly installed environment:
 
@@ -37,10 +35,34 @@ Now configure Blender to use the newly installed environment:
 On Mac
 ======
 
+Open the Terminal and type the following to install a new python
+environment with **COMPAS**:
+
+::
+
+    $ conda create -n blender-279 python=3.5.3
+    $ source activate blender-279
+    $ conda config --add channels conda-forge
+    $ conda install COMPAS
+
+
+Now configure Blender to use the newly installed environment:
+
+::
+
+    $ cd /Applications/blender.app/Contents/Resources/2.78
+    $ mv python original_python
+    $ ln -s $CONDA_PREFIX python
+
 
 Using the built-in script editor
 ================================
 
+coming soon...
+
 
 Using an external editor
 ========================
+
+coming soon...
+
