@@ -15,8 +15,8 @@ except:
 try:
     import pycuda
     import pycuda.gpuarray as cuda_array
-    import pycuda.autoinit
     import pycuda.curandom
+    import pycuda.autoinit
     has_pycuda = True
 except:
     has_pycuda = False
@@ -411,7 +411,7 @@ def vstack_cuda(a, b, dim=4):
 
 if __name__ == "__main__":
 
-    n = 15000
+    n = 500
     # device_cuda()
     # a = give_cuda([[1., 2., 3.], [4., 5., 6.]])
     # a = give_cuda([1.+1j, 2.+2j, 3.+3j], type='complex')

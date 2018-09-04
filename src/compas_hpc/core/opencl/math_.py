@@ -28,19 +28,19 @@ __all__ = [
     'atan_cl',
 #     'atan2_cl',
 #     'atanh_cl',
-#     'ceil_cl',
+    'ceil_cl',
     'cos_cl',
     'cosh_cl',
-#     'exp_cl',
-#     'floor_cl',
-#     'log_cl',
-#     'log10_cl',
+    'exp_cl',
+    'floor_cl',
+    'log_cl',
+    'log10_cl',
 #     # 'max_cl',
 #     # 'min_cl',
 #     # 'mean_cl',
     'maximum_cl',
     'minimum_cl',
-#     'round_cl',
+    'round_cl',
     'sin_cl',
     'sinh_cl',
     'sqrt_cl',
@@ -244,23 +244,31 @@ def atan_cl(a):
 #     return pyopencl.clmath.atanh(a)
 
 
-# def ceil_cl(a):
+def ceil_cl(a):
 
-#     """ Ceiling of GPUArray elements.
+    """ Ceiling of GPUArray elements.
 
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
 
-#     Returns
-#     -------
-#     gpuarray
-#         ceil(GPUArray)
+    Returns
+    -------
+    gpuarray
+        ceil(GPUArray)
 
-#     """
+    Examples
+    --------
+    >>> a = ceil_cl(give_cl(queue, [0.5, 0.1, 1.9]))
+    [ 1.,  1.,  2.]
 
-#     return pyopencl.clmath.ceil(a)
+    >>> type(a)
+    <class 'pyopencl.array.Array'>
+
+    """
+
+    return pyopencl.clmath.ceil(a)
 
 
 def cos_cl(a):
@@ -317,80 +325,111 @@ def cosh_cl(a):
     return pyopencl.clmath.cosh(a)
 
 
-# def exp_cl(a):
+def exp_cl(a):
 
-#     """ Exponential of GPUArray elements.
+    """ Exponential of GPUArray elements.
 
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
 
-#     Returns
-#     -------
-#     gpuarray
-#         exp(GPUArray)
+    Returns
+    -------
+    gpuarray
+        exp(GPUArray)
 
-#     """
+    Examples
+    --------
+    >>> a = exp_cl(give_cl(queue, [0, 1]))
+    [ 1.,  2.7182817]
 
-#     return pyopencl.clmath.exp(a)
+    >>> type(a)
+    <class 'pyopencl.array.Array'>
 
+    """
 
-# def floor_cl(a):
-
-#     """ Floor of GPUArray elements.
-
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
-
-#     Returns
-#     -------
-#     gpuarray
-#         floor(GPUArray)
-
-#     """
-
-#     return pyopencl.clmath.floor(a)
+    return pyopencl.clmath.exp(a)
 
 
-# def log_cl(a):
+def floor_cl(a):
 
-#     """ Natural logarithm of GPUArray elements.
+    """ Floor of GPUArray elements.
 
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
 
-#     Returns
-#     -------
-#     gpuarray
-#         log(GPUArray)
+    Returns
+    -------
+    gpuarray
+        floor(GPUArray)
 
-#     """
+    Examples
+    --------
+    >>> a = floor_cl(give_cl(queue, [0.5, 0.1, 1.9]))
+    [ 0.,  0.,  1.]
 
-#     return pyopencl.clmath.log(a)
+    >>> type(a)
+    <class 'pyopencl.array.Array'>
+
+    """
+
+    return pyopencl.clmath.floor(a)
 
 
-# def log10_cl(a):
+def log_cl(a):
 
-#     """ Base10 logarithm of GPUArray elements.
+    """ Natural logarithm of GPUArray elements.
 
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
 
-#     Returns
-#     -------
-#     gpuarray
-#         log10(GPUArray)
+    Returns
+    -------
+    gpuarray
+        ln(GPUArray)
 
-#     """
+    Examples
+    --------
+    >>> a = log_cl(give_cl(queue, [1, 10]))
+    [ 0.,  2.30258509]
 
-#     return pyopencl.clmath.log10(a)
+    >>> type(a)
+    <class 'pyopencl.array.Array'>
+
+    """
+
+    return pyopencl.clmath.log(a)
+
+
+def log10_cl(a):
+
+    """ Base10 logarithm of GPUArray elements.
+
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
+
+    Returns
+    -------
+    gpuarray
+        log10(GPUArray)
+
+    Examples
+    --------
+    >>> a = log10_cl(give_cl(queue, [1, 10]))
+    [ 0.,  1.]
+
+    >>> type(a)
+    <class 'pycuda.gpuarray.GPUArray'>
+
+    """
+    return pyopencl.clmath.log10(a)
 
 
 # def max_cl():
@@ -467,23 +506,31 @@ def minimum_cl(a, b=None):
 #     raise NotImplementedError
 
 
-# def round_cl(a):
+def round_cl(a):
 
-#     """ Rounding of GPUArray elements.
+    """ Rounding of GPUArray elements.
 
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
 
-#     Returns
-#     -------
-#     gpuarray
-#         round(GPUArray)
+    Returns
+    -------
+    gpuarray
+        round(GPUArray)
 
-#     """
+    Examples
+    --------
+    >>> a = round_cl(give_cl(queue, [1.4, 1.5, 1.6]))
+    [1., 2., 2.]
 
-#     return pyopencl.clmath.round(a)
+    >>> type(a)
+    <class 'pyopencl.array.Array'>
+
+    """
+
+    return pyopencl.clmath.round(a)
 
 
 def sin_cl(a):
@@ -674,6 +721,12 @@ if __name__ == "__main__":
     a = sqrt_cl(give_cl(queue, [4, 9]))
     # a = tan_cl(give_cl(queue, [0, pi/4]))
     # a = tanh_cl(give_cl(queue, [0, pi/4]))
+    a = exp_cl(give_cl(queue, [0, 1]))
+    a = floor_cl(give_cl(queue, [0.5, 0.1, 1.9]))
+    a = ceil_cl(give_cl(queue, [0.5, 0.1, 1.9]))
+    a = log_cl(give_cl(queue, [1, 10]))
+    a = log10_cl(give_cl(queue, [1, 10]))
+    a = round_cl(give_cl(queue, [1.4, 1.5, 1.6]))
 
     print(a)
     print(type(a))
