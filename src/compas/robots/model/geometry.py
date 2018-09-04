@@ -48,7 +48,6 @@ class Origin(Frame):
 
     def __init__(self, point, xaxis, yaxis):
         super(Origin, self).__init__(point, xaxis, yaxis)
-        self.init = None  # keep a copy to the initial, not transformed origin
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
@@ -56,27 +55,8 @@ class Origin(Frame):
         rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
         return cls.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
 
-    @property
-    def init_transformation(self):
-        return Transformation.from_frame(self.init)
-
-    def create(self, transformation):
-        self.transform(transformation)
-        self.init = self.copy()
-
-    def reset_transform(self):
-        if self.init:
-            # TODO: Transform back into initial state does not always work...
-            # T = init_transformation * Transformation.from_frame(self).inverse()
-            # self.transform(T)
-            cp = self.init.copy()
-            self.point = cp.point
-            self.xaxis = cp.xaxis
-            self.yaxis = cp.yaxis
-
     def scale(self, factor):
         self.point = self.point * factor
-        self.init = self.copy()
 
 
 class BaseShape(object):

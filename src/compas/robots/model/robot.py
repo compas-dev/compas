@@ -225,21 +225,6 @@ class Robot(object):
         for name in shortest_chain:
             yield name
 
-    def update(self, names, positions, collision=True):
-        """Updates the joints and link geometries.
-
-        Args:
-            names (list of str): a list of the joints names that are updated
-            positions (list_of float): a list of the respective joint positions,
-                in radians and m
-            collision (bool): If collision geometry should be transformed as
-                well. Defaults to True.
-        """
-        if len(names) != len(positions):
-            return ValueError("len(names): %d is not len(positions) %d" % (len(names), len(positions)))
-        joint_state = dict(zip(names, positions))
-        self.root.update(joint_state, Transformation(), Transformation(), collision)
-
     def get_configurable_joints(self):
         joints = self.iter_joints()
         return [joint for joint in joints if joint.is_configurable()]
@@ -322,6 +307,7 @@ class Robot(object):
                 axes.append(joint.axis.vector)
         return axes
 
+    # TODO: Check
     def scale(self, factor):
         names = self.get_configurable_joint_names()
         # bring to init configuration

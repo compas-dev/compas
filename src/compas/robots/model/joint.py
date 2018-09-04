@@ -114,18 +114,10 @@ class Axis(object):
         self.x = xyz[0]
         self.y = xyz[1]
         self.z = xyz[2]
-        self.init = None
 
     def copy(self):
         cls = type(self)
         return cls("%f %f %f" % (self.x, self.y, self.z))
-
-    def reset_transform(self):
-        if self.init:
-            cp = self.init.copy()
-            self.x = cp.x
-            self.y = cp.y
-            self.z = cp.z
 
     def transform(self, transformation):
         xyz = transform_vectors(
@@ -133,14 +125,6 @@ class Axis(object):
         self.x = xyz[0][0]
         self.y = xyz[0][1]
         self.z = xyz[0][2]
-
-    def create(self, transformation):
-        """Stores the initial direction of the axis.
-
-        This is called when the robot is created.
-        """
-        self.transform(transformation)
-        self.init = self.copy()
 
     @property
     def vector(self):
@@ -208,6 +192,8 @@ class Joint(object):
         self.attr = kwargs
         self.child_link = None
         self.position = 0
+        self.init_origin = origin.copy() if origin else None
+        self.init_axis = axis.copy() if axis else None
 
         switcher = {
             Joint.REVOLUTE: self.calculate_revolute_transformation,
@@ -229,16 +215,16 @@ class Joint(object):
 
     @property
     def init_transformation(self):
-        if self.origin:
-            return self.origin.init_transformation.copy()
+        if self.init_origin:
+            return Transformation.from_frame(self.init_origin)
         else:
             return Transformation()
 
     def reset_transform(self):
-        if self.origin:
-            self.origin.reset_transform()
-        if self.axis:
-            self.axis.reset_transform()
+        if self.init_origin:
+            self.origin = self.init_origin.copy()
+        if self.init_axis:
+            self.axis = self.init_axis.copy()
 
     def transform(self, transformation):
         if self.origin:
