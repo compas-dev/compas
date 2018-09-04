@@ -13,18 +13,42 @@ Testing heroku app integration
 
     pass
 
+
 .. code-block:: none
     
     $
+
 
 .. code-block:: ruby
 
     //
 
+
 .. code-block:: c
 
     //
 
+
 .. code-block:: console
 
     $ test
+
+
+.. code-block:: bash
+
+    $ test
+
+
+.. highlight:: bash
+
+::
+
+    $ test
+
+
+.. highlight:: python
+
+::
+
+    def function(): pass
+
