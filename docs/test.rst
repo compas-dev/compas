@@ -39,14 +39,14 @@ Testing heroku app integration
     $ test
 
 
-.. highlight:: bash
+.. highlightlang:: bash
 
 ::
 
     $ test
 
 
-.. highlight:: python
+.. highlightlang:: python
 
 ::
 
