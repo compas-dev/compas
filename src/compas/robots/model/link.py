@@ -139,54 +139,6 @@ class Link(object):
         self.parent_joint = None
 
     # TODO: Check
-    def update(self, joint_state, parent_transformation, reset_transformation, collision=True):
-        """Recursive function to apply the transformations given by the joint
-            state.
-
-        Joint_states are given absolute, so it is necessary to reset the current
-        transformation.
-
-        Args:
-            joint_state (dict): A dictionary with the joint names as keys and
-                values in radians and m (depending on the joint type)
-            parent_transformation (:class:`Transformation`): The transfomation
-                of the parent joint
-            reset_transformation (:class:`Transformation`): The transfomation
-                to reset the current transformation of the link's geometry.
-            collision (bool): If collision geometry should be transformed as
-                well. Defaults to True.
-        """
-        relative_transformation = parent_transformation * reset_transformation
-
-        for item in self.visual:
-            item.geometry.shape.transform(relative_transformation)
-
-        if collision:
-            for item in self.collision:
-                item.geometry.shape.transform(relative_transformation)
-
-        for joint in self.joints:
-            # 1. Get reset transformation
-            reset_transformation = joint.calculate_reset_transformation()
-            # 2. Reset
-            joint.reset_transform()
-            # joint.transform(reset_transformation) # why does this not work properly....
-
-            # 3. Calculate transformation for next joints in the chain
-            if joint.name in joint_state.keys():
-                position = joint_state[joint.name]
-                transformation = joint.calculate_transformation(position)
-                transformation = parent_transformation * transformation
-                joint.position = position
-            else:
-                transformation = parent_transformation
-
-            # 4. Apply on joint
-            joint.transform(transformation)
-            # 4. Apply function to all children in the chain
-            joint.child_link.update(joint_state, transformation, reset_transformation, collision)
-
-    # TODO: Check
     def scale(self, factor):
         from compas.geometry import Scale
         S = Scale([factor, factor, factor])
