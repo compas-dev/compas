@@ -29,11 +29,13 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = [
     'volmesh_from_polysurfaces',
     'volmesh_from_wireframe',
+
     'volmesh_draw',
     'volmesh_draw_vertices',
     'volmesh_draw_edges',
     'volmesh_draw_faces',
     'volmesh_draw_cells',
+
     'volmesh_select_vertex',
     'volmesh_select_vertices',
     'volmesh_select_edge',
