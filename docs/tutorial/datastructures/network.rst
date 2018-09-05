@@ -54,3 +54,118 @@ Other types keys may be specified as well, as long as their value is *hashable*.
 .. code-block:: python
 
     print(a, type(a))
+
+    # 0 <class 'int'>
+
+.. code-block:: python
+
+    b == a + 1
+
+    # True
+
+.. code-block:: python
+
+    f = network.add_vertex(key=7)
+    f == e + 1
+
+    # False
+
+.. code-block:: python
+
+    g = network.add_vertex()
+    g == f + 1
+
+    # True
+
+.. code-block:: python
+
+    network.add_vertex(key='compas')
+
+    # 'compas'
+
+.. code-block:: python
+
+    network.add_vertex()
+
+    # 9
+
+
+Data
+====
+
+.. code-block:: python
+
+    network.vertices()
+
+    # <dict_keyiterator object at 0x1104280e8>
+
+.. code-block:: python
+
+    network.edges()
+
+    # <generator object Network.edges at 0x112fc1990>
+
+.. code-block:: python
+
+    for key in network.vertices():
+        # do stuff
+
+.. code-block:: python
+
+    for u, v in network.edges():
+        # do stuff
+
+.. code-block:: python
+
+    vertices = list(network.vertices())
+
+.. code-block:: python
+
+    edges = list(network.edges())
+
+
+Attributes
+==========
+
+All vertices and edges automatically have the default attributes.
+The default vertex attributes are xyz coordinates, with ``x=0``, ``y=0`` and ``z=0``.
+Edges have no defaults.
+
+To change the default attributes associated with vertices and edges, do:
+
+.. code-block:: python
+
+    network.update_default_vertex_attributes({'z' : 10, 'is_fixed' : False})
+
+    # or network.update_default_vertex_attributes({z=10, is_fixed=False)
+
+.. code-block:: python
+
+    network.update_default_edge_attributes({'weight': 0.0})
+
+    # or network.update_default_edge_attributes(weight=0.0)
+
+.. note::
+
+    Other attributes then the ones specified in the defaults can also be added.
+    However, these attributes then only exist on the vertices or edges where they have been specified.
+    To prevent this and only allow the registered attributes to be added, set ``Network.strict_attributes = True``.
+
+    When a vertex or edge is added to the network, the default attributes are copied and the values of the specified attributes are modified.
+    To only store the modified values, set ``Network.copy_defaults = False``.
+
+
+Getting attributes
+------------------
+
+.. code-block:: python
+
+    network.get_vertex_attribute(a, 'is_fixed')
+
+    # False
+
+.. code-block:: python
+
+    network.get_vertices_attribute('x')
+
+    # [0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0]

@@ -5,8 +5,6 @@ compas.interop
 
 .. currentmodule:: compas.interop
 
-This package includes utility functions for seamless integration of C, C++ and Fortran code.
-
 .. warning::
 
     The functionality of this package is experimental and subject to frequent change.

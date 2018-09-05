@@ -6,10 +6,6 @@ compas.utilities
 .. currentmodule:: compas.utilities
 
 
-.. combine all decorators
-.. combine xscript and xfunc into xrun
-
-
 animation
 =========
 
