@@ -1,32 +1,34 @@
-********************************************************************************
+
 Networks
-********************************************************************************
+========
 
-**COMPAS** networks are simple edge graphs: they consist of vertices connected by edges.
-Not all vertices have to be connected by edges.
-A network without edges is a valid network.
-In fact, even a network without vertices is a valid network, albeit a quite pointless one.
+**COMPAS** networks are simple edge graphs: they consist of vertices
+connected by edges. Not all vertices have to be connected by edges. A
+network without edges is a valid network. In fact, even a network
+without vertices and edges is a valid network, albeit a quite pointless
+one.
 
-Edges have a direction.
-There can only be one edge between two vertices in a particular direction.
-However, there can be two edges between two vertices in opposite direction.
-Vertices can be connected to themseleves.
+Edges have a direction. There can only be one edge between two vertices
+in a particular direction. However, there can be two edges between two
+vertices in opposite direction. Vertices can be connected to
+themseleves.
 
 
 Making a network
-================
+----------------
 
-.. code-block:: python
+.. code:: ipython3
 
+    import compas
     from compas.datastructures import Network
-
+    
     network = Network()
 
 
 Adding vertices and edges
-=========================
+-------------------------
 
-.. code-block:: python
+.. code:: ipython3
 
     a = network.add_vertex()
     b = network.add_vertex(x=1.0)
@@ -34,7 +36,8 @@ Adding vertices and edges
     d = network.add_vertex(x=-1.0)
     e = network.add_vertex(y=-1.0)
 
-.. code-block:: python
+
+.. code:: ipython3
 
     network.add_edge(a, b)
     network.add_edge(a, c)
@@ -42,130 +45,308 @@ Adding vertices and edges
     network.add_edge(a, e)
 
 
+.. parsed-literal::
+
+    (0, 4)
+
+
 Identifiers
-===========
+-----------
 
-All vertices in a network have a unique id, the *key* of the vertex.
-By default, keys are integers, and every vertex is assigned a number corresponding to the order in which they are added.
-The number is always the highest number used so far, plus one.
+All vertices in a network have a unique id, the *key* of the vertex. By
+default, keys are integers, and every vertex is assigned a number
+corresponding to the order in which they are added. The number is always
+the highest number used so far, plus one.
 
-Other types keys may be specified as well, as long as their value is *hashable*.
+Other types keys may be specified as well, as long as their value is
+*hashable*.
 
-.. code-block:: python
+
+.. code:: ipython3
 
     print(a, type(a))
 
-    # 0 <class 'int'>
 
-.. code-block:: python
+.. parsed-literal::
+
+    0 <class 'int'>
+
+
+.. code:: ipython3
 
     b == a + 1
 
-    # True
 
-.. code-block:: python
+.. parsed-literal::
+
+    True
+
+
+.. code:: ipython3
 
     f = network.add_vertex(key=7)
     f == e + 1
 
-    # False
 
-.. code-block:: python
+.. parsed-literal::
+
+    False
+
+
+.. code:: ipython3
 
     g = network.add_vertex()
     g == f + 1
 
-    # True
 
-.. code-block:: python
+.. parsed-literal::
+
+    True
+
+
+.. code:: ipython3
 
     network.add_vertex(key='compas')
 
-    # 'compas'
 
-.. code-block:: python
+.. parsed-literal::
+
+    'compas'
+
+
+.. code:: ipython3
 
     network.add_vertex()
 
-    # 9
+
+.. parsed-literal::
+
+    9
 
 
 Data
-====
+----
 
-.. code-block:: python
+Iteration
+~~~~~~~~~
+
+.. code:: ipython3
 
     network.vertices()
 
-    # <dict_keyiterator object at 0x1104280e8>
 
-.. code-block:: python
+.. parsed-literal::
+
+    <dict_keyiterator at 0x6193a2958>
+
+
+.. code:: ipython3
 
     network.edges()
 
-    # <generator object Network.edges at 0x112fc1990>
 
-.. code-block:: python
+.. parsed-literal::
+
+    <generator object Network.edges at 0x61560f678>
+
+
+.. code:: ipython3
 
     for key in network.vertices():
-        # do stuff
+        print(key)
 
-.. code-block:: python
+
+.. parsed-literal::
+
+    0
+    1
+    2
+    3
+    4
+    7
+    8
+    compas
+    9
+
+
+.. code:: ipython3
 
     for u, v in network.edges():
-        # do stuff
+        print(u, v)
 
-.. code-block:: python
 
-    vertices = list(network.vertices())
+.. parsed-literal::
 
-.. code-block:: python
+    0 1
+    0 2
+    0 3
+    0 4
 
-    edges = list(network.edges())
+
+Lists
+~~~~~
+
+.. code:: ipython3
+
+    list(network.vertices())
+
+
+.. parsed-literal::
+
+    [0, 1, 2, 3, 4, 7, 8, 'compas', 9]
+
+
+.. code:: ipython3
+
+    list(network.edges())
+
+
+.. parsed-literal::
+
+    [(0, 1), (0, 2), (0, 3), (0, 4)]
+
+
+Filtering
+~~~~~~~~~
+
+.. code:: ipython3
+
+    network.vertices_where({'x': 0.0})
+
+
+.. parsed-literal::
+
+    <generator object VertexFilter.vertices_where at 0x61560f468>
 
 
 Attributes
-==========
+----------
 
-All vertices and edges automatically have the default attributes.
-The default vertex attributes are xyz coordinates, with ``x=0``, ``y=0`` and ``z=0``.
-Edges have no defaults.
+All vertices and edges automatically have the default attributes. The
+default vertex attributes are xyz coordinates, with ``x=0``, ``y=0`` and
+``z=0``. Edges have no defaults.
 
 To change the default attributes associated with vertices and edges, do:
 
-.. code-block:: python
+.. code:: ipython3
 
-    network.update_default_vertex_attributes({'z' : 10, 'is_fixed' : False})
-
+    network.update_default_vertex_attributes({'z': 10}, is_fixed=False)
+    
     # or network.update_default_vertex_attributes(z=10, is_fixed=False)
 
-.. code-block:: python
+.. code:: ipython3
 
     network.update_default_edge_attributes({'weight': 0.0})
-
+    
     # or network.update_default_edge_attributes(weight=0.0)
 
-.. note::
+**Note**
 
-    Other attributes then the ones specified in the defaults can also be added.
-    However, these attributes then only exist on the vertices or edges where they have been specified.
-    To prevent this and only allow the registered attributes to be added, set ``Network.strict_attributes = True``.
+Other attributes then the ones specified in the defaults can also be
+added. However, these attributes then only exist on the vertices or
+edges where they have been specified. To prevent this and only allow the
+registered attributes to be added, set
+``Network.strict_attributes = True``.
 
-    When a vertex or edge is added to the network, the default attributes are copied and the values of the specified attributes are modified.
-    To only store the modified values, set ``Network.copy_defaults = False``.
+When a vertex or edge is added to the network, the default attributes
+are copied and the values of the specified attributes are modified. To
+only store the modified values, set ``Network.copy_defaults = False``.
 
 
 Getting attributes
-------------------
+~~~~~~~~~~~~~~~~~~
 
-.. code-block:: python
+.. code:: ipython3
 
     network.get_vertex_attribute(a, 'is_fixed')
 
-    # False
 
-.. code-block:: python
+.. parsed-literal::
+
+    False
+
+
+.. code:: ipython3
 
     network.get_vertices_attribute('x')
 
-    # [0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+.. parsed-literal::
+
+    [0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+
+.. code:: ipython3
+
+    network.get_vertices_attributes('xyz')
+
+
+.. parsed-literal::
+
+    [[0.0, 0.0, 0.0],
+     [1.0, 0.0, 0.0],
+     [0.0, 1.0, 0.0],
+     [-1.0, 0.0, 0.0],
+     [0.0, -1.0, 0.0],
+     [0.0, 0.0, 0.0],
+     [0.0, 0.0, 0.0],
+     [0.0, 0.0, 0.0],
+     [0.0, 0.0, 0.0]]
+
+
+Setting attributes
+~~~~~~~~~~~~~~~~~~
+
+.. code:: ipython3
+
+    network.set_vertex_attribute(a, 'is_fixed', True)
+
+.. code:: ipython3
+
+    network.set_vertices_attribute('is_fixed', True)
+
+.. code:: ipython3
+
+    network.set_vertices_attributes(('z', 'is_fixed'), (3, False))
+
+
+Using constructors
+------------------
+
+.. code:: ipython3
+
+    # network = Network.from_data(data)
+    # network = Network.from_lines([([], []), ([], [])])
+    # network = Network.from_json('network.json')
+    # network = Network.from_pickle('network.pickle')
+    
+    network = Network.from_obj(compas.get('lines.obj'))
+
+
+Queries
+-------
+
+under construction...
+
+
+Visualisation
+-------------
+
+To create a 2D representation of a network, use a plotter.
+
+.. code:: ipython3
+
+    from compas.plotters import NetworkPlotter
+
+.. plot::
+    :include-source:
+
+    plotter = NetworkPlotter(network, figsize=(16, 9))
+    plotter.draw_vertices(
+        facecolor={key: '#ff0000' for key in network.vertices_where({'vertex_degree': 1})},
+        text={key: str(key) for key in network.vertices_where({'vertex_degree': 4})},
+        radius={key: 0.3 for key in network.vertices_where({'vertex_degree': 4})}
+    )
+    plotter.draw_edges()
+    plotter.show()
+
