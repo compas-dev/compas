@@ -20,4 +20,5 @@ Remeshing 3D
     </div>
 
 .. literalinclude:: /_examples/mesh-remeshing-on-mesh.py
+    :language: python
 

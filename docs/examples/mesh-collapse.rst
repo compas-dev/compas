@@ -8,4 +8,5 @@ Collapse mesh to a single vertex
 
 
 .. literalinclude:: /_examples/mesh-collapse.py
+    :language: python
 

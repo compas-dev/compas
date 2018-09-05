@@ -8,4 +8,5 @@ Subd mesh modeling
 
 
 .. literalinclude:: /_examples/mesh-subd-modeling.py
+    :language: python
 

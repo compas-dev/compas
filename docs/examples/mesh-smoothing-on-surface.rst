@@ -20,4 +20,5 @@ Mesh smoothing on a surface
     </div>
 
 .. literalinclude:: /_examples/mesh-smoothing-on-surface.py
+    :language: python
 

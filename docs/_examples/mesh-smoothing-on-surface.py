@@ -6,8 +6,10 @@
 - use a callback to pull the mesh back onto the surface at every iteration
 - visualize the process with a conduit
 
-"""
+author : Tom Van Mele, Matthias Rippmann
+email  : van.mele@arch.ethz.ch
 
+"""
 from __future__ import print_function
 
 from compas.datastructures import Mesh
@@ -20,12 +22,6 @@ from compas_rhino.helpers import mesh_from_guid
 from compas_rhino.conduits import LinesConduit
 from compas_rhino.geometry import RhinoSurface
 from compas_rhino.artists import MeshArtist
-
-
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
 
 
 # make a mesh datastructure from a Rhino mesh object

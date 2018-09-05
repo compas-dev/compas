@@ -1,4 +1,7 @@
-"""Network 01: Shortest path
+"""Shortest path in a network
+
+author : Tom Van Mele
+email  : van.mele@arch.ethz.ch
 
 """
 
@@ -8,12 +11,6 @@ from compas.utilities import pairwise
 from compas.datastructures import Network
 from compas.topology import dijkstra_path
 from compas.plotters import NetworkPlotter
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
 
 
 start, end = 21, 22

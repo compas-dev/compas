@@ -16,3 +16,4 @@ Mesh parametrisation
 
 
 .. literalinclude:: /_examples/mesh-parameterisation.py
+    :language: python

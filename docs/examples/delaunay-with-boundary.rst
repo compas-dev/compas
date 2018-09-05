@@ -23,5 +23,6 @@ Delaunay triangulation with boundary
     </div>
     </div>
 
-.. literalinclude:: /_examples/mesh-delaunay-with-boundary.py
 
+.. literalinclude:: /_examples/mesh-delaunay-with-boundary.py
+    :language: python

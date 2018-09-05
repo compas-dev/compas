@@ -8,4 +8,5 @@ Spline relaxation
 
 
 .. literalinclude:: /_examples/spline-drx-numpy.py
+    :language: python
 

@@ -1,5 +1,8 @@
 """Parameterisation of a triangle mesh.
 
+author : Tom Van Mele
+email  : van.mele@arch.ethz.ch
+
 For more info see:
 
 - http://www.ctralie.com/Teaching/LapMesh/
@@ -18,12 +21,6 @@ from scipy.sparse.linalg import spsolve
 
 from compas.datastructures import Mesh
 from compas.plotters import MeshPlotter
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
 
 
 # make a *stanford bunny* mesh
