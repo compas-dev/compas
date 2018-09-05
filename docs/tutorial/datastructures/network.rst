@@ -18,7 +18,6 @@ Making a network
 
 .. code-block:: python
 
-    import compas
     from compas.datastructures import Network
 
     network = Network()
@@ -34,6 +33,8 @@ Adding vertices and edges
     c = network.add_vertex(y=1.0)
     d = network.add_vertex(x=-1.0)
     e = network.add_vertex(y=-1.0)
+
+.. code-block:: python
 
     network.add_edge(a, b)
     network.add_edge(a, c)
