@@ -137,7 +137,7 @@ To change the default attributes associated with vertices and edges, do:
 
     network.update_default_vertex_attributes({'z' : 10, 'is_fixed' : False})
 
-    # or network.update_default_vertex_attributes({z=10, is_fixed=False)
+    # or network.update_default_vertex_attributes(z=10, is_fixed=False)
 
 .. code-block:: python
 
