@@ -2,6 +2,10 @@
 Delaunay triangulation with boundary
 ********************************************************************************
 
+.. literalinclude:: /_examples/mesh-delaunay-with-boundary.py
+    :language: python
+
+
 .. figure:: /_images/example-mesh-delaunay-with-boundary.*
     :figclass: figure
     :class: figure-img img-fluid
@@ -22,7 +26,3 @@ Delaunay triangulation with boundary
 
     </div>
     </div>
-
-
-.. literalinclude:: /_examples/mesh-delaunay-with-boundary.py
-    :language: python
