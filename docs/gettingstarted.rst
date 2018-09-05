@@ -16,7 +16,7 @@ But it can also be installed using `pip`::
 
 To verify your setup, start Python from the command line and run the following:
 
-.. code-block::
+::
 
     >>> import compas
     >>> import compas_rhino
