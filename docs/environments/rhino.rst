@@ -89,10 +89,3 @@ And add
 
     Restart Rhino and check the version info as before.
 
-
-Using the built-in script editor
-================================
-
-
-Using an external editor
-========================

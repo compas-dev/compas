@@ -16,7 +16,7 @@ Vertices can be connected to themseleves.
 Making a network
 ================
 
-.. ipython:: python
+.. code-block:: python
 
     import compas
     from compas.datastructures import Network
@@ -27,7 +27,7 @@ Making a network
 Adding vertices and edges
 =========================
 
-.. ipython:: python
+.. code-block:: python
 
     a = network.add_vertex()
     b = network.add_vertex(x=1.0)
@@ -50,6 +50,6 @@ The number is always the highest number used so far, plus one.
 
 Other types keys may be specified as well, as long as their value is *hashable*.
 
-.. ipython:: python
+.. code-block:: python
 
     print(a, type(a))

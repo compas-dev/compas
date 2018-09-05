@@ -54,15 +54,3 @@ Now configure Blender to use the newly installed environment:
     $ mv python original_python
     $ ln -s $CONDA_PREFIX python
 
-
-Using the built-in script editor
-================================
-
-coming soon...
-
-
-Using an external editor
-========================
-
-coming soon...
-
