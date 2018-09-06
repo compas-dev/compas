@@ -395,8 +395,91 @@ Getting attributes
 Setting attributes
 ~~~~~~~~~~~~~~~~~~
 
+.. code:: ipython3
+
+    mesh.set_vertex_attribute(0, 'is_fixed', True)
+
+.. code:: ipython3
+
+    mesh.set_vertex_attributes(0, ('is_fixed', 'z'), (False, 10))
+
+.. code:: ipython3
+
+    mesh.set_vertices_attribute('z', 10)
+
+.. code:: ipython3
+
+    mesh.set_vertices_attributes(('z', 'is_fixed'), (0, False))
+
+
 Serialisation
 -------------
 
+Raw data
+~~~~~~~~
+
+.. code:: ipython3
+
+    data = mesh.to_data()
+
+.. code:: ipython3
+
+    mesh = Mesh.from_data(data)
+
+
+Json
+~~~~
+
+.. code:: ipython3
+
+    mesh.to_json('mesh.json')
+
+.. code:: ipython3
+
+    mesh = Mesh.from_json('mesh.json')
+
+
+Pickle
+~~~~~~
+
+.. code:: ipython3
+
+    mesh.dump('mesh.pickle')
+
+.. code:: ipython3
+
+    s = mesh.dumps()
+
+.. code:: ipython3
+
+    mesh.load('mesh.pickle')
+
+.. code:: ipython3
+
+    mesh.loads(s)
+
+
 Visualisation
 -------------
+
+.. plot::
+    :include-source:
+
+    from compas.plotters import MeshPlotter
+    
+    plotter = MeshPlotter(mesh)
+    
+    plotter.draw_vertices(
+        facecolor={key: '#ff0000' for key in mesh.vertices_on_boundary()},
+        radius={key: 0.3 for key in mesh.vertices_on_boundary()},
+        text={key: str(key) for key in mesh.vertices_on_boundary()}
+    )
+    plotter.draw_edges(
+        color={key: '#00ff00' for key in mesh.edges_on_boundary()},
+        width={key: 3 for key in mesh.edges_on_boundary()}
+    )
+    plotter.draw_faces(
+        text={key: str(key) for key in mesh.faces_on_boundary()}
+    )
+    
+    plotter.show()
