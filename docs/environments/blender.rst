@@ -2,6 +2,8 @@
 Working in Blender
 ********************************************************************************
 
+.. highlight:: bash
+
 Blender ships with its own embedded version of Python but it is relatively
 simple to replace it with the one you have **COMPAS** installed on.
 It is recommended to create a new ``conda`` environment to make sure the python

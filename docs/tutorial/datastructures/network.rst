@@ -240,17 +240,17 @@ To change the default attributes associated with vertices and edges, do:
     
     # or network.update_default_edge_attributes(weight=0.0)
 
-**Note**
+.. note::
 
-Other attributes then the ones specified in the defaults can also be
-added. However, these attributes then only exist on the vertices or
-edges where they have been specified. To prevent this and only allow the
-registered attributes to be added, set
-``Network.strict_attributes = True``.
+    Other attributes then the ones specified in the defaults can also be
+    added. However, these attributes then only exist on the vertices or
+    edges where they have been specified. To prevent this and only allow the
+    registered attributes to be added, set
+    ``Network.strict_attributes = True``.
 
-When a vertex or edge is added to the network, the default attributes
-are copied and the values of the specified attributes are modified. To
-only store the modified values, set ``Network.copy_defaults = False``.
+    When a vertex or edge is added to the network, the default attributes
+    are copied and the values of the specified attributes are modified. To
+    only store the modified values, set ``Network.copy_defaults = False``.
 
 
 Getting attributes

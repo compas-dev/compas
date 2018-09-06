@@ -2,6 +2,8 @@
 Working in Rhino
 ********************************************************************************
 
+.. highlight:: bash
+
 .. warning::
 
     All instructions on this page are for Rhino for Windows.
