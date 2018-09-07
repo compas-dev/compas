@@ -108,7 +108,7 @@ class Network(FromToJson,
         super(Network, self).__init__()
         self._key_to_str = False
         self._max_int_key = -1
-        self._key_to_str = False
+
         self.attributes = {
             'name'         : 'Network',
             'color.vertex' : None,
@@ -149,7 +149,7 @@ class Network(FromToJson,
 
     @property
     def name(self):
-        """:obj:`str` : The name of the data structure.
+        """str : The name of the data structure.
 
         Any value assigned to this property will be stored in the attribute dict
         of the data structure instance.
@@ -178,8 +178,7 @@ class Network(FromToJson,
                 'max_int_key' : self._max_int_key, }
 
         for key in self.vertex:
-            rkey = repr(key)
-            data['vertex'][rkey] = self.vertex[key]
+            data['vertex'][repr(key)] = self.vertex[key]
 
         for u in self.edge:
             ru = repr(u)
@@ -257,11 +256,127 @@ class Network(FromToJson,
         self._max_int_key = max_int_key
 
     # --------------------------------------------------------------------------
+    # serialisation
+    # --------------------------------------------------------------------------
+
+    def dump(self, filepath):
+        """Dump the data representing the network to a file using Python's built-in
+        object serialisation.
+
+        Parameters
+        ----------
+        filepath : str
+            Path to the dump file.
+
+        """
+        data = {
+            'attributes'  : self.attributes,
+            'dva'         : self.default_vertex_attributes,
+            'dea'         : self.default_edge_attributes,
+            'vertex'      : self.vertex,
+            'edge'        : self.edge,
+            'halfedge'    : self.halfedge,
+            'max_int_key' : self._max_int_key,
+        }
+        with open(filepath, 'wb+') as fo:
+            pickle.dump(data, fo, protocol=pickle.HIGHEST_PROTOCOL)
+
+    def dumps(self):
+        """Dump the data representing the network to a string using Python's built-in
+        object serialisation.
+
+        Returns
+        -------
+        str
+            The pickled string representation of the data.
+
+        """
+        data = {
+            'attributes'  : self.attributes,
+            'dva'         : self.default_vertex_attributes,
+            'dea'         : self.default_edge_attributes,
+            'vertex'      : self.vertex,
+            'edge'        : self.edge,
+            'halfedge'    : self.halfedge,
+            'max_int_key' : self._max_int_key,
+        }
+        return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
+
+    def load(self, filepath):
+        """Load serialised network data from a pickle file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the pickle file.
+
+        """
+        with open(filepath, 'rb') as fo:
+            data = pickle.load(fo)
+
+        self.attributes = data['attributes']
+        self.default_vertex_attributes = data['dva']
+        self.default_edge_attributes = data['dea']
+        self.vertex = data['vertex']
+        self.edge = data['edge']
+        self.halfedge = data['halfedge']
+        self._max_int_key = data['max_int_key']
+
+    def loads(self, s):
+        """Load serialised network data from a pickle string.
+
+        Parameters
+        ----------
+        s : str
+            The pickled string.
+
+        """
+        data = pickle.loads(s)
+
+        self.attributes = data['attributes']
+        self.default_vertex_attributes = data['dva']
+        self.default_edge_attributes = data['dea']
+        self.vertex = data['vertex']
+        self.edge = data['edge']
+        self.halfedge = data['halfedge']
+        self._max_int_key = data['max_int_key']
+
+    # --------------------------------------------------------------------------
     # constructors
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_obj(cls, filepath, precision='3f'):
+    def from_obj(cls, filepath, precision=None):
+        """Construct a network from the data contained in an OBJ file.
+
+        Parameters
+        ----------
+        filepath : str
+            Path to the OBJ file.
+        precision: str, optional
+            The precision of the geometric map that is used to connect the lines.
+
+        Returns
+        -------
+        Network
+            A network object.
+
+        Note
+        ----
+        There are a few sample files available for testing and debugging:
+
+        * lines.obj
+
+        Examples
+        --------
+        .. code-block:: python
+
+            import compas
+            from compas.datastructures import Network
+            
+            network = Network.from_obj(compas.get('lines.obj'))
+
+        """
         network  = cls()
         obj      = OBJ(filepath, precision=precision)
         vertices = obj.parser.vertices
@@ -273,7 +388,36 @@ class Network(FromToJson,
         return network
 
     @classmethod
-    def from_lines(cls, lines, precision='3f'):
+    def from_lines(cls, lines, precision=None):
+        """Construct a network from a set of lines represented by their start and end point coordinates.
+
+        Parameters
+        ----------
+        lines : list
+            A list of pairs of point coordinates.
+        precision: str, optional
+            The precision of the geometric map that is used to connect the lines.
+
+        Returns
+        -------
+        Network
+            A network object.
+
+        Examples
+        --------
+        .. code-block:: python
+            
+            import json
+
+            import compas
+            from compas.datastructures import Network
+
+            with open(compas.get('lines.json'), 'r') as fo:
+                lines = json.load(fo)
+
+            network = Network.from_lines(lines)
+
+        """
         network = cls()
         edges   = []
         vertex  = {}
@@ -297,6 +441,16 @@ class Network(FromToJson,
 
     @classmethod
     def from_vertices_and_edges(cls, vertices, edges):
+        """Construct a network from vertices and edges.
+
+        Parameters
+        ----------
+        vertices : list of list of float
+            A list of vertex coordinates.
+        edges : list of tuple of int
+
+
+        """
         network = cls()
         for x, y, z in vertices:
             network.add_vertex(x=x, y=y, z=z)

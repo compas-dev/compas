@@ -48,6 +48,7 @@ from compas.datastructures._mixins import FaceFilter
 
 from compas.datastructures._mixins import FromToData
 from compas.datastructures._mixins import FromToJson
+from compas.datastructures._mixins import FromToPickle
 
 from compas.datastructures._mixins import VertexMappings
 from compas.datastructures._mixins import EdgeMappings
@@ -79,7 +80,8 @@ Mesh summary
 """
 
 
-class Mesh(FromToJson,
+class Mesh(FromToPickle,
+           FromToJson,
            FromToData,
            EdgeGeometry,
            FaceHelpers,
@@ -115,6 +117,16 @@ class Mesh(FromToJson,
         A dictionary of general mesh attributes.
 
     """
+
+    collapse_edge   = mesh_collapse_edge
+    split_face      = mesh_split_face
+    split_edge      = mesh_split_edge
+    unweld_vertices = mesh_unweld_vertices
+
+    collapse_edge_tri = trimesh_collapse_edge
+    split_edge_tri    = trimesh_split_edge
+    swap_edge_tri     = trimesh_swap_edge
+
 
     def __init__(self):
         super(Mesh, self).__init__()
@@ -165,10 +177,6 @@ class Mesh(FromToJson,
     # --------------------------------------------------------------------------
 
     @property
-    def adjacency(self):
-        return self.halfedge
-
-    @property
     def name(self):
         """str : The name of the data structure.
 
@@ -180,6 +188,10 @@ class Mesh(FromToJson,
     @name.setter
     def name(self, value):
         self.attributes['name'] = value
+
+    @property
+    def adjacency(self):
+        return self.halfedge
 
     @property
     def data(self):
@@ -379,7 +391,7 @@ class Mesh(FromToJson,
 
         Returns
         -------
-        Mesh :
+        Mesh
             A mesh object.
 
         Note
@@ -511,7 +523,7 @@ class Mesh(FromToJson,
 
         Returns
         -------
-        Mesh :
+        Mesh
             A mesh object.
 
         Examples
@@ -2785,14 +2797,14 @@ class Mesh(FromToJson,
         plotter.show()
 
 
-Mesh.collapse_edge = mesh_collapse_edge.__get__(None, Mesh)
-Mesh.split_face = mesh_split_face.__get__(None, Mesh)
-Mesh.split_edge = mesh_split_edge.__get__(None, Mesh)
-Mesh.unweld_vertices = mesh_unweld_vertices.__get__(None, Mesh)
+# Mesh.collapse_edge = mesh_collapse_edge.__get__(None, Mesh)
+# Mesh.split_face = mesh_split_face.__get__(None, Mesh)
+# Mesh.split_edge = mesh_split_edge.__get__(None, Mesh)
+# Mesh.unweld_vertices = mesh_unweld_vertices.__get__(None, Mesh)
 
-Mesh.collapse_edge_tri = trimesh_collapse_edge.__get__(None, Mesh)
-Mesh.split_edge_tri = trimesh_split_edge.__get__(None, Mesh)
-Mesh.swap_edge_tri = trimesh_swap_edge.__get__(None, Mesh)
+# Mesh.collapse_edge_tri = trimesh_collapse_edge.__get__(None, Mesh)
+# Mesh.split_edge_tri = trimesh_split_edge.__get__(None, Mesh)
+# Mesh.swap_edge_tri = trimesh_swap_edge.__get__(None, Mesh)
 
 
 # ==============================================================================
