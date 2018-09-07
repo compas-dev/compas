@@ -91,7 +91,6 @@ class Mesh(FromToJson,
            FaceMappings,
            EdgeMappings,
            VertexMappings,
-           VertexCoordinatesDescriptors,
            FaceAttributesManagement,
            VertexAttributesManagement,
            Datastructure):
@@ -100,24 +99,20 @@ class Mesh(FromToJson,
     Attributes
     ----------
     vertex : dict
-        The vertex dictionary.
-        With every key in the dictionary corresponds a dictionary of attributes.
+        A dictionary mapping vertex identifiers to vertex attributes.
     face : dict
-        The face dictionary.
-        With every key in the dictionary corresponds a dictionary of half-edges.
-    facedata : dict
-        A dictionary with face attributes.
-        For every face, there is a corresponding entry in this dict.
+        A dictionary mapping face identifiers to ordered face vertices.
     halfedge : dict
-        The half-edge dictionary.
-        Every key in the dictionary corresponds to a vertex of the mesh.
-        With every key corresponds a dictionary of neighbors pointing to face keys.
-    edge : dict
-        The edge dictionary.
-        Every key in the dictionary corresponds to a vertex.
-        With every key corresponds a dictionary of neighbors pointing to attribute dictionaries.
+        A dictionary mapping each vertex identifier to a dictionary that maps
+        vertex identifiers of the half-edges connected to the first vertex to the
+        corresponding faces.
+    facedata : dict
+        A dictionary mapping face identifiers to face attributes.
+    edgedata : dict
+        A dictionary mapping edge identifiers (pairs of vertex identifiers) to edge
+        attributes.
     attributes : dict
-        General mesh attributes.
+        A dictionary of general mesh attributes.
 
     """
 
@@ -197,9 +192,9 @@ class Mesh(FromToJson,
         * 'dea'          => dict
         * 'dfa'          => dict
         * 'vertex'       => dict
-        * 'edge'         => dict
         * 'face'         => dict
         * 'facedata'     => dict
+        * 'edgedata'     => dict
         * 'max_int_key'  => int
         * 'max_int_fkey' => int
 
@@ -209,46 +204,34 @@ class Mesh(FromToJson,
         to ensure compatibility of all allowed key types with the JSON serialisation
         format, which only allows for dict keys that are strings.
 
-        See Also
-        --------
-        * :meth:`to_data`
-        * :meth:`to_json`
-        * :meth:`from_data`
-        * :meth:`from_json`
-
         """
         data = {'attributes'  : self.attributes,
                 'dva'         : self.default_vertex_attributes,
                 'dea'         : self.default_edge_attributes,
                 'dfa'         : self.default_face_attributes,
                 'vertex'      : {},
-                'edgedata'    : {},
                 'face'        : {},
                 'facedata'    : {},
+                'edgedata'    : {},
                 'max_int_key' : self._max_int_key,
                 'max_int_fkey': self._max_int_fkey, }
 
         for key in self.vertex:
-            rkey = repr(key)
-            data['vertex'][rkey] = self.vertex[key]
+            data['vertex'][repr(key)] = self.vertex[key]
 
         for fkey in self.face:
-            rfkey = repr(fkey)
-            data['face'][rfkey] = [repr(key) for key in self.face[fkey]]
+            data['face'][repr(fkey)] = [repr(key) for key in self.face[fkey]]
 
         for fkey in self.facedata:
-            rfkey = repr(fkey)
-            data['facedata'][rfkey] = self.facedata[fkey]
+            data['facedata'][repr(fkey)] = self.facedata[fkey]
 
         for uv in self.edgedata:
-            ruv = repr(uv)
-            data['edgedata'][ruv] = self.edgedata[uv]
+            data['edgedata'][repr(uv)] = self.edgedata[uv]
 
         return data
 
     @data.setter
     def data(self, data):
-        """"""
         attributes   = data.get('attributes') or {}
         dva          = data.get('dva') or {}
         dfa          = data.get('dfa') or {}
@@ -268,19 +251,15 @@ class Mesh(FromToJson,
         self.clear()
 
         for key, attr in iter(vertex.items()):
-            key = literal_eval(key)
-            self.add_vertex(key, attr_dict=attr)
+            self.add_vertex(literal_eval(key), attr_dict=attr)
 
         for fkey, vertices in iter(face.items()):
             attr = facedata.get(fkey) or {}
             vertices = [literal_eval(k) for k in vertices]
-            fkey = literal_eval(fkey)
-            self.add_face(vertices, fkey=fkey, attr_dict=attr)
+            self.add_face(vertices, fkey=literal_eval(fkey), attr_dict=attr)
 
         for uv, attr in iter(edgedata.items()):
-            attr = attr or {}
-            uv = literal_eval(uv)
-            self.edgedata[uv] = attr
+            self.edgedata[literal_eval(uv)] = attr or {}
 
         self._max_int_key = max_int_key
         self._max_int_fkey = max_int_fkey
@@ -290,15 +269,24 @@ class Mesh(FromToJson,
     # --------------------------------------------------------------------------
 
     def dump(self, filepath):
+        """Dump the data representing the mesh to a file using Python's built-in
+        object serialisation.
+
+        Parameters
+        ----------
+        filepath : str
+            Path to the dump file.
+
+        """
         data = {
             'attributes'  : self.attributes,
             'dva'         : self.default_vertex_attributes,
             'dea'         : self.default_edge_attributes,
             'dfa'         : self.default_face_attributes,
             'vertex'      : self.vertex,
-            'edgedata'    : self.edgedata,
             'face'        : self.face,
             'facedata'    : self.facedata,
+            'edgedata'    : self.edgedata,
             'max_int_key' : self._max_int_key,
             'max_int_fkey': self._max_int_fkey,
         }
@@ -306,21 +294,38 @@ class Mesh(FromToJson,
             pickle.dump(data, fo, protocol=pickle.HIGHEST_PROTOCOL)
 
     def dumps(self):
+        """Dump the data representing the mesh to a string using Python's built-in
+        object serialisation.
+
+        Returns
+        -------
+        str
+            The pickled string representation of the data.
+
+        """
         data = {
             'attributes'  : self.attributes,
             'dva'         : self.default_vertex_attributes,
             'dea'         : self.default_edge_attributes,
             'dfa'         : self.default_face_attributes,
             'vertex'      : self.vertex,
-            'edgedata'    : self.edgedata,
             'face'        : self.face,
             'facedata'    : self.facedata,
+            'edgedata'    : self.edgedata,
             'max_int_key' : self._max_int_key,
             'max_int_fkey': self._max_int_fkey,
         }
         return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
 
     def load(self, filepath):
+        """Load serialised mesh data from a pickle file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the pickle file.
+
+        """
         with open(filepath, 'rb') as fo:
             data = pickle.load(fo)
 
@@ -336,6 +341,14 @@ class Mesh(FromToJson,
         self._max_int_fkey = data['max_int_fkey']
 
     def loads(self, s):
+        """Load serialised mesh data from a pickle string.
+
+        Parameters
+        ----------
+        s : str
+            The pickled string.
+
+        """
         data = pickle.loads(s)
 
         self.attributes = data['attributes']
@@ -382,9 +395,12 @@ class Mesh(FromToJson,
 
         Examples
         --------
-        >>> import compas
-        >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+        .. code-block:: python
+
+            import compas
+            from compas.datastructures import Mesh
+            
+            mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         """
         obj = OBJ(filepath, precision)
@@ -419,9 +435,12 @@ class Mesh(FromToJson,
 
         Examples
         --------
-        >>> import compas
-        >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_obj(compas.get('bunny.ply'))
+        .. code-block:: python
+
+            import compas
+            from compas.datastructures import Mesh
+            
+            mesh = Mesh.from_obj(compas.get('bunny.ply'))
 
         """
         ply = PLY(filepath)
@@ -432,6 +451,35 @@ class Mesh(FromToJson,
 
     @classmethod
     def from_stl(cls, filepath):
+        """Construct a mesh object from the data described in a STL file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
+
+        Returns
+        -------
+        Mesh :
+            A mesh object.
+
+        Note
+        ----
+        There are a few sample files available for testing and debugging:
+
+        * cube_ascii.stl
+        * cube_binary.stl
+
+        Examples
+        --------
+        .. code-block:: python
+
+            import compas
+            from compas.datastructures import Mesh
+            
+            mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
+
+        """
         stl = STL(filepath)
         vertices = stl.parser.vertices
         faces = stl.parser.faces
@@ -447,7 +495,7 @@ class Mesh(FromToJson,
         return leaves
 
     @classmethod
-    def from_lines(cls, lines, delete_boundary_face=False, precision='3f'):
+    def from_lines(cls, lines, delete_boundary_face=False, precision=None):
         """Construct a mesh object from a list of lines described by start and end point coordinates.
 
         Parameters
@@ -466,17 +514,19 @@ class Mesh(FromToJson,
         Mesh :
             A mesh object.
 
-        See Also
-        --------
-        * :func:`compas.datastructures.network_find_faces`
-        * :func:`compas.datastructures.FaceNetwork`
-        * :meth:`from_vertices_and_faces`
-
         Examples
         --------
-        >>> import compas
-        >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_obj(compas.get('bunny.ply'))
+        .. code-block:: python
+            
+            import json
+
+            import compas
+            from compas.datastructures import Mesh
+
+            with open(compas.get('lines.json'), 'r') as fo:
+                lines = json.load(fo)
+
+            mesh = Mesh.from_lines(lines)
 
         """
         from compas.topology import network_find_faces
@@ -517,11 +567,15 @@ class Mesh(FromToJson,
 
         Examples
         --------
-        >>> import compas
-        >>> from compas.datastructures import Mesh
-        >>> vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]
-        >>> faces = [[0, 1, 2]]
-        >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        .. code-block:: python
+
+            import compas
+            from compas.datastructures import Mesh
+            
+            vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]
+            faces = [[0, 1, 2]]
+            
+            mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
         """
         mesh = cls()
@@ -546,6 +600,15 @@ class Mesh(FromToJson,
         Mesh
             A mesh object.
 
+        Examples
+        --------
+        .. code-block:: python
+
+            import compas
+            from compas.datastructures import Mesh
+
+            mesh = Mesh.from_polyhedron(8)
+
         """
         p = Polyhedron.generate(f)
         return cls.from_vertices_and_faces(p.vertices, p.faces)
@@ -565,13 +628,19 @@ class Mesh(FromToJson,
         Mesh
             A mesh object.
 
+        Examples
+        --------
+        .. code-block:: python
+
+            pass
+
         """
         from compas.topology import delaunay_from_points
         faces = delaunay_from_points(points, boundary=boundary, holes=holes)
         return cls.from_vertices_and_faces(points, faces)
 
     @classmethod
-    def from_polygons(cls, polygons, precision='3f'):
+    def from_polygons(cls, polygons, precision=None):
         """Construct a mesh from a series of polygons.
 
         Parameters
@@ -579,6 +648,8 @@ class Mesh(FromToJson,
         polygons : list
             A list of polygons, with each polygon defined as an ordered list of
             XYZ coordinates of its corners.
+        precision: str, optional
+            The precision of the geometric map that is used to connect the lines.
 
         Returns
         -------
@@ -622,7 +693,9 @@ class Mesh(FromToJson,
 
         Examples
         --------
-        >>>
+        .. code-block:: python
+
+            pass
 
         """
         key_index = self.key_index()
@@ -650,7 +723,9 @@ class Mesh(FromToJson,
 
         Example
         -------
-        >>>
+        .. code-block:: python
+
+            pass
 
         """
         key_index = self.key_index()
@@ -813,22 +888,16 @@ class Mesh(FromToJson,
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
 
-        See Also
-        --------
-        * :meth:`add_face`
-        * :meth:`add_edge`
-
         Examples
         --------
-        >>> mesh = Mesh()
         >>> mesh.add_vertex()
-        '0'
+        0
         >>> mesh.add_vertex(x=0, y=0, z=0)
-        '1'
+        1
         >>> mesh.add_vertex(key=2)
-        '2'
+        2
         >>> mesh.add_vertex(key=0, x=1)
-        '0'
+        0
 
         """
         attr = self._compile_vattr(attr_dict, kwattr)
@@ -880,11 +949,6 @@ class Mesh(FromToJson,
 
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
-
-        See Also
-        --------
-        * :meth:`add_vertex`
-        * :meth:`add_edge`
 
         Examples
         --------
@@ -1123,10 +1187,6 @@ class Mesh(FromToJson,
         """Count the number of faces in the mesh."""
         return len(list(self.faces()))
 
-    def number_of_halfedges(self):
-        """Count the number of halfedges in the mesh."""
-        return len(list(self.halfedges()))
-
     def is_valid(self):
         """Verify that the mesh is valid.
 
@@ -1316,9 +1376,11 @@ class Mesh(FromToJson,
             The next vertex as a (key, attr) tuple, if ``data`` is true.
 
         """
-        if data:
-            return iter(self.vertex.items())
-        return iter(self.vertex)
+        for key in self.vertex:
+            if data:
+                yield key, self.vertex[key]
+            else:
+                yield key
 
     def faces(self, data=False):
         """Iterate over the faces of the mesh.
@@ -1408,9 +1470,11 @@ class Mesh(FromToJson,
 
                 if (u, v) not in self.edgedata:
                     self.edgedata[u, v] = self.default_edge_attributes.copy()
+
                     if (v, u) in self.edgedata:
                         self.edgedata[u, v].update(self.edgedata[v, u])
                         del self.edgedata[v, u]
+
                     self.edgedata[v, u] = self.edgedata[u, v]
 
                 if data:
@@ -1535,7 +1599,6 @@ class Mesh(FromToJson,
             plotter.show()
 
         """
-
         temp = list(self.halfedge[key])
 
         if not ordered:
@@ -2053,8 +2116,6 @@ class Mesh(FromToJson,
         """
         for u, v in self.face_halfedges(f1):
             if self.halfedge[v][u] == f2:
-                # if v in self.edge[u]:
-                #     return u, v
                 return u, v
 
     # --------------------------------------------------------------------------
@@ -2175,7 +2236,19 @@ class Mesh(FromToJson,
 
     def vertex_normal(self, key):
         """Return the normal vector at the vertex as the weighted average of the
-        normals of the neighboring faces."""
+        normals of the neighboring faces.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        list
+            The components of the normal vector.
+
+        """
         vectors = [self.face_normal(fkey) for fkey in self.vertex_faces(key) if fkey is not None]
         return normalize_vector(centroid_points(vectors))
 
@@ -2276,9 +2349,6 @@ class Mesh(FromToJson,
         """
         return area_polygon(self.face_coordinates(fkey))
 
-    # def face_circle(self, fkey):
-    #     pass
-
     def face_flatness(self, fkey):
         """Compute the flatness of the mesh face.
 
@@ -2306,6 +2376,9 @@ class Mesh(FromToJson,
         vertices = self.face_coordinates(fkey)
         face = range(len(self.face_vertices(fkey)))
         return flatness(vertices, [face])[0]
+
+    # def face_circle(self, fkey):
+    #     pass
 
     # def face_frame(self, fkey):
     #     pass
@@ -2452,8 +2525,8 @@ class Mesh(FromToJson,
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
 
-        Note
-        ----
+        Notes
+        -----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
 
@@ -2472,18 +2545,12 @@ class Mesh(FromToJson,
 
         Parameters
         ----------
-        key : tuple, list
+        key : tuple of hashable
             The identifier of the edge, in the form of a pair of vertex identifiers.
         name : str
             The name of the attribute.
         value : object
             The value of the attribute.
-
-        See Also
-        --------
-        * :meth:`set_edge_attributes`
-        * :meth:`set_edges_attribute`
-        * :meth:`set_edges_attributes`
 
         """
         u, v = key
@@ -2500,24 +2567,12 @@ class Mesh(FromToJson,
 
         Parameters
         ----------
-        key : tuple, list
+        key : tuple of hashable
             The identifier of the edge, in the form of a pair of vertex identifiers.
-        attr_dict : dict (None)
-            A dictionary of attributes as name-value pairs.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Note
-        ----
-        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
-        if they exist.
-
-        See Also
-        --------
-        * :meth:`set_edge_attribute`
-        * :meth:`set_edges_attribute`
-        * :meth:`set_edges_attributes`
+        names : list of str
+            The names of the attributes.
+        values : list of object
+            The values of the attributes.
 
         """
         for name, value in zip(names, values):
@@ -2532,16 +2587,10 @@ class Mesh(FromToJson,
             The name of the attribute.
         value : object
             The value of the attribute.
-        keys : iterable (None)
+        keys : list of hashable, optional
             A list of edge identifiers.
             Each edge identifier is a pair of vertex identifiers.
             Defaults to all edges.
-
-        See Also
-        --------
-        * :meth:`set_edge_attribute`
-        * :meth:`set_edge_attributes`
-        * :meth:`set_edges_attributes`
 
         """
         if not keys:
@@ -2554,26 +2603,14 @@ class Mesh(FromToJson,
 
         Parameters
         ----------
-        keys : iterable (None)
+        names : list of str
+            The names of the attributes.
+        values : list of object
+            The values of the attributes.
+        keys : list of hashable, optional
             A list of edge identifiers.
             Each edge identifier is a pair of vertex identifiers.
             Defaults to all edges.
-        attr_dict : dict (None)
-            A dictionary of attributes as name-value pairs.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Note
-        ----
-        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
-        if they exist.
-
-        See Also
-        --------
-        * :meth:`set_edge_attribute`
-        * :meth:`set_edge_attributes`
-        * :meth:`set_edges_attribute`
 
         """
         for name, value in zip(names, values):
@@ -2584,7 +2621,7 @@ class Mesh(FromToJson,
 
         Parameters
         ----------
-        key : tuple, list
+        key : tuple of hashable
             The identifier of the edge, in the form of a pair of vertex identifiers.
         name : str
             The name of the attribute.
@@ -2597,12 +2634,6 @@ class Mesh(FromToJson,
             The value of the attribute,
             or the default value if the attribute does not exist.
 
-        See Also
-        --------
-        * :meth:`get_edge_attributes`
-        * :meth:`get_edges_attribute`
-        * :meth:`get_edges_attributes`
-
         """
         if key not in self.edgedata:
             self.set_edge_attributes(key, [], [])
@@ -2613,13 +2644,13 @@ class Mesh(FromToJson,
 
         Parameters
         ----------
-        key : tuple, list
+        key : tuple of hashable
             The identifier of the edge, in the form of a pair of vertex identifiers.
         names : list
             A list of attribute names.
-        values : list (None)
+        values : list, optional
             A list of default values.
-            Defaults to a list of ``None`` s.
+            Defaults to a list of ``None``.
 
         Returns
         -------
@@ -2627,12 +2658,6 @@ class Mesh(FromToJson,
             A list of values.
             Every attribute that does not exist is replaced by the corresponding
             default value.
-
-        See Also
-        --------
-        * :meth:`get_edge_attribute`
-        * :meth:`get_edges_attribute`
-        * :meth:`get_edges_attributes`
 
         """
         if not values:
@@ -2659,12 +2684,6 @@ class Mesh(FromToJson,
         values : list
             A list of values of the named attribute of the specified edges.
 
-        See Also
-        --------
-        * :meth:`get_edge_attribute`
-        * :meth:`get_edge_attributes`
-        * :meth:`get_edges_attributes`
-
         """
         if not keys:
             keys = self.edges()
@@ -2678,10 +2697,10 @@ class Mesh(FromToJson,
         ----------
         names : list
             The names of the attributes.
-        values : list (None)
+        values : list, optional
             A list of default values.
-            Defaults to a list of ``None`` s.
-        keys : iterable (None)
+            Defaults to a list of ``None``.
+        keys : list of hashable, optional
             A list of edge identifiers.
             Each edge identifier is a pair of vertex identifiers.
             Defaults to all edges.
@@ -2693,20 +2712,78 @@ class Mesh(FromToJson,
             If an attribute does not exist for a specific edge, it is replaced
             by the default value.
 
-        See Also
-        --------
-        * :meth:`get_edge_attribute`
-        * :meth:`get_edge_attributes`
-        * :meth:`get_edges_attribute`
-
         """
         if not keys:
             keys = self.edges()
 
         return [self.get_edge_attributes(key, names, values) for key in keys]
 
+    # --------------------------------------------------------------------------
+    # visualisation
+    # --------------------------------------------------------------------------
 
-# move these to where they are needed
+    def plot(self,
+             vertexcolor=None,
+             edgecolor=None,
+             facecolor=None,
+             vertexsize=None,
+             edgewidth=None,
+             vertextext=None,
+             edgetext=None,
+             facetext=None):
+        """Plot a 2D representation of the mesh.
+
+        Parameters
+        ----------
+        vertexcolor : dict, optional
+            A dictionary mapping vertex identifiers to colors.
+        edgecolor : dict, optional
+            A dictionary mapping edge identifiers to colors.
+        facecolor : dict, optional
+            A dictionary mapping face identifiers to colors.
+        vertexsize : dict, optional
+            A dictionary mapping vertex identifiers to sizes.
+        edgewidth : dict, optional
+            A dictionary mapping edge identifiers to widths.
+        vertextext : dict, optional
+            A dictionary mappping vertex identifiers to labels.
+        edgetext : dict, optional
+            A dictionary mappping edge identifiers to labels.
+        facetext : dict, optional
+            A dictionary mappping face identifiers to labels.
+
+        Examples
+        --------
+        .. plot::
+            :include-source:
+
+            import compas
+            from compas.datastructures import Mesh
+
+            mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+            mesh.plot()
+    
+        """
+        from compas.plotters import MeshPlotter
+
+        plotter = MeshPlotter(self)
+        plotter.draw_vertices(
+            facecolor=vertexcolor,
+            radius=vertexsize,
+            text=vertextext
+        )
+        plotter.draw_edges(
+            color=edgecolor,
+            width=edgewidth,
+            text=edgetext
+        )
+        plotter.draw_faces(
+            facecolor=facecolor,
+            text=facetext
+        )
+        plotter.show()
+
 
 Mesh.collapse_edge = mesh_collapse_edge.__get__(None, Mesh)
 Mesh.split_face = mesh_split_face.__get__(None, Mesh)

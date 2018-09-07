@@ -137,6 +137,10 @@ def get(filename):
 
     """
     filename = filename.strip('/')
+
+    if filename.endswith('bunny.ply'):
+        return get_bunny()
+
     localpath = compas._os.absjoin(DATA, filename)
 
     if os.path.exists(localpath):
