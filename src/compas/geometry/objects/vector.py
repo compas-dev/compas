@@ -10,6 +10,7 @@ from math import pi
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import subtract_vectors
+from compas.geometry.angles import angle_vectors
 
 from compas.geometry.transformations import transform_vectors
 
@@ -559,6 +560,9 @@ if __name__ == '__main__':
 
     u = Vector(0.0, 0.0, 1.0)
     v = Vector(1.0, 0.0, 0.0)
+
+    print(u.angle(v))
+    print(3.14159 / 2)
 
     w = Vector.from_start_end(u, v)
 
