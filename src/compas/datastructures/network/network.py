@@ -449,6 +449,16 @@ class Network(FromToJson,
             A list of vertex coordinates.
         edges : list of tuple of int
 
+        Returns
+        -------
+        Network
+            A network object.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            pass    
 
         """
         network = cls()
@@ -458,33 +468,87 @@ class Network(FromToJson,
             network.add_edge(u, v)
         return network
 
-    @classmethod
-    def from_grid(cls, xlim, ylim):
-        pass
-
     # --------------------------------------------------------------------------
     # converters
     # --------------------------------------------------------------------------
 
     def to_obj(self):
+        """Write the network to an OBJ file.
+
+        Parameters
+        ----------
+        filepath : str
+            Full path of the file.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            pass
+
+        """
         raise NotImplementedError
 
     def to_points(self, axes='xyz'):
+        """Return the coordinates of the network.
+
+        Parameters
+        ----------
+        axes : str, optional
+            The components of the point coordinates to return.
+            Default is to return XYZ components.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            pass
+
+        """
         return [self.vertex_coordinates(key, axes) for key in self.vertices()]
 
     def to_lines(self, axes='xyz'):
+        """Return the lines of the network as pairs of start and end point coordinates.
+
+        Parameters
+        ----------
+        axes : str, optional
+            The components of the point coordinates to return.
+            Default is to return XYZ components.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            pass
+
+        """
         return [self.edge_coordinates(u, v, axes=axes) for u, v in self.edges()]
 
     def to_vertices_and_edges(self):
+        """Return the vertices and edges of a network.
+
+        Returns
+        -------
+        tuple
+            A 2-tuple containing
+
+            * a list of vertices, represented by their XYZ coordinates, and
+            * a list of edges.
+
+            Each face is a list of indices referencing the list of vertex coordinates.
+
+        Example
+        -------
+        .. code-block:: python
+
+            pass
+
+        """
         key_index = dict((key, index) for index, key in enumerate(self.vertices()))
         vertices  = [self.vertex_coordinates(key) for key in self.vertices()]
         edges     = [(key_index[u], key_index[v]) for u, v in self.edges()]
         return vertices, edges
-
-    def to_points_and_lines(self):
-        points = [self.vertex_coordinates(key) for key in self.vertices()]
-        lines = [self.edge_coordinates(u, v) for u, v in self.edges()]
-        return points, lines
 
     # --------------------------------------------------------------------------
     # helpers
@@ -507,15 +571,22 @@ class Network(FromToJson,
         return key
 
     def copy(self):
+        """Make an independent copy of the network object.
+
+        Returns
+        -------
+        Network
+            A separate, but identical network object.
+
+        """
         cls = type(self)
         return cls.from_data(deepcopy(self.data))
 
     def clear(self):
+        """Clear all the network data."""
         del self.vertex
         del self.edge
         del self.halfedge
-        del self.face
-        del self.facedata
         self.vertex   = {}
         self.edge     = {}
         self.halfedge = {}
@@ -523,15 +594,18 @@ class Network(FromToJson,
         self._max_int_fkey = -1
 
     def clear_vertexdict(self):
+        """Clear only the vertices."""
         del self.vertex
         self.vertex = {}
         self._max_int_key = -1
 
     def clear_edgedict(self):
+        """Clear only the edges."""
         del self.edge
         self.edge = {}
 
     def clear_halfedgedict(self):
+        """Clear only the half-edges."""
         del self.halfedge
         self.halfedge = {}
 
@@ -542,32 +616,40 @@ class Network(FromToJson,
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
         """Add a vertex and specify its attributes (optional).
 
-        Notes:
-            If no key is provided for the vertex, one is generated
-            automatically. An automatically generated key increments the highest
-            key in use by 1::
+        Parameters
+        ----------
+        key : hashable, optional
+            An identifier for the vertex.
+            Defaults to ``None``, in which case an identifier of type ``int`` is automatically generated.
+        attr_dict : dict, optional
+            Vertex attributes, defaults to ``None``.
+        kwattr
+            Other named vertex attributes, defaults to an empty dict.
 
-                key = int(sorted(self.vertex.keys())[-1]) + 1
+        Returns
+        -------
+        str
+            The key of the vertex.
 
-        Parameters:
-            key (int): An identifier for the vertex. Defaults to None. The key
-                is converted to a string before it is used.
-            attr_dict (dict): Vertex attributes, defaults to ``None``.
-            **attr: Other named vertex attributes, defaults to an empty :obj:`dict`.
+        Notes
+        -----
+        If no key is provided for the vertex, one is generated
+        automatically. An automatically generated key increments the highest
+        key in use by 1::
 
-        Returns:
-            str: The key of the vertex.
+            key = int(sorted(self.vertex.keys())[-1]) + 1
 
-        Examples:
-            >>> network = Network()
-            >>> network.add_vertex()
-            '0'
-            >>> network.add_vertex(x=0, y=0, z=0)
-            '1'
-            >>> network.add_vertex(key=2)
-            '2'
-            >>> network.add_vertex(key=0, x=1)
-            '0'
+        Examples
+        --------
+        >>> network.add_vertex()
+        0
+        >>> network.add_vertex(x=0, y=0, z=0)
+        1
+        >>> network.add_vertex(key=2)
+        2
+        >>> network.add_vertex(key=0, x=1)
+        0
+
         """
         attr = deepcopy(self.default_vertex_attributes)
         if not attr_dict:
@@ -587,7 +669,31 @@ class Network(FromToJson,
         return key
 
     def add_edge(self, u, v, attr_dict=None, **kwattr):
-        """Add an edge and specify its attributes (optional)."""
+        """Add an edge and specify its attributes.
+
+        Parameters
+        ----------
+        u : hashable
+            The identifier of the first vertex of the edge.
+        v : hashable
+            The identifier of the second vertex of the edge.
+        attr_dict : dict, optional
+            A dictionary of edge attributes.
+        kwattr
+            Other edge attributes as additional keyword arguments.
+
+        Returns
+        -------
+        tuple
+            The identifiers of the edge vertices.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            pass
+
+        """
         attr = deepcopy(self.default_edge_attributes)
         if not attr_dict:
             attr_dict = {}
@@ -615,6 +721,20 @@ class Network(FromToJson,
     # --------------------------------------------------------------------------
 
     def delete_vertex(self, key):
+        """Delete a vertex from the network.
+        
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            pass
+
+        """
         for nbr in self.vertex_neighbors(key):
             del self.halfedge[key][nbr]
             del self.halfedge[nbr][key]
@@ -627,6 +747,22 @@ class Network(FromToJson,
         del self.edge[key]
 
     def delete_edge(self, u, v):
+        """Delete an edge from the network.
+        
+        Parameters
+        ----------
+        u : hashable
+            The identifier of the first vertex.
+        v : hashable
+            The identifier of the second vertex.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            pass
+
+        """
         del self.halfedge[u][v]
         del self.halfedge[v][u]
         if u in self.edge and v in self.edge[u]:
@@ -639,44 +775,67 @@ class Network(FromToJson,
     # --------------------------------------------------------------------------
 
     def number_of_vertices(self):
+        """Compute the number of vertices of the network.
+
+        Returns
+        -------
+        int
+            the number of vertices.
+
+        """
         return len(list(self.vertices()))
 
     def number_of_edges(self):
+        """Compute the number of edges of the network.
+
+        Returns
+        -------
+        int
+            the number of edges.
+
+        """
         return len(list(self.edges()))
-
-    def number_of_halfedges(self):
-        return len(list(self.halfedges()))
-
-    # def is_connected(self):
-    #     """Return True if for every two vertices a path exists connecting them."""
-    #     if not self.vertex:
-    #         return False
-
-    #     root = self.get_any_vertex()
-    #     nodes = breadth_first_traverse(self.halfedge, root)
-
-    #     return len(nodes) == self.number_of_vertices()
 
     # --------------------------------------------------------------------------
     # accessors
     # --------------------------------------------------------------------------
 
     def vertices(self, data=False):
-        """Return an iterator for the vertices and their attributes (optional).
+        """Iterate over the vertices of the network.
 
-        Parameters:
-            data (bool): Return key, data pairs, defaults to False.
+        Parameters
+        ----------
+        data : bool, optional
+            If ``True``, yield both the identifier and the attributes.
 
-        Returns:
-            iter: An iterator of vertex keys, if data is False.
-            iter: An iterator of key, data pairs, if data is True.
+        Yields
+        ------
+        hashable
+            The next vertex identifier (*key*), if ``data`` is ``False``.
+        2-tuple
+            The next vertex as a (key, attr) tuple, if ``data`` is ``True``.
+
         """
         if data:
             return iter(self.vertex.items())
         return iter(self.vertex)
 
     def edges(self, data=False):
-        """Return an iterator for the edges and their attributes (optional)."""
+        """Iterate over the edges of the network.
+
+        Parameters
+        ----------
+        data : bool, optional
+            If ``True``, yield both the identifier and the attributes.
+
+        Yields
+        ------
+        2-tuple
+            The next edge identifier (u, v), if ``data`` is ``False``.
+        3-tuple
+            The next vertex as a (u, v, attr) tuple, if ``data`` is ``True``.
+
+        """
         for u, nbrs in iter(self.edge.items()):
             for v, attr in iter(nbrs.items()):
                 if data:
@@ -688,9 +847,9 @@ class Network(FromToJson,
     # additional accessors
     # --------------------------------------------------------------------------
 
-    def indexed_edges(self):
-        k_i = self.key_index()
-        return [(k_i[u], k_i[v]) for u, v in self.edges()]
+    # def indexed_edges(self):
+    #     k_i = self.key_index()
+    #     return [(k_i[u], k_i[v]) for u, v in self.edges()]
 
     # --------------------------------------------------------------------------
     # default attributes
@@ -717,26 +876,101 @@ class Network(FromToJson,
     # --------------------------------------------------------------------------
 
     def has_vertex(self, key):
+        """Verify if a specific vertex is present in the network.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        bool
+            True or False.
+
+        """
         return key in self.vertex
 
     def is_vertex_leaf(self, key):
+        """Verify if a vertex is a leaf.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        bool
+            True or False.
+
+        Notes
+        -----
+        A vertex is a *leaf* if it has only one neighbor.
+
+        """
         return self.vertex_degree(key) == 1
 
     def leaves(self):
+        """Return all leaves of the network.
+
+        Returns
+        -------
+        list
+            A list of vertex identifiers.
+
+        """
         return [key for key in self.vertices() if self.is_vertex_leaf(key)]
 
-    def is_vertex_orphan(self, key):
-        return not self.vertex_degree(key) > 0
-
     def is_vertex_connected(self, key):
+        """Verify if a specific vertex is connected.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        bool
+            True or False.
+
+        """
         return self.vertex_degree(key) > 0
 
     def vertex_neighbors(self, key):
-        """Return the neighbors of a vertex."""
+        """Return the neighbors of a vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        list
+            A list of vertex identifiers.
+
+        """
         return list(self.halfedge[key])
 
     def vertex_neighborhood(self, key, ring=1):
-        """Return the vertices in the neighborhood of a vertex."""
+        """Return the vertices in the neighborhood of a vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+        ring : int, optional
+            The size of the neighborhood.
+            Default is ``1``.
+
+        Returns
+        -------
+        list
+            A list of vertex identifiers.
+
+        """
         nbrs = set(self.vertex_neighbors(key))
 
         i = 1
@@ -752,30 +986,102 @@ class Network(FromToJson,
 
             i += 1
 
-        return nbrs
+        return list(nbrs)
 
     def vertex_neighbors_out(self, key):
-        """Return the outgoing neighbors of a vertex."""
+        """Return the outgoing neighbors of a vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        list
+            A list of vertex identifiers.
+
+        """
         return list(self.edge[key])
 
     def vertex_neighbors_in(self, key):
-        """Return the incoming neighbors of a vertex."""
+        """Return the incoming neighbors of a vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        list
+            A list of vertex identifiers.
+
+        """
         return list(set(self.halfedge[key]) - set(self.edge[key]))
 
     def vertex_degree(self, key):
-        """Return the number of neighbors of a vertex."""
+        """Return the number of neighbors of a vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        int
+            The number of neighbors of the vertex.
+
+        """
         return len(self.vertex_neighbors(key))
 
     def vertex_degree_out(self, key):
-        """Return the number of outgoing neighbors of a vertex."""
+        """Return the number of outgoing neighbors of a vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        int
+            The number of outgoing neighbors of the vertex.
+
+        """
         return len(self.vertex_neighbors_out(key))
 
     def vertex_degree_in(self, key):
-        """Return the numer of incoming neighbors of a vertex."""
+        """Return the numer of incoming neighbors of a vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        int
+            The number of incoming neighbors of the vertex.
+
+        """
         return len(self.vertex_neighbors_in(key))
 
     def vertex_connected_edges(self, key):
-        """Return the edges connected to a vertex."""
+        """Return the edges connected to a vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        list
+            The edges connected to the vertex.
+
+        """
         edges = []
         for nbr in self.vertex_neighbors(key):
             if nbr in self.edge[key]:
@@ -789,11 +1095,44 @@ class Network(FromToJson,
     # --------------------------------------------------------------------------
 
     def has_edge(self, u, v, directed=True):
+        """Verify if the network contains a specific edge.
+
+        Parameters
+        ----------
+        u : hashable
+            The identifier of the first vertex of the edge.
+        v : hashable
+            The identifier of the secondt vertex of the edge.
+        directed : bool, optional
+            Take into accoun the direction of the edge.
+            Default is ``True``.
+
+        Returns
+        -------
+        bool
+            True if the edge is present, False otherwise.
+
+        """
         if directed:
             return u in self.edge and v in self.edge[u]
         return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])
 
     def edge_connected_edges(self, u, v):
+        """Return the edges connected to an edge.
+
+        Parameters
+        ----------
+        u : hashable
+            The identifier of the first vertex of the edge.
+        v : hashable
+            The identifier of the secondt vertex of the edge.
+
+        Returns
+        -------
+        list
+            A list of connected edges.
+
+        """
         edges = []
         for nbr in self.vertex_neighbors(u):
             if nbr in self.edge[u]:
@@ -812,16 +1151,56 @@ class Network(FromToJson,
     # --------------------------------------------------------------------------
 
     def vertex_coordinates(self, key, axes='xyz'):
-        """Return the coordinates of a vertex."""
+        """Return the coordinates of a vertex.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+        axes : str, optional
+            The components of the vertex coordinates to return.
+            Default is ``'xyz'``.
+
+        Returns
+        -------
+        list
+            The coordniates of the vertex.
+
+        """
         return [self.vertex[key][axis] for axis in axes]
 
     def vertex_laplacian(self, key):
-        """Return the vector from the vertex to the centroid of its 1-ring neighborhood."""
+        """Return the vector from the vertex to the centroid of its 1-ring neighborhood.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        list
+            The laplacian vector.
+
+        """
         c = centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbors(key)])
         p = self.vertex_coordinates(key)
         return subtract_vectors(c, p)
 
     def vertex_neighborhood_centroid(self, key):
+        """Compute the centroid of the neighboring vertices.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        list
+            The coordinates of the centroid.
+
+        """
         return centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbors(key)])
 
     # --------------------------------------------------------------------------
@@ -841,6 +1220,62 @@ class Network(FromToJson,
     # inherited from VertexAttributesMixin
 
     # inherited from EdgeAttributesMixin
+
+    # --------------------------------------------------------------------------
+    # visualisation
+    # --------------------------------------------------------------------------
+
+    def plot(self,
+             vertexcolor=None,
+             edgecolor=None,
+             vertexsize=None,
+             edgewidth=None,
+             vertextext=None,
+             edgetext=None):
+        """Plot a 2D representation of the network.
+
+        Parameters
+        ----------
+        vertexcolor : dict, optional
+            A dictionary mapping vertex identifiers to colors.
+        edgecolor : dict, optional
+            A dictionary mapping edge identifiers to colors.
+        vertexsize : dict, optional
+            A dictionary mapping vertex identifiers to sizes.
+        edgewidth : dict, optional
+            A dictionary mapping edge identifiers to widths.
+        vertextext : dict, optional
+            A dictionary mappping vertex identifiers to labels.
+        edgetext : dict, optional
+            A dictionary mappping edge identifiers to labels.
+
+        Examples
+        --------
+        .. plot::
+            :include-source:
+
+            import compas
+            from compas.datastructures import Network
+
+            network = Network.from_obj(compas.get('lines.obj'))
+
+            network.plot()
+    
+        """
+        from compas.plotters import NetworkPlotter
+
+        plotter = NetworkPlotter(self)
+        plotter.draw_vertices(
+            facecolor=vertexcolor,
+            radius=vertexsize,
+            text=vertextext
+        )
+        plotter.draw_edges(
+            color=edgecolor,
+            width=edgewidth,
+            text=edgetext
+        )
+        plotter.show()
 
 
 # ==============================================================================

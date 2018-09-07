@@ -1405,9 +1405,9 @@ class Mesh(FromToPickle,
         Yields
         ------
         hashable
-            The next face identifier (*key*), if ``data`` is false.
+            The next face identifier (*key*), if ``data`` is ``False``.
         2-tuple
-            The next face as a (fkey, attr) tuple, if ``data`` is true.
+            The next face as a (fkey, attr) tuple, if ``data`` is ``True``.
 
         """
         for fkey in self.face:
