@@ -12,7 +12,8 @@ except NameError:
 
 __all__ = [
     'FromToData',
-    'FromToJson'
+    'FromToJson',
+    'FromToPickle',
 ]
 
 
