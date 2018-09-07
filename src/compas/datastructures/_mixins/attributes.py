@@ -448,7 +448,7 @@ class EdgeAttributesManagement(object):
         * :meth:`get_edges_attributes`
 
         """
-        if not names:
+        if not values:
             values = [None] * len(names)
         return [self.get_edge_attribute(key, name, value) for name, value in zip(names, values)]
 

@@ -18,8 +18,8 @@ from numba import i4
 from numba import i8
 
 from compas.numerical import uvw_lengths
-from compas.numerical.algorithms.drx_numpy import _beam_data
-from compas.numerical.algorithms.drx_numpy import _create_arrays
+from compas.numerical.drx.drx_numpy import _beam_data
+from compas.numerical.drx.drx_numpy import _create_arrays
 
 from compas_hpc.geometry import cross_vectors_numba as cross
 from compas_hpc.geometry import dot_vectors_numba as dot
