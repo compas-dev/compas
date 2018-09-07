@@ -412,16 +412,16 @@ def vstack_cuda(a, b, dim=4):
 if __name__ == "__main__":
 
     n = 500
-    # device_cuda()
+    device_cuda()
     # a = give_cuda([[1., 2., 3.], [4., 5., 6.]])
     # a = give_cuda([1.+1j, 2.+2j, 3.+3j], type='complex')
     # a = get_cuda(a)
     # a = ones_cuda((3, 3))
     # a = zeros_cuda((3, 3))
     # a = give_cuda([[1, 2, 3], [4, 5, 6]])
-    a = rand_cuda((n, n))
-    b = rand_cuda((n, n))
-    c = hstack_cuda(a, b, dim=4)
+    # a = rand_cuda((n, n))
+    # b = rand_cuda((n, n))
+    # c = hstack_cuda(a, b, dim=4)
 
     # print(a)
     # print(b)

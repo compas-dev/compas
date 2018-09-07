@@ -54,7 +54,7 @@ __all__ = [
     'sin_cuda',
     'sinh_cuda',
     'sqrt_cuda',
-#     'sum_cuda',
+    'sum_cuda',
     'tan_cuda',
     'tanh_cuda',
 ]
@@ -84,6 +84,38 @@ __global__ void round2d_cuda(float *a, float *b, int m, int n)
 
         b[id] = roundf(a[id]);
     }
+}
+
+
+__global__ void sum0_cuda(float *a, float *b, int m, int n)
+{
+    int i;
+    int id = blockDim.x * blockIdx.x + threadIdx.x;
+
+    float sum = 0.;
+
+    for (i = 0; i < m; i++)
+    {
+        sum += a[i * n + id];
+    }
+
+    b[id] = sum;
+}
+
+
+__global__ void sum1_cuda(float *a, float *b, int m, int n)
+{
+    int i;
+    int id = blockDim.y * blockIdx.y + threadIdx.y;
+
+    float sum = 0.;
+
+    for (i = 0; i < n; i++)
+    {
+        sum += a[id * n + i];
+    }
+
+    b[id] = sum;
 }
 
 """
@@ -722,36 +754,48 @@ def sqrt_cuda(a):
     return pycuda.cumath.sqrt(a)
 
 
-# def sum_cuda(a, axis=None):
+def sum_cuda(a, axis=None):
 
-#     """ Sum of GPUArray elements in a given axis direction or all elements.
+    """ Sum of GPUArray elements in a given axis direction or all elements.
 
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
-#     axis : int
-#         Axis direction to sum through, all if None.
+    Parameters
+    ----------
+    a : gpuarray
+        GPUArray with elements to be operated on.
+    axis : int
+        Axis direction to sum through, all if None.
 
-#     Returns
-#     -------
-#     gpuarray
-#         GPUArray sum.
+    Returns
+    -------
+    gpuarray
+        GPUArray sum.
 
-#     Examples
-#     --------
-#     >>> a = sum_cuda(give_cuda([[1, 2], [3, 4]]), axis=0)
-#     array([ 4.,  6.])
+    Notes
+    -----
+    - This is not a particularly efficient implementation.
 
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
+    """
 
-#     """
+    if axis is not None:
 
-#     if axis is not None:
-#         raise NotImplementedError
-#     else:
-#         return cuda_array.sum(a)
+        m, n = a.shape
+
+        if axis == 0:
+
+            func = mod.get_function('sum0_cuda')
+            b = pycuda.gpuarray.empty((1, n), dtype=float32)
+            func(a, b, int32(m), int32(n), block=(1, 1, 1), grid=(n, 1, 1))
+
+        elif axis == 1:
+
+            func = mod.get_function('sum1_cuda')
+            b = pycuda.gpuarray.empty((m, 1), dtype=float32)
+            func(a, b, int32(m), int32(n), block=(1, 1, 1), grid=(1, m, 1))
+
+        return b
+
+    else:
+        return cuda_array.sum(a)
 
 
 def tan_cuda(a):
@@ -846,6 +890,7 @@ if __name__ == "__main__":
     # a = tanh_cuda(give_cuda([0, pi/4]))
     a = round_cuda(give_cuda([1.4, 1.5, 1.6]))
     a = round_cuda(give_cuda([[1.4, 1.5, 1.6], [2.4, 2.5, 2.6]]))
+    a = sum_cuda(give_cuda([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), axis=1)
 
     print(a)
     print(type(a))

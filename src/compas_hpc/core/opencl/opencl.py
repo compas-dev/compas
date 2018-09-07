@@ -205,7 +205,7 @@ def zeros_cl(queue, shape):
     return cl_array.zeros(queue, shape, dtype=float32)
 
 
-def tile_cl(queue, a, shape, dim=2):
+def tile_cl(queue, a, shape, dim=4):
 
     """ Horizontally and vertically tile a GPUArray.
 
@@ -247,7 +247,7 @@ def tile_cl(queue, a, shape, dim=2):
     return b.get()
 
 
-def hstack_cl(queue, a, b, dim=2):
+def hstack_cl(queue, a, b, dim=4):
 
     """ Stack two GPUArrays horizontally.
 
@@ -296,7 +296,7 @@ def hstack_cl(queue, a, b, dim=2):
     return c.get()
 
 
-def vstack_cl(queue, a, b, dim=2):
+def vstack_cl(queue, a, b, dim=4):
 
     """ Stack two GPUArrays vertically.
 
