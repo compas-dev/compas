@@ -91,16 +91,13 @@ class Network(FromToJson,
 
         import compas
         from compas.datastructures import Network
-        from compas.plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('lines.obj'))
 
-        plotter = NetworkPlotter(network)
-
-        plotter.draw_vertices(text={key: key for key in network.vertices()}, radius=0.2)
-        plotter.draw_edges()
-
-        plotter.show()
+        network.plot(
+            vertextext={key: key for key in network.vertices()},
+            vertexsize=0.2
+        )
 
     """
 

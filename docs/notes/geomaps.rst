@@ -18,11 +18,6 @@ a dictionary are very fast.
 Comparing distances
 ===================
 
-* :download:`lines.json </../../examples/workshops/acadia2017/lines.json>`
-* :download:`lines_big.json </../../examples/workshops/acadia2017/lines_big.json>`
-* :download:`lines_bigger.json </../../examples/workshops/acadia2017/lines_bigger.json>`
-
-
 The concept is best explained with an example. Consider a set of line segments defined
 by their start and end point coordinates. To determine how the lines are connected,
 we could compute the distance between each point and all other points, identifying
@@ -32,8 +27,9 @@ a match as soon as the distance is below a tolerance value.
 .. code-block:: python
 
     import json
+    import compas
 
-    with open('lines.json', 'r') as f:
+    with open(compas.get('lines.json'), 'r') as f:
         lines = json.load(f)
 
     print(len(lines))
@@ -96,7 +92,7 @@ a match as soon as the distance is below a tolerance value.
     We are not really comparing distances between points, but rather the distance
     per coordinate axis. This has the advantage that when the points don't match
     the calculation gets interrupted faster than when calculating the full spatial
-    distance. The result is not entirely the same.
+    distance.
 
 
 Geometric mapping
@@ -112,8 +108,9 @@ A better way is to use a geometric map.
 .. code-block:: python
 
     import json
+    import compas
 
-    with open('lines.json', 'r') as f:
+    with open(compas.get('lines.json'), 'r') as f:
         lines = json.load(f)
 
     print(len(lines))

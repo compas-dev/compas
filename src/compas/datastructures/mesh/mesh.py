@@ -115,6 +115,22 @@ class Mesh(FromToPickle,
     attributes : dict
         A dictionary of general mesh attributes.
 
+    Examples
+    --------
+    .. plot::
+        :include-source:
+
+        import compas
+        from compas.datastructures import Mesh
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+        mesh.plot(
+            vertextext={key: key for key in network.vertices()},
+            vertexcolor={key: '#ff0000' for key in mesh.vertices_where({'vertex_degree': 2})}
+            vertexsize=0.2
+        )
+
     """
 
     collapse_edge   = mesh_collapse_edge
@@ -412,6 +428,8 @@ class Mesh(FromToPickle,
             from compas.datastructures import Mesh
             
             mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+            mesh.plot()
 
         """
         obj = OBJ(filepath, precision)

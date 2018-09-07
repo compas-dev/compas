@@ -1,6 +1,6 @@
 
-Mesh
-====
+Meshes
+======
 
 **COMPAS** meshes are polygon meshes with support for n-sided polygonal
 faces. the meshes are presented using a half-edge data structure. In a
@@ -12,7 +12,7 @@ connecting the vertices of the face in a specific order forming a closed
 n-sided polygon. The ordering of the vertices determines the direction
 of its normal.
 
-Check the docs for detailed information about the mesh and the available
+Check out the docs for detailed information about the mesh and the available
 functionality: :class:`compas.datastructures.Mesh`.
 
 

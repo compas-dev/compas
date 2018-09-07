@@ -13,6 +13,9 @@ in a particular direction. However, there can be two edges between two
 vertices in opposite direction. Vertices can be connected to
 themseleves.
 
+Check out the docs for detailed information about the network and the available
+functionality: :class:`compas.datastructures.Network`.
+
 
 Making a network
 ----------------

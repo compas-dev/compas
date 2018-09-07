@@ -32,7 +32,6 @@ class SubdMesh(Mesh):
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
-            self.edge[key] = {}
 
         self.vertex[key] = dict(x=x, y=y, z=z)
 
@@ -637,7 +636,7 @@ if __name__ == "__main__":
     fixed = [mesh.get_any_vertex()]
     print(fixed)
 
-    subdivide = partial(mesh_subdivide_quad)
+    subdivide = partial(mesh_subdivide_doosabin)
     subd = subdivide(mesh, k=4)
 
     viewer = MeshViewer()
