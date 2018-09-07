@@ -252,6 +252,22 @@ class Vector(object):
         """
         return Vector(self.x * n, self.y * n, self.z * n)
 
+    def __truediv__(self, n):
+        """Return a ``Vector`` that is the scaled version of this ``Vector``.
+
+        Parameters
+        ----------
+        n : float
+            The scaling factor.
+
+        Returns
+        -------
+        Vector
+            The resulting new ``Vector``.
+
+        """
+        return Vector(self.x / n, self.y / n, self.z / n)
+
     def __pow__(self, n):
         """Create a ``Vector`` from the components of the current ``Vector`` raised
         to the given power.
@@ -285,6 +301,7 @@ class Vector(object):
         self.x += other[0]
         self.y += other[1]
         self.z += other[2]
+        return self
 
     def __isub__(self, other):
         """Subtract the components of the other vector from this ``Vector``.
@@ -298,6 +315,7 @@ class Vector(object):
         self.x -= other[0]
         self.y -= other[1]
         self.z -= other[2]
+        return self
 
     def __imul__(self, n):
         """Multiply the components of this ``Vector`` by the given factor.
@@ -311,6 +329,21 @@ class Vector(object):
         self.x *= n
         self.y *= n
         self.z *= n
+        return self
+
+    def __itruediv__(self, n):
+        """Divide the components of this ``Vector`` by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+
+        """
+        self.x /= n
+        self.y /= n
+        self.z /= n
+        return self
 
     def __ipow__(self, n):
         """Raise the components of this ``Vector`` to the given power.
@@ -324,6 +357,7 @@ class Vector(object):
         self.x **= n
         self.y **= n
         self.z **= n
+        return self
 
     # ==========================================================================
     # static methods

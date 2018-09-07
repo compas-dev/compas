@@ -266,6 +266,23 @@ class Point(object):
 
         """
         return Point(n * self.x, n * self.y, n * self.z)
+    
+    def __truediv__(self, n):
+        """Create a ``Point`` from the coordinates of the current ``Point`` 
+        divided by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+
+        Returns
+        -------
+        Point
+            The resulting new ``Point``.
+
+        """
+        return Point(self.x / n, self.y / n, self.z / n)
 
     def __pow__(self, n):
         """Create a ``Point`` from the coordinates of the current ``Point`` raised
@@ -300,6 +317,7 @@ class Point(object):
         self.x += other[0]
         self.y += other[1]
         self.z += other[2]
+        return self
 
     def __isub__(self, other):
         """Subtract the coordinates of the other point from this ``Point``.
@@ -313,6 +331,7 @@ class Point(object):
         self.x -= other[0]
         self.y -= other[1]
         self.z -= other[2]
+        return self
 
     def __imul__(self, n):
         """Multiply the coordinates of this ``Point`` by the given factor.
@@ -326,6 +345,21 @@ class Point(object):
         self.x *= n
         self.y *= n
         self.z *= n
+        return self
+
+    def __itruediv__(self, n):
+        """Divide the coordinates of this ``Point`` by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+
+        """
+        self.x /= n
+        self.y /= n
+        self.z /= n
+        return self
 
     def __ipow__(self, n):
         """Raise the coordinates of this ``Point`` to the given power.
@@ -339,6 +373,7 @@ class Point(object):
         self.x **= n
         self.y **= n
         self.z **= n
+        return self
 
     # ==========================================================================
     # helpers
