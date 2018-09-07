@@ -27,7 +27,6 @@ from compas.geometry import normal_polygon
 from compas.geometry import area_polygon
 from compas.geometry import bestfit_plane
 from compas.geometry import flatness
-
 from compas.geometry import Polyhedron
 
 from compas.datastructures import Datastructure

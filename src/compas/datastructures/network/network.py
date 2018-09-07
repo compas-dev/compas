@@ -2,10 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import pickle
+import pprint
+import json
+
 from copy import deepcopy
 from ast import literal_eval
-
-import compas
 
 from compas.files import OBJ
 
@@ -1283,6 +1285,8 @@ class Network(FromToJson,
 # ==============================================================================
 
 if __name__ == '__main__':
+
+    import compas
 
     from compas.plotters import NetworkPlotter
 

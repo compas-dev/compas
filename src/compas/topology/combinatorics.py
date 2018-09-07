@@ -9,8 +9,8 @@ from compas.topology import breadth_first_traverse
 __all__ = [
     'vertex_coloring',
     'connected_components',
+    'mesh_is_connected',
     'network_is_connected',
-    'mesh_is_connected'
 ]
 
 
@@ -107,33 +107,14 @@ def connected_components(adjacency):
     return components
 
 
-def network_is_connected(network):
-    """Verify that the mesh is connected.
-
-    Returns
-    -------
-    bool
-        True, if the mesh is connected.
-        False, otherwise.
-
-    Notes
-    -----
-    A network is connected if the following conditions are fulfilled:
-
-    * For every two vertices a path exists connecting them.
-
-    """
-    if not network.vertex:
-        return False
-
-    nodes = breadth_first_traverse(network.adjacency, network.get_any_vertex())
-
-    return len(nodes) == network.number_of_vertices()
-
-
 def mesh_is_connected(mesh):
     """Verify that the mesh is connected.
 
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh data structure.
+
     Returns
     -------
     bool
@@ -142,9 +123,7 @@ def mesh_is_connected(mesh):
 
     Notes
     -----
-    A mesh is connected if the following conditions are fulfilled:
-
-    * For every two vertices a path exists connecting them.
+    A mesh is connected if for every two vertices a path exists connecting them.
 
     """
     if not mesh.vertex:
@@ -153,6 +132,28 @@ def mesh_is_connected(mesh):
     nodes = breadth_first_traverse(mesh.adjacency, mesh.get_any_vertex())
 
     return len(nodes) == mesh.number_of_vertices()
+
+
+def network_is_connected(network):
+    """Verify that the network is connected.
+
+    Returns
+    -------
+    bool
+        True, if the network is connected.
+        False, otherwise.
+
+    Notes
+    -----
+    A network is connected if for every two vertices a path exists connecting them.
+
+    """
+    if not network.vertex:
+        return False
+
+    nodes = breadth_first_traverse(network.adjacency, network.get_any_vertex())
+
+    return len(nodes) == network.number_of_vertices()
 
 
 # ==============================================================================
@@ -168,9 +169,6 @@ if __name__ == "__main__":
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 
     components = connected_components(network.adjacency)
-
-    print(network_is_connected(network))
-    print(components)
 
     key_color = vertex_coloring(network.adjacency)
 
