@@ -12,6 +12,9 @@ connecting the vertices of the face in a specific order forming a closed
 n-sided polygon. The ordering of the vertices determines the direction
 of its normal.
 
+Check the docs for detailed information about the mesh and the available
+functionality: :class:`compas.datastructures.Mesh`.
+
 
 Making a mesh
 -------------
@@ -448,11 +451,11 @@ Pickle
 
 .. code:: ipython3
 
-    s = mesh.dumps()
+    mesh.load('mesh.pickle')
 
 .. code:: ipython3
 
-    mesh.load('mesh.pickle')
+    s = mesh.dumps()
 
 .. code:: ipython3
 
@@ -465,7 +468,12 @@ Visualisation
 .. plot::
     :include-source:
 
+    import compas
+
+    from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
+
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
     
     plotter = MeshPlotter(mesh)
     
