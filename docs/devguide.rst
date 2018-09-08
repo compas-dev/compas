@@ -23,7 +23,7 @@ Installation
 1. clone repo
 2. install from source (dependencies + dev tools)
 
-::
+.. code-block:: bash
 
     $ pip install -r requirements-dev.txt
 
