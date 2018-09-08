@@ -7,4 +7,6 @@ Notes
    :titlesonly:
    :glob:
 
-   notes/*
+   notes/callbacks
+   notes/geomaps
+   notes/xfuncs

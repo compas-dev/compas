@@ -15,6 +15,5 @@ The main library of COMPAS
    api
    contributions
    devguide
-   recipes
    citing
    license
