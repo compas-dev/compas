@@ -18,12 +18,12 @@ and type the following
     $ python -m compas_rhino.install
 
 
-Optionally, you could provide a Rhino version number (``'5.0', '6.0'``).
-The default is ``'5.0'``.
+Optionally, you could provide a Rhino version number (``5.0, 6.0``).
+The default is ``5.0``.
 
 ::
 
-    $ python -m compas_rhino.install '6.0'
+    $ python -m compas_rhino.install 6.0
 
 
 
