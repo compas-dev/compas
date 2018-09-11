@@ -107,13 +107,14 @@ class SafetyController(object):
 class Axis(object):
     """Representation of an axis or vector."""
 
-    def __init__(self, xyz='0 0 0'):
+    def __init__(self, xyz='0 0 0', **kwargs):
         # We are not using Vector here because we
         # cannot attach _urdf_source to it due to __slots__
         xyz = _parse_floats(xyz)
         self.x = xyz[0]
         self.y = xyz[1]
         self.z = xyz[2]
+        self.attr = kwargs
 
     def copy(self):
         cls = type(self)

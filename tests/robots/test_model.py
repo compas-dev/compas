@@ -26,6 +26,9 @@ def urdf_file_with_shapes():
 def ur5_file():
     return os.path.join(BASE_FOLDER, 'fixtures', 'ur5.xacro')
 
+@pytest.fixture
+def urdf_with_unknown_attr():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'sample_unknown_attributes.urdf')
 
 @pytest.fixture
 def ur5():
@@ -278,6 +281,11 @@ def test_iter_link_chain_defaults(urdf_file):
         'panda_rightfinger',
     ]
     assert names == expected_chain
+
+
+def test_unknown_axis_attribute(urdf_with_unknown_attr):
+    r = Robot.from_urdf_file(urdf_with_unknown_attr)
+    assert r.joints[0].axis.attr['rpy'] == '0 0 0'
 
 
 if __name__ == '__main__':
