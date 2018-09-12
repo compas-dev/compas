@@ -8,12 +8,6 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from compas.plotters.core.utilities import assert_axes_dimension
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'Axes2D', 'Axes3D', 'Bounds', 'Box', 'Cloud2D', 'Cloud3D', 'Hull',
 ]

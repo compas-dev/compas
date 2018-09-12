@@ -46,7 +46,7 @@ Alternatively, you can also install from source. Check the [documentation for mo
 
 ## Questions and feedback
 
-The **COMPAS** framework has a forum: http://forum.compas-framework.org/
+The **COMPAS** framework has a forum: https://forum.compas-framework.org/
 for questions and discussions.
 
 
@@ -57,9 +57,9 @@ If you find a bug, please help us solve it by [filing a report](https://github.c
 
 ## Contributing
 
-If you want to contribute, check out our [developer guidelines](https://compas-dev.github.io/contributions.html).
+If you want to contribute, check out our [developer guidelines](https://compas-dev.github.io/main/devguide.html).
 
 
 ## License
 
-The main library of **COMPAS** is [released under the MIT license](https://compas-dev.github.io/license.html).
+The main library of **COMPAS** is [released under the MIT license](https://compas-dev.github.io/main/license.html).

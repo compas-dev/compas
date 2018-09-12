@@ -8,12 +8,6 @@ from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
 
 
-__author__     = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'mesh_dual',
     'network_dual',

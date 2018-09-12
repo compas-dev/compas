@@ -14,12 +14,6 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = ['FaceArtist']
 
 
@@ -94,6 +88,7 @@ class FaceArtist(object):
 
         """
         fkeys = fkeys or list(self.datastructure.faces())
+        
         colordict = color_to_colordict(color,
                                        fkeys,
                                        default=self.datastructure.attributes.get('color.face'),

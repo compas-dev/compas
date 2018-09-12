@@ -2,87 +2,77 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import importlib
 import os
-from xml.etree import ElementTree as ET
+import sys
 
-import compas
+import compas_rhino
 
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
+from compas._os import create_symlink
 
 __all__ = []
 
+INSTALLABLE_PACKAGES = ('compas', 'compas_ghpython', 'compas_rhino')
 
-def install(version='5.0'):
-    """Install COMPAS for Rhino by adding the path to COMPAS to the Rhino Python search paths.
+
+def _get_package_path(package):
+    return os.path.abspath(os.path.join(os.path.dirname(package.__file__), '..'))
+
+
+def install(version='5.0', packages=None):
+    """Install COMPAS for Rhino.
 
     Parameters
     ----------
     version : {'5.0', '6.0'}
         The version number of Rhino.
+    packages : list of str
+        List of packages to install or None to use default package list.
 
     Examples
     --------
     .. code-block:: python
-        
+
         >>> import compas_rhino
         >>> compas_rhino.install('5.0')
 
     .. code-block:: python
-        
-        $ python -m compas_rhino.install '5.0'
+
+        $ python -m compas_rhino.install 5.0
 
     """
-    compaspath = os.path.abspath(os.path.join(compas.HERE, '../'))
-    appdata = os.getenv('APPDATA')
-    filename = 'settings.xml'
 
-    if version not in ('5.0', '6.0'):
-        version = '5.0'
+    print('Installing COMPAS packages to Rhino IronPython lib:')
 
-    if version == '6.0':
-        filename = 'settings-Scheme__Default.xml'
+    ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
-    xmlpath = os.path.abspath(os.path.join(appdata,
-                                           'McNeel',
-                                           'Rhinoceros',
-                                           '{}'.format(version),
-                                           'Plug-ins',
-                                           'IronPython (814d908a-e25c-493d-97e9-ee3861957f49)',
-                                           'settings',
-                                           filename))
+    results = []
+    exit_code = 0
 
-    if not os.path.exists(xmlpath):
-        raise Exception("The settings file does not exist in this location: {}".format(xmlpath))
+    for package in packages:
+        base_path = _get_package_path(importlib.import_module(package))
+        package_path = os.path.join(base_path, package)
+        symlink_path = os.path.join(ipylib_path, package)
 
-    if not os.path.isfile(xmlpath):
-        raise Exception("The settings file is not a file :)")
-        
-    if not os.access(xmlpath, os.W_OK):
-        raise Exception("The settings file is not wrtieable.")
-       
-    tree = ET.parse(xmlpath)
-    root = tree.getroot()
+        if os.path.exists(symlink_path):
+            results.append(
+                (package, 'ERROR: Package "{}" already found in Rhino lib, try uninstalling first'.format(package)))
+            continue
 
-    entries = root.findall(".//entry[@key='SearchPaths']")
+        try:
+            create_symlink(package_path, symlink_path)
+            results.append((package, 'OK'))
+        except OSError:
+            results.append(
+                (package, 'Cannot create symlink, try to run as administrator.'))
 
-    try:
-        searchpathsentry = entries[0]
-    except IndexError:
-        raise Exception("The settings file has no entry 'SearchPaths'.")
+    for package, status in results:
+        print('   {} {}'.format(package.ljust(20), status))
+        if status is not 'OK':
+            exit_code = -1
 
-    searchpaths = searchpathsentry.text.split(';')
-    searchpaths[:] = [os.path.abspath(path) for path in searchpaths]
-        
-    if compaspath not in searchpaths:
-        searchpaths.append(compaspath)
-
-    searchpathsentry.text = ";".join(searchpaths)
-    tree.write(xmlpath)
+    print('\nCompleted.')
+    sys.exit(exit_code)
 
 
 # ==============================================================================
@@ -92,6 +82,9 @@ def install(version='5.0'):
 if __name__ == "__main__":
 
     import sys
+
+    print('\nusage: python -m compas_rhino.install [version]\n')
+    print('  version       Rhino version (5.0 or 6.0)\n')
 
     try:
         version = sys.argv[1]
@@ -103,4 +96,4 @@ if __name__ == "__main__":
         except Exception:
             version = '5.0'
 
-    install(version=version)
+    install(version=version, packages=INSTALLABLE_PACKAGES)

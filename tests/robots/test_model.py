@@ -26,6 +26,9 @@ def urdf_file_with_shapes():
 def ur5_file():
     return os.path.join(BASE_FOLDER, 'fixtures', 'ur5.xacro')
 
+@pytest.fixture
+def urdf_with_unknown_attr():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'sample_unknown_attributes.urdf')
 
 @pytest.fixture
 def ur5():
@@ -53,7 +56,7 @@ def ur5():
 def test_ur5_urdf(ur5_file):
     r = Robot.from_urdf_file(ur5_file)
     assert r.name == 'ur5'
-    assert len(list(filter(lambda i: i.type == 'revolute', r.joints))) == 6
+    assert len(list(filter(lambda i: i.type == Joint.REVOLUTE, r.joints))) == 6
 
 
 def test_root_urdf_attributes():
@@ -106,7 +109,7 @@ def test_parse_from_file(urdf_file):
 def test_inertial_parser(urdf_file):
     r = Robot.from_urdf_file(urdf_file)
     assert r.links[0].inertial.origin is not None
-    assert r.links[0].inertial.origin.point == [0.0, 0.0, 500.0]
+    assert r.links[0].inertial.origin.point == [0.0, 0.0, 0.5]
     assert r.links[0].inertial.mass.value == 1.0
     assert r.links[0].inertial.inertia.izz == 100.0
 
@@ -130,14 +133,14 @@ def test_geometry_parser(urdf_file_with_shapes):
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
     assert type(r.links[0].collision[0].geometry.shape) == Sphere
-    assert r.links[0].collision[0].geometry.shape.radius == 200.
+    assert r.links[0].collision[0].geometry.shape.radius == 0.2
 
     assert type(r.links[1].visual[0].geometry.shape) == Box
-    assert r.links[1].visual[0].geometry.shape.size == [600., 100., 200.]
+    assert r.links[1].visual[0].geometry.shape.size == [0.6, 0.1, 0.2]
 
     assert type(r.links[1].collision[0].geometry.shape) == Cylinder
-    assert r.links[1].collision[0].geometry.shape.length == 600.
-    assert r.links[1].collision[0].geometry.shape.radius == 200.
+    assert r.links[1].collision[0].geometry.shape.length == 0.6
+    assert r.links[1].collision[0].geometry.shape.radius == 0.2
 
 
 def test_root(urdf_file):
@@ -278,6 +281,11 @@ def test_iter_link_chain_defaults(urdf_file):
         'panda_rightfinger',
     ]
     assert names == expected_chain
+
+
+def test_unknown_axis_attribute(urdf_with_unknown_attr):
+    r = Robot.from_urdf_file(urdf_with_unknown_attr)
+    assert r.joints[0].axis.attr['rpy'] == '0 0 0'
 
 
 if __name__ == '__main__':

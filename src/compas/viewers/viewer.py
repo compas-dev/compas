@@ -40,13 +40,13 @@ from compas.viewers.core import Controller
 from compas.viewers.core import App
 
 
-__author__     = ['Tom Van Mele', ]
+__author__     = ['Tom Van Mele']
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['Viewer', ]
+__all__ = ['Viewer']
 
 
 hex_to_rgb = partial(hex_to_rgb, normalize=True)

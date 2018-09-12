@@ -1,10 +1,8 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from copy import deepcopy
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -15,14 +13,16 @@ __all__ = [
 
 
 class VertexAttributesManagement(object):
+    """Mix-in methods for working getting, setting, and updating vertex attributes."""
 
     def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
         """Update the default vertex attributes (this also affects already existing vertices).
 
         Parameters
         ----------
-        attr_dict : dict (None)
+        attr_dict : dict, optional
             A dictionary of attributes with their default values.
+            Defaults to an empty ``dict``.
         kwattr : dict
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
@@ -70,16 +70,10 @@ class VertexAttributesManagement(object):
         ----------
         key : hashable
             The identifier of the vertex.
-        attr_dict : dict (None)
-            A dictionary of attributes as name-value pairs.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Note
-        ----
-        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
-        if they exist.
+        names : list of str
+            A list of attribute names.
+        values : list
+            A list of attribute values.
 
         See Also
         --------
@@ -100,8 +94,7 @@ class VertexAttributesManagement(object):
             The name of the attribute.
         value : object
             The value of the attribute.
-        keys : iterable (None)
-            A list of vertex identifiers.
+        keys : list of hashable, optional
             Defaults to all vertices.
 
         See Also
@@ -111,28 +104,23 @@ class VertexAttributesManagement(object):
         * :meth:`set_vertices_attributes`
 
         """
-        keys = keys or self.vertices()
+        if not keys:
+            keys = self.vertices()
         for key in keys:
-            self.vertex[key][name] = value
+            self.set_vertex_attribute(key, name, value)
 
     def set_vertices_attributes(self, names, values, keys=None):
         """Set multiple attributes of multiple vertices.
 
         Parameters
         ----------
-        keys : iterable (None)
+        names : list of str
+            A list of attribute names.
+        values : list
+            A list of attribute values.
+        keys : list of hashable, optional
             A list of vertex identifiers.
             Defaults to all vertices.
-        attr_dict : dict (None)
-            A dictionary of attributes as name-value pairs.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Note
-        ----
-        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
-        if they exist.
 
         See Also
         --------
@@ -153,7 +141,7 @@ class VertexAttributesManagement(object):
             The identifier of the vertex.
         name : str
             The name of the attribute.
-        value : object (None)
+        value : object, optional
             The default value.
 
         Returns
@@ -180,9 +168,9 @@ class VertexAttributesManagement(object):
             The identifier of the vertex.
         names : list
             A list of attribute names.
-        values : list (None)
+        values : list, optional
             A list of default values.
-            Defaults to a list of ``None`` s.
+            Defaults to a list of ``None``.
 
         Returns
         -------
@@ -200,7 +188,7 @@ class VertexAttributesManagement(object):
         """
         if not values:
             values = [None] * len(names)
-        return [self.vertex[key].get(name, value) for name, value in zip(names, values)]
+        return [self.get_vertex_attribute(key, name, value) for name, value in zip(names, values)]
 
     def get_vertices_attribute(self, name, value=None, keys=None):
         """Get the value of a named attribute of multiple vertices.
@@ -209,9 +197,10 @@ class VertexAttributesManagement(object):
         ----------
         name : str
             The name of the attribute.
-        value : object (None)
+        value : object, optional
             The default value.
-        keys : list (None)
+            Default is ``None``.
+        keys : list, optional
             A list of identifiers.
             Defaults to all vertices.
 
@@ -228,8 +217,8 @@ class VertexAttributesManagement(object):
 
         """
         if not keys:
-            return [attr.get(name, value) for key, attr in self.vertices(True)]
-        return [self.vertex[key].get(name, value) for key in keys]
+            keys = self.vertices()
+        return [self.get_vertex_attribute(key, name, value) for key in keys]
 
     def get_vertices_attributes(self, names, values=None, keys=None):
         """Get the values of multiple named attribute of multiple vertices.
@@ -238,10 +227,10 @@ class VertexAttributesManagement(object):
         ----------
         names : list
             The names of the attributes.
-        values : list (None)
+        values : list, optional
             A list of default values.
-            Defaults to a list of ``None`` s.
-        keys : list (None)
+            Defaults to a list of ``None``.
+        keys : list, optional
             A list of vertex identifiers.
             Defaults to all vertices.
 
@@ -263,19 +252,21 @@ class VertexAttributesManagement(object):
             values = [None] * len(names)
         temp = list(zip(names, values))
         if not keys:
-            return [[attr.get(name, value) for name, value in temp] for key, attr in self.vertices(True)]
-        return [[self.vertex[key].get(name, value) for name, value in temp] for key in keys]
+            keys = self.vertices()
+        return [[self.get_vertex_attribute(key, name, value) for name, value in temp] for key in keys]
 
 
 class EdgeAttributesManagement(object):
+    """Mix-in methods for setting, getting, and updating edge attributes."""
 
     def update_default_edge_attributes(self, attr_dict=None, **kwattr):
         """Update the default edge attributes (this also affects already existing edges).
 
         Parameters
         ----------
-        attr_dict : dict (None)
+        attr_dict : dict, optional
             A dictionary of attributes with their default values.
+            Defaults to an empty ``dict``.
         kwattr : dict
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
@@ -295,7 +286,7 @@ class EdgeAttributesManagement(object):
             attr.update(self.edge[u][v])
             self.edge[u][v] = attr
 
-    def set_edge_attribute(self, key, name, value, directed=True):
+    def set_edge_attribute(self, key, name, value):
         """Set one attribute of one edge.
 
         Parameters
@@ -307,6 +298,11 @@ class EdgeAttributesManagement(object):
         value : object
             The value of the attribute.
 
+        Raises
+        ------
+        Exception
+            If the edge does not exist in the data structure.
+
         See Also
         --------
         * :meth:`set_edge_attributes`
@@ -315,18 +311,12 @@ class EdgeAttributesManagement(object):
 
         """
         u, v = key
-        if directed:
+        if u in self.edge and v in self.edge[u]:
             self.edge[u][v][name] = value
+        elif v in self.edge and u in self.edge[v]:
+            self.edge[v][u][name] = value
         else:
-            if u in self.edge and v in self.edge[u]:
-                self.edge[u][v][name] = value
-            elif v in self.edge and u in self.edge[v]:
-                self.edge[v][u][name] = value
-            else:
-                if v in self.halfedge[u] or u in self.halfedge[v]:
-                    self.edge[u] = {}
-                    self.edge[u][v] = self.default_edge_attributes.copy()
-                    self.edge[u][v][name] = value
+            raise Exception('The edge does not exist: {}-{}'.format(u, v))
 
     def set_edge_attributes(self, key, names, values):
         """Set multiple attributes of one edge.
@@ -335,16 +325,10 @@ class EdgeAttributesManagement(object):
         ----------
         key : tuple, list
             The identifier of the edge, in the form of a pair of vertex identifiers.
-        attr_dict : dict (None)
-            A dictionary of attributes as name-value pairs.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Note
-        ----
-        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
-        if they exist.
+        names : list of str
+            The names of the attributes to update.
+        values : list of object
+            The new values of the attributes.
 
         See Also
         --------
@@ -365,10 +349,10 @@ class EdgeAttributesManagement(object):
             The name of the attribute.
         value : object
             The value of the attribute.
-        keys : iterable (None)
+        keys : list of hashable, optional
             A list of edge identifiers.
             Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
+            Defaults to ``None``, in which case all edges will be modified.
 
         See Also
         --------
@@ -378,31 +362,23 @@ class EdgeAttributesManagement(object):
 
         """
         if not keys:
-            for u, v, attr in self.edges(True):
-                attr[name] = value
-        else:
-            for u, v in keys:
-                self.edge[u][v][name] = value
+            keys = self.edges()
+        for key in keys:
+            self.set_edge_attribute(key, name, value)
 
     def set_edges_attributes(self, names, values, keys=None):
         """Set multiple attributes of multiple edges.
 
         Parameters
         ----------
-        keys : iterable (None)
+        names : list of str
+            The names of the attributes.
+        values : list of object
+            The new values of the attributes.
+        keys : list of hashable, optional
             A list of edge identifiers.
             Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
-        attr_dict : dict (None)
-            A dictionary of attributes as name-value pairs.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Note
-        ----
-        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
-        if they exist.
+            Defaults to ``None``, in which case all edges will be modified.
 
         See Also
         --------
@@ -423,8 +399,9 @@ class EdgeAttributesManagement(object):
             The identifier of the edge, in the form of a pair of vertex identifiers.
         name : str
             The name of the attribute.
-        value : object (None)
+        value : object, optional
             The default value.
+            Default is ``None``.
 
         Returns
         -------
@@ -449,13 +426,13 @@ class EdgeAttributesManagement(object):
 
         Parameters
         ----------
-        key : tuple, list
+        key : tuple of hashable
             The identifier of the edge, in the form of a pair of vertex identifiers.
         names : list
             A list of attribute names.
-        values : list (None)
+        values : list of object, optional
             A list of default values.
-            Defaults to a list of ``None`` s.
+            Defaults to a list of ``None``.
 
         Returns
         -------
@@ -471,12 +448,9 @@ class EdgeAttributesManagement(object):
         * :meth:`get_edges_attributes`
 
         """
-        u, v = key
-        if not names:
+        if not values:
             values = [None] * len(names)
-        if v in self.edge[u]:
-            return [self.edge[u][v].get(name, value) for name, value in zip(names, values)]
-        return [self.edge[v][u].get(name, value) for name, value in zip(names, values)]
+        return [self.get_edge_attribute(key, name, value) for name, value in zip(names, values)]
 
     def get_edges_attribute(self, name, value=None, keys=None):
         """Get the value of a named attribute of multiple edges.
@@ -485,12 +459,14 @@ class EdgeAttributesManagement(object):
         ----------
         name : str
             The name of the attribute.
-        value : object (None)
+        value : object, optional
             The default value.
-        keys : iterable (None)
+            Default is ``None``.
+        keys : list of tuple of hashable, optional
             A list of edge identifiers.
             Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
+            Defaults to ``None``, in which case the value of the specified
+            attribute of all edges is returned.
 
         Returns
         -------
@@ -505,8 +481,8 @@ class EdgeAttributesManagement(object):
 
         """
         if not keys:
-            return [attr.get(name, value) for u, v, attr in self.edges(True)]
-        return [self.edge[u][v].get(name, value) for u, v in keys]
+            keys = self.edges()
+        return [self.get_edge_attribute(key, name, value) for key in keys]
 
     def get_edges_attributes(self, names, values=None, keys=None):
         """Get the values of multiple named attribute of multiple edges.
@@ -515,13 +491,14 @@ class EdgeAttributesManagement(object):
         ----------
         names : list
             The names of the attributes.
-        values : list (None)
+        values : list of object, optional
             A list of default values.
-            Defaults to a list of ``None`` s.
-        keys : iterable (None)
+            Defaults to a list of ``None``.
+        keys : list of tuple of hashable, optional
             A list of edge identifiers.
             Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
+            Defaults to ``None``, in which case the values of the specified attributes
+            of all edges are returned.
 
         Returns
         -------
@@ -541,11 +518,12 @@ class EdgeAttributesManagement(object):
             values = [None] * len(names)
         temp = list(zip(names, values))
         if not keys:
-            return [[attr.get(name, value) for name, value in temp] for u, v, attr in self.edges(True)]
-        return [[self.edge[u][v].get(name, value) for name, value in temp] for u, v in keys]
+            keys = self.edges()
+        return [[self.get_edge_attribute(key, name, value) for name, value in temp] for key in keys]
 
 
 class FaceAttributesManagement(object):
+    """Mix-in methods for setting, getting, and updating face attributes."""
 
     def update_default_face_attributes(self, attr_dict=None, **kwattr):
         """Update the default face attributes (this also affects already existing faces).
@@ -573,7 +551,7 @@ class FaceAttributesManagement(object):
             attr.update(self.facedata[fkey])
             self.facedata[fkey] = attr
 
-    def set_face_attribute(self, fkey, name, value):
+    def set_face_attribute(self, key, name, value):
         """Set one attribute of one face.
 
         Parameters
@@ -592,27 +570,21 @@ class FaceAttributesManagement(object):
         * :meth:`set_faces_attributes`
 
         """
-        if fkey not in self.facedata:
-            self.facedata[fkey] = self.default_face_attributes.copy()
-        self.facedata[fkey][name] = value
+        if key not in self.facedata:
+            self.facedata[key] = self.default_face_attributes.copy()
+        self.facedata[key][name] = value
 
-    def set_face_attributes(self, fkey, attr_dict=None, **kwattr):
+    def set_face_attributes(self, key, names, values):
         """Set multiple attributes of one face.
 
         Parameters
         ----------
         key : hashable
             The identifier of the face.
-        attr_dict : dict (None)
-            A dictionary of attributes as name-value pairs.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Note
-        ----
-        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
-        if they exist.
+        names : list of str
+            The names of the attributes.
+        values : list of object
+            The new values of the attributes.
 
         See Also
         --------
@@ -621,24 +593,20 @@ class FaceAttributesManagement(object):
         * :meth:`set_faces_attributes`
 
         """
-        attr_dict = attr_dict or {}
-        attr_dict.update(kwattr)
-        if fkey not in self.facedata:
-            self.facedata[fkey] = self.default_face_attributes.copy()
-        self.facedata[fkey].update(attr_dict)
+        for name, value in zip(names, values):
+            self.set_face_attribute(key, name, value)
 
-    def set_faces_attribute(self, name, value, fkeys=None):
+    def set_faces_attribute(self, keys, name, value):
         """Set one attribute of multiple faces.
 
         Parameters
         ----------
+        keys : list of hashable
+            A list of face identifiers.
         name : str
             The name of the attribute.
         value : object
             The value of the attribute.
-        keys : iterable (None)
-            A list of face identifiers.
-            Defaults to all faces.
 
         See Also
         --------
@@ -647,33 +615,20 @@ class FaceAttributesManagement(object):
         * :meth:`set_faces_attributes`
 
         """
-        if not fkeys:
-            for fkey, attr in self.faces_iter(True):
-                attr[name] = value
-        else:
-            for fkey in fkeys:
-                if fkey not in self.facedata:
-                    self.facedata[fkey] = self.default_face_attributes.copy()
-                self.facedata[fkey][name] = value
+        for key in keys:
+            self.set_face_attribute(key, name, value)
 
-    def set_faces_attributes(self, fkeys=None, attr_dict=None, **kwattr):
+    def set_faces_attributes(self, keys, names, values):
         """Set multiple attributes of multiple faces.
 
         Parameters
         ----------
-        keys : iterable (None)
+        keys : list of hashable
             A list of face identifiers.
-            Defaults to all faces.
-        attr_dict : dict (None)
-            A dictionary of attributes as name-value pairs.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Note
-        ----
-        Named arguments overwrite correpsonding name-value pairs in the attribute dictionary,
-        if they exist.
+        names : list of str
+            A list of attribute names,
+        values : list of object
+            The new values of the attributes.
 
         See Also
         --------
@@ -682,19 +637,10 @@ class FaceAttributesManagement(object):
         * :meth:`set_faces_attribute`
 
         """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        if not fkeys:
-            for fkey, attr in self.faces(True):
-                attr.update(attr_dict)
-        else:
-            for fkey in fkeys:
-                if fkey not in self.facedata:
-                    self.facedata[fkey] = self.default_face_attributes.copy()
-                self.facedata[fkey].update(attr_dict)
+        for name, value in zip(names, values):
+            self.set_faces_attribute(keys, name, value)
 
-    def get_face_attribute(self, fkey, name, value=None):
+    def get_face_attribute(self, key, name, value=None):
         """Get the value of a named attribute of one face.
 
         Parameters
@@ -703,8 +649,9 @@ class FaceAttributesManagement(object):
             The identifier of the face.
         name : str
             The name of the attribute.
-        value : object (None)
+        value : object, optional
             The default value.
+            Default is ``None``.
 
         Returns
         -------
@@ -721,22 +668,22 @@ class FaceAttributesManagement(object):
         """
         if not self.facedata:
             return value
-        if fkey not in self.facedata:
+        if key not in self.facedata:
             return value
-        return self.facedata[fkey].get(name, value)
+        return self.facedata[key].get(name, value)
 
-    def get_face_attributes(self, fkey, names, values=None):
+    def get_face_attributes(self, key, names, values=None):
         """Get the value of a named attribute of one face.
 
         Parameters
         ----------
         key : hashable
             The identifier of the face.
-        names : list
+        names : list of str
             A list of attribute names.
-        values : list (None)
+        values : list of object, optional
             A list of default values.
-            Defaults to a list of ``None`` s.
+            Defaults to a list of ``None``.
 
         Returns
         -------
@@ -754,24 +701,20 @@ class FaceAttributesManagement(object):
         """
         if not values:
             values = [None] * len(names)
-        if not self.facedata:
-            return values
-        if fkey not in self.facedata:
-            return values
-        return [self.facedata[fkey].get(name, value) for name, value in zip(names, values)]
+        return [self.get_face_attribute(key, name, value) for name, value in zip(names, values)]
 
-    def get_faces_attribute(self, name, value=None, fkeys=None):
+    def get_faces_attribute(self, keys, name, value=None):
         """Get the value of a named attribute of multiple faces.
 
         Parameters
         ----------
+        keys : list of hashable
+            A list of identifiers.
         name : str
             The name of the attribute.
-        value : object (None)
+        value : object, optional
             The default value.
-        keys : list (None)
-            A list of identifiers.
-            Defaults to all faces.
+            Defaults to ``None``.
 
         Returns
         -------
@@ -785,27 +728,20 @@ class FaceAttributesManagement(object):
         * :meth:`get_faces_attributes`
 
         """
-        if not fkeys:
-            if not self.facedata:
-                return [value for fkey in self.face]
-            return [self.get_face_attribute(fkey, name, value) for fkey in self.face]
-        if not self.facedata:
-            return [value for fkey in fkeys]
-        return [self.get_face_attribute(fkey, name, value) for fkey in fkeys]
+        return [self.get_face_attribute(key, name, value) for key in keys]
 
-    def get_faces_attributes(self, names, values=None, fkeys=None):
+    def get_faces_attributes(self, keys, names, values=None):
         """Get the values of multiple named attribute of multiple faces.
 
         Parameters
         ----------
+        keys : list of hashable
+            A list of identifiers.
         names : list
             The names of the attributes.
-        values : list (None)
+        values : list of object, optional
             A list of default values.
-            Defaults to a list of ``None`` s.
-        keys : list (None)
-            A list of face identifiers.
-            Defaults to all faces.
+            Defaults to a list of ``None``.
 
         Returns
         -------
@@ -824,12 +760,6 @@ class FaceAttributesManagement(object):
         if not values:
             values = [None] * len(names)
         temp = list(zip(names, values))
-        if not fkeys:
-            if not self.facedata:
-                return [[value for name, value in temp] for fkey in self.face]
-            return [[self.get_face_attribute(fkey, name, value) for name, value in temp] for fkey in self.face]
-        if not self.facedata:
-            return [[value for name, value in temp] for fkey in fkeys]
         return [[self.get_face_attribute(fkey, name, value) for name, value in temp] for fkey in fkeys]
 
 

@@ -12,10 +12,11 @@ Definition of display conduits.
 .. autosummary::
     :toctree: generated/
 
+    MeshConduit
     FacesConduit
-    LabelsConduit
     LinesConduit
     PointsConduit
+    LabelsConduit
 
 """
 
@@ -66,12 +67,14 @@ class Conduit(DisplayConduit):
         Rhino.RhinoApp.Wait()
 
 
+from .mesh import *
 from .faces import *
 from .labels import *
 from .lines import *
 from .points import *
 # from .splines import *
 
+from . import mesh
 from . import faces
 from . import labels
 from . import lines
@@ -80,6 +83,7 @@ from . import points
 
 __all__ = []
 
+__all__ += mesh.__all__
 __all__ += faces.__all__
 __all__ += labels.__all__
 __all__ += lines.__all__

@@ -23,12 +23,6 @@ except NameError:
     basestring = str
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = ['ImageForm', 'image_from_remote', 'image_from_local']
 
 

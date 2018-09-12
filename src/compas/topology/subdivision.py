@@ -10,12 +10,6 @@ from compas.datastructures import Mesh
 from compas.geometry import centroid_points
 
 
-__author__     = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'mesh_subdivide',
     'mesh_subdivide_tri',
@@ -38,7 +32,6 @@ class SubdMesh(Mesh):
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
-            self.edge[key] = {}
 
         self.vertex[key] = dict(x=x, y=y, z=z)
 
@@ -254,7 +247,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         from compas.plotters import MeshPlotter
 
         vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
-        faces = [[0, 1, 2, 3], ]
+        faces = [[0, 1, 2, 3]]
 
         mesh = Mesh.from_vertices_and_faces(vertices, faces)
         subd = mesh_subdivide_catmullclark(mesh, k=3, fixed=mesh.vertices())
@@ -275,7 +268,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         from compas.plotters import MeshPlotter
 
         vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
-        faces = [[0, 1, 2, 3], ]
+        faces = [[0, 1, 2, 3]]
 
         mesh = Mesh.from_vertices_and_faces(vertices, faces)
         subd = mesh_subdivide_catmullclark(mesh, k=3, fixed=None)
@@ -643,7 +636,7 @@ if __name__ == "__main__":
     fixed = [mesh.get_any_vertex()]
     print(fixed)
 
-    subdivide = partial(mesh_subdivide_quad)
+    subdivide = partial(mesh_subdivide_doosabin)
     subd = subdivide(mesh, k=4)
 
     viewer = MeshViewer()

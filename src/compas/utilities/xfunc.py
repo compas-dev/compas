@@ -23,21 +23,8 @@ try:
 except ImportError:
     compas.raise_if_not_ironpython()
 
-    # try:
-    #     from System.Diagnostics import Process
 
-    # except ImportError:
-    #     compas.raise_if_ironpython()
-
-
-
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['XFunc', ]
+__all__ = ['XFunc']
 
 
 WRAPPER = """
@@ -70,10 +57,11 @@ ipath      = sys.argv[3]
 opath      = sys.argv[4]
 serializer = sys.argv[5]
 
-with open(ipath, 'r') as fo:
-    if serializer == 'json':
+if serializer == 'json':
+    with open(ipath, 'r') as fo:
         idict = json.load(fo, cls=DataDecoder)
-    else:
+else:
+    with open(ipath, 'rb') as fo:
         idict = pickle.load(fo)
 
 try:
@@ -116,11 +104,13 @@ else:
     odict['data']       = r
     odict['profile']    = stream.getvalue()
 
-with open(opath, 'w+') as fo:
-    if serializer == 'json':
+if serializer == 'json':
+    with open(opath, 'w+') as fo:
         json.dump(odict, fo, cls=DataEncoder)
-    else:
-        pickle.dump(odict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+else:
+    with open(opath, 'wb+') as fo:
+        # pickle.dump(odict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(odict, fo, protocol=2)
 
 """
 
@@ -345,17 +335,17 @@ class XFunc(object):
         """
         idict = {'args': args, 'kwargs': kwargs}
 
-        with open(self.ipath, 'w+') as fo:
-            if self.serializer == 'json':
+        if self.serializer == 'json':
+            with open(self.ipath, 'w+') as fo:
                 json.dump(idict, fo, cls=DataEncoder)
-            else:
-                pickle.dump(idict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+        else:
+            with open(self.ipath, 'wb+') as fo:
+                # pickle.dump(idict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+                pickle.dump(idict, fo, protocol=2)
 
         with open(self.opath, 'w+') as fh:
             fh.write('')
 
-        # this part is different on Mono
-        # ----------------------------------------------------------------------
         process_args = [self.python,
                         '-u',
                         '-c',
@@ -374,40 +364,17 @@ class XFunc(object):
                 self.callback(line, self.callback_args)
             if self.verbose:
                 print(line)
-        # ----------------------------------------------------------------------
-        # end of part
-        # p = Process()
-        # p.StartInfo.UseShellExecute = False
-        # p.StartInfo.RedirectStandardOutput = True
-        # p.StartInfo.RedirectStandardError = True
-        # p.StartInfo.FileName = self.python
-        # p.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4}'.format(WRAPPER,
-        #                                                              self.basedir,
-        #                                                              self.funcname,
-        #                                                              self.ipath,
-        #                                                              self.opath)
-        # p.Start()
-        # p.WaitForExit()
 
-        # while True:
-        #     line = p.StandardOutput.ReadLine()
-        #     if not line:
-        #         break
-        #     line = line.strip()
-        #     if self.verbose:
-        #         print(line)
-
-        # stderr = p.StandardError.ReadToEnd()
-
-        with open(self.opath, 'r') as fo:
-            if self.serializer == 'json':
+        if self.serializer == 'json':
+            with open(self.opath, 'r') as fo:
                 odict = json.load(fo, cls=DataDecoder)
-            else:
+        else:
+            with open(self.opath, 'rb') as fo:
                 odict = pickle.load(fo)
 
-            self.data    = odict['data']
-            self.profile = odict['profile']
-            self.error   = odict['error']
+        self.data    = odict['data']
+        self.profile = odict['profile']
+        self.error   = odict['error']
 
         if self.delete_files:
             try:
@@ -434,10 +401,10 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
+    # from compas.plotters import MeshPlotter
     from compas.utilities import XFunc
 
-    fd_numpy = XFunc('compas.numerical.fd_numpy', delete_files=True, serializer='json')
+    fd_numpy = XFunc('compas.numerical.fd.fd_numpy.fd_numpy', delete_files=True, serializer='json')
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -452,15 +419,15 @@ if __name__ == '__main__':
     print(type(xyz))
 
     for key, attr in mesh.vertices(True):
-        attr['x'] = xyz[key][0]
-        attr['y'] = xyz[key][1]
-        attr['z'] = xyz[key][2]
+       attr['x'] = xyz[key][0]
+       attr['y'] = xyz[key][1]
+       attr['z'] = xyz[key][2]
 
-    plotter = MeshPlotter(mesh)
-    plotter.draw_vertices()
-    plotter.draw_faces()
-    plotter.draw_edges()
-    plotter.show()
+    # plotter = MeshPlotter(mesh)
+    # plotter.draw_vertices()
+    # plotter.draw_faces()
+    # plotter.draw_edges()
+    # plotter.show()
 
     print(fd_numpy.profile)
 

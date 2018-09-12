@@ -6,7 +6,7 @@ compas.topology
 .. currentmodule:: compas.topology
 
 
-combinatorial
+combinatorics
 -------------
 
 .. autosummary::
@@ -14,6 +14,20 @@ combinatorial
     :nosignatures:
 
     vertex_coloring
+    connected_components
+    mesh_is_connected
+    network_is_connected
+
+duality
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    mesh_dual
+    network_dual
+    network_find_faces
 
 orientation
 -----------
@@ -22,6 +36,9 @@ orientation
     :toctree: generated/
     :nosignatures:
 
+    face_adjacency
+    flip_cycles
+    mesh_face_adjacency
     mesh_flip_cycles
     mesh_unify_cycles
 
@@ -49,8 +66,11 @@ subdivision
 
     mesh_subdivide
     mesh_subdivide_tri
+    mesh_subdivide_corner
+    mesh_subdivide_quad
     mesh_subdivide_catmullclark
     mesh_subdivide_doosabin
+    trimesh_subdivide_loop   
 
 traversal
 ---------
@@ -85,7 +105,7 @@ triangulation
 
 from .traversal import *
 
-from .combinatorial import *
+from .combinatorics import *
 from .duality import *
 from .orientation import *
 from .planarity import *
@@ -93,7 +113,7 @@ from .subdivision import *
 from .triangulation import *
 from .connectivity import *
 
-from .combinatorial import __all__ as a
+from .combinatorics import __all__ as a
 from .duality import __all__ as b
 from .orientation import __all__ as c
 from .planarity import __all__ as d

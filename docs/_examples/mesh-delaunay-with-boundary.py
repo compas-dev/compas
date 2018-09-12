@@ -1,4 +1,9 @@
-"""Delaunay triangulation with boundary"""
+"""Delaunay triangulation with boundary.
+
+author : Matthias Rippmann
+email  : rippmann@arch.ethz.ch
+
+"""
 
 import compas_rhino
 
@@ -6,12 +11,6 @@ from compas.datastructures import Mesh
 from compas.topology import delaunay_from_points
 
 from compas_rhino.artists import MeshArtist
-
-
-__author__    = 'Matthias Rippmann'
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'rippmann@arch.ethz.ch'
 
 
 # select the points
@@ -26,6 +25,7 @@ boundary = compas_rhino.get_polyline_coordinates(guid)
 
 guids = compas_rhino.select_polylines("Select holes.")
 holes = [compas_rhino.get_polyline_coordinates(guid) for guid in guids]
+
 
 # make a delaunay triangulation
 # within the boundary

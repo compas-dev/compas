@@ -2,6 +2,14 @@
 Working in Rhino
 ********************************************************************************
 
+.. highlight:: bash
+
+.. warning::
+
+    All instructions on this page are for Rhino for Windows.
+    The instructions for Rhinomac are coming soon...
+
+
 *Installing* **COMPAS** for Rhino is very simple. Just open the *command prompt*
 and type the following
 
@@ -10,12 +18,12 @@ and type the following
     $ python -m compas_rhino.install
 
 
-Optionally, you could provide a Rhino version number (``'5.0', '6.0'``).
-The default is ``'5.0'``.
+Optionally, you could provide a Rhino version number (``5.0, 6.0``).
+The default is ``5.0``.
 
 ::
 
-    $ python -m compas_rhino.install '6.0'
+    $ python -m compas_rhino.install 6.0
 
 
 
@@ -82,3 +90,4 @@ And add
 .. note::
 
     Restart Rhino and check the version info as before.
+

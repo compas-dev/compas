@@ -1,8 +1,9 @@
 from __future__ import print_function
 
-from compas.utilities import geometric_key
-
+import compas
 import compas_rhino
+
+from compas.utilities import geometric_key
 
 from compas_rhino.geometry import RhinoSurface
 
@@ -23,12 +24,10 @@ try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
-__author__    = ['Tom Van Mele', ]
+__author__    = ['Tom Van Mele']
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
@@ -39,6 +38,7 @@ __all__ = [
     'mesh_from_surface',
     'mesh_from_surface_uv',
     'mesh_from_surface_heightfield',
+
     'mesh_draw',
     'mesh_draw_vertices',
     'mesh_draw_edges',
@@ -46,12 +46,14 @@ __all__ = [
     'mesh_draw_vertex_labels',
     'mesh_draw_edge_labels',
     'mesh_draw_face_labels',
+
     'mesh_select_vertices',
     'mesh_select_vertex',
     'mesh_select_edges',
     'mesh_select_edge',
     'mesh_select_faces',
     'mesh_select_face',
+
     'mesh_update_vertex_attributes',
     'mesh_update_edge_attributes',
     'mesh_update_face_attributes',

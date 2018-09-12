@@ -1,8 +1,13 @@
+"""Spline relaxation
+
+author : Andrew Liew, Tom Van Mele
+email  : liew@arch.ethz.ch
+
+"""
+
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-import os
 
 import compas
 
@@ -11,14 +16,6 @@ from compas.plotters import NetworkPlotter
 from compas.numerical import drx_numpy
 
 from numpy import linspace
-
-HERE  = os.path.abspath(os.path.dirname(__file__))
-
-
-__author__    = ['Andrew Liew', 'Tom Van Mele']
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
 
 
 # Setup

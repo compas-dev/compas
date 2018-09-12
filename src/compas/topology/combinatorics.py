@@ -6,14 +6,11 @@ from collections import deque
 from compas.topology import breadth_first_traverse
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'vertex_coloring',
+    'connected_components',
+    'mesh_is_connected',
+    'network_is_connected',
 ]
 
 
@@ -81,6 +78,25 @@ def vertex_coloring(adjacency):
 
 
 def connected_components(adjacency):
+    """Identify the vertices of connected components.
+
+    Parameters
+    ----------
+    adjacency : dict
+        An adjacency dictionary mapping vertex identifiers to neighbours.
+
+    Returns
+    -------
+    list of list of hashable
+        A nested list of vertex identifiers.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        pass
+
+    """
     tovisit = set(adjacency)
     components = []
     while tovisit:
@@ -91,40 +107,23 @@ def connected_components(adjacency):
     return components
 
 
-def network_is_connected(network):
-    """Verify that the mesh is connected.
-
-    A mesh is connected if the following conditions are fulfilled:
-
-    * For every two vertices a path exists connecting them.
-
-    Returns
-    -------
-    bool
-        True, if the mesh is connected.
-        False, otherwise.
-
-    """
-    if not network.vertex:
-        return False
-
-    nodes = breadth_first_traverse(network.adjacency, network.get_any_vertex())
-
-    return len(nodes) == network.number_of_vertices()
-
-
 def mesh_is_connected(mesh):
     """Verify that the mesh is connected.
 
-    A mesh is connected if the following conditions are fulfilled:
-
-    * For every two vertices a path exists connecting them.
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh data structure.
 
     Returns
     -------
     bool
         True, if the mesh is connected.
         False, otherwise.
+
+    Notes
+    -----
+    A mesh is connected if for every two vertices a path exists connecting them.
 
     """
     if not mesh.vertex:
@@ -133,6 +132,28 @@ def mesh_is_connected(mesh):
     nodes = breadth_first_traverse(mesh.adjacency, mesh.get_any_vertex())
 
     return len(nodes) == mesh.number_of_vertices()
+
+
+def network_is_connected(network):
+    """Verify that the network is connected.
+
+    Returns
+    -------
+    bool
+        True, if the network is connected.
+        False, otherwise.
+
+    Notes
+    -----
+    A network is connected if for every two vertices a path exists connecting them.
+
+    """
+    if not network.vertex:
+        return False
+
+    nodes = breadth_first_traverse(network.adjacency, network.get_any_vertex())
+
+    return len(nodes) == network.number_of_vertices()
 
 
 # ==============================================================================
@@ -149,12 +170,9 @@ if __name__ == "__main__":
 
     components = connected_components(network.adjacency)
 
-    print(network_is_connected(network))
-    print(components)
-
     key_color = vertex_coloring(network.adjacency)
 
-    colors = ['#ff0000', '#00ff00', '#0000ff']
+    colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00']
 
     plotter = NetworkPlotter(network, figsize=(10, 7))
 

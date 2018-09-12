@@ -18,12 +18,6 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = ['MeshArtist']
 
 
@@ -87,6 +81,13 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     @mesh.setter
     def mesh(self, mesh):
         self.datastructure = mesh
+
+    def draw(self):
+        vertices = self.mesh.get_vertices_attributes('xyz')
+        faces = [self.mesh.face_vertices(fkey) for fkey in self.mesh.faces()]
+        layer = self.layer
+        name = "{}.mesh".format(self.mesh.name)
+        return compas_rhino.xdraw_mesh(vertices, faces, layer=layer, name=name)
 
     def redraw(self, timeout=None):
         """Redraw the Rhino view.

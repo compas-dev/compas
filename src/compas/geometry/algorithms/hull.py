@@ -10,12 +10,6 @@ from compas.geometry.basic import cross_vectors_xy
 from compas.geometry.distance import distance_point_point
 
 
-__author__     = ['Matthias Rippmann <rippmann@ethz.ch>']
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = '<rippmannt@ethz.ch>'
-
-
 __all__ = [
     'convex_hull',
     'convex_hull_xy',

@@ -5,12 +5,6 @@ from __future__ import division
 import struct
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'PLY',
     'PLYReader',
@@ -413,8 +407,8 @@ class PLYReader(object):
 class PLYParser(object):
     """"""
 
-    def __init__(self, reader, precision):
-        self.precision = precision if precision is not None else '3f'
+    def __init__(self, reader, precision=None):
+        self.precision = precision
         self.reader    = reader
         self.vertices  = None
         self.edges     = None
@@ -441,4 +435,4 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_vertices_and_faces(ply.parser.vertices, ply.parser.faces)
 
-    print(mesh)
+    print(mesh.summary())

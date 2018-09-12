@@ -16,13 +16,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['LinesConduit', ]
+__all__ = ['LinesConduit']
 
 
 class LinesConduit(Conduit):
@@ -119,7 +113,7 @@ class LinesConduit(Conduit):
             The color specification of each line in hex or RGB(255) format.
 
         """
-        return self._colors
+        return self._color
     
     @color.setter
     def color(self, color):

@@ -14,27 +14,25 @@ from compas_rhino.selectors import VertexSelector
 from compas_rhino.selectors import EdgeSelector
 
 
-__author__    = 'Tom Van Mele'
-__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__   = 'MIT license'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'network_draw',
     'network_draw_vertices',
     'network_draw_edges',
     'network_draw_vertex_labels',
     'network_draw_edge_labels',
+
     'network_select_vertices',
     'network_select_vertex',
     'network_select_edges',
     'network_select_edge',
+
     'network_update_attributes',
     'network_update_vertex_attributes',
     'network_update_edge_attributes',
+
     'network_move',
     'network_move_vertex',
+
     'network_draw_reaction_forces',
     'network_draw_loads',
     'network_draw_axial_forces'

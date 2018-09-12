@@ -15,13 +15,13 @@ import os
 project          = 'COMPAS'
 copyright        = '2017, Block Research Group - ETH Zurich'
 author           = 'Tom Van Mele'
-release          = '0.3.0'
+release          = '0.3.2'
 version          = '.'.join(release.split('.')[0:2])
 
 master_doc       = 'index'
 source_suffix    = ['.rst', ]
 templates_path   = ['_templates', ]
-exclude_patterns = ['__build', '**.ipynb_checkpoints']
+exclude_patterns = ['__build', '**.ipynb_checkpoints', '_notebooks']
 
 pygments_style   = 'sphinx'
 show_authors     = True

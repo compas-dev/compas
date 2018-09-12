@@ -6,10 +6,6 @@ compas.utilities
 .. currentmodule:: compas.utilities
 
 
-.. combine all decorators
-.. combine xscript and xfunc into xrun
-
-
 animation
 =========
 
@@ -170,6 +166,7 @@ from .maps import *
 from .mixing import *
 from .names import *
 from .profiling import *
+from .remote import *
 from .sorting import *
 from .xfunc import *
 from .xscript import *
@@ -186,6 +183,7 @@ from . import maps
 from . import mixing
 from . import names
 from . import profiling
+from . import remote
 from . import sorting
 from . import xfunc
 from . import xscript
@@ -195,5 +193,6 @@ __all__  = []
 __all__ += animation.__all__ + coercing.__all__ + colors.__all__
 __all__ += datetime_.__all__ + decorators.__all__ + encoders.__all__
 __all__ += itertools_.__all__ + maps.__all__ + mixing.__all__ + names.__all__
-__all__ += profiling.__all__ + sorting.__all__ + xfunc.__all__ + xscript.__all__
+__all__ += profiling.__all__ + remote.__all__ + sorting.__all__
+__all__ += xfunc.__all__ + xscript.__all__
 __all__ += functions.__all__

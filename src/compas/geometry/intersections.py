@@ -22,12 +22,6 @@ from compas.geometry.queries import is_point_on_segment_xy
 from compas.geometry.queries import is_point_in_triangle
 
 
-__author__ = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__ = 'MIT License'
-__email__ = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'intersection_line_line',
     'intersection_line_line_xy',

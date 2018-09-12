@@ -152,12 +152,16 @@ def release(ctx, release_type):
     if release_type not in ('patch', 'minor', 'major'):
         raise Exit('The release type parameter is invalid.\nMust be one of: major, minor, patch')
 
+    # Run checks
+    ctx.run('invoke check test')
+
     # Bump version and git tag it
     ctx.run('bumpversion %s --verbose' % release_type)
-    ctx.run('invoke docs test')
-    ctx.run('python setup.py clean --all sdist bdist_wheel')
-    # TODO: Add github release upload if required
 
+    # Build project
+    ctx.run('python setup.py clean --all sdist bdist_wheel')
+
+    # Upload to pypi
     if confirm('You are about to upload the release to pypi.org. Are you sure? [y/N]'):
         files = ['dist/*.whl', 'dist/*.gz', 'dist/*.zip']
         dist_files = ' '.join([pattern for f in files for pattern in glob.glob(f)])

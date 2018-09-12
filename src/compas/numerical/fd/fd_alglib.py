@@ -18,15 +18,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = [
-    'mesh_fd_alglib',
-]
+__all__ = ['mesh_fd_alglib']
 
 
 def mesh_fd_alglib(mesh, density=1.0, kmax=10):
@@ -94,6 +86,10 @@ def mesh_fd_alglib(mesh, density=1.0, kmax=10):
         l = mesh.edge_length(u, v)
         f = q * l
         mesh.set_edge_attributes((u, v), ('q', 'f', 'l'), (q, f, l))
+
+
+def fd_alglib(vertices, edges, fixed, q, loads, **kwargs):
+    pass
 
 
 # ==============================================================================

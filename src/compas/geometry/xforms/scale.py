@@ -15,14 +15,7 @@ from compas.geometry.transformations import matrix_from_scale_factors
 from compas.geometry.xforms import Transformation
 
 
-__author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
-__license__ = 'MIT License'
-__email__ = 'rust@arch.ethz.ch'
-
-
-__all__ = [
-    'Scale',
-]
+__all__ = ['Scale']
 
 
 class Scale(Transformation):

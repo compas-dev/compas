@@ -8,15 +8,7 @@ import json
 import copy
 
 
-__author__    = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'mtomas@ethz.ch'
-
-
-__all__ = [
-    'ga'
-]
+__all__ = ['ga']
 
 
 TPL = """

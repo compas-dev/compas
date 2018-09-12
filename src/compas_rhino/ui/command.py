@@ -1,18 +1,12 @@
 from __future__ import print_function
 
+import compas
+
 try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
-
-
-__author__     = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__  = 'Copyright 2016, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+    compas.raise_if_ironpython()
 
 
 __all__ = ['Command', 'CommandLoop', 'command_line_menu']
@@ -100,7 +94,7 @@ def command_line_menu(interface):
 if __name__ == "__main__":
 
     interface_3 = {
-        "options" : ["sub_sub_option_1", "sub_sub_option_2", ],
+        "options" : ["sub_sub_option_1", "sub_sub_option_2"],
         "message" : "Select C",
         "default" : "sub_sub_option_1",
         "show"    : "sub_sub_menu",
@@ -108,7 +102,7 @@ if __name__ == "__main__":
     }
 
     interface_2 = {
-        "options" : ["sub_option_1", interface_3, ],
+        "options" : ["sub_option_1", interface_3],
         "message" : "Select B",
         "default" : "sub_option_1",
         "show"    : "sub_menu",

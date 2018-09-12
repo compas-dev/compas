@@ -6,12 +6,6 @@ import struct
 from compas.utilities import geometric_key
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'STL',
     'STLReader',
@@ -212,8 +206,8 @@ class STLReader(object):
 class STLParser(object):
     """"""
 
-    def __init__(self, reader, precision):
-        self.precision = precision if precision is not None else '3f'
+    def __init__(self, reader, precision=None):
+        self.precision = precision
         self.reader    = reader
         self.vertices  = None
         self.faces     = None
@@ -226,7 +220,7 @@ class STLParser(object):
         for facet in self.reader.facets:
             face = []
             for xyz in facet['vertices']:
-                gkey = geometric_key(xyz)
+                gkey = geometric_key(xyz, self.precision)
                 if gkey not in gkey_index:
                     gkey_index[gkey] = len(vertices)
                     vertices.append(xyz)
@@ -247,20 +241,41 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
     from compas.viewers import MeshViewer
-    from compas.plotters import MeshPlotter
+    from compas.utilities import download_file_from_remote
+    from compas.topology import connected_components
 
-    filepath = os.path.join(compas.DATA, 'cube_ascii.stl')
 
-    stl = STL(filepath)
+    source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
+    filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
+
+    download_file_from_remote(source, filepath, overwrite=False)
+
+    stl = STL(filepath, precision='6f')
 
     mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
 
-    viewer = MeshViewer()
-    viewer.mesh = mesh
-    viewer.show()
+    vertexgroups = connected_components(mesh.halfedge)
+    facegroups = [[] for _ in range(len(vertexgroups))]
 
-    # plotter = MeshPlotter(mesh)
-    # # plotter.draw_vertices()
-    # plotter.draw_edges()
-    # plotter.draw_faces()
-    # plotter.show()
+    vertexsets = list(map(set, vertexgroups))
+
+    for fkey in mesh.faces():
+        vertices = set(mesh.face_vertices(fkey))
+
+        for i, vertexset in enumerate(vertexsets):
+            if vertices.issubset(vertexset):
+                facegroups[i].append(fkey)
+                break
+
+    meshes = []
+
+    for vertexgroup, facegroup in zip(vertexgroups, facegroups):
+        key_index = {key: index for index, key in enumerate(vertexgroup)}
+        vertices = mesh.get_vertices_attributes('xyz', keys=vertexgroup)
+        faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in facegroup]
+
+        meshes.append(Mesh.from_vertices_and_faces(vertices, faces))
+
+    viewer = MeshViewer()
+    viewer.mesh = meshes[0]
+    viewer.show()

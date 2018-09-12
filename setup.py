@@ -31,11 +31,15 @@ def read(*names, **kwargs):
 
 long_description = read('README.md')
 requirements = read('requirements.txt').split('\n')
-optional_requirements = {}
+optional_requirements = {
+    "viewers"      : ['PyOpenGL', 'PySide2', 'vtk'],
+    "optimisation" : ['cython', 'pyopencl', 'pycuda'],
+    "robotics"     : ['roslibpy']
+}
 
 setup(
     name='COMPAS',
-    version='0.3.0',
+    version='0.3.2',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',

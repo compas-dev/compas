@@ -32,15 +32,7 @@ except ImportError:
 from time import time
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
-__all__ = [
-    'devo_numpy'
-]
+__all__ = ['devo_numpy']
 
 
 def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, CR=0.5, polish=False, args=(),

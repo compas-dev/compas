@@ -17,12 +17,6 @@ from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'fd_numpy',
     'network_fd_numpy',
@@ -79,7 +73,7 @@ def mesh_fd_numpy(mesh):
         attr['l'] = l[index][0]
 
 
-def fd_numpy(vertices, edges, fixed, q, loads):
+def fd_numpy(vertices, edges, fixed, q, loads, **kwargs):
     """Implementation of the force density method to compute equilibrium of axial force networks.
 
     Parameters

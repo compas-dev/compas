@@ -21,24 +21,6 @@ compas
 ..
     compas.viewers
 
-
-In addition to the above packages, :mod:`compas` provides the following convenience functions.
-
-.. autosummary::
-    :toctree: generated/
-
-    get
-    get_bunny
-    is_windows
-    is_linux
-    is_mono
-    is_ironpython
-    raise_if_not_ironpython
-    raise_if_ironpython
-    verify
-    installed
-    requirements
-
 """
 
 from __future__ import print_function
@@ -46,20 +28,70 @@ from __future__ import print_function
 import os
 import sys
 
+import compas._os
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
+
+__author__    = 'Tom Van Mele and many others (see CONTRIBUTORS.md)'
+__copyright__ = 'Copyright 2014-2018 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
-__version__   = '0.3.0'
+__version__   = '0.3.2'
 
-
-PY3 = sys.version_info.major == 3
 
 HERE = os.path.dirname(__file__)
-HOME = os.path.abspath(os.path.join(HERE, '../..'))
-DATA = os.path.abspath(os.path.join(HERE, '../../data'))
-TEMP = os.path.abspath(os.path.join(HERE, '../../temp'))
+HOME = compas._os.absjoin(HERE, '../..')
+DATA = compas._os.absjoin(HERE, '../../data')
+TEMP = compas._os.absjoin(HERE, '../../temp')
+
+APPDATA = compas._os.user_data_dir('COMPAS', 'compas-dev', roaming=True)
+APPTEMP = compas._os.absjoin(APPDATA, 'temp')
+
+PRECISION = '3f'
+
+
+__all__ = [
+    'license',
+    'version',
+    'help',
+    'copyright',
+    'credits',
+    'verify',
+    'installed',
+    'requirements',
+    'raise_if_ironpython',
+    'raise_if_not_ironpython',
+]
+
+
+def is_windows():
+    return os.name == 'nt'
+
+
+def is_linux():
+    return os.name == 'posix'
+
+
+def is_mono():
+    return 'mono' in sys.version.lower()
+
+
+def is_ironpython():
+    return 'ironpython' in sys.version.lower()
+
+
+def raise_if_not_ironpython():
+    if not is_ironpython():
+        raise
+
+
+def raise_if_ironpython():
+    if is_ironpython():
+        raise
+
+
+# ==============================================================================
+# data
+# ==============================================================================
 
 
 def get(filename):
@@ -90,7 +122,7 @@ def get(filename):
     or if you are working directly with the source.
     In all other cases, the function will get the corresponding files direcly from
     the GitHub repo, at https://raw.githubusercontent.com/compas-dev/compas/master/data
-    
+
     Examples
     --------
     The ``compas.get`` function is meant to be used in combination with the static
@@ -105,7 +137,12 @@ def get(filename):
 
     """
     filename = filename.strip('/')
-    localpath = os.path.abspath(os.path.join(DATA, filename))
+
+    if filename.endswith('bunny.ply'):
+        return get_bunny()
+
+    localpath = compas._os.absjoin(DATA, filename)
+
     if os.path.exists(localpath):
         return localpath
     else:
@@ -141,17 +178,27 @@ def get_bunny(localstorage=None):
         mesh = Mesh.from_ply(compas.get_bunny())
 
     """
-    import urllib
     import tarfile
-    import appdirs
 
-    # bunny.tar.gz, when extracted contains the folders bunny/reconstruction/bun_zipper.ply
+    try:
+        from urllib.request import urlretrieve
+    except ImportError:
+        from urllib import urlretrieve
 
     if not localstorage:
-        localstorage = appdirs.user_data_dir('COMPAS', 'compas-dev', roaming=True)
+        localstorage = APPDATA
 
-    bunny = os.path.abspath(os.path.join(localstorage, 'bunny/reconstruction/bun_zipper.ply'))
-    destination = os.path.abspath(os.path.join(localstorage, 'bunny.tar.gz'))
+    if not os.path.exists(localstorage):
+        os.makedirs(localstorage)
+
+    if not os.path.isdir(localstorage):
+        raise Exception('Local storage location does not exist: {}'.format(localstorage))
+
+    if not os.access(localstorage, os.W_OK):
+        raise Exception('Local storage location is not writable: {}'.format(localstorage))
+
+    bunny = compas._os.absjoin(localstorage, 'bunny/reconstruction/bun_zipper.ply')
+    destination = compas._os.absjoin(localstorage, 'bunny.tar.gz')
 
     if not os.path.exists(bunny):
         url = 'http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz'
@@ -159,7 +206,7 @@ def get_bunny(localstorage=None):
         print('Getting the bunny from {} ...'.format(url))
         print('This will take a few seconds...')
 
-        urllib.urlretrieve(url, destination)
+        urlretrieve(url, destination)
 
         with tarfile.open(destination) as file:
             file.extractall(localstorage)
@@ -171,48 +218,9 @@ def get_bunny(localstorage=None):
     return bunny
 
 
-def get_armadillo():
-    import urllib
-    import gzip
-    import shutil
-    armadillo = os.path.abspath(os.path.join(DATA, 'armadillo/Armadillo.ply'))
-    if not os.path.exists(armadillo):
-        url = 'http://graphics.stanford.edu/pub/3Dscanrep/armadillo/Armadillo.ply.gz'
-        print('Getting the armadillo from {} ...'.format(url))
-        print('This will take a few seconds...')
-        destination = os.path.abspath(os.path.join(DATA, 'Armadillo.ply.gz'))
-        urllib.urlretrieve(url, destination)
-        with gzip.open(destination, 'rb') as ifile, open(armadillo, 'wb+') as ofile:
-            shutil.copyfileobj(ifile, ofile)
-        os.remove(destination)
-        print('Got it!\n')
-    return armadillo
-
-
-def is_windows():
-    return os.name == 'nt'
-
-
-def is_linux():
-    return os.name == 'posix'
-
-
-def is_mono():
-    return 'mono' in sys.version.lower()
-
-
-def is_ironpython():
-    return 'ironpython' in sys.version.lower()
-
-
-def raise_if_not_ironpython():
-    if not is_ironpython():
-        raise
-
-
-def raise_if_ironpython():
-    if is_ironpython():
-        raise
+# ==============================================================================
+# meta data
+# ==============================================================================
 
 
 def license():
@@ -230,10 +238,6 @@ def help():
 
 def copyright():
     return __copyright__
-
-
-def credits():
-    pass
 
 
 def verify():
@@ -299,17 +303,3 @@ def requirements():
         for line in f:
             print(line.strip())
 
-
-__all__ = [
-    'get',
-    'license',
-    'version',
-    'help',
-    'copyright',
-    'credits',
-    'verify',
-    'installed',
-    'requirements',
-    'raise_if_ironpython',
-    'raise_if_not_ironpython',
-]

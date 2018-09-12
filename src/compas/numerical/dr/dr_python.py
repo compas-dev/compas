@@ -8,22 +8,14 @@ from compas.geometry import norm_vectors
 from compas.topology import adjacency_from_edges
 
 
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = [
-    'dr_python',
-]
+__all__ = ['dr_python']
 
 
 K = [
-    [0.0, ],
-    [0.5, 0.5, ],
-    [0.5, 0.0, 0.5, ],
-    [1.0, 0.0, 0.0, 1.0, ],
+    [0.0],
+    [0.5, 0.5],
+    [0.5, 0.0, 0.5],
+    [1.0, 0.0, 0.0, 1.0],
 ]
 
 

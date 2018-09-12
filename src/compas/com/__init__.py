@@ -5,8 +5,6 @@ compas.com
 
 .. currentmodule:: compas.com
 
-:mod:`compas.com` provides functionality for communicating with external software.
-
 
 Matlab
 ======
