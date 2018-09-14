@@ -2441,6 +2441,7 @@ class Mesh(FromToPickle,
 
         """
         vertices = set()
+
         for key, nbrs in iter(self.halfedge.items()):
             for nbr, face in iter(nbrs.items()):
                 if face is None:
@@ -2452,7 +2453,7 @@ class Mesh(FromToPickle,
         if not ordered:
             return vertices
 
-        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices_all], key=lambda x: (x[1][1], x[1][0]))[0][0]
+        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices], key=lambda x: (x[1][1], x[1][0]))[0][0]
 
         vertices = []
         start = key
