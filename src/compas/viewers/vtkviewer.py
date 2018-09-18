@@ -40,6 +40,7 @@ except ImportError:
 
 try:
     from PyQt5.Qt import QApplication
+    from PyQt5.Qt import QCheckBox
     from PyQt5.Qt import QComboBox
     from PyQt5.Qt import QDockWidget
     from PyQt5.Qt import QFrame
@@ -206,9 +207,10 @@ class VtkViewer(QApplication):
         self.width        = width
         self.keycallbacks = {}
 
-        self.labels    = {}
-        self.listboxes = {}
-        self.sliders   = {}
+        self.labels     = {}
+        self.listboxes  = {}
+        self.sliders    = {}
+        self.checkboxes = {}
 
 
     # ==============================================================================
@@ -383,6 +385,14 @@ class VtkViewer(QApplication):
         label.setText(text)
         self.layout.addWidget(label)
 
+    def add_checkbox(self, name, text, checked, callback):
+
+        self.checkboxes[name] = checkbox = QCheckBox()
+        checkbox.setText(text)
+        checkbox.setChecked(checked)
+        checkbox.stateChanged.connect(callback)
+        self.layout.addWidget(checkbox)
+
     def add_listbox(self, name, items, callback):
 
         self.listboxes[name] = listbox = QComboBox()
@@ -399,7 +409,6 @@ class VtkViewer(QApplication):
 
         self.sidebar = sidebar = QDockWidget()
         sidebar.setFixedWidth(120)
-        # sidebar.setWindowTitle('-')
 
         self.layout = layout = QVBoxLayout()
         layout.addStretch()
