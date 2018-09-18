@@ -150,7 +150,7 @@ class Mesh(FromToPickle,
         self._max_int_fkey = -1
 
         self.attributes = {
-            'name'         : None,
+            'name'         : 'Mesh',
             'color.vertex' : None,
             'color.edge'   : None,
             'color.face'   : None,
@@ -426,7 +426,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            
+
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
             mesh.plot()
@@ -468,7 +468,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            
+
             mesh = Mesh.from_obj(compas.get('bunny.ply'))
 
         """
@@ -505,7 +505,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            
+
             mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
 
         """
@@ -546,7 +546,7 @@ class Mesh(FromToPickle,
         Examples
         --------
         .. code-block:: python
-            
+
             import json
 
             import compas
@@ -600,10 +600,10 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            
+
             vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]
             faces = [[0, 1, 2]]
-            
+
             mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
         """
@@ -2441,6 +2441,7 @@ class Mesh(FromToPickle,
 
         """
         vertices = set()
+
         for key, nbrs in iter(self.halfedge.items()):
             for nbr, face in iter(nbrs.items()):
                 if face is None:
@@ -2452,7 +2453,7 @@ class Mesh(FromToPickle,
         if not ordered:
             return vertices
 
-        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices_all], key=lambda x: (x[1][1], x[1][0]))[0][0]
+        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices], key=lambda x: (x[1][1], x[1][0]))[0][0]
 
         vertices = []
         start = key
@@ -2792,7 +2793,7 @@ class Mesh(FromToPickle,
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
             mesh.plot()
-    
+
         """
         from compas.plotters import MeshPlotter
 
