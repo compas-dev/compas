@@ -244,7 +244,7 @@ def tile_cl(queue, a, shape, dim=4):
 
     kernel.tile_cl(queue, (n * repx, m * repy), None, a.data, b.data, uint32(m), uint32(n), uint32(repx), uint32(repy))
 
-    return b.get()
+    return b
 
 
 def hstack_cl(queue, a, b, dim=4):
@@ -293,7 +293,7 @@ def hstack_cl(queue, a, b, dim=4):
 
     kernel.hstack_cl(queue, (n + o, m, 1), None, a.data, b.data, c.data, uint32(n), uint32(o))
 
-    return c.get()
+    return c
 
 
 def vstack_cl(queue, a, b, dim=4):
@@ -342,7 +342,7 @@ def vstack_cl(queue, a, b, dim=4):
 
     kernel.vstack_cl(queue, (n, m + o, 1), None, a.data, b.data, c.data, uint32(m), uint32(n), uint32(o))
 
-    return c.get()
+    return c
 
 
 # ==============================================================================

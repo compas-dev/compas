@@ -4,6 +4,12 @@ from __future__ import division
 from __future__ import print_function
 
 try:
+    from numpy import float32
+    from numpy import uint32
+except:
+    pass
+
+try:
     import pyopencl as cl
     import pyopencl.clmath
     import pyopencl.array as cl_array
@@ -44,7 +50,7 @@ __all__ = [
     'sin_cl',
     'sinh_cl',
     'sqrt_cl',
-#     'sum_cl',
+    'sum_cl',
     'tan_cl',
     'tanh_cl',
 ]
@@ -614,28 +620,82 @@ def sqrt_cl(a):
     return pyopencl.clmath.sqrt(a)
 
 
-# def sum_cl(a, axis=None):
+def sum_cl(queue, a, axis=None):
 
-#     """ Sum of GPUArray elements in a given axis direction or all elements.
+    """ Sum of GPUArray elements in a given axis direction or all elements.
 
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
-#     axis : int
-#         Axis direction to sum through, all if None.
+    Parameters
+    ----------
+    queue
+        PyOpenCL queue.
+    a : gpuarray
+        GPUArray with elements to be operated on.
+    axis : int
+        Axis direction to sum through, all if None.
 
-#     Returns
-#     -------
-#     gpuarray
-#         GPUArray sum.
+    Returns
+    -------
+    gpuarray
+        GPUArray sum.
 
-#     """
+    Notes
+    -----
+    - This is temporary and not an efficient implementation.
 
-#     if axis is not None:
-#         raise NotImplementedError
-#     else:
-#         return cl_array.sum(a)
+    """
+
+    if axis is not None:
+
+        m, n = a.shape
+
+        kernel = cl.Program(queue.context, """
+
+        __kernel void sum0_cl(__global float *a, __global float *b, unsigned m, unsigned n)
+        {
+            int i;
+            int id = get_global_id(0);
+
+            float sum = 0.;
+
+            for (i = 0; i < m; i++)
+            {
+                sum += a[i * n + id];
+            }
+
+            b[id] = sum;
+        }
+
+        __kernel void sum1_cl(__global float *a, __global float *b, unsigned m, unsigned n)
+        {
+            int i;
+            int id = get_global_id(1);
+
+            float sum = 0.;
+
+            for (i = 0; i < n; i++)
+            {
+                sum += a[id * n + i];
+            }
+
+            b[id] = sum;
+        }
+
+        """).build()
+
+        if axis == 0:
+
+            b = cl_array.empty(queue, (1, n), dtype=float32)
+            kernel.sum0_cl(queue, (n, 1), None, a.data, b.data, uint32(m), uint32(n))
+
+        elif axis == 1:
+
+            b = cl_array.empty(queue, (m, 1), dtype=float32)
+            kernel.sum1_cl(queue, (1, m), None, a.data, b.data, uint32(m), uint32(n))
+
+        return b
+
+    else:
+        return cl_array.sum(a)
 
 
 def tan_cl(a):
@@ -699,34 +759,35 @@ def tanh_cl(a):
 if __name__ == "__main__":
 
     from compas_hpc import give_cl
-#     from compas_hpc import get_cl
+    from compas_hpc import get_cl
 
     from numpy import pi
 
     ctx   = cl.create_some_context()
     queue = cl.CommandQueue(ctx)
 
-    a = abs_cl(give_cl(queue, [-0.1, -1.7]))
-    a = acos_cl(give_cl(queue, [0.5, 1]))
-    a = asin_cl(give_cl(queue, [0.5, 1]))
-    a = atan_cl(give_cl(queue, [0.5, 1]))
-    a = cos_cl(give_cl(queue, [0, pi/4]))
-    a = cosh_cl(give_cl(queue, [0, pi/4]))
-    a = maximum_cl(give_cl(queue, [1, 2, 3]), give_cl(queue, [3, 2, 1]))
-    a = maximum_cl(give_cl(queue, [1, 2, 3]))
-    a = minimum_cl(give_cl(queue, [1, 2, 3]), give_cl(queue, [3, 2, 1]))
-    a = minimum_cl(give_cl(queue, [1, 2, 3]))
+    # a = abs_cl(give_cl(queue, [-0.1, -1.7]))
+    # a = acos_cl(give_cl(queue, [0.5, 1]))
+    # a = asin_cl(give_cl(queue, [0.5, 1]))
+    # a = atan_cl(give_cl(queue, [0.5, 1]))
+    # a = cos_cl(give_cl(queue, [0, pi/4]))
+    # a = cosh_cl(give_cl(queue, [0, pi/4]))
+    # a = maximum_cl(give_cl(queue, [1, 2, 3]), give_cl(queue, [3, 2, 1]))
+    # a = maximum_cl(give_cl(queue, [1, 2, 3]))
+    # a = minimum_cl(give_cl(queue, [1, 2, 3]), give_cl(queue, [3, 2, 1]))
+    # a = minimum_cl(give_cl(queue, [1, 2, 3]))
     # a = sin_cl(give_cl(queue, [0, pi/4]))
     # a = sinh_cl(give_cl(queue, [0, pi/4]))
-    a = sqrt_cl(give_cl(queue, [4, 9]))
+    # a = sqrt_cl(give_cl(queue, [4, 9]))
     # a = tan_cl(give_cl(queue, [0, pi/4]))
     # a = tanh_cl(give_cl(queue, [0, pi/4]))
-    a = exp_cl(give_cl(queue, [0, 1]))
-    a = floor_cl(give_cl(queue, [0.5, 0.1, 1.9]))
-    a = ceil_cl(give_cl(queue, [0.5, 0.1, 1.9]))
-    a = log_cl(give_cl(queue, [1, 10]))
-    a = log10_cl(give_cl(queue, [1, 10]))
-    a = round_cl(give_cl(queue, [1.4, 1.5, 1.6]))
+    # a = exp_cl(give_cl(queue, [0, 1]))
+    # a = floor_cl(give_cl(queue, [0.5, 0.1, 1.9]))
+    # a = ceil_cl(give_cl(queue, [0.5, 0.1, 1.9]))
+    # a = log_cl(give_cl(queue, [1, 10]))
+    # a = log10_cl(give_cl(queue, [1, 10]))
+    # a = round_cl(give_cl(queue, [1.4, 1.5, 1.6]))
+    a = sum_cl(queue, give_cl(queue, [[1, 2, 3], [4, 5, 6], [7, 8, 9]]), axis=1)
 
     print(a)
     print(type(a))

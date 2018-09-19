@@ -89,17 +89,25 @@ __global__ void round2d_cuda(float *a, float *b, int m, int n)
 
 __global__ void sum0_cuda(float *a, float *b, int m, int n)
 {
-    int i;
-    int id = blockDim.x * blockIdx.x + threadIdx.x;
+    int bid = blockIdx.x;
+    int tid = threadIdx.y;
+    int id  = tid * n + bid;
+    int stride = 0;
 
-    float sum = 0.;
+    __shared__ float sum[32000 / sizeof(float)];
+    sum[tid] = a[id];
+    sum[m] = 0.;
 
-    for (i = 0; i < m; i++)
+    for (stride = 1; stride < blockDim.y; stride *= 2)
     {
-        sum += a[i * n + id];
+        __syncthreads();
+        if (tid % (2 * stride) == 0)
+        {
+            sum[tid] += sum[tid + stride];
+        }
     }
 
-    b[id] = sum;
+    b[bid] = sum[0];
 }
 
 
@@ -772,7 +780,7 @@ def sum_cuda(a, axis=None):
 
     Notes
     -----
-    - This is not a particularly efficient implementation.
+    - This is temporary and not an efficient implementation.
 
     """
 
@@ -784,13 +792,13 @@ def sum_cuda(a, axis=None):
 
             func = mod.get_function('sum0_cuda')
             b = pycuda.gpuarray.empty((1, n), dtype=float32)
-            func(a, b, int32(m), int32(n), block=(1, 1, 1), grid=(n, 1, 1))
+            func(a, b, int32(m), int32(n), block=(1, m, 1), grid=(n, 1, 1))
 
         elif axis == 1:
 
             func = mod.get_function('sum1_cuda')
             b = pycuda.gpuarray.empty((m, 1), dtype=float32)
-            func(a, b, int32(m), int32(n), block=(1, 1, 1), grid=(1, m, 1))
+            func(a, b, int32(m), int32(n), block=(n, 1, 1), grid=(1, m, 1))
 
         return b
 
@@ -862,7 +870,7 @@ if __name__ == "__main__":
 
     from numpy import pi
 
-    a = abs_cuda(give_cuda([-0.1, -1.7]))
+    # a = abs_cuda(give_cuda([-0.1, -1.7]))
     # a = maximum_cuda(give_cuda([1, 2, 3]), give_cuda([3, 2, 1]))
     # a = maximum_cuda(give_cuda([1, 2, 3]))
     # a = minimum_cuda(give_cuda([1, 2, 3]), give_cuda([3, 2, 1]))
@@ -872,13 +880,13 @@ if __name__ == "__main__":
     # a = acos_cuda(give_cuda([0.5, 1]))
     # a = asin_cuda(give_cuda([0.5, 1]))
     # a = atan_cuda(give_cuda([0.5, 1]))
-    a = ceil_cuda(give_cuda([0.5, 0.1, 1.9]))
+    # a = ceil_cuda(give_cuda([0.5, 0.1, 1.9]))
     # a = cos_cuda(give_cuda([0, pi/4]))
     # a = cosh_cuda(give_cuda([0, pi/4]))
     # a = exp_cuda(give_cuda([0, 1]))
     # a = floor_cuda(give_cuda([0.5, 0.1, 1.9]))
-    a = log_cuda(give_cuda([1, 10]))
-    a = log10_cuda(give_cuda([1, 10]))
+    # a = log_cuda(give_cuda([1, 10]))
+    # a = log10_cuda(give_cuda([1, 10]))
 #     # k = max_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
 #     # l = min_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
 #     # m = mean_cuda(give_cuda([[1, 2], [3, 4]]), axis=0)
@@ -888,9 +896,9 @@ if __name__ == "__main__":
 #     # a = sum_cuda(give_cuda([[1, 2], [3, 4]]), axis=None)
     # a = tan_cuda(give_cuda([0, pi/4]))
     # a = tanh_cuda(give_cuda([0, pi/4]))
-    a = round_cuda(give_cuda([1.4, 1.5, 1.6]))
-    a = round_cuda(give_cuda([[1.4, 1.5, 1.6], [2.4, 2.5, 2.6]]))
-    a = sum_cuda(give_cuda([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), axis=1)
+    # a = round_cuda(give_cuda([1.4, 1.5, 1.6]))
+    # a = round_cuda(give_cuda([[1.4, 1.5, 1.6], [2.4, 2.5, 2.6]]))
+    a = sum_cuda(give_cuda([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), axis=0)
 
     print(a)
     print(type(a))
