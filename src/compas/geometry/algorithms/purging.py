@@ -83,7 +83,7 @@ def mesh_cull_duplicate_vertices(mesh, precision='3f'):
             new_faces[fkey] = face
 
     for fkey in new_faces:
-        del mesh.face[fkey]
+        mesh.delete_face(fkey)
         mesh.add_face(new_faces[fkey], fkey)
 
 
