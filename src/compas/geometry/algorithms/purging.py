@@ -10,7 +10,19 @@ __all__ = [
 ]
 
 
-def _mesh_cull_duplicate_vertices(mesh, precision=None):
+def mesh_cull_duplicate_vertices(mesh, precision=None):
+    """Cull all duplicate vertices of a mesh and sanitize affected faces.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+    precision (str): Optional.
+        A formatting option that specifies the precision of the
+        individual numbers in the string (truncation after the decimal point).
+        Supported values are any float precision, or decimal integer (``'d'``).
+        Default is ``'3f'``.
+    """
     key_gkey = {key: geometric_key(mesh.vertex_coordinates(key), precision=precision) for key in mesh.vertices()}
     gkey_key = {gkey: key for key, gkey in iter(key_gkey.items())}
 
@@ -38,61 +50,6 @@ def _mesh_cull_duplicate_vertices(mesh, precision=None):
             if u not in mesh.halfedge[v]:
                 mesh.halfedge[v][u] = None
 
-
-def mesh_cull_duplicate_vertices(mesh, precision=None):
-    """Cull all duplicate vertices of a mesh and sanitize affected faces.
-
-    Parameters
-    ----------
-    mesh : Mesh
-        A mesh object.
-    precision (str): Optional.
-        A formatting option that specifies the precision of the
-        individual numbers in the string (truncation after the decimal point).
-        Supported values are any float precision, or decimal integer (``'d'``).
-        Default is ``'3f'``.
-    """
-
-    geo_keys = {}
-    keys_geo = {}
-    keys_pointer = {}
-
-    for key in mesh.vertices():
-        geo_key = geometric_key(mesh.vertex_coordinates(key), precision)
-
-        if geo_key in geo_keys:
-            keys_pointer[key] = geo_keys[geo_key]
-        else:
-            geo_keys[geo_key] = key
-            keys_geo[key] = geo_key
-
-    keys_remain = geo_keys.values()
-    keys_del = [key for key in mesh.vertices() if key not in keys_remain]
-
-    # delete vertices
-    for key in keys_del:
-        del mesh.vertex[key]
-
-    # sanitize affected faces
-    new_faces = {}
-    for fkey in mesh.faces():
-        face = []
-        seen = set()
-        for key in mesh.face_vertices(fkey):
-            if key in keys_pointer:
-                pointer = keys_pointer[key]
-
-                if pointer not in seen:
-                    face.append(pointer)
-                    seen.add(pointer)
-            else:
-                face.append(key)
-        if seen:
-            new_faces[fkey] = face
-
-    for fkey in new_faces:
-        mesh.delete_face(fkey)
-        mesh.add_face(new_faces[fkey], fkey)
 
 
 # ==============================================================================
