@@ -96,7 +96,6 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)
-        print(new_faces)
         return compas_rhino.xdraw_mesh(vertices, new_faces, layer=layer, name=name)
 
     def redraw(self, timeout=None):
