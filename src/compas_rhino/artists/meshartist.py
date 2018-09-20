@@ -93,10 +93,8 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
                 new_faces.append(face + [face[-1]])
             elif l == 4:
                 new_faces.append(face)
-
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)
-        print(new_faces)
         return compas_rhino.xdraw_mesh(vertices, new_faces, layer=layer, name=name)
 
     def redraw(self, timeout=None):

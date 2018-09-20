@@ -193,7 +193,7 @@ class RhinoCurve(RhinoGeometry):
         return x, y, z, t
 
     def closest_points(self, points, maxdist=None):
-        return [self.closest_point(point, maxdist) for point in points]
+        return [self.closest_point(point, maxdist) for point in points]        
 
 
 # ==============================================================================
