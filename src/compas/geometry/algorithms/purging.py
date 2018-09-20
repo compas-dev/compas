@@ -26,7 +26,12 @@ def _mesh_cull_duplicate_vertices(mesh, precision=None):
                         del mesh.halfedge[u][v]
 
     for fkey in mesh.faces():
-        face = [gkey_key[key_gkey[key]] for key in mesh.face_vertices(fkey)]
+        seen = set()
+        face = []
+        for key in [gkey_key[key_gkey[key]] for key in mesh.face_vertices(fkey)]:
+            if key not in seen:
+                seen.add(key)
+                face.append(key)
         mesh.face[fkey] = face
         for u, v in mesh.face_halfedges(fkey):
             mesh.halfedge[u][v] = fkey
