@@ -1022,15 +1022,107 @@ def mesh_update_face_attributes(mesh, fkeys, names=None):
 # ==============================================================================
 
 
-def mesh_identify_vertices(mesh, points, precision):
+def mesh_identify_vertices(mesh, points, precision=None):
     keys = []
     gkey_key = {geometric_key(mesh.vertex_coordinates(key), precision): key for key in mesh.vertices()}
     for xyz in points:
-        gkey = geometric_key(xyz, '1f')
+        gkey = geometric_key(xyz, precision)
         if gkey in gkey_key:
             key = gkey_key[gkey]
             keys.append(key)
     return keys
+
+
+# def mesh_identify_edges(mesh, curves, precision=None):
+#     pass
+
+
+# def mesh_identify_points(mesh, keys):
+#     pass
+
+
+# def mesh_identify_curves(mesh, keys):
+#     pass
+
+
+# def mesh_get_continuous_edges(mesh, uv, stop=None):
+#         edges = [uv]
+
+#         a, b = uv
+#         end = b
+#         while True:
+#             if mesh.vertex_degree(a) != 4:
+#                 break
+#             if a == end:
+#                 break
+#             if stop is not None and a == stop:
+#                 break 
+#             if mesh.get_vertex_attribute(a, 'is_anchor', False):
+#                 break
+#             nbrs = mesh.vertex_neighbors(a, ordered=True)
+#             i = nbrs.index(b)
+#             b = nbrs[i - 2]
+#             edges.append((a, b))
+#             a, b = b, a
+
+#         b, a = uv
+#         end = b
+#         while True:
+#             if mesh.vertex_degree(a) != 4:
+#                 break
+#             if a == end:
+#                 break
+#             if stop is not None and a == stop:
+#                 break 
+#             if mesh.get_vertex_attribute(a, 'is_anchor', False):
+#                 break
+#             nbrs = mesh.vertex_neighbors(a, ordered=True)
+#             i = nbrs.index(b)
+#             b = nbrs[i - 2]
+#             edges.append((a, b))
+#             a, b = b, a
+
+#         edgeset = set(list(mesh.edges()))
+#         return [(u, v) if (u, v) in edgeset else (v, u) for u, v in edges]
+
+
+# def mesh_get_parallel_edges(mesh, uv):
+#     edges = [uv]
+
+#     a, b = a0, b0 = uv
+#     while True:
+#         f = mesh.halfedge[a][b]
+#         if f is None:
+#             break
+#         vertices = mesh.face_vertices(f)
+#         if len(vertices) != 4:
+#             break
+#         i = vertices.index(a)
+#         a = vertices[i - 1]
+#         b = vertices[i - 2]
+#         if a in (a0, b0) and b in (a0, b0):
+#             break
+#         edges.append((a, b))
+
+#     edges[:] = edges[::-1]
+
+#     b, a = b0, a0 = uv
+#     while True:
+#         f = mesh.halfedge[a][b]
+#         if f is None:
+#             break
+#         vertices = mesh.face_vertices(f)
+#         if len(vertices) != 4:
+#             break
+#         i = vertices.index(a)
+#         a = vertices[i - 1]
+#         b = vertices[i - 2]
+#         if a in (a0, b0) and b in (a0, b0):
+#             break
+#         edges.append((a, b))
+
+#     edgeset = set(list(mesh.edges()))
+#     return [(u, v) if (u, v) in edgeset else (v, u) for u, v in edges]
 
 
 # ==============================================================================
