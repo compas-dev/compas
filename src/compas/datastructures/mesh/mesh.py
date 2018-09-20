@@ -566,7 +566,7 @@ class Mesh(FromToPickle,
         mesh = cls()
 
         for key, attr in network.vertices(True):
-            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0)
+            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0.0)
 
         mesh.halfedge = network.halfedge
 
@@ -2207,7 +2207,7 @@ class Mesh(FromToPickle,
             plotter.show()
 
         """
-        area = 0
+        area = 0.
 
         p0 = self.vertex_coordinates(key)
 
