@@ -10,31 +10,33 @@ __all__ = [
 ]
 
 
-# def mesh_cull_duplicate_vertices(mesh, precision='3f'):
-#     key_gkey = {key: geometric_key(mesh.vertex_coordinates(key), precision=precision) for key in mesh.vertices()}
-#     gkey_key = {gkey: key for key, gkey in iter(key_gkey.items())}
+def _mesh_cull_duplicate_vertices(mesh, precision=None):
+    key_gkey = {key: geometric_key(mesh.vertex_coordinates(key), precision=precision) for key in mesh.vertices()}
+    gkey_key = {gkey: key for key, gkey in iter(key_gkey.items())}
 
-#     for key in list(mesh.vertices()):
-#         test = gkey_key[key_gkey[key]]
-#         if test != key:
-#             del mesh.vertex[key]
-#             del mesh.halfedge[key]
-#             for u in mesh.halfedge:
-#                 for v in mesh.halfedge[u]:
-#                     if v == key:
-#                         del mesh.halfedge[u][v]
+    for key in list(mesh.vertices()):
+        test = gkey_key[key_gkey[key]]
+        if test != key:
+            del mesh.vertex[key]
+            del mesh.halfedge[key]
+            for u in mesh.halfedge:
+                nbrs = list(mesh.halfedge[u].keys())
+                for v in nbrs:
+                    if v == key:
+                        del mesh.halfedge[u][v]
 
-#     for fkey in mesh.faces():
-#         face = []
-#         for u, v in mesh.face_halfedges(fkey):
-#             a = gkey_key[key_gkey[u]]
-#             b = gkey_key[key_gkey[v]]
-#             face.append(a)
-#             face.append(b)
-#             mesh.halfedge[a][b] = fkey
+    for fkey in mesh.faces():
+        face = []
+        for u, v in mesh.face_halfedges(fkey):
+            a = gkey_key[key_gkey[u]]
+            b = gkey_key[key_gkey[v]]
+            face.append(a)
+            face.append(b)
+            mesh.halfedge[a][b] = fkey
+        mesh.face[fkey] = face
 
 
-def mesh_cull_duplicate_vertices(mesh, precision='3f'):
+def mesh_cull_duplicate_vertices(mesh, precision=None):
     """Cull all duplicate vertices of a mesh and sanitize affected faces.
 
     Parameters
@@ -51,8 +53,10 @@ def mesh_cull_duplicate_vertices(mesh, precision='3f'):
     geo_keys = {}
     keys_geo = {}
     keys_pointer = {}
+
     for key in mesh.vertices():
         geo_key = geometric_key(mesh.vertex_coordinates(key), precision)
+
         if geo_key in geo_keys:
             keys_pointer[key] = geo_keys[geo_key]
         else:
@@ -74,6 +78,7 @@ def mesh_cull_duplicate_vertices(mesh, precision='3f'):
         for key in mesh.face_vertices(fkey):
             if key in keys_pointer:
                 pointer = keys_pointer[key]
+
                 if pointer not in seen:
                     face.append(pointer)
                     seen.add(pointer)
@@ -108,7 +113,7 @@ if __name__ == "__main__":
     print("Original mesh:")
     print(mesh)
 
-    mesh_cull_duplicate_vertices(mesh)
+    _mesh_cull_duplicate_vertices(mesh)
 
     print("Mesh with duplicate vertices deleted:")
     print(mesh)
