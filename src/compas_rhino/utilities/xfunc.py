@@ -37,7 +37,7 @@ import cProfile
 import pstats
 import traceback
 
-# sys.path.insert(0, '"{}/src"')
+sys.path.insert(0, '{0}/src')
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
@@ -93,9 +93,7 @@ else:
 with open(opath, 'w+') as fp:
     json.dump(odict, fp, cls=DataEncoder)
 
-"""
-
-# .format(compas.HOME)
+""".format(compas.HOME)
 
 
 class XFunc(object):
@@ -351,12 +349,16 @@ class XFunc(object):
 
 if __name__ == '__main__':
 
+    import sys
+
     import compas
 
     from compas.datastructures import Mesh
     from compas_rhino.utilities import XFunc
 
     fd_numpy = XFunc('compas.numerical.fd.fd_numpy.fd_numpy', delete_files=True)
+
+    fd_numpy.python = "/Users/vanmelet/anaconda3/bin/python3"
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -368,11 +370,17 @@ if __name__ == '__main__':
 
     xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
 
+    print(xyz)
+
     for key, attr in mesh.vertices(True):
         attr['x'] = xyz[key][0]
         attr['y'] = xyz[key][1]
         attr['z'] = xyz[key][2]
 
+    print('here')
+
     print(fd_numpy.error)
     print(fd_numpy.data)
     print(fd_numpy.profile)
+
+    print('here')
