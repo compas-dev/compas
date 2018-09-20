@@ -21,7 +21,10 @@ try:
     from subprocess import PIPE
 
 except ImportError:
-    compas.raise_if_not_ironpython()
+    if not compas.is_mono():
+        raise
+    if compas.is_windows():
+        compas.raise_if_not_ironpython()
 
 
 __all__ = ['XFunc']
