@@ -566,7 +566,7 @@ class Mesh(FromToPickle,
         mesh = cls()
 
         for key, attr in network.vertices(True):
-            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0.0)
+            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=attr['z'])
 
         mesh.halfedge = network.halfedge
 

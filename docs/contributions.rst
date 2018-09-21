@@ -32,7 +32,7 @@ In short, this is how that works.
     $ invoke test
 
 
-7. Add yourself to ``authors.rst``.
+7. Add yourself to ``CONTRIBUTORS.md``.
 8. Commit your changes and push your branch to GitHub.
 9. Create a `pull request <https://help.github.com/articles/about-pull-requests/>`_ through the GitHub website.
 
