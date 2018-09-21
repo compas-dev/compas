@@ -16,6 +16,7 @@ from compas.datastructures import Mesh
 from compas.datastructures._mixins import VertexAttributesManagement
 from compas.datastructures._mixins import VertexHelpers
 from compas.datastructures._mixins import VertexCoordinatesDescriptors
+from compas.datastructures._mixins import VertexFilter
 
 from compas.datastructures._mixins import EdgeAttributesManagement
 from compas.datastructures._mixins import EdgeHelpers
@@ -55,7 +56,8 @@ class VolMesh(FromToData,
               FaceAttributesManagement,
               EdgeAttributesManagement,
               VertexAttributesManagement,
-              Datastructure):
+              Datastructure,
+              VertexFilter):
     """Class for working with volumetric meshes.
 
     Attributes
@@ -858,7 +860,8 @@ class VolMesh(FromToData,
 if __name__ == '__main__':
 
     import compas
-    from compas.viewers import VolMeshViewer
+    # from compas.viewers import VolMeshViewer
+    from compas.viewers import Viewer
 
     mesh = VolMesh.from_obj(compas.get('boxes.obj'))
 
@@ -866,16 +869,23 @@ if __name__ == '__main__':
 
     mesh = VolMesh.from_data(mesh.to_data())
 
-    viewer = VolMeshViewer(mesh, 600, 600, grid_on=False, zoom=5.)
+    viewer = Viewer()
 
-    viewer.grid_on = False
-    viewer.axes_on = False
+    viewer.mesh = mesh
 
-    viewer.axes.x_color = (0.1, 0.1, 0.1)
-    viewer.axes.y_color = (0.1, 0.1, 0.1)
-    viewer.axes.z_color = (0.1, 0.1, 0.1)
-
-    viewer.setup()
-
-    viewer.camera.zoom_out(5)
     viewer.show()
+
+
+    # viewer = VolMeshViewer(mesh, 600, 600, grid_on=False, zoom=5.)
+
+    # viewer.grid_on = False
+    # viewer.axes_on = False
+
+    # viewer.axes.x_color = (0.1, 0.1, 0.1)
+    # viewer.axes.y_color = (0.1, 0.1, 0.1)
+    # viewer.axes.z_color = (0.1, 0.1, 0.1)
+
+    # viewer.setup()
+
+    # viewer.camera.zoom_out(5)
+    # viewer.show()
