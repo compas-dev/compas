@@ -2665,9 +2665,13 @@ class Mesh(FromToPickle,
             or the default value if the attribute does not exist.
 
         """
-        if key not in self.edgedata:
-            self.set_edge_attributes(key, [], [])
-        return self.edgedata[key].get(name, value)
+        u, v = key
+        if (u, v) in self.edgedata:
+            return self.edgedata[u, v].get(name, value)
+        if (v, u) in self.edgedata:
+            return self.edgedata[v, u].get(name, value)
+        self.edgedata[u, v] = self.edgedata[v, u] = self.default_edge_attributes.copy()
+        return self.edgedata[u, v].get(name, value)
 
     def get_edge_attributes(self, key, names, values=None):
         """Get the value of a named attribute of one edge.
