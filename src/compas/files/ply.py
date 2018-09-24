@@ -42,21 +42,21 @@ class PLYReader(object):
     }
 
     binary_property_types = {
-        # 'int8'   : 'i1',
+        'int8'   : 'i1',
         'char'   : 'i1',
-        # 'uint8'  : 'u1',
+        'uint8'  : 'u1',
         'uchar'  : 'u1',
-        # 'int16'  : 'i2',
+        'int16'  : 'i2',
         'short'  : 'i2',
-        # 'uint16' : 'u2',
+        'uint16' : 'u2',
         'ushort' : 'u2',
-        # 'int32'  : 'i4',
+        'int32'  : 'i4',
         'int'    : 'i4',
-        # 'uint32' : 'u4',
+        'uint32' : 'u4',
         'uint'   : 'u4',
-        # 'float32': 'f4',
+        'float32': 'f4',
         'float'  : 'f4',
-        # 'float64': 'f8',
+        'float64': 'f8',
         'double' : 'f8'
     }
 

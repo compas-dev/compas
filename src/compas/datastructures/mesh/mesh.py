@@ -2278,7 +2278,7 @@ class Mesh(FromToPickle,
             The components of the normal vector.
 
         """
-        vectors = [self.face_normal(fkey) for fkey in self.vertex_faces(key) if fkey is not None]
+        vectors = [self.face_normal(fkey, False) for fkey in self.vertex_faces(key) if fkey is not None]
         return normalize_vector(centroid_points(vectors))
 
     # --------------------------------------------------------------------------
