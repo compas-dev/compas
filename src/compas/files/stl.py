@@ -50,7 +50,7 @@ class STLReader(object):
                 self.read_ascii()
             else:
                 self.read_binary()
-        except RuntimeError:
+        except Exception:
             # raise if it was already detected as binary, but failed anyway
             if is_binary: raise
 
