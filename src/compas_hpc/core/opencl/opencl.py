@@ -291,7 +291,7 @@ def hstack_cl(queue, a, b, dim=4):
 
     """).build()
 
-    kernel.hstack_cl(queue, (n + o, m, 1), None, a.data, b.data, c.data, uint32(n), uint32(o))
+    kernel.hstack_cl(queue, (n + o, m), None, a.data, b.data, c.data, uint32(n), uint32(o))
 
     return c
 
@@ -340,7 +340,7 @@ def vstack_cl(queue, a, b, dim=4):
 
     """).build()
 
-    kernel.vstack_cl(queue, (n, m + o, 1), None, a.data, b.data, c.data, uint32(m), uint32(n), uint32(o))
+    kernel.vstack_cl(queue, (n, m + o), None, a.data, b.data, c.data, uint32(m), uint32(n), uint32(o))
 
     return c
 

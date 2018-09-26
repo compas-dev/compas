@@ -113,17 +113,25 @@ __global__ void sum0_cuda(float *a, float *b, int m, int n)
 
 __global__ void sum1_cuda(float *a, float *b, int m, int n)
 {
-    int i;
-    int id = blockDim.y * blockIdx.y + threadIdx.y;
+    int bid = blockIdx.y;
+    int tid = threadIdx.x;
+    int id  = bid * n + tid;
+    int stride = 0;
 
-    float sum = 0.;
+    __shared__ float sum[32000 / sizeof(float)];
+    sum[tid] = a[id];
+    sum[n] = 0.;
 
-    for (i = 0; i < n; i++)
+    for (stride = 1; stride < blockDim.x; stride *= 2)
     {
-        sum += a[id * n + i];
+        __syncthreads();
+        if (tid % (2 * stride) == 0)
+        {
+            sum[tid] += sum[tid + stride];
+        }
     }
 
-    b[id] = sum;
+    b[bid] = sum[0];
 }
 
 """
@@ -898,7 +906,7 @@ if __name__ == "__main__":
     # a = tanh_cuda(give_cuda([0, pi/4]))
     # a = round_cuda(give_cuda([1.4, 1.5, 1.6]))
     # a = round_cuda(give_cuda([[1.4, 1.5, 1.6], [2.4, 2.5, 2.6]]))
-    a = sum_cuda(give_cuda([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), axis=0)
+    a = sum_cuda(give_cuda([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), axis=1)
 
     print(a)
     print(type(a))

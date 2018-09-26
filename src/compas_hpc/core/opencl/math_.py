@@ -652,32 +652,48 @@ def sum_cl(queue, a, axis=None):
 
         __kernel void sum0_cl(__global float *a, __global float *b, unsigned m, unsigned n)
         {
-            int i;
-            int id = get_global_id(0);
+            int bid = get_group_id(0);
+            int tid = get_local_id(1);
+            int id  = get_global_id(1) * n + get_global_id(0);
+            int stride = 0;
 
-            float sum = 0.;
+            __local float sum[32000 / sizeof(float)];
+            sum[tid] = a[id];
+            sum[m] = 0.;
 
-            for (i = 0; i < m; i++)
+            for (stride = 1; stride < m; stride *= 2)
             {
-                sum += a[i * n + id];
+                barrier(CLK_LOCAL_MEM_FENCE);
+                if (tid % (2 * stride) == 0)
+                {
+                    sum[tid] += sum[tid + stride];
+                }
             }
 
-            b[id] = sum;
+            b[bid] = sum[0];
         }
 
         __kernel void sum1_cl(__global float *a, __global float *b, unsigned m, unsigned n)
         {
-            int i;
-            int id = get_global_id(1);
+            int bid = get_group_id(1);
+            int tid = get_local_id(0);
+            int id  = get_global_id(1) * n + get_global_id(0);
+            int stride = 0;
 
-            float sum = 0.;
+            __local float sum[32000 / sizeof(float)];
+            sum[tid] = a[id];
+            sum[n] = 0.;
 
-            for (i = 0; i < n; i++)
+            for (stride = 1; stride < n; stride *= 2)
             {
-                sum += a[id * n + i];
+                barrier(CLK_LOCAL_MEM_FENCE);
+                if (tid % (2 * stride) == 0)
+                {
+                    sum[tid] += sum[tid + stride];
+                }
             }
 
-            b[id] = sum;
+            b[bid] = sum[0];
         }
 
         """).build()
@@ -685,12 +701,12 @@ def sum_cl(queue, a, axis=None):
         if axis == 0:
 
             b = cl_array.empty(queue, (1, n), dtype=float32)
-            kernel.sum0_cl(queue, (n, 1), None, a.data, b.data, uint32(m), uint32(n))
+            kernel.sum0_cl(queue, (n, m), (1, m), a.data, b.data, uint32(m), uint32(n))
 
         elif axis == 1:
 
             b = cl_array.empty(queue, (m, 1), dtype=float32)
-            kernel.sum1_cl(queue, (1, m), None, a.data, b.data, uint32(m), uint32(n))
+            kernel.sum1_cl(queue, (n, m), (n, 1), a.data, b.data, uint32(m), uint32(n))
 
         return b
 
