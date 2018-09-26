@@ -44,10 +44,19 @@ class STLReader(object):
                 is_binary = False
             else:
                 is_binary = True
-        if is_binary:
+
+        try:
+            if not is_binary:
+                self.read_ascii()
+            else:
+                self.read_binary()
+        except RuntimeError:
+            # raise if it was already detected as binary, but failed anyway
+            if is_binary: raise
+
+            # else, ascii parsing failed, try binary
+            is_binary = True
             self.read_binary()
-        else:
-            self.read_ascii()
 
     # ==========================================================================
     # ascii
@@ -78,6 +87,7 @@ class STLReader(object):
 
         while True:
             line = self.file.readline().strip()
+
             if not line:
                 break
 
@@ -89,34 +99,32 @@ class STLReader(object):
                 else:
                     name = 'solid'
                 solids[name] = []
-                continue
 
-            if parts[0] == 'endsolid':
+            elif parts[0] == 'endsolid':
                 name = None
-                continue
 
-            if parts[0] == 'facet':
+            elif parts[0] == 'facet':
                 facet = {'normal': None, 'vertices': None, 'attributes': None}
                 if parts[1] == 'normal':
                     facet['normal'] = [float(parts[i]) for i in range(2, 5)]
-                    continue
 
-            if parts[0] == 'outer' and parts[1] == 'loop':
+            elif parts[0] == 'outer' and parts[1] == 'loop':
                 vertices = []
-                continue
 
-            if parts[0] == 'vertex':
+            elif parts[0] == 'vertex':
                 xyz = [float(parts[i]) for i in range(1, 4)]
                 vertices.append(xyz)
-                continue
 
-            if parts[0] == 'endloop':
+            elif parts[0] == 'endloop':
                 facet['vertices'] = vertices
-                continue
 
-            if parts[0] == 'endfacet':
+            elif parts[0] == 'endfacet':
                 solids[name].append(facet)
                 facets.append(facet)
+
+            # no known line start matches, maybe not ascii
+            elif not parts[0].isalnum():
+                raise RuntimeError('File is not ASCII')
 
         return facets
 
