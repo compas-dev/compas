@@ -502,7 +502,8 @@ def mesh_transform(mesh, transformation):
     :func:`mesh_transformed`
 
     """
-    xyz = transform_points(mesh.xyz, transformation.matrix)
+    vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+    xyz = transform_points(vertices, transformation.matrix)
     for i in range(len(xyz)):
         mesh.vertex[i].update({'x': xyz[i][0], 'y': xyz[i][1], 'z': xyz[i][2]})
 

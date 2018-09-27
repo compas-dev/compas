@@ -7,6 +7,7 @@ try:
     from numpy import array
     from numpy import float32
     from numpy import complex64
+    from numpy import uint32
 except:
     pass
 
@@ -30,15 +31,15 @@ __all__ = [
     'get_cl',
     'ones_cl',
     'zeros_cl',
-    # 'tile_cl',
-    # 'hstack_cl',
+    'tile_cl',
+    'hstack_cl',
     'vstack_cl',
 ]
 
 
 def rand_cl(queue, shape):
 
-    """ Create random values in the range [0, 1] as GPUArray.
+    """ Create random values in the range [0, 1] in a GPUArray.
 
     Parameters
     ----------
@@ -51,6 +52,15 @@ def rand_cl(queue, shape):
     -------
     gpuarray
         Random floats from 0 to 1 in GPUArray.
+
+    Examples
+    --------
+    >>> a = rand_cl((2, 2))
+    [[ 0.80916596,  0.82687163],
+     [ 0.03921388,  0.44197764]]
+
+    >>> type(a)
+    <class 'pyopencl.array.Array'>
 
     """
 
@@ -73,20 +83,38 @@ def give_cl(queue, a, type='real'):
     Returns
     -------
     gpuarray
-        GPUArray of the input array.
+        GPUArray version of the input array.
+
+    Examples
+    --------
+    >>> a = give_cl([[1., 2., 3.], [4., 5., 6.]])
+    [[ 1.,  2.,  3.],
+     [ 4.,  5.,  6.]]
+
+    >>> type(a)
+    <class 'pyopencl.array.Array'>
+
+    >>> a.shape
+    (2, 3)
+
+    >>> a.dtype
+    'float32'
+
+    >>> a.reshape((1, 6))
+    [[ 1.,  2.,  3.,  4.,  5.,  6.]]
 
     """
 
     if type == 'real':
-        return cl_array.to_device(queue, array(a, dtype=float32))
+        return cl_array.to_device(queue, array(a).astype(float32))
+
     elif type == 'complex':
-        pass
-        # return cl_array.to_device(queue, array(a, dtype=complex64))
+        return cl_array.to_device(queue, array(a).astype(complex64))
 
 
 def get_cl(a):
 
-    """ Get back GPUArray from GPU memory as NumPy array.
+    """ Return GPUArray from GPU memory as NumPy array.
 
     Parameters
     ----------
@@ -96,7 +124,16 @@ def get_cl(a):
     Returns
     -------
     array
-        The GPUArray returned to RAM as NumPy array.
+        The GPUArray returned to RAM as a NumPy array.
+
+    Examples
+    --------
+    >>> a = give_cl([1, 2, 3])
+    >>> b = get_cl(a)
+    [ 1.,  2.,  3.]
+
+    >>> type(b)
+    <class 'numpy.ndarray'>
 
     """
 
@@ -119,10 +156,21 @@ def ones_cl(queue, shape):
     gpuarray
         GPUArray of ones.
 
+    Examples
+    --------
+    >>> a = ones_cl((3, 2))
+    [[ 1.,  1.],
+     [ 1.,  1.],
+     [ 1.,  1.]]
+
+    >>> type(a)
+    <class 'pyopencl.array.Array'>
+
     """
 
     a = cl_array.zeros(queue, shape, dtype=float32)
     a.fill(1.0)
+
     return a
 
 
@@ -142,51 +190,159 @@ def zeros_cl(queue, shape):
     gpuarray
         GPUArray of zeros.
 
+    Examples
+    --------
+    >>> a = zeros_cl((3, 2))
+    [[ 0.,  0.],
+     [ 0.,  0.],
+     [ 0.,  0.]]
+
+    >>> type(a)
+    <class 'pyopencl.array.Array'>
+
     """
 
     return cl_array.zeros(queue, shape, dtype=float32)
 
 
-# def hstack_cl(a):
+def tile_cl(queue, a, shape, dim=4):
 
-#     """ Horizontally stack GPUArrays.
-
-#     Parameters
-#     ----------
-#     a : list
-#         List of GPUArrays.
-
-#     Returns
-#     -------
-#     gpuarray
-#         Horizontally stack GPUArrays.
-
-#     """
-
-#     return cl_array.concatenate(a, axis=1)
-
-
-def vstack_cl(a):
-
-    """ Vertically stack GPUArrays.
+    """ Horizontally and vertically tile a GPUArray.
 
     Parameters
     ----------
-    a : list
-        List of GPUArrays.
+    queue
+        PyOpenCL queue.
+    a : gpuarray
+        GPUArray to tile.
+    shape : tuple
+        Number of vertical and horizontal tiles.
 
     Returns
     -------
     gpuarray
-        Vertically stack GPUArrays.
+        Tiled GPUArray.
 
     """
 
-    return cl_array.concatenate(a, axis=0)
+    m, n = a.shape
+    repy, repx = shape
+    b = cl_array.empty(queue, (m * repy, n * repx), dtype=float32)
+
+    kernel = cl.Program(queue.context, """
+
+    __kernel void tile_cl(__global float *a, __global float *b, unsigned m, unsigned n, unsigned repx, unsigned repy)
+    {
+        int idx = get_global_id(0);
+        int idy = get_global_id(1);
+        int id  = idy * (n * repx) + idx;
+
+        b[id] = a[(idy % m) * n + (idx % n)];
+    }
+
+    """).build()
+
+    kernel.tile_cl(queue, (n * repx, m * repy), None, a.data, b.data, uint32(m), uint32(n), uint32(repx), uint32(repy))
+
+    return b
 
 
-def tile_cl():
-    raise NotImplementedError
+def hstack_cl(queue, a, b, dim=4):
+
+    """ Stack two GPUArrays horizontally.
+
+    Parameters
+    ----------
+    queue
+        PyOpenCL queue.
+    a : gpuarray
+        First GPUArray.
+    b : gpuarray
+        Second GPUArray.
+
+    Returns
+    -------
+    gpuarray
+        Horizontally stacked GPUArrays.
+
+    """
+
+    m, n = a.shape
+    o = b.shape[1]
+    c = cl_array.empty(queue, (m, n + o), dtype=float32)
+
+    kernel = cl.Program(queue.context, """
+
+    __kernel void hstack_cl(__global float *a, __global float *b, __global float *c, unsigned n, unsigned o)
+    {
+        int idx = get_global_id(0);
+        int idy = get_global_id(1);
+        int id  = idy * (n + o) + idx;
+
+        if (idx < n)
+        {
+            c[id] = a[idy * n + idx];
+        }
+        else
+        {
+            c[id] = b[idy * o + (idx - n)];
+        }
+    }
+
+    """).build()
+
+    kernel.hstack_cl(queue, (n + o, m), None, a.data, b.data, c.data, uint32(n), uint32(o))
+
+    return c
+
+
+def vstack_cl(queue, a, b, dim=4):
+
+    """ Stack two GPUArrays vertically.
+
+    Parameters
+    ----------
+    queue
+        PyOpenCL queue.
+    a : gpuarray
+        First GPUArray.
+    b : gpuarray
+        Second GPUArray.
+
+    Returns
+    -------
+    gpuarray
+        Vertically stacked GPUArrays.
+
+    """
+
+    m, n = a.shape
+    o = b.shape[0]
+    c = cl_array.empty(queue, (m + o, n), dtype=float32)
+
+    kernel = cl.Program(queue.context, """
+
+    __kernel void vstack_cl(__global float *a, __global float *b, __global float *c, unsigned m, unsigned n, unsigned o)
+    {
+        int idx = get_global_id(0);
+        int idy = get_global_id(1);
+        int id  = idy * n + idx;
+
+        if (idy < m)
+        {
+            c[id] = a[idy * n + idx];
+        }
+        else
+        {
+            c[id] = b[(idy - m) * n + idx];
+        }
+    }
+
+    """).build()
+
+    kernel.vstack_cl(queue, (n, m + o), None, a.data, b.data, c.data, uint32(m), uint32(n), uint32(o))
+
+    return c
 
 
 # ==============================================================================
@@ -195,126 +351,79 @@ def tile_cl():
 
 if __name__ == "__main__":
 
-    ctx = cl.create_some_context()
-    queue = cl.CommandQueue(ctx)
+    ctx   = cl.create_some_context()
+    queue = cl.CommandQueue(ctx)  # need to find the device association
 
-    a_ = give_cl(queue, [0, 1, 2])
-    b_ = give_cl(queue, [3, 4, 5])
-    c_ = a_ + b_
-    d_ = a_ - b_
-    e_ = a_ * b_
-    f_ = a_ / b_
-    g_ = a_**3
-    z_ = ones_cl(queue, (2, 2))
-    o_ = zeros_cl(queue, (2, 2))
-    # h_ = vstack_cl([z_, o_, z_])
-    # g_ = hstack_cl([z_, o_, z_])
+    a = give_cl(queue, [[1., 2., 3.], [4., 5., 6.]])
+    # a = give_cl(queue, [1.+1j, 2.+2j, 3.+3j], type='complex')
+    a = get_cl(a)
+    a = ones_cl(queue, (2, 2))
+    b = zeros_cl(queue, (2, 2))
+    c = rand_cl(queue, (1, 3))
+    d = rand_cl(queue, (1, 2))
+    # e = vstack_cl(queue, c, d)
+    e = tile_cl(queue, d, (2, 2))
 
-    print(get_cl(z_))
-    print(get_cl(o_))
-    print(get_cl(c_))
-    print(get_cl(d_))
-    print(get_cl(e_))
-    print(get_cl(f_))
-    print(get_cl(g_))
-    print(get_cl(e_ > c_))
-    # print(get_cl(h_))
-    # print(get_cl(g_))
-    print(get_cl(rand_cl(queue, (2, 2))))
-
-# ==============================================================================
-
-    # ctx = cl.create_some_context()
-    # queue = cl.CommandQueue(ctx)
-
-    # a_ = give_cl(queue, [0, 1, 2])
-    # b_ = give_cl(queue, [3, 4, 5])
-    # c_ = cl_array.empty_like(a_)
-
-    # prg = cl.Program(ctx, """
-
-    # __kernel void sum(__global const float *a,
-
-    # __global const float *b, __global float *c)
-    #     {
-    #         int gid = get_global_id(0);
-
-    #         c[gid] = a[gid] + b[gid];
-    #     }
-    # """).build()
-
-    # prg.sum(queue, a_.shape, None, a_.data, b_.data, c_.data)
-
-    # print((c_).get())
-
-# ==============================================================================
-
-    # from numpy import empty
-    # from numpy import int32
-
-    # demo_r = empty((3, 5), dtype=int32)
-    # ctx = cl.create_some_context()
-    # queue = cl.CommandQueue(ctx)
-
-    # mf = cl.mem_flags
-    # demo_buf = cl.Buffer(ctx, mf.WRITE_ONLY, demo_r.nbytes)
-
-    # prg = cl.Program(ctx,
-    # """
-    # __kernel void demo(__global uint *demo)
-    # {
-    #     int i;
-    #     int gid = get_global_id(0);
-
-    #     for(i = 0; i < 5; i++)
-    #     {
-    #         demo[gid*5+i] = i;
-    #     }
-    # }""")
-
-    # prg.build()
-    # prg.demo(queue, (3,), None, demo_buf)
-    # cl.enqueue_read_buffer(queue, demo_buf, demo_r).wait()
-
-    # for res in demo_r:
-    #     print(res)
+    print(d)
+    print(e)
 
 
-# ====================================================================================
 
-    # from __future__ import absolute_import
-    # from __future__ import print_function
-    # #!/usr/bin/env python
-    # # -*- coding: utf-8 -*-
 
-    # import numpy as np
-    # import pyopencl as cl
-    # import pyopencl.array
-    # from pyopencl.elementwise import ElementwiseKernel
 
-    # n = 10
-    # a_np = np.random.randn(n).astype(np.float32)
-    # b_np = np.random.randn(n).astype(np.float32)
 
-    # ctx = cl.create_some_context()
-    # queue = cl.CommandQueue(ctx)
 
-    # a_g = cl.array.to_device(queue, a_np)
-    # b_g = cl.array.to_device(queue, b_np)
 
-    # lin_comb = ElementwiseKernel(ctx,
-    #     "float k1, float *a_g, float k2, float *b_g, float *res_g",
-    #     "res_g[i] = k1 * a_g[i] + k2 * b_g[i]",
-    #     "lin_comb"
-    # )
 
-    # res_g = cl.array.empty_like(a_g)
-    # lin_comb(2, a_g, 3, b_g, res_g)
 
-    # # Check on GPU with PyOpenCL Array:
-    # print((res_g - (2 * a_g + 3 * b_g)).get())
 
-    # # Check on CPU with Numpy:
-    # res_np = res_g.get()
-    # print(res_np - (2 * a_np + 3 * b_np))
-    # print(np.linalg.norm(res_np - (2 * a_np + 3 * b_np)))
+
+
+
+
+
+
+
+
+
+
+
+
+# # ====================================================================================
+
+#     # from __future__ import absolute_import
+#     # from __future__ import print_function
+#     # #!/usr/bin/env python
+#     # # -*- coding: utf-8 -*-
+
+#     # import numpy as np
+#     # import pyopencl as cl
+#     # import pyopencl.array
+#     # from pyopencl.elementwise import ElementwiseKernel
+
+#     # n = 10
+#     # a_np = np.random.randn(n).astype(np.float32)
+#     # b_np = np.random.randn(n).astype(np.float32)
+
+#     # ctx = cl.create_some_context()
+#     # queue = cl.CommandQueue(ctx)
+
+#     # a_g = cl.array.to_device(queue, a_np)
+#     # b_g = cl.array.to_device(queue, b_np)
+
+#     # lin_comb = ElementwiseKernel(ctx,
+#     #     "float k1, float *a_g, float k2, float *b_g, float *res_g",
+#     #     "res_g[i] = k1 * a_g[i] + k2 * b_g[i]",
+#     #     "lin_comb"
+#     # )
+
+#     # res_g = cl.array.empty_like(a_g)
+#     # lin_comb(2, a_g, 3, b_g, res_g)
+
+#     # # Check on GPU with PyOpenCL Array:
+#     # print((res_g - (2 * a_g + 3 * b_g)).get())
+
+#     # # Check on CPU with Numpy:
+#     # res_np = res_g.get()
+#     # print(res_np - (2 * a_np + 3 * b_np))
+#     # print(np.linalg.norm(res_np - (2 * a_np + 3 * b_np)))
