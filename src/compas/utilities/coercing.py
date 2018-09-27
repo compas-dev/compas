@@ -22,6 +22,8 @@ __all__ = [
 
     'coerce_sequence_of_tuple',
     'coerce_sequence_of_list',
+
+    'coerce_json'
 ]
 
 
@@ -109,6 +111,14 @@ def coerce_sequence_of_list(sequence):
 
 def coerce_sequence_of_dict(sequence):
     raise NotImplementedError
+
+
+def coerce_json(path):
+    parts = path.split('.')
+    if parts[-1] != 'json':
+        parts.append('json')
+        path = ".".join(parts)
+    return path
 
 
 # ==============================================================================

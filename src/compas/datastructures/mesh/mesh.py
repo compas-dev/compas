@@ -148,12 +148,8 @@ class Mesh(FromToPickle,
         self._key_to_str = False
         self._max_int_key = -1
         self._max_int_fkey = -1
-
         self.attributes = {
-            'name'         : 'Mesh',
-            'color.vertex' : None,
-            'color.edge'   : None,
-            'color.face'   : None,
+            'name' : 'Mesh',
         }
         self.vertex = {}
         self.halfedge = {}
