@@ -13,8 +13,6 @@ The main library of COMPAS
    tutorial
    notes
    api
-   contributions
    devguide
-   recipes
    citing
    license

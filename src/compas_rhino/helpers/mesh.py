@@ -1022,11 +1022,11 @@ def mesh_update_face_attributes(mesh, fkeys, names=None):
 # ==============================================================================
 
 
-def mesh_identify_vertices(mesh, points, precision):
+def mesh_identify_vertices(mesh, points, precision=None):
     keys = []
     gkey_key = {geometric_key(mesh.vertex_coordinates(key), precision): key for key in mesh.vertices()}
     for xyz in points:
-        gkey = geometric_key(xyz, '1f')
+        gkey = geometric_key(xyz, precision)
         if gkey in gkey_key:
             key = gkey_key[gkey]
             keys.append(key)
@@ -1048,8 +1048,3 @@ if __name__ == "__main__":
     mesh = Mesh.from_obj(compas.get_data('quadmesh_planar.obj'))
 
     mesh_draw(mesh, layer='test', clear_layer=True)
-
-#    key = mesh_select_vertex(mesh)
-#
-#    if mesh_move_vertex(mesh, key):
-#        mesh_draw(mesh, layer='test', clear_layer=True)

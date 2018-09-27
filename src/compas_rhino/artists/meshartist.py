@@ -83,11 +83,19 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
         self.datastructure = mesh
 
     def draw(self):
+        key_index = self.mesh.key_index()
         vertices = self.mesh.get_vertices_attributes('xyz')
-        faces = [self.mesh.face_vertices(fkey) for fkey in self.mesh.faces()]
+        faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
+        new_faces = []
+        for face in faces:
+            l = len(face)
+            if l == 3:
+                new_faces.append(face + [face[-1]])
+            elif l == 4:
+                new_faces.append(face)
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)
-        return compas_rhino.xdraw_mesh(vertices, faces, layer=layer, name=name)
+        return compas_rhino.xdraw_mesh(vertices, new_faces, layer=layer, name=name)
 
     def redraw(self, timeout=None):
         """Redraw the Rhino view.

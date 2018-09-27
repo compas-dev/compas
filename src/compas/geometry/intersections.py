@@ -14,6 +14,7 @@ from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import length_vector_xy
 from compas.geometry.basic import subtract_vectors_xy
+from compas.geometry.basic import normalize_vector
 
 from compas.geometry.distance import distance_point_point
 
@@ -72,8 +73,8 @@ def intersection_line_line(l1, l2, tol=1e-6):
     cd = subtract_vectors(d, c)
 
     n = cross_vectors(ab, cd)
-    n1 = cross_vectors(ab, n)
-    n2 = cross_vectors(cd, n)
+    n1 = normalize_vector(cross_vectors(ab, n))
+    n2 = normalize_vector(cross_vectors(cd, n))
 
     plane_1 = (a, n1)
     plane_2 = (c, n2)

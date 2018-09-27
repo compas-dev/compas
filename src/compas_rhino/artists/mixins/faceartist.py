@@ -61,7 +61,7 @@ class FaceArtist(object):
                 guids.append(guid)
         compas_rhino.delete_objects(guids)
 
-    def draw_faces(self, fkeys=None, color=None, join_faces=False):
+    def draw_faces(self, keys=None, color=None, join_faces=False):
         """Draw a selection of faces.
 
         Parameters
@@ -87,15 +87,15 @@ class FaceArtist(object):
         This name is used afterwards to identify faces in the Rhino model.
 
         """
-        fkeys = fkeys or list(self.datastructure.faces())
+        keys = keys or list(self.datastructure.faces())
         
         colordict = color_to_colordict(color,
-                                       fkeys,
+                                       keys,
                                        default=self.datastructure.attributes.get('color.face'),
                                        colorformat='rgb',
                                        normalize=False)
         faces = []
-        for fkey in fkeys:
+        for fkey in keys:
             faces.append({
                 'points': self.datastructure.face_coordinates(fkey),
                 'name'  : self.datastructure.face_name(fkey),

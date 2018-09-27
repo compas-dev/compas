@@ -39,7 +39,7 @@ optional_requirements = {
 
 setup(
     name='COMPAS',
-    version='0.3.2',
+    version='0.3.4',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
