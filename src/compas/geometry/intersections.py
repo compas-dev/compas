@@ -125,7 +125,7 @@ def intersection_line_line_xy(l1, l2, tol=1e-6):
 
     d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
 
-    if d <= tol:
+    if fabs(d) <= tol:
         return None
 
     a = (x1 * y2 - y1 * x2)
@@ -572,16 +572,23 @@ def intersection_sphere_sphere(sphere1, sphere2):
 
 if __name__ == "__main__":
     
-    # intersection_sphere_sphere(sphere1, sphere2)
-    sphere1 = (3.0, 7.0, 4.0), 10.0
-    sphere2 = (7.0, 4.0, 0.0), 5.0
-    result = intersection_sphere_sphere(sphere1, sphere2)
-    print(result)
-    if result:
-        case, res = result
-        if case == "circle":
-            center, radius, normal = res
-        elif case == "point":
-            point = res
-        elif case == "sphere":
-            center, radius = res
+    # # intersection_sphere_sphere(sphere1, sphere2)
+    # sphere1 = (3.0, 7.0, 4.0), 10.0
+    # sphere2 = (7.0, 4.0, 0.0), 5.0
+    # result = intersection_sphere_sphere(sphere1, sphere2)
+    # print(result)
+    # if result:
+    #     case, res = result
+    #     if case == "circle":
+    #         center, radius, normal = res
+    #     elif case == "point":
+    #         point = res
+    #     elif case == "sphere":
+    #         center, radius = res
+
+    a = ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
+    b = ([1.0, 0.0, 0.0], [2.0, 1.0, 0.0])
+
+    res = intersection_line_line_xy(a, b)
+
+    print(res)
