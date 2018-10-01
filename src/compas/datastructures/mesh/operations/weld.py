@@ -87,7 +87,7 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
 
     return face
 
-def weld_mesh(mesh, precision = None):
+def mesh_weld(mesh, precision = None):
     """Weld vertices of a mesh within some precision distance.
 
     Parameters
@@ -116,7 +116,7 @@ def weld_mesh(mesh, precision = None):
 
     return Mesh.from_vertices_and_faces(vertices, faces)
 
-def join_and_weld_meshes(meshes, precision = None):
+def meshes_join_and_weld(meshes, precision = None):
     """Join and and weld meshes within some precision distance.
 
     Parameters
@@ -145,7 +145,7 @@ def join_and_weld_meshes(meshes, precision = None):
 
     return Mesh.from_vertices_and_faces(vertices, faces)
 
-def join_meshes(meshes):
+def meshes_join(meshes):
     """Join meshes without welding.
 
     Parameters
