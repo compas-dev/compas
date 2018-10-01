@@ -306,15 +306,7 @@ class Robot(object):
             if joint.axis:
                 axes.append(joint.axis.vector)
         return axes
-
-    # TODO: Check
-    def scale(self, factor):
-        names = self.get_configurable_joint_names()
-        # bring to init configuration
-        self.update(names, [0] * len(names), collision=True)
-        self.root.scale(factor)
-        self.scale_factor *= factor
-
+        
     def __str__(self):
         """Generate a readable representation of the robot."""
         return 'Robot name={}, Links={}, Joints={} ({} configurable)'.format(
