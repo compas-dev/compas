@@ -4,10 +4,12 @@ from __future__ import division
 
 import copy
 
+from compas.datastructures.mesh import Mesh
+
 from compas.utilities import pairwise
 
 from compas.utilities import geometric_key
-#from compas.utilities import reverse_geometric_key
+from compas.utilities import reverse_geometric_key
 
 __all__ = [
     'mesh_unweld_vertices',
@@ -15,14 +17,6 @@ __all__ = [
     'join_meshes',
     'join_and_weld_meshes',
 ]
-
-def reverse_geometric_key(string):
-    """Reverse a geometric key string into xyz coordinates."""
-
-    xyz = string.split(',')
-
-    return [float(i) for i in xyz]
-
 
 def mesh_unweld_vertices(mesh, fkey, where=None):
     """Unweld a face of the mesh.
@@ -93,67 +87,63 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
 
     return face
 
-def weld_mesh(mesh, tolerance = '3f'):
-    """Weld vertices of a mesh within some tolerance distance.
+def weld_mesh(mesh, precision = None):
+    """Weld vertices of a mesh within some precision distance.
 
     Parameters
     ----------
     mesh : Mesh
         A mesh.
 
-    tolerance: str
+    precision: str
         Tolerance distance for welding.
 
     Returns
     -------
-    vertices : list
-        The vertices of the new mesh.
-    faces : list
-        The faces of the new mesh.
+    mesh
+        The welded mesh.
 
     """
 
     # create vertex map based on geometric keys in dictionary without duplicates
-    vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), tolerance): vkey for vkey in mesh.vertices()}
+    vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), precision): vkey for vkey in mesh.vertices()}
     # list vertices with coordinates
     vertices = [reverse_geometric_key(geom_key) for geom_key in vertex_map.keys()]
     # reorder vertex keys in vertex map
     vertex_map = {geom_key: i for i, geom_key in enumerate(vertex_map.keys())}
     # modify vertex indices in the faces
-    faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), tolerance)] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
-    return vertices, faces
+    return Mesh.from_vertices_and_faces(vertices, faces)
 
-def join_and_weld_meshes(meshes, tolerance = '3f'):
-    """Join and and weld meshes within some tolerance distance.
+def join_and_weld_meshes(meshes, precision = None):
+    """Join and and weld meshes within some precision distance.
 
     Parameters
     ----------
     meshes : list
         A list of meshes.
 
-    tolerance: str
+    precision: str
         Tolerance distance for welding.
 
     Returns
     -------
-    vertices : list
-        The vertices of the new mesh.
-    faces : list
-        The faces of the new mesh.
+    mesh
+        The joined and welded mesh.
 
     """
 
     # create vertex map based on geometric keys in dictionary without duplicates
-    vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), tolerance): vkey for mesh in meshes for vkey in mesh.vertices()}
+    vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), precision): vkey for mesh in meshes for vkey in mesh.vertices()}
     # list vertices with coordinates
     vertices = [reverse_geometric_key(geom_key) for geom_key in vertex_map.keys()]
     # reorder vertex keys in vertex map
     vertex_map = {geom_key: i for i, geom_key in enumerate(vertex_map.keys())}
     # modify vertex indices in the faces
-    faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), tolerance)] for vkey in mesh.face_vertices(fkey)] for mesh in meshes for fkey in mesh.faces()]
+    faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for mesh in meshes for fkey in mesh.faces()]
 
-    return vertices, faces
+    return Mesh.from_vertices_and_faces(vertices, faces)
 
 def join_meshes(meshes):
     """Join meshes without welding.
@@ -165,10 +155,8 @@ def join_meshes(meshes):
 
     Returns
     -------
-    vertices : list
-        The vertices of the new mesh.
-    faces : list
-        The faces of the new mesh.
+    mesh
+        The joined mesh.
 
     """
 
@@ -183,7 +171,7 @@ def join_meshes(meshes):
         # modify vertex indices in the faces
         faces += [ [vertex_map[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
-    return vertices, faces
+    return Mesh.from_vertices_and_faces(vertices, faces)
 
 # ==============================================================================
 # Main
@@ -221,20 +209,4 @@ if __name__ == "__main__":
     plotter.draw_vertices()
     plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
 
-    #plotter.show()
-
-    mesh_1 = mesh
-    mesh_2 = copy.copy(mesh)
-    for vkey in mesh_2.vertices():
-        mesh_2.vertex[vkey]['y'] += 10.
-
-    vertices, faces = join_meshes([mesh_1, mesh_2])
-    print('joining: nb vertices:', len(vertices), '; nb faces:', len(faces))
-
-    mesh_3 = Mesh.from_vertices_and_faces(vertices, faces)
-    vertices, faces = weld_mesh(mesh_3)
-    print('welding: nb vertices:', len(vertices), '; nb faces:', len(faces))
-
-    vertices, faces = join_and_weld_meshes([mesh_1, mesh_2])
-    print('joining and welding: nb vertices:', len(vertices), '; nb faces:', len(faces))
-
+    plotter.show()

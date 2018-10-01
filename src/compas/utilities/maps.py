@@ -68,7 +68,7 @@ def reverse_geometric_key(string):
     xyz = string.split(',')
 
     return [float(i) for i in xyz]
-
+    
 def geometric_key2(xy, precision=None, sanitize=True):
     """Convert XY coordinates to a string that can be used as a dict key."""
     x, y = xy
