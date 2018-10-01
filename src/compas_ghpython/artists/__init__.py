@@ -6,13 +6,15 @@ compas_ghpython.artists
 .. currentmodule:: compas_ghpython.artists
 
 
-Artists for visualising (painting) COMPAS data structures in Grasshopper.
+Artists for visualising (painting) COMPAS data structures in compas_ghpython.
 
 
 .. autosummary::
     :toctree: generated/
 
     MeshArtist
+    NetworkArtist
+    VolMeshArtist
 
 """
 from __future__ import absolute_import

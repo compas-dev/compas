@@ -8,6 +8,5 @@ from . import vertexartist
 from . import edgeartist
 from . import faceartist
 
-__all__ = []
 
-__all__ += vertexartist.__all__ + edgeartist.__all__ + faceartist.__all__
+__all__ = vertexartist.__all__ + edgeartist.__all__ + faceartist.__all__

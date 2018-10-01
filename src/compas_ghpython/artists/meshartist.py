@@ -2,27 +2,23 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import time
-
-import compas
 import compas_ghpython
 
 from compas_ghpython.artists.mixins import VertexArtist
 from compas_ghpython.artists.mixins import EdgeArtist
 from compas_ghpython.artists.mixins import FaceArtist
 
+
 __all__ = ['MeshArtist']
 
 
 class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
-    """A mesh artist defines functionality for visualising COMPAS meshes in Grasshopper.
+    """A mesh artist defines functionality for visualising COMPAS meshes in GhPython.
 
     Parameters
     ----------
     mesh : compas.datastructures.Mesh
         A COMPAS mesh.
-    layer : str, optional
-        Layer is ignored.
 
     Attributes
     ----------
@@ -40,32 +36,19 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         artist = MeshArtist(mesh)
-        artist.clear_layer()
-        artist.draw_faces()
-        artist.draw_vertices()
+        artist.draw_faces(join_faces=True)
+        artist.draw_vertices(color={key: '#ff0000' for key in mesh.vertices_on_boundary()})
         artist.draw_edges()
-        artist.redraw()
 
     """
 
-    def __init__(self, mesh, layer=None):
-        self.objects = dict(faces={}, edges={}, vertices={})
+    def __init__(self, mesh):
         self.mesh = mesh
-        self.layer = layer
         self.defaults = {
-            'color.vertex': (255, 0, 0),
-            'color.face': (255, 255, 255),
-            'color.edge': (0, 0, 0),
+            'color.vertex' : (255, 255, 255),
+            'color.edge'   : (0, 0, 0),
+            'color.face'   : (210, 210, 210),
         }
-
-    @property
-    def layer(self):
-        """str: The layer that contains the mesh."""
-        return self.datastructure.attributes.get('layer')
-
-    @layer.setter
-    def layer(self, value):
-        self.datastructure.attributes['layer'] = value
 
     @property
     def mesh(self):
@@ -76,27 +59,37 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     def mesh(self, mesh):
         self.datastructure = mesh
 
-    def clear(self):
-        self.clear_vertices()
-        self.clear_faces()
-        self.clear_edges()
+    def draw(self, color=None):
+        key_index = self.mesh.key_index()
+        vertices = self.mesh.get_vertices_attributes('xyz')
+        faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
+        new_faces = []
+        for face in faces:
+            l = len(face)
+            if l == 3:
+                new_faces.append(face + [face[-1]])
+            elif l == 4:
+                new_faces.append(face)
+        return compas_ghpython.xdraw_mesh(vertices, new_faces, color)
 
-    def redraw(self, timeout=None):
-        """Redraw the Grasshopper geometry.
 
-        Parameters
-        ----------
-        timeout : float, optional
-            The amount of time the artist waits before updating the Grasshopper view.
-            The time should be specified in seconds.
-            Default is ``None``.
+# ==============================================================================
+# Main
+# ==============================================================================
 
-        """
-        if timeout:
-            time.sleep(timeout)
+if __name__ == "__main__":
 
-        points = compas_ghpython.xdraw_points(self.objects['vertices'].values())
-        faces = compas_ghpython.xdraw_faces(self.objects['faces'].values())
-        edges = compas_ghpython.xdraw_lines(self.objects['edges'].values())
+    from compas.datastructures import Mesh
+    from compas.geometry import Polyhedron
 
-        return points + faces + edges
+    from compas_ghpython.artists.meshartist import MeshArtist
+
+    poly = Polyhedron.generate(12)
+
+    mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
+
+    artist = MeshArtist(mesh)
+
+    vertices = artist.draw_vertices()
+    faces = artist.draw_faces()
+    edges = artist.draw_edges()
