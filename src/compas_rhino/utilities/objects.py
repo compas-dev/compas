@@ -5,6 +5,7 @@ from __future__ import division
 from ast import literal_eval
 
 import compas
+import compas_rhino
 
 try:
     import System
