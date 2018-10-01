@@ -42,19 +42,15 @@ class NetworkArtist(EdgeArtist, VertexArtist):
     def __init__(self, network, layer=None):
         self.network = network
         self.layer = layer
-        self.defaults = {
-            'color.vertex': (0, 0, 0),
-            'color.edge'  : (0, 0, 0),
-        }
 
     @property
     def layer(self):
         """str: The layer that contains the network."""
-        return self.datastructure.attributes.get('layer')
+        return self.network.attributes.get('layer')
 
     @layer.setter
     def layer(self, value):
-        self.datastructure.attributes['layer'] = value
+        self.network.attributes['layer'] = value
 
     @property
     def network(self):

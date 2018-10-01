@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 
 import compas
 
+
 __all__ = [
     'XML',
     'XMLReader'

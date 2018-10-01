@@ -65,7 +65,7 @@ class VertexArtist(object):
             To apply the same color to all vertices, provide a single color
             specification. Individual colors can be assigned using a dictionary
             of key-color pairs. Missing keys will be assigned the default vertex
-            color (``self.datastructure.attributes['color.vertex']``).
+            color (``self.defaults['color.vertex']``).
             The default is ``None``, in which case all vertices are assigned the
             default vertex color.
 
@@ -79,7 +79,7 @@ class VertexArtist(object):
         keys = keys or list(self.datastructure.vertices())
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.datastructure.attributes.get('color.vertex'),
+                                       default=self.defaults.get('color.vertex'),
                                        colorformat='rgb',
                                        normalize=False)
         points = []
@@ -108,7 +108,7 @@ class VertexArtist(object):
             should refer to vertex keys and the values should be color
             specifications in the form of strings or tuples.
             The default value is ``None``, in which case the labels are assigned
-            the default vertex color (``self.datastructure.attributes['color.vertex']``).
+            the default vertex color (``self.defaults['color.vertex']``).
 
         Notes
         -----
@@ -125,7 +125,7 @@ class VertexArtist(object):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.datastructure.attributes.get('color.vertex'),
+                                       default=self.defaults.get('color.vertex'),
                                        colorformat='rgb',
                                        normalize=False)
         labels = []

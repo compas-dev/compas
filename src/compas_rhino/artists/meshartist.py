@@ -56,22 +56,23 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     """
 
     def __init__(self, mesh, layer=None):
+        self._layer = None
         self.mesh = mesh
         self.layer = layer
         self.defaults = {
-            'color.vertex' : (255, 0, 0),
-            'color.face'   : (255, 255, 255),
+            'color.vertex' : (255, 255, 255),
             'color.edge'   : (0, 0, 0),
+            'color.face'   : (210, 210, 210),
         }
 
     @property
     def layer(self):
         """str: The layer that contains the mesh."""
-        return self.datastructure.attributes.get('layer')
+        return self._layer
 
     @layer.setter
     def layer(self, value):
-        self.datastructure.attributes['layer'] = value
+        self._layer = value
 
     @property
     def mesh(self):

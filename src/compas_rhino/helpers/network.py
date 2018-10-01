@@ -32,50 +32,7 @@ __all__ = [
 
     'network_move',
     'network_move_vertex',
-
-    'network_draw_reaction_forces',
-    'network_draw_loads',
-    'network_draw_axial_forces'
 ]
-
-
-# def network_update_from_points(network, guids):
-#     points = compas_rhino.get_point_coordinates(guids)
-#     names = compas_rhino.get_object_names(guids)
-#     gkey_key = {geometric_key(network.vertex_coordinates(key)): key for key in network}
-#     for i, xyz in enumerate(points):
-#         name = names[i]
-#         try:
-#             attr = ast.literal_eval(name)
-#         except ValueError:
-#             pass
-#         else:
-#             gkey = geometric_key(xyz)
-#             if gkey in gkey_key:
-#                 key = gkey_key[gkey]
-#                 network.vertex[key].update(attr)
-
-
-# def network_update_from_lines(network, guids):
-#     lines = compas_rhino.get_line_coordinates(guids)
-#     names = compas_rhino.get_object_names(guids)
-#     gkey_key = {geometric_key(network.vertex_coordinates(key)): key for key in network}
-#     for i, (sp, ep) in enumerate(lines):
-#         name = names[i]
-#         try:
-#             attr = ast.literal_eval(name)
-#         except ValueError:
-#             pass
-#         else:
-#             a = geometric_key(sp)
-#             b = geometric_key(ep)
-#             if a in gkey_key and b in gkey_key:
-#                 u = gkey_key[a]
-#                 v = gkey_key[b]
-#                 if v in network.edge[u]:
-#                     network.edge[u][v].update(attr)
-#                 else:
-#                     network.edge[v][u].update(attr)
 
 
 # ==============================================================================
@@ -596,65 +553,6 @@ def network_update_edge_attributes(network, keys, names=None):
 
     """
     return EdgeModifier.update_edge_attributes(network, keys, names=names)
-
-
-# ==============================================================================
-# temp
-# ==============================================================================
-
-
-def network_draw_reaction_forces(network, scale=1.0, layer=None, clear_layer=False):
-    lines = []
-    for key, attr in network.vertices(True):
-        if attr['is_fixed']:
-            force = attr['rx'], attr['ry'], attr['rz']
-            start = network.vertex_coordinates(key)
-            end = [start[axis] - scale * force[axis] for axis in (0, 1, 2)]
-            lines.append({
-                'start': start,
-                'end'  : end,
-                'name' : '{}.reaction.{}'.format(network.name, key),
-                'color': (0, 255, 0),
-                'arrow': 'end',
-            })
-    guids = compas_rhino.get_objects(name='{}.reaction.*'.format(network.name))
-    compas_rhino.delete_objects(guids)
-    compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
-
-
-def network_draw_loads(network, scale=1.0, layer=None, clear_layer=False):
-    lines = []
-    for key, attr in network.vertices(True):
-        if not attr['is_fixed']:
-            force = attr['px'], attr['py'], attr['pz']
-            start = network.vertex_coordinates(key)
-            end = [start[axis] + scale * force[axis] for axis in (0, 1, 2)]
-            lines.append({
-                'start': start,
-                'end'  : end,
-                'name' : '{}.load.{}'.format(network.name, key),
-                'color': (0, 255, 255),
-                'arrow': 'end',
-            })
-    guids = compas_rhino.get_objects(name='{}.load.*'.format(network.name))
-    compas_rhino.delete_objects(guids)
-    compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer)
-
-
-def network_draw_axial_forces(network, scale=0.1, layer=None, clear_layer=False):
-    cylinders = []
-    for u, v, attr in network.edges(True):
-        if attr['f'] > 0.0:
-            cylinders.append({
-                'start' : network.vertex_coordinates(u),
-                'end'   : network.vertex_coordinates(v),
-                'radius': scale * 3.14159 * attr['f'] ** 2,
-                'name'  : '{}.axial.{}-{}'.format(network.name, u, v),
-                'color' : (255, 0, 0),
-            })
-    guids = compas_rhino.get_objects(name='{}.axial.*'.format(network.name))
-    compas_rhino.delete_objects(guids)
-    compas_rhino.xdraw_cylinders(cylinders, layer=layer, clear=clear_layer)
 
 
 # ==============================================================================

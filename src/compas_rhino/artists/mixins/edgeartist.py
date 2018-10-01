@@ -69,7 +69,7 @@ class EdgeArtist(object):
             To apply the same color to all edges, provide a single color
             specification. Individual colors can be assigned using a dictionary
             of key-color pairs. Missing keys will be assigned the default face
-            color (``self.datastructure.attributes['edge.color']``).
+            color (``self.defaults['edge.color']``).
             The default is ``None``, in which case all edges are assigned the
             default edge color.
 
@@ -83,7 +83,7 @@ class EdgeArtist(object):
         keys = keys or list(self.datastructure.edges())
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.datastructure.attributes.get('color.edge'),
+                                       default=self.defaults.get('color.edge'),
                                        colorformat='rgb',
                                        normalize=False)
         lines = []
@@ -111,7 +111,7 @@ class EdgeArtist(object):
             Tuples are interpreted as RGB component specifications (e.g. ``(255, 0, 0) for red``.
             Individual colors can be assigned using a dictionary
             of key-color pairs. Missing keys will be assigned the default face
-            color (``self.datastructure.attributes['edge.color']``).
+            color (``self.defaults['edge.color']``).
             The default is ``None``, in which case all edges are assigned the
             default edge color.
 
@@ -130,7 +130,7 @@ class EdgeArtist(object):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.datastructure.attributes.get('color.edge'),
+                                       default=self.defaults.get('color.edge'),
                                        colorformat='rgb',
                                        normalize=False)
         labels = []

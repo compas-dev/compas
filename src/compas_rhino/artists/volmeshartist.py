@@ -41,20 +41,15 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     def __init__(self, volmesh, layer=None):
         self.volmesh = volmesh
         self.layer = layer
-        self.defaults = {
-            'color.vertex' : (255, 0, 0),
-            'color.face'   : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
-        }
 
     @property
     def layer(self):
         """str: The layer that contains the volmesh."""
-        return self.datastructure.attributes.get('layer')
+        return self.volmesh.attributes.get('layer')
 
     @layer.setter
     def layer(self, value):
-        self.datastructure.attributes['layer'] = value
+        self.volmesh.attributes['layer'] = value
 
     @property
     def volmesh(self):

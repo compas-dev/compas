@@ -91,7 +91,7 @@ class FaceArtist(object):
         
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.datastructure.attributes.get('color.face'),
+                                       default=self.defaults.get('color.face'),
                                        colorformat='rgb',
                                        normalize=False)
         faces = []
@@ -127,7 +127,7 @@ class FaceArtist(object):
             should refer to face keys and the values should be color
             specifications in the form of strings or tuples.
             The default value is ``None``, in which case the labels are assigned
-            the default face color (``self.datastructure.attributes['color.face']``).
+            the default face color (``self.defaults['color.face']``).
 
         Notes
         -----
@@ -145,7 +145,7 @@ class FaceArtist(object):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.datastructure.attributes.get('color.face'),
+                                       default=self.defaults.get('color.face'),
                                        colorformat='rgb',
                                        normalize=False)
 

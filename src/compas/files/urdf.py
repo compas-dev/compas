@@ -7,6 +7,7 @@ import inspect
 from compas.files.xml import XML
 from compas.utilities import memoize
 
+
 __all__ = [
     'URDF',
     'URDFParser'
