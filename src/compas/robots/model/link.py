@@ -138,17 +138,6 @@ class Link(object):
         self.joints = []
         self.parent_joint = None
 
-    # TODO: Check
-    def scale(self, factor):
-        from compas.geometry import Scale
-        S = Scale([factor, factor, factor])
-        for item in self.visual:
-            item.geometry.shape.transform(S)
-        for item in self.collision:
-            item.geometry.shape.transform(S)
-        for joint in self.joints:
-            joint.scale(factor)
-            joint.child_link.scale(factor)
 
 
 
