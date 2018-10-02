@@ -4,7 +4,7 @@ from __future__ import division
 
 import inspect
 
-from compas.files.xml import XML
+from compas.files.xml_ import XML
 from compas.utilities import memoize
 
 
