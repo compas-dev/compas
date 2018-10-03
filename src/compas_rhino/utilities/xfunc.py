@@ -317,8 +317,6 @@ class XFunc(object):
         else:
             wrapper = WRAPPER.format(compas.HOME, '')
 
-        print(wrapper)
-
         p = Process()
         p.StartInfo.UseShellExecute = False
         p.StartInfo.RedirectStandardOutput = True
