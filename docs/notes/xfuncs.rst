@@ -48,7 +48,7 @@ Below is an example from the API reference.
     # because Numpy & Scipy are not available for IronPython
     # however we can construct an *XFunc* to replace the original function
 
-    fd_numpy = XFunc('compas.numerical.fd_numpy')
+    fd = XFunc('compas.numerical.fd.fd_numpy.fd_numpy')
 
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
@@ -62,8 +62,11 @@ Below is an example from the API reference.
 
     # the *XFunc* can be called in the same way as the original
 
-    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
+    xyz, q, f, l, r = fd(vertices, edges, fixed, q, loads)
 
+
+    # update the mesh
+    # and display the result
 
     for key, attr in mesh.vertices(True):
         attr['x'] = xyz[key][0]

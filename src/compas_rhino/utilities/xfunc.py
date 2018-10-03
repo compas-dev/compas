@@ -21,6 +21,9 @@ except ImportError:
 __all__ = ['XFunc', 'DataDecoder', 'DataEncoder']
 
 
+PATH = "sys.path.insert(0, '{0}')"
+
+
 WRAPPER = """
 import os
 import sys
@@ -38,6 +41,7 @@ import pstats
 import traceback
 
 sys.path.insert(0, '{0}/src')
+{1}
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
@@ -93,7 +97,7 @@ else:
 with open(opath, 'w+') as fp:
     json.dump(odict, fp, cls=DataEncoder)
 
-""".format(compas.HOME)
+"""
 
 
 class XFunc(object):
@@ -197,11 +201,13 @@ class XFunc(object):
     """
 
     def __init__(self, funcname, basedir='.', tmpdir='.', delete_files=True,
-                 verbose=True, callback=None, callback_args=None, python='pythonw'):
+                 verbose=True, callback=None, callback_args=None,
+                 python='pythonw', paths=None):
         self._basedir      = None
         self._tmpdir       = None
         self._callback     = None
         self._python       = None
+        self._paths        = None
         self.funcname      = funcname
         self.basedir       = basedir
         self.tmpdir        = tmpdir
@@ -210,6 +216,7 @@ class XFunc(object):
         self.callback      = callback
         self.callback_args = callback_args
         self.python        = python
+        self.paths         = paths
         self.data          = None
         self.profile       = None
         self.error         = None
@@ -277,6 +284,14 @@ class XFunc(object):
         self._python = python
 
     @property
+    def paths(self):
+        return self._paths
+
+    @paths.setter
+    def paths(self, paths):
+        self._paths = paths
+
+    @property
     def ipath(self):
         return os.path.join(self.tmpdir, '%s.in' % self.funcname)
 
@@ -295,12 +310,21 @@ class XFunc(object):
         with open(self.opath, 'w+') as fh:
             fh.write('')
 
+        paths = self.paths
+
+        if paths:
+            wrapper = WRAPPER.format(compas.HOME, "\n".join([PATH.format(p) for p in paths]))
+        else:
+            wrapper = WRAPPER.format(compas.HOME, '')
+
+        print(wrapper)
+
         p = Process()
         p.StartInfo.UseShellExecute = False
         p.StartInfo.RedirectStandardOutput = True
         p.StartInfo.RedirectStandardError = True
         p.StartInfo.FileName = self.python
-        p.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4}'.format(WRAPPER,
+        p.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4}'.format(wrapper,
                                                                      self.basedir,
                                                                      self.funcname,
                                                                      self.ipath,
