@@ -1,12 +1,11 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import inspect
 
-from compas.files.xml import XML
+from compas.files.xml_ import XML
 from compas.utilities import memoize
-
 
 __all__ = [
     'URDF',
