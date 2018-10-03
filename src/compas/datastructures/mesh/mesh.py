@@ -2143,6 +2143,26 @@ class Mesh(FromToPickle,
             if self.halfedge[v][u] == f2:
                 return u, v
 
+    def is_face_on_boundary(self, key):
+        """Verify that a face is on a boundary.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the face.
+
+        Returns
+        -------
+        bool
+            True if the face is on the boundary.
+            False otherwise.
+
+        """
+        a = [self.halfedge[v][u] for u, v in self.face_halfedges(key)]
+        if None in a:
+            return True
+        else:
+            return False
     # --------------------------------------------------------------------------
     # vertex geometry
     # --------------------------------------------------------------------------
@@ -2865,16 +2885,21 @@ if __name__ == '__main__':
 
     # # mesh.add_face([a, b, c, d, e, f, g, h])
 
-    # plotter = MeshPlotter(mesh)
+    for k in mesh.face:
+        print(k, mesh.is_face_on_boundary(k))
 
-    # plotter.draw_vertices()
-    # plotter.draw_edges()
-    # plotter.draw_faces()
 
-    # plotter.show()
+    plotter = MeshPlotter(mesh)
 
-    print(mesh.get_vertices_attribute('x'))
-    print(mesh.get_vertices_attributes('xy'))
+    plotter.draw_vertices()
+    plotter.draw_edges()
+    plotter.draw_faces(text='key')
+    plotter.show()
 
-    print(mesh.get_edges_attribute('q', 1.0))
-    print(mesh.get_edges_attributes('qf', (1.0, 2.0)))
+    # print(mesh.get_vertices_attribute('x'))
+    # print(mesh.get_vertices_attributes('xy'))
+
+    # print(mesh.get_edges_attribute('q', 1.0))
+    # print(mesh.get_edges_attributes('qf', (1.0, 2.0)))
+
+
