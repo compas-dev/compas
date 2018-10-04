@@ -42,6 +42,10 @@ class NetworkArtist(EdgeArtist, VertexArtist):
     def __init__(self, network, layer=None):
         self.network = network
         self.layer = layer
+        self.defaults = {
+            'color.vertex' : (255, 255, 255),
+            'color.edge'   : (0, 0, 0),
+        }
 
     @property
     def layer(self):

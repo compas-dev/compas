@@ -51,27 +51,28 @@ def mesh_draw(mesh,
         RGB colors should specify color values between 0 and 255.
 
     """
-
+    """
     vertexcolor = color_to_colordict(vertexcolor,
                                      mesh.vertices(),
                                      default=mesh.attributes['color.vertex'],
                                      colorformat='rgb',
                                      normalize=False)
 
-    """
+
     edgecolor = color_to_colordict(edgecolor,
                                    mesh.edges(),
                                    default=mesh.attributes['color.edge'],
                                    colorformat='rgb',
                                    normalize=False)
-    """
+
 
     facecolor = color_to_colordict(facecolor,
                                    mesh.faces(),
                                    default=mesh.attributes['color.face'],
                                    colorformat='rgb',
                                    normalize=False)
-
+    """
+    
     key_index = {key: index for index, key in enumerate(mesh.vertices())}
     xyz = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
     faces = []
