@@ -44,7 +44,6 @@ class Robot(object):
         self.materials = materials
         self.attr = kwargs
         self.root = None
-        self.scale_factor = 1.
         self._rebuild_tree()
 
     def _rebuild_tree(self):
