@@ -41,6 +41,8 @@ class NetworkArtist(EdgeArtist, VertexArtist, Artist):
 
     """
 
+    __module__ = "compas_rhino.artists"
+
     def __init__(self, network, layer=None):
         super(NetworkArtist, self).__init__(layer=layer)
         self.network = network

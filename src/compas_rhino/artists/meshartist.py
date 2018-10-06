@@ -57,6 +57,8 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
     """
 
+    __module__ = "compas_rhino.artists"
+
     def __init__(self, mesh, layer=None):
         super(MeshArtist, self).__init__(layer=layer)
         self.mesh = mesh

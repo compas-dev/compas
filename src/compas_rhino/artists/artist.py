@@ -48,6 +48,8 @@ class Artist(object):
 
     """
 
+    __module__ = "compas_rhino.artists"
+
     def __init__(self, layer=None):
         self._layer = None
         self.layer = layer

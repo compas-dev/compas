@@ -12,6 +12,8 @@ __all__ = ['EdgeArtist']
 
 class EdgeArtist(object):
 
+    __module__ = "compas_rhino.artists.mixins"
+
     def clear_edges(self, keys=None):
         """Clear all edges previously drawn by the ``EdgeArtist``.
 

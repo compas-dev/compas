@@ -8,6 +8,8 @@ __all__ = ['VertexArtist']
 
 class VertexArtist(object):
 
+    __module__ = "compas_rhino.artists.mixins"
+
     def clear_vertices(self, keys=None):
         """Clear all vertices previously drawn by the ``VertexArtist``.
 
