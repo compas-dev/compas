@@ -133,6 +133,8 @@ class Mesh(FromToPickle,
 
     """
 
+    __module__ = 'compas.datastructures'
+
     collapse_edge   = mesh_collapse_edge
     split_face      = mesh_split_face
     split_edge      = mesh_split_edge

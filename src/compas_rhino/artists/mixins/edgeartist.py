@@ -95,6 +95,7 @@ class EdgeArtist(object):
                 'name' : self.datastructure.edge_name(u, v),
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
+
         return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
