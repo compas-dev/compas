@@ -1,6 +1,6 @@
-
-Meshes
-======
+********************************************************************************
+Working with Meshes
+********************************************************************************
 
 **COMPAS** meshes are polygon meshes with support for n-sided polygonal
 faces. the meshes are presented using a half-edge data structure. In a
@@ -17,7 +17,7 @@ functionality: :class:`compas.datastructures.Mesh`.
 
 
 Making a mesh
--------------
+=============
 
 .. code:: ipython3
 
@@ -28,7 +28,7 @@ Making a mesh
 
 
 Adding vertices and faces
--------------------------
+=========================
 
 .. code:: ipython3
 
@@ -49,7 +49,7 @@ Adding vertices and faces
 
 
 Identifiers
------------
+===========
 
 All vertices of a mesh have a unique id, the *key* of the vertex. By
 default, keys are integers, and every vertex is assigned a unmbr
@@ -93,7 +93,7 @@ by default, but any other *hashable* type can be assigned explicitly.
 
 
 Constructors
-------------
+============
 
 Meshes can be constructed from data contained in files. Currently, the
 following formats are supported: ``obj``, ``ply``, ``stl``. **COMPAS**
@@ -113,7 +113,7 @@ tutorial.
 
 
 Data
-----
+====
 
 All data accessors return objects that are meant to be iterated over
 (dictionary key iterators or generator objects). Storing the data in
@@ -121,7 +121,7 @@ lists that can be reused multiple times must be done explicitly.
 
 
 Iteration
-~~~~~~~~~
+---------
 
 .. code:: ipython3
 
@@ -211,7 +211,7 @@ Iteration
 
 
 Lists
-~~~~~
+-----
 
 .. code:: ipython3
 
@@ -244,7 +244,7 @@ Lists
 
 
 Traversal
-~~~~~~~~~
+---------
 
 .. code:: ipython3
 
@@ -330,7 +330,7 @@ Traversal
     
 
 Attributes
-----------
+==========
 
 All vertices, faces, and edges automatically have the default attributes
 specified by the mesh class. The default vertex attributes are xyz
@@ -353,7 +353,7 @@ To change the default attributes, do:
 
 
 Getting attributes
-~~~~~~~~~~~~~~~~~~
+------------------
 
 .. code:: ipython3
 
@@ -396,7 +396,7 @@ Getting attributes
 
 
 Setting attributes
-~~~~~~~~~~~~~~~~~~
+------------------
 
 .. code:: ipython3
 
@@ -416,10 +416,10 @@ Setting attributes
 
 
 Serialisation
--------------
+=============
 
 Raw data
-~~~~~~~~
+--------
 
 .. code:: ipython3
 
@@ -431,7 +431,7 @@ Raw data
 
 
 Json
-~~~~
+----
 
 .. code:: ipython3
 
@@ -443,7 +443,7 @@ Json
 
 
 Pickle
-~~~~~~
+------
 
 .. code:: ipython3
 
@@ -463,7 +463,7 @@ Pickle
 
 
 Visualisation
--------------
+=============
 
 .. plot::
     :include-source:

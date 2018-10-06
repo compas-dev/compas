@@ -1,6 +1,6 @@
-
-Networks
-========
+********************************************************************************
+Working with Networks
+********************************************************************************
 
 **COMPAS** networks are simple edge graphs: they consist of vertices
 connected by edges. Not all vertices have to be connected by edges. A
@@ -18,7 +18,7 @@ functionality: :class:`compas.datastructures.Network`.
 
 
 Making a network
-----------------
+================
 
 .. code:: ipython3
 
@@ -29,15 +29,15 @@ Making a network
 
 
 Adding vertices and edges
--------------------------
+=========================
 
 .. code:: ipython3
 
     a = network.add_vertex()
     b = network.add_vertex(x=1.0)
     c = network.add_vertex(y=1.0)
-    d = network.add_vertex(x=-1.0)
-    e = network.add_vertex(y=-1.0)
+    d = network.add_vertex(x==1.0)
+    e = network.add_vertex(y==1.0)
 
 
 .. code:: ipython3
@@ -54,7 +54,7 @@ Adding vertices and edges
 
 
 Identifiers
------------
+===========
 
 All vertices in a network have a unique id, the *key* of the vertex. By
 default, keys are integers, and every vertex is assigned a number
@@ -128,10 +128,10 @@ Other types keys may be specified as well, as long as their value is
 
 
 Data
-----
+====
 
 Iteration
-~~~~~~~~~
+---------
 
 .. code:: ipython3
 
@@ -187,7 +187,7 @@ Iteration
 
 
 Lists
-~~~~~
+-----
 
 .. code:: ipython3
 
@@ -210,7 +210,7 @@ Lists
 
 
 Filtering
-~~~~~~~~~
+---------
 
 .. code:: ipython3
 
@@ -223,7 +223,7 @@ Filtering
 
 
 Attributes
-----------
+==========
 
 All vertices and edges automatically have the default attributes. The
 default vertex attributes are xyz coordinates, with ``x=0``, ``y=0`` and
@@ -257,7 +257,7 @@ To change the default attributes associated with vertices and edges, do:
 
 
 Getting attributes
-~~~~~~~~~~~~~~~~~~
+------------------
 
 .. code:: ipython3
 
@@ -298,7 +298,7 @@ Getting attributes
 
 
 Setting attributes
-~~~~~~~~~~~~~~~~~~
+------------------
 
 .. code:: ipython3
 
@@ -314,7 +314,7 @@ Setting attributes
 
 
 Using constructors
-------------------
+==================
 
 .. code:: ipython3
 
@@ -327,13 +327,13 @@ Using constructors
 
 
 Queries
--------
+=======
 
 under construction...
 
 
 Visualisation
--------------
+=============
 
 To create a 2D representation of a network, use a plotter.
 
