@@ -12,6 +12,8 @@ __all__ = [
 
 class VertexFilter(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     def vertices_where(self, conditions, data=False):
         """Get vertices for which a certain condition or set of conditions is true.
 
@@ -79,6 +81,8 @@ class VertexFilter(object):
 
 class EdgeFilter(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     def edges_where(self, conditions, data=False):
         """Get edges for which a certain condition or set of conditions is true.
 
@@ -140,6 +144,8 @@ class EdgeFilter(object):
 
 
 class FaceFilter(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     def faces_where(self, conditions, data=False):
         for fkey, attr in self.faces(True):

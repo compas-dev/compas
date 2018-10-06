@@ -63,6 +63,9 @@ from compas.datastructures.mesh.operations import mesh_split_edge
 from compas.datastructures.mesh.operations import mesh_unweld_vertices
 
 
+__all__ = ['Mesh']
+
+
 TPL = """
 ================================================================================
 Mesh summary
