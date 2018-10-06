@@ -101,6 +101,8 @@ class Network(FromToJson,
 
     """
 
+    __module__ = "compas.datastructures"
+
     split_edge = network_split_edge
 
     def __init__(self):
