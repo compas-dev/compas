@@ -20,7 +20,6 @@ from compas.datastructures import Datastructure
 
 from compas.datastructures._mixins import VertexAttributesManagement
 from compas.datastructures._mixins import VertexHelpers
-from compas.datastructures._mixins import VertexCoordinatesDescriptors
 from compas.datastructures._mixins import VertexMappings
 from compas.datastructures._mixins import VertexFilter
 
@@ -60,7 +59,6 @@ class Network(FromToJson,
               EdgeMappings,
               VertexFilter,
               EdgeFilter,
-              VertexCoordinatesDescriptors,
               EdgeAttributesManagement,
               VertexAttributesManagement,
               Datastructure):
