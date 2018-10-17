@@ -313,7 +313,8 @@ class XFunc(object):
         paths = self.paths
 
         if paths:
-            wrapper = WRAPPER.format(compas.HOME, "\n".join([PATH.format(p) for p in paths]))
+            newline = "{}".format(os.linesep)
+            wrapper = WRAPPER.format(compas.HOME, newline.join([PATH.format(p) for p in paths]))
         else:
             wrapper = WRAPPER.format(compas.HOME, '')
 
