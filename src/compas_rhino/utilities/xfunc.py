@@ -21,7 +21,7 @@ except ImportError:
 __all__ = ['XFunc', 'DataDecoder', 'DataEncoder']
 
 
-PATH = "sys.path.insert(0, '{0}')"
+PATH = "sys.path.insert(0, r'{0}')"
 
 
 WRAPPER = """
@@ -40,7 +40,7 @@ import cProfile
 import pstats
 import traceback
 
-sys.path.insert(0, '{0}/src')
+sys.path.insert(0, r'{0}/src')
 {1}
 
 from compas.utilities import DataEncoder
@@ -313,8 +313,7 @@ class XFunc(object):
         paths = self.paths
 
         if paths:
-            newline = "{}".format(os.linesep)
-            wrapper = WRAPPER.format(compas.HOME, newline.join([PATH.format(p) for p in paths]))
+            wrapper = WRAPPER.format(compas.HOME, "\n".join([PATH.format(p) for p in paths]))
         else:
             wrapper = WRAPPER.format(compas.HOME, '')
 
