@@ -7,8 +7,21 @@ compas_ghpython
 
 This package contains utilities and helpers for working with COMPAS in Grasshopper.
 
-drawing
+Modules
 =======
+
+.. toctree::
+    :maxdepth: 1
+
+    compas_ghpython.artists
+    compas_ghpython.utilities
+
+
+Functions
+=========
+
+drawing
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -27,7 +40,7 @@ drawing
 
 
 sets
-====
+----
 
 .. autosummary::
     :toctree: generated/
@@ -37,7 +50,7 @@ sets
 
 
 timers
-======
+------
 
 .. autosummary::
     :toctree: generated/
@@ -46,13 +59,12 @@ timers
 
 
 utilities
-=========
+---------
 
 .. autosummary::
     :toctree: generated/
 
     unload_modules
-
 
 """
 from .utilities import *

@@ -39,9 +39,11 @@ __email__ = 'rust@arch.ethz.ch'
 
 
 __all__ = [
+    'xdraw_labels',
     'xdraw_frame',
     'xdraw_points',
     'xdraw_lines',
+    'xdraw_geodesics',
     'xdraw_polylines',
     'xdraw_faces',
     'xdraw_cylinders',
@@ -50,6 +52,14 @@ __all__ = [
     'xdraw_mesh',
     'xdraw_network',
 ]
+
+
+def xdraw_labels(labels):
+    # This is not yet possible through GhPython. Using Text Tag from ghpythonlib
+    # (only Windows) would be an option, but ghpythonlib.components.TextTag does
+    # not return anything.
+    raise NotImplementedError
+
 
 def xdraw_frame(frame):
     """Draw frame.
@@ -81,6 +91,19 @@ def xdraw_lines(lines):
     return rg_lines
 
 
+def xdraw_geodesics(geodesics, **kwargs):
+    """Draw geodesic lines on specified surfaces.
+    """
+    rg_geodesics = []
+    for g in iter(geodesics):
+        sp    = g['start']
+        ep    = g['end']
+        srf   = g['srf']
+        curve = srf.ShortPath(Point3d(*sp), Point3d(*ep), TOL)
+        rg_geodesics.append(curve)
+    return rg_geodesics
+
+
 def xdraw_polylines(polylines):
     """Draw polylines.
     """
@@ -101,22 +124,13 @@ def xdraw_faces(faces, srf=None, u=10, v=10, trim=True, tangency=True,
     for f in iter(faces):
         points = f['points']
         corners = [Point3d(*point) for point in points]
-        pcurve = PolylineCurve(corners)
-        geo = List[GeometryBase](1)
-        geo.Add(pcurve)
-        p = len(points)
-        if p == 4:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
-                                               Point3d(*points[1]),
-                                               Point3d(*points[2]),
-                                               TOL)
-        elif p == 5:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
-                                               Point3d(*points[1]),
-                                               Point3d(*points[2]),
-                                               Point3d(*points[3]),
-                                               TOL)
+        if len(points) in [3, 4]:
+            args = corners + [TOL]
+            brep = Brep.CreateFromCornerPoints(*args)
         else:
+            pcurve = PolylineCurve(corners)
+            geo = List[GeometryBase](1)
+            geo.Add(pcurve)
             brep = Brep.CreatePatch(geo, u, v, TOL)
         if not brep:
             continue
@@ -174,11 +188,9 @@ def xdraw_spheres(spheres):
     return rg_sheres
 
 
-def xdraw_mesh(vertices, faces, name=None, vertex_normals=None, texture_coordinates=None,
-               vertex_colors=None):
+def xdraw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordinates=None):
     """Draw mesh in Grasshopper.
     """
-
     mesh = Mesh()
     for a, b, c in vertices:
         mesh.Vertices.Add(a, b, c)
@@ -202,10 +214,10 @@ def xdraw_mesh(vertices, faces, name=None, vertex_normals=None, texture_coordina
             tcs[i] = Point2f(tc[0], tc[1])
         mesh.TextureCoordinates.SetTextureCoordinates(tcs)
 
-    if vertex_colors:
-        count = len(vertex_colors)
+    if color:
+        count = len(vertices)
         colors = CreateInstance(Color, count)
-        for i, color in enumerate(vertex_colors):
+        for i in range(count):
             colors[i] = rs.coercecolor(color)
         mesh.VertexColors.SetColors(colors)
 
