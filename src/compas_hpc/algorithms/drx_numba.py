@@ -345,46 +345,46 @@ if __name__ == "__main__":
     # Example 1 (dense)
     # ==========================================================================
 
-    from compas.datastructures import Network
-    from compas.viewers import VtkViewer
+    # from compas.datastructures import Network
+    # from compas.viewers import VtkViewer
 
 
-    m = 150
-    p = [(i / m - 0.5) * 5 for i in range(m + 1)]
-    vertices = [[xi, yi, 0] for yi in p for xi in p]
-    edges = []
+    # m = 150
+    # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
+    # vertices = [[xi, yi, 0] for yi in p for xi in p]
+    # edges = []
 
-    for i in range(m):
-        for j in range(m):
-            s = (m + 1)
-            p1 = (j + 0) * s + i + 0
-            p2 = (j + 0) * s + i + 1
-            p3 = (j + 1) * s + i + 0
-            p4 = (j + 1) * s + i + 1
-            edges.append([p1, p2])
-            edges.append([p1, p3])
-            if j == m - 1:
-                edges.append([p4, p3])
-            if i == m - 1:
-                edges.append([p2, p4])
+    # for i in range(m):
+    #     for j in range(m):
+    #         s = (m + 1)
+    #         p1 = (j + 0) * s + i + 0
+    #         p2 = (j + 0) * s + i + 1
+    #         p3 = (j + 1) * s + i + 0
+    #         p4 = (j + 1) * s + i + 1
+    #         edges.append([p1, p2])
+    #         edges.append([p1, p3])
+    #         if j == m - 1:
+    #             edges.append([p4, p3])
+    #         if i == m - 1:
+    #             edges.append([p2, p4])
 
-    network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
-    network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
-    network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
-    network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
+    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    # sides = [i for i in network.vertices() if network.vertex_degree(i) <= 2]
+    # network.update_default_vertex_attributes({'P': [0, 0, 1000 / network.number_of_vertices()]})
+    # network.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
+    # network.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
 
-    drx_numba(network=network, tol=0.01, summary=1, update=1)
+    # drx_numba(network=network, tol=0.01, summary=1, update=1)
 
-    data = {
-        'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
-        'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
-    }
+    # data = {
+    #     'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
+    #     'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
+    # }
 
-    viewer = VtkViewer(data=data)
-    viewer.vertex_size = 0
-    viewer.setup()
-    viewer.start()
+    # viewer = VtkViewer(data=data)
+    # viewer.vertex_size = 0
+    # viewer.setup()
+    # viewer.start()
 
 
     # ==========================================================================
@@ -466,91 +466,91 @@ if __name__ == "__main__":
     # Example 3 (mouse)
     # ==========================================================================
 
-    # from compas.datastructures import Network
-    # from compas.viewers import VtkViewer
+    from compas.datastructures import Network
+    from compas.viewers import VtkViewer
 
-    # from numpy import linspace
+    from numpy import linspace
 
-    # from vtk import vtkSphereWidget
-
-
-    # def func(self):
-
-    #     tol, steps, _, m, n, u, v, X, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V, inds, indi, indf, EIx, EIy, beams, _ = self.args
-    #     X_ = self.X if self.X is not None else X
-    #     drx_solver_numba(tol, steps, 0, m, n, u, v, X_, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V,
-    #                      inds, indi, indf, EIx, EIy, beams)
-    #     self.update_vertices_coordinates({i: X[i, :] for i in range(X.shape[0])})
-    #     self.X = X_
+    from vtk import vtkSphereWidget
 
 
-    # L = 12
-    # n = 40
-    # EI = 0.2
+    def func(self):
 
-    # vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-5, 5, n))]
-    # edges = [[i, i + 1] for i in range(n - 1)]
-
-    # network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    # leaves  = network.leaves()
-    # network.update_default_vertex_attributes({'EIx': EI, 'EIy': EI})
-    # network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
-    # network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], leaves)
-    # network.beams = {'beam': {'nodes': list(range(n))}}
-
-    # data = {
-    #     'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
-    #     'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
-    # }
+        tol, steps, _, m, n, u, v, X, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V, inds, indi, indf, EIx, EIy, beams, _ = self.args
+        X_ = self.X if self.X is not None else X
+        drx_solver_numba(tol, steps, 0, m, n, u, v, X_, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V,
+                         inds, indi, indf, EIx, EIy, beams)
+        self.update_vertices_coordinates({i: X[i, :] for i in range(X.shape[0])})
+        self.X = X_
 
 
-    # class RightHandle():
+    L = 12
+    n = 40
+    EI = 0.2
 
-    #     def __init__(self, viewer):
+    vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-5, 5, n))]
+    edges = [[i, i + 1] for i in range(n - 1)]
 
-    #         self.viewer = viewer
+    network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    leaves  = network.leaves()
+    network.update_default_vertex_attributes({'EIx': EI, 'EIy': EI})
+    network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+    network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], leaves)
+    network.attributes['beams'] = {'beam': {'nodes': list(range(n))}}
 
-    #     def __call__(self, caller, ev):
-
-    #         xyz = caller.GetCenter()
-    #         self.viewer.X[-1, :] = xyz[:]
-    #         self.viewer.func(self.viewer)
-
-
-    # class LeftHandle():
-
-    #     def __init__(self, viewer):
-
-    #         self.viewer = viewer
-
-    #     def __call__(self, caller, ev):
-
-    #         xyz = caller.GetCenter()
-    #         self.viewer.X[0, :] = xyz[:]
-    #         self.viewer.func(self.viewer)
+    data = {
+        'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},
+        'edges':    [{'u': u, 'v': v} for u, v in network.edges()]
+    }
 
 
-    # viewer = VtkViewer(data=data)
-    # viewer.args = _args(network=network, factor=1, summary=0, steps=10000, tol=0.01)
-    # viewer.X = None
-    # viewer.func = func
-    # viewer.keycallbacks['s'] = viewer.func
-    # viewer.setup()
+    class RightHandle():
 
-    # left_widget = vtkSphereWidget()
-    # left_widget.SetCenter(network.vertex_coordinates(network.leaves()[0]))
-    # left_widget.SetRadius(0.1)
-    # left_widget.SetInteractor(viewer.main.interactor)
-    # left_widget.SetRepresentationToSurface()
-    # left_widget.On()
-    # left_widget.AddObserver("InteractionEvent", LeftHandle(viewer))
+        def __init__(self, viewer):
 
-    # right_widget = vtkSphereWidget()
-    # right_widget.SetCenter(network.vertex_coordinates(network.leaves()[1]))
-    # right_widget.SetRadius(0.1)
-    # right_widget.SetInteractor(viewer.main.interactor)
-    # right_widget.SetRepresentationToSurface()
-    # right_widget.On()
-    # right_widget.AddObserver("InteractionEvent", RightHandle(viewer))
+            self.viewer = viewer
 
-    # viewer.start()
+        def __call__(self, caller, ev):
+
+            xyz = caller.GetCenter()
+            self.viewer.X[-1, :] = xyz[:]
+            self.viewer.func(self.viewer)
+
+
+    class LeftHandle():
+
+        def __init__(self, viewer):
+
+            self.viewer = viewer
+
+        def __call__(self, caller, ev):
+
+            xyz = caller.GetCenter()
+            self.viewer.X[0, :] = xyz[:]
+            self.viewer.func(self.viewer)
+
+
+    viewer = VtkViewer(data=data)
+    viewer.args = _args(network=network, factor=1, summary=0, steps=10000, tol=0.01)
+    viewer.X = None
+    viewer.func = func
+    viewer.keycallbacks['s'] = viewer.func
+    viewer.setup()
+
+    left_widget = vtkSphereWidget()
+    left_widget.SetCenter(network.vertex_coordinates(network.leaves()[0]))
+    left_widget.SetRadius(0.1)
+    left_widget.SetInteractor(viewer.main.interactor)
+    left_widget.SetRepresentationToSurface()
+    left_widget.On()
+    left_widget.AddObserver("InteractionEvent", LeftHandle(viewer))
+
+    right_widget = vtkSphereWidget()
+    right_widget.SetCenter(network.vertex_coordinates(network.leaves()[1]))
+    right_widget.SetRadius(0.1)
+    right_widget.SetInteractor(viewer.main.interactor)
+    right_widget.SetRepresentationToSurface()
+    right_widget.On()
+    right_widget.AddObserver("InteractionEvent", RightHandle(viewer))
+
+    viewer.start()

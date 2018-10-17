@@ -108,7 +108,7 @@ def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=F
             i = uv_i[uv]
             structure.set_edge_attribute(uv, 'f', float(f[i]))
 
-    return X, f, l
+    return X, f, l, structure
 
 
 def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh,
@@ -221,9 +221,9 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, 
 
 def _beam_data(structure):
 
-    if getattr(structure, 'beams', None):
+    if structure.attributes.get('beams', None):
         inds, indi, indf, EIx, EIy = [], [], [], [], []
-        for beam in structure.beams.values():
+        for beam in structure.attributes['beams'].values():
             nodes = beam['nodes']
             inds.extend(nodes[:-2])
             indi.extend(nodes[1:-1])
@@ -385,56 +385,56 @@ if __name__ == "__main__":
     # Example 1 (Dense)
     # ==========================================================================
 
-    from compas.datastructures import Network
-    from compas.viewers import VtkViewer
+    # from compas.datastructures import Network
+    # from compas.viewers import VtkViewer
 
 
-    m = 70
-    p = [(i / m - 0.5) * 5 for i in range(m + 1)]
-    vertices = [[xi, yi, 0] for yi in p for xi in p]
-    edges = []
+    # m = 70
+    # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
+    # vertices = [[xi, yi, 0] for yi in p for xi in p]
+    # edges = []
 
-    for i in range(m):
-        for j in range(m):
-            s = (m + 1)
-            p1 = (j + 0) * s + i + 0
-            p2 = (j + 0) * s + i + 1
-            p3 = (j + 1) * s + i + 0
-            p4 = (j + 1) * s + i + 1
-            edges.append([p1, p2])
-            edges.append([p1, p3])
-            if j == m - 1:
-                edges.append([p4, p3])
-            if i == m - 1:
-                edges.append([p2, p4])
+    # for i in range(m):
+    #     for j in range(m):
+    #         s = (m + 1)
+    #         p1 = (j + 0) * s + i + 0
+    #         p2 = (j + 0) * s + i + 1
+    #         p3 = (j + 1) * s + i + 0
+    #         p4 = (j + 1) * s + i + 1
+    #         edges.append([p1, p2])
+    #         edges.append([p1, p3])
+    #         if j == m - 1:
+    #             edges.append([p4, p3])
+    #         if i == m - 1:
+    #             edges.append([p2, p4])
 
-    structure = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    sides = [i for i in structure.vertices() if structure.vertex_degree(i) <= 2]
-    structure.update_default_vertex_attributes({'P': [0, 0, 1000 / structure.number_of_vertices()]})
-    structure.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
-    structure.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
+    # structure = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    # sides = [i for i in structure.vertices() if structure.vertex_degree(i) <= 2]
+    # structure.update_default_vertex_attributes({'P': [0, 0, 1000 / structure.number_of_vertices()]})
+    # structure.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
+    # structure.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
 
-    data = {
-        'vertices': {i: structure.vertex_coordinates(i) for i in structure.vertices()},
-        'edges':    [{'u': u, 'v': v} for u, v in structure.edges()]
-    }
-
-
-    def callback(X, self):
-        self.update_vertices_coordinates({i: X[i, :] for i in range(X.shape[0])})
-
-    def func(self):
-        drx_numpy(structure=structure, tol=0.05, update=True, refresh=5, callback=callback, self=self)
+    # data = {
+    #     'vertices': {i: structure.vertex_coordinates(i) for i in structure.vertices()},
+    #     'edges':    [{'u': u, 'v': v} for u, v in structure.edges()]
+    # }
 
 
-    print('Press key S to start')
+    # def callback(X, self):
+    #     self.update_vertices_coordinates({i: X[i, :] for i in range(X.shape[0])})
 
-    viewer = VtkViewer(data=data)
-    viewer.vertex_size = 1
-    viewer.edge_width  = 10
-    viewer.keycallbacks['s'] = func
-    viewer.setup()
-    viewer.start()
+    # def func(self):
+    #     drx_numpy(structure=structure, tol=0.05, update=True, refresh=5, callback=callback, self=self)
+
+
+    # print('Press key S to start')
+
+    # viewer = VtkViewer(data=data)
+    # viewer.vertex_size = 1
+    # viewer.edge_width  = 10
+    # viewer.keycallbacks['s'] = func
+    # viewer.setup()
+    # viewer.start()
 
 
     # ==========================================================================
@@ -467,7 +467,7 @@ if __name__ == "__main__":
 
 
     # def callback(X, k_i):
-    #
+
     #     for key in structure.vertices():
     #         x, y, z = X[k_i[key], :]
     #         structure.set_vertex_attributes(key, 'xyz', [x, y, z])
@@ -484,52 +484,52 @@ if __name__ == "__main__":
     # Example 3 (beam)
     # ==========================================================================
 
-    # from numpy import linspace
-    # from numpy import sign
+    from numpy import linspace
+    from numpy import sign
 
-    # from compas.datastructures import Network
-    # from compas.plotters import NetworkPlotter
-
-
-    # L  = 2.5
-    # n  = 100
-    # EI = 0.2
-
-    # vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
-    # for i in range(n):
-    #     if vertices[i][1] < 0.5:
-    #         vertices[i][0] = sign(vertices[i][0]) * vertices[i][1]
-    # edges = [[i, i + 1] for i in range(n - 1)]
-
-    # structure = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    # structure.update_default_vertex_attributes({'is_fixed': False, 'EIx': EI, 'EIy': EI})
-    # structure.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
-    # structure.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], structure.leaves())
-    # structure.beams = {'beam': {'nodes': list(range(n))}}
-
-    # lines = []
-    # for u, v in structure.edges():
-    #     lines.append({
-    #         'start': structure.vertex_coordinates(u, 'xy'),
-    #         'end'  : structure.vertex_coordinates(v, 'xy'),
-    #         'color': '#cccccc'
-    #     })
-
-    # plotter = NetworkPlotter(structure, figsize=(10, 7))
-    # plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in structure.vertices_where({'is_fixed': True})})
-    # plotter.draw_lines(lines)
-    # plotter.draw_edges()
+    from compas.datastructures import Network
+    from compas.plotters import NetworkPlotter
 
 
-    # def callback(X, k_i):
-    #
-    #     for key in structure.vertices():
-    #         x, y, z = X[k_i[key], :]
-    #         structure.set_vertex_attributes(key, 'xyz', [x, y, z])
-    #     plotter.update_edges()
-    #     plotter.update(pause=0.01)
+    L  = 2.5
+    n  = 100
+    EI = 0.2
+
+    vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
+    for i in range(n):
+        if vertices[i][1] < 0.5:
+            vertices[i][0] = sign(vertices[i][0]) * vertices[i][1]
+    edges = [[i, i + 1] for i in range(n - 1)]
+
+    structure = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    structure.update_default_vertex_attributes({'is_fixed': False, 'EIx': EI, 'EIy': EI})
+    structure.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
+    structure.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], structure.leaves())
+    structure.attributes['beams'] = {'beam': {'nodes': list(range(n))}}
+
+    lines = []
+    for u, v in structure.edges():
+        lines.append({
+            'start': structure.vertex_coordinates(u, 'xy'),
+            'end'  : structure.vertex_coordinates(v, 'xy'),
+            'color': '#cccccc'
+        })
+
+    plotter = NetworkPlotter(structure, figsize=(10, 7))
+    plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in structure.vertices_where({'is_fixed': True})})
+    plotter.draw_lines(lines)
+    plotter.draw_edges()
 
 
-    # drx_numpy(structure=structure, tol=0.01, refresh=20, factor=30, update=1, callback=callback, k_i=structure.key_index())
+    def callback(X, k_i):
 
-    # plotter.show()
+        for key in structure.vertices():
+            x, y, z = X[k_i[key], :]
+            structure.set_vertex_attributes(key, 'xyz', [x, y, z])
+        plotter.update_edges()
+        plotter.update(pause=0.01)
+
+
+    drx_numpy(structure=structure, tol=0.01, refresh=20, factor=30, update=1, callback=callback, k_i=structure.key_index())
+
+    plotter.show()
