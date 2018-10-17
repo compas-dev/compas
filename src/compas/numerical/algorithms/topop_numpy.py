@@ -38,12 +38,6 @@ except ImportError:
     compas.raise_if_not_ironpython()
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'topop2d_numpy',
     'topop3d_numpy',

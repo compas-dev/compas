@@ -17,12 +17,6 @@ from compas.geometry.objects import Vector
 from compas.geometry.objects import Line
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = ['Polygon']
 
 
@@ -150,7 +144,7 @@ class Polygon(object):
     #     a, b, c = self.normal
     #     u = 1.0, 0.0, - a / c
     #     v = 0.0, 1.0, - b / c
-    #     u, v = orthonormalise_vectors([u, v])
+    #     u, v = orthonormalize_vectors([u, v])
     #     u = Vector(*u)
     #     v = Vector(*v)
     #     u.unitize()

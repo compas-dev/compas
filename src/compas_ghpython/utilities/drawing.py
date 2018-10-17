@@ -34,7 +34,7 @@ except ImportError:
     if platform.python_implementation() == 'IronPython':
         raise
 
-__author__ = ['Romana Rust', ]
+__author__ = ['Romana Rust']
 __email__ = 'rust@arch.ethz.ch'
 
 
@@ -64,9 +64,9 @@ def xdraw_labels(labels):
 def xdraw_frame(frame):
     """Draw frame.
     """
-    pt = Point3d(*frame.point)
-    xaxis = Vector3d(*frame.xaxis)
-    yaxis = Vector3d(*frame.yaxis)
+    pt = Point3d(*iter(frame.point))
+    xaxis = Vector3d(*iter(frame.xaxis))
+    yaxis = Vector3d(*iter(frame.yaxis))
     return Plane(pt, xaxis, yaxis)
 
 
@@ -162,7 +162,6 @@ def xdraw_cylinders(cylinders, cap=False):
 
 
 def xdraw_pipes(pipes, cap=2, fit=1.0):
-    rg_pipes = []
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
     for p in pipes:
@@ -173,12 +172,12 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
         if type(radius) in (int, float):
             radius = [radius] * 2
         radius = [float(r) for r in radius]
+
         rail = Curve.CreateControlPointCurve([Point3d(*xyz) for xyz in points])
         breps = Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol,
                                 ang_tol)
-        rg_pipes += breps
-    return rg_pipes
-
+        for brep in breps:
+            yield brep
 
 def xdraw_spheres(spheres):
     rg_sheres = []

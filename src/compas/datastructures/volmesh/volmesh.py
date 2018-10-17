@@ -16,6 +16,7 @@ from compas.datastructures import Mesh
 from compas.datastructures._mixins import VertexAttributesManagement
 from compas.datastructures._mixins import VertexHelpers
 from compas.datastructures._mixins import VertexCoordinatesDescriptors
+from compas.datastructures._mixins import VertexFilter
 
 from compas.datastructures._mixins import EdgeAttributesManagement
 from compas.datastructures._mixins import EdgeHelpers
@@ -28,10 +29,7 @@ from compas.datastructures._mixins import FromToData
 from compas.datastructures._mixins import FromToJson
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+__all__ = ['VolMesh']
 
 
 def center_of_mass(edges, sqrt=sqrt):
@@ -61,7 +59,8 @@ class VolMesh(FromToData,
               FaceAttributesManagement,
               EdgeAttributesManagement,
               VertexAttributesManagement,
-              Datastructure):
+              Datastructure,
+              VertexFilter):
     """Class for working with volumetric meshes.
 
     Attributes
@@ -76,7 +75,7 @@ class VolMesh(FromToData,
         the cell dictionary. The key is the unique identifier of the cell, and
         the value id itself a dictionary. The keys of this dictionary correspond
         to the vertices that make up the cell. The values are again dictionaries.
-        Each key in the latter dictionary is a neighbour of the previous vertex.
+        Each key in the latter dictionary is a neighbor of the previous vertex.
         Together they form a halfedge of the cell, pointing at one of the cell's
         halffaces.
         ``self.cell[ckey][u][v] -> fkey``
@@ -85,9 +84,9 @@ class VolMesh(FromToData,
         ``self.halfface[fkey] -> vertex cycle``
     plane : dict
         The planes of the volmesh. Every plane is uniquely defined by three
-        neighbouring vertices of the volmesh in a specific order. At the first level,
+        neighboring vertices of the volmesh in a specific order. At the first level,
         each vertex in the plane dict points at a new dictionary. This keys of this
-        dictionary are the (undirected) neighbours of the previous vertex. The values
+        dictionary are the (undirected) neighbors of the previous vertex. The values
         are again dictionaries. In combination with the first two keys, the keys
         of the latter identify oriented faces (planes) of the volmesh, finally
         pointing at the cells of the volmesh.
@@ -144,14 +143,7 @@ class VolMesh(FromToData,
 
     def __str__(self):
         """"""
-        return """
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-volmesh summary
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-under construction
-
-"""
+        raise NotImplementedError
 
     # --------------------------------------------------------------------------
     # special properties
@@ -602,7 +594,7 @@ under construction
     # vertex topology
     # --------------------------------------------------------------------------
 
-    def vertex_neighbours(self, vkey):
+    def vertex_neighbors(self, vkey):
         return self.plane[vkey].keys()
 
     # --------------------------------------------------------------------------
@@ -641,7 +633,7 @@ under construction
     # cell topology
     # --------------------------------------------------------------------------
 
-    def cell_neighbours(self, ckey):
+    def cell_neighbors(self, ckey):
         nbrs = []
         for fkey in self.cell_halffaces(ckey):
             u   = self.halfface[fkey].iterkeys().next()
@@ -652,7 +644,7 @@ under construction
                 nbrs.append(nbr)
         return nbrs
 
-    def cell_vertex_neighbours(self, ckey):
+    def cell_vertex_neighbors(self, ckey):
         raise NotImplementedError
 
     def cell_halffaces(self, ckey):
@@ -871,7 +863,8 @@ under construction
 if __name__ == '__main__':
 
     import compas
-    from compas.viewers import VolMeshViewer
+    # from compas.viewers import VolMeshViewer
+    from compas.viewers import Viewer
 
     mesh = VolMesh.from_obj(compas.get('boxes.obj'))
 
@@ -879,16 +872,23 @@ if __name__ == '__main__':
 
     mesh = VolMesh.from_data(mesh.to_data())
 
-    viewer = VolMeshViewer(mesh, 600, 600, grid_on=False, zoom=5.)
+    viewer = Viewer()
 
-    viewer.grid_on = False
-    viewer.axes_on = False
+    viewer.mesh = mesh
 
-    viewer.axes.x_color = (0.1, 0.1, 0.1)
-    viewer.axes.y_color = (0.1, 0.1, 0.1)
-    viewer.axes.z_color = (0.1, 0.1, 0.1)
-
-    viewer.setup()
-
-    viewer.camera.zoom_out(5)
     viewer.show()
+
+
+    # viewer = VolMeshViewer(mesh, 600, 600, grid_on=False, zoom=5.)
+
+    # viewer.grid_on = False
+    # viewer.axes_on = False
+
+    # viewer.axes.x_color = (0.1, 0.1, 0.1)
+    # viewer.axes.y_color = (0.1, 0.1, 0.1)
+    # viewer.axes.z_color = (0.1, 0.1, 0.1)
+
+    # viewer.setup()
+
+    # viewer.camera.zoom_out(5)
+    # viewer.show()

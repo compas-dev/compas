@@ -7,12 +7,6 @@ import collections
 from compas.geometry.distance import distance_point_point_sqrd
 
 
-__author__     = ['Matthias Rippmann <rippmann@arch.ethz.ch>', 'Tom Van Mele <van.mele@arch.ethz.ch>']
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'rippmann@arch.ethz.ch'
-
-
 __all__ = [
     'KDTree'
 ]
@@ -69,7 +63,7 @@ class KDTree(object):
         exclude = set()
 
         for i in range(n):
-            nnbr = tree.nearest_neighbour(point, exclude)
+            nnbr = tree.nearest_neighbor(point, exclude)
             nnbrs.append(nnbr)
             exclude.add(nnbr[1])
 
@@ -147,9 +141,9 @@ class KDTree(object):
             self.build(objects[:median_idx], next_axis),
             self.build(objects[median_idx + 1:], next_axis))
 
-    def nearest_neighbour(self, point, exclude=None):
-        """Find the nearest neighbour to a given point,
-        excluding neighbours that have already been found.
+    def nearest_neighbor(self, point, exclude=None):
+        """Find the nearest neighbor to a given point,
+        excluding neighbors that have already been found.
 
         Parameters
         ----------
@@ -162,8 +156,8 @@ class KDTree(object):
         Returns
         -------
         list:
-            XYZ coordinates of the nearest neighbour.
-            Label of the nearest neighbour.
+            XYZ coordinates of the nearest neighbor.
+            Label of the nearest neighbor.
             Distance to the base point.
 
         """
@@ -192,29 +186,29 @@ class KDTree(object):
         best[2] **= 0.5
         return best
 
-    def nearest_neighbours(self, point, number, distance_sort=False):
-        """Find the N nearest neighbours to a given point.
+    def nearest_neighbors(self, point, number, distance_sort=False):
+        """Find the N nearest neighbors to a given point.
 
         Parameters
         ----------
         point : list
             XYZ coordinates of the bbase point.
         number : int
-            The number of nearest neighbours.
+            The number of nearest neighbors.
         distance_sort : bool, optional
-            Sort the nearest neighbours by distance to the base point.
+            Sort the nearest neighbors by distance to the base point.
             Default is ``False``.
 
         Returns
         -------
         list
-            A list of N nearest neighbours.
+            A list of N nearest neighbors.
 
         """
         nnbrs = []
         exclude = set()
         for i in range(number):
-            nnbr = self.nearest_neighbour(point, exclude)
+            nnbr = self.nearest_neighbor(point, exclude)
             nnbrs.append(nnbr)
             exclude.add(nnbr[1])
         if distance_sort:
@@ -243,7 +237,7 @@ if __name__ == '__main__':
     exclude = set()
 
     for i in range(n):
-        nnbr = tree.nearest_neighbour(point, exclude)
+        nnbr = tree.nearest_neighbor(point, exclude)
         nnbrs.append(nnbr)
         exclude.add(nnbr[1])
 

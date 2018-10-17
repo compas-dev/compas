@@ -26,9 +26,7 @@ from compas.geometry.transformations import inverse
 from compas.geometry.transformations import matrix_from_frame
 
 
-__author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
-__license__ = 'MIT License'
-__email__ = 'rust@arch.ethz.ch'
+__all__ = ['Frame']
 
 
 class Frame(object):
@@ -52,7 +50,7 @@ class Frame(object):
 
     Notes
     -----
-    All input vectors are orthonormalised when creating a frame, with the first
+    All input vectors are orthonormalized when creating a frame, with the first
     vector as starting point.
 
     """

@@ -3,12 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'network_split_edge',
 ]
@@ -36,7 +30,7 @@ def network_split_edge(network, u, v, t=0.5):
     ValueError
         If `t` is not `0 <= t <= 1`.
     Exception
-        If `u` and `v` are not neighbours.
+        If `u` and `v` are not neighbors.
 
     Examples
     --------
@@ -49,10 +43,9 @@ def network_split_edge(network, u, v, t=0.5):
 
         network = Network.from_obj(compas.get('lines.obj'))
 
-        a = network.split_edge(0, 22)
-        b = network.split_edge(2, 30)
-        c = network.split_edge(17, 21)
-        d = network.split_edge(28, 16)
+        u, v = network.get_any_edge()
+
+        a = network.split_edge(u, v)
 
         lines = []
         for u, v in network.edges():
@@ -71,7 +64,7 @@ def network_split_edge(network, u, v, t=0.5):
         plotter.draw_vertices(
             radius=0.2,
             text={key: key for key in network.vertices()},
-            facecolor={key: '#ff0000' for key in (a, b, c, d)}
+            facecolor={key: '#ff0000' for key in (a,)}
         )
         plotter.draw_edges()
 

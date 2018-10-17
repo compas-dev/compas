@@ -27,7 +27,7 @@ install:
 
 script:
 - invoke test
-- if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+- if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
     cd temp && git clone https://github.com/compas-dev/sphinx_compas_theme && cd ..;
     invoke docs;
   fi
@@ -42,5 +42,5 @@ deploy:
   target-branch: master
   local_dir: dist/docs
   on:
-    branch: develop
-    condition: $TRAVIS_PYTHON_VERSION = 2.7
+    branch: master
+    condition: $TRAVIS_PYTHON_VERSION = 3.6

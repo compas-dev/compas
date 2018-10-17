@@ -3,12 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__    = 'Tom Van Mele'
-__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__   = 'MIT license'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'network_parallelise_edges',
 ]
@@ -62,7 +56,7 @@ def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=Non
         lengths = [network.edge_length(u, v) for u, v in network.edges()]
         # the inner loop
         for key in free:
-            nbrs = network.vertex_neighbours(key)
+            nbrs = network.vertex_neighbors(key)
             n = float(len(nbrs))
             x, y, z = 0.0, 0.0, 0.0
 

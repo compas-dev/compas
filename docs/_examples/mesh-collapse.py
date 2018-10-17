@@ -1,4 +1,9 @@
-"""Collapse a mesh to a single vertex."""
+"""Collapse a mesh to a single vertex.
+
+author : Tom Van Mele
+email  : van.mele@arch.ethz.ch
+
+"""
 
 from __future__ import print_function
 
@@ -9,13 +14,7 @@ from compas.plotters import MeshPlotter
 from compas.topology import mesh_quads_to_triangles
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'van.mele@arch.ethz.ch'
-
-
-mesh = Mesh.from_obj(compas.get_data('faces.obj'))
+mesh = Mesh.from_obj(compas.get('faces.obj'))
 
 u = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2][0]
 
@@ -31,7 +30,7 @@ plotter.draw_edges()
 mesh_quads_to_triangles(mesh)
 
 while True:
-    nbrs = mesh.vertex_neighbours(u, ordered=True)
+    nbrs = mesh.vertex_neighbors(u, ordered=True)
 
     if not nbrs:
         break

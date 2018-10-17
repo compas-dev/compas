@@ -10,19 +10,16 @@ except NameError:
     basestring = str
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'FromToData',
-    'FromToJson'
+    'FromToJson',
+    'FromToPickle',
 ]
 
 
 class FromToData(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     @classmethod
     def from_data(cls, data):
@@ -43,10 +40,6 @@ class FromToData(object):
         This constructor method is meant to be used in conjuction with the
         corresponding *to_data* method.
 
-        See Also
-        --------
-        * :meth:`to_data`
-
         """
         graph = cls()
         graph.data = data
@@ -65,15 +58,13 @@ class FromToData(object):
         This method produces the data that can be used in conjuction with the
         corresponding *from_data* class method.
 
-        See Also
-        --------
-        * :meth:`from_data`
-
         """
         return self.data
 
 
 class FromToJson(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     @classmethod
     def from_json(cls, filepath):
@@ -94,10 +85,6 @@ class FromToJson(object):
         This constructor method is meant to be used in conjuction with the
         corresponding *to_json* method.
 
-        See Also
-        --------
-        * :meth:`to_json`
-
         """
         with open(filepath, 'r') as fp:
             data = json.load(fp)
@@ -113,13 +100,49 @@ class FromToJson(object):
         filepath : str
             The path to the json file.
 
-        See Also
-        --------
-        * :meth:`from_json`
-
         """
         with open(filepath, 'w+') as fp:
             json.dump(self.data, fp)
+
+
+class FromToPickle(object):
+
+    __module__ = 'compas.datastructures._mixins'
+
+    @classmethod
+    def from_pickle(cls, filepath):
+        """Construct a datastructure from serialised data contained in a pickle file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the pickle file.
+
+        Returns
+        -------
+        object
+            An object of type ``cls``.
+
+        Note
+        ----
+        This constructor method is meant to be used in conjuction with the
+        corresponding *to_pickle* method.
+
+        """
+        o = cls()
+        o.load(filepath)
+        return o
+
+    def to_pickle(self, filepath):
+        """Serialised the structured data representing the data structure to a pickle file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the pickle file.
+
+        """
+        self.dump(filepath)
 
 
 # ==============================================================================

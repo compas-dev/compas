@@ -6,7 +6,6 @@ import compas
 import compas_rhino
 
 from compas_rhino.geometry import RhinoGeometry
-from compas_rhino.utilities import select_surface
 
 from compas.geometry import subtract_vectors
 
@@ -22,13 +21,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['RhinoSurface', ]
+__all__ = ['RhinoSurface']
 
 
 class RhinoSurface(RhinoGeometry):
@@ -39,7 +32,7 @@ class RhinoSurface(RhinoGeometry):
 
     @classmethod
     def from_selection(cls):
-        guid = select_surface()
+        guid = compas_rhino.select_surface()
         return cls(guid)
 
     def space(self, density=10):
@@ -212,9 +205,25 @@ class RhinoSurface(RhinoGeometry):
 
         return curvature
 
-    def borders(self):
-        """"""
-        border = rs.DuplicateSurfaceBorder(self.guid, type=1)
+    def borders(self, type=1):
+        """Duplicate the borders of the surface.
+
+        Parameters
+        ----------
+        type : {0, 1, 2}
+            The type of border.
+
+            * 0: All borders
+            * 1: The exterior borders.
+            * 2: The interior borders.
+
+        Returns
+        -------
+        list
+            The GUIDs of the extracted border curves.
+
+        """
+        border = rs.DuplicateSurfaceBorder(self.guid, type=type)
         curves = rs.ExplodeCurves(border, delete_input=True)
         return curves
 

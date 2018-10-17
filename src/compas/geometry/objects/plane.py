@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.basic import orthonormalise_vectors
+from compas.geometry.basic import orthonormalize_vectors
 
 from compas.geometry.transformations import transform_points
 from compas.geometry.transformations import transform_vectors
@@ -11,13 +11,7 @@ from compas.geometry.objects import Vector
 from compas.geometry.objects import Point
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['Plane', ]
+__all__ = ['Plane']
 
 
 class Plane(object):
@@ -73,7 +67,7 @@ class Plane(object):
         Returns
         -------
         Plane
-            A plane with base point ``a`` and normal vector defined as the unitised
+            A plane with base point ``a`` and normal vector defined as the unitized
             cross product of the vectors ``ab`` and ``ac``.
 
         """
@@ -99,7 +93,7 @@ class Plane(object):
         Returns
         -------
         Plane
-            A plane with base point ``point`` and normal vector defined as the unitised
+            A plane with base point ``point`` and normal vector defined as the unitized
             cross product of vectors ``u`` and ``v``.
 
         """
@@ -118,7 +112,7 @@ class Plane(object):
         Returns
         -------
         Plane
-            A plane that minimises the distance to each point in the list.
+            A plane that minimizes the distance to each point in the list.
 
         """
         raise NotImplementedError
@@ -161,7 +155,7 @@ class Plane(object):
     #     a, b, c = self.normal
     #     u = 1.0, 0.0, - a / c
     #     v = 0.0, 1.0, - b / c
-    #     u, v = orthonormalise_vectors([u, v])
+    #     u, v = orthonormalize_vectors([u, v])
     #     u = Vector(*u)
     #     v = Vector(*v)
     #     u.unitize()

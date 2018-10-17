@@ -10,17 +10,12 @@ from math import pi
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import subtract_vectors
+from compas.geometry.angles import angle_vectors
 
 from compas.geometry.transformations import transform_vectors
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['Vector', ]
+__all__ = ['Vector']
 
 
 class Vector(object):
@@ -258,6 +253,22 @@ class Vector(object):
         """
         return Vector(self.x * n, self.y * n, self.z * n)
 
+    def __truediv__(self, n):
+        """Return a ``Vector`` that is the scaled version of this ``Vector``.
+
+        Parameters
+        ----------
+        n : float
+            The scaling factor.
+
+        Returns
+        -------
+        Vector
+            The resulting new ``Vector``.
+
+        """
+        return Vector(self.x / n, self.y / n, self.z / n)
+
     def __pow__(self, n):
         """Create a ``Vector`` from the components of the current ``Vector`` raised
         to the given power.
@@ -291,6 +302,7 @@ class Vector(object):
         self.x += other[0]
         self.y += other[1]
         self.z += other[2]
+        return self
 
     def __isub__(self, other):
         """Subtract the components of the other vector from this ``Vector``.
@@ -304,6 +316,7 @@ class Vector(object):
         self.x -= other[0]
         self.y -= other[1]
         self.z -= other[2]
+        return self
 
     def __imul__(self, n):
         """Multiply the components of this ``Vector`` by the given factor.
@@ -317,6 +330,21 @@ class Vector(object):
         self.x *= n
         self.y *= n
         self.z *= n
+        return self
+
+    def __itruediv__(self, n):
+        """Divide the components of this ``Vector`` by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+
+        """
+        self.x /= n
+        self.y /= n
+        self.z /= n
+        return self
 
     def __ipow__(self, n):
         """Raise the components of this ``Vector`` to the given power.
@@ -330,6 +358,7 @@ class Vector(object):
         self.x **= n
         self.y **= n
         self.z **= n
+        return self
 
     # ==========================================================================
     # static methods
@@ -368,7 +397,7 @@ class Vector(object):
         pass
 
     @staticmethod
-    def orthonormalise_vectors(vectors):
+    def orthonormalize_vectors(vectors):
         pass
 
     # ==========================================================================
@@ -394,7 +423,7 @@ class Vector(object):
 
         """
         cls = type(self)
-        return cls(self.x, self.y, self.z, self.w, self.precision)
+        return cls(self.x, self.y, self.z, self.precision)
 
     # ==========================================================================
     # methods
@@ -497,7 +526,7 @@ class Vector(object):
             The transformation matrix.
 
         """
-        point = transform_vectors([self, ], matrix)[0]
+        point = transform_vectors([self], matrix)[0]
         self.x = point[0]
         self.y = point[1]
         self.z = point[2]
@@ -531,6 +560,9 @@ if __name__ == '__main__':
 
     u = Vector(0.0, 0.0, 1.0)
     v = Vector(1.0, 0.0, 0.0)
+
+    print(u.angle(v))
+    print(3.14159 / 2)
 
     w = Vector.from_start_end(u, v)
 

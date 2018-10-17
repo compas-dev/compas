@@ -26,14 +26,7 @@ from compas.geometry.transformations import translation_from_matrix
 from compas.geometry.transformations import decompose_matrix
 
 
-__author__ = ['Romana Rust <rust@arch.ethz.ch>', ]
-__license__ = 'MIT License'
-__email__ = 'rust@arch.ethz.ch'
-
-
-__all__ = [
-    'Transformation',
-]
+__all__ = ['Transformation']
 
 
 class Transformation(object):
@@ -95,6 +88,12 @@ class Transformation(object):
             return True
         except BaseException:
             raise TypeError("Wrong input type.")
+    
+    def copy(self):
+        """Returns a copy of the transformation.
+        """
+        cls = type(self)
+        return cls.from_matrix(self.matrix)
 
     def __repr__(self):
         s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10)

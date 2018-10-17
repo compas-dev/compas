@@ -1,8 +1,21 @@
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from compas.files import URDF
+from compas.files import URDFParser
+from compas.geometry.xforms import Transformation
 
-from .geometry import Box, Capsule, Color, Cylinder, Geometry, Material, MeshDescriptor, Origin, Sphere, Texture
+from .geometry import Box
+from .geometry import Capsule
+from .geometry import Color
+from .geometry import Cylinder
+from .geometry import Geometry
+from .geometry import Material
+from .geometry import MeshDescriptor
+from .geometry import Origin
+from .geometry import Sphere
+from .geometry import Texture
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
@@ -26,7 +39,6 @@ class Inertia(object):
     """
 
     def __init__(self, ixx=0., ixy=0., ixz=0., iyy=0., iyz=0., izz=0.):
-        # TODO: Check if we need unit conversion here (m to mm?)
         self.ixx = float(ixx)
         self.ixy = float(ixy)
         self.ixz = float(ixz)
@@ -70,6 +82,15 @@ class Visual(object):
         self.material = material
         self.attr = kwargs
 
+    def draw(self):
+        return self.geometry.draw()
+
+    def get_color(self):
+        if self.material:
+            return self.material.get_color()
+        else:
+            return None
+
 
 class Collision(object):
     """Collidable description of a link.
@@ -88,6 +109,9 @@ class Collision(object):
         self.name = name
         self.attr = kwargs
 
+    def draw(self):
+        return self.geometry.draw()
+
 
 class Link(object):
     """Link represented as a rigid body with an inertia, visual, and collision features.
@@ -101,6 +125,7 @@ class Link(object):
         inertial: Inertial properties of the link.
         attr: Non-standard attributes.
         joints: A list of joints that are the link's children
+        parent_joint: The reference to a parent joint if it exists
     """
 
     def __init__(self, name, type=None, visual=[], collision=[], inertial=None, **kwargs):
@@ -111,24 +136,27 @@ class Link(object):
         self.inertial = inertial
         self.attr = kwargs
         self.joints = []
+        self.parent_joint = None
 
 
-URDF.add_parser(Link, 'robot/link')
-URDF.add_parser(Inertial, 'robot/link/inertial')
-URDF.add_parser(Mass, 'robot/link/inertial/mass')
-URDF.add_parser(Inertia, 'robot/link/inertial/inertia')
 
-URDF.add_parser(Visual, 'robot/link/visual')
-URDF.add_parser(Collision, 'robot/link/collision')
 
-URDF.add_parser(Origin, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin')
-URDF.add_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
-URDF.add_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
-URDF.add_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')
-URDF.add_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder')
-URDF.add_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere')
-URDF.add_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule')
+URDFParser.install_parser(Link, 'robot/link')
+URDFParser.install_parser(Inertial, 'robot/link/inertial')
+URDFParser.install_parser(Mass, 'robot/link/inertial/mass')
+URDFParser.install_parser(Inertia, 'robot/link/inertial/inertia')
 
-URDF.add_parser(Material, 'robot/link/visual/material')
-URDF.add_parser(Color, 'robot/link/visual/material/color')
-URDF.add_parser(Texture, 'robot/link/visual/material/texture')
+URDFParser.install_parser(Visual, 'robot/link/visual')
+URDFParser.install_parser(Collision, 'robot/link/collision')
+
+URDFParser.install_parser(Origin, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin')
+URDFParser.install_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
+URDFParser.install_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
+URDFParser.install_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box')
+URDFParser.install_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder')
+URDFParser.install_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere')
+URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule')
+
+URDFParser.install_parser(Material, 'robot/link/visual/material')
+URDFParser.install_parser(Color, 'robot/link/visual/material/color')
+URDFParser.install_parser(Texture, 'robot/link/visual/material/texture')

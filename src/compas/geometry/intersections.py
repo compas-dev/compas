@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import fabs
+from math import sqrt
 
 from compas.utilities import pairwise
 
@@ -13,16 +14,13 @@ from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import length_vector_xy
 from compas.geometry.basic import subtract_vectors_xy
+from compas.geometry.basic import normalize_vector
+
+from compas.geometry.distance import distance_point_point
 
 from compas.geometry.queries import is_point_on_segment
 from compas.geometry.queries import is_point_on_segment_xy
 from compas.geometry.queries import is_point_in_triangle
-
-
-__author__ = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__ = 'MIT License'
-__email__ = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -37,6 +35,7 @@ __all__ = [
     'intersection_segment_plane',
     'intersection_plane_plane',
     'intersection_plane_plane_plane',
+    'intersection_sphere_sphere',
 ]
 
 
@@ -74,8 +73,8 @@ def intersection_line_line(l1, l2, tol=1e-6):
     cd = subtract_vectors(d, c)
 
     n = cross_vectors(ab, cd)
-    n1 = cross_vectors(ab, n)
-    n2 = cross_vectors(cd, n)
+    n1 = normalize_vector(cross_vectors(ab, n))
+    n2 = normalize_vector(cross_vectors(cd, n))
 
     plane_1 = (a, n1)
     plane_2 = (c, n2)
@@ -126,7 +125,7 @@ def intersection_line_line_xy(l1, l2, tol=1e-6):
 
     d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
 
-    if d <= tol:
+    if fabs(d) <= tol:
         return None
 
     a = (x1 * y2 - y1 * x2)
@@ -482,9 +481,114 @@ def intersection_plane_plane_plane(plane1, plane2, plane3, tol=1e-6):
         return intersection_line_plane(line, plane3, tol=tol)
 
 
+def intersection_sphere_sphere(sphere1, sphere2):
+    """Computes the intersection of 2 spheres.
+
+    There are 4 cases of sphere-sphere intersection : 1) the spheres intersect
+    in a circle, 2) they intersect in a point, 3) they overlap, 4) they do not
+    intersect.
+
+    Parameters
+    ----------
+    sphere1 : tuple
+        center, radius of the sphere.
+    sphere2 : tuple
+        center, radius of the sphere.
+
+    Returns
+    -------
+    case : str
+        `point`, `circle`, or `sphere`
+    result : tuple
+        - point: xyz coordinates
+        - circle: center, radius, normal
+        - sphere: center, radius
+
+    Examples
+    --------
+    >>> sphere1 = (3.0, 7.0, 4.0), 10.0
+    >>> sphere2 = (7.0, 4.0, 0.0), 5.0
+    >>> result = intersection_sphere_sphere(sphere1, sphere2)
+    >>> if result:
+    >>>    case, res = result
+    >>>    if case == "circle":
+    >>>        center, radius, normal = res
+    >>>    elif case == "point":
+    >>>        point = res
+    >>>    elif case == "sphere":
+    >>>        center, radius = res
+
+    References
+    --------
+    https://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection
+
+    """
+
+    center1, radius1 = sphere1
+    center2, radius2 = sphere2
+
+    distance = distance_point_point(center1, center2)
+
+    # Case 4: No intersection
+    if radius1 + radius2 < distance:
+        return None
+    # Case 4: No intersection, sphere is within the other sphere
+    elif distance + min(radius1, radius2) < max(radius1, radius2):
+        return None
+    # Case 3: sphere's overlap
+    elif radius1 == radius2 and distance == 0:
+        return "sphere", sphere1
+    # Case 2: point intersection
+    elif radius1 + radius2 == distance:
+        ipt = subtract_vectors(center2, center1)
+        ipt = scale_vector(ipt, radius1/distance)
+        ipt = add_vectors(center1, ipt)
+        return "point", ipt
+    # Case 2: point intersection, smaller sphere is within the bigger
+    elif distance + min(radius1, radius2) == max(radius1, radius2):
+        if radius1 > radius2:
+            ipt = subtract_vectors(center2, center1)
+            ipt = scale_vector(ipt, radius1/distance)
+            ipt = add_vectors(center1, ipt)
+        else:
+            ipt = subtract_vectors(center1, center2)
+            ipt = scale_vector(ipt, radius2/distance)
+            ipt = add_vectors(center2, ipt)
+        return "point", ipt
+    # Case 1: circle intersection
+    else:
+        h  = 0.5 + (radius1**2 - radius2**2)/(2 * distance**2)
+        ci = subtract_vectors(center2, center1)
+        ci = scale_vector(ci, h)
+        ci = add_vectors(center1, ci)
+        ri = sqrt(radius1**2 - h**2 * distance**2)
+        normal = scale_vector(subtract_vectors(center2, center1), 1/distance)
+        return "circle", (ci, ri, normal)
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+    
+    # # intersection_sphere_sphere(sphere1, sphere2)
+    # sphere1 = (3.0, 7.0, 4.0), 10.0
+    # sphere2 = (7.0, 4.0, 0.0), 5.0
+    # result = intersection_sphere_sphere(sphere1, sphere2)
+    # print(result)
+    # if result:
+    #     case, res = result
+    #     if case == "circle":
+    #         center, radius, normal = res
+    #     elif case == "point":
+    #         point = res
+    #     elif case == "sphere":
+    #         center, radius = res
+
+    a = ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
+    b = ([1.0, 0.0, 0.0], [2.0, 1.0, 0.0])
+
+    res = intersection_line_line_xy(a, b)
+
+    print(res)

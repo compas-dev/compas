@@ -7,6 +7,8 @@ import time
 import compas
 import compas_rhino
 
+from compas_rhino.artists import Artist
+
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
 from compas_rhino.artists.mixins import FaceArtist
@@ -18,16 +20,10 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = ['MeshArtist']
 
 
-class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
+class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     """A mesh artist defines functionality for visualising COMPAS meshes in Rhino.
 
     Parameters
@@ -61,59 +57,54 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
     """
 
+    __module__ = "compas_rhino.artists"
+
     def __init__(self, mesh, layer=None):
+        super(MeshArtist, self).__init__(layer=layer)
         self.mesh = mesh
-        self.layer = layer
-        self.defaults = {
-            'color.vertex' : (255, 0, 0),
-            'color.face'   : (255, 255, 255),
+        self.defaults.update({
+            'color.vertex' : (255, 255, 255),
             'color.edge'   : (0, 0, 0),
-        }
-
-    @property
-    def layer(self):
-        """str: The layer that contains the mesh."""
-        return self.datastructure.attributes.get('layer')
-
-    @layer.setter
-    def layer(self, value):
-        self.datastructure.attributes['layer'] = value
+            'color.face'   : (210, 210, 210),
+        })
 
     @property
     def mesh(self):
-        """compas.datastructures.Mesh: The mesh that should be painted."""
+        """Mesh: The mesh that should be painted."""
         return self.datastructure
 
     @mesh.setter
     def mesh(self, mesh):
         self.datastructure = mesh
 
-    def redraw(self, timeout=None):
-        """Redraw the Rhino view.
+    def draw(self):
+        """Draw the mesh as a consolidated RhinoMesh.
 
-        Parameters
-        ----------
-        timeout : float, optional
-            The amount of time the artist waits before updating the Rhino view.
-            The time should be specified in seconds.
-            Default is ``None``.
+        Notes
+        -----
+        The mesh should be a valid Rhino Mesh object, which means it should have
+        only triangular or quadrilateral faces.
 
         """
-        if timeout:
-            time.sleep(timeout)
-        rs.EnableRedraw(True)
-        rs.Redraw()
-
-    def clear_layer(self):
-        """Clear the main layer of the artist."""
-        if self.layer:
-            compas_rhino.clear_layer(self.layer)
-        else:
-            compas_rhino.clear_current_layer()
+        key_index = self.mesh.key_index()
+        vertices = self.mesh.get_vertices_attributes('xyz')
+        faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
+        new_faces = []
+        for face in faces:
+            l = len(face)
+            if l == 3:
+                new_faces.append(face + face[-1:])
+            elif l == 4:
+                new_faces.append(face)
+        layer = self.layer
+        name = "{}.mesh".format(self.mesh.name)
+        return compas_rhino.xdraw_mesh(vertices, new_faces, layer=layer, name=name)
 
     def clear(self):
         """Clear the vertices, faces and edges of the mesh, without clearing the
-        other elements in the layer."""
+        other elements in the layer.
+
+        """
         self.clear_vertices()
         self.clear_faces()
         self.clear_edges()
@@ -124,6 +115,8 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 # ==============================================================================
 
 if __name__ == "__main__":
+    
+    import os
 
     from compas.datastructures import Mesh
     from compas.geometry import Polyhedron
@@ -155,3 +148,5 @@ if __name__ == "__main__":
 
     artist.draw_edgelabels()
     artist.redraw(1.0)
+
+    print(artist.save(os.path.join(compas.TEMP, 'test4.png')))

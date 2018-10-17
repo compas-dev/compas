@@ -44,11 +44,8 @@ mesh.update_default_edge_attributes(dea)
 # increase the force density along the boundaries
 # to prevent the mesh from collapsing too much
 
-for key in mesh.vertices():
-    mesh.vertex[key]['is_anchor'] = mesh.vertex_degree(key) == 2
-
-for u, v in mesh.edges_on_boundary():
-    mesh.edge[u][v]['q'] = 10.0
+mesh.set_vertices_attribute('is_anchor', True, keys=mesh.vertices_where({'vertex_degree': 2}))
+mesh.set_edges_attribute('q', 10.0, keys=mesh.edges_on_boundary())
 
 
 # extract the structural data required for form finding
@@ -60,7 +57,7 @@ key_index = mesh.key_index()
 xyz   = mesh.get_vertices_attributes('xyz')
 loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))
 fixed = [key_index[key] for key in mesh.vertices_where({'is_anchor': True})]
-edges = mesh.indexed_edges()
+edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
 q     = mesh.get_edges_attribute('q')
 
 res = fd_numpy(xyz, edges, fixed, q, loads)
@@ -75,7 +72,7 @@ for index, (key, attr) in enumerate(mesh.vertices(True)):
     attr['y'] = xyz[index][1]
     attr['z'] = xyz[index][2]
 
-viewer = MeshViewer(mesh, 800, 600)
-viewer.setup()
-viewer.camera.zoom_in(5)
+viewer = MeshViewer()
+viewer.mesh = mesh
+
 viewer.show()

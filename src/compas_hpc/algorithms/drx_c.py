@@ -8,8 +8,8 @@ from ctypes import c_double
 from ctypes import c_int
 from ctypes import POINTER
 
-from compas.numerical.algorithms.drx_numpy import _beam_data
-from compas.numerical.algorithms.drx_numpy import _create_arrays
+from compas.numerical.drx.drx_numpy import _beam_data
+from compas.numerical.drx.drx_numpy import _create_arrays
 
 from numpy import array
 from numpy import ctypeslib
@@ -172,7 +172,7 @@ if __name__ == "__main__":
     from compas.viewers import VtkViewer
 
 
-    m = 100
+    m = 150
     p = [(i / m - 0.5) * 5 for i in range(m + 1)]
     vertices = [[xi, yi, 0] for yi in p for xi in p]
     edges = []
@@ -222,7 +222,7 @@ if __name__ == "__main__":
 
 
     # L  = 12
-    # n  = 40
+    # n  = 200
     # EI = 0.2
 
     # vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-5, 5, n))]
@@ -233,9 +233,9 @@ if __name__ == "__main__":
     # network.update_default_vertex_attributes({'EIx': EI, 'EIy': EI})
     # network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
     # network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], leaves)
-    # network.beams = {'beam': {'nodes': list(range(n))}}
+    # network.attributes['beams'] = {'beam': {'nodes': list(range(n))}}
 
-    # drx_c(network=network, tol=0.01, summary=1, update=1)
+    # drx_c(network=network, tol=0.01, summary=1, update=1, factor=5)
 
     # data = {
     #     'vertices': {i: network.vertex_coordinates(i) for i in network.vertices()},

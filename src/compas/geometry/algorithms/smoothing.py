@@ -7,12 +7,6 @@ from compas.geometry import center_of_mass_polygon
 from compas.geometry import area_polygon
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'smooth_centroid',
     'smooth_centerofmass',
@@ -33,7 +27,7 @@ def smooth_centroid(vertices,
                     callback=None,
                     callback_args=None):
     """Smooth a connected set of vertices
-    by moving each vertex to the centroid of its neighbours.
+    by moving each vertex to the centroid of its neighbors.
 
     Parameters
     ----------
@@ -70,7 +64,7 @@ def smooth_centroid(vertices,
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         vertices   = mesh.get_vertices_attributes('xyz')
-        neighbours = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
+        neighbors = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
         fixed      = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
         lines = []
@@ -82,7 +76,7 @@ def smooth_centroid(vertices,
                 'width': 1.0,
             })
 
-        smooth_centroid(vertices, neighbours, fixed=fixed, kmax=100)
+        smooth_centroid(vertices, neighbors, fixed=fixed, kmax=100)
 
         for key, attr in mesh.vertices(True):
             attr['x'] = vertices[key][0]
@@ -136,7 +130,7 @@ def smooth_centerofmass(vertices,
                         callback=None,
                         callback_args=None):
     """Smooth a connected set of vertices by moving each vertex to
-    the center of mass of the polygon formed by the neighbouring vertices.
+    the center of mass of the polygon formed by the neighboring vertices.
 
     Parameters
     ----------
@@ -163,7 +157,7 @@ def smooth_centerofmass(vertices,
     Notes
     -----
     When using this algorithm in combination with one of the datastructures (as in the example below),
-    note that the neighbours of each vertex have to be listed in order, i.e. they have to form a polygon
+    note that the neighbors of each vertex have to be listed in order, i.e. they have to form a polygon
     without self-intersections.
 
     Examples
@@ -179,7 +173,7 @@ def smooth_centerofmass(vertices,
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         vertices   = mesh.get_vertices_attributes('xyz')
-        neighbours = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
+        neighbors = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
         fixed      = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
         lines = []
@@ -191,7 +185,7 @@ def smooth_centerofmass(vertices,
                 'width': 1.0,
             })
 
-        smooth_centerofmass(vertices, neighbours, fixed=fixed, kmax=100)
+        smooth_centerofmass(vertices, neighbors, fixed=fixed, kmax=100)
 
         for key, attr in mesh.vertices(True):
             attr['x'] = vertices[key][0]
@@ -369,7 +363,7 @@ def smooth_laplacian():
 
 
 def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
-    """Smooth a mesh by moving every free vertex to the centroid of its neighbours.
+    """Smooth a mesh by moving every free vertex to the centroid of its neighbors.
 
     Parameters
     ----------
@@ -436,7 +430,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
 
             x, y, z = key_xyz[key]
 
-            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in mesh.vertex_neighbours(key)])
+            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in mesh.vertex_neighbors(key)])
 
             attr['x'] += damping * (cx - x)
             attr['y'] += damping * (cy - y)
@@ -447,7 +441,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
 
 
 def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
-    """Smooth a mesh by moving every free vertex to the center of mass of the polygon formed by the neighbouring vertices.
+    """Smooth a mesh by moving every free vertex to the center of mass of the polygon formed by the neighboring vertices.
 
     Parameters
     ----------
@@ -514,7 +508,7 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
 
             x, y, z = key_xyz[key]
 
-            cx, cy, cz = center_of_mass_polygon([key_xyz[nbr] for nbr in mesh.vertex_neighbours(key)])
+            cx, cy, cz = center_of_mass_polygon([key_xyz[nbr] for nbr in mesh.vertex_neighbors(key)])
 
             attr['x'] += damping * (cx - x)
             attr['y'] += damping * (cy - y)
@@ -525,7 +519,7 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
 
 
 def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
-    """Smooth a mesh by moving each vertex to the barycentre of the centroids of the surrounding faces, weighted by area.
+    """Smooth a mesh by moving each vertex to the barycenter of the centroids of the surrounding faces, weighted by area.
 
     Parameters
     ----------
@@ -627,7 +621,7 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
 
 
 def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback=None, callback_args=None):
-    """Smooth a network by moving each vertex to the centroid of its neighbours.
+    """Smooth a network by moving each vertex to the centroid of its neighbors.
 
     Parameters
     ----------
@@ -689,7 +683,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
 
             x, y, z = key_xyz[key]
 
-            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in network.vertex_neighbours(key)])
+            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in network.vertex_neighbors(key)])
 
             attr['x'] += damping * (cx - x)
             attr['y'] += damping * (cy - y)
@@ -715,7 +709,7 @@ if __name__ == "__main__":
 
     vertices  = mesh.get_vertices_attributes('xyz')
     faces     = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
-    adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
+    adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
     fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
     lines = []

@@ -2,5 +2,6 @@ matplotlib
 networkx
 numba
 numpy
+Pillow
 scipy
 sympy

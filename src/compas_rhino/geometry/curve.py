@@ -19,13 +19,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['RhinoCurve', ]
+__all__ = ['RhinoCurve']
 
 
 class RhinoCurve(RhinoGeometry):
@@ -199,7 +193,7 @@ class RhinoCurve(RhinoGeometry):
         return x, y, z, t
 
     def closest_points(self, points, maxdist=None):
-        return [self.closest_point(point, maxdist) for point in points]
+        return [self.closest_point(point, maxdist) for point in points]        
 
 
 # ==============================================================================

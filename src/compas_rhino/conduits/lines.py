@@ -3,6 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
+
+from compas.utilities import color_to_rgb
 from compas_rhino.conduits import Conduit
 
 try:
@@ -16,13 +18,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['LinesConduit', ]
+__all__ = ['LinesConduit']
 
 
 class LinesConduit(Conduit):
@@ -50,30 +46,18 @@ class LinesConduit(Conduit):
     -------
     .. code-block:: python
 
-        import random
-        import time
+        from random import randint
 
-        from compas_rhino.conduits import LinesConduit
-
-        points = [(1.0 * random.ranint(0, 30), 1.0 * random.randint(0, 30), 0.0) for _ in range(100)]
+        points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
         lines  = [(points[i], points[i + 1]) for i in range(99)]
 
         conduit = LinesConduit(lines)
-        conduit.enable()
 
-        try:
+        with conduit.enabled():
             for i in range(100):
-                points = [(1.0 * random.randint(0, 30), 1.0 * random.randint(0, 30), 0.0) for _ in range(100)]
+                points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
                 conduit.lines = [(points[i], points[i + 1]) for i in range(99)]
-                conduit.redraw()
-
-                time.sleep(0.1)
-        except Exception:
-            raise
-
-        finally:
-            conduit.disable()
-            del conduit
+                conduit.redraw(pause=0.1)
 
     """
     def __init__(self, lines, thickness=None, color=None, **kwargs):
@@ -101,6 +85,10 @@ class LinesConduit(Conduit):
     @thickness.setter
     def thickness(self, thickness):
         if thickness:
+            try:
+                len(thickness)
+            except TypeError:
+                thickness = [thickness]
             l = len(self.lines)
             t = len(thickness)
             if t < l:
@@ -119,44 +107,54 @@ class LinesConduit(Conduit):
             The color specification of each line in hex or RGB(255) format.
 
         """
-        return self._colors
+        return self._color
     
     @color.setter
     def color(self, color):
         if color:
-            color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
             l = len(self.lines)
+            if isinstance(color, (basestring, tuple)):
+                # if a single color was provided
+                color = [color for _ in range(l)]
+            # convert the specified colors to windows system colors
+            color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
             c = len(color)
             if c < l:
+                # pad the list with default colors
                 color += [self._default_color for i in range(l - c)]
             elif c > l:
+                # resize to the number of lines
                 color[:] = color[:l]
+            # assign to the protected attribute
             self._color = color
 
     def DrawForeground(self, e):
-        if self.color:
-            draw = e.Display.DrawLine
-            if self.thickness:
-                for i, (start, end) in enumerate(self.lines):
-                    draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
-            else:
-                for i, (start, end) in enumerate(self.lines):
-                    draw(Point3d(*start), Point3d(*end), self.color[i], self._default_thickness)
-
-        elif self.thickness:
-            draw = e.Display.DrawLine
+        try:
             if self.color:
-                for i, (start, end) in enumerate(self.lines):
-                    draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
-            else:
-                for i, (start, end) in enumerate(self.lines):
-                    draw(Point3d(*start), Point3d(*end), self._default_color, self.thickness[i])
+                draw = e.Display.DrawLine
+                if self.thickness:
+                    for i, (start, end) in enumerate(self.lines):
+                        draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
+                else:
+                    for i, (start, end) in enumerate(self.lines):
+                        draw(Point3d(*start), Point3d(*end), self.color[i], self._default_thickness)
 
-        else:
-            lines = List[Line](len(self.lines))
-            for start, end in self.lines:
-                lines.Add(Line(Point3d(*start), Point3d(*end)))
-            e.Display.DrawLines(lines, self._default_color, self._default_thickness)
+            elif self.thickness:
+                draw = e.Display.DrawLine
+                if self.color:
+                    for i, (start, end) in enumerate(self.lines):
+                        draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
+                else:
+                    for i, (start, end) in enumerate(self.lines):
+                        draw(Point3d(*start), Point3d(*end), self._default_color, self.thickness[i])
+
+            else:
+                lines = List[Line](len(self.lines))
+                for start, end in self.lines:
+                    lines.Add(Line(Point3d(*start), Point3d(*end)))
+                e.Display.DrawLines(lines, self._default_color, self._default_thickness)
+        except Exception as e:
+            print(e)
 
 
 # ==============================================================================
@@ -166,26 +164,14 @@ class LinesConduit(Conduit):
 if __name__ == "__main__":
 
     from random import randint
-    import time
 
     points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
     lines  = [(points[i], points[i + 1]) for i in range(99)]
 
-    try:
-        conduit = LinesConduit(lines)
-        conduit.Enabled = True
+    conduit = LinesConduit(lines, color=['#ff00ff', '#ff0000'], thickness=[1, 2, 3, 4, 5, 20])
 
+    with conduit.enabled():
         for i in range(100):
             points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
             conduit.lines = [(points[i], points[i + 1]) for i in range(99)]
-
-            conduit.redraw()
-
-            time.sleep(0.1)
-
-    except Exception as e:
-        print(e)
-
-    finally:
-        conduit.Enabled = False
-        del conduit
+            conduit.redraw(pause=0.1)

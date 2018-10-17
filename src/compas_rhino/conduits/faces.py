@@ -16,13 +16,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['FacesConduit', ]
+__all__ = ['FacesConduit']
 
 
 class FacesConduit(Conduit):
@@ -98,13 +92,19 @@ class FacesConduit(Conduit):
     @color.setter
     def color(self, color):
         if color:
-            color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
             f = len(self.faces)
+            if isinstance(color, (basestring, tuple)):
+                # if a single color was provided
+                color = [color for _ in range(f)]
+            # convert to windows system colors
+            color = [FromArgb(* color_to_rgb(c)) for c in color]
+            # pad the color specification
             c = len(color)
             if c < f:
-                color += [self._default_color for i in range(f - c)]
+                color += [self._default_color for _ in range(f - c)]
             elif c > f:
                 color[:] = color[:f]
+            # assign to the protected value
             self._color = color
 
     def DrawForeground(self, e):
@@ -122,25 +122,19 @@ class FacesConduit(Conduit):
 
 if __name__ == "__main__":
 
-    import time
+    from random import shuffle
     from compas.geometry import Polyhedron
 
     polyhedron = Polyhedron.generate(6)
 
     faces = polyhedron.faces
     vertices = polyhedron.vertices
+    colors = [(255, 255, 255), (255, 0, 0), (255, 255, 0), (0, 255, 0), (0, 255, 255), (0, 0, 255)]
 
-    polygons = [[vertices[index] for index in face] for face in faces]
+    conduit = FacesConduit(vertices, faces, color=colors)
 
-    try:
-        conduit = FacesConduit(polygons)
-        conduit.enable()
-        conduit.redraw()
-        time.sleep(5.0)
-
-    except Exception as e:
-        print(e)
-
-    finally:
-        conduit.disable()
-        del conduit
+    with conduit.enabled():
+        for i in range(10):
+            shuffle(colors)
+            conduit.color = colors
+            conduit.redraw(pause=1.0)

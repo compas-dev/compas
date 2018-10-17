@@ -18,7 +18,7 @@ __license__    = 'MIT License'
 __email__      = '<vanmelet@ethz.ch>'
 
 
-__all__ = ['VolMeshViewer', ]
+__all__ = ['VolMeshViewer']
 
 
 class VolMeshViewer(Viewer):

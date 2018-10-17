@@ -18,12 +18,6 @@ from compas.geometry.basic import norm_vector
 from compas.geometry.transformations import _EPS
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'transform_points',
     'transform_points_numpy',
@@ -508,9 +502,10 @@ def mesh_transform(mesh, transformation):
     :func:`mesh_transformed`
 
     """
-    xyz = transform(mesh.xyz, transformation.matrix)
-    for i in range(len(vertices)):
-        mesh.vertex[i].update({'x': vertices[i][0], 'y': vertices[i][1], 'z': vertices[i][2]})
+    vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+    xyz = transform_points(vertices, transformation.matrix)
+    for i in range(len(xyz)):
+        mesh.vertex[i].update({'x': xyz[i][0], 'y': xyz[i][1], 'z': xyz[i][2]})
 
 
 # TODO: this is really slow

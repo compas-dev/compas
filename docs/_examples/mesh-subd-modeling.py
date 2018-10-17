@@ -1,8 +1,7 @@
-"""Mesh 08: Subd modeling
+"""Mesh subdivision.
 
-The following code computes a solidified smooth mesh from a spatial network of lines.
-The shown method yields similar results as the exoskeleton plugin for Grasshopper
-to create meshes for 3D printing.
+author : Tom Van Mele
+email  : van.mele@arch.ethz.ch
 
 """
 
@@ -15,12 +14,6 @@ import compas_rhino
 
 from compas.datastructures import Mesh
 from compas.topology import mesh_subdivide
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
 
 
 # make a control mesh

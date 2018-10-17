@@ -3,12 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'mesh_collapse_edge',
     'trimesh_collapse_edge',
@@ -72,7 +66,7 @@ def mesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
         An edge can only be collapsed if the collapse is `legal`. A collapse is
         legal if it meets the following requirements:
 
-            * any vertex `w` that is a neighbour of both `u` and `v` is a face
+            * any vertex `w` that is a neighbor of both `u` and `v` is a face
               of the mesh
             * `u` and `v` are not on the boundary
             * ...
@@ -90,7 +84,7 @@ def mesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
         None
 
     Raises:
-        ValueError: If `u` and `v` are not neighbours.
+        ValueError: If `u` and `v` are not neighbors.
 
     """
     if t < 0.0:
@@ -192,7 +186,7 @@ def mesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
             del self.halfedge[v][u]
             self.halfedge[a][u] = fkey
 
-    # V neighbours and halfedges coming into V
+    # V neighbors and halfedges coming into V
     for nbr, fkey in list(self.halfedge[v].items()):
 
         if fkey is None:
@@ -239,7 +233,7 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
     An edge can only be collapsed if the collapse is `legal`. A collapse is
     legal if it meets the following requirements:
 
-        * any vertex `w` that is a neighbour of both `u` and `v` is a face
+        * any vertex `w` that is a neighbor of both `u` and `v` is a face
           of the mesh
         * `u` and `v` are not on the boundary
         * ...
@@ -265,7 +259,7 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
     Raises
     ------
     ValueError
-        If `u` and `v` are not neighbours.
+        If `u` and `v` are not neighbors.
 
     Examples
     --------
@@ -293,26 +287,15 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
 
         from compas.datastructures import Mesh
         from compas.plotters import MeshPlotter
-
-        from compas.geometry import centroid_points
+        from compas.topology import mesh_quads_to_triangles
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        for fkey in list(mesh.faces()):
-            vertices = mesh.face_vertices(fkey)
-            mesh.split_face(fkey, vertices[0], vertices[2])
+        mesh_quads_to_triangles(mesh)
 
-        mesh.swap_edge_tri(14, 16)
-        mesh.swap_edge_tri(31, 22)
+        u, v = mesh.get_any_edge()
 
-        mesh.collapse_edge_tri(30, 17)
-        mesh.collapse_edge_tri(30, 31)
-        mesh.collapse_edge_tri(30, 22)
-
-        points = mesh.get_vertices_attributes('xyz', keys=mesh.vertex_neighbours(30))
-        x, y, z = centroid_points(points)
-
-        mesh.set_vertex_attributes(30, ('x', 'y', 'z'), (x, y, z))
+        mesh.collapse_edge_tri(u, v)
 
         plotter = MeshPlotter(mesh)
 
@@ -383,7 +366,7 @@ def trimesh_collapse_edge(self, u, v, t=0.5, allow_boundary=False, fixed=None):
             del self.vertex[o]
             del self.halfedge[v][o]
 
-    # neighbourhood of V
+    # neighborhood of V
     for nbr, fkey in list(self.halfedge[v].items()):
 
         if fkey is None:

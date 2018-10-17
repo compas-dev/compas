@@ -1,4 +1,11 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from ast import literal_eval
+
+import compas
+import compas_rhino
 
 try:
     import System
@@ -9,21 +16,13 @@ try:
     find_object = sc.doc.Objects.Find
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 else:
     try:
         purge_object = sc.doc.Objects.Purge
     except AttributeError:
         purge_object = None
-
-
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
 
 
 # get_point_coordinates => get_coordinates_points
@@ -102,14 +101,20 @@ def get_objects(name=None, color=None, layer=None, type=None):
     return guids
 
 
-def delete_object(guid, purge=True):
+def delete_object(guid, purge=None):
+    if purge is None:
+        purge = compas_rhino.PURGE_ON_DELETE
+
     if purge and purge_object:
         purge_objects([guid])
     else:
         delete_objects([guid], purge)
 
 
-def delete_objects(guids, purge=True):
+def delete_objects(guids, purge=None):
+    if purge is None:
+        purge = compas_rhino.PURGE_ON_DELETE
+
     if purge and purge_object:
         purge_objects(guids)
     else:
@@ -119,7 +124,10 @@ def delete_objects(guids, purge=True):
         rs.DeleteObjects(guids)
 
 
-def delete_objects_by_name(name, purge=True):
+def delete_objects_by_name(name, purge=None):
+    if purge is None:
+        purge = compas_rhino.PURGE_ON_DELETE
+
     guids = get_objects(name)
     delete_objects(guids, purge=purge)
 
@@ -634,5 +642,4 @@ def get_mesh_edge_vertex_indices(guid):
 # ==============================================================================
 
 if __name__ == '__main__':
-
     pass

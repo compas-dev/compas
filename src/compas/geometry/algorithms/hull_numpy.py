@@ -12,12 +12,6 @@ except ImportError:
     compas.raise_if_not_ironpython()
 
 
-__author__     = ['Matthias Rippmann <rippmann@ethz.ch>']
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = '<rippmannt@ethz.ch>'
-
-
 __all__ = [
     'convex_hull_numpy',
     'convex_hull_xy_numpy',

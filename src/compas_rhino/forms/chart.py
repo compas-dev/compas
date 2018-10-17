@@ -24,13 +24,7 @@ except NameError:
     basestring = str
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['ChartForm', ]
+__all__ = ['ChartForm']
 
 
 class Series(object):
@@ -67,7 +61,7 @@ class ChartForm(Form):
 
     Other Parameters
     ----------------
-    bgcolour : str, tuple, System.Drawing.Color
+    bgcolor : str, tuple, System.Drawing.Color
         The background color of the chart area.
 
     Examples
@@ -112,10 +106,10 @@ class ChartForm(Form):
                  xlimits, xstep,
                  ylimits=None, ystep=None,
                  chartsize=(800, 600), padding=(20, 20, 20, 20),
-                 bgcolour=None,
+                 bgcolor=None,
                  title='ChartForm', **kwargs):
 
-        self._bgcolour = None
+        self._bgcolor = None
 
         w, h = chartsize
         self.chartwidth = w
@@ -125,7 +119,7 @@ class ChartForm(Form):
         self.xmin = xlimits[0]
         self.xmax = xlimits[1]
         self.xstep = xstep
-        self.bgcolour = bgcolour
+        self.bgcolor = bgcolor
 
         self.ymin = 0
         self.ymax = 0
@@ -143,19 +137,19 @@ class ChartForm(Form):
         super(ChartForm, self).__init__(title)
 
     @property
-    def bgcolour(self):
-        return self._bgcolour
+    def bgcolor(self):
+        return self._bgcolor
 
-    @bgcolour.setter
-    def bgcolour(self, colour):
+    @bgcolor.setter
+    def bgcolor(self, colour):
         if not colour:
-            self._bgcolour = Color.White
+            self._bgcolor = Color.White
         elif isinstance(colour, Color):
-            self._bgcolour = colour
+            self._bgcolor = colour
         elif isinstance(colour, basestring):
             raise NotImplementedError
         elif isinstance(colour, tuple):
-            self._bgcolour = Color.FromArgb(* colour)
+            self._bgcolor = Color.FromArgb(* colour)
         else:
             raise NotImplementedError
 
@@ -199,7 +193,7 @@ class ChartForm(Form):
                 value = attr['data'][key]
                 series.Points.AddXY(int(key), value)
 
-        area.BackColor = self.bgcolour
+        area.BackColor = self.bgcolor
 
         self.Controls.Add(chart)
 

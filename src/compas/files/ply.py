@@ -5,12 +5,6 @@ from __future__ import division
 import struct
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'PLY',
     'PLYReader',
@@ -48,21 +42,21 @@ class PLYReader(object):
     }
 
     binary_property_types = {
-        # 'int8'   : 'i1',
+        'int8'   : 'i1',
         'char'   : 'i1',
-        # 'uint8'  : 'u1',
+        'uint8'  : 'u1',
         'uchar'  : 'u1',
-        # 'int16'  : 'i2',
+        'int16'  : 'i2',
         'short'  : 'i2',
-        # 'uint16' : 'u2',
+        'uint16' : 'u2',
         'ushort' : 'u2',
-        # 'int32'  : 'i4',
+        'int32'  : 'i4',
         'int'    : 'i4',
-        # 'uint32' : 'u4',
+        'uint32' : 'u4',
         'uint'   : 'u4',
-        # 'float32': 'f4',
+        'float32': 'f4',
         'float'  : 'f4',
-        # 'float64': 'f8',
+        'float64': 'f8',
         'double' : 'f8'
     }
 
@@ -413,8 +407,8 @@ class PLYReader(object):
 class PLYParser(object):
     """"""
 
-    def __init__(self, reader, precision):
-        self.precision = precision if precision is not None else '3f'
+    def __init__(self, reader, precision=None):
+        self.precision = precision
         self.reader    = reader
         self.vertices  = None
         self.edges     = None
@@ -441,4 +435,4 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_vertices_and_faces(ply.parser.vertices, ply.parser.faces)
 
-    print(mesh)
+    print(mesh.summary())

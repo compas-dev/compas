@@ -31,11 +31,15 @@ def read(*names, **kwargs):
 
 long_description = read('README.md')
 requirements = read('requirements.txt').split('\n')
-optional_requirements = {}
+optional_requirements = {
+    "viewers"      : ['PyOpenGL', 'PySide2', 'vtk'],
+    "optimisation" : ['cython', 'pyopencl', 'pycuda'],
+    "robotics"     : ['roslibpy']
+}
 
 setup(
     name='COMPAS',
-    version='0.2.7',
+    version='0.3.4',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -57,6 +61,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation :: CPython',
     ],
     keywords=['architecture', 'fabrication', 'engineering'],
@@ -80,12 +85,12 @@ setup(
     extras_require=optional_requirements,
 
     entry_points={
-        'console_scripts': [],
+        'console_scripts': ['install_compas_rhino=compas_rhino.install:install'],
     },
 
     ext_modules=[],
 
-    cmdclass={
-        'install': PostInstallCommand,
-    }
+    # cmdclass={
+    #     'install': PostInstallCommand,
+    # }
 )

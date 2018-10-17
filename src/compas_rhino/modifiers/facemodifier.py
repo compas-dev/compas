@@ -4,6 +4,7 @@ from __future__ import division
 
 import ast
 
+import compas
 import compas_rhino
 
 try:
@@ -11,20 +12,10 @@ try:
     from Rhino.Geometry import Point3d
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = [
-    'FaceModifier',
-]
+__all__ = ['FaceModifier']
 
 
 class FaceModifier(object):
@@ -32,7 +23,7 @@ class FaceModifier(object):
     @staticmethod
     def move_face(self, key, constraint=None, allow_off=None):
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        nbrs  = [self.face_coordinates(nbr) for nbr in self.face_neighbours(key)]
+        nbrs  = [self.face_coordinates(nbr) for nbr in self.face_neighbors(key)]
         nbrs  = [Point3d(*xyz) for xyz in nbrs]
 
         def OnDynamicDraw(sender, e):

@@ -20,13 +20,7 @@ from compas.plotters.core.drawing import draw_xpolygons_xy
 from compas.plotters.core.drawing import draw_xarrows_xy
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = ['Plotter', ]
+__all__ = ['Plotter']
 
 
 class Plotter(object):
@@ -690,7 +684,7 @@ if __name__ == "__main__":
         plotter.update(pause=0.001)
 
     vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
+    adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
 
     smooth_centroid(vertices,
                     adjacency,

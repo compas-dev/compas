@@ -7,15 +7,7 @@ import random
 import json
 
 
-__author__    = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'mtomas@ethz.ch'
-
-
-__all__ = [
-    'moga'
-]
+__all__ = ['moga']
 
 
 TPL = """
@@ -194,7 +186,7 @@ def moga(fit_functions,
     moga.fit_functions        = fit_functions
     moga.output_path          = output_path or ''
     moga.num_fit_func         = len(fit_functions)
-    moga.moga_optimise()
+    moga.moga_optimize()
     return moga
 
 
@@ -324,7 +316,7 @@ class MOGA(object):
         """Print a summary of the MOGA."""
         print(self)
 
-    def moga_optimise(self):
+    def moga_optimize(self):
         """This is the main optimization function, this function permorms the multi objective
         GA optimization, performing all genetic operators.
         """

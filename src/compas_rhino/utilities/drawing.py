@@ -2,6 +2,8 @@ from __future__ import print_function
 
 from functools import wraps
 
+import compas
+
 from compas.geometry import center_of_mass_polygon
 
 from compas_rhino.utilities import create_layers_from_path
@@ -46,21 +48,13 @@ try:
     TOL = sc.doc.ModelAbsoluteTolerance
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 else:
     try:
         find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
     except SystemError:
         find_layer_by_fullpath = None
-
-
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -80,7 +74,7 @@ __all__ = [
 # ==============================================================================
 # Extended drawing
 #
-# these functions are optimised for speed,
+# these functions are optimized for speed,
 # but potential error checking has been removed
 # perhaps a good middle ground would be better...
 # ==============================================================================
@@ -539,6 +533,7 @@ def xdraw_faces(faces, **kwargs):
         points = face['points']
         name   = face.get('name')
         color  = face.get('color')
+        vertexcolors = face.get('vertexcolors')
 
         v = len(points)
 
@@ -552,6 +547,13 @@ def xdraw_faces(faces, **kwargs):
             mfaces = _face_to_max_quad(points, range(v))
 
         guid = xdraw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
+
+        if vertexcolors:
+            try:
+                compas_rhino.set_mesh_vertex_colors(guid, vertexcolors)
+            except Exception:
+                pass
+    
         guids.append(guid)
 
     return guids

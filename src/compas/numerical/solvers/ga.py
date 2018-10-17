@@ -8,15 +8,7 @@ import json
 import copy
 
 
-__author__    = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'mtomas@ethz.ch'
-
-
-__all__ = [
-    'ga'
-]
+__all__ = ['ga']
 
 
 TPL = """
@@ -212,7 +204,7 @@ def ga(fit_function,
     ga_.output_path          = output_path or ''
     ga_.input_path           = input_path or ''
     ga_.print_refresh        = print_refresh
-    ga_.ga_optimise()
+    ga_.ga_optimize()
     return ga_
 
 
@@ -346,7 +338,7 @@ class GA(object):
         """Print a summary of the GA."""
         print(self)
 
-    def ga_optimise(self):
+    def ga_optimize(self):
         """ This is the main optimization function, this function permorms the GA optimization,
         performing all genetic operators.
         """

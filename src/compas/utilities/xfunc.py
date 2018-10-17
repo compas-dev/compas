@@ -21,23 +21,13 @@ try:
     from subprocess import PIPE
 
 except ImportError:
-    compas.raise_if_not_ironpython()
-
-    # try:
-    #     from System.Diagnostics import Process
-
-    # except ImportError:
-    #     compas.raise_if_ironpython()
+    if compas.is_windows():
+        compas.raise_if_not_ironpython()
+    elif not compas.is_mono():
+        raise
 
 
-
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['XFunc', ]
+__all__ = ['XFunc']
 
 
 WRAPPER = """
@@ -70,10 +60,11 @@ ipath      = sys.argv[3]
 opath      = sys.argv[4]
 serializer = sys.argv[5]
 
-with open(ipath, 'r') as fo:
-    if serializer == 'json':
+if serializer == 'json':
+    with open(ipath, 'r') as fo:
         idict = json.load(fo, cls=DataDecoder)
-    else:
+else:
+    with open(ipath, 'rb') as fo:
         idict = pickle.load(fo)
 
 try:
@@ -116,11 +107,13 @@ else:
     odict['data']       = r
     odict['profile']    = stream.getvalue()
 
-with open(opath, 'w+') as fo:
-    if serializer == 'json':
+if serializer == 'json':
+    with open(opath, 'w+') as fo:
         json.dump(odict, fo, cls=DataEncoder)
-    else:
-        pickle.dump(odict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+else:
+    with open(opath, 'wb+') as fo:
+        # pickle.dump(odict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(odict, fo, protocol=2)
 
 """
 
@@ -205,7 +198,7 @@ class XFunc(object):
         import compas
         import compas_rhino
 
-        from compas_rhino.helpers import MeshArtist
+        from compas_rhino.artists import MeshArtist
         from compas.datastructures import Mesh
         from compas.utilities import XFunc
 
@@ -345,17 +338,17 @@ class XFunc(object):
         """
         idict = {'args': args, 'kwargs': kwargs}
 
-        with open(self.ipath, 'w+') as fo:
-            if self.serializer == 'json':
+        if self.serializer == 'json':
+            with open(self.ipath, 'w+') as fo:
                 json.dump(idict, fo, cls=DataEncoder)
-            else:
-                pickle.dump(idict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+        else:
+            with open(self.ipath, 'wb+') as fo:
+                # pickle.dump(idict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+                pickle.dump(idict, fo, protocol=2)
 
         with open(self.opath, 'w+') as fh:
             fh.write('')
 
-        # this part is different on Mono
-        # ----------------------------------------------------------------------
         process_args = [self.python,
                         '-u',
                         '-c',
@@ -374,40 +367,17 @@ class XFunc(object):
                 self.callback(line, self.callback_args)
             if self.verbose:
                 print(line)
-        # ----------------------------------------------------------------------
-        # end of part
-        # p = Process()
-        # p.StartInfo.UseShellExecute = False
-        # p.StartInfo.RedirectStandardOutput = True
-        # p.StartInfo.RedirectStandardError = True
-        # p.StartInfo.FileName = self.python
-        # p.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4}'.format(WRAPPER,
-        #                                                              self.basedir,
-        #                                                              self.funcname,
-        #                                                              self.ipath,
-        #                                                              self.opath)
-        # p.Start()
-        # p.WaitForExit()
 
-        # while True:
-        #     line = p.StandardOutput.ReadLine()
-        #     if not line:
-        #         break
-        #     line = line.strip()
-        #     if self.verbose:
-        #         print(line)
-
-        # stderr = p.StandardError.ReadToEnd()
-
-        with open(self.opath, 'r') as fo:
-            if self.serializer == 'json':
+        if self.serializer == 'json':
+            with open(self.opath, 'r') as fo:
                 odict = json.load(fo, cls=DataDecoder)
-            else:
+        else:
+            with open(self.opath, 'rb') as fo:
                 odict = pickle.load(fo)
 
-            self.data    = odict['data']
-            self.profile = odict['profile']
-            self.error   = odict['error']
+        self.data    = odict['data']
+        self.profile = odict['profile']
+        self.error   = odict['error']
 
         if self.delete_files:
             try:
@@ -431,36 +401,76 @@ class XFunc(object):
 
 if __name__ == '__main__':
 
+    import random
+
     import compas
-
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
     from compas.utilities import XFunc
+    from compas_rhino.artists import MeshArtist
 
-    fd_numpy = XFunc('compas.numerical.fd_numpy', delete_files=True, serializer='json')
+    dr = XFunc('compas.numerical.dr.dr_numpy.dr_numpy')
+
+    dva = {
+        'is_fixed': False,
+        'x': 0.0,
+        'y': 0.0,
+        'z': 0.0,
+        'px': 0.0,
+        'py': 0.0,
+        'pz': 0.0,
+        'rx': 0.0,
+        'ry': 0.0,
+        'rz': 0.0,
+    }
+
+    dea = {
+        'qpre': 1.0,
+        'fpre': 0.0,
+        'lpre': 0.0,
+        'linit': 0.0,
+        'E': 0.0,
+        'radius': 0.0,
+    }
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    vertices = mesh.get_vertices_attributes('xyz')
-    edges    = list(mesh.edges())
-    fixed    = list([key for key in mesh.vertices() if mesh.vertex_degree(key) == 2])
-    q        = mesh.get_edges_attribute('q', 1.0)
-    loads    = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
-
-    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
-
-    print(type(xyz))
+    mesh.update_default_vertex_attributes(dva)
+    mesh.update_default_edge_attributes(dea)
 
     for key, attr in mesh.vertices(True):
-        attr['x'] = xyz[key][0]
-        attr['y'] = xyz[key][1]
-        attr['z'] = xyz[key][2]
+        attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
-    plotter = MeshPlotter(mesh)
-    plotter.draw_vertices()
-    plotter.draw_faces()
-    plotter.draw_edges()
-    plotter.show()
+    for u, v, attr in mesh.edges(True):
+        attr['qpre'] = 1.0 * random.randint(1, 7)
 
-    print(fd_numpy.profile)
+    k_i = mesh.key_index()
+
+    vertices = mesh.get_vertices_attributes(('x', 'y', 'z'))
+    edges    = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
+    fixed    = [k_i[key] for key in mesh.vertices_where({'is_fixed': True})]
+    loads    = mesh.get_vertices_attributes(('px', 'py', 'pz'))
+    qpre     = mesh.get_edges_attribute('qpre')
+    fpre     = mesh.get_edges_attribute('fpre')
+    lpre     = mesh.get_edges_attribute('lpre')
+    linit    = mesh.get_edges_attribute('linit')
+    E        = mesh.get_edges_attribute('E')
+    radius   = mesh.get_edges_attribute('radius')
+
+    xyz, q, f, l, r = dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius, kmax=100)
+
+    for key, attr in mesh.vertices(True):
+        index = k_i[key]
+        attr['x'] = xyz[index][0]
+        attr['y'] = xyz[index][1]
+        attr['z'] = xyz[index][2]
+
+    artist = MeshArtist(mesh, layer="XFunc::Mesh")
+
+    artist.clear_layer()
+
+    artist.draw_vertices()
+    artist.draw_edges()
+    artist.draw_faces()
+
+    artist.redraw()
 

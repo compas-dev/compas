@@ -14,12 +14,6 @@ from compas.geometry.basic import length_vector
 from compas.geometry.basic import length_vector_xy
 
 
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'angles_vectors',
     'angles_vectors_xy',

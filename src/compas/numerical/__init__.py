@@ -5,12 +5,6 @@ compas.numerical
 
 .. currentmodule:: compas.numerical
 
-This package implements numerical solvers and algorithms.
-The array and matrix-based implementations are built around `NumPy`_ and `SciPy`_.
-
-.. _NumPy: http://www.numpy.org/
-.. _SciPy: https://www.scipy.org/
-
 
 Algorithms
 ==========
@@ -19,11 +13,15 @@ Algorithms
     :toctree: generated/
     :nosignatures:
 
-    dr
-    dr_numpy
-    drx_numpy
-    fd_cpp
-    fd_numpy
+    DynamicRelaxation
+    DynamicRelaxationX
+    ForceDensity
+
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     pca_numpy
     topop2d_numpy
     topop3d_numpy
@@ -126,6 +124,10 @@ from .utilities import *
 from .solvers import *
 from .algorithms import *
 
+from .dr import *
+from .drx import *
+from .fd import *
+
 from . import linalg
 from . import matrices
 from . import operators
@@ -134,4 +136,14 @@ from . import utilities
 from . import solvers
 from . import algorithms
 
-__all__ = linalg.__all__ + matrices.__all__ + operators.__all__ + utilities.__all__ + solvers.__all__ + algorithms.__all__
+from . import dr
+from . import drx
+from . import fd
+
+__all__ = []
+
+__all__ += linalg.__all__ + matrices.__all__ + operators.__all__ + utilities.__all__
+__all__ += solvers.__all__
+__all__ += algorithms.__all__
+__all__ += dr.__all__ + drx.__all__
+__all__ += fd.__all__

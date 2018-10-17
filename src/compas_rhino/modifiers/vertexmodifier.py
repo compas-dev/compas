@@ -4,6 +4,7 @@ from __future__ import division
 
 import ast
 
+import compas
 import compas_rhino
 
 try:
@@ -11,20 +12,10 @@ try:
     from Rhino.Geometry import Point3d
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = [
-    'VertexModifier',
-]
+__all__ = ['VertexModifier']
 
 
 class VertexModifier(object):
@@ -32,7 +23,7 @@ class VertexModifier(object):
     @staticmethod
     def move_vertex(self, key, constraint=None, allow_off=None):
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        nbrs  = [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbours(key)]
+        nbrs  = [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)]
         nbrs  = [Point3d(*xyz) for xyz in nbrs]
 
         def OnDynamicDraw(sender, e):
@@ -52,13 +43,75 @@ class VertexModifier(object):
 
         gp.Get()
 
-        if gp.CommandResult() == Rhino.Commands.Result.Success:
-            pos = list(gp.Point())
-            self.vertex[key]['x'] = pos[0]
-            self.vertex[key]['y'] = pos[1]
-            self.vertex[key]['z'] = pos[2]
-            return True
-        return False
+        if gp.CommandResult() != Rhino.Commands.Result.Success:
+            return False
+
+        pos = list(gp.Point())
+        self.vertex[key]['x'] = pos[0]
+        self.vertex[key]['y'] = pos[1]
+        self.vertex[key]['z'] = pos[2]
+
+        return True
+
+    @staticmethod
+    def move_vertices(self, keys):
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+        lines = []
+        connectors = []
+
+        for key in keys:
+            a = self.vertex_coordinates(key)
+            nbrs = self.vertex_neighbors(key)
+            for nbr in nbrs:
+                b = self.vertex_coordinates(nbr)
+                line = [Point3d(* a), Point3d(* b)]
+                if nbr in keys:
+                    lines.append(line)
+                else:
+                    connectors.append(line)
+
+        gp = Rhino.Input.Custom.GetPoint()
+
+        gp.SetCommandPrompt('Point to move from?')
+        gp.Get()
+
+        if gp.CommandResult() != Rhino.Commands.Result.Success:
+            return False
+
+        start = gp.Point()
+
+        def OnDynamicDraw(sender, e):
+            end = e.CurrentPoint
+            vector = end - start
+            for a, b in lines:
+                a = a + vector
+                b = b + vector
+                e.Display.DrawDottedLine(a, b, color)
+            for a, b in connectors:
+                a = a + vector
+                e.Display.DrawDottedLine(a, b, color)
+
+        gp.SetCommandPrompt('Point to move to?')
+        gp.SetBasePoint(start, False)
+        gp.DrawLineFromPoint(start, True)
+
+        gp.DynamicDraw += OnDynamicDraw
+
+        gp.Get()
+
+        if gp.CommandResult() != Rhino.Commands.Result.Success:
+            return False
+
+        end = gp.Point()
+
+        vector = list(end - start)
+
+        for key in keys:
+            self.vertex[key]['x'] += vector[0]
+            self.vertex[key]['y'] += vector[1]
+            self.vertex[key]['z'] += vector[2]
+
+        return True
 
     @staticmethod
     def update_vertex_attributes(self, keys, names=None):

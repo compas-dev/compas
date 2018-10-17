@@ -41,12 +41,6 @@ else:
 from subprocess import Popen
 
 
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'nullspace',
     'rank',
@@ -598,7 +592,7 @@ def normalizerow(A, do_nan_to_num=True):
     Returns
     -------
     array
-        Matrix of normalised row vectors (m x n).
+        Matrix of normalized row vectors (m x n).
 
     Notes
     -----

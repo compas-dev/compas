@@ -13,15 +13,7 @@ except ImportError:
     compas.raise_if_not_ironpython()
 
 
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>']
-__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = [
-    'pca_numpy'
-]
+__all__ = ['pca_numpy']
 
 
 def pca_numpy(data):
@@ -126,7 +118,7 @@ def pca_numpy(data):
 
     # eigenvectors
     # ------------
-    # note: the eigenvectors are normalised
+    # note: the eigenvectors are normalized
     # note: vT is exactly what it says it will be => the transposed eigenvectors
     # => take the rows of vT, or the columns of v
     # the right-singular vectors of C (the columns of V or the rows of Vt)

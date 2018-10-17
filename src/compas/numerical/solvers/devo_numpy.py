@@ -32,15 +32,7 @@ except ImportError:
 from time import time
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
-__all__ = [
-    'devo_numpy'
-]
+__all__ = ['devo_numpy']
 
 
 def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, CR=0.5, polish=False, args=(),
@@ -51,7 +43,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
     Parameters
     ----------
     fn : obj
-        The function to evaluate and minimise.
+        The function to evaluate and minimize.
     bounds : list
         Lower and upper bounds for each DoF [[lb, ub], ...].
     population : int
@@ -82,7 +74,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
     float
         Optimal value of objective function.
     list
-        Values that give the optimum (minimised) function.
+        Values that give the optimum (minimized) function.
 
     """
 

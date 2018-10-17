@@ -18,13 +18,10 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+__all__ = ['XFunc', 'DataDecoder', 'DataEncoder']
 
 
-__all__ = ['XFunc', 'DataDecoder', 'DataEncoder', ]
+PATH = "sys.path.insert(0, '{0}')"
 
 
 WRAPPER = """
@@ -43,7 +40,8 @@ import cProfile
 import pstats
 import traceback
 
-sys.path.insert(0, '"{}/src"')
+sys.path.insert(0, '{0}/src')
+{1}
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
@@ -99,7 +97,7 @@ else:
 with open(opath, 'w+') as fp:
     json.dump(odict, fp, cls=DataEncoder)
 
-""".format(compas.HOME)
+"""
 
 
 class XFunc(object):
@@ -203,11 +201,13 @@ class XFunc(object):
     """
 
     def __init__(self, funcname, basedir='.', tmpdir='.', delete_files=True,
-                 verbose=True, callback=None, callback_args=None, python='pythonw'):
+                 verbose=True, callback=None, callback_args=None,
+                 python='pythonw', paths=None):
         self._basedir      = None
         self._tmpdir       = None
         self._callback     = None
         self._python       = None
+        self._paths        = None
         self.funcname      = funcname
         self.basedir       = basedir
         self.tmpdir        = tmpdir
@@ -216,6 +216,7 @@ class XFunc(object):
         self.callback      = callback
         self.callback_args = callback_args
         self.python        = python
+        self.paths         = paths
         self.data          = None
         self.profile       = None
         self.error         = None
@@ -283,6 +284,14 @@ class XFunc(object):
         self._python = python
 
     @property
+    def paths(self):
+        return self._paths
+
+    @paths.setter
+    def paths(self, paths):
+        self._paths = paths
+
+    @property
     def ipath(self):
         return os.path.join(self.tmpdir, '%s.in' % self.funcname)
 
@@ -301,12 +310,20 @@ class XFunc(object):
         with open(self.opath, 'w+') as fh:
             fh.write('')
 
+        paths = self.paths
+
+        if paths:
+            newline = "{}".format(os.linesep)
+            wrapper = WRAPPER.format(compas.HOME, newline.join([PATH.format(p) for p in paths]))
+        else:
+            wrapper = WRAPPER.format(compas.HOME, '')
+
         p = Process()
         p.StartInfo.UseShellExecute = False
         p.StartInfo.RedirectStandardOutput = True
         p.StartInfo.RedirectStandardError = True
         p.StartInfo.FileName = self.python
-        p.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4}'.format(WRAPPER,
+        p.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4}'.format(wrapper,
                                                                      self.basedir,
                                                                      self.funcname,
                                                                      self.ipath,
@@ -355,12 +372,16 @@ class XFunc(object):
 
 if __name__ == '__main__':
 
+    import sys
+
     import compas
 
     from compas.datastructures import Mesh
     from compas_rhino.utilities import XFunc
 
-    fd_numpy = XFunc('compas.numerical.fd_numpy', delete_files=True)
+    fd_numpy = XFunc('compas.numerical.fd.fd_numpy.fd_numpy', delete_files=True)
+
+    fd_numpy.python = "/Users/vanmelet/anaconda3/bin/python3"
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -372,9 +393,17 @@ if __name__ == '__main__':
 
     xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
 
+    print(xyz)
+
     for key, attr in mesh.vertices(True):
         attr['x'] = xyz[key][0]
         attr['y'] = xyz[key][1]
         attr['z'] = xyz[key][2]
 
+    print('here')
+
+    print(fd_numpy.error)
+    print(fd_numpy.data)
     print(fd_numpy.profile)
+
+    print('here')
