@@ -2,10 +2,6 @@
 Mesh parametrisation
 ********************************************************************************
 
-.. literalinclude:: /_examples/mesh-parameterisation.py
-    :language: python
-
-
 .. figure:: /_images/example-mesh-parameterisation.jpg
     :figclass: figure
     :class: figure-img img-fluid
@@ -17,4 +13,8 @@ Mesh parametrisation
     (http://www.ctralie.com/Teaching/LapMesh/). The examples there are an implementation
     of the laplacian mesh editing framework described in
     https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-editing/laplacian-mesh-editing.pdf.
+
+
+.. literalinclude:: /_examples/mesh-parameterisation.py
+    :language: python
 

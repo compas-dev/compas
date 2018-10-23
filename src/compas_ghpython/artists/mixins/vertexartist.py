@@ -1,56 +1,12 @@
 from compas.utilities import color_to_colordict
 
-import compas_rhino
+import compas_ghpython
 
 
 __all__ = ['VertexArtist']
 
 
 class VertexArtist(object):
-
-    __module__ = "compas_rhino.artists.mixins"
-
-    def clear_vertices(self, keys=None):
-        """Clear all vertices previously drawn by the ``VertexArtist``.
-
-        Parameters
-        ----------
-        keys : list, optional
-            The keys of a specific set of vertices that should be cleared.
-            Default is to clear all vertices.
-
-        """
-        if not keys:
-            name = '{}.vertex.*'.format(self.datastructure.name)
-            guids = compas_rhino.get_objects(name=name)
-        else:
-            guids = []
-            for key in keys:
-                name = self.datastructure.vertex_name(key)
-                guid = compas_rhino.get_object(name=name)
-                guids.append(guid)
-        compas_rhino.delete_objects(guids)
-
-    def clear_vertexlabels(self, keys=None):
-        """Clear all vertex labels previously drawn by the ``VertexArtist``.
-
-        Parameters
-        ----------
-        keys : list, optional
-            The keys of a specific set of vertex labels that should be cleared.
-            Default is to clear all vertex labels.
-
-        """
-        if not keys:
-            name = '{}.vertex.label.*'.format(self.datastructure.name)
-            guids = compas_rhino.get_objects(name=name)
-        else:
-            guids = []
-            for key in keys:
-                name = self.datastructure.vertex_label_name(key)
-                guid = compas_rhino.get_object(name=name)
-                guids.append(guid)
-        compas_rhino.delete_objects(guids)
 
     def draw_vertices(self, keys=None, color=None):
         """Draw a selection of vertices.
@@ -92,7 +48,7 @@ class VertexArtist(object):
                 'color' : colordict[key],
                 'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
-        return compas_rhino.xdraw_points(points, layer=self.layer, clear=False, redraw=False)
+        return compas_ghpython.xdraw_points(points)
 
     def draw_vertexlabels(self, text=None, color=None):
         """Draw labels for a selection vertices.
@@ -141,7 +97,7 @@ class VertexArtist(object):
                 'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
 
-        return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        return compas_ghpython.xdraw_labels(labels)
 
 
 # ==============================================================================

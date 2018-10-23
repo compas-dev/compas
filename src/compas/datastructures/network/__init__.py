@@ -1,8 +1,7 @@
+from __future__ import absolute_import
+
 from .network import *
-from .facenetwork import *
-from .operations import *
 
-from .network import __all__ as a
-from .facenetwork import __all__ as b
+from . import network
 
-__all__ = a + b
+__all__ = network.__all__

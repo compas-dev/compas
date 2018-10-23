@@ -1,5 +1,7 @@
-from .volmesh import VolMesh
-from .operations import *
-from .operations import __all__ as a
+from __future__ import absolute_import
 
-__all__ = ['VolMesh'] + a
+from .volmesh import *
+
+from . import volmesh
+
+__all__ = volmesh.__all__

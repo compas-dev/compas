@@ -29,6 +29,9 @@ from compas.datastructures._mixins import FromToData
 from compas.datastructures._mixins import FromToJson
 
 
+__all__ = ['VolMesh']
+
+
 def center_of_mass(edges, sqrt=sqrt):
     L  = 0
     cx = 0

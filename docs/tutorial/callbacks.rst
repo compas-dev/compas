@@ -76,7 +76,7 @@ of an iterative smoothing algorithm (:func:`compas.geometry.mesh_smooth_centroid
     from compas.plotters import MeshPlotter
     from compas.geometry import mesh_smooth_centroid
 
-    mesh = Mesh.from_obj('https://u.nu/faces')
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
@@ -185,6 +185,8 @@ The result shpould be something like this.
 
 Dynamic visualisation in Rhino with conduits
 ============================================
+
+
 
 
 Applying constraints

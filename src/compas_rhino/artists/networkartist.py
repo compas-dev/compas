@@ -9,6 +9,8 @@ import compas_rhino
 
 from compas.utilities import color_to_colordict
 
+from compas_rhino.artists import Artist
+
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
 
@@ -22,7 +24,7 @@ except ImportError:
 __all__ = ['NetworkArtist']
 
 
-class NetworkArtist(EdgeArtist, VertexArtist):
+class NetworkArtist(EdgeArtist, VertexArtist, Artist):
     """A network artist defines functionality for visualising COMPAS networks in Rhino.
 
     Parameters
@@ -39,22 +41,15 @@ class NetworkArtist(EdgeArtist, VertexArtist):
 
     """
 
+    __module__ = "compas_rhino.artists"
+
     def __init__(self, network, layer=None):
+        super(NetworkArtist, self).__init__(layer=layer)
         self.network = network
-        self.layer = layer
-        self.defaults = {
+        self.defaults.update({
             'color.vertex' : (255, 255, 255),
             'color.edge'   : (0, 0, 0),
-        }
-
-    @property
-    def layer(self):
-        """str: The layer that contains the network."""
-        return self.network.attributes.get('layer')
-
-    @layer.setter
-    def layer(self, value):
-        self.network.attributes['layer'] = value
+        })
 
     @property
     def network(self):
@@ -64,29 +59,6 @@ class NetworkArtist(EdgeArtist, VertexArtist):
     @network.setter
     def network(self, network):
         self.datastructure = network
-
-    def redraw(self, timeout=None):
-        """Redraw the Rhino view.
-
-        Parameters
-        ----------
-        timeout : float, optional
-            The amount of time the artist waits before updating the Rhino view.
-            The time should be specified in seconds.
-            Default is ``None``.
-
-        """
-        if timeout:
-            time.sleep(timeout)
-        rs.EnableRedraw(True)
-        rs.Redraw()
-
-    def clear_layer(self):
-        """Clear the main layer of the artist."""
-        if self.layer:
-            compas_rhino.clear_layer(self.layer)
-        else:
-            compas_rhino.clear_current_layer()
 
     def clear(self):
         """Clear the vertices and edges of the network, without clearing the

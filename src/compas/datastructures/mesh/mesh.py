@@ -63,6 +63,9 @@ from compas.datastructures.mesh.operations import mesh_split_edge
 from compas.datastructures.mesh.operations import mesh_unweld_vertices
 
 
+__all__ = ['Mesh']
+
+
 TPL = """
 ================================================================================
 Mesh summary
@@ -97,24 +100,6 @@ class Mesh(FromToPickle,
            Datastructure):
     """Definition of a mesh.
 
-    Attributes
-    ----------
-    vertex : dict
-        A dictionary mapping vertex identifiers to vertex attributes.
-    face : dict
-        A dictionary mapping face identifiers to ordered face vertices.
-    halfedge : dict
-        A dictionary mapping each vertex identifier to a dictionary that maps
-        vertex identifiers of the half-edges connected to the first vertex to the
-        corresponding faces.
-    facedata : dict
-        A dictionary mapping face identifiers to face attributes.
-    edgedata : dict
-        A dictionary mapping edge identifiers (pairs of vertex identifiers) to edge
-        attributes.
-    attributes : dict
-        A dictionary of general mesh attributes.
-
     Examples
     --------
     .. plot::
@@ -132,6 +117,8 @@ class Mesh(FromToPickle,
         )
 
     """
+
+    __module__ = 'compas.datastructures'
 
     collapse_edge   = mesh_collapse_edge
     split_face      = mesh_split_face

@@ -19,6 +19,8 @@ __all__ = ['FaceArtist']
 
 class FaceArtist(object):
 
+    __module__ = "compas_rhino.artists.mixins"
+
     def clear_faces(self, keys=None):
         """Clear all faces previously drawn by the ``FaceArtist``.
 

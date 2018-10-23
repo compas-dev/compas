@@ -19,6 +19,8 @@ __all__ = [
 
 class FromToData(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     @classmethod
     def from_data(cls, data):
         """Construct a datastructure from structured data.
@@ -62,6 +64,8 @@ class FromToData(object):
 
 class FromToJson(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     @classmethod
     def from_json(cls, filepath):
         """Construct a datastructure from structured data contained in a json file.
@@ -102,6 +106,8 @@ class FromToJson(object):
 
 
 class FromToPickle(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     @classmethod
     def from_pickle(cls, filepath):
