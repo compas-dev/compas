@@ -342,6 +342,8 @@ def decompose_matrix(M):
     True
 
     """
+    from compas.geometry.transformations.matrices import euler_angles_from_matrix
+    
     detM = determinant(M)  # raises ValueError if matrix is not squared
 
     if detM == 0:
@@ -395,15 +397,8 @@ def decompose_matrix(M):
         scale = [-x for x in scale]
         row = [[-x for x in y] for y in row]
 
-    # use base vectors??
-    angles[1] = math.asin(-row[0][2])
-    if math.cos(angles[1]):
-        angles[0] = math.atan2(row[1][2], row[2][2])
-        angles[2] = math.atan2(row[0][1], row[0][0])
-    else:
-        angles[0] = math.atan2(-row[2][1], row[1][1])
-        angles[2] = 0.0
-
+    angles = euler_angles_from_matrix(row)
+    
     # perspective
     if math.fabs(Mt[0][3]) > _EPS and math.fabs(Mt[1][3]) > _EPS and \
             math.fabs(Mt[2][3]) > _EPS:
