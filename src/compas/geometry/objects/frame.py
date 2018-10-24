@@ -416,6 +416,7 @@ class Frame(object):
         yaxis = Vector(*vector)
         yaxis.unitize()
         zaxis = Vector.cross(self.xaxis, yaxis)
+        zaxis.unitize()
         self._yaxis = Vector.cross(zaxis, self.xaxis)
 
     @property
