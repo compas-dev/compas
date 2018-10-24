@@ -341,8 +341,11 @@ def decompose_matrix(M):
     >>> allclose(trans1, trans2)
     True
 
+    References
+    ----------
+    .. [1] Slabaugh, 1999. *Computing Euler angles from a rotation matrix*.
+           Available at: http://www.gregslabaugh.net/publications/euler.pdf
     """
-    from compas.geometry.transformations.matrices import euler_angles_from_matrix
     
     detM = determinant(M)  # raises ValueError if matrix is not squared
 
@@ -397,8 +400,30 @@ def decompose_matrix(M):
         scale = [-x for x in scale]
         row = [[-x for x in y] for y in row]
 
-    angles = euler_angles_from_matrix(row)
-    
+    # angles   
+    if row[0][2] != -1. and row[0][2] != 1.:
+
+        beta1 = math.asin(-row[0][2])
+        beta2 = math.pi - beta1
+        
+        alpha1 = math.atan2(row[1][2]/math.cos(beta1), row[2][2]/math.cos(beta1))
+        alpha2 = math.atan2(row[1][2]/math.cos(beta2), row[2][2]/math.cos(beta2))
+
+        gamma1 = math.atan2(row[0][1]/math.cos(beta1), row[0][0]/math.cos(beta1))
+        gamma2 = math.atan2(row[0][1]/math.cos(beta2), row[0][0]/math.cos(beta2))
+
+        angles = [alpha1, beta1, gamma1]
+        # TODO: check for alpha2, beta2, gamma2 needed?
+    else:
+        gamma = 0.
+        if row[0][2] == -1.:
+            beta = math.pi/2.
+            alpha = gamma + math.atan2(row[1][0], row[2][0])
+        else: # row[0][2] == 1
+            beta = -math.pi/2.
+            alpha = -gamma + math.atan2(-row[1][0], -row[2][0])
+        angles = [alpha, beta, gamma]
+
     # perspective
     if math.fabs(Mt[0][3]) > _EPS and math.fabs(Mt[1][3]) > _EPS and \
             math.fabs(Mt[2][3]) > _EPS:
