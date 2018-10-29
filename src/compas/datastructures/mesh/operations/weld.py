@@ -4,8 +4,6 @@ from __future__ import division
 
 import copy
 
-from compas.datastructures.mesh import Mesh
-
 from compas.utilities import pairwise
 
 from compas.utilities import geometric_key
