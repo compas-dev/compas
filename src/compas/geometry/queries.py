@@ -660,19 +660,25 @@ def is_point_in_convex_polygon_xy(point, polygon):
 def is_point_in_polygon_xy(point, polygon):
     """Determine if a point is in the interior of a polygon lying in the XY-plane.
 
-    Parameters:
-        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-        polygon (sequence) : A sequence of XY(Z) coordinates of 2D or 3D points
-        (Z will be ignored) representing the locations of the corners of a polygon.
-        The vertices are assumed to be in order. The polygon is assumed to be closed:
-        the first and last vertex in the sequence should not be the same.
+    Parameters
+    ----------
+    point : sequence of float
+        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+    polygon : sequence
+        A sequence of XY(Z) coordinates of 2D or 3D points (Z will be ignored) representing the locations of the corners of a polygon.
+        The vertices are assumed to be in order.
+        The polygon is assumed to be closed. 
+        The first and last vertex in the sequence should not be the same.
 
-    Warning:
-        A boundary check is not yet implemented.
-        This should include a tolerance value.
+    Warning
+    -------
+    A boundary check is not yet implemented. This should include a tolerance value.
 
-    Returns:
-        bool: True if the point is in the polygon, False otherwise.
+    Returns
+    -------
+    bool
+        True if the point is in the polygon, False otherwise.
+
     """
     x, y = point[0], point[1]
     polygon = [(p[0], p[1]) for p in polygon]  # make 2D
