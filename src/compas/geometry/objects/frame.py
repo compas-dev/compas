@@ -381,7 +381,7 @@ class Frame(object):
         >>>
 
         """
-        frame = cls()
+        frame = cls.worldXY()
         frame.data = data
         return frame
 
@@ -422,9 +422,9 @@ class Frame(object):
     @property
     def data(self):
         """:obj:`dict` : The data dictionary that represents the frame."""
-        return {'point': self.point,
-                'xaxis': self.xaxis,
-                'yaxis': self.yaxis}
+        return {'point': list(self.point),
+                'xaxis': list(self.xaxis),
+                'yaxis': list(self.yaxis)}
 
     @data.setter
     def data(self, data):
