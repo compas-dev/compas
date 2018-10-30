@@ -103,6 +103,9 @@ def mesh_weld(mesh, precision = None):
 
     """
 
+    # get class to re-apply
+    mesh_class = type(mesh)
+
     # create vertex map based on geometric keys in dictionary without duplicates
     vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), precision): vkey for vkey in mesh.vertices()}
     # list vertices with coordinates
@@ -112,7 +115,7 @@ def mesh_weld(mesh, precision = None):
     # modify vertex indices in the faces
     faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
-    return Mesh.from_vertices_and_faces(vertices, faces)
+    return mesh_class.from_vertices_and_faces(vertices, faces)
 
 def meshes_join_and_weld(meshes, precision = None):
     """Join and and weld meshes within some precision distance.
@@ -132,6 +135,9 @@ def meshes_join_and_weld(meshes, precision = None):
 
     """
 
+    # get class to re-apply
+    mesh_class = type(meshes[0])
+
     # create vertex map based on geometric keys in dictionary without duplicates
     vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), precision): vkey for mesh in meshes for vkey in mesh.vertices()}
     # list vertices with coordinates
@@ -141,7 +147,7 @@ def meshes_join_and_weld(meshes, precision = None):
     # modify vertex indices in the faces
     faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for mesh in meshes for fkey in mesh.faces()]
 
-    return Mesh.from_vertices_and_faces(vertices, faces)
+    return mesh_class.from_vertices_and_faces(vertices, faces)
 
 def meshes_join(meshes):
     """Join meshes without welding.
@@ -158,6 +164,9 @@ def meshes_join(meshes):
 
     """
 
+    # get class to re-apply
+    mesh_class = type(meshes[0])
+    
     vertices = []
     faces = []
 
@@ -169,7 +178,7 @@ def meshes_join(meshes):
         # modify vertex indices in the faces
         faces += [ [vertex_map[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
-    return Mesh.from_vertices_and_faces(vertices, faces)
+    return mesh_class.from_vertices_and_faces(vertices, faces)
 
 # ==============================================================================
 # Main
