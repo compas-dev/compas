@@ -11,9 +11,9 @@ from compas.utilities import reverse_geometric_key
 
 __all__ = [
     'mesh_unweld_vertices',
-    'weld_mesh',
-    'join_meshes',
-    'join_and_weld_meshes',
+    'mesh_weld',
+    'meshes_join',
+    'meshes_join_and_weld',
 ]
 
 def mesh_unweld_vertices(mesh, fkey, where=None):
@@ -166,7 +166,7 @@ def meshes_join(meshes):
 
     # get class to re-apply
     mesh_class = type(meshes[0])
-    
+
     vertices = []
     faces = []
 
