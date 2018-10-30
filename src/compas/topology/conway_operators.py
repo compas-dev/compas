@@ -1,5 +1,3 @@
-from compas.datastructures.mesh import Mesh
-
 __author__     = ['Robin Oval']
 __copyright__  = 'Copyright 2018, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -43,13 +41,15 @@ def conway_dual(mesh):
 
 	"""
 
+	mesh_class = type(mesh)
+
 	vertices = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
 
 	old_faces_to_new_vertices = {fkey: i for i, fkey in enumerate(mesh.faces())}
 	
 	faces = [[old_faces_to_new_vertices[fkey] for fkey in reversed(mesh.vertex_faces(vkey, ordered = True))] for vkey in mesh.vertices() if not mesh.is_vertex_on_boundary(vkey) and len(mesh.vertex_neighbors(vkey)) != 0]
 
-	return Mesh.from_vertices_and_faces(vertices, faces)
+	return mesh_class.from_vertices_and_faces(vertices, faces)
 
 def conway_join(mesh):
 	"""Generates the join mesh from a seed mesh.
@@ -73,6 +73,8 @@ def conway_join(mesh):
 
 	"""
 
+	mesh_class = type(mesh)
+
 	vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()] + [mesh.face_centroid(fkey) for fkey in mesh.faces()]
 	
 	old_vertices_to_new_vertices = {vkey: i for i, vkey in enumerate(mesh.vertices())}
@@ -82,7 +84,7 @@ def conway_join(mesh):
 		old_vertices_to_new_vertices[u], old_faces_to_new_vertices[mesh.halfedge[v][u]], old_vertices_to_new_vertices[v], old_faces_to_new_vertices[mesh.halfedge[u][v]]
 		] for u, v in mesh.edges() if not mesh.is_edge_on_boundary(u, v)]
 
-	join_mesh =  Mesh.from_vertices_and_faces(vertices, faces)
+	join_mesh =  mesh_class.from_vertices_and_faces(vertices, faces)
 	join_mesh.cull_vertices()
 
 	return join_mesh
@@ -133,6 +135,8 @@ def conway_kis(mesh):
 
 	"""
 
+	mesh_class = type(mesh)
+
 	vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()] + [mesh.face_centroid(fkey) for fkey in mesh.faces()]
 	
 	old_vertices_to_new_vertices = {vkey: i for i, vkey in enumerate(mesh.vertices())}
@@ -142,7 +146,7 @@ def conway_kis(mesh):
 		old_vertices_to_new_vertices[u], old_vertices_to_new_vertices[v], old_faces_to_new_vertices[mesh.halfedge[u][v]]
 		] for fkey in mesh.faces() for u, v in mesh.face_halfedges(fkey)]
 
-	return Mesh.from_vertices_and_faces(vertices, faces)
+	return mesh_class.from_vertices_and_faces(vertices, faces)
 
 def conway_needle(mesh):
 	"""Generates the needle mesh from a seed mesh.
@@ -286,6 +290,8 @@ def conway_gyro(mesh):
 
 	"""
 
+	mesh_class = type(mesh)
+
 	vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()] + [mesh.face_centroid(fkey) for fkey in mesh.faces()] + [mesh.edge_point(u, v, t = .33) for u in mesh.vertices() for v in mesh.halfedge[u]]
 	
 	old_vertices_to_new_vertices = {vkey: i for i, vkey in enumerate(mesh.vertices())}
@@ -296,7 +302,7 @@ def conway_gyro(mesh):
 		old_halfedges_to_new_vertices[(u, v)], old_halfedges_to_new_vertices[(v, u)], old_vertices_to_new_vertices[v], old_halfedges_to_new_vertices[(v, mesh.face_vertex_descendant(fkey, v))], old_faces_to_new_vertices[mesh.halfedge[u][v]]
 		] for fkey in mesh.faces() for u, v in mesh.face_halfedges(fkey)]
 
-	return Mesh.from_vertices_and_faces(vertices, faces)
+	return mesh_class.from_vertices_and_faces(vertices, faces)
 
 def conway_snub(mesh):
 	"""Generates the snub mesh from a seed mesh.
