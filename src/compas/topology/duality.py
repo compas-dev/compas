@@ -4,6 +4,8 @@ from __future__ import division
 
 from math import pi
 
+from itertools import combinations
+
 from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
 
@@ -12,6 +14,7 @@ __all__ = [
     'mesh_dual',
     'network_dual',
     'network_find_faces',
+    'network_complement'
 ]
 
 
@@ -181,6 +184,33 @@ def network_dual(network, cls=None):
 
     return dual
 
+def network_complement(network, cls = None):
+    """Generate the complement network of a network.
+
+    Parameters
+    ----------
+    network : Network
+        A network.
+
+    Returns
+    -------
+    Network
+        The complement network.
+
+    References
+    ----------
+    .. [1] Wolfram MathWorld. *Graph complement*.
+           Available at: http://mathworld.wolfram.com/GraphComplement.html.
+    """
+
+    if not cls:
+        cls = type(network)
+
+    vertices = [network.vertex_coordinates(vkey) for vkey in network.vertices()]
+
+    edges = [(u, v) for u, v in combinations(network.vertices(), 2) if not network.has_edge(u, v, directed = False)]
+
+    return cls.from_vertices_and_edges(vertices, edges)
 
 def network_find_faces(network, breakpoints=None):
     """Find the faces of a network.
