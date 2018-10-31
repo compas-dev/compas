@@ -85,7 +85,7 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
 
     return face
 
-def mesh_weld(mesh, precision = None):
+def mesh_weld(mesh, precision = None, cls = None):
     """Weld vertices of a mesh within some precision distance.
 
     Parameters
@@ -103,8 +103,8 @@ def mesh_weld(mesh, precision = None):
 
     """
 
-    # get class to re-apply
-    mesh_class = type(mesh)
+    if cls is None:
+        cls = type(mesh)
 
     # create vertex map based on geometric keys in dictionary without duplicates
     vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), precision): vkey for vkey in mesh.vertices()}
@@ -115,9 +115,9 @@ def mesh_weld(mesh, precision = None):
     # modify vertex indices in the faces
     faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
-    return mesh_class.from_vertices_and_faces(vertices, faces)
+    return cls.from_vertices_and_faces(vertices, faces)
 
-def meshes_join_and_weld(meshes, precision = None):
+def meshes_join_and_weld(meshes, precision = None, cls = None):
     """Join and and weld meshes within some precision distance.
 
     Parameters
@@ -135,8 +135,8 @@ def meshes_join_and_weld(meshes, precision = None):
 
     """
 
-    # get class to re-apply
-    mesh_class = type(meshes[0])
+    if cls is None:
+        cls = type(meshes[0])
 
     # create vertex map based on geometric keys in dictionary without duplicates
     vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), precision): vkey for mesh in meshes for vkey in mesh.vertices()}
@@ -147,9 +147,9 @@ def meshes_join_and_weld(meshes, precision = None):
     # modify vertex indices in the faces
     faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for mesh in meshes for fkey in mesh.faces()]
 
-    return mesh_class.from_vertices_and_faces(vertices, faces)
+    return cls.from_vertices_and_faces(vertices, faces)
 
-def meshes_join(meshes):
+def meshes_join(meshes,c ls = None):
     """Join meshes without welding.
 
     Parameters
@@ -164,8 +164,8 @@ def meshes_join(meshes):
 
     """
 
-    # get class to re-apply
-    mesh_class = type(meshes[0])
+    if cls is None:
+        cls = type(meshes[0])
 
     vertices = []
     faces = []
@@ -178,7 +178,7 @@ def meshes_join(meshes):
         # modify vertex indices in the faces
         faces += [ [vertex_map[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
-    return mesh_class.from_vertices_and_faces(vertices, faces)
+    return cls.from_vertices_and_faces(vertices, faces)
 
 # ==============================================================================
 # Main
