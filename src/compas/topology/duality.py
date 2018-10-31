@@ -186,6 +186,7 @@ def network_dual(network, cls=None):
 
 def network_complement(network, cls = None):
     """Generate the complement network of a network.
+    The complement of a graph G is the graph H with the same vertices but whose edges consists of the edges not present in the graph G [1].
 
     Parameters
     ----------
