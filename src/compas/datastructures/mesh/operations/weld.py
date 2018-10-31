@@ -149,7 +149,7 @@ def meshes_join_and_weld(meshes, precision = None, cls = None):
 
     return cls.from_vertices_and_faces(vertices, faces)
 
-def meshes_join(meshes,c ls = None):
+def meshes_join(meshes, cls = None):
     """Join meshes without welding.
 
     Parameters
