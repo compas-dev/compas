@@ -5,7 +5,7 @@ from __future__ import division
 from math import cos
 from math import pi
 
-from compas.datastructures import Mesh
+from compas.datastructures.mesh import Mesh
 
 from compas.geometry import centroid_points
 
