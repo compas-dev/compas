@@ -18,7 +18,7 @@ def mesh_disjointed_parts(mesh):
 
     Returns
     -------
-    disjointed_faces : list
+    parts : list
         The list of disjointed parts as lists of face keys.
 
     """
