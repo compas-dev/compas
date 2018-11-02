@@ -18,6 +18,15 @@ combinatorics
     mesh_is_connected
     network_is_connected
 
+complementarity
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    network_complement
+
 duality
 -------
 
@@ -112,6 +121,7 @@ from .planarity import *
 from .subdivision import *
 from .triangulation import *
 from .connectivity import *
+from .complementarity import *
 
 from .combinatorics import __all__ as a
 from .duality import __all__ as b
@@ -121,6 +131,7 @@ from .subdivision import __all__ as e
 from .traversal import __all__ as f
 from .triangulation import __all__ as g
 from .connectivity import __all__ as h
+from .complementarity import __all__ as i
 
 
-__all__ = a + b + c + d + e + f + g + h
+__all__ = a + b + c + d + e + f + g + h + i
