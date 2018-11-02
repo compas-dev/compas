@@ -19,6 +19,8 @@ __all__ = ['FaceArtist']
 
 class FaceArtist(object):
 
+    __module__ = "compas_rhino.artists.mixins"
+
     def clear_faces(self, keys=None):
         """Clear all faces previously drawn by the ``FaceArtist``.
 
@@ -61,7 +63,7 @@ class FaceArtist(object):
                 guids.append(guid)
         compas_rhino.delete_objects(guids)
 
-    def draw_faces(self, fkeys=None, color=None, join_faces=False):
+    def draw_faces(self, keys=None, color=None, join_faces=False):
         """Draw a selection of faces.
 
         Parameters
@@ -87,15 +89,15 @@ class FaceArtist(object):
         This name is used afterwards to identify faces in the Rhino model.
 
         """
-        fkeys = fkeys or list(self.datastructure.faces())
+        keys = keys or list(self.datastructure.faces())
         
         colordict = color_to_colordict(color,
-                                       fkeys,
-                                       default=self.datastructure.attributes.get('color.face'),
+                                       keys,
+                                       default=self.defaults.get('color.face'),
                                        colorformat='rgb',
                                        normalize=False)
         faces = []
-        for fkey in fkeys:
+        for fkey in keys:
             faces.append({
                 'points': self.datastructure.face_coordinates(fkey),
                 'name'  : self.datastructure.face_name(fkey),
@@ -127,7 +129,7 @@ class FaceArtist(object):
             should refer to face keys and the values should be color
             specifications in the form of strings or tuples.
             The default value is ``None``, in which case the labels are assigned
-            the default face color (``self.datastructure.attributes['color.face']``).
+            the default face color (``self.defaults['color.face']``).
 
         Notes
         -----
@@ -145,7 +147,7 @@ class FaceArtist(object):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.datastructure.attributes.get('color.face'),
+                                       default=self.defaults.get('color.face'),
                                        colorformat='rgb',
                                        normalize=False)
 

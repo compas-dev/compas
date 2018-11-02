@@ -105,13 +105,13 @@ class DynamicRelaxation(object):
     """
 
     backends = {
-        'python' : None,
-        'numpy'  : None
+        'none'   : None,
+        'numpy'  : None,
     }
 
-    def __init__(self, backend='python'):
+    def __init__(self, backend=None):
         self._backend = None
-        self.backend = backend
+        self.backend = backend or 'none'
 
     @property
     def backend(self):
@@ -119,11 +119,12 @@ class DynamicRelaxation(object):
 
     @backend.setter
     def backend(self, backend):
-        if backend not in self.backends:
+        if backend and backend not in self.backends:
             raise NotSupportedError
 
         m = importlib.import_module(".dr_{}".format(backend), package="compas.numerical.dr")
         f = getattr(m, "dr_{}".format(backend))
+
         self.backends[backend] = f
         self._backend = backend
 
@@ -133,6 +134,7 @@ class DynamicRelaxation(object):
 
     def __call__(self, vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
                  callback=None, callback_args=None, **kwargs):
+        """"""
         return self.solver(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
                            callback=callback, callback_args=callback_args, **kwargs)
 

@@ -11,9 +11,13 @@ from numpy import asarray
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+from matplotlib.path import Path
+
 from matplotlib.patches import Circle
 from matplotlib.patches import Polygon
+from matplotlib.patches import PathPatch
 
+from matplotlib.collections import PathCollection
 from matplotlib.collections import LineCollection
 from matplotlib.collections import PatchCollection
 
@@ -38,6 +42,7 @@ __all__ = [
     'draw_xarrows_xy',
     'draw_xlabels_xy',
     'draw_xpolygons_xy',
+    'draw_xpolylines_xy',
 ]
 
 
@@ -564,6 +569,73 @@ def draw_lines_3d(lines,
     )
     axes.add_collection(coll)
     return coll
+
+
+# ==============================================================================
+# polylines
+# ==============================================================================
+
+
+def draw_xpolylines_xy(polylines, axes):
+    patches = []
+
+    widths = []
+    colors = []
+
+    for polyline in polylines:
+        points = polyline['points']
+        codes = [Path.MOVETO] + [Path.LINETO] * (len(points) - 1)
+
+        width     = polyline.get('width', 1.0)
+        color     = polyline.get('color', '#000000')
+        text      = polyline.get('text', None)
+        textcolor = polyline.get('textcolor') or '#000000'
+        fontsize  = polyline.get('fontsize') or 6
+
+        path = Path(points, codes)
+        patch = PathPatch(path, fill=False, edgecolor=color_to_rgb(color, normalize=True))
+
+        # patches.append(patch)
+        # widths.append(width)
+        # colors.append(color_to_rgb(color, normalize=True))
+
+        if text:
+            p = len(points)
+
+            # a = points[0]
+            # b = points[1]
+            # x, y, z = midpoint_line_xy((a, b))
+
+            if p % 2 == 0:
+                a = points[p // 2]
+                b = points[p // 2 + 1]
+                x, y, z = midpoint_line_xy((a, b))
+            else:
+                x, y = points[p // 2 + 1]
+
+            t = axes.text(x,
+                          y,
+                          text,
+                          fontsize=fontsize,
+                          zorder=ZORDER_LABELS,
+                          ha='center',
+                          va='center',
+                          color=color_to_rgb(textcolor, normalize=True))
+
+            t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
+
+        axes.add_patch(patch)
+
+    # coll = PatchCollection(
+    #     patches,
+    #     linewidths=widths,
+    #     edgecolors=colors,
+    #     zorder=ZORDER_LINES
+    # )
+
+    # axes.add_collection(coll)
+
+    # return coll
 
 
 # ==============================================================================

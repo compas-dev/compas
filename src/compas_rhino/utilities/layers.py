@@ -150,7 +150,8 @@ def clear_layers(layers, include_children=True, include_hidden=True):
     rs.EnableRedraw(False)
     to_delete = []
     for name in layers:
-        to_delete += find_objects_on_layer(name, include_hidden, include_children)
+        if rs.IsLayer(name):
+            to_delete += find_objects_on_layer(name, include_hidden, include_children)
     for guid in to_delete:
         obj = find_object(guid)
         if not obj:

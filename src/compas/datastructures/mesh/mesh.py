@@ -63,6 +63,9 @@ from compas.datastructures.mesh.operations import mesh_split_edge
 from compas.datastructures.mesh.operations import mesh_unweld_vertices
 
 
+__all__ = ['Mesh']
+
+
 TPL = """
 ================================================================================
 Mesh summary
@@ -97,24 +100,6 @@ class Mesh(FromToPickle,
            Datastructure):
     """Definition of a mesh.
 
-    Attributes
-    ----------
-    vertex : dict
-        A dictionary mapping vertex identifiers to vertex attributes.
-    face : dict
-        A dictionary mapping face identifiers to ordered face vertices.
-    halfedge : dict
-        A dictionary mapping each vertex identifier to a dictionary that maps
-        vertex identifiers of the half-edges connected to the first vertex to the
-        corresponding faces.
-    facedata : dict
-        A dictionary mapping face identifiers to face attributes.
-    edgedata : dict
-        A dictionary mapping edge identifiers (pairs of vertex identifiers) to edge
-        attributes.
-    attributes : dict
-        A dictionary of general mesh attributes.
-
     Examples
     --------
     .. plot::
@@ -133,6 +118,8 @@ class Mesh(FromToPickle,
 
     """
 
+    __module__ = 'compas.datastructures'
+
     collapse_edge   = mesh_collapse_edge
     split_face      = mesh_split_face
     split_edge      = mesh_split_edge
@@ -148,12 +135,8 @@ class Mesh(FromToPickle,
         self._key_to_str = False
         self._max_int_key = -1
         self._max_int_fkey = -1
-
         self.attributes = {
-            'name'         : None,
-            'color.vertex' : None,
-            'color.edge'   : None,
-            'color.face'   : None,
+            'name' : 'Mesh',
         }
         self.vertex = {}
         self.halfedge = {}
@@ -426,7 +409,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            
+
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
             mesh.plot()
@@ -468,7 +451,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            
+
             mesh = Mesh.from_obj(compas.get('bunny.ply'))
 
         """
@@ -505,7 +488,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            
+
             mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
 
         """
@@ -546,7 +529,7 @@ class Mesh(FromToPickle,
         Examples
         --------
         .. code-block:: python
-            
+
             import json
 
             import compas
@@ -566,7 +549,7 @@ class Mesh(FromToPickle,
         mesh = cls()
 
         for key, attr in network.vertices(True):
-            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0)
+            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=attr['z'])
 
         mesh.halfedge = network.halfedge
 
@@ -600,10 +583,10 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            
+
             vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]
             faces = [[0, 1, 2]]
-            
+
             mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
         """
@@ -2147,6 +2130,26 @@ class Mesh(FromToPickle,
             if self.halfedge[v][u] == f2:
                 return u, v
 
+    def is_face_on_boundary(self, key):
+        """Verify that a face is on a boundary.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the face.
+
+        Returns
+        -------
+        bool
+            True if the face is on the boundary.
+            False otherwise.
+
+        """
+        a = [self.halfedge[v][u] for u, v in self.face_halfedges(key)]
+        if None in a:
+            return True
+        else:
+            return False
     # --------------------------------------------------------------------------
     # vertex geometry
     # --------------------------------------------------------------------------
@@ -2207,7 +2210,7 @@ class Mesh(FromToPickle,
             plotter.show()
 
         """
-        area = 0
+        area = 0.
 
         p0 = self.vertex_coordinates(key)
 
@@ -2278,7 +2281,7 @@ class Mesh(FromToPickle,
             The components of the normal vector.
 
         """
-        vectors = [self.face_normal(fkey) for fkey in self.vertex_faces(key) if fkey is not None]
+        vectors = [self.face_normal(fkey, False) for fkey in self.vertex_faces(key) if fkey is not None]
         return normalize_vector(centroid_points(vectors))
 
     # --------------------------------------------------------------------------
@@ -2441,6 +2444,7 @@ class Mesh(FromToPickle,
 
         """
         vertices = set()
+
         for key, nbrs in iter(self.halfedge.items()):
             for nbr, face in iter(nbrs.items()):
                 if face is None:
@@ -2452,7 +2456,7 @@ class Mesh(FromToPickle,
         if not ordered:
             return vertices
 
-        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices_all], key=lambda x: (x[1][1], x[1][0]))[0][0]
+        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices], key=lambda x: (x[1][1], x[1][0]))[0][0]
 
         vertices = []
         start = key
@@ -2664,9 +2668,13 @@ class Mesh(FromToPickle,
             or the default value if the attribute does not exist.
 
         """
-        if key not in self.edgedata:
-            self.set_edge_attributes(key, [], [])
-        return self.edgedata[key].get(name, value)
+        u, v = key
+        if (u, v) in self.edgedata:
+            return self.edgedata[u, v].get(name, value)
+        if (v, u) in self.edgedata:
+            return self.edgedata[v, u].get(name, value)
+        self.edgedata[u, v] = self.edgedata[v, u] = self.default_edge_attributes.copy()
+        return self.edgedata[u, v].get(name, value)
 
     def get_edge_attributes(self, key, names, values=None):
         """Get the value of a named attribute of one edge.
@@ -2792,7 +2800,7 @@ class Mesh(FromToPickle,
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
             mesh.plot()
-    
+
         """
         from compas.plotters import MeshPlotter
 
@@ -2864,16 +2872,21 @@ if __name__ == '__main__':
 
     # # mesh.add_face([a, b, c, d, e, f, g, h])
 
-    # plotter = MeshPlotter(mesh)
+    for k in mesh.face:
+        print(k, mesh.is_face_on_boundary(k))
 
-    # plotter.draw_vertices()
-    # plotter.draw_edges()
-    # plotter.draw_faces()
 
-    # plotter.show()
+    plotter = MeshPlotter(mesh)
 
-    print(mesh.get_vertices_attribute('x'))
-    print(mesh.get_vertices_attributes('xy'))
+    plotter.draw_vertices()
+    plotter.draw_edges()
+    plotter.draw_faces(text='key')
+    plotter.show()
 
-    print(mesh.get_edges_attribute('q', 1.0))
-    print(mesh.get_edges_attributes('qf', (1.0, 2.0)))
+    # print(mesh.get_vertices_attribute('x'))
+    # print(mesh.get_vertices_attributes('xy'))
+
+    # print(mesh.get_edges_attribute('q', 1.0))
+    # print(mesh.get_edges_attributes('qf', (1.0, 2.0)))
+
+

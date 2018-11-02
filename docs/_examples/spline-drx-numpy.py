@@ -9,20 +9,18 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
 from compas.datastructures import Network
 from compas.plotters import NetworkPlotter
-from compas.numerical import drx_numpy
+from compas.numerical.drx.drx_numpy import drx_numpy
 
 from numpy import linspace
 
 
 # Setup
 
-L0 = 1
-L = 1.5
-n = 40
+L0 = 1.0
+L  = 1.5
+n  = 40
 EI = 0.2
 pins = [0, 5, 20, n - 5]
 
@@ -30,13 +28,13 @@ pins = [0, 5, 20, n - 5]
 # Network
 
 vertices = [[i, i, 0] for i in list(linspace(0, L0, n))]
-edges = [[i, i + 1] for i in range(n - 1)]
+edges    = [[i, i + 1] for i in range(n - 1)]
 
 network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
 network.update_default_vertex_attributes({'is_fixed': False, 'P': [1, -2, 0], 'EIx': EI, 'EIy': EI})
 network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
-network.set_vertices_attributes(pins, {'B': [0, 0, 0], 'is_fixed': True})
-network.beams = {'beam': {'nodes': list(range(n))}}
+network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], keys=pins)
+network.attributes['beams'] = {'beam': {'nodes': list(range(n))}}
 
 
 # Plotter
@@ -62,10 +60,11 @@ plotter.update()
 
 # Callback for dynamic visualization
 
-def plot_iterations(k, X, radius=0.005):
+def plot_iterations(X, radius=0.005):
+
     for i in network.vertices():
         x, y, z = X[i, :]
-        network.set_vertex_attributes(i, {'x': x, 'y': y, 'z': z})
+        network.set_vertex_attributes(i, 'xyz', [x, y, z])
 
     plotter.update_vertices(radius)
     plotter.update_edges()
@@ -74,7 +73,7 @@ def plot_iterations(k, X, radius=0.005):
 
 # Solver with dynamic visualization
 
-drx_numpy(network=network,
+drx_numpy(structure=network,
           tol=0.01,
           refresh=10,
           factor=30,

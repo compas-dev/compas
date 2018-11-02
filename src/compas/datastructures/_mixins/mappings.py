@@ -14,6 +14,8 @@ __all__ = [
 
 class VertexMappings(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     def key_index(self):
         """Returns a dictionary that maps vertex dictionary keys to the
         corresponding index in a vertex list or array.
@@ -46,7 +48,7 @@ class VertexMappings(object):
         """
         return dict(enumerate(self.vertices()))
 
-    def key_gkey(self, precision='3f'):
+    def key_gkey(self, precision=None):
         """Returns a dictionary that maps vertex dictionary keys to the corresponding
         *geometric key* up to a certain precision.
 
@@ -70,7 +72,7 @@ class VertexMappings(object):
         xyz = self.vertex_coordinates
         return {key: gkey(xyz(key), precision) for key in self.vertices()}
 
-    def gkey_key(self, precision='3f'):
+    def gkey_key(self, precision=None):
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the keys of the corresponding vertices.
 
@@ -96,6 +98,8 @@ class VertexMappings(object):
 
 
 class EdgeMappings(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     def uv_index(self):
         """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
@@ -131,7 +135,8 @@ class EdgeMappings(object):
 
 
 class FaceMappings(object):
-    pass
+
+    __module__ = 'compas.datastructures._mixins'
 
 
 # ==============================================================================

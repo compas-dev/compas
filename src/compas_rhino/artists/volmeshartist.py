@@ -7,6 +7,8 @@ import time
 import compas
 import compas_rhino
 
+from compas_rhino.artists import Artist
+
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
 from compas_rhino.artists.mixins import FaceArtist
@@ -21,7 +23,7 @@ except ImportError:
 __all__ = ['VolMeshArtist']
 
 
-class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
+class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     """A volmesh artist defines functionality for visualising COMPAS volmeshes in Rhino.
 
     Parameters
@@ -38,23 +40,14 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
     """
 
+    __module__ = "compas_rhino.artists"
+
     def __init__(self, volmesh, layer=None):
+        super(VolMeshArtist, self).__init__(layer=layer)
         self.volmesh = volmesh
-        self.layer = layer
-        self.defaults = {
-            'color.vertex' : (255, 0, 0),
-            'color.face'   : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
-        }
+        self.defaults.update({
 
-    @property
-    def layer(self):
-        """str: The layer that contains the volmesh."""
-        return self.datastructure.attributes.get('layer')
-
-    @layer.setter
-    def layer(self, value):
-        self.datastructure.attributes['layer'] = value
+        })
 
     @property
     def volmesh(self):
@@ -64,27 +57,6 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     @volmesh.setter
     def volmesh(self, volmesh):
         self.datastructure = volmesh
-
-    def redraw(self, timeout=None):
-        """Redraw the Rhino view.
-
-        Parameters
-        ----------
-        timeout : float, optional
-            The amount of time the artist waits before updating the Rhino view.
-            The time should be specified in seconds.
-            Default is ``None``.
-
-        """
-        if timeout:
-            time.sleep(timeout)
-        rs.EnableRedraw(True)
-        rs.Redraw()
-
-    def clear_layer(self):
-        """Clear the main layer of the artist."""
-        if self.layer:
-            compas_rhino.clear_layer(self.layer)
 
     def clear(self):
         """Clear the vertices, faces and edges of the volmesh, without clearing the

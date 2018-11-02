@@ -331,9 +331,12 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         # keep track track of the new edge points on the boundary
         # and their relation to the previous boundary points
 
+        # quad subdivision
+        # ======================================================================
+
         edgepoints = []
 
-        for u, v in list(subd.edges()):
+        for u, v in mesh.edges():
 
             w = subd.split_edge(u, v, allow_boundary=True)
 
@@ -348,20 +351,26 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
             edgepoints.append(w)
 
+        fkey_xyz = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
+
         for fkey in mesh.faces():
 
             descendant = {i: j for i, j in subd.face_halfedges(fkey)}
             ancestor = {j: i for i, j in subd.face_halfedges(fkey)}
 
-            x, y, z = mesh.face_centroid(fkey)
+            x, y, z = fkey_xyz[fkey]
             c = subd.add_vertex(x=x, y=y, z=z)
 
             for key in mesh.face_vertices(fkey):
                 a = ancestor[key]
                 d = descendant[key]
+
                 subd.add_face([a, key, d, c])
 
             del subd.face[fkey]
+
+        # update coordinates
+        # ======================================================================
 
         # these are the coordinates before updating
 
@@ -400,10 +409,12 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
                 f = 1.0 / n
                 e = 2.0 / n
                 v = (n - 3.0) / n
-                F = [coord * f for coord in centroid_points(fnbrs)]
-                E = [coord * e for coord in centroid_points(nbrs)]
-                V = [coord * v for coord in key_xyz[key]]
-                x, y, z = [F[_] + E[_] + V[_] for _ in range(3)]
+                F = centroid_points(fnbrs)
+                E = centroid_points(nbrs)
+                V = key_xyz[key]
+                x = f * F[0] + e * E[0] + v * V[0]
+                y = f * F[1] + e * E[1] + v * V[1]
+                z = f * F[2] + e * E[2] + v * V[2]
 
             subd.vertex[key]['x'] = x
             subd.vertex[key]['y'] = y
@@ -633,10 +644,10 @@ if __name__ == "__main__":
     from compas.viewers import MeshViewer
 
     mesh = Mesh.from_polyhedron(6)
-    fixed = [mesh.get_any_vertex()]
-    print(fixed)
+    # fixed = [mesh.get_any_vertex()]
+    # print(fixed)
 
-    subdivide = partial(mesh_subdivide_doosabin)
+    subdivide = partial(mesh_subdivide_catmullclark)
     subd = subdivide(mesh, k=4)
 
     viewer = MeshViewer()

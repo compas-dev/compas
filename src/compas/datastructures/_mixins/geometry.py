@@ -18,10 +18,12 @@ __all__ = [
 
 
 class VertexGeometry(object):
-    pass
+    __module__ = 'compas.datastructures._mixins'
 
 
 class EdgeGeometry(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     def edge_coordinates(self, u, v, axes='xyz'):
         """Return the coordinates of the start and end point of an edge.
@@ -145,7 +147,8 @@ class EdgeGeometry(object):
 
 
 class FaceGeometry(object):
-    pass
+
+    __module__ = 'compas.datastructures._mixins'
 
 
 # ==============================================================================

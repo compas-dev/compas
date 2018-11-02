@@ -2,12 +2,10 @@
 Remeshing 3D
 ********************************************************************************
 
-.. literalinclude:: /_examples/mesh-remeshing-on-mesh.py
-    :language: python
-
 .. figure:: /_images/example-mesh-remeshing-on-mesh.gif
     :figclass: figure
     :class: figure-img img-fluid
+
 
 .. raw:: html
 
@@ -21,3 +19,8 @@ Remeshing 3D
 
     </div>
     </div>
+
+
+.. literalinclude:: /_examples/mesh-remeshing-on-mesh.py
+    :language: python
+
