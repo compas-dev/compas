@@ -233,15 +233,18 @@ def thicken_mesh(mesh, distance, cls=None):
         The thickened mesh.
     """
 
+    if cls is None:
+        cls = type(mesh)
+
     # offset in both directions
-    mesh_top = offset_mesh(mesh, distance / 2.)
-    mesh_bottom = offset_mesh(mesh, - distance / 2.)
+    mesh_top = offset_mesh(mesh, distance / 2., cls)
+    mesh_bottom = offset_mesh(mesh, - distance / 2., cls)
 
     # flip bottom part
     mesh_flip_cycles(mesh_bottom)
 
     # join parts
-    thick_mesh = meshes_join([mesh_top, mesh_bottom])
+    thick_mesh = meshes_join([mesh_top, mesh_bottom], cls)
 
     # close boundaries
     n = thick_mesh.number_of_vertices() / 2
@@ -257,4 +260,4 @@ def thicken_mesh(mesh, distance, cls=None):
 
 if __name__ == "__main__":
 
-    from compas.datastructures.mesh import Mesh
+    pass

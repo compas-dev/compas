@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from .bbox import *
 from .bbox_numpy import *
 from .bestfit import *
+from .bestfit_numpy import *
 from .boolean import *
 from .geodesics import *
 from .hull import *
@@ -19,6 +20,7 @@ from .offset import *
 from . import bbox
 from . import bbox_numpy
 from . import bestfit
+from . import bestfit_numpy
 from . import boolean
 from . import geodesics
 from . import hull
@@ -36,6 +38,7 @@ __all__ = []
 
 __all__ += bbox.__all__ + bbox_numpy.__all__
 __all__ += bestfit.__all__
+__all__ += bestfit_numpy.__all__
 __all__ += boolean.__all__
 __all__ += geodesics.__all__
 __all__ += hull.__all__ + hull_numpy.__all__
