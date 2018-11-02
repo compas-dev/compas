@@ -9,6 +9,8 @@ from compas.geometry.transformations import transform_points
 from compas.geometry.objects import Point
 from compas.geometry.objects import Line
 
+from compas.geometry.distance import distance_point_point
+
 
 __all__ = ['Polyline']
 
@@ -129,6 +131,43 @@ class Polyline(object):
         raise NotImplementedError
 
     # ==========================================================================
+    # queries
+    # ==========================================================================
+
+    def point(self, t, snap = False):
+        """Point: The point from the start to the end at a specific normalized parameter.
+        If snap is True, return the closest polyline point."""
+
+        if t < 0 or t > 1:
+            return None
+
+        points = self.points
+        polyline_length = self.length
+
+        x = 0
+        i = 0
+
+        while x <= t:
+
+            line = Line(points[i], points[i + 1])
+            line_length = line.length
+
+            dx = line_length / polyline_length
+
+            if x + dx >= t:
+
+                if snap:
+                    if t - x < x + dx - t:
+                        return line.start
+                    else:
+                        return line.end
+
+                return line.point((t - x) * polyline_length / line_length)
+            
+            x += dx
+            i += 1
+
+    # ==========================================================================
     # operators
     # ==========================================================================
 
@@ -225,7 +264,9 @@ if __name__ == '__main__':
     p = Polyline([[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]])
     q = p.transformed(M)
 
-    plotter = Plotter(figsize=(10, 7))
+    #plotter = Plotter(figsize=(10, 7))
 
-    plotter.draw_polygons([{'points': p.points}, {'points': q.points}])
-    plotter.show()
+    #plotter.draw_polygons([{'points': p.points}, {'points': q.points}])
+    #plotter.show()
+    
+    print(p.point(.7, snap = True))

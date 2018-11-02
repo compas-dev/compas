@@ -145,6 +145,17 @@ class Line(object):
         raise NotImplementedError
 
     # ==========================================================================
+    # queries
+    # ==========================================================================
+
+    def point(self, t):
+        """Point: The point from the start to the end at a specific normalized parameter."""
+        if t < 0 or t > 1:
+            return None
+        v = self.direction * (t * self.length)
+        return self.start + v
+        
+    # ==========================================================================
     # operators
     # ==========================================================================
 
@@ -219,6 +230,7 @@ if __name__ == '__main__':
 
     print(type(l1.start))
     print(l1.midpoint)
+    print(l1.point(.75))
     print(type(l1.midpoint))
     print(l1.length)
     print(l1.direction)
