@@ -15,6 +15,8 @@ __all__ = [
 
 class VertexHelpers(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     def get_any_vertex(self):
         """Get the identifier of a random vertex.
 
@@ -86,6 +88,8 @@ class VertexHelpers(object):
 
 class EdgeHelpers(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     def get_any_edge(self):
         """Get the identifier of a random edge.
 
@@ -137,6 +141,8 @@ class EdgeHelpers(object):
 
 
 class FaceHelpers(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     def get_any_face(self):
         """Get the identifier of a random face.

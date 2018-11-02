@@ -11,8 +11,7 @@ The main library of COMPAS
    environments
    examples
    tutorial
-   notes
    api
-   devguide
+   contributions
    citing
    license

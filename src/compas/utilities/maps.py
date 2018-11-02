@@ -153,6 +153,8 @@ if __name__ == "__main__":
 
     # GeometricKey.set_precision('3f')
 
+    print(geometric_key([1.0, 0.2, 0], '3f'))
+
     print(geometric_key([pi, pi, pi]))
     print(geometric_key([-0.00001, +0.00001, 0.00001], '3f'))
     print(geometric_key2([-0.00001, +0.00001], '3f'))

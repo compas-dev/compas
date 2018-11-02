@@ -20,7 +20,6 @@ from compas.datastructures import Datastructure
 
 from compas.datastructures._mixins import VertexAttributesManagement
 from compas.datastructures._mixins import VertexHelpers
-from compas.datastructures._mixins import VertexCoordinatesDescriptors
 from compas.datastructures._mixins import VertexMappings
 from compas.datastructures._mixins import VertexFilter
 
@@ -60,7 +59,6 @@ class Network(FromToJson,
               EdgeMappings,
               VertexFilter,
               EdgeFilter,
-              VertexCoordinatesDescriptors,
               EdgeAttributesManagement,
               VertexAttributesManagement,
               Datastructure):
@@ -100,6 +98,8 @@ class Network(FromToJson,
         )
 
     """
+
+    __module__ = "compas.datastructures"
 
     split_edge = network_split_edge
 
@@ -372,7 +372,7 @@ class Network(FromToJson,
 
             import compas
             from compas.datastructures import Network
-            
+
             network = Network.from_obj(compas.get('lines.obj'))
 
         """
@@ -405,7 +405,7 @@ class Network(FromToJson,
         Examples
         --------
         .. code-block:: python
-            
+
             import json
 
             import compas
@@ -457,7 +457,7 @@ class Network(FromToJson,
         --------
         .. code-block:: python
 
-            pass    
+            pass
 
         """
         network = cls()
@@ -721,7 +721,7 @@ class Network(FromToJson,
 
     def delete_vertex(self, key):
         """Delete a vertex from the network.
-        
+
         Parameters
         ----------
         key : hashable
@@ -747,7 +747,7 @@ class Network(FromToJson,
 
     def delete_edge(self, u, v):
         """Delete an edge from the network.
-        
+
         Parameters
         ----------
         u : hashable
@@ -1259,7 +1259,7 @@ class Network(FromToJson,
             network = Network.from_obj(compas.get('lines.obj'))
 
             network.plot()
-    
+
         """
         from compas.plotters import NetworkPlotter
 

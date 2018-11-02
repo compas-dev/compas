@@ -23,6 +23,7 @@ Definition of display conduits.
 from __future__ import print_function
 from __future__ import absolute_import
 
+import time
 from contextlib import contextmanager
 
 import compas
@@ -61,10 +62,12 @@ class Conduit(DisplayConduit):
     def disable(self):
         self.Enabled = False
 
-    def redraw(self, k=0):
+    def redraw(self, k=0, pause=None):
         if k % self.refreshrate == 0:
             sc.doc.Views.Redraw()
         Rhino.RhinoApp.Wait()
+        if pause:
+            time.sleep(pause)
 
 
 from .mesh import *

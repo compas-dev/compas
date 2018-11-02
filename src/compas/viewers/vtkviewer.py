@@ -40,6 +40,7 @@ except ImportError:
 
 try:
     from PyQt5.Qt import QApplication
+    from PyQt5.Qt import QCheckBox
     from PyQt5.Qt import QComboBox
     from PyQt5.Qt import QDockWidget
     from PyQt5.Qt import QFrame
@@ -172,8 +173,25 @@ class InteractorStyle(vtkInteractorStyleTrackballCamera):
 
 class VtkViewer(QApplication):
 
-    def __init__(self, name='VTK Viewer', data={}, height=900, width=1440):
+    def __init__(self, name='VTK Viewer', data={}, height=900, width=1440, datastructure=None):
         QApplication.__init__(self, sys.argv)
+
+        if datastructure:
+
+            i_k = datastructure.index_key()
+            k_i = datastructure.index_key()
+            data = {}
+
+            data['vertices'] = {i: datastructure.vertex_coordinates(i_k[i])
+                                for i in range(datastructure.number_of_vertices())}
+
+            data['edges']    = [{'u': k_i[u], 'v': k_i[v]} for u, v in datastructure.edges()]
+
+            data['fixed']    = [k_i[key] for key in datastructure.vertices()
+                                if datastructure.vertex[key].get('is_fixed')]
+
+            if datastructure.attributes['name'] == 'Mesh':
+                data['faces']    = {i: {'vertices': datastructure.face[i]} for i in datastructure.faces()}
 
         self.camera_position = [10, -1, 10]
         self.camera_target   = [0, 0, 0]
@@ -189,9 +207,10 @@ class VtkViewer(QApplication):
         self.width        = width
         self.keycallbacks = {}
 
-        self.labels    = {}
-        self.listboxes = {}
-        self.sliders   = {}
+        self.labels     = {}
+        self.listboxes  = {}
+        self.sliders    = {}
+        self.checkboxes = {}
 
 
     # ==============================================================================
@@ -366,6 +385,14 @@ class VtkViewer(QApplication):
         label.setText(text)
         self.layout.addWidget(label)
 
+    def add_checkbox(self, name, text, checked, callback):
+
+        self.checkboxes[name] = checkbox = QCheckBox()
+        checkbox.setText(text)
+        checkbox.setChecked(checked)
+        checkbox.stateChanged.connect(callback)
+        self.layout.addWidget(checkbox)
+
     def add_listbox(self, name, items, callback):
 
         self.listboxes[name] = listbox = QComboBox()
@@ -382,7 +409,6 @@ class VtkViewer(QApplication):
 
         self.sidebar = sidebar = QDockWidget()
         sidebar.setFixedWidth(120)
-        # sidebar.setWindowTitle('-')
 
         self.layout = layout = QVBoxLayout()
         layout.addStretch()
@@ -678,54 +704,54 @@ if __name__ == "__main__":
     # Mesh
     # ==============================================================================
 
-    def func(self):
-        print('Callback test!')
+    # def func(self):
+    #     print('Callback test!')
 
-    data = {
-        'vertices': {
-            0: [-3, -3, 0],
-            1: [+3, -3, 0],
-            2: [+3, +3, 0],
-            3: [-3, +3, 0],
-            4: [-3, -3, 3],
-            5: [+3, -3, 3],
-            6: [+3, +3, 3],
-            7: [-3, +3, 3],
-        },
-        'vertex_colors': {
-            # turn on vertex coloring by uncommenting
-            0: [255, 0, 255],
-            1: [255, 0, 0],
-            2: [255, 255, 0],
-            3: [255, 255, 0],
-            4: [0, 255, 0],
-            5: [0, 255, 150],
-            6: [0, 255, 255],
-            7: [0, 0, 255],
-        },
-        'edges': [
-            {'u': 0, 'v': 4, 'color': [0, 0, 0]},
-            {'u': 1, 'v': 5, 'color': [0, 0, 255]},
-            {'u': 2, 'v': 6, 'color': [0, 255, 0]},
-            {'u': 3, 'v': 7}
-        ],
-        'faces': {
-            0: {'vertices': [4, 5, 6], 'color': [250, 150, 150]},
-            1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
-        },
-        'fixed':
-            [0, 1],
-        'blocks': {
-            'size': 1,
-            'locations': [[0, 0, 3], [0, 0, 4]],
-        }
-    }
+    # data = {
+    #     'vertices': {
+    #         0: [-3, -3, 0],
+    #         1: [+3, -3, 0],
+    #         2: [+3, +3, 0],
+    #         3: [-3, +3, 0],
+    #         4: [-3, -3, 3],
+    #         5: [+3, -3, 3],
+    #         6: [+3, +3, 3],
+    #         7: [-3, +3, 3],
+    #     },
+    #     'vertex_colors': {
+    #         # turn on vertex coloring by uncommenting
+    #         0: [255, 0, 255],
+    #         1: [255, 0, 0],
+    #         2: [255, 255, 0],
+    #         3: [255, 255, 0],
+    #         4: [0, 255, 0],
+    #         5: [0, 255, 150],
+    #         6: [0, 255, 255],
+    #         7: [0, 0, 255],
+    #     },
+    #     'edges': [
+    #         {'u': 0, 'v': 4, 'color': [0, 0, 0]},
+    #         {'u': 1, 'v': 5, 'color': [0, 0, 255]},
+    #         {'u': 2, 'v': 6, 'color': [0, 255, 0]},
+    #         {'u': 3, 'v': 7}
+    #     ],
+    #     'faces': {
+    #         0: {'vertices': [4, 5, 6], 'color': [250, 150, 150]},
+    #         1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
+    #     },
+    #     'fixed':
+    #         [0, 1],
+    #     'blocks': {
+    #         'size': 1,
+    #         'locations': [[0, 0, 3], [0, 0, 4]],
+    #     }
+    # }
 
-    viewer = VtkViewer(data=data)
-    viewer.show_axes = False
-    viewer.keycallbacks['s'] = func
-    viewer.setup()
-    viewer.start()
+    # viewer = VtkViewer(data=data)
+    # viewer.show_axes = False
+    # viewer.keycallbacks['s'] = func
+    # viewer.setup()
+    # viewer.start()
 
 
     # ==============================================================================
@@ -745,3 +771,20 @@ if __name__ == "__main__":
     # viewer = VtkViewer(data=data)
     # viewer.setup()
     # viewer.start()
+
+
+    # ==============================================================================
+    # Datastructures
+    # ==============================================================================
+
+    from compas.datastructures import Network
+    from compas.datastructures import Mesh
+
+    import compas
+
+    # datastructure = Network.from_obj(compas.get('saddle.obj'))
+    datastructure = Mesh.from_obj(compas.get('quadmesh.obj'))
+
+    viewer = VtkViewer(datastructure=datastructure)
+    viewer.setup()
+    viewer.start()

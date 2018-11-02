@@ -10,6 +10,8 @@ __all__ = [
 
 class VertexCoordinatesDescriptors(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     @property
     def xyz(self):
         """list: The XYZ coordinates of the vertices."""

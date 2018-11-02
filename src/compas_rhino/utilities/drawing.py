@@ -533,6 +533,7 @@ def xdraw_faces(faces, **kwargs):
         points = face['points']
         name   = face.get('name')
         color  = face.get('color')
+        vertexcolors = face.get('vertexcolors')
 
         v = len(points)
 
@@ -546,6 +547,13 @@ def xdraw_faces(faces, **kwargs):
             mfaces = _face_to_max_quad(points, range(v))
 
         guid = xdraw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
+
+        if vertexcolors:
+            try:
+                compas_rhino.set_mesh_vertex_colors(guid, vertexcolors)
+            except Exception:
+                pass
+    
         guids.append(guid)
 
     return guids
