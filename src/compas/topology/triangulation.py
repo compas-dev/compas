@@ -9,14 +9,14 @@ from compas.utilities import flatten
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import add_vectors
-from compas.geometry import bounding_box
+from compas.geometry.algorithms.bbox import bounding_box
 
 from compas.geometry import is_point_in_polygon_xy
 from compas.geometry import is_point_in_triangle_xy
 from compas.geometry import is_point_in_circle_xy
 from compas.geometry import circle_from_points_xy
 
-from compas.geometry import mesh_smooth_area
+from compas.geometry.algorithms.smoothing import mesh_smooth_area
 
 from compas.topology import mesh_dual
 
