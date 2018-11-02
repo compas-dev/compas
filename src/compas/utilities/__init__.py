@@ -95,6 +95,7 @@ maps
     :nosignatures:
 
     geometric_key
+    reverse_geometric_key
     geometric_key2
     normalize_values
 
