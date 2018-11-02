@@ -61,7 +61,7 @@ def centroid_points(points):
     return sum(x) / p, sum(y) / p, sum(z) / p
 
 def weighted_centroid_points(points, weights):
-    """Compute the weighted centroid of a set of points.
+    """Compute the weighted centroid of a set of points. The weights can be negative.
 
     Parameters
     ----------
