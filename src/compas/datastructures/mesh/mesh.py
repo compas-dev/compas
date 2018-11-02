@@ -2528,16 +2528,28 @@ class Mesh(FromToPickle,
                     faces[self.halfedge[nbr][key]] = 1
         return faces.keys()
 
-    def edges_on_boundary(self):
+    def edges_on_boundary(self, oriented = True):
         """Find the edges on the boundary.
+
+        Parameters
+        ----------
+        oriented : bool
+            Boolean whether the boundary edges should point outwards.
 
         Returns
         -------
-        list
-            The edges on the boundary.
+        boundary_edges : list
+            The boundary edges.
 
         """
-        return [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
+
+        boundary_edges =  [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
+        
+        if not oriented:
+            return boundary_edges
+
+        else:
+            return [(v, u) if self.halfedge[u][v] is not None else (u, v) for u, v in boundary_edges]
 
     # --------------------------------------------------------------------------
     # attributes

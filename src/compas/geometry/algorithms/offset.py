@@ -14,11 +14,16 @@ from compas.geometry.intersections import intersection_line_line
 
 from compas.geometry.normals import normal_polygon
 
+from compas.topology import mesh_flip_cycles
+from compas.datastructures.mesh.operations import meshes_join
+
 
 __all__ = [
     'offset_line',
     'offset_polyline',
     'offset_polygon',
+    'offset_mesh',
+    'thicken_mesh'
 ]
 
 
@@ -183,6 +188,68 @@ def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
     polyline_offset.append(lines_offset[-1][1])
     return polyline_offset
 
+def offset_mesh(mesh, distance, cls=None):
+    """Offset a mesh by a constant distance in direction of the vertex normals.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A Mesh to offset.
+    distance : real
+        The offset distance.
+        Distance > 0: offset towards the "top", distance < 0: offset towards the "bottom"
+
+
+    Returns
+    -------
+    Mesh
+        The offset mesh.
+
+    """
+
+    if cls is None:
+        cls = type(mesh)
+
+    vertex_offset = {vkey: (i, [0,0,0]) if len(mesh.vertex_neighbors(vkey)) == 0 else (i, add_vectors(mesh.vertex_coordinates(vkey), scale_vector(mesh.vertex_normal(vkey), distance))) for i, vkey in enumerate(mesh.vertices())}
+    
+    vertices = [xyz for i, xyz in vertex_offset.values()]   
+    faces = [[vertex_offset[vkey][0] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()] 
+    
+    return cls.from_vertices_and_faces(vertices, faces)
+
+def thicken_mesh(mesh, distance, cls=None):
+    """Thicken a mesh by a constant distance, half in both direction of the vertex normals.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh to thicken.
+    distance : real
+        The mesh thickness.
+
+    Returns
+    -------
+    thick_mesh : Mesh
+        The thickened mesh.
+    """
+
+    # offset in both directions
+    mesh_top = offset_mesh(mesh, distance / 2.)
+    mesh_bottom = offset_mesh(mesh, - distance / 2.)
+
+    # flip bottom part
+    mesh_flip_cycles(mesh_bottom)
+
+    # join parts
+    thick_mesh = meshes_join([mesh_top, mesh_bottom])
+
+    # close boundaries
+    n = thick_mesh.number_of_vertices() / 2
+    for u, v in list(thick_mesh.edges_on_boundary()):
+        if u < n and v < n:
+            thick_mesh.add_face([u, v, v + n, u + n])
+
+    return thick_mesh
 
 # ==============================================================================
 # Main
@@ -190,4 +257,4 @@ def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
 
 if __name__ == "__main__":
 
-    pass
+    from compas.datastructures.mesh import Mesh
