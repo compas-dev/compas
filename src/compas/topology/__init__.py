@@ -5,6 +5,26 @@ compas.topology
 
 .. currentmodule:: compas.topology
 
+conway_operators
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    conway_dual
+    conway_join
+    conway_ambo
+    conway_kis
+    conway_needle
+    conway_zip
+    conway_truncate
+    conway_ortho
+    conway_expand
+    conway_gyro
+    conway_snub
+    conway_meta
+    conway_bevel
 
 combinatorics
 -------------
@@ -112,6 +132,7 @@ from .planarity import *
 from .subdivision import *
 from .triangulation import *
 from .connectivity import *
+from .conway_operators import *
 
 from .combinatorics import __all__ as a
 from .duality import __all__ as b
@@ -121,6 +142,7 @@ from .subdivision import __all__ as e
 from .traversal import __all__ as f
 from .triangulation import __all__ as g
 from .connectivity import __all__ as h
+from .conway_operators import __all__ as i
 
 
-__all__ = a + b + c + d + e + f + g + h
+__all__ = a + b + c + d + e + f + g + h + i
