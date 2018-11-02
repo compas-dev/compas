@@ -25,7 +25,6 @@ from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import normal_polygon
 from compas.geometry import area_polygon
-from compas.geometry import bestfit_plane
 from compas.geometry import flatness
 from compas.geometry import Polyhedron
 
