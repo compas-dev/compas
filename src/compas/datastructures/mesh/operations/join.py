@@ -4,7 +4,7 @@ from __future__ import division
 
 from compas.utilities import geometric_key
 
-from compas.geometry import mesh_cull_duplicate_vertices
+from compas.geometry.purging import mesh_cull_duplicate_vertices
 
 from copy import deepcopy
 
