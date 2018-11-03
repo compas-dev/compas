@@ -11,17 +11,22 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'MacroController',
+    'VertexSelector',
 ]
 
 
-class MacroController(object):
+class VertexSelector(object):
 
-    instancename = None
+    @staticmethod
+    def select_vertex(self, message="Select a vertex."):
 
-    def __init__(self, tool=None):
+        raise NotImplementedError
 
-        self.tool = tool
+
+    @staticmethod
+    def select_vertices(self, message="Select vertices."):
+
+        raise NotImplementedError
 
 
 # ==============================================================================

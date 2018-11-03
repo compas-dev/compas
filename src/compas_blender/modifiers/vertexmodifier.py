@@ -11,17 +11,28 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'MacroController',
+    'VertexModifier'
 ]
 
 
-class MacroController(object):
+class VertexModifier(object):
 
-    instancename = None
+    @staticmethod
+    def move_vertex(self, key, constraint=None, allow_off=None):
 
-    def __init__(self, tool=None):
+        raise NotImplementedError
 
-        self.tool = tool
+
+    @staticmethod
+    def move_vertices(self, keys):
+
+        raise NotImplementedError
+
+
+    @staticmethod
+    def update_vertex_attributes(self, keys, names=None):
+
+        raise NotImplementedError
 
 
 # ==============================================================================

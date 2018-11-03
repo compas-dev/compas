@@ -11,17 +11,22 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'MacroController',
+    'EdgeSelector',
 ]
 
 
-class MacroController(object):
+class EdgeSelector(object):
 
-    instancename = None
+    @staticmethod
+    def select_edge(self, message="Select an edge."):
 
-    def __init__(self, tool=None):
+        raise NotImplementedError
 
-        self.tool = tool
+
+    @staticmethod
+    def select_edges(self, message="Select edges."):
+
+        raise NotImplementedError
 
 
 # ==============================================================================

@@ -11,17 +11,35 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'MacroController',
+    'MeshInspector',
 ]
 
 
-class MacroController(object):
+class MeshInspector(object):
 
-    instancename = None
+    def __init__(self):
 
-    def __init__(self, tool=None):
+        pass
 
-        self.tool = tool
+
+    def DrawForeground(self, e):
+
+        raise NotImplementedError
+
+
+    def inspect_vertex(self, key):
+
+        raise NotImplementedError
+
+
+    def inspect_edge(self, key):
+
+        raise NotImplementedError
+
+
+    def inspect_face(self, key):
+
+        raise NotImplementedError
 
 
 # ==============================================================================

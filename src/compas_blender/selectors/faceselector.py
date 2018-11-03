@@ -11,17 +11,22 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'MacroController',
+    'FaceSelector',
 ]
 
 
-class MacroController(object):
+class FaceSelector(object):
 
-    instancename = None
+    @staticmethod
+    def select_face(self, message="Select a face."):
 
-    def __init__(self, tool=None):
+        raise NotImplementedError
 
-        self.tool = tool
+
+    @staticmethod
+    def select_faces(self, message="Select faces."):
+
+        raise NotImplementedError
 
 
 # ==============================================================================

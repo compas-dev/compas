@@ -11,17 +11,30 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'MacroController',
+    'NetworkInspector',
 ]
 
 
-class MacroController(object):
+class NetworkInspector(object):
 
-    instancename = None
+    def __init__(self):
 
-    def __init__(self, tool=None):
+        pass
 
-        self.tool = tool
+
+    def DrawForeground(self, e):
+
+        raise NotImplementedError
+
+
+    def inspect_vertex(self, key):
+
+        raise NotImplementedError
+
+
+    def inspect_edge(self, key):
+
+        raise NotImplementedError
 
 
 # ==============================================================================
@@ -29,5 +42,4 @@ class MacroController(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-
     pass

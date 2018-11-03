@@ -16,26 +16,48 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
-    'cursor_xyz',
+    'Mouse',
 ]
 
 
-def cursor_xyz():
-    
-    """ Returns the spatial co-ordinates of the cursor.
+class Mouse(object):
 
-    Parameters
-    ----------
-    None
+    def __init__(self):
 
-    Returns
-    -------
-    list: 
-        [x, y and z] position of the cursor.
-    
-    """
-    
-    return list(bpy.context.scene.cursor_location.copy())
+        pass
+
+
+    def OnMouseMove(self, e):
+
+        raise NotImplementedError
+
+
+    def OnMouseDown(self, e):
+
+        raise NotImplementedError
+
+
+    def OnMouseUp(self, e):
+
+        raise NotImplementedError
+
+
+    def xyz(self):
+
+        """ Returns the spatial co-ordinates of the cursor.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        list:
+            [x, y and z] position of the cursor.
+
+        """
+
+        return list(bpy.context.scene.cursor_location.copy())
 
 
 # ==============================================================================
@@ -44,4 +66,4 @@ def cursor_xyz():
 
 if __name__ == "__main__":
 
-    print(cursor_xyz())
+    print(Mouse().cursor_xyz())
