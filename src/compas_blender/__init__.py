@@ -22,7 +22,7 @@ compas_blender
 """
 
 from .artists import *
-from .conduits import *
+# from .conduits import *
 from .forms import *
 from .geometry import *
 from .inspectors import *
@@ -32,7 +32,7 @@ from .ui import *
 from .utilities import *
 
 from .artists import __all__ as a
-from .conduits import __all__ as b
+# from .conduits import __all__ as b
 from .forms import __all__ as c
 from .geometry import __all__ as d
 from .inspectors import __all__ as e
@@ -41,4 +41,5 @@ from .selectors import __all__ as g
 from .ui import __all__ as h
 from .utilities import __all__ as i
 
-__all__ = a + b + c + d + e + f + g + h + i
+# __all__ = a + b + c + d + e + f + g + h + i
+__all__ = a + c + d + e + f + g + h + i

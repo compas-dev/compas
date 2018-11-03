@@ -26,7 +26,7 @@ __all__ = [
 
 def wrap_xdrawfunc(f):
 
-    raise NotImplementedError
+    pass
 
 
 @wrap_xdrawfunc

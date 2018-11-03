@@ -1,27 +1,12 @@
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-try:
-    import bpy
-except ImportError:
-    pass
 
 import json
-
-
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
 
 __all__ = [
     'delete_object',
     'delete_objects',
     'delete_objects_by_name',
-    'get_objects',
 #    'get_object_layers',
     'get_object_types',
     'get_object_name',
@@ -40,14 +25,6 @@ __all__ = [
 #    'get_mesh_vertex_index',
 #    'get_mesh_face_index',
 #    'get_mesh_edge_index',
-    'select_point',
-    'select_points',
-    'select_curve',
-    'select_curves',
-    'select_surface',
-    'select_surfaces',
-    'select_mesh',
-    'select_meshes',
     'set_select',
     'set_deselect',
 
@@ -74,70 +51,12 @@ __all__ = [
 ]
 
 
-# ==============================================================================
-# Deleting
-# ==============================================================================
-
-def delete_object(object):
-
-   bpy.data.objects.remove(object)
-   #bpy.data.objects.remove(object, True)  # unlinking argument crashes
 
 
-def delete_objects(objects=[]):
-
-    if not objects:
-        objects = bpy.data.objects
-
-    for object in objects:
-        delete_object(object)
-
-def delete_objects_by_name(names):
-
-    objects = [bpy.data.objects[name] for name in names]
-    delete_objects(objects)
 
 
-def purge_objects():
-    raise NotImplementedError
 
 
-# ==============================================================================
-# Get
-# ==============================================================================
-
-def get_objects(name=None, color=None, collection=None, type=None):
-
-    objects = list(bpy.data.objects)
-
-    if name:
-        objects = [bpy.data.objects[name]]
-
-    elif color:
-        raise NotImplementedError
-
-    elif collection:
-        objects = list(bpy.data.collections[collection].objects)
-
-    elif type:
-        objects = [i for i in objects if i.type == type]
-
-    return objects
-
-
-def get_object_types(objects):
-
-    return [object.type for object in objects]
-
-
-def get_object_name(object):
-
-    return object.name.split('.')[0]
-
-
-def get_object_names(objects):
-
-    return [get_object_name(object) for object in objects]
 
 
 def get_object_attributes(objects):
@@ -157,141 +76,29 @@ def get_object_coordinates(objects):
     return [list(object.location) for object in objects]
 
 
-def get_points(collection=None):
 
-    return [i for i in get_objects(collection=collection) if i.type == 'EMPTY']
-
-
-def get_curves(collection=None):
-
-    return [i for i in get_objects(collection=collection) if i.type == 'CURVE']
-
-
-def get_meshes(collection=None):
-
-    return [i for i in get_objects(collection=collection) if i.type == 'MESH']
-
-
-# ==============================================================================
-# Select
-# ==============================================================================
-
-def select_point():
-
-    # PROMPT FOR USER TO SELECT SOME OBJECTS
-    selected = bpy.context.selected_objects
-    if selected:
-        for object in selected:
-            if object.type == 'EMPTY':
-                return object
-            
-    print('***** A point (empty) object was not in the selection *****')
-    return
-
-
-def select_points():
-
-    # PROMPT FOR USER TO SELECT SOME OBJECTS
-    selected = bpy.context.selected_objects
-    if selected:
-        return [i for i in selected if i.type == 'EMPTY']
-    
-    print('***** Point (empty) objects were not in the selection *****')
-    return
-
-
-def select_curve():
-
-    # PROMPT FOR USER TO SELECT SOME OBJECTS
-    selected = bpy.context.selected_objects
-    if selected:
-        for object in selected:
-            if object.type == 'CURVE':
-                return object
-           
-    print('***** A curve object was not in the selection *****')
-    return
-
-
-def select_curves():
-
-    # PROMPT FOR USER TO SELECT SOME OBJECTS
-    selected = bpy.context.selected_objects
-    if selected:
-        return [i for i in selected if i.type == 'CURVE']
-    
-    print('***** Curve objects were not in the selection *****')
-    return
-
-
-def select_mesh():
-
-    # PROMPT FOR USER TO SELECT SOME OBJECTS
-    selected = bpy.context.selected_objects
-    if selected:
-        for object in selected:
-            if object.type == 'MESH':
-                return object
-            
-    print('***** A mesh object was not in the selection *****')
-    return
-
-
-def select_meshes():
-
-    # PROMPT FOR USER TO SELECT SOME OBJECTS
-    selected = bpy.context.selected_objects
-    if selected:
-        return [i for i in selected if i.type == 'MESH']
-    
-    print('***** Mesh objects were not in the selection *****')
-    return
-
-
-def select_surface():
-
-    # PROMPT FOR USER TO SELECT SOME OBJECTS
-    selected = bpy.context.selected_objects
-    if selected:
-        for object in selected:
-            if object.type == 'SURFACE':
-                return object
-            
-    print('***** A surface object was not in the selection *****')
-    return
-
-
-def select_surfaces():
-
-    # PROMPT FOR USER TO SELECT SOME OBJECTS
-    selected = bpy.context.selected_objects
-    if selected:
-        return [i for i in selected if i.type == 'SURFACE']
-    
-    print('***** Surface objects were not in the selection *****')
-    return
 
 
 def set_select(objects=[]):
-    
+
     if objects:
         if not isinstance(objects, list):
             objects = [objects]
         for object in objects:
             object.select_set(action='SELECT')
-    
+
     else:
         bpy.ops.object.select_all(action='SELECT')
 
 
 def set_deselect(objects=[]):
-    
+
     if objects:
         if not isinstance(objects, list):
             objects = [objects]
         for object in objects:
             object.select_set(action='DESELECT')
-    
+
     else:
         bpy.ops.object.select_all(action='DESELECT')
 
@@ -513,23 +320,8 @@ def set_deselect(objects=[]):
 #    return objects[0]
 
 
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    
     set_deselect()
 
-    cube = get_objects(name='Cube')[0]
-
-    print(cube)
-    #print(get_objects(type='MESH'))
-    #print(get_objects(collection='Collection 1'))
-
-    #print(get_object_types(objects=get_objects(collection='Collection 1')))
-    #print(get_object_name(object=get_objects(collection='Collection 1')[0]))
-    #print(get_object_names(objects=get_objects(collection='Collection 1')))
     #print(get_object_attributes(objects=get_objects(collection='Collection 1')))
 
     #print(get_object_coordinates(objects=get_objects(collection='Collection 1')))

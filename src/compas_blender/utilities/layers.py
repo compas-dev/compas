@@ -3,6 +3,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+try:
+    import bpy
+except ImportError:
+    pass
+
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
@@ -11,48 +16,43 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
+    'create_layer',
+    'create_layers',
     'create_layers_from_path',
     'create_layers_from_paths',
     'create_layers_from_dict',
-    'create_layers',
     'clear_layer',
-    'clear_current_layer',
     'clear_layers',
+    'clear_current_layer',
+    'delete_layer',
     'delete_layers',
 ]
-
-
-# ==============================================================================
-# helpers
-# ==============================================================================
-
-def show_hidden_objects_on_layer(name):
-
-    raise NotImplementedError
-
-
-def find_objects_on_layer(name, include_hidden=True, include_children=True):
-
-    raise NotImplementedError
-
-
-def delete_objects_on_layer(name, include_hidden=True, include_children=False, purge=True):
-
-    raise NotImplementedError
 
 
 # ==============================================================================
 # create
 # ==============================================================================
 
+def create_layer(layer):
+
+    raise NotImplementedError
+
+
+def create_layers(layers):
+
+    for layer in layers:
+        create_layer(layer=layer)
+
+
 def create_layers_from_path(path, separator='::'):
 
     raise NotImplementedError
 
 
-def create_layers_from_paths(names, separator='::'):
+def create_layers_from_paths(paths, separator='::'):
 
-    raise NotImplementedError
+    for path in paths:
+        create_layers_from_path(path=path)
 
 
 def create_layers_from_dict(layers):
@@ -60,24 +60,22 @@ def create_layers_from_dict(layers):
     raise NotImplementedError
 
 
-create_layers = create_layers_from_dict
-
-
 # ==============================================================================
 # clear
 # ==============================================================================
 
-def clear_layer(name, include_hidden=True, include_children=True, purge=True):
+def clear_layer(layer):
 
     raise NotImplementedError
+
+
+def clear_layers(layers):
+
+    for layer in layers:
+        clear_layer(layer=layer)
 
 
 def clear_current_layer():
-
-    raise NotImplementedError
-
-
-def clear_layers(layers, include_children=True, include_hidden=True):
 
     raise NotImplementedError
 
@@ -86,9 +84,15 @@ def clear_layers(layers, include_children=True, include_hidden=True):
 # delete
 # ==============================================================================
 
-def delete_layers(layers):
+def delete_layer(layer):
 
     raise NotImplementedError
+
+
+def delete_layers(layers):
+
+    for layer in layers:
+        delete_layer(layer=layer)
 
 
 # ==============================================================================

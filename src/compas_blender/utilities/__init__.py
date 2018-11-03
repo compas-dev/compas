@@ -28,8 +28,14 @@ layers
 .. autosummary::
     :toctree: generated/
 
+    create_layers_from_path
+    create_layers_from_paths
+    create_layers_from_dict
+    create_layer
     create_layers
+    clear_layer
     clear_layers
+    clear_current_layer
     delete_layers
 
 
@@ -115,13 +121,11 @@ from .layers import *
 from .objects import *
 from .drawing import *
 from .geometry import *
-from .xfunc import *
 
 from .document import __all__ as a
 from .layers import __all__ as b
 from .objects import __all__ as c
 from .drawing import __all__ as d
 from .geometry import __all__ as e
-from .xfunc import __all__ as f
 
-__all__ = a + b + c + d + e + f
+__all__ = a + b + c + d + e
