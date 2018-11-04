@@ -3,6 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import json
+
 try:
     import bpy
 except ImportError:
@@ -25,25 +27,16 @@ __all__ = [
     'get_objects_names',
     'get_objects_layers',
     'get_objects_types',
-    # 'get_object_attributes',
-    # 'get_object_attributes_from_name',
+    'get_objects_coordinates',
+    'get_objects_attributes',
+    'get_objects_attributes_from_names',
     'get_points',
     'get_curves',
-    # 'get_point_coordinates',
-    # 'get_line_coordinates',
-    # 'get_polyline_coordinates',
-    # 'get_polygon_coordinates',
+    'get_points_coordinates',
+    'get_curves_coordinates',
     'get_meshes',
-    # 'get_mesh_face_vertices',
-    # 'get_mesh_vertex_coordinates',
-    # 'get_mesh_vertex_colors',
-    # 'set_mesh_vertex_colors',
-    # 'get_mesh_vertices_and_faces',
-    # 'get_mesh_vertex_index',
-    # 'get_mesh_face_index',
-    # 'get_mesh_edge_index',
-    # 'select_object',
-    # 'select_objects',
+    'select_object',
+    'select_objects',
     'select_point',
     'select_points',
     'select_curve',
@@ -52,6 +45,14 @@ __all__ = [
     'select_surfaces',
     'select_mesh',
     'select_meshes',
+    'set_select',
+    'set_deselect',
+    'set_objects_layer',
+    'set_objects_coordinates',
+    'set_objects_rotations',
+    'set_objects_scales',
+    'set_objects_show_names',
+    'set_objects_visible',
 ]
 
 
@@ -81,7 +82,7 @@ def purge_objects(objects):
 
 
 # ==============================================================================
-# Get
+# Objects
 # ==============================================================================
 
 def get_objects(name=None, color=None, layer=None, type=None):
@@ -111,7 +112,7 @@ def get_object_name(object):
 
 def get_objects_names(objects):
 
-    return [get_object_name(object) for object in objects]
+    return [get_object_name(i) for i in objects]
 
 
 def get_objects_layers(objects):
@@ -121,7 +122,42 @@ def get_objects_layers(objects):
 
 def get_objects_types(objects):
 
-    return [object.type for object in objects]
+    return [i.type for i in objects]
+
+
+def get_objects_coordinates(objects):
+
+    return [list(i.location) for i in objects]
+
+
+def get_objects_attributes(objects):
+
+    raise NotImplementedError
+
+
+def get_objects_attributes_from_names(objects):
+
+    attrs = []
+
+    for i in get_objects_names(objects):
+        name = i.replace("'", '"') + '}'
+
+        try:
+            attrs.append(json.loads(name))
+        except:
+            attrs.append(None)
+
+    return attrs
+
+
+def select_object(message="Select an object."):
+
+    raise NotImplementedError
+
+
+def select_objects(message='Select objects.'):
+
+    raise NotImplementedError
 
 
 # ==============================================================================
@@ -143,6 +179,11 @@ def select_points(message='Select points.'):
     raise NotImplementedError
 
 
+def get_points_coordinates(objects):
+
+    return [list(i.location) for i in objects if i.type == 'EMPTY']
+
+
 # ==============================================================================
 # Curves
 # ==============================================================================
@@ -158,6 +199,11 @@ def select_curve(message='Select curve.'):
 
 
 def select_curves(message='Select curves.'):
+
+    raise NotImplementedError
+
+
+def get_curves_coordinates(objects):
 
     raise NotImplementedError
 
@@ -195,147 +241,61 @@ def select_surfaces(message='Select surfaces.'):
     raise NotImplementedError
 
 
+# ==============================================================================
+# Set
+# ==============================================================================
+
+def set_select(objects=None):
+
+    if objects:
+        for i in objects:
+            i.select_set(action='SELECT')
+    else:
+        bpy.ops.object.select_all(action='SELECT')
 
 
+def set_deselect(objects=None):
+
+    if objects:
+        for i in objects:
+            i.select_set(action='DESELECT')
+    else:
+        bpy.ops.object.select_all(action='DESELECT')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def get_object_attributes(guids):
-
-    raise NotImplementedError
-
-
-def get_object_attributes_from_name(guids):
+def set_objects_layer(objects):
 
     raise NotImplementedError
 
 
-def select_object(message="Select an object."):
+def set_objects_coordinates(objects, coords):
 
-    raise NotImplementedError
+    for i, j in zip(objects, coords):
+        i.location = j
 
 
-def select_objects(message='Select objects.'):
+def set_objects_rotations(objects, rotations):
 
-    raise NotImplementedError
+    for i, j in zip(objects, rotations):
+        i.rotation_euler = j
 
 
-def get_point_coordinates(guids):
+def set_objects_scales(objects, scales):
 
-    raise NotImplementedError
+    for i, j in zip(objects, scales):
+        i.scale = j
 
 
-def get_curve_coordinates():
+def set_objects_show_names(objects, show=True):
 
-    raise NotImplementedError
+    for i in objects:
+        i.show_name = show
 
 
-def get_line_coordinates(guids):
+def set_objects_visible(objects, visible=True):
 
-    raise NotImplementedError
-
-
-def get_polycurve_coordinates():
-
-    raise NotImplementedError
-
-
-def get_polyline_coordinates(guids):
-
-    raise NotImplementedError
-
-
-def get_polygon_coordinates(guids):
-
-    raise NotImplementedError
-
-
-def get_mesh_border(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_face_vertices(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_vertex_coordinates(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_vertex_colors(guid):
-
-    raise NotImplementedError
-
-
-def set_mesh_vertex_colors(guid, colors):
-
-    raise NotImplementedError
-
-
-def get_mesh_vertices_and_faces(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_vertex_index(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_face_index(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_edge_index(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_vertex_indices(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_face_indices(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_vertex_face_indices(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_face_vertex_indices(guid):
-
-    raise NotImplementedError
-
-
-def get_mesh_edge_vertex_indices(guid):
-
-    raise NotImplementedError
+    for i in objects:
+        raise NotImplementedError
 
 
 # ==============================================================================
@@ -347,11 +307,21 @@ if __name__ == '__main__':
     objects = get_objects()
 
     print(objects)
-    print(get_object_types(objects=objects))
-    print(get_object_names(objects=objects))
+    print(get_objects_types(objects=objects))
+    print(get_objects_names(objects=objects))
 
-    #bpy.ops.object.move_to_collection(collection_index=2)
-#    delete_objects(get_objects(layer=layer))
-#    elif isinstance(layers, list):
-#        for layer in layers:
-#            delete_objects(get_objects(layer=layer))
+    points = get_points(layer='Collection 1')
+    print(get_objects_coordinates(objects=points))
+
+    set_select(objects=objects)
+
+    print(get_objects_attributes_from_names(objects=points))
+
+    print(points)
+
+    set_objects_coordinates(points, [[0, 0, 3], [0, 0, 4]])
+    set_objects_rotations(points, [[2, 0, 0], [0, 0, 2]])
+    set_objects_scales(points, [[2, 2, 2], [3, 3, 3]])
+
+    set_objects_show_names(points, True)
+    set_objects_visible(points, False)

@@ -1,4 +1,10 @@
 
+try:
+    import bpy
+except ImportError:
+    pass
+
+
 """
 ********************************************************************************
 compas_blender.geometry
@@ -21,19 +27,23 @@ Object-oriented convenience wrappers for native Blender geometry.
 
 class BlenderGeometry(object):
 
-    def __init__(self):
+    def __init__(self, obj):
 
-        pass
+        self.name       = obj.name
+        self.object     = obj
+        self.geometry   = obj.data
+        self.attributes = {}
+        self.otype      = obj.type
+
+
+    @property
+    def location(self):
+
+        return list(self.object.location)
 
 
     @classmethod
     def from_selection(cls):
-
-        raise NotImplementedError
-
-
-    @staticmethod
-    def from_name(name):
 
         raise NotImplementedError
 
@@ -44,16 +54,9 @@ class BlenderGeometry(object):
         raise NotImplementedError
 
 
-    @property
-    def name(self):
-
-        raise NotImplementedError
-
-
-    @name.setter
-    def name(self, value):
-
-        raise NotImplementedError
+    @staticmethod
+    def refresh():
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 
     def delete(self):
