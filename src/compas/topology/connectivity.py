@@ -91,7 +91,7 @@ def join_lines_to_polylines(lines):
 
         polylines.append(polyline)
 
-    return [[network.vertex_coordinates(vkey) for vkey in polyline]for polyline in polylines]
+    return [[network.vertex_coordinates(vkey) for vkey in polyline] for polyline in polylines]
 
 # ==============================================================================
 # Main
