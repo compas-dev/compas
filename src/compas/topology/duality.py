@@ -4,6 +4,8 @@ from __future__ import division
 
 from math import pi
 
+from itertools import combinations
+
 from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
 
@@ -180,7 +182,6 @@ def network_dual(network, cls=None):
             dual.add_edge(f1, f2)
 
     return dual
-
 
 def network_find_faces(network, breakpoints=None):
     """Find the faces of a network.

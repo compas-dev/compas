@@ -25,9 +25,7 @@ from compas.plotters import MeshPlotter
 
 # make a *stanford bunny* mesh
 
-mesh = Mesh.from_ply(compas.get_bunny())
-
-mesh.cull_vertices()
+mesh = Mesh.from_ply(compas.get('bunny.ply'))
 
 # get any vertex of the mesh
 # and its neighbors
@@ -65,7 +63,11 @@ for key in mesh.vertices():
     if key not in anchors:
         nbrs = mesh.vertex_neighbors(key)
         w = len(nbrs)
-        d = - 1. / w
+
+        if w:
+            d = - 1. / w
+        else:
+            d = 0
 
         for nbr in nbrs:
             c = key_index[nbr]

@@ -16,8 +16,10 @@ except ImportError:
 try:
     from PIL import Image
 except ImportError:
-    compas.raise_if_not_ironpython()
-
+    if compas.is_windows():
+        compas.raise_if_not_ironpython()
+    elif not compas.is_mono():
+        raise
 
 
 __all__ = ['download_file_from_remote', 'download_image_from_remote']

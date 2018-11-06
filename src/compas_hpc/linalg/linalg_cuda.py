@@ -22,7 +22,7 @@ try:
     import pycuda.autoinit
     has_pycuda = True
 except:
-    has_pycuda = None
+    has_pycuda = False
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
@@ -156,12 +156,12 @@ def dot_cuda(a, b, dim=2):
     """
 
     m, n = a.shape
-    o = b.shape[1]
+    o  = b.shape[1]
     nx = int(ceil(o / dim))
     ny = int(ceil(m / dim))
 
     func = mod.get_function('dot_cuda')
-    c = pycuda.gpuarray.empty((m, o), float32)
+    c = pycuda.gpuarray.empty((m, o), dtype=float32)
     func(uint32(m), uint32(n), uint32(o),  a, b, c, block=(dim, dim, 1), grid=(nx, ny, 1))
 
     return c

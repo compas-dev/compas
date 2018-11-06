@@ -310,6 +310,7 @@ class Joint(object):
 
     def scale(self, factor):
         self.origin.scale(factor)
+        self.init_origin.point *= factor
         if self.type in [Joint.PLANAR, Joint.PRISMATIC]:
             self.limit = self.limit.scale(factor)
 

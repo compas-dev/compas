@@ -121,8 +121,9 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
 
     if plot:
 
-        fmin = frange[0] if frange[0] else 0
-        fmax = frange[1] if frange[1] else max(fopt)
+        fmin, fmax = 0, max(fopt)
+        if len(frange) == 2:
+            fmin, fmax = frange
         ydiv = 100
         dc = 1. / population
         data = ones((ydiv + 1, generations + 1, 3))

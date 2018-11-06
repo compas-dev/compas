@@ -674,68 +674,6 @@ def mesh_draw_face_labels(mesh,
     artist.redraw()
 
 
-# def mesh_draw_vertex_normals(mesh,
-#                              display=True,
-#                              layer=None,
-#                              scale=1.0,
-#                              color=(0, 0, 255)):
-#     """"""
-#     guids = compas_rhino.get_objects(name='{0}.vertex.normal.*'.format(mesh.attributes['name']))
-#     compas_rhino.delete_objects(guids)
-
-#     if not display:
-#         return
-
-#     lines = []
-
-#     for key in mesh.vertices():
-#         normal = mesh.vertex_normal(key)
-#         start  = mesh.vertex_coordinates(key)
-#         end    = [start[axis] + normal[axis] for axis in range(3)]
-#         name   = '{0}.vertex.normal.{1}'.format(mesh.attributes['name'], key)
-
-#         lines.append({
-#             'start': start,
-#             'end'  : end,
-#             'name' : name,
-#             'color': color,
-#             'arrow': 'end',
-#         })
-
-#     compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
-
-
-# def mesh_draw_face_normals(mesh,
-#                            display=True,
-#                            layer=None,
-#                            scale=1.0,
-#                            color=(0, 0, 255)):
-#     """"""
-#     guids = compas_rhino.get_objects(name='{0}.face.normal.*'.format(mesh.attributes['name']))
-#     compas_rhino.delete_objects(guids)
-
-#     if not display:
-#         return
-
-#     lines = []
-
-#     for fkey in mesh.faces():
-#         normal = mesh.face_normal(fkey)
-#         start  = mesh.face_center(fkey)
-#         end    = [start[axis] + normal[axis] for axis in range(3)]
-#         name   = '{0}.face.normal.{1}'.format(mesh.attributes['name'], fkey)
-
-#         lines.append({
-#             'start' : start,
-#             'end'   : end,
-#             'name'  : name,
-#             'color' : color,
-#             'arrow' : 'end',
-#         })
-
-#     compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
-
-
 # ==============================================================================
 # selections
 # ==============================================================================
@@ -1022,11 +960,11 @@ def mesh_update_face_attributes(mesh, fkeys, names=None):
 # ==============================================================================
 
 
-def mesh_identify_vertices(mesh, points, precision):
+def mesh_identify_vertices(mesh, points, precision=None):
     keys = []
     gkey_key = {geometric_key(mesh.vertex_coordinates(key), precision): key for key in mesh.vertices()}
     for xyz in points:
-        gkey = geometric_key(xyz, '1f')
+        gkey = geometric_key(xyz, precision)
         if gkey in gkey_key:
             key = gkey_key[gkey]
             keys.append(key)
@@ -1048,8 +986,3 @@ if __name__ == "__main__":
     mesh = Mesh.from_obj(compas.get_data('quadmesh_planar.obj'))
 
     mesh_draw(mesh, layer='test', clear_layer=True)
-
-#    key = mesh_select_vertex(mesh)
-#
-#    if mesh_move_vertex(mesh, key):
-#        mesh_draw(mesh, layer='test', clear_layer=True)

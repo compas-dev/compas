@@ -5,6 +5,7 @@ from __future__ import division
 from ast import literal_eval
 
 import compas
+import compas_rhino
 
 try:
     import System
@@ -100,14 +101,20 @@ def get_objects(name=None, color=None, layer=None, type=None):
     return guids
 
 
-def delete_object(guid, purge=True):
+def delete_object(guid, purge=None):
+    if purge is None:
+        purge = compas_rhino.PURGE_ON_DELETE
+
     if purge and purge_object:
         purge_objects([guid])
     else:
         delete_objects([guid], purge)
 
 
-def delete_objects(guids, purge=True):
+def delete_objects(guids, purge=None):
+    if purge is None:
+        purge = compas_rhino.PURGE_ON_DELETE
+
     if purge and purge_object:
         purge_objects(guids)
     else:
@@ -117,7 +124,10 @@ def delete_objects(guids, purge=True):
         rs.DeleteObjects(guids)
 
 
-def delete_objects_by_name(name, purge=True):
+def delete_objects_by_name(name, purge=None):
+    if purge is None:
+        purge = compas_rhino.PURGE_ON_DELETE
+
     guids = get_objects(name)
     delete_objects(guids, purge=purge)
 

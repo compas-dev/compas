@@ -16,6 +16,7 @@ from matplotlib.patches import Circle
 from compas.plotters.core.drawing import create_axes_xy
 from compas.plotters.core.drawing import draw_xpoints_xy
 from compas.plotters.core.drawing import draw_xlines_xy
+from compas.plotters.core.drawing import draw_xpolylines_xy
 from compas.plotters.core.drawing import draw_xpolygons_xy
 from compas.plotters.core.drawing import draw_xarrows_xy
 
@@ -525,6 +526,9 @@ class Plotter(object):
 
         """
         return draw_xlines_xy(lines, self.axes)
+
+    def draw_polylines(self, polylines):
+        return draw_xpolylines_xy(polylines, self.axes)
 
     def draw_polygons(self, polygons):
         """Draws polygons on a 2D plot.
