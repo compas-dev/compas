@@ -26,6 +26,17 @@ conway_operators
     conway_meta
     conway_bevel
 
+connectivity
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    adjacency_from_edges
+    connectivity_from_edges
+    join_lines_to_polylines
+
 combinatorics
 -------------
 
