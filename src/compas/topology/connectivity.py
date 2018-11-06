@@ -46,7 +46,7 @@ def connectivity_from_edges(edges):
     raise NotImplementedError
 
 def join_lines_to_polylines(lines):
-    """Join polylines from lines. The polylines stop at points connectng more than two lines.
+    """Join polylines from lines. The polylines stop at points connecting more than two lines.
 
     Parameters
     ----------
@@ -91,7 +91,7 @@ def join_lines_to_polylines(lines):
 
         polylines.append(polyline)
 
-    return [[network.vertex_coordinates(vkey) for vkey in polyline]for polyline in polylines]
+    return [[network.vertex_coordinates(vkey) for vkey in polyline] for polyline in polylines]
 
 # ==============================================================================
 # Main
