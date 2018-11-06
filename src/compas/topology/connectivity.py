@@ -64,7 +64,7 @@ def join_lines_to_polylines(lines):
     network = Network.from_lines([(line[0], line[-1]) for line in lines])
 
     polylines = []
-    edges_to_visit = list(network.edges())
+    edges_to_visit = set(network.edges())
 
     # initiate a polyline from an unvisited edge
     while len(edges_to_visit) > 0:
