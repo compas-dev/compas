@@ -8,7 +8,7 @@ from compas.utilities import pairwise
 
 __all__ = [
     'adjacency_from_edges',
-    'connectivity_from_edges'
+    'connectivity_from_edges',
     'join_lines_to_polylines',
 ]
 
