@@ -122,6 +122,8 @@ data/bunny
 *.ply
 *.tar.gz
 
+data/models
+
 docs/api/generated/
 docs/__build
 
