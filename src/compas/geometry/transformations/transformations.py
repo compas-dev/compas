@@ -827,28 +827,26 @@ def orient_points(points, reference_plane, target_plane):
         from compas.geometry import orient_points
         from compas.geometry import intersection_segment_segment_xy
 
-        reference_plane = [(0.57735,0.57735,0.57735),(1.0, 1.0, 1.0)]
+        refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
+        tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
 
-        line_a = [
-            (0.288675,0.288675,1.1547),
-            (0.866025,0.866025, 0.)
-            ]
+        points = [
+            [0.288675, 0.288675, 1.1547],
+            [0.866025, 0.866025, 0.0],
+            [1.077350, 0.077350, 0.57735],
+            [0.077350, 1.077350, 0.57735]
+        ]
 
-        line_b = [
-            (1.07735,0.0773503,0.57735),
-            (0.0773503,1.07735,0.57735)
-            ]
+        points = orient_points(points, refplane, tarplane)
 
-        # orient lines to lie in the xy-plane
-        line_a_xy = orient_points(line_a, reference_plane)
-        line_b_xy = orient_points(line_b, reference_plane)
+        ab = points[0], points[1]
+        cd = points[2], points[3]
 
-        # compute intersection in 2d in the xy-plane
-        intx_point_xy = intersection_segment_segment_xy(line_a_xy, line_b_xy)
+        point = intersection_segment_segment_xy(ab, cd)
 
-        # re-orient resulting intersection point to lie in the reference plane
-        intx_point = orient_points([intx_point_xy], target_plane=reference_plane)[0]
-        print(intx_point)
+        points = orient_points([point], tarplane, refplane)
+        
+        print(points[0])
 
     """
     axis = cross_vectors(reference_plane[1], target_plane[1])
@@ -874,36 +872,38 @@ if __name__ == "__main__":
     from compas.geometry import intersection_segment_segment_xy
 
 
-    # refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
-    # tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
-
-    # points = [
-    #     [0.288675, 0.288675, 1.1547],
-    #     [0.866025, 0.866025, 0.0],
-    #     [1.077350, 0.077350, 0.57735],
-    #     [0.077350, 1.077350, 0.57735]
-    # ]
-
-    # points = orient_points(points, refplane, tarplane)
-
-    # ab = points[0], points[1]
-    # cd = points[2], points[3]
-
-    # result = intersection_segment_segment_xy(ab, cd)
-
-    # print(result)
+    refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
+    tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
 
     points = [
-        [ 1.0,  1.0, 0.0],
-        [-1.0,  1.0, 0.0],
-        [-1.0, -1.0, 0.0],
-        [ 1.0, -1.0, 0.0]
+        [0.288675, 0.288675, 1.1547],
+        [0.866025, 0.866025, 0.0],
+        [1.077350, 0.077350, 0.57735],
+        [0.077350, 1.077350, 0.57735]
     ]
-
-    refplane = ([0, 0, 0], [0, 0, -1.0])
-    tarplane = ([0, 0, 0], [0, 0, 1.0])
 
     points = orient_points(points, refplane, tarplane)
 
-    print(points)
+    ab = points[0], points[1]
+    cd = points[2], points[3]
+
+    point = intersection_segment_segment_xy(ab, cd)
+
+    points = orient_points([point], tarplane, refplane)
+    
+    print(points[0])
+
+    # points = [
+    #     [ 1.0,  1.0, 0.0],
+    #     [-1.0,  1.0, 0.0],
+    #     [-1.0, -1.0, 0.0],
+    #     [ 1.0, -1.0, 0.0]
+    # ]
+
+    # refplane = ([0, 0, 0], [0, 0, -1.0])
+    # tarplane = ([0, 0, 0], [0, 0, 1.0])
+
+    # points = orient_points(points, refplane, tarplane)
+
+    # print(points)
 
