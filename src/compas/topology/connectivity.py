@@ -5,6 +5,7 @@ from __future__ import division
 from compas.datastructures.network import Network
 
 from compas.utilities import pairwise
+from compas.utilities import geometric_key
 
 __all__ = [
     'adjacency_from_edges',
@@ -45,13 +46,15 @@ def connectivity_from_edges(edges):
     """"""
     raise NotImplementedError
 
-def join_lines_to_polylines(lines):
+def join_lines_to_polylines(lines, stops = []):
     """Join polylines from lines. The polylines stop at points connecting more than two lines.
 
     Parameters
     ----------
     lines : list
         List of lines as tuples of their extremity coordinates.
+    stops : list
+        List of point coordinates for additional splits.
 
     Returns
     -------
@@ -59,6 +62,9 @@ def join_lines_to_polylines(lines):
         The polylines. If the polyline is closed, the two extremities are the same.
 
     """
+
+    # geometric keys of split points
+    stop_geom_keys = set([geometric_key(xyz) for xyz in stops])
 
     # create graph from line extremities
     network = Network.from_lines([(line[0], line[-1]) for line in lines])
@@ -74,9 +80,9 @@ def join_lines_to_polylines(lines):
         while polyline[0] != polyline[-1]:
 
             # ... or until both end are non-two-valent vertices
-            if len(network.vertex_neighbors(polyline[-1])) != 2:
+            if len(network.vertex_neighbors(polyline[-1])) != 2 or geometric_key(polyline[-1]) in stop_geom_keys:
                 polyline = list(reversed(polyline))
-                if len(network.vertex_neighbors(polyline[-1])) != 2:
+                if len(network.vertex_neighbors(polyline[-1])) != 2 or geometric_key(polyline[-1]) in stop_geom_keys:
                     break
 
             # add next edge
