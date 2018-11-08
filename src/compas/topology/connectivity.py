@@ -46,23 +46,26 @@ def connectivity_from_edges(edges):
     """"""
     raise NotImplementedError
 
-def join_lines_to_polylines(lines, stops = []):
-    """Join polylines from lines. The polylines stop at points connecting more than two lines.
+def join_polylines(polylines, stops = []):
+    """Join polylines. The polylines stop at points connectng more than two lines and to optional additional points.
 
     Parameters
     ----------
-    lines : list
-        List of lines as tuples of their extremity coordinates.
+    polylines : list
+        List of polylines as tuples of vertex coordinates.
     stops : list
         List of point coordinates for additional splits.
 
     Returns
     -------
     polylines: list
-        The polylines. If the polyline is closed, the two extremities are the same.
+        The joined polylines. If the polyline is closed, the two extremities are the same.
 
     """
 
+    # explode in lines
+    lines = [(u, v) for polyline in polylines for u, v in pairwise(polyline)]
+    
     # geometric keys of split points
     stop_geom_keys = set([geometric_key(xyz) for xyz in stops])
 
@@ -80,9 +83,9 @@ def join_lines_to_polylines(lines, stops = []):
         while polyline[0] != polyline[-1]:
 
             # ... or until both end are non-two-valent vertices
-            if len(network.vertex_neighbors(polyline[-1])) != 2 or geometric_key(polyline[-1]) in stop_geom_keys:
+            if len(network.vertex_neighbors(polyline[-1])) != 2 or geometric_key(network.vertex_coordinates(polyline[-1])) in stop_geom_keys:
                 polyline = list(reversed(polyline))
-                if len(network.vertex_neighbors(polyline[-1])) != 2 or geometric_key(polyline[-1]) in stop_geom_keys:
+                if len(network.vertex_neighbors(polyline[-1])) != 2 or geometric_key(network.vertex_coordinates(polyline[-1])) in stop_geom_keys:
                     break
 
             # add next edge
