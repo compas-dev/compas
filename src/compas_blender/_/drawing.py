@@ -14,11 +14,7 @@ from __future__ import print_function
 #from compas.geometry import centroid_points
 #from compas.geometry import distance_point_point
 
-try:
-    import bpy
-#    from mathutils import Vector
-except ImportError:
-    pass
+
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
@@ -38,7 +34,7 @@ __all__ = [
 #    'xdraw_pipes',
 #    'xdraw_spheres',
 #    'xdraw_mesh',
-    
+
 #    'delete_all_materials',
 #    'create_material',
 #    'draw_cuboid',
@@ -210,20 +206,6 @@ __all__ = [
 #                        for u, v in zip(start, end)])
 
 
-#def draw_points(pos=[[0, 0, 0]], radius=1, layer=0):
-#    """ Draw multiple points (empties).
-
-#    Parameters:
-#        pos (list): Centroid locations [[x, y, z], ...].
-#        radius (float): Radius of points.
-#        layer (int): Layer number.
-
-#    Returns:
-#        list: Created point objects.
-#    """
-#    return xdraw_points([{'pos': i, 'radius': radius, 'layer': layer} for i in pos])
-
-
 #def draw_spheres(pos=[[0, 0, 0]], radius=1, layer=0, color=[1, 1, 1]):
 #    """ Draw multiple spheres.
 
@@ -239,15 +221,7 @@ __all__ = [
 #    return xdraw_spheres([{'pos': i, 'radius': radius, 'layer': layer, 'color': color} for i in pos])
 
 
-def _link_objects(objects):
 
-    for object in objects:
-        pass
-        #bpy.context.scene.objects.link(object)
-        #bpy.context.scene_collection.objects.link(object)
-#        object.layers[:] = mask
-#    deselect_all_objects()
-    return objects
 
 
 # ==============================================================================
@@ -437,27 +411,6 @@ def xdraw_lines(lines):
 #    return _link_objects(objects)
 
 
-#def xdraw_points(points):
-#    """ Draw a set of points (empties).
-
-#    Parameters:
-#        points (list): {'radius':, 'pos':, 'name':, 'layer':}.
-
-#    Returns:
-#        list: Created empty objects.
-#    """
-#    bpy.ops.object.empty_add(type='SPHERE', radius=1, location=[0, 0, 0])
-#    object = bpy.context.object
-#    objects = []
-#    for point in points:
-#        copy = object.copy()
-#        copy.scale *= point.get('radius', 1)
-#        copy.location = Vector(point.get('pos', [0, 0, 0]))
-#        copy.name = point.get('name', 'point')
-#        set_object_layer(object=copy, layer=point.get('layer', 0))
-#        objects.append(copy)
-#    delete_object(object=object)
-#    return _link_objects(objects)
 
 
 #def xdraw_spheres(spheres, div=20):
@@ -549,14 +502,14 @@ if __name__ == '__main__':
 #    xdraw_points(points)
 
     xdraw_lines([{
-        'start': [3, 1, 0], 
+        'start': [3, 1, 0],
         'end': [5, -1, 0],
-        'name': 'line-test', 
-        'width': 0.1, 
+        'name': 'line-test',
+        'width': 0.1,
         'collection': 'Collection 2',
         'color': [0, 0.5, 1],
     }])
-    
+
     print(dir(bpy.context.scene.objects))
 
 #    draw_pipes(start=[[0, -2, 0]], end=[[0, -2, 1]], radius=0.1, color=[0, 0, 1], layer=1)
