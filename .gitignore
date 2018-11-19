@@ -123,6 +123,7 @@ data/bunny
 *.tar.gz
 
 data/models
+data/ctralie
 
 docs/api/generated/
 docs/__build
