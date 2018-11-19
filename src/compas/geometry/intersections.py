@@ -36,6 +36,7 @@ __all__ = [
     'intersection_plane_plane',
     'intersection_plane_plane_plane',
     'intersection_sphere_sphere',
+    'intersection_ellipse_line_xy',
 ]
 
 
@@ -565,6 +566,58 @@ def intersection_sphere_sphere(sphere1, sphere2):
         normal = scale_vector(subtract_vectors(center2, center1), 1/distance)
         return "circle", (ci, ri, normal)
 
+
+def intersection_ellipse_line_xy(ellipse, line):
+    """Computes the intersection of an ellipse and a line in the XY plane.
+
+    Parameters
+    ----------
+    ellipse : tuple
+        The lengths a, b of the ellipse' semiaxes.
+    line : tuple
+        XY(Z) coordinates of two points defining another line.
+
+    Returns
+    -------
+    None
+        If there is no intersection.
+    tuple
+        Either 1 or 2 intersection points.
+
+    Examples
+    --------
+    >>> ellipse = 6., 2.5
+    >>> p1 = (4.1, 2.8, 0.)
+    >>> p2 = (3.4, -3.1, 0.)
+    >>> i1, i2 = intersection_ellipse_line_xy(ellipse, [p1, p2])
+
+    References
+    ----------
+    .. [1] C# Helper. *Calculate where a line segment and an ellipse intersect in C#*.
+           Available at: http://csharphelper.com/blog/2017/08/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c/
+
+    """
+    x1, y1 = line[0][0], line[0][1]
+    x2, y2 = line[1][0], line[1][1]
+
+    a, b = ellipse
+
+    A = (x2 - x1)**2/a**2 + (y2 - y1)**2/b**2
+    B = 2*x1*(x2 - x1)/a**2 + 2*y1*(y2 - y1)/b**2
+    C = x1**2/a**2 + y1**2/b**2 - 1
+
+    discriminant = B**2 - 4*A*C
+    if discriminant == 0:
+        t = -B/(2*A)
+        return (x1 + (x2 - x1)*t, y1 + (y2 - y1)*t, 0.0)
+    elif discriminant > 0:
+        t1 = (-B + sqrt(discriminant))/(2*A)
+        t2 = (-B - sqrt(discriminant))/(2*A)
+        p1 = (x1 + (x2 - x1)*t1, y1 + (y2 - y1)*t1, 0.0)
+        p2 = (x1 + (x2 - x1)*t2, y1 + (y2 - y1)*t2, 0.0)
+        return p1, p2
+    else:
+        return None
 
 # ==============================================================================
 # Main

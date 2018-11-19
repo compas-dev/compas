@@ -179,7 +179,7 @@ class VtkViewer(QApplication):
         if datastructure:
 
             i_k = datastructure.index_key()
-            k_i = datastructure.index_key()
+            k_i = datastructure.key_index()
             data = {}
 
             data['vertices'] = {i: datastructure.vertex_coordinates(i_k[i])
@@ -191,7 +191,13 @@ class VtkViewer(QApplication):
                                 if datastructure.vertex[key].get('is_fixed')]
 
             if datastructure.attributes['name'] == 'Mesh':
-                data['faces']    = {i: {'vertices': datastructure.face[i]} for i in datastructure.faces()}
+
+                data['faces'] = {}
+
+                for c, fkey in enumerate(datastructure.faces()):
+                    face = [k_i[j] for j in datastructure.face[fkey]]
+                    data['faces'][c] = {'vertices': face}
+
 
         self.camera_position = [10, -1, 10]
         self.camera_target   = [0, 0, 0]
