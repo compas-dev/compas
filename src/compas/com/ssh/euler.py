@@ -6,12 +6,6 @@ from __future__ import print_function
 from compas.com.ssh.ssh import SSH
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'EulerSSH',
 ]
@@ -23,14 +17,10 @@ class EulerSSH(SSH):
 
     Parameters
     ----------
+    server : str
+        ssh server address.
     username : str
         Username.
-    server : str
-        Euler ssh server address.
-
-    Returns
-    -------
-    None
 
     """
 
@@ -38,6 +28,7 @@ class EulerSSH(SSH):
         SSH.__init__(self, server=server, username=username)
 
         pass
+
 
     def show_quotas(self):
 
@@ -54,7 +45,7 @@ class EulerSSH(SSH):
         """
 
         self.server_command(command='quota -s')
-        self.server_command(command='pan_quota /cluster/scratch/{0}'.format(self.username))
+
 
     def available_modules(self, module=None):
 
@@ -73,8 +64,10 @@ class EulerSSH(SSH):
 
         if module:
             self.server_command(command='module avail {0}'.format(module))
+
         else:
             self.server_command(command='module avail')
+
 
     def show_module(self, module):
 
@@ -93,6 +86,7 @@ class EulerSSH(SSH):
 
         self.server_command(command='module show {0}'.format(module))
 
+
     def load_module(self, module):
 
         """ Load an Euler module.
@@ -110,6 +104,7 @@ class EulerSSH(SSH):
 
         self.server_command(command='module load {0} '.format(module))
 
+
     def loaded_modules(self):
 
         """ List the currently loaded Euler modules.
@@ -125,6 +120,7 @@ class EulerSSH(SSH):
         """
 
         self.server_command(command='module list')
+
 
     def unload_modules(self):
 
@@ -142,7 +138,8 @@ class EulerSSH(SSH):
 
         self.server_command(command='module purge')
 
-    def submit_job(self, command, time='60', output='output.txt', mem=256, cpus=1):
+
+    def submit_job(self, command, time='60', output='output.txt', memory=256, cpus=1):
 
         """ Submit a job to Euler.
 
@@ -154,7 +151,7 @@ class EulerSSH(SSH):
             Requested amount of CPU time '1:30' (hrs:mins) or '60' (mins).
         output : str
             Name of the output summary file.
-        mem : int
+        memory : int
             Requested RAM in MB per CPU.
         cpus : int
             Number of CPUs to request.
@@ -171,12 +168,13 @@ class EulerSSH(SSH):
         """
 
         n = min([24, int(cpus)])
-        cmd = 'bsub -R "rusage[mem={0}]" -n {1} -W {2} -oo {3} {4}'.format(mem, n, int(time), output, command)
+        cmd = 'bsub -R "rusage[mem={0}]" -n {1} -W {2} -oo {3} {4}'.format(memory, n, int(time), output, command)
         self.server_command(command=cmd)
+
 
     def show_jobs(self, type='user', job=None):
 
-        """ Show the jobs in queue on Euler.
+        """ Show the Euler jobs in queue.
 
         Parameters
         ----------
@@ -200,6 +198,7 @@ class EulerSSH(SSH):
             else:
                 self.server_command(command='bbjobs')
 
+
     def show_resources(self):
 
         """ Show the available Euler resources for the user.
@@ -215,6 +214,7 @@ class EulerSSH(SSH):
         """
 
         self.server_command(command='busers')
+
 
     def peek_job(self, job):
 
@@ -233,6 +233,7 @@ class EulerSSH(SSH):
 
         self.server_command(command='bpeek {0}'.format(job))
 
+
     def cpu_load_job(self, job):
 
         """ View the CPU load of a completed job.
@@ -249,6 +250,7 @@ class EulerSSH(SSH):
         """
 
         self.server_command(command='lsf_load {0}'.format(job))
+
 
     def kill_job(self, job):
 
@@ -278,22 +280,20 @@ if __name__ == '__main__':
 
     euler_ssh = EulerSSH(username='liewa')
 
-    euler_ssh.sync_folder(local_folder='/home/al/compas/', remote_folder='compas/')
-
+    # euler_ssh.show_module(module='python/3.6.0')
     euler_ssh.load_module(module='python/3.6.0')
-    euler_ssh.show_module(module='python/3.6.0')
+    euler_ssh.unload_modules()
     euler_ssh.loaded_modules()
-    euler_ssh.available_modules()
+    # euler_ssh.available_modules()
+    # euler_ssh.available_modules(module='python')
 
     euler_ssh.show_resources()
-    euler_ssh.show_quotas()
+    # euler_ssh.show_quotas()
 
-    euler_ssh.server_command(command='export OMP_NUM_THREADS=24')
-    euler_ssh.submit_job(command='python /cluster/home/liewa/script.py',
-                         time='20', output='output.txt', mem=256, cpus=4)
-    euler_ssh.show_jobs(type='user', job=58152512)
-
-    euler_ssh.receive_file(remote_file='/cluster/home/liewa/output.txt',
-                           local_file='/home/al/output.txt')
+    # euler_ssh.server_command(command='export OMP_NUM_THREADS=24')
+    # euler_ssh.submit_job(command='python /cluster/home/liewa/script.py', time='20', output='output.txt', memory=256,
+                         # cpus=4)
+    # euler_ssh.show_jobs(type='user')
+    # euler_ssh.show_jobs(type='all')
 
     euler_ssh.close()
