@@ -220,6 +220,10 @@ class Joint(object):
             return Transformation.from_frame(self.init_origin)
         else:
             return Transformation()
+    
+    @property
+    def reset_transformation(self):
+        return self.init_transformation * self.current_transformation.inverse()
 
     def reset_transform(self):
         if self.init_origin:
@@ -232,6 +236,14 @@ class Joint(object):
             self.origin.transform(transformation)
         if self.axis:
             self.axis.transform(transformation)
+    
+    def create(self, transformation):
+        if self.origin:
+            self.origin.transform(transformation)
+            self.init_origin = self.origin.copy()
+        if self.axis:
+            self.axis.transform(self.current_transformation)
+            self.init_axis = self.axis.copy()
 
     def calculate_revolute_transformation(self, position):
         """Returns a transformation of a revolute joint.
@@ -300,9 +312,6 @@ class Joint(object):
             position (float): radians or meters.
         """
         pass
-
-    def calculate_reset_transformation(self):
-        return self.init_transformation * self.current_transformation.inverse()
 
     def is_configurable(self):
         """Returns ``True`` if the joint can be configured, otherwise ``False``."""
