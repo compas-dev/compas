@@ -102,7 +102,7 @@ class MainWindow(QMainWindow):
 
         # Widget
 
-        self.frame = frame = QFrame()
+        self.frame  = frame  = QFrame()
         self.widget = widget = QVTKRenderWindowInteractor(frame, rw=window)
         self.layout = layout = QVBoxLayout()
         layout.addWidget(widget)
@@ -178,8 +178,8 @@ class VtkViewer(QApplication):
 
         if datastructure:
 
-            i_k = datastructure.index_key()
-            k_i = datastructure.key_index()
+            i_k  = datastructure.index_key()
+            k_i  = datastructure.key_index()
             data = {}
 
             data['vertices'] = {i: datastructure.vertex_coordinates(i_k[i])
@@ -251,6 +251,7 @@ class VtkViewer(QApplication):
     def keypress(self, obj, event):
 
         key = obj.GetKeySym()
+
         try:
             func = self.keycallbacks[key]
             func(self)
@@ -309,6 +310,7 @@ class VtkViewer(QApplication):
             self.polydata.GetPointData().SetScalars(self.vertex_colors)
 
         self.draw_axes()
+
         if not self.show_axes:
             self.axes.VisibilityOff()
 
@@ -318,10 +320,12 @@ class VtkViewer(QApplication):
         self.actor = actor = vtkActor()
         actor.SetMapper(mapper)
         actor.GetProperty().SetLineWidth(self.edge_width * self.edge_scale)
+
         if self.edge_width == 0:
             actor.GetProperty().EdgeVisibilityOff()
         else:
             actor.GetProperty().EdgeVisibilityOn()
+
         actor.GetProperty().SetEdgeColor([0, 0.5, 0])
         actor.GetProperty().SetInterpolationToGouraud()
 
@@ -498,14 +502,17 @@ class VtkViewer(QApplication):
         value = self.sliders['slider_vertices'].value()
         self.labels['label_vertices'].setText('Vertex size: {0}'.format(value))
         self.vertex.SetRadius(value * self.vertex_scale)
+
         if self.support:
             self.support.SetRadius(value * 1.5 * self.vertex_scale)
+
         self.main.window.Render()
 
     def update_vertices_coordinates(self, coordinates):
 
         for key, xyz in coordinates.items():
             self.vertices.SetPoint(key, xyz)
+
         self.vertices.Modified()
         self.main.window.Render()
 
@@ -514,8 +521,10 @@ class VtkViewer(QApplication):
         self.vertex_colors = vtkUnsignedCharArray()
         self.vertex_colors.SetNumberOfComponents(3)
         colors_ = [colors.get(i, [200, 200, 200]) for i in self.data['vertices'].keys()]
+
         for color in colors_:
             self.vertex_colors.InsertNextTypedTuple([int(round(i)) for i in color])
+
         self.polydata.GetPointData().SetScalars(self.vertex_colors)
         self.main.window.Render()
 
@@ -546,10 +555,12 @@ class VtkViewer(QApplication):
     def edge_callback(self):
 
         value = self.sliders['slider_edges'].value()
+
         if value == 0:
             self.actor.GetProperty().EdgeVisibilityOff()
         else:
             self.actor.GetProperty().EdgeVisibilityOn()
+
         self.labels['label_edges'].setText('Edge width: {0}'.format(value))
         self.actor.GetProperty().SetLineWidth(value * self.edge_scale)
         self.main.window.Render()
@@ -566,8 +577,10 @@ class VtkViewer(QApplication):
         for fkey, face in self.data['faces'].items():
 
             vil = vtkIdList()
+
             for pt in face['vertices']:
                 vil.InsertNextId(pt)
+
             faces.InsertNextCell(vil)
             color = face.get('color', [150, 255, 150])
 
@@ -583,8 +596,10 @@ class VtkViewer(QApplication):
         value = self.sliders['slider_opacity'].value()
         self.labels['label_opacity'].setText('Opacity: {0}'.format(value))
         self.actor.GetProperty().SetOpacity(value * 0.01)
+
         if self.block_actor:
             self.block_actor.GetProperty().SetOpacity(value * 0.01)
+
         self.main.window.Render()
 
 
@@ -596,6 +611,7 @@ class VtkViewer(QApplication):
 
         for location in self.data['blocks'].get('locations', []):
             self.locations.InsertNextPoint(location)
+
         self.blocks.SetPoints(self.locations)
 
         self.block = block = vtkCubeSource()
@@ -767,6 +783,7 @@ if __name__ == "__main__":
     # from numpy import linspace
     # from numpy import meshgrid
 
+
     # r = linspace(-1, 1, 50)
     # x, y, z = meshgrid(r, r, r)
 
@@ -785,6 +802,7 @@ if __name__ == "__main__":
 
     from compas.datastructures import Network
     from compas.datastructures import Mesh
+
 
     import compas
 
