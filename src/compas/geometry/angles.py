@@ -12,6 +12,8 @@ from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import dot_vectors_xy
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import length_vector_xy
+from compas.geometry.basic import normalize_vector
+from compas.geometry.basic import add_vectors
 
 
 __all__ = [
@@ -22,6 +24,7 @@ __all__ = [
     'angles_points',
     'angles_points_xy',
     'angle_vectors',
+    'angle_vectors_signed',
     'angle_vectors_xy',
     'angle_points',
     'angle_points_xy',
@@ -57,6 +60,49 @@ def angle_vectors(u, v, deg=False):
     if deg:
         return degrees(acos(a))
     return acos(a)
+
+
+def angle_vectors_signed(u, v, normal, deg=False):
+    """Computes the signed angle between two vectors.
+
+    It calculates the angle such that rotating vector u about the normal by 
+    angle would result in a vector that looks into the same direction as v.
+
+    Parameters
+    ----------
+    u : sequence of float
+        XYZ components of the first vector.
+    v : sequence of float
+        XYZ components of the second vector.
+    normal : sequence of float
+        XYZ components of the plane's normal spanned by u and v.
+    deg : boolean
+        returns angle in degrees if True
+
+    Returns
+    -------
+    float
+        The signed angle in radians (in degrees if deg == True).
+
+    Examples
+    --------
+    >>> normal = [0.0, 0.0, 1.0]
+    >>> angle_vectors_signed([0.0, 1.0, 0.0], [1.0, 0.0, 0.0], normal)
+    """
+    from compas.geometry.transformations import rotate_points
+    
+    angle = angle_vectors(u, v)
+    ur1 = normalize_vector(rotate_points([u], angle, normal)[0])
+    ur2 = normalize_vector(rotate_points([u], -angle, normal)[0])
+    vn = normalize_vector(v)
+
+    if length_vector(add_vectors(vn, ur1)) < length_vector(add_vectors(vn, ur2)):
+        angle *= -1
+
+    if deg:
+        return degrees(angle)
+    else:
+        return angle
 
 
 def angle_vectors_xy(u, v, deg=False):
