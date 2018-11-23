@@ -7,12 +7,6 @@ from compas_rhino.artists.networkartist import NetworkArtist
 import rhinoscriptsyntax as rs
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
 # Input
 
 s0 = 10**6
@@ -46,11 +40,11 @@ for i in rs.ObjectsByLayer('Pins'):
 # Run XFunc
 
 X, f, l, network = XFunc('compas.numerical.drx.drx_numpy.drx_numpy')(
-    structure=network, 
-    factor=factor, 
-    tol=tol, 
-    steps=steps, 
-    refresh=10, 
+    structure=network,
+    factor=factor,
+    tol=tol,
+    steps=steps,
+    refresh=10,
     update=True
 )
 

@@ -48,7 +48,7 @@ lines = []
 for u, v in network.edges():
     lines.append({
         'start': network.vertex_coordinates(u, 'xy'),
-        'end'  : network.vertex_coordinates(v, 'xy'),
+        'end':   network.vertex_coordinates(v, 'xy'),
         'color': '#cccccc',
         'width': 1.0})
 
