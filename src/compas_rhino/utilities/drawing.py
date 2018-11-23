@@ -4,7 +4,7 @@ from functools import wraps
 
 import compas
 
-from compas.geometry import center_of_mass_polygon
+from compas.geometry import centroid_polygon
 
 from compas_rhino.utilities import create_layers_from_path
 from compas_rhino.utilities import clear_layer
@@ -562,7 +562,7 @@ def xdraw_faces(faces, **kwargs):
 def _face_to_max_quad(points, face):
     faces = []
     c = len(points)
-    points.append(center_of_mass_polygon(points))
+    points.append(centroid_polygon(points))
     for i in range(-1, len(face) - 1):
         a = face[i]
         b = face[i + 1]

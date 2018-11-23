@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from math import fabs
+
 from compas.utilities import window
 
 from compas.geometry.basic import add_vectors
@@ -11,80 +13,28 @@ from compas.geometry.basic import length_vector
 from compas.geometry.basic import length_vector_xy
 from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import cross_vectors
+from compas.geometry.basic import cross_vectors_xy
 from compas.geometry.basic import vector_from_points
 from compas.geometry.basic import scale_vector
 from compas.geometry.distance import distance_point_point
 
 
 __all__ = [
-    'centroid_points',
-    'centroid_points_xy',
     'midpoint_point_point',
     'midpoint_point_point_xy',
     'midpoint_line',
     'midpoint_line_xy',
-    'center_of_mass_polygon',
-    'center_of_mass_polygon_xy',
-    'center_of_mass_polyhedron',
-    'tween_points',
-    'tween_points_distance'
+
+    'centroid_points',
+    'centroid_points_xy',
+    'centroid_polygon',
+    'centroid_polygon_xy',
+    'centroid_polygon_vertices',
+    'centroid_polygon_vertices_xy',
+    'centroid_polygon_edges',
+    'centroid_polygon_edges_xy',
+    'centroid_polyhedron',
 ]
-
-
-def centroid_points(points):
-    """Compute the centroid of a set of points.
-
-    Warning
-    -------
-    Duplicate points are **NOT** removed. If there are duplicates in the
-    sequence, they should be there intentionally.
-
-    Parameters
-    ----------
-    points : sequence
-        A sequence of XYZ coordinates.
-
-    Returns
-    -------
-    list
-        XYZ coordinates of the centroid.
-
-    Examples
-    --------
-    >>> centroid_points()
-
-    """
-    p = len(points)
-    x, y, z = zip(*points)
-    return sum(x) / p, sum(y) / p, sum(z) / p
-
-
-def centroid_points_xy(points):
-    """Compute the centroid of a set of points lying in the XY-plane.
-
-    Warning
-    -------
-    Duplicate points are **NOT** removed. If there are duplicates in the
-    sequence, they should be there intentionally.
-
-    Parameters
-    ----------
-    points : list of list
-        A sequence of points represented by their XY(Z) coordinates.
-
-    Returns
-    -------
-    list
-        XYZ coordinates of the centroid (Z = 0.0).
-
-    Examples
-    --------
-    >>> centroid_points_xy()
-
-    """
-    p = len(points)
-    x, y = list(zip(*points))[:2]
-    return [sum(x) / p, sum(y) / p, 0.0]
 
 
 def midpoint_point_point(a, b):
@@ -169,26 +119,346 @@ def midpoint_line_xy(line):
     return midpoint_point_point_xy(*line)
 
 
-def center_of_mass_polygon(polygon):
-    """Compute the center of mass of a polygon defined as a sequence of points.
+def centroid_points(points):
+    """Compute the centroid of a set of points.
 
-    The center of mass of a polygon is the centroid of the midpoints of the edges,
-    each weighted by the length of the corresponding edge.
+    Warning
+    -------
+    Duplicate points are **NOT** removed. If there are duplicates in the
+    sequence, they should be there intentionally.
 
     Parameters
     ----------
-    polygon : sequence
-        A sequence of XYZ coordinates representing the locations of the corners of a polygon.
+    points : sequence
+        A sequence of XYZ coordinates.
 
     Returns
     -------
-    tuple
-        The XYZ coordinates of the center of mass.
+    list
+        XYZ coordinates of the centroid.
 
     Examples
     --------
-    >>> points = [(0., 0., 0.), (1., 0., 0.), (0., 10., 0.)]
-    >>> center_of_mass_polygon(points)
+    >>> centroid_points()
+
+    """
+    p = len(points)
+    x, y, z = zip(*points)
+    return [sum(x) / p, sum(y) / p, sum(z) / p]
+
+
+def centroid_points_xy(points):
+    """Compute the centroid of a set of points lying in the XY-plane.
+
+    Warning
+    -------
+    Duplicate points are **NOT** removed. If there are duplicates in the
+    sequence, they should be there intentionally.
+
+    Parameters
+    ----------
+    points : list of list
+        A sequence of points represented by their XY(Z) coordinates.
+
+    Returns
+    -------
+    list
+        XYZ coordinates of the centroid (Z = 0.0).
+
+    Examples
+    --------
+    >>> centroid_points_xy()
+
+    """
+    p = len(points)
+    x, y = list(zip(*points))[:2]
+    return [sum(x) / p, sum(y) / p, 0.0]
+
+
+def centroid_polygon(polygon):
+    r"""Compute the centroid of the surface of a polygon.
+
+    Parameters
+    ----------
+    polygon : list of point
+        A sequence of polygon point coordinates.
+
+    Returns
+    -------
+    list
+        The XYZ coordinates of the centroid.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        from compas.geometry import centroid_polygon
+
+        polygon = [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [1.0, 1.0, 0.0],
+            [0.0, 1.0, 0.0]
+        ]
+
+        c = centroid_polygon(polygon)
+
+        print(c)  # [0.5, 0.5, 0.0]
+
+    .. code-block:: python
+
+        from compas.geometry import centroid_polygon
+        from compas.geometry import centroid_points
+
+        polygon = [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [1.0, 1.0, 0.0],
+            [0.5, 1.0, 0.0],
+            [0.0, 1.0, 0.0]
+        ]
+
+        c = centroid_polygon(polygon)
+        print(c)  # [0.5, 0.5, 0.0]
+
+        c = centroid_points(polygon)
+        print(c)  # [0.5, 0.6, 0.0]
+
+    Notes
+    -----
+    The centroid is the centre of gravity of the polygon surface if mass would be
+    uniformly distributed over it.
+
+    It is calculated by triangulating the polygon surface with respect to the centroid
+    of the polygon vertices, and then computing the centroid of the centroids of
+    the individual triangles, weighted by the corresponding triangle area in
+    proportion to the total surface area.
+
+    .. math::
+
+        c_x = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{x,i}
+        c_y = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{y,i}
+        c_z = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{z,i}
+
+    Warning
+    -------
+    The polygon need not be convex. 
+
+    The polygon need not be flat. However, it is unclear what the meaning of the
+    centroid is in that case.
+
+    The polygon may be self-intersecting. However, it is unclear what the meaning
+    of the centroid is in that case.
+
+    """
+    p = len(polygon)
+
+    assert p > 2, "At least three points required"
+
+    if p == 3:
+        return centroid_points(polygon)
+
+    cx, cy, cz = 0.0, 0.0, 0.0
+    A2 = 0
+
+    o = centroid_points(polygon)
+    a = polygon[-1]
+    b = polygon[0]
+    oa = subtract_vectors(a, o)
+    ob = subtract_vectors(b, o)
+    n0 = cross_vectors(oa, ob)
+
+    x, y, z = centroid_points([o, a, b])
+    a2 = length_vector(n0)
+
+    A2 += a2
+    cx += a2 * x
+    cy += a2 * y
+    cz += a2 * z
+
+    for i in range(1, len(polygon)):
+        a = b
+        b = polygon[i]
+
+        oa = ob
+        ob = subtract_vectors(b, o)
+
+        n = cross_vectors(oa, ob)
+        x, y, z = centroid_points([o, a, b])
+
+        if dot_vectors(n, n0) > 0:
+            a2 = length_vector(n)
+        else:
+            a2 = - length_vector(n)
+
+        A2 += a2
+        cx += a2 * x
+        cy += a2 * y
+        cz += a2 * z
+
+    return [cx / A2, cy / A2, cz / A2]
+
+
+def centroid_polygon_xy(polygon):
+    r"""Compute the centroid of the surface of a polygon projected to the XY plane.
+
+    Parameters
+    ----------
+    polygon : list of point
+        A sequence of polygon point XY(Z) coordinates.
+        The Z coordinates are ignored.
+
+    Returns
+    -------
+    list
+        The XYZ coordinates of the centroid.
+        The Z coodinate is zero.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        from compas.geometry import centroid_polygon_xy
+
+        polygon = [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [1.0, 1.0, 0.0],
+            [0.0, 1.0, 0.0]
+        ]
+
+        c = centroid_polygon_xy(polygon)
+
+        print(c)  # [0.5, 0.5, 0.0]
+
+    .. code-block:: python
+
+        from compas.geometry import centroid_polygon_xy
+        from compas.geometry import centroid_points_xy
+
+        polygon = [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [1.0, 1.0, 0.0],
+            [0.5, 1.0, 0.0],
+            [0.0, 1.0, 0.0]
+        ]
+
+        c = centroid_polygon(polygon)
+        print(c)  # [0.5, 0.5, 0.0]
+
+        c = centroid_points(polygon)
+        print(c)  # [0.5, 0.6, 0.0]
+
+    Notes
+    -----
+    The centroid is the centre of gravity of the polygon surface if mass would be
+    uniformly distributed over it.
+
+    It is calculated by triangulating the polygon surface with respect to the centroid
+    of the polygon vertices, and then computing the centroid of the centroids of
+    the individual triangles, weighted by the corresponding triangle area in
+    proportion to the total surface area.
+
+    .. math::
+
+        c_x = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{x,i}
+        c_y = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{y,i}
+        c_z = 0
+
+    Warning
+    -------
+    The polygon need not be convex. 
+
+    The polygon may be self-intersecting. However, it is unclear what the meaning
+    of the centroid is in that case.
+
+    """
+    p = len(polygon)
+
+    assert p > 2, "At least three points required"
+
+    if p == 3:
+        return centroid_points_xy(polygon)
+
+    cx, cy = 0.0, 0.0
+    A2 = 0
+
+    o = centroid_points_xy(polygon)
+    a = polygon[-1]
+    b = polygon[0]
+    oa = subtract_vectors_xy(a, o)
+    ob = subtract_vectors_xy(b, o)
+    n0 = cross_vectors_xy(oa, ob)
+
+    x, y, z = centroid_points_xy([o, a, b])
+    a2 = fabs(n0[2])
+
+    A2 += a2
+    cx += a2 * x
+    cy += a2 * y
+
+    for i in range(1, len(polygon)):
+        a = b
+        b = polygon[i]
+
+        oa = ob
+        ob = subtract_vectors_xy(b, o)
+
+        n = cross_vectors_xy(oa, ob)
+        x, y, z = centroid_points_xy([o, a, b])
+
+        if n[2] * n0[2] > 0:
+            a2 = fabs(n[2])
+        else:
+            a2 = - fabs(n[2])
+
+        A2 += a2
+        cx += a2 * x
+        cy += a2 * y
+
+    return [cx / A2, cy / A2, 0.0]
+
+
+def centroid_polygon_vertices(polygon):
+    """Compute the centroid of the vertices of a polygon.
+
+    Parameters
+    ----------
+    polygon : list of point
+        A sequence of polygon point coordinates.
+
+    Returns
+    -------
+    list
+        The XYZ coordinates of the centroid.
+
+    """
+    return centroid_points(polygon)
+
+
+def centroid_polygon_vertices_xy(polygon):
+    return centroid_points_xy(polygon)
+
+
+def centroid_polygon_edges(polygon):
+    """Compute the centroid of the edges of a polygon.
+
+    Parameters
+    ----------
+    polygon : list of point
+        A sequence of polygon point coordinates.
+
+    Returns
+    -------
+    list
+        The XYZ coordinates of the centroid.
+
+    Notes
+    -----
+    The centroid of the edges is the centroid of the midpoints of the edges, with
+    each midpoint weighted by the length of the corresponding edge proportional
+    to the total length of the boundary.
 
     """
     L  = 0
@@ -204,34 +474,11 @@ def center_of_mass_polygon(polygon):
         cy += 0.5 * d * (p1[1] + p2[1])
         cz += 0.5 * d * (p1[2] + p2[2])
         L  += d
-    cx = cx / L
-    cy = cy / L
-    cz = cz / L
-    return cx, cy, cz
+    return [cx / L, cy / L, cz / L]
 
 
-def center_of_mass_polygon_xy(polygon):
-    """Compute the center of mass of a polygon defined as a sequence of points lying in the XY-plane.
-
-    The center of mass of a polygon is the centroid of the midpoints of the edges,
-    each weighted by the length of the corresponding edge.
-
-    Parameters
-    ----------
-    polygon : sequence
-        A sequence of XY(Z) coordinates of 2D or 3D points (Z will be ignored)
-        representing the locations of the corners of a polygon.
-
-    Returns
-    -------
-    tuple
-        The XYZ coordinates of the center of mass (Z = 0.0).
-
-    Examples
-    --------
-    >>>
-
-    """
+def centroid_polygon_edges_xy(polygon):
+    """"""
     L  = 0
     cx = 0
     cy = 0
@@ -243,12 +490,10 @@ def center_of_mass_polygon_xy(polygon):
         cx += 0.5 * d * (p1[0] + p2[0])
         cy += 0.5 * d * (p1[1] + p2[1])
         L  += d
-    cx = cx / L
-    cy = cy / L
-    return cx, cy, 0.0
+    return [cx / L, cy / L, 0.0]
 
 
-def center_of_mass_polyhedron(polyhedron):
+def centroid_polyhedron(polyhedron):
     """Compute the center of mass of a polyhedron.
 
     Parameters
@@ -259,7 +504,7 @@ def center_of_mass_polyhedron(polyhedron):
 
     Returns
     -------
-    tuple
+    list
         XYZ coordinates of the center of mass.
 
     Examples
@@ -318,65 +563,7 @@ def center_of_mass_polyhedron(polyhedron):
     y *= d
     z *= d
 
-    return x, y, z
-
-
-def tween_points(points1, points2, num):
-    """Compute the interpolated points between two sets of points.
-
-    Parameters
-    ----------
-    points1 : list
-        The first set of points
-    points2 : list
-        The second set of points
-    num : int
-        The number of interpolated sets to return
-    Returns
-    -------
-    list
-        Nested list of points
-
-    """
-    tweens = []
-    for j in range(num - 1):
-        tween = []
-        for i in range(len(points1)):
-            tween.append(add_vectors(points1[i], scale_vector(vector_from_points(points1[i], points2[i]), 1 / (num / (j + 1)))))
-        tweens.append(tween)
-    return tweens
-
-
-def tween_points_distance(points1, points2, dist, index=None):
-    """Compute an interpolated set of points between two sets of points, at
-    a given distance.
-
-    Parameters
-    ----------
-    points1 : list
-        The first set of points
-    points2 : list
-        The second set of points
-    dist : float
-        The distance from the first set to the second at which to compute the
-        interpolated set.
-    index: int
-        The index of the point in the first set from which to calculate the
-        distance to the second set. If no value is given, the first point will be used.
-    Returns
-    -------
-    list
-        List of points
-
-    """
-    if not index:
-        index = 0
-    d = distance_point_point(points1[index], points2[index])
-    scale = float(dist) / d
-    tweens = []
-    for i in range(len(points1)):
-        tweens.append(add_vectors(points1[i], scale_vector(vector_from_points(points1[i], points2[i]), scale)))
-    return tweens
+    return [x, y, z]
 
 
 # ==============================================================================
@@ -385,10 +572,73 @@ def tween_points_distance(points1, points2, dist, index=None):
 
 if __name__ == "__main__":
 
-    from compas.geometry import Polyhedron
+    from compas.plotters import Plotter
+    from compas.geometry import intersection_line_line
+    from compas.geometry import midpoint_point_point
+    from compas.geometry import centroid_points
 
-    p = Polyhedron.generate(6)
+    polygon = [
+        [0.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+        [1.0, 1.0, 0.0],
+        [0.5, 1.0, 0.0],
+        [0.0, 1.0, 0.0]
+    ]
 
-    c = center_of_mass_polyhedron((p.vertices, p.faces))
+    o = centroid_polygon_xy(polygon)
+    print(o)
 
-    print(c)
+    o = centroid_points(polygon)
+    print(o)
+
+    # polygons = [{
+    #     'points' : polygon,
+    #     'facecolor' : '#eeeeee',
+    # }]
+
+    # points = [
+    #     {
+    #         'pos' : o,
+    #         'radius' : 0.03,
+    #         'facecolor' : '#ff0000',
+    #     },
+    #     {
+    #         'pos' : c,
+    #         'radius' : 0.01,
+    #         'facecolor' : '#0000ff',
+    #     },
+    # ]
+
+    # for point in polygon:
+    #     points.append({
+    #         'pos' : point,
+    #         'radius' : 0.02,
+    #         'facecolor' : '#ffffff',
+    #     })
+
+    # plotter = Plotter(figsize=(10, 7))
+
+    # plotter.draw_polygons(polygons)
+    # plotter.draw_points(points)
+
+    # plotter.show()
+
+    # # m1v = [
+    # #     [1.0, 1.0, 2.0],
+    # #     [0.0, 0.0, 0.0],
+    # #     [1.0, 0.0, 2.0],
+    # #     [1.0, 0.0, 0.0],
+    # #     [0.0, 1.0, 0.0],
+    # #     [1.0, 1.0, 0.0],
+    # #     [0.0, 1.0, 1.0],
+    # #     [0.0, 0.0, 1.0]
+    # # ]
+
+    # # m1f = [
+    # #     [4, 6, 7, 1],
+    # #     [5, 0, 6, 4],
+    # #     [4, 1, 3, 5],
+    # #     [3, 2, 0, 5],
+    # #     [1, 7, 2, 3],
+    # #     [6, 0, 2, 7]
+    # # ]

@@ -19,7 +19,7 @@ from compas.utilities import geometric_key
 
 from compas.geometry import normalize_vector
 from compas.geometry import centroid_points
-from compas.geometry import center_of_mass_polygon
+from compas.geometry import centroid_polygon
 from compas.geometry import cross_vectors
 from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
@@ -2363,7 +2363,7 @@ class Mesh(FromToPickle,
             The coordinates of the center of mass.
 
         """
-        return center_of_mass_polygon(self.face_coordinates(fkey))
+        return centroid_polygon(self.face_coordinates(fkey))
 
     def face_area(self, fkey):
         """Compute the area of a face.

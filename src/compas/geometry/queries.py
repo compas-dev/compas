@@ -21,7 +21,7 @@ from compas.geometry.distance import closest_point_on_segment_xy
 from compas.geometry.size import area_triangle
 
 from compas.geometry.angles import angle_vectors
-from compas.geometry.average import center_of_mass_polygon
+from compas.geometry.average import centroid_polygon
 
 
 __all__ = [
@@ -233,7 +233,7 @@ def is_polygon_convex(polygon):
     is_polygon_convex_xy
 
     """
-    c = center_of_mass_polygon(polygon)
+    c = centroid_polygon(polygon)
 
     for i in range(-1, len(polygon) - 1):
         p0 = polygon[i]

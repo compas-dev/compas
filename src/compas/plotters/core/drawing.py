@@ -20,6 +20,7 @@ from matplotlib.patches import PathPatch
 from matplotlib.collections import PathCollection
 from matplotlib.collections import LineCollection
 from matplotlib.collections import PatchCollection
+from matplotlib.collections import PolyCollection
 
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
 from mpl_toolkits.mplot3d.art3d import Patch3DCollection
@@ -578,6 +579,7 @@ def draw_lines_3d(lines,
 
 def draw_xpolylines_xy(polylines, axes):
     patches = []
+    paths = []
 
     widths = []
     colors = []
@@ -592,19 +594,14 @@ def draw_xpolylines_xy(polylines, axes):
         textcolor = polyline.get('textcolor') or '#000000'
         fontsize  = polyline.get('fontsize') or 6
 
-        path = Path(points, codes)
-        patch = PathPatch(path, fill=False, edgecolor=color_to_rgb(color, normalize=True))
+        path = [point[0:2] for point in points]
+        paths.append(path)
 
-        # patches.append(patch)
-        # widths.append(width)
-        # colors.append(color_to_rgb(color, normalize=True))
+        widths.append(width)
+        colors.append(color_to_rgb(color, normalize=True))
 
         if text:
             p = len(points)
-
-            # a = points[0]
-            # b = points[1]
-            # x, y, z = midpoint_line_xy((a, b))
 
             if p % 2 == 0:
                 a = points[p // 2]
@@ -624,18 +621,18 @@ def draw_xpolylines_xy(polylines, axes):
 
             t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
 
-        axes.add_patch(patch)
+    coll = PolyCollection(
+        paths,
+        closed=False,
+        linewidths=widths,
+        edgecolors=colors,
+        facecolors='none',
+        zorder=ZORDER_LINES
+    )
 
-    # coll = PatchCollection(
-    #     patches,
-    #     linewidths=widths,
-    #     edgecolors=colors,
-    #     zorder=ZORDER_LINES
-    # )
+    axes.add_collection(coll)
 
-    # axes.add_collection(coll)
-
-    # return coll
+    return coll
 
 
 # ==============================================================================
@@ -773,14 +770,18 @@ def draw_xpolygons_xy(polygons, axes):
     edgecolors = []
     linewidths = []
     patches = []
+
     for attr in polygons:
         points    = attr['points']
         text      = attr.get('text')
         textcolor = color_to_rgb(attr.get('textcolor', '#000000'), normalize=True)
+
         facecolors.append(color_to_rgb(attr.get('facecolor', '#ffffff'), normalize=True))
         edgecolors.append(color_to_rgb(attr.get('edgecolor', '#000000'), normalize=True))
         linewidths.append(attr.get('edgewidth', 1.0))
+
         patches.append(Polygon([point[0:2] for point in points]))
+
         if text:
             c = centroid_points_xy(points)
             axes.text(
@@ -793,14 +794,18 @@ def draw_xpolygons_xy(polygons, axes):
                 va='center',
                 color=textcolor
             )
+
+    # this could also be a PolyCollection
     coll = PatchCollection(
         patches,
-        facecolor=facecolors,
-        edgecolor=edgecolors,
+        facecolors=facecolors,
+        edgecolors=edgecolors,
         lw=linewidths,
         zorder=ZORDER_POLYGONS
     )
+
     axes.add_collection(coll)
+
     return coll
 
 
