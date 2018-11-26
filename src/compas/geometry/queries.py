@@ -45,6 +45,7 @@ __all__ = [
     'is_point_in_convex_polygon_xy',
     'is_point_in_circle',
     'is_point_in_circle_xy',
+    'is_polygon_in_polygon_xy',
     'is_intersection_line_line',
     'is_intersection_line_line_xy',
     'is_intersection_segment_segment',
