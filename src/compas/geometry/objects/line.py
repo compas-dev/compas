@@ -150,8 +150,16 @@ class Line(object):
 
     def point(self, t):
         """Point: The point from the start to the end at a specific normalized parameter."""
+        
         if t < 0 or t > 1:
             return None
+        
+        if t == 0:
+            return self.start
+        
+        if t == 1:
+            return self.end
+        
         v = self.direction * (t * self.length)
         return self.start + v
         
