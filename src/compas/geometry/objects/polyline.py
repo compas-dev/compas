@@ -140,8 +140,15 @@ class Polyline(object):
 
         if t < 0 or t > 1:
             return None
-
+        
         points = self.points
+            
+        if t == 0:
+            return points[0]
+        
+        if t == 1:
+            return points[-1]
+
         polyline_length = self.length
 
         x = 0
