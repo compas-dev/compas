@@ -2,12 +2,10 @@
 Mesh smoothing on a surface
 ********************************************************************************
 
-.. literalinclude:: /_examples/mesh-smoothing-on-surface.py
-    :language: python
-
 .. figure:: /_images/example-mesh-smoothing-on-surface.gif
     :figclass: figure
     :class: figure-img img-fluid
+
 
 .. raw:: html
 
@@ -21,4 +19,8 @@ Mesh smoothing on a surface
 
     </div>
     </div>
+
+
+.. literalinclude:: /_examples/mesh-smoothing-on-surface.py
+    :language: python
 

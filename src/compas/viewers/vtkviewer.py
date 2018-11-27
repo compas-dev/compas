@@ -40,6 +40,7 @@ except ImportError:
 
 try:
     from PyQt5.Qt import QApplication
+    from PyQt5.Qt import QCheckBox
     from PyQt5.Qt import QComboBox
     from PyQt5.Qt import QDockWidget
     from PyQt5.Qt import QFrame
@@ -101,7 +102,7 @@ class MainWindow(QMainWindow):
 
         # Widget
 
-        self.frame = frame = QFrame()
+        self.frame  = frame  = QFrame()
         self.widget = widget = QVTKRenderWindowInteractor(frame, rw=window)
         self.layout = layout = QVBoxLayout()
         layout.addWidget(widget)
@@ -172,8 +173,31 @@ class InteractorStyle(vtkInteractorStyleTrackballCamera):
 
 class VtkViewer(QApplication):
 
-    def __init__(self, name='VTK Viewer', data={}, height=900, width=1440):
+    def __init__(self, name='VTK Viewer', data={}, height=900, width=1440, datastructure=None):
         QApplication.__init__(self, sys.argv)
+
+        if datastructure:
+
+            i_k  = datastructure.index_key()
+            k_i  = datastructure.key_index()
+            data = {}
+
+            data['vertices'] = {i: datastructure.vertex_coordinates(i_k[i])
+                                for i in range(datastructure.number_of_vertices())}
+
+            data['edges']    = [{'u': k_i[u], 'v': k_i[v]} for u, v in datastructure.edges()]
+
+            data['fixed']    = [k_i[key] for key in datastructure.vertices()
+                                if datastructure.vertex[key].get('is_fixed')]
+
+            if datastructure.attributes['name'] == 'Mesh':
+
+                data['faces'] = {}
+
+                for c, fkey in enumerate(datastructure.faces()):
+                    face = [k_i[j] for j in datastructure.face[fkey]]
+                    data['faces'][c] = {'vertices': face}
+
 
         self.camera_position = [10, -1, 10]
         self.camera_target   = [0, 0, 0]
@@ -189,9 +213,10 @@ class VtkViewer(QApplication):
         self.width        = width
         self.keycallbacks = {}
 
-        self.labels    = {}
-        self.listboxes = {}
-        self.sliders   = {}
+        self.labels     = {}
+        self.listboxes  = {}
+        self.sliders    = {}
+        self.checkboxes = {}
 
 
     # ==============================================================================
@@ -226,6 +251,7 @@ class VtkViewer(QApplication):
     def keypress(self, obj, event):
 
         key = obj.GetKeySym()
+
         try:
             func = self.keycallbacks[key]
             func(self)
@@ -284,6 +310,7 @@ class VtkViewer(QApplication):
             self.polydata.GetPointData().SetScalars(self.vertex_colors)
 
         self.draw_axes()
+
         if not self.show_axes:
             self.axes.VisibilityOff()
 
@@ -293,10 +320,12 @@ class VtkViewer(QApplication):
         self.actor = actor = vtkActor()
         actor.SetMapper(mapper)
         actor.GetProperty().SetLineWidth(self.edge_width * self.edge_scale)
+
         if self.edge_width == 0:
             actor.GetProperty().EdgeVisibilityOff()
         else:
             actor.GetProperty().EdgeVisibilityOn()
+
         actor.GetProperty().SetEdgeColor([0, 0.5, 0])
         actor.GetProperty().SetInterpolationToGouraud()
 
@@ -366,6 +395,14 @@ class VtkViewer(QApplication):
         label.setText(text)
         self.layout.addWidget(label)
 
+    def add_checkbox(self, name, text, checked, callback):
+
+        self.checkboxes[name] = checkbox = QCheckBox()
+        checkbox.setText(text)
+        checkbox.setChecked(checked)
+        checkbox.stateChanged.connect(callback)
+        self.layout.addWidget(checkbox)
+
     def add_listbox(self, name, items, callback):
 
         self.listboxes[name] = listbox = QComboBox()
@@ -382,7 +419,6 @@ class VtkViewer(QApplication):
 
         self.sidebar = sidebar = QDockWidget()
         sidebar.setFixedWidth(120)
-        # sidebar.setWindowTitle('-')
 
         self.layout = layout = QVBoxLayout()
         layout.addStretch()
@@ -466,14 +502,17 @@ class VtkViewer(QApplication):
         value = self.sliders['slider_vertices'].value()
         self.labels['label_vertices'].setText('Vertex size: {0}'.format(value))
         self.vertex.SetRadius(value * self.vertex_scale)
+
         if self.support:
             self.support.SetRadius(value * 1.5 * self.vertex_scale)
+
         self.main.window.Render()
 
     def update_vertices_coordinates(self, coordinates):
 
         for key, xyz in coordinates.items():
             self.vertices.SetPoint(key, xyz)
+
         self.vertices.Modified()
         self.main.window.Render()
 
@@ -482,8 +521,10 @@ class VtkViewer(QApplication):
         self.vertex_colors = vtkUnsignedCharArray()
         self.vertex_colors.SetNumberOfComponents(3)
         colors_ = [colors.get(i, [200, 200, 200]) for i in self.data['vertices'].keys()]
+
         for color in colors_:
             self.vertex_colors.InsertNextTypedTuple([int(round(i)) for i in color])
+
         self.polydata.GetPointData().SetScalars(self.vertex_colors)
         self.main.window.Render()
 
@@ -514,10 +555,12 @@ class VtkViewer(QApplication):
     def edge_callback(self):
 
         value = self.sliders['slider_edges'].value()
+
         if value == 0:
             self.actor.GetProperty().EdgeVisibilityOff()
         else:
             self.actor.GetProperty().EdgeVisibilityOn()
+
         self.labels['label_edges'].setText('Edge width: {0}'.format(value))
         self.actor.GetProperty().SetLineWidth(value * self.edge_scale)
         self.main.window.Render()
@@ -534,8 +577,10 @@ class VtkViewer(QApplication):
         for fkey, face in self.data['faces'].items():
 
             vil = vtkIdList()
+
             for pt in face['vertices']:
                 vil.InsertNextId(pt)
+
             faces.InsertNextCell(vil)
             color = face.get('color', [150, 255, 150])
 
@@ -551,8 +596,10 @@ class VtkViewer(QApplication):
         value = self.sliders['slider_opacity'].value()
         self.labels['label_opacity'].setText('Opacity: {0}'.format(value))
         self.actor.GetProperty().SetOpacity(value * 0.01)
+
         if self.block_actor:
             self.block_actor.GetProperty().SetOpacity(value * 0.01)
+
         self.main.window.Render()
 
 
@@ -564,6 +611,7 @@ class VtkViewer(QApplication):
 
         for location in self.data['blocks'].get('locations', []):
             self.locations.InsertNextPoint(location)
+
         self.blocks.SetPoints(self.locations)
 
         self.block = block = vtkCubeSource()
@@ -678,54 +726,54 @@ if __name__ == "__main__":
     # Mesh
     # ==============================================================================
 
-    def func(self):
-        print('Callback test!')
+    # def func(self):
+    #     print('Callback test!')
 
-    data = {
-        'vertices': {
-            0: [-3, -3, 0],
-            1: [+3, -3, 0],
-            2: [+3, +3, 0],
-            3: [-3, +3, 0],
-            4: [-3, -3, 3],
-            5: [+3, -3, 3],
-            6: [+3, +3, 3],
-            7: [-3, +3, 3],
-        },
-        'vertex_colors': {
-            # turn on vertex coloring by uncommenting
-            0: [255, 0, 255],
-            1: [255, 0, 0],
-            2: [255, 255, 0],
-            3: [255, 255, 0],
-            4: [0, 255, 0],
-            5: [0, 255, 150],
-            6: [0, 255, 255],
-            7: [0, 0, 255],
-        },
-        'edges': [
-            {'u': 0, 'v': 4, 'color': [0, 0, 0]},
-            {'u': 1, 'v': 5, 'color': [0, 0, 255]},
-            {'u': 2, 'v': 6, 'color': [0, 255, 0]},
-            {'u': 3, 'v': 7}
-        ],
-        'faces': {
-            0: {'vertices': [4, 5, 6], 'color': [250, 150, 150]},
-            1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
-        },
-        'fixed':
-            [0, 1],
-        'blocks': {
-            'size': 1,
-            'locations': [[0, 0, 3], [0, 0, 4]],
-        }
-    }
+    # data = {
+    #     'vertices': {
+    #         0: [-3, -3, 0],
+    #         1: [+3, -3, 0],
+    #         2: [+3, +3, 0],
+    #         3: [-3, +3, 0],
+    #         4: [-3, -3, 3],
+    #         5: [+3, -3, 3],
+    #         6: [+3, +3, 3],
+    #         7: [-3, +3, 3],
+    #     },
+    #     'vertex_colors': {
+    #         # turn on vertex coloring by uncommenting
+    #         0: [255, 0, 255],
+    #         1: [255, 0, 0],
+    #         2: [255, 255, 0],
+    #         3: [255, 255, 0],
+    #         4: [0, 255, 0],
+    #         5: [0, 255, 150],
+    #         6: [0, 255, 255],
+    #         7: [0, 0, 255],
+    #     },
+    #     'edges': [
+    #         {'u': 0, 'v': 4, 'color': [0, 0, 0]},
+    #         {'u': 1, 'v': 5, 'color': [0, 0, 255]},
+    #         {'u': 2, 'v': 6, 'color': [0, 255, 0]},
+    #         {'u': 3, 'v': 7}
+    #     ],
+    #     'faces': {
+    #         0: {'vertices': [4, 5, 6], 'color': [250, 150, 150]},
+    #         1: {'vertices': [6, 7, 4], 'color': [150, 150, 250]},
+    #     },
+    #     'fixed':
+    #         [0, 1],
+    #     'blocks': {
+    #         'size': 1,
+    #         'locations': [[0, 0, 3], [0, 0, 4]],
+    #     }
+    # }
 
-    viewer = VtkViewer(data=data)
-    viewer.show_axes = False
-    viewer.keycallbacks['s'] = func
-    viewer.setup()
-    viewer.start()
+    # viewer = VtkViewer(data=data)
+    # viewer.show_axes = False
+    # viewer.keycallbacks['s'] = func
+    # viewer.setup()
+    # viewer.start()
 
 
     # ==============================================================================
@@ -734,6 +782,7 @@ if __name__ == "__main__":
 
     # from numpy import linspace
     # from numpy import meshgrid
+
 
     # r = linspace(-1, 1, 50)
     # x, y, z = meshgrid(r, r, r)
@@ -745,3 +794,21 @@ if __name__ == "__main__":
     # viewer = VtkViewer(data=data)
     # viewer.setup()
     # viewer.start()
+
+
+    # ==============================================================================
+    # Datastructures
+    # ==============================================================================
+
+    from compas.datastructures import Network
+    from compas.datastructures import Mesh
+
+
+    import compas
+
+    # datastructure = Network.from_obj(compas.get('saddle.obj'))
+    datastructure = Mesh.from_obj(compas.get('quadmesh.obj'))
+
+    viewer = VtkViewer(datastructure=datastructure)
+    viewer.setup()
+    viewer.start()

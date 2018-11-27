@@ -8,11 +8,16 @@ import datetime
 
 __all__ = [
     'timestamp',
+    'now'
 ]
 
 
 def timestamp():
     return datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d%H%M%S')
+
+
+def now():
+    return timestamp()
 
 
 # ==============================================================================

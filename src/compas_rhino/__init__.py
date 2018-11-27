@@ -30,7 +30,10 @@ import compas
 from .utilities import *
 from . import utilities
 
-__version__ = '0.3.2'
+__version__ = '0.3.4'
+
+
+PURGE_ON_DELETE = True
 
 
 def _get_ironpython_lib_path(version):
@@ -54,4 +57,5 @@ def _get_ironpython_lib_path(version):
     return ironpython_lib_path
 
 
-__all__ = utilities.__all__ + ['__version__']
+__all__  = ['__version__', 'PURGE_ON_DELETE']
+__all__ += utilities.__all__

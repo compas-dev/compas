@@ -16,6 +16,7 @@ from matplotlib.patches import Circle
 from compas.plotters.core.drawing import create_axes_xy
 from compas.plotters.core.drawing import draw_xpoints_xy
 from compas.plotters.core.drawing import draw_xlines_xy
+from compas.plotters.core.drawing import draw_xpolylines_xy
 from compas.plotters.core.drawing import draw_xpolygons_xy
 from compas.plotters.core.drawing import draw_xarrows_xy
 
@@ -526,6 +527,31 @@ class Plotter(object):
         """
         return draw_xlines_xy(lines, self.axes)
 
+    def draw_polylines(self, polylines):
+        """Draw polylines on a 2D plot.
+
+        Parameters
+        ----------
+        polylines : list of dict
+            A list of dictionaries containing the polyline properties.
+            The following properties are supported:
+
+            * points (list): XY(Z) coordinates of the polygon vertices.
+            * text (str, optional): The text of the label. Default is ``None``.
+            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
+            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
+            * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
+            * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
+            * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
+
+        Returns
+        -------
+        object
+            The matplotlib polyline collection object.
+
+        """
+        return draw_xpolylines_xy(polylines, self.axes)
+
     def draw_polygons(self, polygons):
         """Draws polygons on a 2D plot.
 
@@ -547,10 +573,6 @@ class Plotter(object):
         -------
         object
             The matplotlib polygon collection object.
-
-        See Also
-        --------
-        :func:`compas.plotters.core.draw_xpolygons_xy`
 
         """
         return draw_xpolygons_xy(polygons, self.axes)

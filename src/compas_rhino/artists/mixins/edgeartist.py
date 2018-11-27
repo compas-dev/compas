@@ -12,6 +12,8 @@ __all__ = ['EdgeArtist']
 
 class EdgeArtist(object):
 
+    __module__ = "compas_rhino.artists.mixins"
+
     def clear_edges(self, keys=None):
         """Clear all edges previously drawn by the ``EdgeArtist``.
 
@@ -69,7 +71,7 @@ class EdgeArtist(object):
             To apply the same color to all edges, provide a single color
             specification. Individual colors can be assigned using a dictionary
             of key-color pairs. Missing keys will be assigned the default face
-            color (``self.datastructure.attributes['edge.color']``).
+            color (``self.defaults['edge.color']``).
             The default is ``None``, in which case all edges are assigned the
             default edge color.
 
@@ -83,7 +85,7 @@ class EdgeArtist(object):
         keys = keys or list(self.datastructure.edges())
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.datastructure.attributes.get('color.edge'),
+                                       default=self.defaults.get('color.edge'),
                                        colorformat='rgb',
                                        normalize=False)
         lines = []
@@ -95,6 +97,7 @@ class EdgeArtist(object):
                 'name' : self.datastructure.edge_name(u, v),
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
+
         return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
@@ -111,7 +114,7 @@ class EdgeArtist(object):
             Tuples are interpreted as RGB component specifications (e.g. ``(255, 0, 0) for red``.
             Individual colors can be assigned using a dictionary
             of key-color pairs. Missing keys will be assigned the default face
-            color (``self.datastructure.attributes['edge.color']``).
+            color (``self.defaults['edge.color']``).
             The default is ``None``, in which case all edges are assigned the
             default edge color.
 
@@ -130,7 +133,7 @@ class EdgeArtist(object):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.datastructure.attributes.get('color.edge'),
+                                       default=self.defaults.get('color.edge'),
                                        colorformat='rgb',
                                        normalize=False)
         labels = []

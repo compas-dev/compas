@@ -104,8 +104,8 @@ Average
     :toctree: generated/
     :nosignatures:
 
-    center_of_mass_polygon
-    center_of_mass_polygon_xy
+    centroid_polygon
+    centroid_polygon_xy
     center_of_mass_polyhedron
     centroid_points
     centroid_points_xy

@@ -14,6 +14,7 @@ from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import length_vector_xy
 from compas.geometry.basic import subtract_vectors_xy
+from compas.geometry.basic import normalize_vector
 
 from compas.geometry.distance import distance_point_point
 
@@ -35,6 +36,7 @@ __all__ = [
     'intersection_plane_plane',
     'intersection_plane_plane_plane',
     'intersection_sphere_sphere',
+    'intersection_ellipse_line_xy',
 ]
 
 
@@ -72,8 +74,8 @@ def intersection_line_line(l1, l2, tol=1e-6):
     cd = subtract_vectors(d, c)
 
     n = cross_vectors(ab, cd)
-    n1 = cross_vectors(ab, n)
-    n2 = cross_vectors(cd, n)
+    n1 = normalize_vector(cross_vectors(ab, n))
+    n2 = normalize_vector(cross_vectors(cd, n))
 
     plane_1 = (a, n1)
     plane_2 = (c, n2)
@@ -124,7 +126,7 @@ def intersection_line_line_xy(l1, l2, tol=1e-6):
 
     d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
 
-    if d <= tol:
+    if fabs(d) <= tol:
         return None
 
     a = (x1 * y2 - y1 * x2)
@@ -565,22 +567,81 @@ def intersection_sphere_sphere(sphere1, sphere2):
         return "circle", (ci, ri, normal)
 
 
+def intersection_ellipse_line_xy(ellipse, line):
+    """Computes the intersection of an ellipse and a line in the XY plane.
+
+    Parameters
+    ----------
+    ellipse : tuple
+        The lengths a, b of the ellipse' semiaxes.
+    line : tuple
+        XY(Z) coordinates of two points defining another line.
+
+    Returns
+    -------
+    None
+        If there is no intersection.
+    tuple
+        Either 1 or 2 intersection points.
+
+    Examples
+    --------
+    >>> ellipse = 6., 2.5
+    >>> p1 = (4.1, 2.8, 0.)
+    >>> p2 = (3.4, -3.1, 0.)
+    >>> i1, i2 = intersection_ellipse_line_xy(ellipse, [p1, p2])
+
+    References
+    ----------
+    .. [1] C# Helper. *Calculate where a line segment and an ellipse intersect in C#*.
+           Available at: http://csharphelper.com/blog/2017/08/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c/
+
+    """
+    x1, y1 = line[0][0], line[0][1]
+    x2, y2 = line[1][0], line[1][1]
+
+    a, b = ellipse
+
+    A = (x2 - x1)**2/a**2 + (y2 - y1)**2/b**2
+    B = 2*x1*(x2 - x1)/a**2 + 2*y1*(y2 - y1)/b**2
+    C = x1**2/a**2 + y1**2/b**2 - 1
+
+    discriminant = B**2 - 4*A*C
+    if discriminant == 0:
+        t = -B/(2*A)
+        return (x1 + (x2 - x1)*t, y1 + (y2 - y1)*t, 0.0)
+    elif discriminant > 0:
+        t1 = (-B + sqrt(discriminant))/(2*A)
+        t2 = (-B - sqrt(discriminant))/(2*A)
+        p1 = (x1 + (x2 - x1)*t1, y1 + (y2 - y1)*t1, 0.0)
+        p2 = (x1 + (x2 - x1)*t2, y1 + (y2 - y1)*t2, 0.0)
+        return p1, p2
+    else:
+        return None
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
     
-    # intersection_sphere_sphere(sphere1, sphere2)
-    sphere1 = (3.0, 7.0, 4.0), 10.0
-    sphere2 = (7.0, 4.0, 0.0), 5.0
-    result = intersection_sphere_sphere(sphere1, sphere2)
-    print(result)
-    if result:
-        case, res = result
-        if case == "circle":
-            center, radius, normal = res
-        elif case == "point":
-            point = res
-        elif case == "sphere":
-            center, radius = res
+    # # intersection_sphere_sphere(sphere1, sphere2)
+    # sphere1 = (3.0, 7.0, 4.0), 10.0
+    # sphere2 = (7.0, 4.0, 0.0), 5.0
+    # result = intersection_sphere_sphere(sphere1, sphere2)
+    # print(result)
+    # if result:
+    #     case, res = result
+    #     if case == "circle":
+    #         center, radius, normal = res
+    #     elif case == "point":
+    #         point = res
+    #     elif case == "sphere":
+    #         center, radius = res
+
+    a = ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
+    b = ([1.0, 0.0, 0.0], [2.0, 1.0, 0.0])
+
+    res = intersection_line_line_xy(a, b)
+
+    print(res)

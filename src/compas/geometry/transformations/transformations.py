@@ -20,6 +20,8 @@ from compas.geometry.basic import vector_component_xy
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import multiply_matrix_vector
 
+from compas.geometry.angles import angle_vectors
+
 from compas.geometry.distance import closest_point_on_plane
 from compas.geometry.distance import closest_point_on_line
 from compas.geometry.distance import closest_point_on_line_xy
@@ -61,6 +63,8 @@ __all__ = [
 
     'reflect_line_plane',
     'reflect_line_triangle',
+
+    'orient_points',
 ]
 
 
@@ -790,48 +794,116 @@ def reflect_line_triangle(line, triangle, tol=1e-6):
 
 
 # ==============================================================================
+# orientation
+# ==============================================================================
+
+
+def orient_points(points, reference_plane, target_plane):
+    """Orient points from one plane to another.
+
+    Parameters
+    ----------
+    points : list of points
+        XYZ coordinates of the points.
+    reference_plane : plane
+        Base point and normal defining a reference plane.
+    target_plane : plane
+        Base point and normal defining a target plane.
+
+    Returns
+    -------
+    points : list of point
+        XYZ coordinates of the oriented points.
+
+    Notes
+    -----
+    This function is useful to orient a planar problem in the xy-plane to simplify
+    the calculation (see example).
+
+    Examples
+    --------
+    .. code-block:: python
+
+        from compas.geometry import orient_points
+        from compas.geometry import intersection_segment_segment_xy
+
+        refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
+        tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
+
+        points = [
+            [0.288675, 0.288675, 1.1547],
+            [0.866025, 0.866025, 0.0],
+            [1.077350, 0.077350, 0.57735],
+            [0.077350, 1.077350, 0.57735]
+        ]
+
+        points = orient_points(points, refplane, tarplane)
+
+        ab = points[0], points[1]
+        cd = points[2], points[3]
+
+        point = intersection_segment_segment_xy(ab, cd)
+
+        points = orient_points([point], tarplane, refplane)
+        
+        print(points[0])
+
+    """
+    axis = cross_vectors(reference_plane[1], target_plane[1])
+    angle = angle_vectors(reference_plane[1], target_plane[1])
+    origin = reference_plane[0]
+
+    if angle:
+        points = rotate_points(points, angle, axis, origin)
+
+    vector = subtract_vectors(target_plane[0], reference_plane[0])
+    points = translate_points(points, vector)
+
+    return points
+
+
+# ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    # from numpy import array
-    # from numpy import vstack
+    from compas.geometry import orient_points
+    from compas.geometry import intersection_segment_segment_xy
 
-    # from numpy.random import randint
 
-    # import matplotlib.pyplot as plt
+    refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
+    tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
 
-    # n = 200
+    points = [
+        [0.288675, 0.288675, 1.1547],
+        [0.866025, 0.866025, 0.0],
+        [1.077350, 0.077350, 0.57735],
+        [0.077350, 1.077350, 0.57735]
+    ]
 
-    # points = randint(0, high=100, size=(n, 3)).astype(float)
-    # points = vstack((points, array([[0, 0, 0], [100, 0, 0]], dtype=float).reshape((-1, 3))))
+    points = orient_points(points, refplane, tarplane)
 
-    # a = math.pi / randint(1, high=8)
+    ab = points[0], points[1]
+    cd = points[2], points[3]
 
-    # R = matrix_from_axis_and_angle([0, 0, 1], a, point=[0, 0, 0], rtype='array')
+    point = intersection_segment_segment_xy(ab, cd)
 
-    # points_ = transform_points_numpy(points, R)
+    points = orient_points([point], tarplane, refplane)
+    
+    print(points[0])
 
-    # plt.plot(points[:, 0], points[:, 1], 'bo')
-    # plt.plot(points_[:, 0], points_[:, 1], 'ro')
+    # points = [
+    #     [ 1.0,  1.0, 0.0],
+    #     [-1.0,  1.0, 0.0],
+    #     [-1.0, -1.0, 0.0],
+    #     [ 1.0, -1.0, 0.0]
+    # ]
 
-    # plt.plot(points[-2:, 0], points[-2:, 1], 'b-', label='before')
-    # plt.plot(points_[-2:, 0], points_[-2:, 1], 'r-', label='after')
+    # refplane = ([0, 0, 0], [0, 0, -1.0])
+    # tarplane = ([0, 0, 0], [0, 0, 1.0])
 
-    # plt.legend(title='Rotation {0}'.format(180 * a / math.pi), fancybox=True)
+    # points = orient_points(points, refplane, tarplane)
 
-    # ax = plt.gca()
-    # ax.set_aspect('equal')
+    # print(points)
 
-    # plt.show()
-
-    plane = [0, 0, 0], [0, 1, 0]
-    triangle = [1.0, 0, 0], [-1.0, 0, 0], [0, 0, 1.0]
-
-    line = [-1, 1, 0], [-0.5, 0.5, 0]
-
-    # line = reflect_line_plane(line, plane)
-    line = reflect_line_triangle(line, triangle)
-
-    print(line)

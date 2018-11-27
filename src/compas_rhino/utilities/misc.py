@@ -68,7 +68,7 @@ def screenshot_current_view(path,
     scale = max(1, scale)  # the rhino command requires a scale > 1
     rs.EnableRedraw(True)
     rs.Sleep(0)
-    result = rs.Command("-_ViewCaptureToFile \"" + path + "\""
+    result = rs.Command("-_ViewCaptureToFile \"" + os.path.abspath(path) + "\""
                         " Width=" + str(width) +
                         " Height=" + str(height) +
                         " Scale=" + str(scale) +

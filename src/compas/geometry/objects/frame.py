@@ -381,7 +381,7 @@ class Frame(object):
         >>>
 
         """
-        frame = cls()
+        frame = cls.worldXY()
         frame.data = data
         return frame
 
@@ -416,14 +416,15 @@ class Frame(object):
         yaxis = Vector(*vector)
         yaxis.unitize()
         zaxis = Vector.cross(self.xaxis, yaxis)
+        zaxis.unitize()
         self._yaxis = Vector.cross(zaxis, self.xaxis)
 
     @property
     def data(self):
         """:obj:`dict` : The data dictionary that represents the frame."""
-        return {'point': self.point,
-                'xaxis': self.xaxis,
-                'yaxis': self.yaxis}
+        return {'point': list(self.point),
+                'xaxis': list(self.xaxis),
+                'yaxis': list(self.yaxis)}
 
     @data.setter
     def data(self, data):

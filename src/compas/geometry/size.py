@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from math import fabs
+
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import subtract_vectors_xy
 from compas.geometry.basic import length_vector
@@ -42,16 +44,74 @@ def area_polygon(polygon):
     float
         The area of the polygon.
 
+    Examples
+    --------
+    .. plot::
+        :include-source:
+
+        from compas.plotters import Plotter
+
+        plotter = Plotters()
+
+        polygon = [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [1.0, 1.0, 0.0],
+            [0.0, 1.0, 0.0]
+        ]
+
+        area_polygon(polygon)
+
+        # 1.0
+
+        plotter.draw_polygons([{'points': polygon}])
+        plotter.show()
+
+    .. plot::
+        :include-source:
+
+        from compas.plotters import Plotter
+
+        plotter = Plotters()
+
+        polygon = [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [1.0, 1.0, 0.0],
+            [0.5, 0.0, 0.0],
+            [0.0, 1.0, 0.0]
+        ]
+
+        area_polygon(polygon)
+
+        # 0.5
+
+        plotter.draw_polygons([{'points': polygon}])
+        plotter.show()
+
     """
     o = centroid_points(polygon)
-    u = subtract_vectors(polygon[-1], o)
-    v = subtract_vectors(polygon[0], o)
-    a = 0.5 * length_vector(cross_vectors(u, v))
+    a = polygon[-1]
+    b = polygon[0]
+    oa = subtract_vectors(a, o)
+    ob = subtract_vectors(b, o)
+
+    n0 = cross_vectors(oa, ob)
+
+    area = 0.5 * length_vector(n0)
+
     for i in range(0, len(polygon) - 1):
-        u = v
-        v = subtract_vectors(polygon[i + 1], o)
-        a += 0.5 * length_vector(cross_vectors(u, v))
-    return a
+        oa = ob
+        b = polygon[i + 1]
+        ob = subtract_vectors(b, o)
+        n = cross_vectors(oa, ob)
+
+        if dot_vectors(n, n0) > 0:
+            area += 0.5 * length_vector(n)
+        else:
+            area -= 0.5 * length_vector(n)
+
+    return area
 
 
 def area_polygon_xy(polygon):
@@ -79,11 +139,22 @@ def area_polygon_xy(polygon):
         u = v
         v = subtract_vectors_xy(polygon[i + 1], o)
         a += 0.5 * cross_vectors_xy(u, v)[2]
-    return abs(a)
+    return fabs(a)
 
 
 def area_triangle(triangle):
     """Compute the area of a triangle defined by three points.
+
+    Parameters
+    ----------
+    triangle : list of list
+        XYZ coordinates of the corners of the triangle.
+
+    Returns
+    -------
+    float
+        The area of the triangle.
+
     """
     return 0.5 * length_vector(normal_triangle(triangle, False))
 
@@ -168,4 +239,26 @@ def volume_polyhedron(polyhedron):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+    
+    from compas.plotters import Plotter
+
+    plotter = Plotter(figsize=(10, 7))
+
+    polygon = [
+        [0, 0, 0],
+        [1.0, 0, 0],
+        [1.0, 1.0, 0],
+        [0.5, 0.0, 0],
+        [0, 1.0, 0]
+    ]
+
+    print(area_polygon(polygon[::-1]))
+
+    polygons = [{
+        'points' : polygon
+    }]
+
+    plotter.draw_polygons(polygons)
+
+    plotter.show()
+

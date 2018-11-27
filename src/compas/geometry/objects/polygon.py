@@ -5,7 +5,7 @@ from __future__ import division
 from compas.geometry.basic import cross_vectors
 
 from compas.geometry.average import centroid_points
-from compas.geometry.average import center_of_mass_polygon
+from compas.geometry.average import centroid_polygon
 
 from compas.geometry.size import area_polygon
 
@@ -21,7 +21,8 @@ __all__ = ['Polygon']
 
 
 class Polygon(object):
-    """An object representing ...
+    """An object representing an ordered collection of points in space connected
+    by straight line segments forming a closed boundary around the interior space.
 
     A polygon has a closed boundary that separates its interior from the
     exterior. The boundary does not intersect itself, and is described by an
@@ -45,6 +46,8 @@ class Polygon(object):
     All ``Polygon`` objects are considered closed. Therefore the first and
     last element in the list of points are not the same. The existence of the
     closing edge is implied.
+
+    Polygons are not necessarily planar by construction; they can be warped.
 
     """
     def __init__(self, points):
@@ -102,7 +105,7 @@ class Polygon(object):
     @property
     def center(self):
         """Point: The center (of mass) of the polygon."""
-        return Point(* center_of_mass_polygon(self.points))
+        return Point(* centroid_polygon(self.points))
 
     @property
     def normal(self):
@@ -173,16 +176,10 @@ class Polygon(object):
     # ==========================================================================
 
     def __getitem__(self, key):
-        try:
-            return self.points[key]
-        except IndexError:
-            raise KeyError
+        return self.points[key]
 
     def __setitem__(self, key, value):
-        try:
-            self.points[key] = value
-        except IndexError:
-            raise KeyError
+        self.points[key] = value
 
     def __iter__(self):
         return iter(self.points)
