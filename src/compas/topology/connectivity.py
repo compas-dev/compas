@@ -10,7 +10,7 @@ from compas.utilities import geometric_key
 __all__ = [
     'adjacency_from_edges',
     'connectivity_from_edges',
-    'join_lines_to_polylines',
+    'join_polylines',
 ]
 
 
