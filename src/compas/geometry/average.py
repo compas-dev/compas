@@ -16,6 +16,7 @@ from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import cross_vectors_xy
 from compas.geometry.basic import vector_from_points
 from compas.geometry.basic import scale_vector
+from compas.geometry.basic import sum_vectors
 from compas.geometry.distance import distance_point_point
 
 
@@ -26,6 +27,7 @@ __all__ = [
     'midpoint_line_xy',
 
     'centroid_points',
+    'weighted_centroid_points',
     'centroid_points_xy',
     'centroid_polygon',
     'centroid_polygon_xy',
@@ -146,6 +148,25 @@ def centroid_points(points):
     x, y, z = zip(*points)
     return [sum(x) / p, sum(y) / p, sum(z) / p]
 
+def weighted_centroid_points(points, weights):
+    """Compute the weighted centroid of a set of points. The weights can be any between minus and plus infinity.
+
+    Parameters
+    ----------
+    points : list
+        A list of point coordinates.
+    weights : list
+        A list of weight floats.
+
+    Returns
+    -------
+    list
+        The coordinates of the weighted centroid.
+    """
+    
+    vectors = [scale_vector(point, weight) for point, weight in zip(points, weights)]
+    vector = scale_vector(sum_vectors(vectors), 1. / sum(weights))
+    return vector
 
 def centroid_points_xy(points):
     """Compute the centroid of a set of points lying in the XY-plane.
