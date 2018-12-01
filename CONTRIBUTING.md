@@ -9,6 +9,7 @@ We accept code contributions through pull requests.
 In short, this is how that works.
 
 > **NOTE**
+>
 > If you do not have write access to the repository,
   you have to work off of a fork to be able to submit pull requests.
 
