@@ -47,7 +47,7 @@ def xdraw_labels(labels, **kwargs):
 def xdraw_points(points, **kwargs):
 
     bpy.ops.object.empty_add(type='SPHERE', radius=1, location=[0, 0, 0])
-    
+
     object  = bpy.context.object
     objects = []
 

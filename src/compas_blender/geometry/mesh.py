@@ -167,7 +167,7 @@ class BlenderMesh(BlenderGeometry):
 
         if not faces:
             faces = range(len(self.geometry.polygons))
-        
+
         return [list(self.geometry.polygons[face].vertices) for face in faces]
 
 
