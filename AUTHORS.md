@@ -5,3 +5,4 @@
 - Romana Rust <<rust@arch.ethz.ch>> [@romanarust](https://github.com/romanarust)
 - Kathrin Dörfler <<doerfler@arch.ethz.ch>> [@Kathrin3010](https://github.com/Kathrin3010)
 - Gonzalo Casas <<casas@arch.ethz.ch>> [@gonzalocasas](https://github.com/gonzalocasas)
+- Robin Oval <<oval@arch.ethz.ch>> [@robin-oval](https://github.com/robin-oval)
