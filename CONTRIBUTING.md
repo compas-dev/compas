@@ -8,6 +8,10 @@ Contributions are welcome and very much appreciated!
 We accept code contributions through pull requests.
 In short, this is how that works.
 
+> **NOTE**
+  If you do not have write access to the repository,
+  you have to work off a fork to be able to submit pull requests.
+
 1. Fork [the repository](https://github.com/compas-dev/compas) and clone the fork.
 2. Create a virtual environment using your tool of choice (e.g. `virtualenv`, `conda`, etc).
 3. Install development dependencies:
