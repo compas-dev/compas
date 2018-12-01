@@ -12,6 +12,7 @@ In short, this is how that works.
 >
 > If you do not have write access to the repository,
   you have to work off of a fork to be able to submit pull requests.
+>
 
 1. Fork [the repository](https://github.com/compas-dev/compas) and clone the fork.
 2. Create a virtual environment using your tool of choice (e.g. `virtualenv`, `conda`, etc).
@@ -57,8 +58,11 @@ When [reporting a bug](https://github.com/compas-dev/compas/issues) please inclu
 * Any details about your local setup that might be helpful in troubleshooting.
 * Detailed steps to reproduce the bug.
 
+> **NOTE**
+>
 > Please don't use the issue tracker to ask questions about **COMPAS**.
 > There is a [forum](https://forum.compas-framework.org) for that!
+>
 
 
 ## Feature requests and feedback
