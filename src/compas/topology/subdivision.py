@@ -549,30 +549,43 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
     Examples
     --------
-    .. code-block:: python
+    .. plot::
+        :include-source:
 
         from compas.datastructures import Mesh
-
         from compas.topology import trimesh_subdivide_loop
-        from compas.topology import delaunay_from_points
-        from compas.topology import voronoi_from_delaunay
-
-        from compas.geometry import pointcloud_xy
-
         from compas.plotters import MeshPlotter
 
         points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.5, 1.0, 0.0]]
         faces = [[0, 1, 2]]
-
         mesh = Mesh.from_vertices_and_faces(points, faces)
 
         subd = trimesh_subdivide_loop(mesh, k=5)
 
         plotter = MeshPlotter(subd)
-
         plotter.draw_vertices(radius=0.002)
         plotter.draw_faces()
+        plotter.show()
 
+
+    .. plot::
+        :include-source:
+
+        from compas.datastructures import Mesh
+        from compas.topology import trimesh_subdivide_loop
+        from compas.topology import delaunay_from_points
+        from compas.geometry import pointcloud_xy
+        from compas.plotters import MeshPlotter
+
+        points = pointcloud_xy(10, (0, 100))
+        faces = delaunay_from_points(points)
+        mesh = Mesh.from_vertices_and_faces(points, faces)
+
+        subd = trimesh_subdivide_loop(mesh, k=3)
+
+        plotter = MeshPlotter(subd)
+        plotter.draw_vertices(radius=0.1)
+        plotter.draw_faces()
         plotter.show()
 
     """
@@ -709,19 +722,19 @@ if __name__ == "__main__":
 
     from compas.plotters import MeshPlotter
 
-    # points = pointcloud_xy(50, (0, 100))
-    # faces = delaunay_from_points(points)
+    points = pointcloud_xy(10, (0, 100))
+    faces = delaunay_from_points(points)
 
-    points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.5, 1.0, 0.0]]
-    faces = [[0, 1, 2]]
+    # points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.5, 1.0, 0.0]]
+    # faces = [[0, 1, 2]]
 
-    delaunay = Mesh.from_vertices_and_faces(points, faces)
+    mesh = Mesh.from_vertices_and_faces(points, faces)
 
-    subd = trimesh_subdivide_loop(delaunay, k=5)
+    subd = trimesh_subdivide_loop(mesh, k=3)
 
     plotter = MeshPlotter(subd, figsize=(10, 7))
 
-    plotter.draw_vertices(radius=0.002)
+    plotter.draw_vertices(radius=0.1)
     plotter.draw_faces()
 
     plotter.show()
