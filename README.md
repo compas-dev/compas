@@ -1,7 +1,7 @@
 # The COMPAS framework
 
-[![Build Status](https://travis-ci.com/compas-dev/compas.svg?branch=develop)](https://travis-ci.com/compas-dev/compas)
-
+[![Build Status](https://travis-ci.com/compas-dev/compas.svg?branch=master)](https://travis-ci.com/compas-dev/compas)
+[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/compas-dev/compas)
 
 The **COMPAS** framework is an open-source, Python-based framework for computational research and collaboration in architecture, engineering and digital fabrication.
 
