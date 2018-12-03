@@ -67,24 +67,24 @@ def join_lines(lines, splits = []):
     
     .. code-block:: python
     
-    points = [
-        [0., 0., 0.],
-        [1., 0., 0.],
-        [2., 0., 0.],
-        [2., 1., 0.],
-        [3., 0., 0.],
-        [4., 0., 0.],
-    ]
+        points = [
+            [0., 0., 0.],
+            [1., 0., 0.],
+            [2., 0., 0.],
+            [2., 1., 0.],
+            [3., 0., 0.],
+            [4., 0., 0.],
+        ]
 
-    lines = [
-        (points[0], points[1]),
-        (points[1], points[2]),
-        (points[2], points[3]),
-        (points[2], points[4]),
-        (points[4], points[5]),
-    ]
-    
-    print(join_lines(lines))
+        lines = [
+            (points[0], points[1]),
+            (points[1], points[2]),
+            (points[2], points[3]),
+            (points[2], points[4]),
+            (points[4], points[5]),
+        ]
+
+        print(join_lines(lines))
 
     """
     
