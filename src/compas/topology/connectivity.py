@@ -10,7 +10,7 @@ from compas.utilities import geometric_key
 __all__ = [
     'adjacency_from_edges',
     'connectivity_from_edges',
-    'join_polylines',
+    'join_lines',
 ]
 
 
@@ -46,28 +46,50 @@ def connectivity_from_edges(edges):
     """"""
     raise NotImplementedError
 
-def join_polylines(polylines, stops = []):
-    """Join polylines. The polylines stop at points connectng more than two lines and to optional additional points.
+def join_lines(lines, splits = []):
+    """Join lines into polylines. The polylines stop at points with a valency different from 2 in the network of line. Optional splits can be included.
 
     Parameters
     ----------
-    polylines : list
-        List of polylines as tuples of vertex coordinates.
-    stops : list
-        List of point coordinates for additional splits.
+    lines : list
+        List of lines as tuples of point coordinates.
+    splits : list
+        List of point coordinates for optional splits.
 
     Returns
     -------
     polylines: list
         The joined polylines. If the polyline is closed, the two extremities are the same.
 
-    """
+    Examples
+    --------
+    Joining the lines (a, b), (b, c), (c, d), (c, e) and (e, f), where a ... f are different point coordinates will resut in the following polylines (a, b, c), (c, d) and (c, e, f).
+    
+    .. code-block:: python
+    
+    points = [
+        [0., 0., 0.],
+        [1., 0., 0.],
+        [2., 0., 0.],
+        [2., 1., 0.],
+        [3., 0., 0.],
+        [4., 0., 0.],
+    ]
 
-    # explode in lines
-    lines = [(u, v) for polyline in polylines for u, v in pairwise(polyline)]
+    lines = [
+        (points[0], points[1]),
+        (points[1], points[2]),
+        (points[2], points[3]),
+        (points[2], points[4]),
+        (points[4], points[5]),
+    ]
+    
+    print(join_lines(lines))
+
+    """
     
     # geometric keys of split points
-    stop_geom_keys = set([geometric_key(xyz) for xyz in stops])
+    stop_geom_keys = set([geometric_key(xyz) for xyz in splits])
 
     # create graph from line extremities
     network = Network.from_lines([(line[0], line[-1]) for line in lines])
@@ -107,4 +129,5 @@ def join_polylines(polylines, stops = []):
 # ==============================================================================
 
 if __name__ == "__main__":
+    
     pass
