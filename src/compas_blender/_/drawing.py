@@ -1,29 +1,4 @@
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-#from math import atan2
-#from math import acos
-
-#from compas_blender.utilities import delete_object
-#from compas_blender.utilities import deselect_all_objects
-#from compas_blender.utilities import set_object_layer
-#from compas_blender.utilities import set_objects_show_name
-
-#from compas.geometry import centroid_points
-#from compas.geometry import distance_point_point
-
-
-
-
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
-__all__ = [
 #    'xdraw_labels',
 #    'xdraw_points',
     'xdraw_lines',
@@ -74,30 +49,7 @@ __all__ = [
 #        materials.remove(material)
 
 
-#def create_material(color, alpha=1):
-#    """ Create a material of given RGB color and alpha.
 
-#    Notes:
-#        - If the material already exists, the existing object is returned.
-
-#    Parameters:
-#        color (list): [R, G, B] with values in range [0, 1].
-#        alpha (float): Alpha value in range [0, 1].
-
-#    Returns:
-#        obj: Created/existing material object.
-#    """
-#    ckey = '-'.join(['{0:.2f}'.format(i) for i in color + [alpha]])
-#    names = [i.name for i in list(bpy.data.materials)]
-#    if ckey not in names:
-#        material = bpy.data.materials.new(name=ckey)
-#        material.diffuse_color = color
-#        material.use_transparency = True
-#        material.alpha = alpha
-#        material.emit = 2
-#        return material
-#    else:
-#        return bpy.data.materials[ckey]
 
 
 #def draw_cubes(pos=[[0, 0, 0]], radius=1, layer=0, color=[1, 1, 1]):
@@ -206,52 +158,6 @@ __all__ = [
 #                        for u, v in zip(start, end)])
 
 
-#def draw_spheres(pos=[[0, 0, 0]], radius=1, layer=0, color=[1, 1, 1]):
-#    """ Draw multiple spheres.
-
-#    Parameters:
-#        pos (list): Centroid locations [[x, y, z], ...].
-#        radius (float): Radius of spheres.
-#        layer (int): Layer number.
-#        color (list): Material color.
-
-#    Returns:
-#        list: Created sphere objects.
-#    """
-#    return xdraw_spheres([{'pos': i, 'radius': radius, 'layer': layer, 'color': color} for i in pos])
-
-
-
-
-
-# ==============================================================================
-# xdraw functions
-# ==============================================================================
-
-#def xdraw_cubes(cubes):
-#    """ Draw a set of cubes.
-
-#    Parameters:
-#        cubes (list): {'radius':, 'pos':, 'color':, 'name':, 'layer':}.
-
-#    Returns:
-#        list: Created cube objects.
-#    """
-#    bpy.ops.mesh.primitive_cube_add()
-#    object = bpy.context.object
-#    objects = []
-#    for cube in cubes:
-#        copy = object.copy()
-#        copy.scale *= cube.get('radius', 1)
-#        copy.location = Vector(cube.get('pos', [0, 0, 0]))
-#        material = create_material(color=cube.get('color', [1, 1, 1]))
-#        copy.data.materials.append(material)
-#        copy.name = cube.get('name', 'cube')
-#        copy.data = copy.data.copy()
-#        set_object_layer(object=copy, layer=cube.get('layer', 0))
-#        objects.append(copy)
-#    delete_object(object=object)
-#    return _link_objects(objects)
 
 
 #def xdraw_faces(faces, alpha=1):
@@ -413,33 +319,6 @@ def xdraw_lines(lines):
 
 
 
-#def xdraw_spheres(spheres, div=20):
-#    """ Draw a set of spheres.
-
-#    Parameters:
-#        spheres (dic): {'radius':, 'pos':, 'color':, 'name':, 'layer':}.
-#        div (int): Divisions for spheres.
-
-#    Returns:
-#        list: Created sphere objects.
-#    """
-#    bpy.ops.mesh.primitive_uv_sphere_add(ring_count=div, segments=div)
-#    object = bpy.context.object
-#    objects = []
-#    for sphere in spheres:
-#        copy = object.copy()
-#        copy.scale *= sphere.get('radius', 1)
-#        copy.location = Vector(sphere.get('pos', [0, 0, 0]))
-#        copy.name = sphere.get('name', 'sphere')
-#        copy.data = copy.data.copy()
-#        material = create_material(color=sphere.get('color', [1, 1, 1]))
-#        copy.data.materials.append(material)
-#        set_object_layer(object=copy, layer=sphere.get('layer', 0))
-#        objects.append(copy)
-#    delete_object(object=object)
-#    return _link_objects(objects)
-
-
 #def xdraw_texts(texts):
 #    """ Draw a set of text objects.
 
@@ -466,25 +345,6 @@ def xdraw_lines(lines):
 #    delete_object(object=object)
 #    return _link_objects(objects)
 
-
-#def xdraw_polylines():
-#    NotImplementedError
-
-
-#def xdraw_geodesics():
-#    NotImplementedError
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    from compas_blender.utilities import delete_objects
-#    from numpy.random import rand
-
-    delete_objects()
 
 #    vertices = [[-1, 0, 0], [-2, 0, 0], [-2, 1, 0], [-1, 1, 0]]
 #    faces = [[0, 1, 2], [2, 3, 0]]
