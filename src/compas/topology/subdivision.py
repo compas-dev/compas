@@ -1,3 +1,23 @@
+"""
+Subdivision surfaces
+====================
+
+.. note::
+
+    This is a combination of the following online resources:
+
+    * https://en.wikipedia.org/wiki/Subdivision_surface
+    * 
+
+A subdivision surface is a method of representing a smooth surface via the
+specification of a coarser piecewise linear polygon mesh.
+
+The smooth surface can be calculated from the coarse mesh as the limit of recursive
+subdivision of each polygonal face into smaller faces that better approximate the 
+smooth surface.
+
+
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -722,19 +742,19 @@ if __name__ == "__main__":
 
     from compas.plotters import MeshPlotter
 
-    points = pointcloud_xy(10, (0, 100))
-    faces = delaunay_from_points(points)
+    # points = pointcloud_xy(10, (0, 100))
+    # faces = delaunay_from_points(points)
 
-    # points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.5, 1.0, 0.0]]
-    # faces = [[0, 1, 2]]
+    points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.5, 1.0, 0.0]]
+    faces = [[0, 1, 2]]
 
     mesh = Mesh.from_vertices_and_faces(points, faces)
 
-    subd = trimesh_subdivide_loop(mesh, k=3)
+    subd = trimesh_subdivide_loop(mesh, k=6)
 
     plotter = MeshPlotter(subd, figsize=(10, 7))
 
-    plotter.draw_vertices(radius=0.1)
+    # plotter.draw_vertices(radius=0.1)
     plotter.draw_faces()
 
     plotter.show()
