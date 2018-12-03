@@ -21,7 +21,7 @@ from compas.geometry.distance import closest_point_on_segment_xy
 from compas.geometry.size import area_triangle
 
 from compas.geometry.angles import angle_vectors
-from compas.geometry.average import center_of_mass_polygon
+from compas.geometry.average import centroid_polygon
 
 
 __all__ = [
@@ -45,6 +45,7 @@ __all__ = [
     'is_point_in_convex_polygon_xy',
     'is_point_in_circle',
     'is_point_in_circle_xy',
+    'is_polygon_in_polygon_xy',
     'is_intersection_line_line',
     'is_intersection_line_line_xy',
     'is_intersection_segment_segment',
@@ -233,7 +234,7 @@ def is_polygon_convex(polygon):
     is_polygon_convex_xy
 
     """
-    c = center_of_mass_polygon(polygon)
+    c = centroid_polygon(polygon)
 
     for i in range(-1, len(polygon) - 1):
         p0 = polygon[i]
@@ -667,7 +668,7 @@ def is_point_in_polygon_xy(point, polygon):
     polygon : sequence
         A sequence of XY(Z) coordinates of 2D or 3D points (Z will be ignored) representing the locations of the corners of a polygon.
         The vertices are assumed to be in order.
-        The polygon is assumed to be closed. 
+        The polygon is assumed to be closed.
         The first and last vertex in the sequence should not be the same.
 
     Warning
@@ -729,6 +730,45 @@ def is_point_in_circle_xy(point, circle):
         return True
     return False
 
+
+def is_polygon_in_polygon_xy(polygon1, polygon2):
+    """Determine if a polygon is in the interior of another polygon, both lying in the XY-plane.
+
+    Parameters
+    ----------
+    polygon1 : list
+        List of XY(Z) coordinates of 2D or 3D points
+        (Z will be ignored) representing the locations of the corners of the exterior polygon.
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
+    polygon2 : list
+        List of XY(Z) coordinates of 2D or 3D points
+        (Z will be ignored) representing the locations of the corners of the interior polygon.
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
+
+    Returns
+    -------
+    bool
+        True if polygon2 is inside polygon1, False otherwise.
+
+    """
+    if is_polygon_convex_xy(polygon1) and is_polygon_convex_xy(polygon2):
+        for pt in polygon2:
+            if not is_point_in_convex_polygon_xy(pt, polygon1):
+                return False
+        return True
+    else:
+        for i in range(len(polygon1)):
+            line = [polygon1[-i], polygon1[-i - 1]]
+            for j in range(len(polygon2)):
+                line_ = [polygon2[-j], polygon2[j - 1]]
+                if is_intersection_segment_segment_xy(line, line_):
+                    return False
+        for pt in polygon2:
+            if is_point_in_polygon_xy(pt, polygon1):
+                return True
+        return False
 
 # ==============================================================================
 # intersections

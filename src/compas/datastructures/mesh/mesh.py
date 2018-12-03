@@ -19,7 +19,7 @@ from compas.utilities import geometric_key
 
 from compas.geometry import normalize_vector
 from compas.geometry import centroid_points
-from compas.geometry import center_of_mass_polygon
+from compas.geometry import centroid_polygon
 from compas.geometry import cross_vectors
 from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
@@ -1370,6 +1370,69 @@ class Mesh(FromToPickle,
             return False
         return not any(4 != len(self.face_vertices(fkey)) for fkey in self.faces())
 
+    def is_empty(self):
+        """Boolean whether the mesh is empty.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        bool
+            True if no vertices. False otherwise.
+        """
+
+        if self.number_of_vertices() == 0:
+            return True
+
+        return False
+
+    def euler(self):
+        """Calculate the Euler characterisic.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        int
+            The Euler chracteristic.
+        """
+
+        V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbours(vkey)) != 0])
+        E = self.number_of_edges()
+        F = self.number_of_faces()
+        
+        return V - E + F
+
+    def genus(self):
+        """Calculate the genus.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        int
+            The genus.
+
+         References
+        ----------
+        .. [1] Wolfram MathWorld. *Genus*.
+               Available at: http://mathworld.wolfram.com/Genus.html.
+
+        """
+
+        X = self.euler()
+
+        # each boundary must be taken into account as if it was one face
+        B = len(self.boundaries())
+        
+        if mesh.is_orientable:
+            return (2 - (X + B)) / 2
+        else:
+            return 2 - (X + B)
+
     # --------------------------------------------------------------------------
     # accessors
     # --------------------------------------------------------------------------
@@ -1903,6 +1966,43 @@ class Mesh(FromToPickle,
         return self.halfedge[u][v] is None or self.halfedge[v][u] is None
 
     # --------------------------------------------------------------------------
+    # polyedge topology
+    # --------------------------------------------------------------------------
+
+    def boundaries(self):
+        """Collect the mesh boundaries as lists of vertices.
+
+        Parameters
+        ----------
+        mesh : Mesh
+            Mesh.
+
+        Returns
+        -------
+        boundaries : list
+            List of boundaries as lists of vertex keys.
+
+        """
+
+        boundaries = []
+
+        # get all boundary edges pointing outwards
+        boundary_edges = {u: v for u, v in self.edges_on_boundary()}
+
+        # start new boundary
+        while len(boundary_edges) > 0:
+            boundary = list(boundary_edges.popitem())
+
+            # get consecuvite vertex until the boundary is closed
+            while boundary[0] != boundary[-1]:
+                boundary.append(boundary_edges[boundary[-1]])
+                boundary_edges.pop(boundary[-2])
+
+            boundaries.append(boundary[: -1])
+        
+        return boundaries
+
+    # --------------------------------------------------------------------------
     # face topology
     # --------------------------------------------------------------------------
 
@@ -2153,6 +2253,52 @@ class Mesh(FromToPickle,
         else:
             return False
     # --------------------------------------------------------------------------
+    # mesh geometry
+    # --------------------------------------------------------------------------
+
+    def area(self):
+        """Calculate the total mesh area.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        float
+            The area.
+        """
+
+        return sum([self.face_area(fkey) for fkey in self.faces()])
+
+    def centroid(self):
+        """Calculate the mesh centroid.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        list
+            The coordinates of the mesh centroid.
+        """
+
+        return scale_vector(1. / self.area(), add_vectors([scale_vector(self.face_area(fkey), self.face_centroid(fkey)) for fkey in mesh.faces()]))
+
+    def normal(self):
+        """Calculate the average mesh normal.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        list
+            The coordinates of the mesh normal.
+        """
+
+        return scale_vector(1. / self.area(), add_vectors([scale_vector(self.face_area(fkey), self.face_normal(fkey)) for fkey in mesh.faces()]))
+
+    # --------------------------------------------------------------------------
     # vertex geometry
     # --------------------------------------------------------------------------
 
@@ -2365,7 +2511,7 @@ class Mesh(FromToPickle,
             The coordinates of the center of mass.
 
         """
-        return center_of_mass_polygon(self.face_coordinates(fkey))
+        return centroid_polygon(self.face_coordinates(fkey))
 
     def face_area(self, fkey):
         """Compute the area of a face.

@@ -7,7 +7,7 @@ compas_hpc
 
 This package provides GPU-accelerated and compiled versions of many geometry,
 numerical and topological functions and algorithms. The package is built around
-`Numba`_, C, `PyCuda`_ and `PyOpenCL`_.
+`Numba`_, `PyCuda`_ and `PyOpenCL`_.
 
 .. _Numba: https://numba.pydata.org/
 .. _PyCuda: https://mathema.tician.de/software/pycuda/
@@ -61,16 +61,6 @@ opencl
     ones_cl
     zeros_cl
     vstack_cl
-
-
-euler
------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    EulerSSH
 
 
 geometry

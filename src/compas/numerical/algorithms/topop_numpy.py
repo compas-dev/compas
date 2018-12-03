@@ -1,3 +1,4 @@
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -6,19 +7,18 @@ import compas
 
 try:
     from numpy import abs
+    from numpy import asarray
     from numpy import array
     from numpy import ceil
     from numpy import dot
-    from numpy import empty
     from numpy import hstack
     from numpy import kron
     from numpy import max
     from numpy import maximum
     from numpy import min
     from numpy import minimum
+    from numpy import int64
     from numpy import isnan
-    from numpy import meshgrid
-    from numpy import mgrid
     from numpy import newaxis
     from numpy import ones
     from numpy import ravel
@@ -28,7 +28,6 @@ try:
     from numpy import sum
     from numpy import tile
     from numpy import vstack
-    from numpy import where
     from numpy import zeros
 
     from scipy.sparse import coo_matrix
@@ -75,20 +74,21 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, c
     - Based on the MATLAB code of  [andreassen2011]_.
 
     """
+
     if callback and not callable(callback):
         raise Exception("The provided callback is not callable.")
 
-    nx = nelx + 1
-    ny = nely + 1
-    nn = nx * ny
-    ne = nelx * nely
+    nx   = nelx + 1
+    ny   = nely + 1
+    nn   = nx * ny
+    ne   = nelx * nely
     ndof = 2 * nn
-    dv = ones((nely, nelx))
+    dv   = ones((nely, nelx))
 
     # Finite element analysis
 
-    v = 0.3
-    E = 1.
+    v    = 0.3
+    E    = 1.
     Emin = 10**(-10)
 
     A11 = array([[12, +3, -6, -3], [+3, 12, +3, +0], [-6, +3, 12, -3], [-3, +0, -3, 12]])
@@ -97,29 +97,33 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, c
     B12 = array([[+2, -3, +4, -9], [-3, +2, +9, -2], [+4, +9, +2, +3], [-9, -2, +3, +2]])
     A21 = A12.transpose()
     B21 = B12.transpose()
-    A = vstack([hstack([A11, A12]), hstack([A21, A11])])
-    B = vstack([hstack([B11, B12]), hstack([B21, B11])])
+    A   = vstack([hstack([A11, A12]), hstack([A21, A11])])
+    B   = vstack([hstack([B11, B12]), hstack([B21, B11])])
 
-    Ke = 1 / (1 - v**2) / 24 * (A + v * B)
-    Ker = ravel(Ke, order='F')[:, newaxis]
+    Ke    = 1 / (1 - v**2) / 24 * (A + v * B)
+    Ker   = ravel(Ke, order='F')[:, newaxis]
     nodes = reshape(range(1, nn + 1), (ny, nx), order='F')
-    eVec = tile(reshape(2 * nodes[:-1, :-1], (ne, 1), order='F'), (1, 8))
-    edof = eVec + tile(hstack([array([0, 1]), 2 * nely + array([2, 3, 0, 1]), array([-2, -1])]), (ne, 1))
-    iK = reshape(kron(edof, ones((8, 1))).transpose(), (64 * ne), order='F')
-    jK = reshape(kron(edof, ones((1, 8))).transpose(), (64 * ne), order='F')
+    eVec  = tile(reshape(2 * nodes[:-1, :-1], (ne, 1), order='F'), (1, 8))
+    edof  = eVec + tile(hstack([array([0, 1]), 2 * nely + array([2, 3, 0, 1]), array([-2, -1])]), (ne, 1))
+    iK    = reshape(kron(edof, ones((8, 1))).transpose(), (64 * ne), order='F')
+    jK    = reshape(kron(edof, ones((1, 8))).transpose(), (64 * ne), order='F')
 
     # Supports
 
     U = zeros((ndof, 1))
     fixed = []
+
     for support, B in supports.items():
+
         jb, ib = [int(i) for i in support.split('-')]
         Bx, By = B
-        node = int(jb * ny + ib)
+        node   = int(jb * ny + ib)
+
         if Bx:
             fixed.append(2 * node)
         if By:
             fixed.append(2 * node + 1)
+
     free = list(set(range(ndof)) - set(fixed))
 
     # Loads
@@ -127,28 +131,34 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, c
     data = []
     rows = []
     cols = []
+
     for load, P in loads.items():
+
         jp, ip = [int(i) for i in load.split('-')]
         Px, Py = P
-        node = int(jp * ny + ip)
+        node   = int(jp * ny + ip)
+
         data.extend([Px, Py])
         rows.extend([2 * node, 2 * node + 1])
         cols.extend([0, 0])
-    F = coo_matrix((data, (rows, cols)), shape=(ndof, 1))
+
+    F    = coo_matrix((data, (rows, cols)), shape=(ndof, 1))
     Find = F.tocsr()[free]
 
     # Filter
 
-    iH = zeros(ne * (2 * (int(ceil(rmin)) - 1) + 1)**2)
-    jH = zeros(iH.shape)
+    iH = zeros(ne * (2 * (int(ceil(rmin)) - 1) + 1)**2, dtype=int64)
+    jH = zeros(iH.shape, dtype=int64)
     sH = zeros(iH.shape)
-    k = 0
+    k  = 0
 
     for i1 in range(nelx):
+
         max_i = int(max([i1 - (ceil(rmin) - 1), 0]))
         min_i = int(min([i1 + (ceil(rmin) - 1), nelx - 1]))
 
         for j1 in range(nely):
+
             max_j = int(max([j1 - (ceil(rmin) - 1), 0]))
             min_j = int(min([j1 + (ceil(rmin) - 1), nely - 1]))
 
@@ -162,50 +172,55 @@ def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, c
                     jH[k] = e2
                     sH[k] = max([0, rmin - sqrt((i1 - i2)**2 + (j1 - j2)**2)])
 
-    H = coo_matrix((sH, (iH, jH)))
+    H  = coo_matrix((sH, (iH, jH)))
     Hs = sum(H.toarray(), 1)
 
     # Main loop
 
     iteration = 0
-    change = 1
-    move = 0.2
-    x = tile(volfrac, (nely, nelx))
-    xP = x * 1.
+    change    = 1
+    move      = 0.2
+
+    x     = tile(volfrac, (nely, nelx))
+    xP    = x * 1.
     nones = ones((ne)) * 0.001
 
     while change > 0.1:
 
         # FE
 
-        xrav = ravel(xP, order='F').transpose()
-        sK = reshape(Ker * (Emin + xrav**penal * (E - Emin)), (64 * ne), order='F')
-        K = coo_matrix((sK, (iK, jK))).tocsr()
-        Kind = (K.tocsc()[:, free]).tocsr()[free, :]
+        xrav    = ravel(xP, order='F').transpose()
+        sK      = reshape(Ker * (Emin + xrav**penal * (E - Emin)), (64 * ne), order='F')
+        K       = coo_matrix((sK, (asarray(iK, dtype=int64), asarray(jK, dtype=int64)))).tocsr()
+        Kind    = (K.tocsc()[:, free]).tocsr()[free, :]
         U[free] = spsolve(Kind, Find)[:, newaxis]
 
         # Objective function
 
-        ce = reshape(sum(dot(squeeze(U[edof]), Ke) * squeeze(U[edof]), 1), (nely, nelx), order='F')
-        c = sum(sum((Emin + xP**penal * (E - Emin)) * ce))
-        dc = -penal * (E - Emin) * xP**(penal - 1) * ce
+        ce  = reshape(sum(dot(squeeze(U[edof]), Ke) * squeeze(U[edof]), 1), (nely, nelx), order='F')
+        c   = sum(sum((Emin + xP**penal * (E - Emin)) * ce))
+        dc  = -penal * (E - Emin) * xP**(penal - 1) * ce
         xdc = squeeze(H.dot(ravel(x * dc, order='F')[:, newaxis]))
-        dc = reshape(xdc / Hs / maximum(nones, ravel(x, order='F')), (nely, nelx), order='F')
+        dc  = reshape(xdc / Hs / maximum(nones, ravel(x, order='F')), (nely, nelx), order='F')
 
         # Lagrange mulipliers
 
         l1 = 0
         l2 = 10**9
+
         while (l2 - l1) / (l1 + l2) > 0.001:
+
             lmid = 0.5 * (l2 + l1)
-            sdv = sqrt(-dc / dv / lmid)
+            sdv  = sqrt(-dc / dv / lmid)
             min1 = minimum(x + move, x * sdv)
-            xn = maximum(0, maximum(x - move, minimum(1, min1)))
-            xP = xn * 1.
+            xn   = maximum(0, maximum(x - move, minimum(1, min1)))
+            xP   = xn * 1.
+
             if sum(xP) > volfrac * ne:
                 l1 = lmid
             else:
                 l2 = lmid
+
         change = max(abs(xn - x))
 
         # Update
@@ -259,38 +274,46 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
     - Based on the MATLAB code of CITE.
 
     """
+
     if callback and not callable(callback):
         raise Exception("The provided callback is not callable.")
 
-    tolx = 0.01
-    E = 1
-    Emin = 1e-9
-    nu = 0.3
+    print('TopOp 3D started')
 
-    nx = nelx + 1
-    ny = nely + 1
-    nz = nelz + 1
-    nn = nx * ny * nz
-    ne = nelx * nely * nelz
+    tolx = 0.01
+    E    = 1
+    Emin = 1e-9
+    nu   = 0.3
+
+    nx   = nelx + 1
+    ny   = nely + 1
+    nz   = nelz + 1
+    nn   = nx * ny * nz
+    ne   = nelx * nely * nelz
     ndof = nn * 3
 
     # Supports
 
     U = zeros((ndof, 1))
     fixed = []
+
     for support, B in supports.items():
+
         ib, jb, kb = [int(i) for i in support.split('-')]
         Bx, By, Bz = B
         node = int(kb * nx * ny + ib * ny + (ny - jb)) - 1
+
         dofx = 3 * node + 0
         dofy = 3 * node + 1
         dofz = 3 * node + 2
+
         if Bx:
             fixed.append(dofx)
         if By:
             fixed.append(dofy)
         if Bz:
             fixed.append(dofz)
+
     free = list(set(range(ndof)) - set(fixed))
 
     # Loads
@@ -298,17 +321,22 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
     data = []
     rows = []
     cols = []
+
     for load, P in loads.items():
+
         ip, jp, kp = [int(i) for i in load.split('-')]
         Px, Py, Pz = P
         node = int(kp * nx * ny + ip * ny + (ny - jp)) - 1
+
         dofx = 3 * node + 0
         dofy = 3 * node + 1
         dofz = 3 * node + 2
+
         data.extend([Px, Py, Pz])
         rows.extend([dofx, dofy, dofz])
         cols.extend([0, 0, 0])
-    F = coo_matrix((data, (rows, cols)), shape=(ndof, 1))
+
+    F    = coo_matrix((data, (rows, cols)), shape=(ndof, 1))
     Find = F.tocsr()[free]
 
     # Stiffness matrix
@@ -374,29 +402,34 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
     nodeids = tile(nodeids, nodeidz.shape) + tile(nodeidz, nodeids.shape)
 
     eVec = (3 * nodeids.ravel(order='F') + 1)[:, newaxis]
-    m1 = 3 * nely + array([3, 4, 5, 0, 1, 2])[newaxis, :]
-    m2 = hstack([array([[0, 1, 2]]), m1, array([[-3, -2, -1]])])
+    m1   = 3 * nely + array([3, 4, 5, 0, 1, 2])[newaxis, :]
+    m2   = hstack([array([[0, 1, 2]]), m1, array([[-3, -2, -1]])])
     edof = tile(eVec, (1, 24)) + tile(hstack([m2, 3 * ny * nx + m2]), (ne, 1)) + 2
-    iK = reshape(kron(edof, ones((24, 1))).transpose(), (24 * 24 * ne), order='F')
-    jK = reshape(kron(edof, ones((1, 24))).transpose(), (24 * 24 * ne), order='F')
+    iK   = reshape(kron(edof, ones((24, 1))).transpose(), (24 * 24 * ne), order='F')
+    jK   = reshape(kron(edof, ones((1, 24))).transpose(), (24 * 24 * ne), order='F')
 
     # Filter
 
-    iH = ones(int(ne * (3 * (ceil(rmin) - 1) + 1)**2))
-    jH = ones(iH.shape)
+    iH = ones(int(ne * (3 * (ceil(rmin) - 1) + 1)**2), dtype=int64)
+    jH = ones(iH.shape, dtype=int64)
     sH = zeros(iH.shape)
 
     k = 0
 
     for k1 in range(nelz):
+
+        print('Building filter {0}/{1}'.format(k1, nelz))
+
         max_k = int(max([k1 - (ceil(rmin) - 1), 0]))
         min_k = int(min([k1 + (ceil(rmin) - 1), nelz - 1]))
 
         for i1 in range(nelx):
+
             max_i = int(max([i1 - (ceil(rmin) - 1), 0]))
             min_i = int(min([i1 + (ceil(rmin) - 1), nelx - 1]))
 
             for j1 in range(nely):
+
                 max_j = int(max([j1 - (ceil(rmin) - 1), 0]))
                 min_j = int(min([j1 + (ceil(rmin) - 1), nely - 1]))
 
@@ -405,6 +438,7 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
                 for k2 in range(max_k, min_k + 1):
                     for i2 in range(max_i, min_i + 1):
                         for j2 in range(max_j, min_j + 1):
+
                             k += 1
                             e2 = k2 * nelx * nely + i2 * nely + j2
                             e3 = max([0, rmin - sqrt((i1 - i2)**2 + (j1 - j2)**2 + (k1 - k2)**2)])
@@ -413,36 +447,38 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
                                 iH[k] = e1
                                 jH[k] = e2
                                 sH[k] = e3
-                            except:  # bug in original code, iH doesnt start as correct size
-                                iH = hstack([iH, array([e1])])
-                                jH = hstack([jH, array([e2])])
+
+                            except:  # fix for bug in original code, iH doesnt start as correct size
+                                iH = hstack([iH, array([e1], dtype=int64)])
+                                jH = hstack([jH, array([e2], dtype=int64)])
                                 sH = hstack([sH, array([e3])])
 
-    H = coo_matrix((sH, (iH, jH)))
+    H  = coo_matrix((sH, (iH, jH)))
     Hs = sum(H.toarray(), 1)
 
     # Main loop
 
     iteration = 0
-    change = 1
-    move = 0.2
-    x = tile(volfrac, (nely, nelx, nelz))
+    change    = 1
+    move      = 0.2
+
+    x  = tile(volfrac, (nely, nelx, nelz))
     xP = x * 1.
 
     while (change > tolx) and (iteration < iterations):
 
         # FE
 
-        xrav = ravel(xP, order='F').transpose()
-        sK = reshape(Ker * (Emin + xrav**penal * (E - Emin)), (24 * 24 * ne), order='F')
-        K = coo_matrix((sK, (iK, jK))).tocsr()
-        Kind = (K.tocsc()[:, free]).tocsr()[free, :]
+        xrav    = ravel(xP, order='F').transpose()
+        sK      = reshape(Ker * (Emin + xrav**penal * (E - Emin)), (24 * 24 * ne), order='F')
+        K       = coo_matrix((sK, (asarray(iK, dtype=int64), asarray(jK, dtype=int64)))).tocsr()
+        Kind    = (K.tocsc()[:, free]).tocsr()[free, :]
         U[free] = spsolve(Kind, Find)[:, newaxis]
 
         # Objective function
 
         ce = reshape(sum(dot(squeeze(U[edof]), Ke) * squeeze(U[edof]), 1), (nely, nelx, nelz), order='F')
-        c = sum(sum(sum((Emin + xP**penal * (E - Emin)) * ce)))
+        c  = sum(sum(sum((Emin + xP**penal * (E - Emin)) * ce)))
         dc = -penal * (E - Emin) * xP**(penal - 1) * ce
         dv = ones((nely, nelx, nelz))
         dc = reshape(dot(H.toarray(), (ravel(dc, order='F') / Hs)[:, newaxis]), (nely, nelx, nelz), order='F')
@@ -452,16 +488,20 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
 
         l1 = 0
         l2 = 10**9
+
         while (l2 - l1) / (l1 + l2) > 0.001:
+
             lmid = 0.5 * (l2 + l1)
-            sdv = sqrt(-dc / dv / lmid)
+            sdv  = sqrt(-dc / dv / lmid)
             min1 = minimum(x + move, x * sdv)
-            xn = maximum(0, maximum(x - move, minimum(1, min1)))
-            xP = xn * 1.
+            xn   = maximum(0, maximum(x - move, minimum(1, min1)))
+            xP   = xn * 1.
+
             if sum(xP) > volfrac * ne:
                 l1 = lmid
             else:
                 l2 = lmid
+
         change = max(abs(xn - x))
 
         # Update
@@ -484,9 +524,12 @@ def topop3d_numpy(nelx, nely, nelz, loads, supports, volfrac=0.3, penal=3, rmin=
 
 if __name__ == "__main__":
 
-    # # 2D Eg1
+    # ==============================================================================
+    # 2D Example 1
+    # ==============================================================================
 
     # from matplotlib import pyplot as plt
+
 
     # nelx = 400
     # nely = 40
@@ -510,9 +553,13 @@ if __name__ == "__main__":
 
     # x = topop2d_numpy(nelx=nelx, nely=nely, loads=loads, supports=supports, volfrac=0.5, callback=callback)
 
-    # 2D Eg2
+
+    # ==============================================================================
+    # 2D Example 2
+    # ==============================================================================
 
     from matplotlib import pyplot as plt
+
 
     nelx = 100
     nely = 200
@@ -540,58 +587,49 @@ if __name__ == "__main__":
 
     x = topop2d_numpy(nelx=nelx, nely=nely, loads=loads, supports=supports, volfrac=0.3, callback=callback)
 
-    # # 3D Eg1
 
-    # import vtk
+    # ==============================================================================
+    # 3D Example 1
+    # ==============================================================================
+
     # from compas.viewers import VtkViewer
 
-    # nx = 30
-    # ny = 15
-    # nz = 30
+    # from numpy import where
+
+
+    # nx = 20
+    # ny = 10
+    # nz = 5
 
     # loads = {
-    #     '{0}-{1}-{2}'.format(1 * int(nx / 4), ny, 1 * int(nz / 4)): [0, -1, 0],
-    #     '{0}-{1}-{2}'.format(3 * int(nx / 4), ny, 1 * int(nz / 4)): [0, -1, 0],
-    #     '{0}-{1}-{2}'.format(1 * int(nx / 4), ny, 3 * int(nz / 4)): [0, -1, 0],
-    #     '{0}-{1}-{2}'.format(3 * int(nx / 4), ny, 3 * int(nz / 4)): [0, -1, 0],
+    #     '20-0-0': [0, -1, 0],
+    #     '20-0-1': [0, -1, 0],
+    #     '20-0-2': [0, -1, 0],
+    #     '20-0-3': [0, -1, 0],
+    #     '20-0-4': [0, -1, 0],
+    #     '20-0-5': [0, -1, 0],
     # }
 
-    # supports = {}
-    # supports['{0}-{1}-{2}'.format(0, 0, 0)] = [0, 1, 0]
-    # supports['{0}-{1}-{2}'.format(nx, 0, 0)] = [0, 1, 0]
-    # supports['{0}-{1}-{2}'.format(nx, 0, nz)] = [0, 1, 0]
-    # supports['{0}-{1}-{2}'.format(0, 0, nz)] = [0, 1, 0]
+    # supports = {
+    #     '0-0-0': [1, 1, 1],
+    #     '0-10-0': [1, 1, 1],
+    #     '0-0-1': [1, 1, 1],
+    #     '0-10-1': [1, 1, 1],
+    # }
+
+    # x = topop3d_numpy(nelx=nx, nely=ny, nelz=nz, loads=loads, supports=supports, iterations=200, volfrac=0.5)
+
+    # indj, indi, indk = where(x >= 0.5)
+    # indj = ny - indj
+    # locations = zip(indi, indj, indk)
 
     # data = {
     #     'blocks': {
     #         'size': 1,
-    #         'locations': [[0, 0, 0]],
+    #         'locations': locations,
     #     }
     # }
 
-
-    # def callback(x, self):
-    #     indj, indi, indk = where(x >= 0.95)
-    #     indj = ny - indj
-    #     locations = zip(indi, indj, indk)
-    #     self.locations = vtk.vtkPoints()
-    #     for c, xyz in enumerate(locations):
-    #         self.locations.InsertNextPoint(xyz)
-    #         self.locations.Modified()
-    #     self.blocks.SetPoints(self.locations)
-    #     self.window.Render()
-
-
-    # def execute(self):
-    #     print('TopOp started')
-    #     topop3d_numpy(nelx=nx, nely=ny, nelz=nz, loads=loads, supports=supports, iterations=200, volfrac=0.5,
-    #                   callback=callback, self=self)
-
-
     # viewer = VtkViewer(data=data)
-    # viewer.keycallbacks['s'] = execute
-    # viewer.settings['camera_pos'] = [0.5 * nx, 0, 2 * max([nx, ny])]
-    # viewer.settings['camera_focus'] = [0.5 * nx, 0.5 * ny, 0.5 * nz]
-    # viewer.settings['camera_azi'] = 0
-    # # viewer.settings['camera_ele'] = 10
+    # viewer.setup()
     # viewer.start()

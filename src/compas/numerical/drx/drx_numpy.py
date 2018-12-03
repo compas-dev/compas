@@ -36,6 +36,7 @@ __all__ = ['drx_numpy']
 
 
 def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=False, callback=None, **kwargs):
+
     """Run dynamic relaxation analysis.
 
     Parameters
@@ -266,7 +267,7 @@ def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
     a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
     k = 2 * sin(a) / Lc
 
-    ex = Qn / tile(LQn, (1, 3))  # temporary simplification
+    ex = Qn / tile(LQn, (1, 3))
     ez = mu / tile(Lmu, (1, 3))
     ey = cross(ez, ex)
 
@@ -292,10 +293,6 @@ def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
     S[inds, :] += Sa
     S[indi, :] -= Sa + Sb
     S[indf, :] += Sb
-
-    # Add node junction duplication for when elements cross each other
-    # mu[0, :] = -1.25*x[0, :] + 1.5*x[1, :] - 0.25*x[2, :]
-    # mu[-1, :] = 0.25*x[-3, :] - 1.5*x[-2, :] + 1.25*x[-1, :]
 
     return S
 
@@ -348,18 +345,6 @@ def _create_arrays(structure):
     f0 = s0 * A
     k0 = E * A / l0
     q0 = f0 / l0
-
-    # Faces (testing)
-
-    # if structure.face:
-    #     for face in faces:
-    #         fdata = structure.facedata[face]
-    #         Eh = fdata.get('E', 0)
-    #         th = fdata.get('t', 0)
-    #         Ah = structure.face_area(face)
-    #         for ui, vi in structure.face_edges(face):
-    #             i = uv_i[(ui, vi)]
-    #             ks[i] += 1.5 * Eh * Ah * th / l0[i]**2
 
     # Arrays
 
@@ -456,7 +441,7 @@ if __name__ == "__main__":
     # for u, v in structure.edges():
     #     lines.append({
     #         'start': structure.vertex_coordinates(u, 'xy'),
-    #         'end'  : structure.vertex_coordinates(v, 'xy'),
+    #         'end':   structure.vertex_coordinates(v, 'xy'),
     #         'color': '#cccccc'
     #     })
 
@@ -511,7 +496,7 @@ if __name__ == "__main__":
     for u, v in structure.edges():
         lines.append({
             'start': structure.vertex_coordinates(u, 'xy'),
-            'end'  : structure.vertex_coordinates(v, 'xy'),
+            'end':   structure.vertex_coordinates(v, 'xy'),
             'color': '#cccccc'
         })
 

@@ -35,6 +35,7 @@ ssh
     :nosignatures:
 
     SSH
+    Euler
 
 """
 

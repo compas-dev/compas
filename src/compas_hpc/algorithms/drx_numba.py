@@ -46,8 +46,10 @@ def _args(network, factor, summary, steps, tol):
 
     if not ind_c:
         ind_c = [-1]
+
     if not ind_t:
         ind_t = [-1]
+
     ind_c = array(ind_c)
     ind_t = array(ind_t)
 
@@ -97,10 +99,12 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
     tic2 = time()
 
     tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M, factor, V, inds, indi, indf, EIx, EIy, beams, C = args
+
     drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv,
                      M, factor, V, inds, indi, indf, EIx, EIy, beams)
+
     _, l = uvw_lengths(C, X)
-    f = f0 + k0 * (l.ravel() - l0)
+    f    = f0 + k0 * (l.ravel() - l0)
 
     toc2 = time() - tic2
 
@@ -116,12 +120,13 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 
     if update:
 
-        k_i = network.key_index()
+        k_i  = network.key_index()
+        uv_i = network.uv_index()
+
         for key in network.vertices():
             x, y, z = X[k_i[key], :]
             network.set_vertex_attributes(key, 'xyz', [x, y, z])
 
-        uv_i = network.uv_index()
         for uv in network.edges():
             i = uv_i[uv]
             network.set_edge_attribute(uv, 'f', float(f[i]))
@@ -221,17 +226,19 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
     while (ts <= steps) and (res > tol):
 
         for i in range(m):
-            xd = X[v[i], 0] - X[u[i], 0]
-            yd = X[v[i], 1] - X[u[i], 1]
-            zd = X[v[i], 2] - X[u[i], 2]
-            l = sqrt(xd**2 + yd**2 + zd**2)
-            f[i] = f0[i] + k0[i] * (l - l0[i])
-            q = f[i] / l
+
+            xd    = X[v[i], 0] - X[u[i], 0]
+            yd    = X[v[i], 1] - X[u[i], 1]
+            zd    = X[v[i], 2] - X[u[i], 2]
+            l     = sqrt(xd**2 + yd**2 + zd**2)
+            f[i]  = f0[i] + k0[i] * (l - l0[i])
+            q     = f[i] / l
             fx[i] = xd * q
             fy[i] = yd * q
             fz[i] = zd * q
 
         if ind_t[0] != -1:
+
             for i in ind_t:
                 if f[i] < 0:
                     fx[i] = 0
@@ -239,6 +246,7 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
                     fz[i] = 0
 
         if ind_c[0] != -1:
+
             for i in ind_c:
                 if f[i] > 0:
                     fx[i] = 0
@@ -258,32 +266,32 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
                 Qc = Xf - Xs
                 Qn = cross(Qa, Qb)
 
-                mu = 0.5 * (Xf - Xs)
-                La = length(Qa)
-                Lb = length(Qb)
-                Lc = length(Qc)
+                mu  = 0.5 * (Xf - Xs)
+                La  = length(Qa)
+                Lb  = length(Qb)
+                Lc  = length(Qc)
                 LQn = length(Qn)
                 Lmu = length(mu)
 
-                a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
-                k = 2 * sin(a) / Lc
+                a  = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
+                k  = 2 * sin(a) / Lc
                 ex = Qn / LQn
                 ez = mu / Lmu
                 ey = cross(ez, ex)
 
-                K = k * Qn / LQn
-                Kx = dot(K, ex) * ex
-                Ky = dot(K, ey) * ey
-                Mc = EIx[i] * Kx + EIy[i] * Ky
+                K   = k * Qn / LQn
+                Kx  = dot(K, ex) * ex
+                Ky  = dot(K, ey) * ey
+                Mc  = EIx[i] * Kx + EIy[i] * Ky
                 cma = cross(Mc, Qa)
                 cmb = cross(Mc, Qb)
-                ua = cma / length(cma)
-                ub = cmb / length(cmb)
-                c1 = cross(Qa, ua)
-                c2 = cross(Qb, ub)
+                ua  = cma / length(cma)
+                ub  = cmb / length(cmb)
+                c1  = cross(Qa, ua)
+                c2  = cross(Qb, ub)
                 Lc1 = length(c1)
                 Lc2 = length(c2)
-                Ms = Mc[0]**2 + Mc[1]**2 + Mc[2]**2
+                Ms  = Mc[0]**2 + Mc[1]**2 + Mc[2]**2
 
                 Sa = ua * Ms * Lc1 / (La * dot(Mc, c1))
                 Sb = ub * Ms * Lc2 / (Lb * dot(Mc, c2))
@@ -300,20 +308,23 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
         frz *= 0
 
         for i in range(nv):
+
             frx[rows[i]] += vals[i] * fx[cols[i]]
             fry[rows[i]] += vals[i] * fy[cols[i]]
             frz[rows[i]] += vals[i] * fz[cols[i]]
 
         for i in range(n):
-            Rx = (P[i, 0] - S[i, 0] - frx[i]) * B[i, 0]
-            Ry = (P[i, 1] - S[i, 1] - fry[i]) * B[i, 1]
-            Rz = (P[i, 2] - S[i, 2] - frz[i]) * B[i, 2]
+
+            Rx    = (P[i, 0] - S[i, 0] - frx[i]) * B[i, 0]
+            Ry    = (P[i, 1] - S[i, 1] - fry[i]) * B[i, 1]
+            Rz    = (P[i, 2] - S[i, 2] - frz[i]) * B[i, 2]
             Rn[i] = sqrt(Rx**2 + Ry**2 + Rz**2)
+
             Mi = M[i] * factor
             V[i, 0] += Rx / Mi
             V[i, 1] += Ry / Mi
             V[i, 2] += Rz / Mi
-            Una[i] = Mi * (V[i, 0]**2 + V[i, 1]**2 + V[i, 2]**2)
+            Una[i]  = Mi * (V[i, 0]**2 + V[i, 1]**2 + V[i, 2]**2)
 
         Un = sum(Una)
 
@@ -322,6 +333,7 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
         Uo = Un
 
         for i in range(n):
+
             X[i, 0] += V[i, 0]
             X[i, 1] += V[i, 1]
             X[i, 2] += V[i, 2]
@@ -356,15 +368,19 @@ if __name__ == "__main__":
 
     # for i in range(m):
     #     for j in range(m):
-    #         s = (m + 1)
+
+    #         s  = (m + 1)
     #         p1 = (j + 0) * s + i + 0
     #         p2 = (j + 0) * s + i + 1
     #         p3 = (j + 1) * s + i + 0
     #         p4 = (j + 1) * s + i + 1
+
     #         edges.append([p1, p2])
     #         edges.append([p1, p3])
+
     #         if j == m - 1:
     #             edges.append([p4, p3])
+
     #         if i == m - 1:
     #             edges.append([p2, p4])
 
@@ -402,15 +418,19 @@ if __name__ == "__main__":
 
     # for i in range(m):
     #     for j in range(m):
-    #         s = (m + 1)
+
+    #         s  = (m + 1)
     #         p1 = (j + 0) * s + i + 0
     #         p2 = (j + 0) * s + i + 1
     #         p3 = (j + 1) * s + i + 0
     #         p4 = (j + 1) * s + i + 1
+
     #         edges.append([p1, p2])
     #         edges.append([p1, p3])
+
     #         if j == m - 1:
     #             edges.append([p4, p3])
+
     #         if i == m - 1:
     #             edges.append([p2, p4])
 
@@ -478,21 +498,22 @@ if __name__ == "__main__":
 
         tol, steps, _, m, n, u, v, X, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V, inds, indi, indf, EIx, EIy, beams, _ = self.args
         X_ = self.X if self.X is not None else X
+
         drx_solver_numba(tol, steps, 0, m, n, u, v, X_, f0, l0, k0, ic, it, B, P, S, rows, cols, vals, nv, M, a, V,
                          inds, indi, indf, EIx, EIy, beams)
         self.update_vertices_coordinates({i: X[i, :] for i in range(X.shape[0])})
         self.X = X_
 
 
-    L = 12
-    n = 40
+    L  = 12
+    n  = 40
     EI = 0.2
 
     vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-5, 5, n))]
-    edges = [[i, i + 1] for i in range(n - 1)]
+    edges    = [[i, i + 1] for i in range(n - 1)]
+    network  = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
+    leaves   = network.leaves()
 
-    network = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    leaves  = network.leaves()
     network.update_default_vertex_attributes({'EIx': EI, 'EIy': EI})
     network.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
     network.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], leaves)
