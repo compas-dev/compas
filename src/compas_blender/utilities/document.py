@@ -3,6 +3,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+try:
+    import bpy
+except ImportError:
+    pass
+
+import os
+
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'

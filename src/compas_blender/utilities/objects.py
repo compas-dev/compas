@@ -28,13 +28,13 @@ __all__ = [
     'get_objects_layers',
     'get_objects_types',
     'get_objects_coordinates',
+    'get_object_attributes',
     'get_objects_attributes',
-    'get_objects_attributes_from_names',
     'get_points',
     'get_curves',
+    'get_meshes',
     'get_points_coordinates',
     'get_curves_coordinates',
-    'get_meshes',
     'select_object',
     'select_objects',
     'select_point',
@@ -62,22 +62,25 @@ __all__ = [
 
 def delete_object(object):
 
+    set_deselct(object=object)
     bpy.data.objects.remove(object)
+    # crashes 2.80
 
 
 def delete_objects(objects):
 
     for object in objects:
-        delete_object(object)
+        delete_object(object=object)
 
 
 def delete_objects_by_names(names):
 
     objects = [bpy.data.objects[name] for name in names]
-    delete_objects(objects)
+    delete_objects(objects=objects)
 
 
 def purge_objects(objects):
+    
     raise NotImplementedError
 
 
@@ -85,10 +88,10 @@ def purge_objects(objects):
 # Objects
 # ==============================================================================
 
-def get_objects(name=None, color=None, layer=None, type=None):
+def get_objects(names=None, color=None, layer=None, type=None):
 
-    if name:
-        objects = [bpy.data.objects[name]]
+    if names:
+        objects = [bpy.data.objects[name] for name in names]
 
     elif color:
         raise NotImplementedError
@@ -117,7 +120,7 @@ def get_objects_names(objects):
 
 def get_objects_layers(objects):
 
-    raise NotImplementedError
+    return [i.users_collection for i in objects]
 
 
 def get_objects_types(objects):
@@ -130,24 +133,22 @@ def get_objects_coordinates(objects):
     return [list(i.location) for i in objects]
 
 
+def get_object_attributes(object):
+
+    name = object.name.replace("'", '"')
+    
+    if name[-5:-3] == '}.':
+        name = name[:-4]
+
+    try:
+        return json.loads(name)
+    except:
+        return
+
+
 def get_objects_attributes(objects):
-
-    raise NotImplementedError
-
-
-def get_objects_attributes_from_names(objects):
-
-    attrs = []
-
-    for i in get_objects_names(objects):
-        name = i.replace("'", '"') + '}'
-
-        try:
-            attrs.append(json.loads(name))
-        except:
-            attrs.append(None)
-
-    return attrs
+    
+    return [get_object_attributes(i) for i in objects]
 
 
 def select_object(message="Select an object."):
@@ -249,7 +250,7 @@ def set_select(objects=None):
 
     if objects:
         for i in objects:
-            i.select_set(action='SELECT')
+            i.select_set(state=True)
     else:
         bpy.ops.object.select_all(action='SELECT')
 
@@ -258,7 +259,7 @@ def set_deselect(objects=None):
 
     if objects:
         for i in objects:
-            i.select_set(action='DESELECT')
+            i.select_set(state=False)
     else:
         bpy.ops.object.select_all(action='DESELECT')
 
@@ -295,7 +296,7 @@ def set_objects_show_names(objects, show=True):
 def set_objects_visible(objects, visible=True):
 
     for i in objects:
-        raise NotImplementedError
+        i.hide_viewport = not visible
 
 
 # ==============================================================================
@@ -304,24 +305,35 @@ def set_objects_visible(objects, visible=True):
 
 if __name__ == '__main__':
 
-    objects = get_objects()
+    objects = get_objects(layer='Collection 1')
 
-    print(objects)
-    print(get_objects_types(objects=objects))
-    print(get_objects_names(objects=objects))
+    #print(get_objects(names=['Plane', 'Sphere']))
+    #print(get_objects(layer='Collection 2'))
+    #print(get_objects(type='Mesh'))
+    
+    #print(get_object_name(object=objects[1]))
+    #print(get_objects_names(objects=objects))
+    #print(get_objects_types(objects=objects))
+    #print(get_objects_coordinates(objects=objects))
+    #print(get_objects_layers(objects=objects))
+    
+    #print(get_points())
+    #print(get_curves())
+    #print(get_meshes())
 
-    points = get_points(layer='Collection 1')
-    print(get_objects_coordinates(objects=points))
+    #a = get_objects_attributes(objects=objects)
+    
+    #set_deselect()
+    #set_deselect(objects=objects)
 
-    set_select(objects=objects)
+    #for i in dir(objects[0]):
+    #    print(i)
 
-    print(get_objects_attributes_from_names(objects=points))
+    #set_objects_coordinates(objects=objects, coords=[[0, 0, 3], [0, 0, 4]])
+    #set_objects_rotations(objects=objects, rotations=[[2, 0, 0], [0, 0, 2]])
+    #set_objects_scales(objects=objects, scales=[[2, 2, 2], [3, 3, 3]])
 
-    print(points)
-
-    set_objects_coordinates(points, [[0, 0, 3], [0, 0, 4]])
-    set_objects_rotations(points, [[2, 0, 0], [0, 0, 2]])
-    set_objects_scales(points, [[2, 2, 2], [3, 3, 3]])
-
-    set_objects_show_names(points, True)
-    set_objects_visible(points, False)
+    #set_objects_show_names(objects=objects, show=1)
+    #set_objects_visible(objects=objects, visible=1)
+    
+    #delete_object(object=objects[0])
