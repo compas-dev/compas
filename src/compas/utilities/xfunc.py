@@ -235,7 +235,8 @@ class XFunc(object):
 
     def __init__(self, funcname, basedir='.', tmpdir='.', delete_files=True,
                  verbose=True, callback=None, callback_args=None, python='pythonw',
-                 paths=None, serializer='json'):
+                 paths=None, serializer='json',
+                 argtypes=None, kwargtypes=None, restypes=None):
         self._basedir       = None
         self._tmpdir        = None
         self._callback      = None
@@ -251,6 +252,9 @@ class XFunc(object):
         self.python         = python
         self.paths          = paths or []
         self.serializer     = serializer
+        self.argtypes       = argtypes
+        self.kwargtypes     = kwargtypes
+        self.restypes       = restypes
         self.data           = None
         self.profile        = None
         self.error          = None
@@ -336,14 +340,25 @@ class XFunc(object):
             In this case, check the ``error`` attribute for more information.
 
         """
-        idict = {'args': args, 'kwargs': kwargs}
+        # if self.argtypes:
+        #     args = [arg for arg in args]
+
+        # if self.kwargtypes:
+        #     kwargs = {name: value for name, value in kwargs.items()}
+
+        idict = {
+            'args': args,
+            'kwargs': kwargs,
+            # 'argtypes': self.argtypes,
+            # 'kwargtypes': self.kwargtypes,
+            # 'restypes': self.restypes
+        }
 
         if self.serializer == 'json':
             with open(self.ipath, 'w+') as fo:
                 json.dump(idict, fo, cls=DataEncoder)
         else:
             with open(self.ipath, 'wb+') as fo:
-                # pickle.dump(idict, fo, protocol=pickle.HIGHEST_PROTOCOL)
                 pickle.dump(idict, fo, protocol=2)
 
         with open(self.opath, 'w+') as fh:
