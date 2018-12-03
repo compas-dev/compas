@@ -1397,7 +1397,7 @@ class Mesh(FromToPickle,
             The Euler chracteristic.
         """
 
-        V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbours(vkey)) != 0])
+        V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
         E = self.number_of_edges()
         F = self.number_of_faces()
         
