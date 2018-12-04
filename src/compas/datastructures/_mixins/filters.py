@@ -287,6 +287,26 @@ class FaceFilter(object):
     __module__ = 'compas.datastructures._mixins'
 
     def faces_where(self, conditions, data=False):
+        """Get faces for which a certain condition or set of conditions is true.
+
+        Parameters
+        ----------
+        conditions : dict
+            A set of conditions in the form of key-value pairs.
+            The keys should be attribute names. The values can be attribute
+            values or ranges of attribute values in the form of min/max pairs.
+        data : bool, optional
+            Yield the faces and their data attributes.
+            Default is ``False``.
+
+        Yields
+        ------
+        key: hashable
+            The next face that matches the condition.
+        2-tuple
+            The next face and its attributes, if ``data=True``.
+
+        """
         for fkey, attr in self.faces(True):
             is_match = True
 
@@ -295,6 +315,12 @@ class FaceFilter(object):
 
                 if callable(method):
                     val = method(fkey)
+
+                    if isinstance(val, list):
+                       if value not in val:
+                          is_match = False
+                          break
+                       break
 
                     if isinstance(value, (tuple, list)):
                         minval, maxval = value
@@ -312,6 +338,12 @@ class FaceFilter(object):
                         is_match = False
                         break
 
+                    if isinstance(attr[name], list):
+                       if value not in attr[name]:
+                          is_match = False
+                          break
+                       break
+
                     if isinstance(value, (tuple, list)):
                         minval, maxval = value
 
@@ -325,6 +357,60 @@ class FaceFilter(object):
 
             if is_match:
 
+                if data:
+                    yield fkey, attr
+                else:
+                    yield fkey
+
+    def faces_where_predicate(self, predicate, data=False):
+        """Get faces for which a certain condition or set of conditions is true using a lambda function.
+
+        Parameters
+        ----------
+        predicate : function
+            The condition you want to evaluate.
+        data : bool, optional
+            Yield the faces and their data attributes.
+            Default is ``False``.
+
+        Yields
+        ------
+        key: hashable
+            The next face that matches the condition.
+        2-tuple
+            The next face and its attributes, if ``data=True``.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            from compas.datastructures import Mesh
+
+            mesh = Mesh()
+
+            v0 = mesh.add_vertex(x = 0.0, y = 0.0, z = 0.0)
+            v1 = mesh.add_vertex(x = 100.0, y = 0.0, z = 0.0)
+            v2 = mesh.add_vertex(x = 100.0, y = 100.0, z = 0.0)
+            v3 = mesh.add_vertex(x = 0.0, y = 100.0, z = 0.0)
+
+            mesh.add_face([v0,v1,v3], extra_attr1 = 5, extra_attr2 = [3,5,9])
+            mesh.add_face([v1,v2,v3], extra_attr1 = 1, extra_attr2 = [3,7,12])
+
+
+            for f_key in mesh.faces_where_predicate(lambda key, attr: attr['extra_attr1'] == 5):
+                print f_key
+
+            for f_key, f_data in mesh.faces_where_predicate(lambda key, attr: 3 <= attr['extra_attr1'] <= 6, True):
+                print f_key, f_data
+
+            for f_key in mesh.faces_where_predicate(lambda key, attr: 'extra_attr2' in attr):
+                print f_key
+
+            for f_key in mesh.faces_where_predicate(lambda key, attr: 3 in attr['extra_attr2']):
+                print f_key
+        """
+        for fkey, attr in self.faces(True):
+            if predicate(fkey, attr):
                 if data:
                     yield fkey, attr
                 else:
