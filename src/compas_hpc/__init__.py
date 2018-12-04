@@ -126,6 +126,14 @@ average
     center_of_mass_polyline_xy_numba
 
 
+spatial
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+
 """
 
 from .algorithms import *
