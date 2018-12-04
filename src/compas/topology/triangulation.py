@@ -647,98 +647,132 @@ def trimesh_remesh(mesh,
 
 if __name__ == "__main__":
 
-    testrun = 2
+    from compas.datastructures import Mesh
+    from compas.plotters import MeshPlotter
 
-    if testrun == 1:
-        from compas.datastructures import Mesh
-        from compas.geometry import pointcloud_xy
-        from compas.plotters import MeshPlotter
+    from triangle import triangulate
 
-        points = pointcloud_xy(10, (0, 10))
-        faces = delaunay_from_points(points)
-        mesh = Mesh.from_vertices_and_faces(points, faces)
+    points = [
+        [2.994817685045075, 10.855606612493078, 0.0],
+        [4.185204599300653, 9.527867361977242, 0.0],
+        [4.414125159734419, 10.718254276232818, 0.0],
+        [5.925000858597267, 9.344730913630228, 0.0],
+        [8.900968144236211, 10.809822500406325, 0.0],
+        [9.496161601363999, 8.566401008155429, 0.0],
+        [7.710581229980631, 7.9254234389408875, 0.0],
+        [7.847933566240888, 6.414547740078039, 0.0],
+        [3.9104999267801377, 4.9036720412151915, 0.0],
+        [5.2909301507195865, 6.342692886748852, 0.0]
+    ]
 
-        trimesh_remesh(mesh, 1.0, kmax=300, allow_boundary_split=True)
+    data = {
+        'vertices': [point[0:2] for point in points],
+        'segments': [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 0]]
+    }
 
-        points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+    res = triangulate(data, opts='p')
 
-        faces = delaunay_from_points(points)
-        mesh = Mesh.from_vertices_and_faces(points, faces)
+    faces = res['triangles']
 
-        voronoi  = voronoi_from_delaunay(mesh)
+    mesh = Mesh.from_vertices_and_faces(points, faces)
 
-        lines = []
-        for u, v in voronoi.edges():
-            lines.append({
-                'start': voronoi.vertex_coordinates(u, 'xy'),
-                'end'  : voronoi.vertex_coordinates(v, 'xy'),
-                'width': 1.0
-            })
+    plotter = MeshPlotter(mesh)
+    plotter.draw_faces()
+    plotter.draw_vertices(text='key')
+    plotter.show()
 
-        plotter = MeshPlotter(mesh, figsize=(10, 7))
+    # testrun = 2
 
-        plotter.draw_lines(lines)
+    # if testrun == 1:
+    #     from compas.datastructures import Mesh
+    #     from compas.geometry import pointcloud_xy
+    #     from compas.plotters import MeshPlotter
 
-        plotter.draw_vertices(
-            radius=0.075,
-            facecolor={key: '#0092d2' for key in mesh.vertices() if key not in mesh.vertices_on_boundary()})
+    #     points = pointcloud_xy(10, (0, 10))
+    #     faces = delaunay_from_points(points)
+    #     mesh = Mesh.from_vertices_and_faces(points, faces)
 
-        plotter.draw_edges(color='#cccccc')
+    #     trimesh_remesh(mesh, 1.0, kmax=300, allow_boundary_split=True)
 
-        plotter.show()
+    #     points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
 
-    if testrun == 2:
-        from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
-        from compas.geometry import mesh_smooth_area
+    #     faces = delaunay_from_points(points)
+    #     mesh = Mesh.from_vertices_and_faces(points, faces)
 
-        vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (10.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
-        faces = [[0, 1, 2, 3]]
+    #     voronoi  = voronoi_from_delaunay(mesh)
 
-        mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    #     lines = []
+    #     for u, v in voronoi.edges():
+    #         lines.append({
+    #             'start': voronoi.vertex_coordinates(u, 'xy'),
+    #             'end'  : voronoi.vertex_coordinates(v, 'xy'),
+    #             'width': 1.0
+    #         })
 
-        key = mesh.insert_vertex(0)
-        fixed = [key]
+    #     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-        plotter = MeshPlotter(mesh, figsize=(10, 7))
+    #     plotter.draw_lines(lines)
 
-        plotter.draw_edges(width=0.5)
+    #     plotter.draw_vertices(
+    #         radius=0.075,
+    #         facecolor={key: '#0092d2' for key in mesh.vertices() if key not in mesh.vertices_on_boundary()})
 
-        def callback(mesh, k, args):
-            print(k)
-            plotter.update_edges()
-            plotter.update()
+    #     plotter.draw_edges(color='#cccccc')
 
-        trimesh_remesh(
-            mesh,
-            1.0,
-            kmax=200,
-            allow_boundary_split=True,
-            allow_boundary_swap=True,
-            allow_boundary_collapse=False,
-            fixed=fixed,
-            callback=callback)
+    #     plotter.show()
 
-        mesh_smooth_area(mesh, fixed=mesh.vertices_on_boundary())
+    # if testrun == 2:
+    #     from compas.datastructures import Mesh
+    #     from compas.plotters import MeshPlotter
+    #     from compas.geometry import mesh_smooth_area
 
-        plotter.update_edges()
-        plotter.update(pause=2.0)
-        plotter.show()
+    #     vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (10.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
+    #     faces = [[0, 1, 2, 3]]
 
-    if testrun == 3:
-        from compas.geometry import pointcloud_xy
-        from compas.datastructures import Mesh
-        from compas.topology import delaunay_from_points
-        from compas.plotters import MeshPlotter
+    #     mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-        points = pointcloud_xy(10, (0, 10))
-        faces = delaunay_from_points(points)
+    #     key = mesh.insert_vertex(0)
+    #     fixed = [key]
 
-        delaunay = Mesh.from_vertices_and_faces(points, faces)
+    #     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-        plotter = MeshPlotter(delaunay)
+    #     plotter.draw_edges(width=0.5)
 
-        plotter.draw_vertices(radius=0.1)
-        plotter.draw_faces()
+    #     def callback(mesh, k, args):
+    #         print(k)
+    #         plotter.update_edges()
+    #         plotter.update()
 
-        plotter.show()
+    #     trimesh_remesh(
+    #         mesh,
+    #         1.0,
+    #         kmax=200,
+    #         allow_boundary_split=True,
+    #         allow_boundary_swap=True,
+    #         allow_boundary_collapse=False,
+    #         fixed=fixed,
+    #         callback=callback)
+
+    #     mesh_smooth_area(mesh, fixed=mesh.vertices_on_boundary())
+
+    #     plotter.update_edges()
+    #     plotter.update(pause=2.0)
+    #     plotter.show()
+
+    # if testrun == 3:
+    #     from compas.geometry import pointcloud_xy
+    #     from compas.datastructures import Mesh
+    #     from compas.topology import delaunay_from_points
+    #     from compas.plotters import MeshPlotter
+
+    #     points = pointcloud_xy(10, (0, 10))
+    #     faces = delaunay_from_points(points)
+
+    #     delaunay = Mesh.from_vertices_and_faces(points, faces)
+
+    #     plotter = MeshPlotter(delaunay)
+
+    #     plotter.draw_vertices(radius=0.1)
+    #     plotter.draw_faces()
+
+    #     plotter.show()
