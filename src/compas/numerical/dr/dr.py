@@ -8,7 +8,7 @@ from compas.geometry import norm_vectors
 from compas.topology import adjacency_from_edges
 
 
-__all__ = ['dr_none']
+__all__ = ['dr']
 
 
 K = [
@@ -26,8 +26,8 @@ class Coeff():
         self.b = 0.5 * (1 + self.a)
 
 
-def dr_none(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
-            kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callback=None, callback_args=None):
+def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
+       kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callback=None, callback_args=None):
     """Implementation of dynamic relaxation with RK integration scheme in pure Python.
 
     Parameters
@@ -322,7 +322,6 @@ if __name__ == "__main__":
     import compas
     from compas.datastructures import Network
     from compas.plotters import NetworkPlotter
-    from compas.numerical import dr
     from compas.utilities import i_to_rgb
 
     # make a network
@@ -419,8 +418,8 @@ if __name__ == "__main__":
 
     # run the dynamic relaxation
 
-    xyz, q, f, l, r = dr_none(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
-                              kmax=100, callback=callback)
+    xyz, q, f, l, r = dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
+                         kmax=100, callback=callback)
 
     # update vertices and edges to reflect the end result
 

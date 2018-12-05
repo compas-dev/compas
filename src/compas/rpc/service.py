@@ -30,6 +30,13 @@ __all__ = ['Service']
 
 
 class Service(object):
+    """Base class for remote services.
+
+    Notes
+    -----
+    ...
+
+    """
 
     def _dispatch(self, name, args):
         odict = {

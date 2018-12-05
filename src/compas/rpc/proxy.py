@@ -115,6 +115,15 @@ class Proxy(object):
         self.stop_server()
 
     def start_server(self):
+        """Start the remote server.
+
+        Raises
+        ------
+        RPCServerError
+            If the server providing the requested service cannot be reached after
+            100 contact attempts (*pings*).
+
+        """
         python = self._python
         script = os.path.join(compas.HOME, 'services', self._service)
         address = "{}:{}".format(self._url, self._port)
@@ -137,6 +146,8 @@ class Proxy(object):
             raise RPCServerError("The server is no available.")
 
     def stop_server(self):
+        """Stop the remote server and terminate/kill the python process that was used to start it.
+        """
         try:
             self._server.kill()
         except:
@@ -160,6 +171,27 @@ class Proxy(object):
         return self.proxy
 
     def proxy(self, *args, **kwargs):
+        """Callable replacement for the requested functionality.
+
+        Parameters
+        ----------
+        args : list
+            Positional arguments to be passed to the remote function.
+        kwargs : dict
+            Named arguments to be passed to the remote function.
+
+        Returns
+        -------
+        object
+            The result returned by the remote function.
+
+        Warning
+        -------
+        The `args` and `kwargs` have to be JSON-serialisable.
+        This means that, currently, only native Python objects are supported.
+        The returned results will also always be in the form of built-in Python objects.
+
+        """
         idict = {'args': args, 'kwargs': kwargs}
         istring = json.dumps(idict, cls=DataEncoder)
 
@@ -202,12 +234,9 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
 
-    from compas.utilities import print_profile
-
     from compas.rpc import Proxy
 
-    numerical = Proxy('compas.numerical.fd.fd_numpy')
-    fd_numpy = print_profile(numerical.fd_numpy)
+    numerical = Proxy('compas.numerical')
 
     mesh = Mesh.from_obj(compas.get('faces_big.obj'))
 
@@ -222,7 +251,7 @@ if __name__ == "__main__":
     q     = mesh.get_edges_attribute('q', 1.0)
     loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
 
-    xyz, q, f, l, r = fd_numpy(xyz, edges, fixed, q, loads)
+    xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
 
     for key, attr in mesh.vertices(True):
         index = key
