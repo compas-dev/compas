@@ -28,6 +28,7 @@ __all__ = [
     'create_material',
     'xdraw_labels',
     'xdraw_points',
+    'xdraw_pointcloud',
     'xdraw_lines',
     'xdraw_geodesics',
     'xdraw_faces',
@@ -203,9 +204,10 @@ def xdraw_cubes(cubes, **kwargs):
     return objects
 
 
-def xdraw_mesh(vertices, faces, edges=None, name='mesh', color=[1, 1, 1], **kwargs):
+def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], **kwargs):
 
     edges = [] if not edges else edges
+    faces = [] if not faces else faces
 
     mesh = bpy.data.meshes.new(name)
     mesh.from_pydata(vertices, edges, faces)
@@ -225,6 +227,23 @@ def xdraw_mesh(vertices, faces, edges=None, name='mesh', color=[1, 1, 1], **kwar
 def xdraw_faces(faces, **kwargs):
 
     raise NotImplementedError
+    
+    
+def xdraw_pointcloud(points):
+
+    objects = []
+
+    for data in points:
+
+        object = xdraw_mesh(name=data.get('name', 'pt'), vertices=[[0, 0, 0]])
+
+        object.location = data['pos']
+        # layer
+        objects.append(object)
+        
+    set_deselect(objects=objects)
+
+    return objects
 
 
 # ==============================================================================
@@ -260,14 +279,17 @@ if __name__ == '__main__':
         {'start': [4, 1, 3], 'end': [4, 0, 4], 'radius': 0.1, 'color': [1, 0, 1]},
     ]
 
-    for i in range(1000):
-        xdraw_points(points=points)
+    for i in range(1):
+        #xdraw_points(points=points)
         #xdraw_spheres(spheres=spheres)
         #xdraw_cubes(cubes=cubes)
         #xdraw_cylinders(cylinders=cylinders)
         #xdraw_lines(lines=lines)
+        objects = xdraw_pointcloud(points=points)
     
     #vertices = [[-1, 0, 1], [-2, 0, 2], [-2, 1, 1], [-1, 1, 0]]
     #faces    = [[0, 1, 2], [2, 3, 0]]
     #bmesh    = xdraw_mesh(name='bmesh', vertices=vertices, faces=faces, color=[1, 0, 1])
+    
+    set_objects_show_names(objects=objects, show=1)
     
