@@ -206,7 +206,7 @@ if __name__ == "__main__":
 
     from compas.rpc import Proxy
 
-    numerical = Proxy('compas.numerical')
+    numerical = Proxy('compas.numerical.fd.fd_numpy')
     fd_numpy = print_profile(numerical.fd_numpy)
 
     mesh = Mesh.from_obj(compas.get('faces_big.obj'))
