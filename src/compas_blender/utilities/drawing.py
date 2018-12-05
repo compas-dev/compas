@@ -26,7 +26,6 @@ __email__     = 'liew@arch.ethz.ch'
 
 __all__ = [
     'create_material',
-    'xdraw_labels',
     'xdraw_points',
     'xdraw_pointcloud',
     'xdraw_lines',
@@ -36,6 +35,7 @@ __all__ = [
     'xdraw_pipes',
     'xdraw_spheres',
     'xdraw_mesh',
+    'xdraw_texts',
 ]
 
 
@@ -44,6 +44,8 @@ def _link_objects(objects):
     for object in objects:
         bpy.context.collection.objects.link(object)
 
+    set_deselect(objects=objects)
+    
     return objects
 
 
@@ -60,47 +62,42 @@ def create_material(color, alpha=1):
         return bpy.data.materials[ckey]
 
 
-def xdraw_labels(labels, **kwargs):
-
-    raise NotImplementedError
-
-
 def xdraw_points(points, **kwargs):
 
+    bpy.ops.object.empty_add(type='SPHERE', radius=1, location=[0, 0, 0])
+    copy = bpy.context.object
+    
     objects = [0] * len(points)
 
     for c, data in enumerate(points):
         
-        bpy.ops.object.empty_add(type='SPHERE', radius=data['radius'], location=data['pos'])
-        object = bpy.context.object
-        
-        object.name = data.get('name', 'point')
-        # layer
-        objects[c] = object
+        object          = copy.copy()
+        object.scale   *= data['radius']
+        object.location = data['pos']
+        object.name     = data.get('name', 'point')
+        # layer and delete copy
+        objects[c]      = object
 
-    set_deselect(objects=objects)
-
-    return objects
+    return _link_objects(objects)
 
 
 def xdraw_lines(lines, **kwargs):
 
-    objects = []
+    objects = [0] * len(lines)
 
-    for data in lines:
-
-        start = data.get('start')
-        end   = data.get('end')
+    for c, data in enumerate(lines):
+        
         name  = data.get('name', 'line')
         
-        bpy.ops.curve.primitive_nurbs_curve_add(radius=1, location=(0, 0, 0))
-        object = bpy.context.object
+        curve = bpy.data.curves.new(name, type='CURVE')
+        curve.dimensions = '3D'
+        object = bpy.data.objects.new(name, curve)
+        object.location = [0, 0, 0]
 
-        spline = object.data.splines[0]
-        spline.points[0].co = start + [1]
-        spline.points[1].co = start + [1]
-        spline.points[2].co = end + [1]
-        spline.points[3].co = end + [1]
+        spline = curve.splines.new('NURBS')
+        spline.points.add(2)
+        spline.points[0].co = list(data.get('start')) + [1]
+        spline.points[1].co = list(data.get('end')) + [1]
         spline.order_u = 1
 
         object.data.fill_mode = 'FULL'
@@ -108,12 +105,9 @@ def xdraw_lines(lines, **kwargs):
         object.data.bevel_resolution = 0
         object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
         # layer
-        
-        objects.append(object)
-        
-    set_deselect(objects=objects)
-
-    return objects
+        objects[c] = object
+         
+    return _link_objects(objects)
 
 
 def xdraw_geodesics(geodesics, **kwargs):
@@ -128,12 +122,12 @@ def xdraw_breps(faces, **kwargs):
 
 def xdraw_cylinders(cylinders, div=10, **kwargs):
     
-    objects = []
+    bpy.ops.mesh.primitive_cylinder_add(radius=1, depth=1, vertices=div, location=[0, 0, 0])
+    copy = bpy.context.object
+    
+    objects = [0] * len(cylinders)
 
-    for data in cylinders:
-        
-        bpy.ops.mesh.primitive_cylinder_add(radius=1, depth=1, vertices=div, location=[0, 0, 0])
-        object = bpy.context.object
+    for c, data in enumerate(cylinders):
         
         radius = data.get('radius', 1)
         start  = data.get('start', [0, 0, 0])
@@ -141,18 +135,17 @@ def xdraw_cylinders(cylinders, div=10, **kwargs):
         L      = distance_point_point(start, end)
         pos    = centroid_points([start, end])
         
+        object = copy.copy()
         object.name = data.get('name', 'cylinder')
         object.rotation_euler[1] = acos((end[2] - start[2]) / L)
         object.rotation_euler[2] = atan2(end[1] - start[1], end[0] - start[0])
         object.location = pos
         object.scale = ((radius, radius, L))
-        # layer
+        # layer and delete copy
         object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
-        objects.append(object)
+        objects[c] = object
 
-    set_deselect(objects=objects)
-
-    return objects
+    return _link_objects(objects)
 
 
 def xdraw_pipes(pipes, cap=2, fit=1.0, **kwargs):
@@ -167,41 +160,43 @@ def xdraw_forces(forces, color, **kwargs):
 
 def xdraw_spheres(spheres, div=10, **kwargs):
     
-    objects = []
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=[0, 0, 0], ring_count=div, segments=div)
+    copy = bpy.context.object
+    
+    objects = [0] * len(spheres)
 
-    for data in spheres:
+    for c, data in enumerate(spheres):
         
-        bpy.ops.mesh.primitive_uv_sphere_add(radius=data['radius'], location=data['pos'], ring_count=div, segments=div)
-        object = bpy.context.object
-        
-        object.name = data.get('name', 'sphere')
-        # layer
+        object          = copy.copy()
+        object.name     = data.get('name', 'sphere')
+        object.scale   *= data['radius']    
+        object.location = data['pos']  
         object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
-        objects.append(object)
+        # layer and delete copy
+        objects[c] = object
 
-    set_deselect(objects=objects)
-
-    return objects
-
+    return _link_objects(objects)
 
 
 def xdraw_cubes(cubes, **kwargs):
     
-    objects = []
+    bpy.ops.mesh.primitive_cube_add(size=1, location=[0, 0, 0])
+    copy = bpy.context.object
+    
+    objects = [0] * len(cubes)
 
-    for data in cubes:
+    for c, data in enumerate(cubes):
         
-        bpy.ops.mesh.primitive_cube_add(size=data['radius'], location=data['pos'])
-        object = bpy.context.object
-        
-        object.name = data.get('name', 'cube')
-        # layer
+            
+        object          = copy.copy()
+        object.name     = data.get('name', 'cube')
+        object.scale   *= data['radius']
+        object.location = data['pos']
         object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
-        objects.append(object)
+        # layer and delete copy
+        objects[c] = object
 
-    set_deselect(objects=objects)
-
-    return objects
+    return _link_objects(objects)
 
 
 def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], **kwargs):
@@ -226,24 +221,49 @@ def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], *
 
 def xdraw_faces(faces, **kwargs):
 
-    raise NotImplementedError
+    for face in faces:
+        
+        name    = face.get('name', 'face')
+        points  = face['points']
+        indices = [list(range(len(points)))]
+        color   = face.get('color', [1, 1, 1])
+        # layer
+        xdraw_mesh(name=name, vertices=points, faces=indices, color=color)
     
     
 def xdraw_pointcloud(points):
 
-    objects = []
-
     for data in points:
 
         object = xdraw_mesh(name=data.get('name', 'pt'), vertices=[[0, 0, 0]])
-
         object.location = data['pos']
-        # layer
         objects.append(object)
+        # layer
         
     set_deselect(objects=objects)
 
     return objects
+
+
+def xdraw_texts(texts):
+    
+    bpy.ops.object.text_add(view_align=True)
+    copy = bpy.context.object
+    
+    objects = [0] * len(texts)
+
+    for c, data in enumerate(texts):
+        
+        object           = copy.copy()
+        object.scale    *= data.get('radius', 1)
+        object.location  = data.get('pos', [0, 0, 0])
+        object.name      = data.get('name', 'text')
+        object.data.body = data.get('text', 'text')
+        object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
+        # layer and delete copy
+        objects[c] = object
+
+    return _link_objects(objects)
 
 
 # ==============================================================================
@@ -253,43 +273,34 @@ def xdraw_pointcloud(points):
 if __name__ == '__main__':
     
     from compas_blender.utilities import set_objects_show_names
+    
+    from time import time
+    
+    
+    n = 500
 
-    points = [
-        {'pos': [0, 0, 1], 'radius': 0.2, 'name': 'pt'},
-        {'pos': [0, 0, 3], 'radius': 0.5},
-    ]
+    points  = [{'pos': [0, 0, i], 'radius': 0.2, 'name': 'pt'} for i in range(n)]
+    lines   = [{'start': [4, 1, i], 'end': [4, 0, i], 'radius': 0.1, 'color': [1, 0, 1]} for i in range(n)]
+    cyls    = [{'start': [3, 1, i], 'end': [3, 0, i], 'radius': 0.1, 'color': [0, 0, 1]} for i in range(n)]
+    spheres = [{'pos': [1, 0, i], 'radius': 0.5, 'color': [0, 1, 0]} for i in range(n)]
+    cubes   = [{'pos': [2, 0, i], 'radius': 0.5, 'color': [0, 1, 1]} for i in range(n)]
+    texts   = [{'text': 'text2', 'radius': 0.1, 'color': [1, 0, 1], 'pos': [5, 1, i]} for i in range(n)]
     
-    spheres = [
-        {'pos': [1, 0, 1], 'radius': 0.2, 'name': 'sphere', 'color': [1, 0, 0]},
-        {'pos': [1, 0, 3], 'radius': 0.5, 'color': [0, 1, 0]},
-    ]
-    
-    cubes = [
-        {'pos': [2, 0, 1], 'radius': 0.2, 'name': 'cube', 'color': [1, 1, 0]},
-        {'pos': [2, 0, 3], 'radius': 0.5, 'color': [0, 1, 1]},
-    ]
-    
-    cylinders = [
-        {'start': [3, 1, 1], 'end': [3, 0, 2], 'radius': 0.2, 'name': 'cylinder', 'color': [1, 0, 1]},
-        {'start': [3, 1, 3], 'end': [3, 0, 4], 'radius': 0.1, 'color': [0, 0, 1]},
-    ]
-    
-    lines = [
-        {'start': [4, 1, 1], 'end': [4, 0, 2], 'radius': 0.05, 'name': 'line', 'color': [1, 0, 0]},
-        {'start': [4, 1, 3], 'end': [4, 0, 4], 'radius': 0.1, 'color': [1, 0, 1]},
-    ]
+    tic = time()
 
-    for i in range(1):
-        #xdraw_points(points=points)
-        #xdraw_spheres(spheres=spheres)
-        #xdraw_cubes(cubes=cubes)
-        #xdraw_cylinders(cylinders=cylinders)
-        #xdraw_lines(lines=lines)
-        objects = xdraw_pointcloud(points=points)
+    #xdraw_points(points=points)
+    #xdraw_lines(lines=lines)
+    #xdraw_cylinders(cylinders=cyls)
+    #xdraw_spheres(spheres=spheres)
+    #xdraw_cubes(cubes=cubes)
+    xdraw_texts(texts=texts)
+        
+    print('Time: ', time() - tic)
     
     #vertices = [[-1, 0, 1], [-2, 0, 2], [-2, 1, 1], [-1, 1, 0]]
     #faces    = [[0, 1, 2], [2, 3, 0]]
     #bmesh    = xdraw_mesh(name='bmesh', vertices=vertices, faces=faces, color=[1, 0, 1])
     
-    set_objects_show_names(objects=objects, show=1)
+    #objects = xdraw_pointcloud(points=points)
+    #set_objects_show_names(objects=objects, show=1)
     
