@@ -25,16 +25,88 @@ __all__ = ['Proxy']
 
 
 class Proxy(object):
+    """Create a proxy object as intermediary between client code and remote functionality.
 
-    def __init__(self, package=None):
+    Parameters
+    ----------
+    package : string, optional
+        The base package for the requested functionality.
+        Default is `None`, in which case a full path to function calls should be provided.
+    python : string, optional
+        The python executable that should be used to execute the code.
+        Default is `'pythonw'`.
+    url : string, optional
+        The server address.
+        Default is `'http://127.0.0.1'`.
+    port : int, optional
+        The port number on the remote server.
+        Default is `8888`.
+    service : string, optional
+        The remote service script.
+        Default is `'default.py'`.
+
+    Attributes
+    ----------
+    profile : string
+        A time profile of the executed code.
+
+    Notes
+    -----
+    If the server is your *localhost*, which will often be the case, it is better
+    to specify the address explicitly (`'http://127.0.0.1'`) because resolving
+    *localhost* takes a surprisingly significant amount of time.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        import compas
+        import time
+
+        from compas.datastructures import Mesh
+        from compas.rpc import Proxy
+
+        numerical = Proxy('compas.numerical')
+
+        mesh = Mesh.from_obj(compas.get('faces_big.obj'))
+
+        mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
+        mesh.update_default_edge_attributes({'q': 1.0})
+
+        key_index = mesh.key_index()
+
+        xyz   = mesh.get_vertices_attributes('xyz')
+        edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
+        fixed = [key_index[key] for key in mesh.vertices_where({'vertex_degree': 2})]
+        q     = mesh.get_edges_attribute('q', 1.0)
+        loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
+
+        xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
+
+        for key, attr in mesh.vertices(True):
+            index = key
+            attr['x'] = xyz[index][0]
+            attr['y'] = xyz[index][1]
+            attr['z'] = xyz[index][2]
+            attr['rx'] = r[index][0]
+            attr['ry'] = r[index][1]
+            attr['rz'] = r[index][2]
+
+        for index, (u, v, attr) in enumerate(mesh.edges(True)):
+            attr['f'] = f[index][0]
+            attr['l'] = l[index][0]
+
+    """
+
+    def __init__(self, package=None, python='pythonw', url='http://127.0.0.1', port=8888, service='default.py'):
         self._package = package
-        self._function = None
+        self._python = python
+        self._url = url
+        self._port = port
+        self._service = service
         self._process = None
-        self._python = 'pythonw'
-        self._port = 8888
-        self._url = 'http://127.0.0.1'
-        self._service = 'default.py'
         self._server = None
+        self._function = None
         self.profile = None
         self.stop_server()
         self.start_server()
@@ -139,14 +211,8 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get('faces_big.obj'))
 
-    # mesh_add_methods(Mesh, Mixin)
-
     mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
     mesh.update_default_edge_attributes({'q': 1.0})
-
-    # to use mesh_fd_numpy
-    # set argtypes and rettypes
-    # potentially in background
 
     key_index = mesh.key_index()
 
