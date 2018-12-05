@@ -322,6 +322,7 @@ if __name__ == "__main__":
     import compas
     from compas.datastructures import Network
     from compas.plotters import NetworkPlotter
+    from compas.numerical import dr
     from compas.utilities import i_to_rgb
 
     # make a network
