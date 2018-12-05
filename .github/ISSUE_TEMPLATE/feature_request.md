@@ -3,6 +3,11 @@ name: Feature request
 about: Suggest an idea for this project
 
 ---
+# Feature Request
+
+As a [role], I want [something] so that [benefit].
+
+## Details
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is.
