@@ -142,7 +142,7 @@ triangulation
 
 
 """
-from __future__ import absolute_imports, division, print_function
+from __future__ import absolute_import, division, print_function
 
 from .traversal import *
 from .combinatorics import *
