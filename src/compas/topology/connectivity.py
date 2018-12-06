@@ -7,6 +7,7 @@ from compas.datastructures import Network
 from compas.utilities import pairwise
 from compas.utilities import geometric_key
 
+
 __all__ = [
     'adjacency_from_edges',
     'connectivity_from_edges',
@@ -45,6 +46,7 @@ def adjacency_from_edges(edges):
 def connectivity_from_edges(edges):
     """"""
     raise NotImplementedError
+
 
 def join_lines(lines, splits = []):
     """Join lines into polylines. The polylines stop at points with a valency different from 2 in the network of line. Optional splits can be included.
@@ -123,6 +125,7 @@ def join_lines(lines, splits = []):
         polylines.append(polyline)
 
     return [[network.vertex_coordinates(vkey) for vkey in polyline] for polyline in polylines]
+
 
 # ==============================================================================
 # Main

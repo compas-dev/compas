@@ -142,9 +142,9 @@ triangulation
 
 
 """
+from __future__ import absolute_imports, division, print_function
 
 from .traversal import *
-
 from .combinatorics import *
 from .duality import *
 from .orientation import *
@@ -152,19 +152,7 @@ from .planarity import *
 from .subdivision import *
 from .triangulation import *
 from .connectivity import *
-from .conway_operators import *
+from .conway import *
 from .complementarity import *
 
-from .combinatorics import __all__ as a
-from .duality import __all__ as b
-from .orientation import __all__ as c
-from .planarity import __all__ as d
-from .subdivision import __all__ as e
-from .traversal import __all__ as f
-from .triangulation import __all__ as g
-from .connectivity import __all__ as h
-from .conway_operators import __all__ as i
-from .complementarity import __all__ as j
-
-__all__ = a + b + c + d + e + f + g + h + i + j
-
+__all__ = [name for name in dir() if not name.startswith('_')]
