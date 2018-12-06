@@ -5,7 +5,6 @@ from __future__ import print_function
 from copy import deepcopy
 
 from compas.geometry import norm_vectors
-from compas.topology import adjacency_from_edges
 
 
 __all__ = ['dr']
@@ -24,6 +23,34 @@ class Coeff():
         self.c = c
         self.a = (1 - c * 0.5) / (1 + c * 0.5)
         self.b = 0.5 * (1 + self.a)
+
+
+def adjacency_from_edges(edges):
+    """Construct an adjacency dictionary from a set of edges.
+
+    Parameters
+    ----------
+    edges : list
+        A list of index pairs.
+
+    Returns
+    -------
+    dict
+        A dictionary mapping each index in the list of index pairs
+        to a list of adjacent indices.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        #
+
+    """
+    adj = {}
+    for i, j in iter(edges):
+        adj.setdefault(i, []).append(j)
+        adj.setdefault(j, []).append(i)
+    return adj
 
 
 def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
