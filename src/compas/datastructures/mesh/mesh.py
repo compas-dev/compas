@@ -12,6 +12,7 @@ from ast import literal_eval
 from compas.files import OBJ
 from compas.files import PLY
 from compas.files import STL
+from compas.files import OFF
 
 from compas.utilities import pairwise
 from compas.utilities import window
@@ -25,9 +26,8 @@ from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import normal_polygon
 from compas.geometry import area_polygon
-
-from compas.geometry.algorithms.bestfit import bestfit_plane
-from compas.geometry.algorithms.planarisation import flatness
+from compas.geometry import bestfit_plane
+from compas.geometry import flatness
 
 from compas.geometry import Polyhedron
 
@@ -497,6 +497,36 @@ class Mesh(FromToPickle,
         stl = STL(filepath)
         vertices = stl.parser.vertices
         faces = stl.parser.faces
+        mesh = cls.from_vertices_and_faces(vertices, faces)
+        return mesh
+
+    @classmethod
+    def from_off(cls, filepath):
+        """Construct a mesh object from the data described in a STL file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
+
+        Returns
+        -------
+        Mesh :
+            A mesh object.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            import compas
+            from compas.datastructures import Mesh
+
+            mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
+
+        """
+        off = OFF(filepath)
+        vertices = off.reader.vertices
+        faces = off.reader.faces
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
@@ -1399,7 +1429,7 @@ class Mesh(FromToPickle,
             The Euler chracteristic.
         """
 
-        V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbours(vkey)) != 0])
+        V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
         E = self.number_of_edges()
         F = self.number_of_faces()
         

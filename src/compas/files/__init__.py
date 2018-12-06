@@ -82,35 +82,17 @@ xml
     XMLReader
 
 """
-from __future__ import absolute_import
 
-# todo: provide support for file-like object, string/stream, or filepath (not url)
+from __future__ import print_function, division, absolute_import
 
 from .amf  import *
 from .dxf  import *
 from .las  import *
 from .obj  import *
+from .off  import *
 from .ply  import *
 from .stl  import *
 from .urdf import *
 from .xml_ import *
 
-from . import amf
-from . import dxf
-from . import las
-from . import obj
-from . import ply
-from . import stl
-from . import urdf
-from . import xml_
-
-__all__ = []
-
-__all__ += amf.__all__
-__all__ += dxf.__all__
-__all__ += las.__all__
-__all__ += obj.__all__
-__all__ += ply.__all__
-__all__ += stl.__all__
-__all__ += urdf.__all__
-__all__ += xml_.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

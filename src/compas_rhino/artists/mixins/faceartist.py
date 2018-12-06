@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas
 
+from compas.geometry import add_vectors
 from compas.utilities import color_to_colordict
 
 import compas_rhino
@@ -53,7 +54,28 @@ class FaceArtist(object):
 
         """
         if not keys:
-            name = '{}.face.*'.format(self.datastructure.name)
+            name = '{}.face.label.*'.format(self.datastructure.name)
+            guids = compas_rhino.get_objects(name=name)
+        else:
+            guids = []
+            for key in keys:
+                name = self.datastructure.face_name(key)
+                guid = compas_rhino.get_object(name=name)
+                guids.append(guid)
+        compas_rhino.delete_objects(guids)
+
+    def clear_facenormals(self, keys=None):
+        """Clear the normals of all faces previously drawn by the ``FaceArtist``.
+
+        Parameters
+        ----------
+        keys : list, optional
+            The keys of a specific set of faces of which the normals should be cleared.
+            Default is to clear the normals of all faces.
+
+        """
+        if not keys:
+            name = '{}.face.normal.*'.format(self.datastructure.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
@@ -161,6 +183,43 @@ class FaceArtist(object):
                 'layer' : self.datastructure.get_face_attribute(key, 'layer', None)
             })
         return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
+
+    def draw_facenormals(self, color=None):
+        """Draw the normals of the faces.
+
+        Parameters
+        ----------
+        color : str (HEX) or tuple (RGB), optional
+            The color specification of the normal vectors.
+            String values are interpreted as hex colors (e.g. ``'#ff0000'`` for red).
+            Tuples are interpreted as RGB component specifications (e.g. ``(255, 0, 0) for red``.
+            The default value is ``None``, in which case the labels are assigned
+            the default normal vector color (``self.defaults['color.normal']``).
+
+        Notes
+        -----
+        The face normals are named using the following template:
+        ``"{}.face.normal.{}".format(self.datastructure.name, key)``.
+        This name is used afterwards to identify the normals in the Rhino model.
+
+        """
+        color = color or self.defaults.get('color.normal')
+
+        lines = []
+        for fkey, attr in self.datastructure.faces(True):
+            n = self.datastructure.face_normal(fkey)
+            sp = self.datastructure.face_centroid(fkey)
+            ep = add_vectors(sp, n)
+            lines.append({
+                'start' : sp,
+                'end'   : ep,
+                'name'  : "{}.face.normal.{}".format(self.datastructure.name, fkey),
+                'color' : color,
+                'arrow' : 'end'
+            })
+        return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
+
+
 
 
 # ==============================================================================

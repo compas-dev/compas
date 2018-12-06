@@ -114,7 +114,7 @@ Utilities
 
 
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 from .linalg import *
 from .matrices import *
@@ -128,22 +128,4 @@ from .dr import *
 from .drx import *
 from .fd import *
 
-from . import linalg
-from . import matrices
-from . import operators
-from . import utilities
-
-from . import solvers
-from . import algorithms
-
-from . import dr
-from . import drx
-from . import fd
-
-__all__ = []
-
-__all__ += linalg.__all__ + matrices.__all__ + operators.__all__ + utilities.__all__
-__all__ += solvers.__all__
-__all__ += algorithms.__all__
-__all__ += dr.__all__ + drx.__all__
-__all__ += fd.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

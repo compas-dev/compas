@@ -9,8 +9,8 @@ try:
     import ctypes
     from ctypes import *
 
-    from compas.interop.cpp.xdarray import Array1D
-    from compas.interop.cpp.xdarray import Array2D
+    from compas.interop.cpp import Array1D
+    from compas.interop.cpp import Array2D
 
 except (ImportError, SystemError):
     compas.raise_if_not_ironpython()

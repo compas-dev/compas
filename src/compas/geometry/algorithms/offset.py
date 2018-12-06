@@ -2,17 +2,17 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.basic import scale_vector
-from compas.geometry.basic import normalize_vector
-from compas.geometry.basic import add_vectors
-from compas.geometry.basic import subtract_vectors
-from compas.geometry.basic import cross_vectors
+from compas.geometry import scale_vector
+from compas.geometry import normalize_vector
+from compas.geometry import add_vectors
+from compas.geometry import subtract_vectors
+from compas.geometry import cross_vectors
 
-from compas.geometry.average import centroid_points
+from compas.geometry import centroid_points
 
-from compas.geometry.intersections import intersection_line_line
+from compas.geometry import intersection_line_line
 
-from compas.geometry.normals import normal_polygon
+from compas.geometry import normal_polygon
 
 from compas.topology import mesh_flip_cycles
 from compas.datastructures.mesh.operations import meshes_join

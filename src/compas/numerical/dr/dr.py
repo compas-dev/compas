@@ -5,10 +5,9 @@ from __future__ import print_function
 from copy import deepcopy
 
 from compas.geometry import norm_vectors
-from compas.topology import adjacency_from_edges
 
 
-__all__ = ['dr_none']
+__all__ = ['dr']
 
 
 K = [
@@ -26,8 +25,36 @@ class Coeff():
         self.b = 0.5 * (1 + self.a)
 
 
-def dr_none(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
-            kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callback=None, callback_args=None):
+def adjacency_from_edges(edges):
+    """Construct an adjacency dictionary from a set of edges.
+
+    Parameters
+    ----------
+    edges : list
+        A list of index pairs.
+
+    Returns
+    -------
+    dict
+        A dictionary mapping each index in the list of index pairs
+        to a list of adjacent indices.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        #
+
+    """
+    adj = {}
+    for i, j in iter(edges):
+        adj.setdefault(i, []).append(j)
+        adj.setdefault(j, []).append(i)
+    return adj
+
+
+def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
+       kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callback=None, callback_args=None):
     """Implementation of dynamic relaxation with RK integration scheme in pure Python.
 
     Parameters
@@ -419,8 +446,8 @@ if __name__ == "__main__":
 
     # run the dynamic relaxation
 
-    xyz, q, f, l, r = dr_none(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
-                              kmax=100, callback=callback)
+    xyz, q, f, l, r = dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
+                         kmax=100, callback=callback)
 
     # update vertices and edges to reflect the end result
 
