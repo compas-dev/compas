@@ -26,6 +26,17 @@ conway_operators
     conway_meta
     conway_bevel
 
+connectivity
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    adjacency_from_edges
+    connectivity_from_edges
+    join_lines_to_polylines
+
 combinatorics
 -------------
 
@@ -155,5 +166,5 @@ from .connectivity import __all__ as h
 from .conway_operators import __all__ as i
 from .complementarity import __all__ as j
 
-
 __all__ = a + b + c + d + e + f + g + h + i + j
+
