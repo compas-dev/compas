@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function
 from .bbox import *
 from .bbox_numpy import *
 from .bestfit import *
-from .bestfit_numpy import *
+# from .bestfit_numpy import *
 from .boolean import *
 from .geodesics import *
 from .hull import *
