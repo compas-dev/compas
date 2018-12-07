@@ -44,7 +44,7 @@ class BlenderGeometry(object):
 
     @classmethod
     def from_selection(cls):
-
+       
         raise NotImplementedError
 
 

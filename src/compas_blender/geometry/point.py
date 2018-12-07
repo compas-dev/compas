@@ -19,20 +19,14 @@ __all__ = [
 
 class BlenderPoint(BlenderGeometry):
 
-    def __init__(self, guid):
-        super(BlenderPoint, self).__init__()
-
-
-    @classmethod
-    def from_selection(cls):
-
-        raise NotImplementedError
+    def __init__(self, object):
+        super(BlenderPoint, self).__init__(object)
 
 
     @property
     def xyz(self):
 
-        raise NotImplementedError
+        return self.location
 
 
     def closest_point(self, point, maxdist=None):
@@ -66,4 +60,11 @@ class BlenderPoint(BlenderGeometry):
 
 if __name__ == "__main__":
 
-    pass
+    from compas_blender.utilities import get_object_by_name
+    
+    
+    object = get_object_by_name(name='Empty')
+    
+    point = BlenderPoint(object=object)
+    
+    print(point.xyz)

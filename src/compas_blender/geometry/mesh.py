@@ -275,3 +275,18 @@ if __name__ == '__main__':
     print(mesh.faces_areas())
 
     mesh.refresh()
+
+    # def mesh_from_bmesh(bmesh):
+    # """ Create a Mesh datastructure from a Blender mesh.
+
+    # Parameters:
+    #     bmesh (obj): Blender mesh object.
+
+    # Returns:
+    #     obj: Mesh object.
+    # """
+    # blendermesh = BlenderMesh(bmesh)
+    # vertices = blendermesh.get_vertex_coordinates()
+    # faces = blendermesh.get_face_vertex_indices()
+    # mesh = Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)
+    # return mesh

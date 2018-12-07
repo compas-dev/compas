@@ -22,6 +22,7 @@ __all__ = [
     'delete_objects',
     'delete_objects_by_names',
     'purge_objects',
+    'get_object_by_name',
     'get_objects',
     'get_object_name',
     'get_objects_names',
@@ -88,6 +89,11 @@ def purge_objects(objects):
 # Objects
 # ==============================================================================
 
+def get_object_by_name(name):
+    
+    return bpy.data.objects[name]
+
+    
 def get_objects(names=None, color=None, layer=None, type=None):
 
     if names:

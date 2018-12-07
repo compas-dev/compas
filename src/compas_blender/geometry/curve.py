@@ -3,7 +3,15 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.geometry import add_vectors
+
 from compas_blender.geometry import BlenderGeometry
+
+try:
+    import bpy
+    from mathutils.geometry import interpolate_bezier
+except ImportError:
+    pass
 
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
@@ -19,14 +27,8 @@ __all__ = [
 
 class BlenderCurve(BlenderGeometry):
 
-    def __init__(self, guid):
-        super(BlenderCurve, self).__init__()
-
-
-    @classmethod
-    def from_selection(cls):
-
-        raise NotImplementedError
+    def __init__(self, object):
+        super(BlenderCurve, self).__init__(object)
 
 
     @classmethod
@@ -35,24 +37,19 @@ class BlenderCurve(BlenderGeometry):
         raise NotImplementedError
 
 
-    def is_line(self):
-
-        raise NotImplementedError
-
-
-    def is_polyline(self):
-
-        raise NotImplementedError
-
-
     def control_points(self):
 
-        raise NotImplementedError
+        return self.geometry.splines[0].bezier_points
 
 
     def control_point_coordinates(self):
 
-        raise NotImplementedError
+        points = self.control_points()
+        middle = [list(i.co) for i in points]
+        left   = [list(i.handle_left) for i in points]
+        right  = [list(i.handle_right) for i in points]
+        
+        return middle, left, right
 
 
     def control_points_on(self):
@@ -95,9 +92,13 @@ class BlenderCurve(BlenderGeometry):
         raise NotImplementedError
 
 
-    def divide(self, number_of_segments, over_space=False):
+    def divide(self, number_of_segments):
 
-        raise NotImplementedError
+        middle, left, right = self.control_point_coordinates()
+        n = number_of_segments + 1
+        points = [list(i) for i in interpolate_bezier(middle[0], right[0], left[1], middle[1], n)]
+        
+        return [add_vectors(self.location, point) for point in points]
 
 
     def divide_length(self, length_of_segments):
@@ -113,12 +114,26 @@ class BlenderCurve(BlenderGeometry):
     def closest_points(self, points, maxdist=None):
 
         raise NotImplementedError
-
+        
 
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == '__main__':
+    
+    from compas_blender.utilities import xdraw_points
+    from compas_blender.utilities import get_object_by_name
+    
+    
+    object = get_object_by_name(name='BezierCurve')
+    
+    curve = BlenderCurve(object=object)
+    
+    print(curve)
 
-    pass
+    print(curve.control_point_coordinates())
+
+    points = [{'pos': i, 'radius': 0.1 } for i in curve.divide(number_of_segments=5)]
+    
+    xdraw_points(points=points)
