@@ -45,12 +45,12 @@ def _link_objects(objects):
         bpy.context.collection.objects.link(object)
 
     set_deselect(objects=objects)
-    
+
     return objects
 
 
 def create_material(color, alpha=1):
-    
+
     ckey  = '-'.join(['{0:.2f}'.format(i) for i in color + [alpha]])
     names = [i.name for i in bpy.data.materials]
 
@@ -58,7 +58,7 @@ def create_material(color, alpha=1):
         material = bpy.data.materials.new(name=ckey)
         material.diffuse_color = color
         return material
-    else: 
+    else:
         return bpy.data.materials[ckey]
 
 
@@ -66,11 +66,11 @@ def xdraw_points(points, **kwargs):
 
     bpy.ops.object.empty_add(type='SPHERE', radius=1, location=[0, 0, 0])
     copy = bpy.context.object
-    
+
     objects = [0] * len(points)
 
     for c, data in enumerate(points):
-        
+
         object          = copy.copy()
         object.scale   *= data['radius']
         object.location = data['pos']
@@ -86,9 +86,9 @@ def xdraw_lines(lines, **kwargs):
     objects = [0] * len(lines)
 
     for c, data in enumerate(lines):
-        
+
         name  = data.get('name', 'line')
-        
+
         curve = bpy.data.curves.new(name, type='CURVE')
         curve.dimensions = '3D'
         object = bpy.data.objects.new(name, curve)
@@ -106,7 +106,7 @@ def xdraw_lines(lines, **kwargs):
         object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
         # layer
         objects[c] = object
-         
+
     return _link_objects(objects)
 
 
@@ -121,20 +121,20 @@ def xdraw_breps(faces, **kwargs):
 
 
 def xdraw_cylinders(cylinders, div=10, **kwargs):
-    
+
     bpy.ops.mesh.primitive_cylinder_add(radius=1, depth=1, vertices=div, location=[0, 0, 0])
     copy = bpy.context.object
-    
+
     objects = [0] * len(cylinders)
 
     for c, data in enumerate(cylinders):
-        
+
         radius = data.get('radius', 1)
         start  = data.get('start', [0, 0, 0])
         end    = data.get('end', [0, 0, 1])
         L      = distance_point_point(start, end)
         pos    = centroid_points([start, end])
-        
+
         object = copy.copy()
         object.name = data.get('name', 'cylinder')
         object.rotation_euler[1] = acos((end[2] - start[2]) / L)
@@ -159,18 +159,18 @@ def xdraw_forces(forces, color, **kwargs):
 
 
 def xdraw_spheres(spheres, div=10, **kwargs):
-    
+
     bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=[0, 0, 0], ring_count=div, segments=div)
     copy = bpy.context.object
-    
+
     objects = [0] * len(spheres)
 
     for c, data in enumerate(spheres):
-        
+
         object          = copy.copy()
         object.name     = data.get('name', 'sphere')
-        object.scale   *= data['radius']    
-        object.location = data['pos']  
+        object.scale   *= data['radius']
+        object.location = data['pos']
         object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
         # layer and delete copy
         objects[c] = object
@@ -179,15 +179,15 @@ def xdraw_spheres(spheres, div=10, **kwargs):
 
 
 def xdraw_cubes(cubes, **kwargs):
-    
+
     bpy.ops.mesh.primitive_cube_add(size=1, location=[0, 0, 0])
     copy = bpy.context.object
-    
+
     objects = [0] * len(cubes)
 
     for c, data in enumerate(cubes):
-        
-            
+
+
         object          = copy.copy()
         object.name     = data.get('name', 'cube')
         object.scale   *= data['radius']
@@ -201,8 +201,8 @@ def xdraw_cubes(cubes, **kwargs):
 
 def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], **kwargs):
 
-    edges = [] if not edges else edges
-    faces = [] if not faces else faces
+    edges = [] if edges is None else edges
+    faces = [] if faces is None else faces
 
     mesh = bpy.data.meshes.new(name)
     mesh.from_pydata(vertices, edges, faces)
@@ -213,24 +213,24 @@ def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], *
     object.show_wire = True
     object.data.materials.append(create_material(color=color))
     # layer
-    
+
     set_deselect(objects=[object])
-    
-    return object    
+
+    return object
 
 
 def xdraw_faces(faces, **kwargs):
 
     for face in faces:
-        
+
         name    = face.get('name', 'face')
         points  = face['points']
         indices = [list(range(len(points)))]
         color   = face.get('color', [1, 1, 1])
         # layer
         xdraw_mesh(name=name, vertices=points, faces=indices, color=color)
-    
-    
+
+
 def xdraw_pointcloud(points):
 
     for data in points:
@@ -239,21 +239,21 @@ def xdraw_pointcloud(points):
         object.location = data['pos']
         objects.append(object)
         # layer
-        
+
     set_deselect(objects=objects)
 
     return objects
 
 
 def xdraw_texts(texts):
-    
+
     bpy.ops.object.text_add(view_align=True)
     copy = bpy.context.object
-    
+
     objects = [0] * len(texts)
 
     for c, data in enumerate(texts):
-        
+
         object           = copy.copy()
         object.scale    *= data.get('radius', 1)
         object.location  = data.get('pos', [0, 0, 0])
@@ -271,12 +271,12 @@ def xdraw_texts(texts):
 # ==============================================================================
 
 if __name__ == '__main__':
-    
+
     from compas_blender.utilities import set_objects_show_names
-    
+
     from time import time
-    
-    
+
+
     n = 500
 
     points  = [{'pos': [0, 0, i], 'radius': 0.2, 'name': 'pt'} for i in range(n)]
@@ -285,7 +285,7 @@ if __name__ == '__main__':
     spheres = [{'pos': [1, 0, i], 'radius': 0.5, 'color': [0, 1, 0]} for i in range(n)]
     cubes   = [{'pos': [2, 0, i], 'radius': 0.5, 'color': [0, 1, 1]} for i in range(n)]
     texts   = [{'text': 'text2', 'radius': 0.1, 'color': [1, 0, 1], 'pos': [5, 1, i]} for i in range(n)]
-    
+
     tic = time()
 
     #xdraw_points(points=points)
@@ -294,13 +294,13 @@ if __name__ == '__main__':
     #xdraw_spheres(spheres=spheres)
     #xdraw_cubes(cubes=cubes)
     xdraw_texts(texts=texts)
-        
+
     print('Time: ', time() - tic)
-    
+
     #vertices = [[-1, 0, 1], [-2, 0, 2], [-2, 1, 1], [-1, 1, 0]]
     #faces    = [[0, 1, 2], [2, 3, 0]]
     #bmesh    = xdraw_mesh(name='bmesh', vertices=vertices, faces=faces, color=[1, 0, 1])
-    
+
     #objects = xdraw_pointcloud(points=points)
     #set_objects_show_names(objects=objects, show=1)
-    
+

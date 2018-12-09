@@ -46,6 +46,12 @@ class BlenderGeometry(object):
     def from_selection(cls):
        
         raise NotImplementedError
+        
+        
+    @classmethod
+    def from_name(cls, name):
+
+        return BlenderGeometry(obj=bpy.data.objects[name])
 
 
     @staticmethod

@@ -8,6 +8,8 @@ try:
 except ImportError:
     pass
 
+from compas.datastructures import Mesh
+
 from compas.geometry import add_vectors
 from compas.geometry import distance_point_point
 from compas.geometry import subtract_vectors
@@ -29,40 +31,35 @@ __all__ = [
 class BlenderMesh(BlenderGeometry):
 
     def __init__(self, object):
-        super(BlenderMesh, self).__init__(obj=object)
-
-
-    @classmethod
-    def from_selection(cls):
-
-        raise NotImplementedError
-
-
-    @classmethod
-    def from_name(cls, name):
-
-        return BlenderMesh(object=bpy.data.objects[name])
+        super(BlenderMesh, self).__init__(object)
 
 
     # ------------------------------------------------------------------------------------
     # Vertices
     # ------------------------------------------------------------------------------------
 
+    def get_vertex_coordinates(self, vertex):
+        
+        return add_vectors(self.location, self.geometry.vertices[vertex].co)
+        
+
     def get_vertices_coordinates(self):
 
-        return [add_vectors(self.location, i) for i in [list(i.co) for i in self.geometry.vertices]]
+        xyzs = [list(i.co) for i in self.geometry.vertices]
+
+        return {vertex: add_vectors(self.location, xyz) for vertex, xyz in enumerate(xyzs)}
 
 
     def set_vertices_coordinates(self, xyzs):
 
-        for index, xyz in xyzs.items():
-            self.geometry.vertices[index].co = subtract_vectors(xyz, self.location)
+        for vertex, xyz in xyzs.items():
+            self.geometry.vertices[vertex].co = subtract_vectors(xyz, self.location)
 
 
     def get_vertices_colors(self, vertices=None):
 
         colors = {}
-        col = self.geometry.vertex_colors.active
+        col    = self.geometry.vertex_colors.active
 
         if col:
 
@@ -71,6 +68,7 @@ class BlenderMesh(BlenderGeometry):
 
             for face in self.geometry.polygons:
                 for i in face.loop_indices:
+                    
                     j = self.geometry.loops[i].vertex_index
 
                     if (j in vertices) and (not colors.get(j, None)):
@@ -85,11 +83,13 @@ class BlenderMesh(BlenderGeometry):
 
         if self.geometry.vertex_colors:
             col = self.geometry.vertex_colors.active
+            
         else:
             col = self.geometry.vertex_colors.new()
 
         for face in self.geometry.polygons:
             for i in face.loop_indices:
+                
                 j = self.geometry.loops[i].vertex_index
 
                 if j in colors:
@@ -128,12 +128,17 @@ class BlenderMesh(BlenderGeometry):
     # Edges
     # ------------------------------------------------------------------------------------
 
+    def get_edge_vertex_indices(self, edge):
+        
+        return list(self.geometry.edges[edge].vertices)
+    
+
     def get_edges_vertex_indices(self, edges=None):
 
         if not edges:
             edges = range(len(self.geometry.edges))
 
-        return {edge: list(self.geometry.edges[edge].vertices) for edge in edges}
+        return {edge: self.get_edge_vertex_indices(edge=edge) for edge in edges}
 
 
     def get_edge_index(self):
@@ -148,36 +153,45 @@ class BlenderMesh(BlenderGeometry):
 
     def edge_length(self, edge):
 
-        u, v = self.geometry.edges[edge].vertices
+        u, v   = self.geometry.edges[edge].vertices
         sp, ep = [list(self.geometry.vertices[i].co) for i in [u, v]]
 
         return distance_point_point(sp, ep)
 
 
-    def edges_lengths(self, edges):
+    def edges_lengths(self, edges=None):
+        
+        if not edges:
+            edges = range(len(self.geometry.edges))
 
-        return [self.edge_length(edge=edge) for edge in edges]
+        return {edge: self.edge_length(edge=edge) for edge in edges}
 
 
     # ------------------------------------------------------------------------------------
     # Faces
     # ------------------------------------------------------------------------------------
 
+    def get_face_vertex_indices(self, face):
+        
+        return list(self.geometry.polygons[face].vertices)
+        
+
     def get_faces_vertex_indices(self, faces=None):
 
         if not faces:
             faces = range(len(self.geometry.polygons))
 
-        return [list(self.geometry.polygons[face].vertices) for face in faces]
+        return {face: self.get_face_vertex_indices(face=face) for face in faces}
+    
+    
+    def get_face_vertex_coordinates(self, face):
+
+        raise NotImplementedError
 
 
-    def get_faces_vertices(self, faces=None):
+    def get_faces_vertex_coordinates(self, faces=None):
 
-        if not faces:
-            faces = range(len(self.geometry.polygons))
-
-        return [[list(add_vectors(self.location, self.geometry.vertices[i].co)) for i in face]
-                for face in self.get_faces_vertex_indices(faces=faces)]
+        raise NotImplementedError
 
 
     def get_face_index(self):
@@ -200,7 +214,7 @@ class BlenderMesh(BlenderGeometry):
         if not faces:
             faces = range(len(self.geometry.polygons))
 
-        return [self.face_normal(face=face) for face in faces]
+        return {face: self.face_normal(face=face) for face in faces}
 
 
     def face_area(self, face):
@@ -213,7 +227,7 @@ class BlenderMesh(BlenderGeometry):
         if not faces:
             faces = range(len(self.geometry.polygons))
 
-        return [self.face_area(face=face) for face in faces]
+        return {face: self.face_area(face=face) for face in faces}
 
 
     # ------------------------------------------------------------------------------------
@@ -241,6 +255,14 @@ class BlenderMesh(BlenderGeometry):
     def closest_points(self, points, maxdist=None):
 
         raise NotImplementedError
+        
+        
+    def to_datastructure(self):
+        
+        vertices = self.get_vertices_coordinates().values()
+        faces    = self.get_faces_vertex_indices().values()
+        
+        return Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)
 
 
 # ==============================================================================
@@ -248,8 +270,13 @@ class BlenderMesh(BlenderGeometry):
 # ==============================================================================
 
 if __name__ == '__main__':
+    
+    from compas_blender.utilities import get_object_by_name
+    
+    
+    object = get_object_by_name(name='Cube')
 
-    mesh = BlenderMesh.from_name('Cube')
+    mesh = BlenderMesh(object)
 
     print(mesh.geometry)
     print(mesh.object)
@@ -257,36 +284,28 @@ if __name__ == '__main__':
     print(mesh.name)
     print(mesh.location)
 
-    print(mesh.get_vertices_coordinates())
-    print(mesh.get_faces_vertex_indices())
-    print(mesh.get_faces_vertices())
-    print(mesh.get_vertices_and_faces())
+    #mesh.set_vertices_coordinates({0: [0, 0, 0], 1: [-1, -1, 0]})
+    #mesh.set_vertices_colors(colors={0: [1, 0, 0], 1: [0, 0, 1], 2: [0, 1, 0]})
+    #mesh.unset_vertices_colors()
+    #mesh.refresh()
 
-    mesh.set_vertices_colors(colors={0: [1, 0, 0], 1: [0, 0, 1]})
-    mesh.unset_vertices_colors()
-    print(mesh.get_vertices_colors())
+    #print(mesh.get_vertices_coordinates())
+    #print(mesh.get_vertices_colors())
+    #print(mesh.get_vertex_coordinates(vertex=0))
 
-    mesh.set_vertices_coordinates({0: [0, 0, 0], 1: [1, 1, 0]})
-
-    print(mesh.edges_lengths(edges=[2, 3]))
-    print(mesh.get_edges_vertex_indices())
-
-    print(mesh.faces_normals())
-    print(mesh.faces_areas())
-
-    mesh.refresh()
-
-    # def mesh_from_bmesh(bmesh):
-    # """ Create a Mesh datastructure from a Blender mesh.
-
-    # Parameters:
-    #     bmesh (obj): Blender mesh object.
-
-    # Returns:
-    #     obj: Mesh object.
-    # """
-    # blendermesh = BlenderMesh(bmesh)
-    # vertices = blendermesh.get_vertex_coordinates()
-    # faces = blendermesh.get_face_vertex_indices()
-    # mesh = Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)
-    # return mesh
+    #print(mesh.get_edge_vertex_indices(edge=4))
+    #print(mesh.get_edges_vertex_indices(edges=[3, 4]))
+    #print(mesh.edge_length(edge=2))
+    #print(mesh.edges_lengths())
+    
+    #print(mesh.get_face_vertex_indices(face=4))
+    #print(mesh.get_faces_vertex_indices())
+    #print(mesh.face_normal(face=2))
+    #print(mesh.faces_normals())
+    #print(mesh.face_area(face=2))
+    #print(mesh.faces_areas())
+    #print(mesh.get_vertices_and_faces())
+    
+    datastructure = mesh.to_datastructure()
+    
+    print(datastructure)
