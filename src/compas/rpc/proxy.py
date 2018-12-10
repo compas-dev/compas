@@ -233,12 +233,14 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
+    from compas.utilities import print_profile
 
     from compas.rpc import Proxy
 
     numerical = Proxy('compas.numerical')
+    fd_numpy = print_profile(numerical.fd_numpy)
 
-    mesh = Mesh.from_obj(compas.get('faces_big.obj'))
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
     mesh.update_default_edge_attributes({'q': 1.0})
@@ -251,7 +253,7 @@ if __name__ == "__main__":
     q     = mesh.get_edges_attribute('q', 1.0)
     loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
 
-    xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
+    xyz, q, f, l, r = fd_numpy(xyz, edges, fixed, q, loads)
 
     for key, attr in mesh.vertices(True):
         index = key
