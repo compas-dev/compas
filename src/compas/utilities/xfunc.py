@@ -250,7 +250,7 @@ class XFunc(object):
         self.verbose        = verbose
         self.callback       = callback
         self.callback_args  = callback_args
-        self.python         = python
+        self.python         = self._select_python(python)
         self.paths          = paths or []
         self.serializer     = serializer
         self.argtypes       = argtypes
@@ -259,6 +259,28 @@ class XFunc(object):
         self.data           = None
         self.profile        = None
         self.error          = None
+
+    def _select_python(self, python):
+        """Detect if we have a conda environment we can use, or we need to default
+        to a system-wide python interpreter."""
+        try:
+            from compas_bootstrapper import CONDA_PREFIX
+        except:
+            CONDA_PREFIX = None
+
+        if CONDA_PREFIX:
+            conda_python = os.path.join(CONDA_PREFIX, 'pythonw')
+
+            if not os.path.exists(conda_python):
+                conda_python = os.path.join(CONDA_PREFIX, 'pythonw.exe')
+            if not os.path.exists(conda_python):
+                conda_python = None
+
+            if conda_python:
+                return conda_python
+
+        # Defaults
+        return 'pythonw'
 
     @property
     def basedir(self):
