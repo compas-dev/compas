@@ -41,14 +41,6 @@ ssh
 from __future__ import absolute_import, division, print_function
 
 
-class Process(object):
-    pass
-
-
-class Client(object):
-    pass
-
-
 from .matlab_ import *
 from .ssh import *
 from .rhino import *

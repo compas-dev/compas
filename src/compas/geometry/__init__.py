@@ -299,7 +299,7 @@ Algorithms
     smooth_centerofmass
 
 """
-from __future__ import absolute_import
+from __future__ import print_function, division, absolute_import
 
 from .basic import *
 from .distance import *
@@ -318,37 +318,5 @@ from .xforms import *
 
 from .algorithms import *
 
-from . import basic
-from . import distance
-from . import angles
-from . import average
-from . import normals
-from . import queries
-from . import intersections
-from . import size
+__all__ = [name for name in dir() if not name.startswith('_')]
 
-from . import transformations
-
-from . import objects
-from . import spatial
-from . import xforms
-
-from . import algorithms
-
-__all__  = []
-__all__ += basic.__all__
-__all__ += distance.__all__
-__all__ += angles.__all__
-__all__ += average.__all__
-__all__ += normals.__all__
-__all__ += queries.__all__
-__all__ += intersections.__all__
-__all__ += size.__all__
-
-__all__ += transformations.__all__
-
-__all__ += objects.__all__
-__all__ += spatial.__all__
-__all__ += xforms.__all__
-
-__all__ += algorithms.__all__
