@@ -3,6 +3,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+try:
+    import bpy
+except ImportError:
+    pass
+
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
@@ -21,24 +26,32 @@ class Artist(object):
 
     def __init__(self, layer=None):
 
-        pass
+        self.layer = layer
+        self.defaults = {
+            'color.point':   (255, 255, 255),
+            'color.line':    (0, 0, 0),
+            'color.polygon': (210, 210, 210),
+        }
+        self.vertex_objects = []
+        self.edgeobjects    = []
+        self.face_objects   = []
 
 
-    @property
-    def layer(self):
+#    @property
+#    def layer(self):
 
-        raise NotImplementedError
+#        return self.layer
 
 
-    @layer.setter
-    def layer(self, value):
+#    @layer.setter
+#    def layer(self, value):
 
-        raise NotImplementedError
+#        self.layer = value
 
 
     def redraw(self, timeout=None):
 
-        raise NotImplementedError
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 
     def clear_layer(self):

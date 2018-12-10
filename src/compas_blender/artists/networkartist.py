@@ -26,19 +26,23 @@ class NetworkArtist(EdgeArtist, VertexArtist, Artist):
     def __init__(self, network, layer=None):
         super(NetworkArtist, self).__init__(layer=layer)
 
-        pass
+        self.network = network
+        self.defaults.update({
+            'color.vertex': (255, 255, 255),
+            'color.edge':   (0, 0, 0),
+        })
 
 
     @property
     def network(self):
 
-        raise NotImplementedError
+        return self.datastructure
 
 
     @network.setter
     def network(self, network):
 
-        raise NotImplementedError
+        self.datastructure = network
 
 
     def draw(self):
@@ -48,7 +52,8 @@ class NetworkArtist(EdgeArtist, VertexArtist, Artist):
 
     def clear(self):
 
-        raise NotImplementedError
+        self.clear_vertices()
+        self.clear_edges()
 
 
 # ==============================================================================
@@ -57,4 +62,21 @@ class NetworkArtist(EdgeArtist, VertexArtist, Artist):
 
 if __name__ == "__main__":
 
-    pass
+    import compas
+
+    from compas.datastructures import Network
+
+
+    network = Network.from_obj(compas.get('grid_irregular.obj'))
+
+    artist = NetworkArtist(network=network)
+
+    # artist.clear_layer()
+
+    artist.draw_vertices(radius=0.05)
+    artist.draw_vertexlabels()
+    #artist.clear_vertexlabels()
+    
+    # artist.draw_edges()
+    # artist.draw_edgelabels()
+    # artist.clear_edgelabels()

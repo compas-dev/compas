@@ -44,10 +44,10 @@ class BlenderGeometry(object):
 
     @classmethod
     def from_selection(cls):
-       
+
         raise NotImplementedError
-        
-        
+
+
     @classmethod
     def from_name(cls, name):
 
@@ -62,6 +62,7 @@ class BlenderGeometry(object):
 
     @staticmethod
     def refresh():
+
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 
