@@ -1,8 +1,6 @@
+from __future__ import absolute_import, division, print_function
 
 from .ssh import *
 from .euler import *
 
-from .ssh import __all__ as a
-from .euler import __all__ as b
-
-__all__ = a + b
+__all__ = [name for name in dir() if not name.startswith('_')]

@@ -6,9 +6,7 @@ from __future__ import print_function
 from compas.com.ssh.ssh import SSH
 
 
-__all__ = [
-    'EulerSSH',
-]
+__all__ = ['EulerSSH']
 
 
 class EulerSSH(SSH):
