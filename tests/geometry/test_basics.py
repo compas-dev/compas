@@ -6,6 +6,8 @@ from compas.geometry import angle_vectors
 from compas.geometry import angles_vectors
 
 from compas.geometry import centroid_points
+from compas.geometry import centroid_polygon
+from compas.geometry import centroid_polyhedron
 
 
 # ==============================================================================
@@ -23,6 +25,7 @@ from compas.geometry import centroid_points
         ([1.0, 0.0, 0.0], [1.0, 0.0, 0.0], 0.0),     # X - X
         ([0.0, 1.0, 0.0], [0.0, 1.0, 0.0], 0.0),     # Y - Y
         ([0.0, 0.0, 1.0], [0.0, 0.0, 1.0], 0.0),     # Z - Z
+
         ([1.0, 0.0, 0.0], [0.0, 1.0, 0.0], pi / 2),  # X - Y
         ([0.0, 1.0, 0.0], [1.0, 0.0, 0.0], pi / 2),  # Y - X
         ([1.0, 0.0, 0.0], [0.0, 0.0, 1.0], pi / 2),  # X - Z
@@ -45,6 +48,7 @@ def test_angle_vectors(u, v, angle):
         ([1.0, 0.0, 0.0], [1.0, 0.0, 0.0], (0.0, 2 * pi)),         # X - X
         ([0.0, 1.0, 0.0], [0.0, 1.0, 0.0], (0.0, 2 * pi)),         # Y - Y
         ([0.0, 0.0, 1.0], [0.0, 0.0, 1.0], (0.0, 2 * pi)),         # Z - Z
+
         ([1.0, 0.0, 0.0], [0.0, 1.0, 0.0], (pi / 2, 3 * pi / 2)),  # X - Y
         ([0.0, 1.0, 0.0], [1.0, 0.0, 0.0], (pi / 2, 3 * pi / 2)),  # Y - X
         ([1.0, 0.0, 0.0], [0.0, 0.0, 1.0], (pi / 2, 3 * pi / 2)),  # X - Z
