@@ -42,7 +42,7 @@ def install(version='6.0', packages=None):
 
     """
 
-    print('Installing COMPAS packages to Rhino IronPython lib:')
+    print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
