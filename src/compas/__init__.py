@@ -15,10 +15,9 @@ compas
     compas.numerical
     compas.plotters
     compas.robots
+    compas.rpc
     compas.topology
     compas.utilities
-
-..
     compas.viewers
 
 """
