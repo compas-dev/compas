@@ -56,8 +56,26 @@ def uninstall(version='6.0', packages=None):
             results.append(
                 (package, 'Cannot remove symlink, try to run as administrator.'))
 
+    for _, status in results:
+        if status is not 'OK':
+            exit_code = -1
+
+    if exit_code == -1:
+        results.append(('compas_bootstrapper', 'One or more packages failed, will not uninstall bootstrapper.'))
+    else:
+        compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
+        try:
+            if os.path.exists(compas_bootstrapper):
+                os.remove(compas_bootstrapper)
+                results.append(('compas_bootstrapper', 'OK'))
+        except:
+            results.append(
+                ('compas_bootstrapper', 'Could not delete compas_bootstrapper'))
+
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))
+
+        # Re-check just in case bootstrapper failed
         if status is not 'OK':
             exit_code = -1
 

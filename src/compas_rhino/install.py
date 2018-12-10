@@ -66,8 +66,27 @@ def install(version='6.0', packages=None):
             results.append(
                 (package, 'Cannot create symlink, try to run as administrator.'))
 
+    for _, status in results:
+        if status is not 'OK':
+            exit_code = -1
+
+    # Installing the bootstrapper rarely fails, so, only do it if no other package failed
+    if exit_code == -1:
+        results.append(('compas_bootstrapper', 'ERROR: One or more packages failed, will not install bootstrapper, try uninstalling first'))
+    else:
+        conda_prefix = os.environ.get('CONDA_PREFIX', None)
+        try:
+            with open(os.path.join(ipylib_path, 'compas_bootstrapper.py'), 'w') as f:
+                f.write('CONDA_PREFIX = r"{0}"'.format(conda_prefix))
+                results.append(('compas_bootstrapper', 'OK'))
+        except:
+            results.append(
+                ('compas_bootstrapper', 'Could not create compas_bootstrapper to auto-determine Python environment'))
+
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))
+
+        # Re-check just in case bootstrapper failed
         if status is not 'OK':
             exit_code = -1
 
