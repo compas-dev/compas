@@ -19,7 +19,7 @@ def _get_package_path(package):
     return os.path.abspath(os.path.join(os.path.dirname(package.__file__), '..'))
 
 
-def install(version='5.0', packages=None):
+def install(version='6.0', packages=None):
     """Install COMPAS for Rhino.
 
     Parameters
@@ -34,11 +34,11 @@ def install(version='5.0', packages=None):
     .. code-block:: python
 
         >>> import compas_rhino
-        >>> compas_rhino.install('5.0')
+        >>> compas_rhino.install('6.0')
 
     .. code-block:: python
 
-        $ python -m compas_rhino.install 5.0
+        $ python -m compas_rhino.install 6.0
 
     """
 
@@ -89,11 +89,11 @@ if __name__ == "__main__":
     try:
         version = sys.argv[1]
     except IndexError:
-        version = '5.0'
+        version = '6.0'
     else:
         try:
             version = str(version)
         except Exception:
-            version = '5.0'
+            version = '6.0'
 
     install(version=version, packages=INSTALLABLE_PACKAGES)
