@@ -1,7 +1,5 @@
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 from .volmesh import *
 
-from . import volmesh
-
-__all__ = volmesh.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]
