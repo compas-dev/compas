@@ -2,15 +2,19 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import socket
+import threading
+
 try:
     from SimpleXMLRPCServer import SimpleXMLRPCServer
 except ImportError:
     from xmlrpc.server import SimpleXMLRPCServer
 
-import threading
+
+socket.setdefaulttimeout(10)
 
 
-__all__ = ['Server', 'kill', 'ping', 'shutdown']
+__all__ = ['Server']
 
 
 class Server(SimpleXMLRPCServer):
@@ -50,45 +54,45 @@ class Server(SimpleXMLRPCServer):
 
     """
 
-    quit = False
+    # quit = False
     
     # def serve_forever(self):
-    #     while True:
-    #         if self.quit:
-    #             break
+    #     while not self.quit:
     #         self.handle_request()
 
+    def server_bind(self):
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        SimpleXMLRPCServer.server_bind(self)
 
-def kill():
-    """Helper function used to kill a remote sever.
+    # def kill(self):
+    #     """Helper function used to kill a remote sever.
 
-    Notes
-    -----
-    Should be used together with an instance of `compas.rpc.Server`.
+    #     Notes
+    #     -----
+    #     Should be used together with an instance of `compas.rpc.Server`.
 
-    """
-    Server.quit = True
-    return 1
-
-
-def ping():
-    """Simple function used to check if a remote server can be reached.
-
-    Notes
-    -----
-    Should be used together with an instance of `compas.rpc.Server`.
-
-    """
-    return 1
+    #     """
+    #     self.quit = True
+    #     return 1
 
 
-def shutdown():
-    threading.Thread(shutdown_thread).start()
-    return 1
+    def ping(self):
+        """Simple function used to check if a remote server can be reached.
 
+        Notes
+        -----
+        Should be used together with an instance of `compas.rpc.Server`.
 
-def shutdown_thread():
-    server.shutdown()
+        """
+        return 1
+
+    def remote_shutdown(self):
+        threading.Thread(self._shutdown_thread).start()
+        return 1
+
+    def _shutdown_thread(self):
+        self.shutdown()
+
 
 
 # ==============================================================================

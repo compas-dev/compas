@@ -7,9 +7,6 @@ import compas
 
 from compas.rpc import Server
 from compas.rpc import Service
-from compas.rpc import kill
-from compas.rpc import ping
-from compas.rpc import shutdown
 
 
 class DefaultService(Service):
@@ -18,10 +15,12 @@ class DefaultService(Service):
 
 if __name__ == '__main__':
 
-    server = Server(("localhost", 8888))
+    import threading
 
-    server.register_function(ping)
-    server.register_function(shutdown)
+    server = Server(("localhost", 1753))
+
+    server.register_function(server.ping)
+    server.register_function(server.remote_shutdown)
 
     server.register_instance(DefaultService())
 

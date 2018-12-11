@@ -101,7 +101,7 @@ class Proxy(object):
 
     """
 
-    def __init__(self, package=None, python='python', url='http://127.0.0.1', port=8888):
+    def __init__(self, package=None, python='python', url='http://127.0.0.1', port=1753):
         self._package = package
         self._python = python
         self._url = url
@@ -151,7 +151,6 @@ class Proxy(object):
         """Stop the remote server and terminate/kill the python process that was used to start it.
         """
         try:
-            # self._server.kill()
             self._server.remote_shutdown()
         except:
             pass
@@ -198,14 +197,6 @@ class Proxy(object):
         idict = {'args': args, 'kwargs': kwargs}
         istring = json.dumps(idict, cls=DataEncoder)
 
-        # if self.serializer == 'json':
-        #     with open(self.ipath, 'w+') as fo:
-        #         json.dump(idict, fo, cls=DataEncoder)
-        # else:
-        #     with open(self.ipath, 'wb+') as fo:
-        #         # pickle.dump(idict, fo, protocol=pickle.HIGHEST_PROTOCOL)
-        #         pickle.dump(idict, fo, protocol=2)
-
         try:
             ostring = self._function(istring)
         except:
@@ -232,16 +223,14 @@ class Proxy(object):
 if __name__ == "__main__":
     
     import compas
-    import time
 
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
     from compas.utilities import print_profile
-
     from compas.rpc import Proxy
 
+    from compas_rhino.artists import MeshArtist
+
     numerical = Proxy('compas.numerical')
-    fd_numpy = print_profile(numerical.fd_numpy)
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -256,7 +245,7 @@ if __name__ == "__main__":
     q     = mesh.get_edges_attribute('q', 1.0)
     loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
 
-    xyz, q, f, l, r = fd_numpy(xyz, edges, fixed, q, loads)
+    xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
 
     for key, attr in mesh.vertices(True):
         index = key
@@ -271,9 +260,11 @@ if __name__ == "__main__":
         attr['f'] = f[index][0]
         attr['l'] = l[index][0]
 
-    artist = MeshPlotter(mesh, figsize=(10, 7))
+    artist = MeshArtist(mesh)
 
     artist.draw_vertices()
     artist.draw_faces()
 
-    artist.show()
+    artist.redraw()
+    
+    numerical.stop_server()
