@@ -28,12 +28,12 @@ class Artist(object):
 
         self.layer = layer
         self.defaults = {
-            'color.point':   (255, 255, 255),
-            'color.line':    (0, 0, 0),
-            'color.polygon': (210, 210, 210),
+            'color.point':   [255, 255, 255],
+            'color.line':    [0, 0, 0],
+            'color.polygon': [210, 210, 210],
         }
         self.vertex_objects = []
-        self.edgeobjects    = []
+        self.edge_objects   = []
         self.face_objects   = []
 
 

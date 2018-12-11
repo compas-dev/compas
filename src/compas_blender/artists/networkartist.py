@@ -77,6 +77,6 @@ if __name__ == "__main__":
     artist.draw_vertexlabels()
     #artist.clear_vertexlabels()
     
-    # artist.draw_edges()
-    # artist.draw_edgelabels()
+    artist.draw_edges(width=0.01)
+    artist.draw_edgelabels()
     # artist.clear_edgelabels()
