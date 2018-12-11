@@ -13,6 +13,35 @@ system = sys.platform
 if 'ironpython' in sys.version.lower() and os.name == 'nt':
     system = 'win32'
 
+def select_python(python):
+    """Selects the most likely python interpreter to run.
+
+    This function detects if there is a conda environment we can use,
+    or if we need to default to a system-wide python interpreter instead."""
+    python = python or 'pythonw'
+
+    try:
+        from compas_bootstrapper import CONDA_PREFIX
+    except:
+        CONDA_PREFIX = None
+
+    if CONDA_PREFIX and os.path.exists(CONDA_PREFIX):
+        conda_python = os.path.join(CONDA_PREFIX, python)
+
+        if os.path.exists(conda_python):
+            return conda_python
+
+        conda_python = os.path.join(CONDA_PREFIX, '{0}.exe'.format(python))
+
+        if os.path.exists(conda_python):
+            return conda_python
+
+        if conda_python:
+            return conda_python
+
+    # Assume a system-wide install exists
+    return python
+
 
 def absjoin(*parts):
     return os.path.abspath(os.path.join(*parts))
@@ -209,4 +238,5 @@ __all__ = [
     'create_symlink',
     'remove_symlink',
     'user_data_dir',
+    'select_python'
 ]
