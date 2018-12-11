@@ -21,6 +21,9 @@ from compas.utilities import DataDecoder
 from compas.rpc import RPCServerError
 
 
+HERE = os.path.abspath(os.path.dirname(__file__))
+
+
 __all__ = ['Proxy']
 
 
@@ -98,12 +101,11 @@ class Proxy(object):
 
     """
 
-    def __init__(self, package=None, python='pythonw', url='http://127.0.0.1', port=8888, service='default.py'):
+    def __init__(self, package=None, python='python', url='http://127.0.0.1', port=8888):
         self._package = package
         self._python = python
         self._url = url
         self._port = port
-        self._service = service
         self._process = None
         self._server = None
         self._function = None
@@ -125,7 +127,7 @@ class Proxy(object):
 
         """
         python = self._python
-        script = os.path.join(compas.HOME, 'services', self._service)
+        script = os.path.join(HERE, 'services', 'default.py')
         address = "{}:{}".format(self._url, self._port)
 
         self._process = Popen([python, script])
@@ -149,7 +151,8 @@ class Proxy(object):
         """Stop the remote server and terminate/kill the python process that was used to start it.
         """
         try:
-            self._server.kill()
+            # self._server.kill()
+            self._server.remote_shutdown()
         except:
             pass
         try:

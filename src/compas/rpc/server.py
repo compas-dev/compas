@@ -7,8 +7,10 @@ try:
 except ImportError:
     from xmlrpc.server import SimpleXMLRPCServer
 
+import threading
 
-__all__ = ['Server', 'kill', 'ping']
+
+__all__ = ['Server', 'kill', 'ping', 'shutdown']
 
 
 class Server(SimpleXMLRPCServer):
@@ -50,9 +52,11 @@ class Server(SimpleXMLRPCServer):
 
     quit = False
     
-    def serve_forever(self):
-        while not self.quit:
-            self.handle_request()
+    # def serve_forever(self):
+    #     while True:
+    #         if self.quit:
+    #             break
+    #         self.handle_request()
 
 
 def kill():
@@ -78,34 +82,13 @@ def ping():
     return 1
 
 
-# def list_methods_wrapper(dispatcher):
-#     def list_methods():
-#         def is_public_method(member):
-#             return inspect.ismethod(member) and not member.__name__.startswith('_')
-#         members = inspect.getmembers(dispatcher, is_public_method)
-#         return [member[0] for member in members]
-#     return list_methods
+def shutdown():
+    threading.Thread(shutdown_thread).start()
+    return 1
 
 
-# def method_help_wrapper(dispatcher):
-#     def method_help(name):
-#         if not hasattr(dispatcher, name):
-#             return 'Not a registered API method: {0}'.format(name)
-#         method = getattr(dispatcher, name)
-#         return inspect.getdoc(method)
-#     return method_help
-
-
-# def method_signature_wrapper(dispatcher):
-#     def method_signature(name):
-#         if not hasattr(dispatcher, name):
-#             return 'Not a registered API method: {0}'.format(name)
-#         method = getattr(dispatcher, name)
-#         spec = inspect.getargspec(method)
-#         args = spec.args
-#         defaults = spec.defaults
-#         return args[1:], defaults
-#     return method_signature
+def shutdown_thread():
+    server.shutdown()
 
 
 # ==============================================================================

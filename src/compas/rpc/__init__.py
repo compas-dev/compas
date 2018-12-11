@@ -8,7 +8,9 @@ compas.rpc
 
 """
 
-from __future__ import print_function, division, absolute_import
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 
 class RPCServerError(Exception):
@@ -21,6 +23,7 @@ class RPCClientError(Exception):
 
 from .proxy import *
 from .server import *
+from .dispatcher import *
 from .service import *
 
 
