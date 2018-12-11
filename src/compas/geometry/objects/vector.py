@@ -10,8 +10,10 @@ from math import pi
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import subtract_vectors
+from compas.geometry.basic import dot_vectors
 from compas.geometry.angles import angle_vectors
 from compas.geometry.angles import angle_vectors_signed
+from compas.geometry.angles import angles_vectors
 
 from compas.geometry.transformations import transform_vectors
 
