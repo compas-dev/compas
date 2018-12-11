@@ -11,7 +11,7 @@ except ImportError:
     from xmlrpc.server import SimpleXMLRPCServer
 
 
-socket.setdefaulttimeout(10)
+# socket.setdefaulttimeout(10)
 
 
 __all__ = ['Server']
@@ -60,9 +60,9 @@ class Server(SimpleXMLRPCServer):
     #     while not self.quit:
     #         self.handle_request()
 
-    def server_bind(self):
-        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        SimpleXMLRPCServer.server_bind(self)
+    # def server_bind(self):
+    #     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    #     SimpleXMLRPCServer.server_bind(self)
 
     # def kill(self):
     #     """Helper function used to kill a remote sever.
