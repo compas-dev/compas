@@ -14,6 +14,7 @@ except ImportError:
 from subprocess import Popen
 
 import compas
+import compas._os
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
@@ -98,9 +99,9 @@ class Proxy(object):
 
     """
 
-    def __init__(self, package=None, python='pythonw', url='http://127.0.0.1', port=8888, service='default.py'):
+    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=8888, service='default.py'):
         self._package = package
-        self._python = python
+        self._python = compas._os.select_python(python)
         self._url = url
         self._port = port
         self._service = service
