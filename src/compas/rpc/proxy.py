@@ -41,10 +41,10 @@ class Proxy(object):
         Default is `'http://127.0.0.1'`.
     port : int, optional
         The port number on the remote server.
-        Default is `8888`.
+        Default is `8118`.
     service : string, optional
         The remote service script.
-        Default is `'default.py'`.
+        Default is `'compas.rpc.default'`.
 
     Attributes
     ----------
@@ -99,7 +99,7 @@ class Proxy(object):
 
     """
 
-    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=8888, service='default.py'):
+    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=8118, service=None):
         self._package = package
         self._python = compas._os.select_python(python)
         self._url = url
@@ -126,10 +126,10 @@ class Proxy(object):
 
         """
         python = self._python
-        script = os.path.join(compas.HOME, 'services', self._service)
+        args = ['-m', 'compas.rpc.default', str(self._port)] if not self._service else [self._service]
         address = "{}:{}".format(self._url, self._port)
 
-        self._process = Popen([python, script])
+        self._process = Popen([python] + args)
         self._server = ServerProxy(address)
 
         success = False
@@ -228,7 +228,7 @@ class Proxy(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     import compas
     import time
 

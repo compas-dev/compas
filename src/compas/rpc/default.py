@@ -17,11 +17,21 @@ class DefaultService(Service):
 
 if __name__ == '__main__':
 
-    server = Server(("localhost", 8888))
+    import sys
+
+    try:
+        port = int(sys.argv[1])
+    except:
+        port = 8118
+
+    print('Starting default RPC service on port {0}...'.format(port))
+
+    server = Server(("localhost", port))
 
     server.register_function(ping)
     server.register_function(kill)
 
     server.register_instance(DefaultService())
 
+    print('Listening, press CTRL+C to abort...')
     server.serve_forever()
