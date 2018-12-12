@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+
 from compas.geometry import local_coords_numpy
 from compas.geometry import global_coords_numpy
 

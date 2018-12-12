@@ -4,6 +4,7 @@ from __future__ import division
 
 import sys
 import time
+import compas
 
 from subprocess import Popen
 from subprocess import PIPE
@@ -12,8 +13,7 @@ try:
     from scipy.io import savemat
     from scipy.io import loadmat
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
 __all__ = ['MatlabProcess']

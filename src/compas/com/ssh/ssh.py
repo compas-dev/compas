@@ -12,9 +12,7 @@ except ImportError:
 import os
 
 
-__all__ = [
-    'SSH',
-]
+__all__ = ['SSH']
 
 
 class SSH(object):

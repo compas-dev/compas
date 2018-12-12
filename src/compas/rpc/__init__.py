@@ -1,21 +1,10 @@
 """
 ********************************************************************************
-compas.plotters
+compas.rpc
 ********************************************************************************
 
-.. currentmodule:: compas.plotters
+.. currentmodule:: compas.rpc
 
-
-Classes
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Plotter
-    NetworkPlotter
-    MeshPlotter
 
 """
 
@@ -23,8 +12,19 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .plotter import Plotter
-from .networkplotter import NetworkPlotter
-from .meshplotter import MeshPlotter
+
+class RPCServerError(Exception):
+    pass
+
+
+class RPCClientError(Exception):
+    pass
+
+
+from .proxy import *
+from .server import *
+from .dispatcher import *
+from .service import *
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

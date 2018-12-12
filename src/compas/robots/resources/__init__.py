@@ -1,9 +1,6 @@
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 from .basic import *
 from .github import *
 
-from . import basic
-from . import github
-
-__all__ = basic.__all__ + github.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]
