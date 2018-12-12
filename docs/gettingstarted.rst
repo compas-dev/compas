@@ -7,12 +7,16 @@ Getting started
 Installation
 ============
 
-The recommended way to install **COMPAS** is to use `Anaconda/conda <https://conda.io/docs/>`_::
+The recommended way to install **COMPAS** is to use `Anaconda/conda <https://conda.io/docs/>`_
+
+::
 
     $ conda config --add channels conda-forge
     $ conda install COMPAS
 
-But it can also be installed using `pip`::
+But it can also be installed using `pip`
+
+::
 
     $ pip install COMPAS
 
@@ -57,13 +61,13 @@ Using pip
 Virtual environments
 ====================
 
-One of the reasons to use virtual environments is to isolate dependencies, to 
+One of the reasons to use virtual environments is to isolate dependencies, to
 be able to create a fully reproducible setup, and to be able to work with
-different versions of Python and/or different versions and combinations of 
+different versions of Python and/or different versions and combinations of
 packages.
 
 For example, if you work on a project that requires a specific version of Python or
-a specific version of a package that is incompatible with the ones required by another 
+a specific version of a package that is incompatible with the ones required by another
 project, you can use environments to make sure both projects can run side-by-side
 without constantly having to update your entire development setup.
 
@@ -91,11 +95,9 @@ Install **COMPAS** (or other packages) for this environment
 For further instructions about managing virtual environments with conda
 `see the docs <https://conda.io/docs/user-guide/tasks/manage-environments.html>`_.
 
-
 First Steps
 ===========
 
 * https://compas-dev.github.io/main/examples.html
 * https://compas-dev.github.io/main/tutorial.html
 * https://compas-dev.github.io/main/api.html
-
