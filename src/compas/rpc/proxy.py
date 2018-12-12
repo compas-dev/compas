@@ -11,7 +11,7 @@ try:
 except ImportError:
     from xmlrpc.client import ServerProxy
 
-from subprocess import Popen
+from subprocess import Popen, PIPE, STDOUT
 
 import compas
 import compas._os
@@ -122,10 +122,10 @@ class Proxy(object):
 
         """
         python = self._python
-        args = ['-m', 'compas.rpc.services.default', str(self._port)]
+        args = [python, '-m', 'compas.rpc.services.default', str(self._port)]
         address = "{}:{}".format(self._url, self._port)
 
-        self._process = Popen([python] + args, shell=True)
+        self._process = Popen(args, stdout=PIPE, stderr=STDOUT)
         self._server = ServerProxy(address)
 
         success = False
