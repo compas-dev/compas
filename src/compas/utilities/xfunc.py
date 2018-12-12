@@ -5,8 +5,10 @@ from __future__ import division
 import os
 import sys
 import json
+import tempfile
 
 import compas
+import compas._os
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
@@ -233,8 +235,8 @@ class XFunc(object):
 
     """
 
-    def __init__(self, funcname, basedir='.', tmpdir='.', delete_files=True,
-                 verbose=True, callback=None, callback_args=None, python='pythonw',
+    def __init__(self, funcname, basedir='.', tmpdir=None, delete_files=True,
+                 verbose=True, callback=None, callback_args=None, python=None,
                  paths=None, serializer='json',
                  argtypes=None, kwargtypes=None, restypes=None):
         self._basedir       = None
@@ -244,12 +246,12 @@ class XFunc(object):
         self._serializer    = None
         self.funcname       = funcname
         self.basedir        = basedir
-        self.tmpdir         = tmpdir
+        self.tmpdir         = tmpdir or tempfile.mkdtemp('compas_xfunc')
         self.delete_files   = delete_files
         self.verbose        = verbose
         self.callback       = callback
         self.callback_args  = callback_args
-        self.python         = python
+        self.python         = compas._os.select_python(python)
         self.paths          = paths or []
         self.serializer     = serializer
         self.argtypes       = argtypes

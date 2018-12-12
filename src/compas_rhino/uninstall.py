@@ -13,7 +13,7 @@ from compas._os import remove_symlink
 __all__ = []
 
 
-def uninstall(version='5.0', packages=None):
+def uninstall(version='6.0', packages=None):
     """Uninstall COMPAS from Rhino.
 
     Parameters
@@ -28,15 +28,15 @@ def uninstall(version='5.0', packages=None):
     .. code-block:: python
 
         >>> import compas_rhino
-        >>> compas_rhino.uninstall('5.0')
+        >>> compas_rhino.uninstall('6.0')
 
     .. code-block:: python
 
-        $ python -m compas_rhino.uninstall 5.0
+        $ python -m compas_rhino.uninstall 6.0
 
     """
 
-    print('Uninstalling COMPAS packages from Rhino IronPython lib:')
+    print('Uninstalling COMPAS packages to Rhino {0} IronPython lib:'.format(version))
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
@@ -56,8 +56,26 @@ def uninstall(version='5.0', packages=None):
             results.append(
                 (package, 'Cannot remove symlink, try to run as administrator.'))
 
+    for _, status in results:
+        if status is not 'OK':
+            exit_code = -1
+
+    if exit_code == -1:
+        results.append(('compas_bootstrapper', 'One or more packages failed, will not uninstall bootstrapper.'))
+    else:
+        compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
+        try:
+            if os.path.exists(compas_bootstrapper):
+                os.remove(compas_bootstrapper)
+                results.append(('compas_bootstrapper', 'OK'))
+        except:
+            results.append(
+                ('compas_bootstrapper', 'Could not delete compas_bootstrapper'))
+
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))
+
+        # Re-check just in case bootstrapper failed
         if status is not 'OK':
             exit_code = -1
 
@@ -79,11 +97,11 @@ if __name__ == "__main__":
     try:
         version = sys.argv[1]
     except IndexError:
-        version = '5.0'
+        version = '6.0'
     else:
         try:
             version = str(version)
         except Exception:
-            version = '5.0'
+            version = '6.0'
 
     uninstall(version=version, packages=compas_rhino.install.INSTALLABLE_PACKAGES)
