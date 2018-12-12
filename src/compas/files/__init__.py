@@ -83,7 +83,9 @@ xml
 
 """
 
-from __future__ import print_function, division, absolute_import
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from .amf  import *
 from .dxf  import *

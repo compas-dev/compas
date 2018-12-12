@@ -260,4 +260,34 @@ def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
 
 if __name__ == "__main__":
 
-    pass
+    import compas
+
+    from compas.plotters import Plotter
+    from compas.utilities import pairwise
+    from compas.plotters import MeshPlotter
+
+    from compas.datastructures import Mesh
+
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    fkey = mesh.get_any_face()
+
+    polyline = mesh.face_coordinates(fkey)
+    polyline.append(polyline[0])
+
+    o = offset_polyline(polyline, 0.1)
+
+    lines = []
+    for a, b in pairwise(o):
+        lines.append({
+            'start' : a,
+            'end'   : b,
+            'color' : '#00ff00',
+            'width' : 0.5
+        })
+
+
+    plotter = MeshPlotter(mesh)
+    plotter.draw_lines(lines)
+    plotter.draw_faces()
+    plotter.show()

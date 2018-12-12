@@ -598,68 +598,74 @@ if __name__ == "__main__":
     from compas.geometry import midpoint_point_point
     from compas.geometry import centroid_points
 
-    polygon = [
-        [0.0, 0.0, 0.0],
-        [1.0, 0.0, 0.0],
-        [1.0, 1.0, 0.0],
-        [0.5, 1.0, 0.0],
-        [0.0, 1.0, 0.0]
-    ]
+    points = [[0.0, 0.0, 0.0], [0.1, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.1, 0.0]]
 
-    o = centroid_polygon_xy(polygon)
-    print(o)
+    centroid = centroid_points(points)
 
-    o = centroid_points(polygon)
-    print(o)
+    print(centroid)
 
-    # polygons = [{
-    #     'points' : polygon,
-    #     'facecolor' : '#eeeeee',
-    # }]
-
-    # points = [
-    #     {
-    #         'pos' : o,
-    #         'radius' : 0.03,
-    #         'facecolor' : '#ff0000',
-    #     },
-    #     {
-    #         'pos' : c,
-    #         'radius' : 0.01,
-    #         'facecolor' : '#0000ff',
-    #     },
+    # polygon = [
+    #     [0.0, 0.0, 0.0],
+    #     [1.0, 0.0, 0.0],
+    #     [1.0, 1.0, 0.0],
+    #     [0.5, 1.0, 0.0],
+    #     [0.0, 1.0, 0.0]
     # ]
 
-    # for point in polygon:
-    #     points.append({
-    #         'pos' : point,
-    #         'radius' : 0.02,
-    #         'facecolor' : '#ffffff',
-    #     })
+    # o = centroid_polygon_xy(polygon)
+    # print(o)
 
-    # plotter = Plotter(figsize=(10, 7))
+    # o = centroid_points(polygon)
+    # print(o)
 
-    # plotter.draw_polygons(polygons)
-    # plotter.draw_points(points)
+    # # polygons = [{
+    # #     'points' : polygon,
+    # #     'facecolor' : '#eeeeee',
+    # # }]
 
-    # plotter.show()
-
-    # # m1v = [
-    # #     [1.0, 1.0, 2.0],
-    # #     [0.0, 0.0, 0.0],
-    # #     [1.0, 0.0, 2.0],
-    # #     [1.0, 0.0, 0.0],
-    # #     [0.0, 1.0, 0.0],
-    # #     [1.0, 1.0, 0.0],
-    # #     [0.0, 1.0, 1.0],
-    # #     [0.0, 0.0, 1.0]
+    # # points = [
+    # #     {
+    # #         'pos' : o,
+    # #         'radius' : 0.03,
+    # #         'facecolor' : '#ff0000',
+    # #     },
+    # #     {
+    # #         'pos' : c,
+    # #         'radius' : 0.01,
+    # #         'facecolor' : '#0000ff',
+    # #     },
     # # ]
 
-    # # m1f = [
-    # #     [4, 6, 7, 1],
-    # #     [5, 0, 6, 4],
-    # #     [4, 1, 3, 5],
-    # #     [3, 2, 0, 5],
-    # #     [1, 7, 2, 3],
-    # #     [6, 0, 2, 7]
-    # # ]
+    # # for point in polygon:
+    # #     points.append({
+    # #         'pos' : point,
+    # #         'radius' : 0.02,
+    # #         'facecolor' : '#ffffff',
+    # #     })
+
+    # # plotter = Plotter(figsize=(10, 7))
+
+    # # plotter.draw_polygons(polygons)
+    # # plotter.draw_points(points)
+
+    # # plotter.show()
+
+    # # # m1v = [
+    # # #     [1.0, 1.0, 2.0],
+    # # #     [0.0, 0.0, 0.0],
+    # # #     [1.0, 0.0, 2.0],
+    # # #     [1.0, 0.0, 0.0],
+    # # #     [0.0, 1.0, 0.0],
+    # # #     [1.0, 1.0, 0.0],
+    # # #     [0.0, 1.0, 1.0],
+    # # #     [0.0, 0.0, 1.0]
+    # # # ]
+
+    # # # m1f = [
+    # # #     [4, 6, 7, 1],
+    # # #     [5, 0, 6, 4],
+    # # #     [4, 1, 3, 5],
+    # # #     [3, 2, 0, 5],
+    # # #     [1, 7, 2, 3],
+    # # #     [6, 0, 2, 7]
+    # # # ]

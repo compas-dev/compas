@@ -17,7 +17,7 @@ Classes
     MeshViewer
 
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 from .core import *
 from .viewer import *
@@ -28,19 +28,4 @@ try:
 except:
     pass
 
-from . import viewer
-from . import meshviewer
-
-try:
-    from . import vtkviewer
-except:
-    pass
-
-__all__ = []
-__all__ += viewer.__all__
-__all__ += meshviewer.__all__
-
-try:
-    __all__ += vtkviewer.__all__
-except:
-    pass
+__all__ = [name for name in dir() if not name.startswith('_')]

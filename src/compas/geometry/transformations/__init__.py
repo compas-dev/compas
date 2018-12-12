@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 from __future__ import division
-
+from __future__ import print_function
 
 _EPS = 1e-16
 """epsilon for testing whether a number is close to zero"""
@@ -23,10 +23,4 @@ from .helpers import *
 from .matrices import *
 from .transformations import *
 
-from . import helpers
-from . import matrices
-from . import transformations
-
-
-__all__  = []
-__all__ += helpers.__all__ + matrices.__all__ + transformations.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

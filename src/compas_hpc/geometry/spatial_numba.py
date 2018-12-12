@@ -4,13 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 from numba import f8
-from numba import guvectorize
 from numba import jit
-
-try:
-    from numba import prange
-except ImportError:
-    prange = range
 
 from numpy import array
 from numpy import min
@@ -54,12 +48,17 @@ def distance_matrix_numba(A, B):
     o = zeros((m, n))
 
     for i in range(m):
+
         u = A[i, :]
+
         for j in range(n):
+
             v = B[j, :]
+
             dx = u[0] - v[0]
             dy = u[1] - v[1]
             dz = u[2] - v[2]
+
             o[i, j] = sqrt(dx**2 + dy**2 + dz**2)
 
     return o
@@ -72,13 +71,13 @@ def closest_distance_field_numba(x, y, z, points):
     Parameters
     ----------
     x : array
-        Grid x (m x n x o).
+        Grid of x coordinates (m x n x o).
     y : array
-        Grid y (m x n x o).
+        Grid of y coordinates (m x n x o).
     z : array
-        Grid z (m x n x o).
+        Grid of z coordinates (m x n x o).
     points : array
-        Target points to compare to.
+        Target points to compare to (p x 3).
 
     Returns
     -------
@@ -87,12 +86,13 @@ def closest_distance_field_numba(x, y, z, points):
 
     """
 
-    m, n, o = x.shape
+    m, n, o   = x.shape
     distances = zeros((m, n, o))
 
     for i in range(m):
         for j in range(n):
             for k in range(o):
+
                 point = array([[x[i, j, k], y[i, j, k], z[i, j, k]]])
                 distances[i, j, k] = min(distance_matrix_numba(point, points))
 
@@ -110,6 +110,8 @@ if __name__ == "__main__":
     from numpy import meshgrid
     from numpy import newaxis
 
+    from compas.viewers import VtkViewer
+
 
     # Grid
 
@@ -119,15 +121,16 @@ if __name__ == "__main__":
 
     # Test points
 
-    x = xm.ravel()[:, newaxis]
-    y = ym.ravel()[:, newaxis]
-    z = zm.ravel()[:, newaxis]
+    x = xm.ravel()
+    y = ym.ravel()
+    z = zm.ravel()
 
-    r = x**2 + y**2 + z**2
-    log = r < 0.1
-    xs = x[log][:, newaxis]
-    ys = y[log][:, newaxis]
-    zs = z[log][:, newaxis]
+    r  = x**2 + y**2 + z**2
+    lg = r < 0.05
+    xs = x[lg][:, newaxis]
+    ys = y[lg][:, newaxis]
+    zs = z[lg][:, newaxis]
+
     points = hstack([xs, ys, zs])
     print(points.shape)
 
@@ -137,10 +140,7 @@ if __name__ == "__main__":
 
     # View
 
-    from compas.viewers import VtkViewer
-
-
-    data = {'voxels': distances}
+    data   = {'voxels': distances}
     viewer = VtkViewer(data=data)
     viewer.setup()
     viewer.start()
