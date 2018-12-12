@@ -22,8 +22,8 @@ __all__ = [
     'offset_line',
     'offset_polyline',
     'offset_polygon',
-    'offset_mesh',
-    'thicken_mesh'
+    #'offset_mesh',
+    #'thicken_mesh'
 ]
 
 
