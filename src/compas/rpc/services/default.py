@@ -16,7 +16,6 @@ class DefaultService(Service):
 if __name__ == '__main__':
 
     import sys
-    import threading
 
     try:
         port = int(sys.argv[1])
