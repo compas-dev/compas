@@ -12,6 +12,7 @@ from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import dot_vectors_xy
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import length_vector_xy
+from compas.geometry.basic import cross_vectors
 
 
 __all__ = [
@@ -22,6 +23,7 @@ __all__ = [
     'angles_points',
     'angles_points_xy',
     'angle_vectors',
+    'angle_vectors_signed',
     'angle_vectors_xy',
     'angle_points',
     'angle_points_xy',
@@ -57,6 +59,48 @@ def angle_vectors(u, v, deg=False):
     if deg:
         return degrees(acos(a))
     return acos(a)
+
+
+def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):
+    """Computes the signed angle between two vectors.
+
+    It calculates the angle such that rotating vector u about the normal by
+    angle would result in a vector that looks into the same direction as v.
+
+    Parameters
+    ----------
+    u : sequence of float
+        XYZ components of the first vector.
+    v : sequence of float
+        XYZ components of the second vector.
+    normal : sequence of float
+        XYZ components of the plane's normal spanned by u and v.
+    deg : boolean
+        returns angle in degrees if True
+    threshold : The threshold (radians) used to consider if the angle is zero.
+        Defaults to 1e-3.
+
+    Returns
+    -------
+    float
+        The signed angle in radians (in degrees if deg == True).
+
+    Examples
+    --------
+    >>> normal = [0.0, 0.0, 1.0]
+    >>> angle_vectors_signed([0.0, 1.0, 0.0], [1.0, 0.0, 0.0], normal)
+    """
+    angle = angle_vectors(u, v)
+    normal_uv = cross_vectors(u, v)
+    # check if normal_uv has the same direction as normal
+    angle_btw_normals = angle_vectors(normal, normal_uv)
+    if angle_btw_normals > threshold:
+        angle *= -1
+
+    if deg:
+        return degrees(angle)
+    else:
+        return angle
 
 
 def angle_vectors_xy(u, v, deg=False):

@@ -10,7 +10,10 @@ from math import pi
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import subtract_vectors
+from compas.geometry.basic import dot_vectors
 from compas.geometry.angles import angle_vectors
+from compas.geometry.angles import angle_vectors_signed
+from compas.geometry.angles import angles_vectors
 
 from compas.geometry.transformations import transform_vectors
 
@@ -387,6 +390,10 @@ class Vector(object):
     @staticmethod
     def angle_vectors(left, right):
         return [angle_vectors(u, v) for u, v in zip(left, right)]
+    
+    @staticmethod
+    def angle_vectors_signed(left, right, normal):
+        return [angle_vectors_signed(u, v, normal) for u, v in zip(left, right)]
 
     @staticmethod
     def homogenise_vectors(vectors):
@@ -496,6 +503,24 @@ class Vector(object):
 
         """
         return angle_vectors(self, other)
+    
+    def angle_signed(self, other, normal):
+        """Compute the signed angle between this ``Vector`` and another vector.
+
+        Parameters
+        ----------
+        other : vector
+            The other vector.
+        normal : vector
+            The plane's normal spanned by this and the other vector.
+
+        Returns
+        -------
+        float
+            The signed angle between the two vectors.
+
+        """
+        return angle_vectors_signed(self, other, normal)
 
     def angles(self, other):
         """Compute both angles between this ``Vector`` and another vector.
