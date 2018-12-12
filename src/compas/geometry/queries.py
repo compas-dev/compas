@@ -4,6 +4,7 @@ from __future__ import division
 
 from math import pi
 from math import fabs
+from random import sample
 
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import cross_vectors
@@ -201,11 +202,13 @@ def is_coplanar(points, tol=0.01):
     # len(points) > 4
     # compare length of cross product vector to tolerance
 
-    u = subtract_vectors(points[1], points[0])
-    v = subtract_vectors(points[2], points[1])
+    a, b, c = sample(points, 3)
+
+    u = subtract_vectors(b, a)
+    v = subtract_vectors(c, a)
     w = cross_vectors(u, v)
 
-    for i in range(1, len(points) - 2):
+    for i in range(0, len(points) - 2):
         u = v
         v = subtract_vectors(points[i + 2], points[i + 1])
         wuv = cross_vectors(w, cross_vectors(u, v))
@@ -982,12 +985,20 @@ def is_intersection_plane_plane(plane1, plane2, epsilon=1e-6):
     return True
 
 
-
-
-
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    import os
+    import compas
+
+    from compas.datastructures import Mesh
+
+    mesh = Mesh.from_json(os.path.join(compas.TEMP, 'm11.json'))
+
+    xyz = mesh.get_vertices_attributes('xyz')
+    xyz = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [3.0, 1.0, 0.5]]
+
+    print(is_coplanar(xyz))
