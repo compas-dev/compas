@@ -11,17 +11,15 @@ try:
 except ImportError:
     from xmlrpc.client import ServerProxy
 
-from subprocess import Popen
+from subprocess import Popen, PIPE, STDOUT
 
 import compas
+import compas._os
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
 
 from compas.rpc import RPCServerError
-
-
-HERE = os.path.abspath(os.path.dirname(__file__))
 
 
 __all__ = ['Proxy']
@@ -43,10 +41,7 @@ class Proxy(object):
         Default is `'http://127.0.0.1'`.
     port : int, optional
         The port number on the remote server.
-        Default is `8888`.
-    service : string, optional
-        The remote service script.
-        Default is `'default.py'`.
+        Default is `1753`.
 
     Attributes
     ----------
@@ -101,9 +96,9 @@ class Proxy(object):
 
     """
 
-    def __init__(self, package=None, python='python', url='http://127.0.0.1', port=1753):
+    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753):
         self._package = package
-        self._python = python
+        self._python = compas._os.select_python(python)
         self._url = url
         self._port = port
         self._process = None
@@ -127,10 +122,10 @@ class Proxy(object):
 
         """
         python = self._python
-        script = os.path.join(HERE, 'services', 'default.py')
+        args = [python, '-m', 'compas.rpc.services.default', str(self._port)]
         address = "{}:{}".format(self._url, self._port)
 
-        self._process = Popen([python, script])
+        self._process = Popen(args, stdout=PIPE, stderr=STDOUT)
         self._server = ServerProxy(address)
 
         success = False
@@ -221,7 +216,7 @@ class Proxy(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     import compas
 
     from compas.datastructures import Mesh
@@ -266,5 +261,5 @@ if __name__ == "__main__":
     artist.draw_faces()
 
     artist.redraw()
-    
+
     numerical.stop_server()
