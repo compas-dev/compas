@@ -1,4 +1,6 @@
-from __future__ import print_function, division, absolute_import
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 _EPS = 1e-16
 """epsilon for testing whether a number is close to zero"""

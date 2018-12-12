@@ -19,7 +19,9 @@ Classes
 
 """
 
-from __future__ import print_function, division, absolute_import
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from .plotter import Plotter
 from .networkplotter import NetworkPlotter

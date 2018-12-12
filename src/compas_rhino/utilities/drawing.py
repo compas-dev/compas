@@ -530,7 +530,7 @@ def xdraw_mesh(vertices, faces, name=None, color=None, **kwargs):
 def xdraw_faces(faces, **kwargs):
     guids = []
     for face in iter(faces):
-        points = face['points']
+        points = face['points'][:]
         name   = face.get('name')
         color  = face.get('color')
         vertexcolors = face.get('vertexcolors')
@@ -553,7 +553,7 @@ def xdraw_faces(faces, **kwargs):
                 compas_rhino.set_mesh_vertex_colors(guid, vertexcolors)
             except Exception:
                 pass
-    
+
         guids.append(guid)
 
     return guids
