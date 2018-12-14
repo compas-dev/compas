@@ -233,6 +233,8 @@ def xdraw_faces(faces, **kwargs):
 
 def xdraw_pointcloud(points):
 
+    objects = [0] * len(points)
+
     for data in points:
 
         object = xdraw_mesh(name=data.get('name', 'pt'), vertices=[[0, 0, 0]])

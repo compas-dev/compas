@@ -71,12 +71,12 @@ if __name__ == "__main__":
 
     artist = NetworkArtist(network=network)
 
-    # artist.clear_layer()
+    #artist.clear_layer()
 
     artist.draw_vertices(radius=0.05)
     artist.draw_vertexlabels()
     #artist.clear_vertexlabels()
     
-    # artist.draw_edges()
-    # artist.draw_edgelabels()
-    # artist.clear_edgelabels()
+    #artist.draw_edges()
+    #artist.draw_edgelabels()
+    #artist.clear_edgelabels()
