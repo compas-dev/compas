@@ -5,12 +5,12 @@ from __future__ import print_function
 
 from compas_blender.utilities import set_deselect
 
-from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
+from compas.geometry import distance_point_point
+from compas.geometry import subtract_vectors
 
 try:
     import bpy
-    from mathutils import Vector
 except ImportError:
     pass
 
@@ -89,15 +89,17 @@ def xdraw_lines(lines, **kwargs):
 
         name  = data.get('name', 'line')
 
+        mp = centroid_points([data.get('start'), data.get('end')])
+
         curve = bpy.data.curves.new(name, type='CURVE')
         curve.dimensions = '3D'
         object = bpy.data.objects.new(name, curve)
-        object.location = [0, 0, 0]
+        object.location = mp
 
         spline = curve.splines.new('NURBS')
         spline.points.add(2)
-        spline.points[0].co = list(data.get('start')) + [1]
-        spline.points[1].co = list(data.get('end')) + [1]
+        spline.points[0].co = list(subtract_vectors(data.get('start'), mp)) + [1]
+        spline.points[1].co = list(subtract_vectors(data.get('end'), mp)) + [1]
         spline.order_u = 1
 
         object.data.fill_mode = 'FULL'
@@ -204,6 +206,9 @@ def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], *
     edges = [] if edges is None else edges
     faces = [] if faces is None else faces
 
+    mp = centroid_points(vertices)
+    vertices = [subtract_vectors(i, mp) for i in vertices]
+    
     mesh = bpy.data.meshes.new(name)
     mesh.from_pydata(vertices, edges, faces)
     mesh.update(calc_edges=True)
@@ -212,6 +217,7 @@ def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], *
     bpy.context.collection.objects.link(object)
     object.show_wire = True
     object.data.materials.append(create_material(color=color))
+    object.location = mp
     # layer
 
     set_deselect(objects=[object])
