@@ -40,13 +40,13 @@ from compas.viewers.core import Controller
 from compas.viewers.core import App
 
 
-__author__     = ['Tom Van Mele', ]
+__author__     = ['Tom Van Mele']
 __copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['Viewer', ]
+__all__ = ['Viewer']
 
 
 hex_to_rgb = partial(hex_to_rgb, normalize=True)
@@ -150,6 +150,30 @@ class Front(Controller):
     settings['vertices.labels.on'] = False
     settings['edges.labels.on'] = False
     settings['faces.labels.on'] = False
+
+    settings['camera.elevation:value'] = -60
+    settings['camera.elevation:minval'] = -180
+    settings['camera.elevation:maxval'] = 0
+    settings['camera.elevation:step'] = +1
+    settings['camera.elevation:scale'] = +1
+
+    settings['camera.azimuth:value'] = +30
+    settings['camera.azimuth:minval'] = -180
+    settings['camera.azimuth:maxval'] = +180
+    settings['camera.azimuth:step'] = +1
+    settings['camera.azimuth:scale'] = +1
+
+    settings['camera.distance:value'] = +10
+    settings['camera.distance:minval'] = 0
+    settings['camera.distance:maxval'] = +100
+    settings['camera.distance:step'] = +1
+    settings['camera.distance:scale'] = +1
+    settings['camera.distance:delta'] = +0.05
+
+    settings['camera.rotation:delta'] = +0.5
+    settings['camera.fov:value'] = 50
+    settings['camera.near:value'] = 0.1
+    settings['camera.far:value'] = 1000
 
     def __init__(self, app):
         super(Front, self).__init__(app)
@@ -329,6 +353,10 @@ class Viewer(App):
     def mesh(self, mesh):
         self.controller.mesh = mesh
         self.controller.center_mesh()
+    
+        self.view.glInit()
+        self.view.make_buffers()
+        self.view.update()
 
 
 # ==============================================================================
@@ -340,9 +368,5 @@ if __name__ == '__main__':
     viewer = Viewer()
 
     viewer.mesh = Mesh.from_polyhedron(6)
-
-    viewer.view.glInit()
-    viewer.view.make_buffers()
-    viewer.view.update()
 
     viewer.show()

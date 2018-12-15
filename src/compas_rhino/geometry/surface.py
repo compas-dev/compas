@@ -2,6 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+import compas_rhino
+
 from compas_rhino.geometry import RhinoGeometry
 
 from compas.geometry import subtract_vectors
@@ -15,33 +18,22 @@ try:
     find_object = sc.doc.Objects.Find
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['RhinoSurface', ]
+__all__ = ['RhinoSurface']
 
 
 class RhinoSurface(RhinoGeometry):
     """"""
 
-    def __init__(self, guid=None):
-        self.guid = guid
-        self.surface = RhinoSurface.find(guid)
-        self.geometry = self.surface.Geometry
-        self.attributes = self.surface.Attributes
-        self.otype = self.geometry.ObjectType
+    def __init__(self, guid):
+        super(RhinoSurface, self).__init__(guid)
 
-    @staticmethod
-    def find(guid):
-        return find_object(guid)
+    @classmethod
+    def from_selection(cls):
+        guid = compas_rhino.select_surface()
+        return cls(guid)
 
     def space(self, density=10):
         """"""
@@ -213,9 +205,25 @@ class RhinoSurface(RhinoGeometry):
 
         return curvature
 
-    def borders(self):
-        """"""
-        border = rs.DuplicateSurfaceBorder(self.guid, type=1)
+    def borders(self, type=1):
+        """Duplicate the borders of the surface.
+
+        Parameters
+        ----------
+        type : {0, 1, 2}
+            The type of border.
+
+            * 0: All borders
+            * 1: The exterior borders.
+            * 2: The interior borders.
+
+        Returns
+        -------
+        list
+            The GUIDs of the extracted border curves.
+
+        """
+        border = rs.DuplicateSurfaceBorder(self.guid, type=type)
         curves = rs.ExplodeCurves(border, delete_input=True)
         return curves
 
@@ -275,11 +283,7 @@ class RhinoSurface(RhinoGeometry):
 
 if __name__ == '__main__':
 
-    import compas_rhino
-
-    guid = compas_rhino.select_surface()
-
-    surface = RhinoSurface(guid)
+    surface = RhinoSurface.from_selection()
 
     points = []
     for xyz in surface.heightfield():

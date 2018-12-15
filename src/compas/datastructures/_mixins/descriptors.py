@@ -1,7 +1,6 @@
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 
 __all__ = [
@@ -10,6 +9,8 @@ __all__ = [
 
 
 class VertexCoordinatesDescriptors(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     @property
     def xyz(self):

@@ -3,9 +3,7 @@
 compas.datastructures
 ********************************************************************************
 
-.. module:: compas.datastructures
-
-This package defines a mesh datastructure, a network, and a cellular mesh.
+.. currentmodule:: compas.datastructures
 
 
 Mesh
@@ -15,12 +13,6 @@ The mesh is implemented as a half-edge datastructure.
 It is meant for the representation of polygonal *"surface"* meshes. A mesh can be
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
-
-.. unified face orientation => consistent/compatible cycle directions
-.. vertex => neighbours => halfedges => faces (optionally ordered around vertex)
-.. face => vertices => halfedges => neighbours
-.. vertex => connectivity, area, normal, laplacian, ...
-.. face => area, normal, ...
 
 .. autosummary::
     :toctree: generated/
@@ -36,12 +28,6 @@ The network is a connectivity graph.
 It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
-
-.. vertex => neighbours, laplacian
-.. edge =>
-
-.. form := network => ordering of neighbours is enough to construct dual
-.. force := mesh => with faces constructed from the ordering ov neighbours
 
 .. autosummary::
     :toctree: generated/
@@ -64,19 +50,9 @@ be used for the representation of subdivided/partitioned polyhedra.
 
     VolMesh
 
-
-.. Assembly
-.. ========
-
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
-
-..     Assembly
-
 """
 
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 
 class Datastructure(object):
@@ -87,8 +63,4 @@ from .network import *
 from .mesh import *
 from .volmesh import *
 
-from .network import __all__ as a
-from .mesh import __all__ as c
-from .volmesh import __all__ as d
-
-__all__ = a + c + d
+__all__ = [name for name in dir() if not name.startswith('_')]

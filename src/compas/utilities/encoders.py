@@ -5,13 +5,7 @@ from __future__ import division
 import json
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['DataDecoder', 'DataEncoder', ]
+__all__ = ['DataDecoder', 'DataEncoder']
 
 
 class DataEncoder(json.JSONEncoder):

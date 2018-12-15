@@ -3,14 +3,7 @@
 compas.numerical
 ********************************************************************************
 
-.. module:: compas.numerical
-
-This package implements numerical solvers and methods for form finding
-and analysis of structures. The array and matrix-based implementations are built
-around `NumPy`_ and `SciPy`_.
-
-.. _NumPy: http://www.numpy.org/
-.. _SciPy: https://www.scipy.org/
+.. currentmodule:: compas.numerical
 
 
 Algorithms
@@ -20,11 +13,18 @@ Algorithms
     :toctree: generated/
     :nosignatures:
 
-    dr
-    dr_numpy
-    drx_numpy
-    fd_numpy
+    DynamicRelaxation
+    DynamicRelaxationX
+    ForceDensity
+
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     pca_numpy
+    topop2d_numpy
+    topop3d_numpy
 
 
 Solvers
@@ -114,7 +114,7 @@ Utilities
 
 
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 from .linalg import *
 from .matrices import *
@@ -124,12 +124,8 @@ from .utilities import *
 from .solvers import *
 from .algorithms import *
 
-from . import linalg
-from . import matrices
-from . import operators
-from . import utilities
+from .dr import *
+from .drx import *
+from .fd import *
 
-from . import solvers
-from . import algorithms
-
-__all__ = linalg.__all__ + matrices.__all__ + operators.__all__ + utilities.__all__ + solvers.__all__ + algorithms.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

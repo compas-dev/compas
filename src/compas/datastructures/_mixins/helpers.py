@@ -1,10 +1,9 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from random import sample
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+from random import choice
 
 
 __all__ = [
@@ -15,6 +14,8 @@ __all__ = [
 
 
 class VertexHelpers(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     def get_any_vertex(self):
         """Get the identifier of a random vertex.
@@ -87,6 +88,8 @@ class VertexHelpers(object):
 
 class EdgeHelpers(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     def get_any_edge(self):
         """Get the identifier of a random edge.
 
@@ -96,7 +99,7 @@ class EdgeHelpers(object):
             The identifier of the edge in the form of a pair of vertex identifiers.
 
         """
-        raise NotImplementedError
+        return choice(list(self.edges()))
 
     def edge_name(self, u, v):
         """Get the name of an edge.
@@ -139,6 +142,8 @@ class EdgeHelpers(object):
 
 class FaceHelpers(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     def get_any_face(self):
         """Get the identifier of a random face.
 
@@ -148,7 +153,7 @@ class FaceHelpers(object):
             The identifier of the face.
 
         """
-        return next(iter(self.faces()))
+        return choice(list(self.faces()))
 
     def get_any_face_vertex(self, fkey):
         """Get the identifier of a random vertex of a specific face.

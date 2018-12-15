@@ -3,13 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
-                  'Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'scalarfield_contours_numpy',
     'mesh_contours_numpy',
@@ -33,7 +26,7 @@ __all__ = [
 # ==============================================================================
 
 
-def scalarfield_contours_numpy(xy, s, N=50):
+def scalarfield_contours_numpy(xy, s, levels=50, density=100):
     r"""Compute the contour lines of a scalarfield.
 
     Parameters
@@ -42,7 +35,7 @@ def scalarfield_contours_numpy(xy, s, N=50):
         The xy-coordinates at which the scalar field is defined.
     s : array-like
         The values of the scalar field.
-    N : int, optional
+    levels : int, optional
         The number of contour lines to compute.
         Default is ``50``.
 
@@ -103,14 +96,18 @@ def scalarfield_contours_numpy(xy, s, N=50):
     s = asarray(s)
     x = xy[:, 0]
     y = xy[:, 1]
-    X, Y = meshgrid(linspace(amin(x), amax(x), 2 * N),
-                    linspace(amin(y), amax(y), 2 * N))
+    X, Y = meshgrid(linspace(amin(x), amax(x), 2 * density),
+                    linspace(amin(y), amax(y), 2 * density))
     S = griddata((x, y), s, (X, Y), method='cubic')
-    ax = plt.figure().add_subplot(111, aspect='equal')
-    c = ax.contour(X, Y, S, N)
-    plt.draw()
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, aspect='equal')
+
+    c = ax.contour(X, Y, S, levels)
+
     contours = [0] * len(c.collections)
     levels = c.levels
+
     for i, coll in enumerate(iter(c.collections)):
         paths = coll.get_paths()
         contours[i] = [0] * len(paths)
@@ -119,6 +116,9 @@ def scalarfield_contours_numpy(xy, s, N=50):
             contours[i][j] = [0] * len(polygons)
             for k, polygon in enumerate(iter(polygons)):
                 contours[i][j][k] = polygon
+
+    plt.close(fig)
+
     return levels, contours
 
 
@@ -159,7 +159,7 @@ def mesh_contours_numpy(mesh, N=50):
 
     """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
-    z = [mesh.vertex_coordinates(key, 'z') for key in mesh.vertices()]
+    z = [mesh.get_vertex_attribute(key, 'z') for key in mesh.vertices()]
     return scalarfield_contours_numpy(xy, z, N)
 
 
@@ -211,6 +211,12 @@ if __name__ == "__main__":
     xy = [point[0:2] for point in points]
 
     levels, contours = scalarfield_contours_numpy(xy, distances)
+
+    # xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
+    # z = [mesh.get_vertex_attribute(key, 'z') for key in mesh.vertices()]
+    # levels, contours = scalarfield_contours_numpy(xy, z)
+
+    # levels, contours = mesh_contours_numpy(mesh)
 
     for i in range(len(contours)):
         level = levels[i]

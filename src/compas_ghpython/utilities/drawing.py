@@ -34,14 +34,16 @@ except ImportError:
     if platform.python_implementation() == 'IronPython':
         raise
 
-__author__ = ['Romana Rust', ]
+__author__ = ['Romana Rust']
 __email__ = 'rust@arch.ethz.ch'
 
 
 __all__ = [
+    'xdraw_labels',
     'xdraw_frame',
     'xdraw_points',
     'xdraw_lines',
+    'xdraw_geodesics',
     'xdraw_polylines',
     'xdraw_faces',
     'xdraw_cylinders',
@@ -51,12 +53,20 @@ __all__ = [
     'xdraw_network',
 ]
 
+
+def xdraw_labels(labels):
+    # This is not yet possible through GhPython. Using Text Tag from ghpythonlib
+    # (only Windows) would be an option, but ghpythonlib.components.TextTag does
+    # not return anything.
+    raise NotImplementedError
+
+
 def xdraw_frame(frame):
     """Draw frame.
     """
-    pt = Point3d(*frame.point)
-    xaxis = Vector3d(*frame.xaxis)
-    yaxis = Vector3d(*frame.yaxis)
+    pt = Point3d(*iter(frame.point))
+    xaxis = Vector3d(*iter(frame.xaxis))
+    yaxis = Vector3d(*iter(frame.yaxis))
     return Plane(pt, xaxis, yaxis)
 
 
@@ -81,6 +91,19 @@ def xdraw_lines(lines):
     return rg_lines
 
 
+def xdraw_geodesics(geodesics, **kwargs):
+    """Draw geodesic lines on specified surfaces.
+    """
+    rg_geodesics = []
+    for g in iter(geodesics):
+        sp    = g['start']
+        ep    = g['end']
+        srf   = g['srf']
+        curve = srf.ShortPath(Point3d(*sp), Point3d(*ep), TOL)
+        rg_geodesics.append(curve)
+    return rg_geodesics
+
+
 def xdraw_polylines(polylines):
     """Draw polylines.
     """
@@ -101,22 +124,13 @@ def xdraw_faces(faces, srf=None, u=10, v=10, trim=True, tangency=True,
     for f in iter(faces):
         points = f['points']
         corners = [Point3d(*point) for point in points]
-        pcurve = PolylineCurve(corners)
-        geo = List[GeometryBase](1)
-        geo.Add(pcurve)
-        p = len(points)
-        if p == 4:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
-                                               Point3d(*points[1]),
-                                               Point3d(*points[2]),
-                                               TOL)
-        elif p == 5:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
-                                               Point3d(*points[1]),
-                                               Point3d(*points[2]),
-                                               Point3d(*points[3]),
-                                               TOL)
+        if len(points) in [3, 4]:
+            args = corners + [TOL]
+            brep = Brep.CreateFromCornerPoints(*args)
         else:
+            pcurve = PolylineCurve(corners)
+            geo = List[GeometryBase](1)
+            geo.Add(pcurve)
             brep = Brep.CreatePatch(geo, u, v, TOL)
         if not brep:
             continue
@@ -148,7 +162,6 @@ def xdraw_cylinders(cylinders, cap=False):
 
 
 def xdraw_pipes(pipes, cap=2, fit=1.0):
-    rg_pipes = []
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
     for p in pipes:
@@ -159,12 +172,12 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
         if type(radius) in (int, float):
             radius = [radius] * 2
         radius = [float(r) for r in radius]
+
         rail = Curve.CreateControlPointCurve([Point3d(*xyz) for xyz in points])
         breps = Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol,
                                 ang_tol)
-        rg_pipes += breps
-    return rg_pipes
-
+        for brep in breps:
+            yield brep
 
 def xdraw_spheres(spheres):
     rg_sheres = []
@@ -175,11 +188,9 @@ def xdraw_spheres(spheres):
     return rg_sheres
 
 
-def xdraw_mesh(vertices, faces, vertex_normals=None, texture_coordinates=None,
-               vertex_colors=None):
+def xdraw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordinates=None):
     """Draw mesh in Grasshopper.
     """
-
     mesh = Mesh()
     for a, b, c in vertices:
         mesh.Vertices.Add(a, b, c)
@@ -203,10 +214,10 @@ def xdraw_mesh(vertices, faces, vertex_normals=None, texture_coordinates=None,
             tcs[i] = Point2f(tc[0], tc[1])
         mesh.TextureCoordinates.SetTextureCoordinates(tcs)
 
-    if vertex_colors:
-        count = len(vertex_colors)
+    if color:
+        count = len(vertices)
         colors = CreateInstance(Color, count)
-        for i, color in enumerate(vertex_colors):
+        for i in range(count):
             colors[i] = rs.coercecolor(color)
         mesh.VertexColors.SetColors(colors)
 
@@ -217,13 +228,13 @@ def xdraw_network(network):
     """Draw a network in Grasshopper.
     """
     points = []
-    for key, attr in network.vertices_iter(True):
+    for key, attr in network.vertices(True):
         points.append({
             'pos': network.vertex_coordinates(key),
         })
 
     lines = []
-    for u, v, attr in network.edges_iter(True):
+    for u, v, attr in network.edges(True):
         lines.append({
             'start': network.vertex_coordinates(u),
             'end': network.vertex_coordinates(v),

@@ -3,26 +3,17 @@ from __future__ import absolute_import
 from __future__ import division
 
 try:
-    import urllib.request as urllib2
+    from urllib.request import urlopen
 except ImportError:
-    import urllib2
+    from urllib2 import urlopen
 
 from compas.utilities import geometric_key
-
-
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__version__    = '0.2.7'
-__date__       = 'Mar 31, 2015'
 
 
 __all__ = [
     'OBJ',
     'OBJReader',
     'OBJParser',
-    'OBJComposer',
-    'OBJWriter',
 ]
 
 
@@ -46,17 +37,9 @@ class OBJReader(object):
     ----------
     filepath : str
         Path to the file.
-    remote : bool
-        Optional. Is the file on a remote location? Default is ``False``.
 
     Attributes
     ----------
-    filepath : str
-        Path to the file.
-    remote : bool
-        Is the file on a remote location.
-    content : iter
-        The contents of the file, line by line.
     vertices : list
         Vertex coordinates.
     weights : list
@@ -91,7 +74,6 @@ class OBJReader(object):
 
     def __init__(self, filepath):
         self.filepath = filepath
-        self.remote = filepath.startswith('http')
         self.content = None
         # vertex data
         self.vertices = []
@@ -124,8 +106,8 @@ class OBJReader(object):
         self.post()
 
     def open(self):
-        if self.remote:
-            resp = urllib2.urlopen(self.filepath)
+        if self.filepath.startswith('http'):
+            resp = urlopen(self.filepath)
             self.content = iter(resp.read().decode('utf-8').split('\n'))
         else:
             with open(self.filepath, 'r') as fh:
@@ -313,7 +295,7 @@ class OBJReader(object):
 class OBJParser(object):
     """"""
     def __init__(self, reader, precision=None):
-        self.precision = precision if precision is not None else '3f'
+        self.precision = precision
         self.reader    = reader
         self.vertices  = None
         self.weights   = None
@@ -348,24 +330,6 @@ class OBJParser(object):
         self.polylines = [[index_index[index] for index in line] for line in self.reader.lines if len(line) > 2]
         self.faces     = [[index_index[index] for index in face] for face in self.reader.faces]
         self.groups    = self.reader.groups
-
-
-class OBJComposer(object):
-    """"""
-    def __init__(self):
-        pass
-
-    def compose(self):
-        pass
-
-
-class OBJWriter(object):
-    """"""
-    def __init__(self):
-        pass
-
-    def write(self):
-        pass
 
 
 # ==============================================================================

@@ -11,12 +11,6 @@ from compas.geometry import is_intersection_segment_segment_xy
 from compas.geometry import is_ccw_xy
 
 
-__author__     = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = '<vanmelet@ethz.ch>'
-
-
 __all__ = [
     'network_is_crossed',
     'network_count_crossings',
@@ -192,7 +186,6 @@ def network_is_planar(network):
 
     Examples
     --------
-
     .. plot::
         :include-source:
 
@@ -291,7 +284,7 @@ def network_embed_in_plane(network, fix=None, straightline=True):
 
         embedding = network.copy()
 
-        fix = (1, 12)
+        fix = (9, 6)
 
         if network_embed_in_plane(embedding, fix=fix):
 
@@ -393,39 +386,39 @@ if __name__ == '__main__':
 
     network = Network.from_obj(compas.get('fink.obj'))
 
-    crossings = network_find_crossings(network)
+    # crossings = network_find_crossings(network)
 
-    print(network_count_crossings(network))
-    print(crossings)
-    print(len(crossings))
+    # print(network_count_crossings(network))
+    # print(crossings)
+    # print(len(crossings))
 
-    ecolor = {}
-    for e1, e2 in crossings:
-        ecolor[e1] = '#ff0000'
-        ecolor[e2] = '#ff0000'
+    # ecolor = {}
+    # for e1, e2 in crossings:
+    #     ecolor[e1] = '#ff0000'
+    #     ecolor[e2] = '#ff0000'
 
-    plotter = NetworkPlotter(network, figsize=(10, 7))
+    # plotter = NetworkPlotter(network, figsize=(10, 7))
 
-    plotter.draw_vertices()
-    plotter.draw_edges(color=ecolor)
-    plotter.show()
+    # plotter.draw_vertices()
+    # plotter.draw_edges(color=ecolor)
+    # plotter.show()
 
-    # embedding = network.copy()
+    embedding = network.copy()
 
-    # fix = (1, 12)
+    fix = (9, 6)
 
-    # if network_embed_in_plane(embedding, fix=fix):
+    if network_embed_in_plane(embedding, fix=fix):
 
-    #     plotter = NetworkPlotter(embedding, figsize=(10, 7))
+        plotter = NetworkPlotter(embedding, figsize=(10, 7))
 
-    #     plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
-    #                           'end': network.vertex_coordinates(v, 'xy'),
-    #                           'color': '#cccccc'} for u, v in network.edges()])
+        plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
+                              'end': network.vertex_coordinates(v, 'xy'),
+                              'color': '#cccccc'} for u, v in network.edges()])
 
-    #     plotter.draw_vertices(radius=0.3,
-    #                           text={key: key for key in embedding.vertices()},
-    #                           facecolor={key: '#ff0000' for key in fix})
+        plotter.draw_vertices(radius=0.3,
+                              text={key: key for key in embedding.vertices()},
+                              facecolor={key: '#ff0000' for key in fix})
 
-    #     plotter.draw_edges()
+        plotter.draw_edges()
 
-    #     plotter.show()
+        plotter.show()

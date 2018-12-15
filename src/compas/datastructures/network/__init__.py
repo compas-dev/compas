@@ -1,8 +1,5 @@
+from __future__ import absolute_import, division, print_function
+
 from .network import *
-from .facenetwork import *
-from .operations import *
 
-from .network import __all__ as a
-from .facenetwork import __all__ as b
-
-__all__ = a + b
+__all__ = [name for name in dir() if not name.startswith('_')]

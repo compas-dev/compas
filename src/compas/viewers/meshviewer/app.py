@@ -11,13 +11,7 @@ from compas.viewers.meshviewer import CONFIG
 from compas.viewers.meshviewer import STYLE
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['MeshViewer', ]
+__all__ = ['MeshViewer']
 
 
 class MeshViewer(App):
@@ -65,14 +59,14 @@ if __name__ == '__main__':
     # some lighting would be appropriate
     # texture mapping for appreciation of mesh quality?
 
-    # don't auto-centre the objects
+    # don't auto-center the objects
     # provide zoom extents and focus functions instead
     # allow user to adjust camera settings
     # and adapt projection parameters to the size of the model
 
     import compas
     from compas.datastructures import Mesh
-    from compas.geometry import transform
+    from compas.geometry import transform_points
     from compas.geometry import matrix_from_translation
 
 
@@ -81,7 +75,7 @@ if __name__ == '__main__':
         def apply_xform(self, M):
             key_index = self.key_index()
             points = self.get_vertices_attributes('xyz')
-            points = transform(points, M)
+            points = transform_points(points, M)
             for key, attr in self.vertices(True):
                 index = key_index[key]
                 x, y, z = points[index]

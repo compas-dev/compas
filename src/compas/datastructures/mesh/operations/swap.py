@@ -3,12 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__    = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = ['trimesh_swap_edge']
 
 
@@ -24,7 +18,7 @@ def trimesh_swap_edge(self, u, v, allow_boundary=True):
         None
 
     Raises:
-        ValueError: If `u` and `v` are not neighbours.
+        ValueError: If `u` and `v` are not neighbors.
         TriMeshError: If one of the half-edges does not exist.
     """
 

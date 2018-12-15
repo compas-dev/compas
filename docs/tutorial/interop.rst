@@ -64,7 +64,7 @@ I would be happy to hear about any and all suggestions (vanmelet@ethz.ch).
         void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback func);
     }
 
-    void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback func) 
+    void smooth_centroid(int v, int *nbrs, int *fixed, double **vertices, int **neighbours, int kmax, callback func)
     {
         int k;
         int i;
@@ -88,7 +88,7 @@ I would be happy to hear about any and all suggestions (vanmelet@ethz.ch).
             for (i = 0; i < v; i++) {
 
                 // skip the vertex if it is fixed
-    
+
                 if (fixed[i]) {
                     continue;
                 }
@@ -167,7 +167,7 @@ to something like this:
 
     # make a mesh
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    mesh = Mesh.from_obj('https://u.nu/faces')
 
     # extract the required data for smoothing
 
@@ -232,7 +232,7 @@ to something like this:
 
     smoothing.smooth_centroid.argtypes = [...]
 
-    smoothing.smooth_centroid(...)    
+    smoothing.smooth_centroid(...)
 
     # ==============================================================================
 
@@ -250,7 +250,7 @@ Some of these conversion are quite trivial. For example, converting an integer i
 Also the 1D arrays are not too complicated. For example:
 
 .. code-block:: python
-    
+
     c_fixed_type = ctypes.c_int * v
     c_fixed_data = c_fixed_type(*fixed)
 
@@ -258,7 +258,7 @@ Also the 1D arrays are not too complicated. For example:
 The 2D arrays are already a bit trickier. For example:
 
 .. code-block:: python
-    
+
     c_vertex_type = ctypes.c_double * 3
     c_vertices_type = ctypes.POINTER(ctypes.c_double) * v
     c_vertices_data = c_vertices_type(*[c_vertex_type(x, y, z) for x, y, z in vertices])
@@ -324,14 +324,14 @@ the argument types of the callable:
         c_neighbours.cdata,
         c_int(kmax),
         c_callback(wrapper)
-    )    
+    )
 
     # ==============================================================================
 
 
 The last step is to define the functionality of the callback.
 The goal is to visualise the changing geometry
-and to change the location of the fixed points 
+and to change the location of the fixed points
 during the smoothing process; in C++, but from Python.
 
 .. code-block:: python
@@ -387,7 +387,7 @@ Putting it all together, we get the following script. Simply copy-paste it and r
 
     # make a mesh
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    mesh = Mesh.from_obj('https://u.nu/faces')
 
 
     # extract the required data for smoothing
@@ -482,89 +482,9 @@ Putting it all together, we get the following script. Simply copy-paste it and r
         c_neighbours.cdata,
         c_int(kmax),
         c_callback(callback)
-    )    
+    )
 
 
     # keep the plotting window alive
 
     plotter.show()
-
-
-CAD environments
-================
-
-This setup can also be used in CAD environments.
-Assuming that "*if it works in RhinoPython, it works everywhere*", here is a script for Rhino
-that does the same as the one above, 
-but uses :func:`compas.geometry.smooth_centroid_cpp` to make things a bit simpler.
-
-.. code-block:: python
-
-    from __future__ import print_function
-    from __future__ import absolute_import
-    from __future__ import division
-
-    import compas
-    import compas_rhino
-
-    from compas.datastructures import Mesh
-    from compas.geometry import smooth_centroid_cpp
-
-    from compas_rhino.helpers import MeshArtist
-
-    kmax = 50
-
-    # make a mesh
-    # and set the default vertex and edge attributes
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    edges = list(mesh.edges())
-
-    # extract numerical data from the datastructure
-
-    vertices  = mesh.get_vertices_attributes(('x', 'y', 'z'))
-    adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
-    fixed     = [int(mesh.vertex_degree(key) == 2) for key in mesh.vertices()]
-
-    # make an artist for dynamic visualization
-    # and define a callback function
-    # for drawing the intermediate configurations
-    # and for changing the boundary conditions during the iterations
-
-    slider = 30  # this is the top left corner
-
-    artist = MeshArtist(mesh, layer='SmoothMesh')
-
-    artist.clear_layer()
-
-
-    def callback(k, xyz):
-        compas_rhino.wait()
-
-        print(k)
-
-        if k < kmax - 1:
-            xyz[slider][0] = 0.1 * (k + 1)
-
-        artist.clear_edges()
-        artist.draw_edges()
-        artist.redraw()
-
-        for key, attr in mesh.vertices(True):
-            attr['x'] = xyz[key][0]
-            attr['y'] = xyz[key][1]
-            attr['z'] = xyz[key][2]
-
-
-    xyz = smooth_centroid_cpp(vertices, adjacency, fixed, kmax=kmax, callback=callback)
-
-    for key, attr in mesh.vertices(True):
-        attr['x'] = xyz[key][0]
-        attr['y'] = xyz[key][1]
-        attr['z'] = xyz[key][2]
-
-    artist.clear_edges()
-    artist.draw_vertices()
-    artist.draw_edges()
-    artist.redraw()

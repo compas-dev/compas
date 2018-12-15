@@ -10,6 +10,7 @@ compas_blender.ui
     :toctree: generated/
 
 """
+from __future__ import absolute_import
 
 from .bui import *
 from .button import *

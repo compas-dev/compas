@@ -3,12 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'mesh_split_edge',
     'mesh_split_face',
@@ -43,7 +37,7 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     Raises
     ------
     ValueError
-        If u and v are not neighbours.
+        If u and v are not neighbors.
 
     """
     if t <= 0.0:
@@ -122,7 +116,9 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
         mesh_quads_to_triangles(mesh)
 
-        split = mesh.split_edge_tri(17, 30)
+        u, v = mesh.get_any_edge()
+
+        split = mesh.split_edge_tri(u, v)
 
         facecolor = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
 
@@ -202,7 +198,7 @@ def mesh_split_face(mesh, fkey, u, v):
     j = face.index(v)
 
     if i + 1 == j:
-        raise ValueError('The split vertices are neighbours.')
+        raise ValueError('The split vertices are neighbors.')
 
     if j > i:
         f = face[i:j + 1]
@@ -225,8 +221,6 @@ def mesh_split_face(mesh, fkey, u, v):
 
 if __name__ == "__main__":
 
-    from random import choice
-
     import compas
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
@@ -236,7 +230,7 @@ if __name__ == "__main__":
 
     mesh_quads_to_triangles(mesh)
 
-    u, v = choice(list(mesh.edges()))
+    u, v = mesh.get_any_edge()
 
     split = mesh.split_edge_tri(u, v, allow_boundary=True)
 

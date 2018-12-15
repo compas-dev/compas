@@ -2,6 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+import compas_rhino
+
 from compas_rhino.geometry import RhinoGeometry
 
 try:
@@ -16,33 +19,34 @@ try:
     find_object = sc.doc.Objects.Find
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['RhinoMesh', ]
+__all__ = ['RhinoMesh']
 
 
 class RhinoMesh(RhinoGeometry):
     """"""
 
     def __init__(self, guid):
-        self.guid = guid
-        self.mesh = RhinoMesh.find(self.guid)
-        self.geometry = self.mesh.Geometry
-        self.attributes = self.mesh.Attributes
-        self.otype = self.geometry.ObjectType
+        super(RhinoMesh, self).__init__(guid)
 
-    @staticmethod
-    def find(guid):
-        return find_object(guid)
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
+    @classmethod
+    def from_selection(cls):
+        guid = compas_rhino.select_mesh()
+        return cls(guid)
+
+    # ==========================================================================
+    # conversion
+    # ==========================================================================
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
 
     def get_vertex_coordinates(self):
         return [map(float, vertex) for vertex in rs.MeshVertices(self.guid)]
@@ -179,10 +183,6 @@ class RhinoMesh(RhinoGeometry):
     #         temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)
     #         vindices.append(temp[0])
     #     return vindices
-
-    # ==========================================================================
-    # geometric stuff
-    # ==========================================================================
 
     def normal(self, point):
         pass

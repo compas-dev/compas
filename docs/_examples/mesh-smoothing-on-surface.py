@@ -6,8 +6,10 @@
 - use a callback to pull the mesh back onto the surface at every iteration
 - visualize the process with a conduit
 
-"""
+author : Tom Van Mele, Matthias Rippmann
+email  : van.mele@arch.ethz.ch
 
+"""
 from __future__ import print_function
 
 from compas.datastructures import Mesh
@@ -15,21 +17,18 @@ from compas.geometry import smooth_area
 
 import compas_rhino
 
+from compas_rhino.helpers import mesh_from_guid
+
 from compas_rhino.conduits import LinesConduit
 from compas_rhino.geometry import RhinoSurface
-
-
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
+from compas_rhino.artists import MeshArtist
 
 
 # make a mesh datastructure from a Rhino mesh object
 # and select a target surface
 
 guid = compas_rhino.select_mesh()
-mesh = compas_rhino.mesh_from_guid(Mesh, guid)
+mesh = mesh_from_guid(Mesh, guid)
 
 guid = compas_rhino.select_surface()
 surf = RhinoSurface(guid)
@@ -86,4 +85,5 @@ for key, attr in mesh.vertices(True):
     attr['y'] = vertices[key][1]
     attr['z'] = vertices[key][2]
 
-compas_rhino.mesh_draw(mesh)
+artist = MeshArtist(mesh, layer='mesh-out')
+artist.draw_faces(join_faces=True)

@@ -1,57 +1,45 @@
+import time
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+try:
+    import bpy
+except ImportError:
+    pass
 
-from compas_blender.artists import Artist
+from compas_blender.utilities import clear_layer
 from compas_blender.artists.mixins import VertexArtist
 from compas_blender.artists.mixins import EdgeArtist
+from compas_blender.artists.mixins import PathArtist
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
+__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'liew@arch.ethz.ch'
 
 
-__all__ = [
-    'NetworkArtist',
-]
+__all__ = ['NetworkArtist']
 
 
-class NetworkArtist(EdgeArtist, VertexArtist, Artist):
+class NetworkArtist(PathArtist, EdgeArtist, VertexArtist):
+    """"""
 
-    __module__ = "compas_blender.artists"
-
-    def __init__(self, network, layer=None):
-        super(NetworkArtist, self).__init__(layer=layer)
-
-        self.network = network
-        self.defaults.update({
-            'color.vertex': [255, 255, 255],
-            'color.edge':   [0, 0, 0],
-        })
-
-
-    @property
-    def network(self):
-
-        return self.datastructure
-
-
-    @network.setter
-    def network(self, network):
-
+    def __init__(self, network, layer=0):
         self.datastructure = network
+        self.layer = layer
+        self.defaults = {
+            'color.vertex': [1, 0, 0],
+            'color.edge': [0, 0, 1]}
 
+    def redraw(self, timeout=None):
+        """Redraw the Blender view."""
+        if timeout:
+            time.sleep(timeout)
+        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
-    def draw(self):
-
-        raise NotImplementedError
-
+    def clear_layer(self):
+        clear_layer(layer=self.layer)
 
     def clear(self):
-
         self.clear_vertices()
         self.clear_edges()
 
@@ -62,21 +50,22 @@ class NetworkArtist(EdgeArtist, VertexArtist, Artist):
 
 if __name__ == "__main__":
 
-    import compas
+    from compas_blender.utilities import get_objects
 
-    from compas.datastructures import Network
+    from compas_blender.helpers import network_from_bmesh
 
+    network = network_from_bmesh(bmesh=get_objects(layer=0)[0])
 
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
+    networkartist = NetworkArtist(network=network, layer=1)
 
-    artist = NetworkArtist(network=network)
+    networkartist.clear_layer()
 
-    #artist.clear_layer()
+    networkartist.draw_vertices()
+    networkartist.draw_vertexlabels()
+    networkartist.clear_vertices(keys=[4])
+    networkartist.clear_vertexlabels(keys=[6])
 
-    artist.draw_vertices(radius=0.05)
-    artist.draw_vertexlabels()
-    #artist.clear_vertexlabels()
-    
-    artist.draw_edges(width=0.01)
-    artist.draw_edgelabels()
-    # artist.clear_edgelabels()
+    networkartist.draw_edges()
+    networkartist.draw_edgelabels()
+    networkartist.clear_edges(keys=[(0, 4)])
+    networkartist.clear_edgelabels(keys=[(5, 4)])

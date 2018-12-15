@@ -9,7 +9,7 @@ import compas_rhino
 from compas.datastructures import Mesh
 from compas.geometry import smooth_centroid_cpp
 
-from compas_rhino.helpers import MeshArtist
+from compas_rhino.artists import MeshArtist
 from compas_rhino.conduits import PointsConduit
 from compas_rhino.conduits import LinesConduit
 
@@ -25,7 +25,7 @@ edges = list(mesh.edges())
 # extract numerical data from the datastructure
 
 vertices  = mesh.get_vertices_attributes(('x', 'y', 'z'))
-adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
+adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
 fixed     = [int(mesh.vertex_degree(key) == 2) for key in mesh.vertices()]
 
 # make a artist for (dynamic) visualization

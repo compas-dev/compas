@@ -5,7 +5,7 @@ import compas_rhino
 from compas.datastructures import Mesh
 from compas.topology import delaunay_from_points
 
-from compas_rhino.helpers import MeshArtist
+from compas_rhino.artists import MeshArtist
 
 
 __author__    = ['Tom Van Mele', 'Matthias Rippmann']
@@ -31,3 +31,4 @@ mesh = Mesh.from_vertices_and_faces(points, faces)
 
 artist = MeshArtist(mesh)
 artist.draw_faces(join_faces=True)
+artist.redraw()

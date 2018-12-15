@@ -1,6 +1,13 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import os
+import sys
 import ast
 import inspect
+
+import compas
 
 from compas_rhino.forms import TextForm
 from compas_rhino.forms import ImageForm
@@ -13,20 +20,12 @@ try:
     from Rhino.UI.Dialogs import ShowMessageBox
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 try:
     basestring
 except NameError:
     basestring = str
-
-
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -47,6 +46,7 @@ __all__ = [
     'screenshot_current_view',
     'select_folder',
     'select_file',
+    'unload_modules',
 ]
 
 
@@ -68,7 +68,7 @@ def screenshot_current_view(path,
     scale = max(1, scale)  # the rhino command requires a scale > 1
     rs.EnableRedraw(True)
     rs.Sleep(0)
-    result = rs.Command("-_ViewCaptureToFile \"" + path + "\""
+    result = rs.Command("-_ViewCaptureToFile \"" + os.path.abspath(path) + "\""
                         " Width=" + str(width) +
                         " Height=" + str(height) +
                         " Scale=" + str(scale) +
@@ -234,6 +234,25 @@ def update_named_values(names, values, message='', title='Update named values', 
                     pass
                 values[i] = value
     return values
+
+def unload_modules(top_level_module_name):
+    """Unloads all modules named starting with the specified string.
+
+    This function eases the development workflow when editing a library that is
+    used from Rhino/Grasshopper.
+
+    Args:
+        top_level_module_name (:obj:`str`): Name of the top-level module to unload.
+
+    Returns:
+        list: List of unloaded module names.
+    """
+    modules = filter(lambda m: m.startswith(top_level_module_name), sys.modules)
+
+    for module in modules:
+        sys.modules.pop(module)
+
+    return modules
 
 
 # ==============================================================================

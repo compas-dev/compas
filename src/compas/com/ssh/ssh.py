@@ -12,15 +12,7 @@ except ImportError:
 import os
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
-__all__ = [
-    'SSH',
-]
+__all__ = ['SSH']
 
 
 class SSH(object):
@@ -29,14 +21,10 @@ class SSH(object):
 
     Parameters
     ----------
-    username : str
-        Username.
     server : str
         ssh server address.
-
-    Returns
-    -------
-    None
+    username : str
+        Username.
 
     """
 
@@ -46,9 +34,10 @@ class SSH(object):
         self.username = username
         self.client   = self.create_client()
 
+
     def create_client(self):
 
-        """ Create SSH client with Paramiko.
+        """ Create an SSH client with Paramiko.
 
         Parameters
         ----------
@@ -73,6 +62,7 @@ class SSH(object):
 
         return client
 
+
     def close(self):
 
         """ Close the SSH object.
@@ -90,16 +80,17 @@ class SSH(object):
         self.client.close()
         print('\n***** SSH connection closed')
 
+
     def receive_file(self, remote_file, local_file):
 
-        """ Recieve a remote file from the ssh server.
+        """ Recieve a remote file from the server.
 
         Parameters
         ----------
         remote_file : str
             Path of the remote file to recieve.
         local_file : str
-            Path to save the local file as.
+            Path to save the local file to.
 
         Returns
         -------
@@ -110,9 +101,10 @@ class SSH(object):
         command = 'scp {0}@{1}:{2} {3}'.format(self.username, self.server, remote_file, local_file)
         self.local_command(command)
 
+
     def send_file(self, local_file):
 
-        """ Send a local file to the ssh server.
+        """ Send a local file to the server.
 
         Parameters
         ----------
@@ -124,12 +116,14 @@ class SSH(object):
         None
 
         """
+
         command = 'scp {0} {1}@{2}:'.format(local_file, self.username, self.server)
         self.local_command(command=command)
 
+
     def send_folder(self, local_folder):
 
-        """ Send a local folder to the ssh server.
+        """ Send a local folder to the server.
 
         Parameters
         ----------
@@ -145,9 +139,10 @@ class SSH(object):
         command = 'scp -r {0} {1}@{2}:'.format(local_folder, self.username, self.server)
         self.local_command(command=command)
 
+
     def sync_folder(self, local_folder, remote_folder):
 
-        """ Sync using rsync, a local folder to a remote folder on an ssh server.
+        """ Sync using rsync, a local folder to a remote folder on the server.
 
         Parameters
         ----------
@@ -161,8 +156,10 @@ class SSH(object):
         None
 
         """
+
         command = 'rsync -Pa {0} {1}@{2}:{3}'.format(local_folder, self.username, self.server, remote_folder)
         self.local_command(command=command)
+
 
     @staticmethod
     def local_command(command, folder=None):
@@ -174,7 +171,7 @@ class SSH(object):
         command : str
             The command to execute on the local system.
         folder : str
-            Local folder to execute the command from.
+            The local folder to execute the command from.
 
         Returns
         -------
@@ -188,11 +185,12 @@ class SSH(object):
             os.chdir(folder)
         os.system(command)
 
-        print('***** Done')
+        print('***** Command executed')
+
 
     def server_command(self, command):
 
-        """ Send a BASH command to run on the ssh server.
+        """ Send a BASH command to run on the server.
 
         Parameters
         ----------
@@ -208,12 +206,14 @@ class SSH(object):
         print('\n***** Executing server command: {0}\n'.format(command))
 
         stdin, stdout, stderr = self.client.exec_command(command)
+
         for line in stdout.readlines():
             print(line)
+
         for line in stderr.readlines():
             print(line)
 
-        print('***** Done')
+        print('***** Command executed')
 
 
 # ==============================================================================
@@ -223,7 +223,9 @@ class SSH(object):
 if __name__ == '__main__':
 
     ssh = SSH(server='euler.ethz.ch', username='liewa')
-    ssh.send_file(local_file='/home/al/downloads/test.py')
     ssh.server_command(command='ls')
-    ssh.receive_file(remote_file='test.py', local_file='/home/al/downloads/test2.py')
+    # ssh.send_folder(local_folder='/home/al/downloads/test/')
+    # ssh.send_file(local_file='/home/al/downloads/test.py')
+    # ssh.receive_file(remote_file='output.txt', local_file='/home/al/downloads/output.txt')
+    ssh.sync_folder(local_folder='/home/al/downloads/test/', remote_folder='test/')
     ssh.close()

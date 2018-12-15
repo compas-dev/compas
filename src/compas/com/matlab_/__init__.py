@@ -1,17 +1,8 @@
-from .client import MatlabClient
-from .engine import MatlabEngine
-from .process import MatlabProcess
-from .session import MatlabSession
+from __future__ import absolute_import, division, print_function
 
+from .client import *
+from .engine import *
+from .process import *
+from .session import *
 
-class Matlab(object):
-
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def run_command():
-        pass
-
-
-__all__ = ['MatlabClient', 'MatlabEngine', 'MatlabSession', 'MatlabProcess']
+__all__ = [name for name in dir() if not name.startswith('_')]
