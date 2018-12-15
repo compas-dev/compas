@@ -1,46 +1,59 @@
-import time
 
-try:
-    import bpy
-except ImportError:
-    pass
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
-from compas_blender.utilities import clear_layer
+from compas_blender.artists import Artist
 from compas_blender.artists.mixins import VertexArtist
 from compas_blender.artists.mixins import EdgeArtist
 from compas_blender.artists.mixins import FaceArtist
 
 
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
+__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'liew@arch.ethz.ch'
 
 
-__all__ = ['MeshArtist']
+__all__ = [
+    'MeshArtist',
+]
 
 
-class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
-    """"""
+class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
-    def __init__(self, mesh, layer=0):
+    __module__ = "compas_blender.artists"
+
+    def __init__(self, mesh, layer=None):
+        super(MeshArtist, self).__init__(layer=layer)
+
+        self.mesh = mesh
+        self.defaults.update({
+            'color.vertex': [255, 255, 255],
+            'color.edge':   [0, 0, 0],
+            'color.face':   [110, 110, 110],
+        })
+
+
+    @property
+    def mesh(self):
+
+        return self.datastructure
+
+
+    @mesh.setter
+    def mesh(self, mesh):
+
         self.datastructure = mesh
-        self.layer = layer
-        self.defaults = {
-            'color.vertex': [1, 0, 0],
-            'color.face': [1, 1, 1],
-            'color.edge': [0, 0, 1]}
 
-    def redraw(self, timeout=None):
-        """Redraw the Blender view."""
-        if timeout:
-            time.sleep(timeout)
-        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
-    def clear_layer(self):
-        clear_layer(layer=self.layer)
+    def draw(self):
+
+        raise NotImplementedError
+
 
     def clear(self):
+
         self.clear_vertices()
         self.clear_faces()
         self.clear_edges()
@@ -52,27 +65,26 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
 if __name__ == "__main__":
 
-    from compas_blender.utilities import get_objects
+    from compas.geometry import Polyhedron
 
-    from compas_blender.helpers import mesh_from_bmesh
+    from compas.datastructures import Mesh
 
-    mesh = mesh_from_bmesh(bmesh=get_objects(layer=0)[0])
 
-    meshartist = MeshArtist(mesh=mesh, layer=1)
+    poly = Polyhedron.generate(12)
 
-    meshartist.clear_layer()
+    mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
 
-    meshartist.draw_vertices()
-    meshartist.draw_vertexlabels()
-    meshartist.clear_vertices(keys=[4])
-    meshartist.clear_vertexlabels(keys=[6])
+    artist = MeshArtist(mesh)
 
-    meshartist.draw_edges()
-    meshartist.draw_edgelabels()
-    meshartist.clear_edges(keys=[(0, 4)])
-    meshartist.clear_edgelabels(keys=[(5, 4)])
+    #artist.clear()
 
-    meshartist.draw_faces()
-    meshartist.draw_facelabels()
-    meshartist.clear_faces(keys=[2, 3])
-    meshartist.clear_facelabels(keys=[5])
+    artist.draw_vertices(radius=0.01)
+    artist.draw_vertexlabels()
+
+    artist.draw_edges(width=0.01)
+    artist.draw_edgelabels()
+
+    artist.draw_faces()
+    artist.draw_facelabels()
+
+    artist.redraw()

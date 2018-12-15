@@ -1,76 +1,67 @@
-from compas.utilities import valuedict
 
-from compas_blender.utilities import delete_objects
-from compas_blender.utilities import get_objects
-from compas_blender.utilities import xdraw_faces
-from compas_blender.utilities import xdraw_labels
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
-
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
+from compas_blender.utilities import set_objects_show_names
+from compas_blender.utilities import xdraw_mesh
 
 
-__all__ = ['FaceArtist']
+__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'liew@arch.ethz.ch'
+
+
+__all__ = [
+    'FaceArtist',
+]
 
 
 class FaceArtist(object):
 
+    __module__ = "compas_blender.artists.mixins"
+
     def clear_faces(self, keys=None):
-        if not keys:
-            keys = list(self.datastructure.faces())
-        objects = []
-        for key in keys:
-            name = self.datastructure.face_name(key)
-            object = get_objects(name=name)
-            if object:
-                objects.append(object)
-            name = 'F{0}'.format(key)
-            object = get_objects(name=name)
-            if object:
-                objects.append(object)
-        delete_objects(objects=objects)
+
+        pass
+
 
     def clear_facelabels(self, keys=None):
-        if not keys:
-            keys = list(self.datastructure.faces())
-        objects = []
-        for key in keys:
-            name = 'F{0}'.format(key)
-            object = get_objects(name=name)
-            if object:
-                objects.append(object)
-        delete_objects(objects=objects)
 
-    def draw_faces(self, fkeys=None, color=None, alpha=0.5):
-        fkeys = fkeys or list(self.datastructure.faces())
-        colordict = valuedict(fkeys, color, self.defaults['color.face'])
-        faces = []
-        for fkey in fkeys:
-            faces.append({
-                'name': self.datastructure.face_name(fkey),
-                'points': self.datastructure.face_coordinates(fkey),
-                'color': colordict[fkey],
-                'layer': self.layer})
-        return xdraw_faces(faces, alpha=alpha)
+        set_objects_show_names(objects=self.face_objects, show=False)
 
-    def draw_facelabels(self, text=None, ds=0.0):
-        if text is None:
-            keys = self.datastructure.faces()
-            textdict = {key: 'F{0}'.format(key) for key in keys}
-        elif isinstance(text, dict):
-            textdict = text
-        else:
-            raise NotImplementedError
-        labels = []
-        for key, text in iter(textdict.items()):
-            xyz = self.datastructure.face_center(key)
-            labels.append({
-                'pos': [i + ds for i in xyz],
-                'name': textdict[key],
-                'layer': self.layer})
-        return xdraw_labels(labels)
+
+    def draw_faces(self, keys=None, colors=None, join_faces=False):
+
+        self.clear_faces()
+        self.clear_facelabels()
+
+        keys = keys or list(self.datastructure.faces())
+
+        if colors is None:
+            colors = {key: self.defaults['color.face'] for key in keys}
+
+        objects = [0] * len(keys)
+
+        for c, key in enumerate(keys):
+
+            mesh = xdraw_mesh(
+                name='F{0}'.format(key),
+                vertices=[self.datastructure.vertex_coordinates(i) for i in self.datastructure.face[key]],
+                faces=[list(range(len(self.datastructure.face[key])))],
+                color=colors[key],
+                layer=self.layer,
+            )
+
+            objects[c] = mesh
+
+        self.face_objects = objects
+
+
+    def draw_facelabels(self, text=None, color=None):
+
+        set_objects_show_names(objects=self.face_objects, show=True)
 
 
 # ==============================================================================

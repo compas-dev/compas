@@ -1,46 +1,56 @@
-import time
 
-try:
-    import bpy
-except ImportError:
-    pass
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
-from compas_blender.utilities import clear_layer
+from compas_blender.artists import Artist
 from compas_blender.artists.mixins import VertexArtist
 from compas_blender.artists.mixins import EdgeArtist
 from compas_blender.artists.mixins import FaceArtist
 
 
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
+__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
+__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'liew@arch.ethz.ch'
 
 
-__all__ = ['VolMeshArtist']
+__all__ = [
+    'VolMeshArtist',
+]
 
 
-class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
-    """"""
+class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
-    def __init__(self, volmesh, layer=0):
+    __module__ = "compas_blender.artists"
+
+    def __init__(self, volmesh, layer=None):
+        super(VolMeshArtist, self).__init__(layer=layer)
+
+        self.volmesh = volmesh
+        self.defaults.update({
+        })
+
+
+    @property
+    def volmesh(self):
+
+        return self.datastructure
+
+
+    @volmesh.setter
+    def volmesh(self, volmesh):
+
         self.datastructure = volmesh
-        self.layer = layer
-        self.defaults = {
-            'color.vertex': [1, 0, 0],
-            'color.face': [1, 1, 1],
-            'color.edge': [0, 0, 1]}
 
-    def redraw(self, timeout=None):
-        """Redraw the Blender view."""
-        if timeout:
-            time.sleep(timeout)
-        bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
-    def clear_layer(self):
-        clear_layer(layer=self.layer)
+    def draw(self):
+
+        raise NotImplementedError
+
 
     def clear(self):
+
         self.clear_vertices()
         self.clear_faces()
         self.clear_edges()
@@ -52,4 +62,31 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
 if __name__ == "__main__":
 
-    pass
+    import compas
+
+    from compas.datastructures import VolMesh
+
+
+    # volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
+
+    # artist = VolMeshArtist(volmesh, layer='VolMeshArtist')
+
+    # artist.clear_layer()
+
+    # artist.draw_vertices()
+    # artist.redraw(0.0)
+
+    # artist.draw_vertexlabels()
+    # artist.redraw(1.0)
+
+    # artist.draw_faces()
+    # artist.redraw(1.0)
+
+    # artist.draw_facelabels()
+    # artist.redraw(1.0)
+
+    # artist.draw_edges()
+    # artist.redraw(1.0)
+
+    # artist.draw_edgelabels()
+    # artist.redraw(1.0)
