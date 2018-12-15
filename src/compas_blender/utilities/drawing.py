@@ -201,14 +201,14 @@ def xdraw_cubes(cubes, **kwargs):
     return _link_objects(objects)
 
 
-def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], **kwargs):
+def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], centroid=True, **kwargs):
 
     edges = [] if edges is None else edges
     faces = [] if faces is None else faces
 
-    mp = centroid_points(vertices)
+    mp = centroid_points(vertices) if centroid else [0, 0, 0]
     vertices = [subtract_vectors(i, mp) for i in vertices]
-    
+
     mesh = bpy.data.meshes.new(name)
     mesh.from_pydata(vertices, edges, faces)
     mesh.update(calc_edges=True)
