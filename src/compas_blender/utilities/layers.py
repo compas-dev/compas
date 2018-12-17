@@ -35,7 +35,8 @@ __all__ = [
 
 def create_layer(layer):
 
-    raise NotImplementedError
+    pass
+    #bpy.data.collections.new(layer)
 
 
 def create_layers(layers):
@@ -101,4 +102,6 @@ def delete_layers(layers):
 
 if __name__ == "__main__":
 
-    pass
+    create_layer(layer='Collection 2')
+    
+    print(list(bpy.data.collections))

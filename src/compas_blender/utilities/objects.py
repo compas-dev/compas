@@ -36,6 +36,8 @@ __all__ = [
     'get_meshes',
     'get_points_coordinates',
     'get_curves_coordinates',
+    'get_object_property',
+    'get_objects_property',
     'select_object',
     'select_objects',
     'select_point',
@@ -54,6 +56,8 @@ __all__ = [
     'set_objects_scales',
     'set_objects_show_names',
     'set_objects_visible',
+    'set_object_property',
+    'set_objects_property',
 ]
 
 
@@ -63,9 +67,8 @@ __all__ = [
 
 def delete_object(object):
 
-    set_deselct(object=object)
-    bpy.data.objects.remove(object)
-    # crashes 2.80
+    set_deselect(objects=[object])
+    # print(bpy.data.meshes.remove(object))
 
 
 def delete_objects(objects):
@@ -81,19 +84,19 @@ def delete_objects_by_names(names):
 
 
 def purge_objects(objects):
-    
+
     raise NotImplementedError
 
 
 # ==============================================================================
-# Objects
+# Get
 # ==============================================================================
 
 def get_object_by_name(name):
-    
+
     return bpy.data.objects[name]
 
-    
+
 def get_objects(names=None, color=None, layer=None, type=None):
 
     if names:
@@ -142,7 +145,7 @@ def get_objects_coordinates(objects):
 def get_object_attributes(object):
 
     name = object.name.replace("'", '"')
-    
+
     if name[-5:-3] == '}.':
         name = name[:-4]
 
@@ -153,8 +156,18 @@ def get_object_attributes(object):
 
 
 def get_objects_attributes(objects):
-    
+
     return [get_object_attributes(i) for i in objects]
+
+
+def get_object_property(object, property):
+
+    return object[property]
+
+
+def get_objects_property(objects, property):
+
+    return [object[property] for object in objects]
 
 
 def select_object(message="Select an object."):
@@ -305,6 +318,17 @@ def set_objects_visible(objects, visible=True):
         i.hide_viewport = not visible
 
 
+def set_object_property(object, property, value):
+
+        object[property] = value
+
+
+def set_objects_property(objects, property, value):
+
+    for object in objects:
+        object[property] = value
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -316,19 +340,19 @@ if __name__ == '__main__':
     #print(get_objects(names=['Plane', 'Sphere']))
     #print(get_objects(layer='Collection 2'))
     #print(get_objects(type='Mesh'))
-    
+
     #print(get_object_name(object=objects[1]))
     #print(get_objects_names(objects=objects))
     #print(get_objects_types(objects=objects))
     #print(get_objects_coordinates(objects=objects))
     #print(get_objects_layers(objects=objects))
-    
+
     #print(get_points())
     #print(get_curves())
     #print(get_meshes())
 
     #a = get_objects_attributes(objects=objects)
-    
+
     #set_deselect()
     #set_deselect(objects=objects)
 
@@ -341,5 +365,12 @@ if __name__ == '__main__':
 
     #set_objects_show_names(objects=objects, show=1)
     #set_objects_visible(objects=objects, visible=1)
-    
+
     #delete_object(object=objects[0])
+
+    #set_object_property(object=objects[0], property='ex', value=[1, 2, 3])
+    #set_objects_property(objects=objects, property='ex', value=[1, 2, 3])
+    # print(get_object_property(object=objects[0], property='ex'))
+    # print(get_objects_property(objects=objects, property='ex'))
+
+    delete_object(object=objects[0])
