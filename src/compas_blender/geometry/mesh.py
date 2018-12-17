@@ -231,7 +231,37 @@ class BlenderMesh(BlenderGeometry):
 
 
     # ------------------------------------------------------------------------------------
-    # Other
+    # Modifiers
+    # ------------------------------------------------------------------------------------
+    
+    def bevel(self, width=0.2, segments=1, only_vertices=False):
+
+        self.object.modifiers.new('bevel', type='BEVEL')
+        self.object.modifiers['bevel'].width = width
+        self.object.modifiers['bevel'].segments = segments
+        self.object.modifiers['bevel'].use_only_vertices = only_vertices
+
+        self.refresh()
+
+
+    def subdivide(self, levels=1, type='SIMPLE'):
+
+        self.object.modifiers.new('subdivision', type='SUBSURF')
+        self.object.modifiers['subdivision'].levels = levels
+        self.object.modifiers['subdivision'].subdivision_type = type  # or 'CATMULL_CLARK'
+        
+        self.refresh()
+
+
+    def triangulate(self):
+
+        self.object.modifiers.new('triangulate', type='TRIANGULATE')
+        
+        self.refresh()
+    
+    
+    # ------------------------------------------------------------------------------------
+    # Misc
     # ------------------------------------------------------------------------------------
 
     def get_vertices_and_faces(self):
@@ -306,6 +336,10 @@ if __name__ == '__main__':
     #print(mesh.faces_areas())
     #print(mesh.get_vertices_and_faces())
 
-    datastructure = mesh.to_datastructure()
-
-    print(datastructure)
+    #datastructure = mesh.to_datastructure()
+    
+    #mesh.triangulate()
+    #mesh.subdivide(levels=2, type='CATMULL_CLARK')
+    #mesh.bevel(width=0.2, segments=1, only_vertices=False)
+    
+    #print(datastructure)
