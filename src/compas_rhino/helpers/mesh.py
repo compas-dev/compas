@@ -1,21 +1,22 @@
 from __future__ import print_function
 
-from compas.utilities import geometric_key
-
+import compas
 import compas_rhino
 
-from compas_rhino.geometry.surface import RhinoSurface
+from compas.utilities import geometric_key
+
+from compas_rhino.geometry import RhinoSurface
 
 from compas_rhino.artists import MeshArtist
 
-from compas_rhino.helpers.modifiers import Modifier
-from compas_rhino.helpers.modifiers import VertexModifier
-from compas_rhino.helpers.modifiers import EdgeModifier
-from compas_rhino.helpers.modifiers import FaceModifier
+from compas_rhino.modifiers import Modifier
+from compas_rhino.modifiers import VertexModifier
+from compas_rhino.modifiers import EdgeModifier
+from compas_rhino.modifiers import FaceModifier
 
-from compas_rhino.helpers.selectors import VertexSelector
-from compas_rhino.helpers.selectors import EdgeSelector
-from compas_rhino.helpers.selectors import FaceSelector
+from compas_rhino.selectors import VertexSelector
+from compas_rhino.selectors import EdgeSelector
+from compas_rhino.selectors import FaceSelector
 
 try:
     import Rhino
@@ -23,12 +24,10 @@ try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
-__author__    = ['Tom Van Mele', ]
+__author__    = ['Tom Van Mele']
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
@@ -39,6 +38,7 @@ __all__ = [
     'mesh_from_surface',
     'mesh_from_surface_uv',
     'mesh_from_surface_heightfield',
+
     'mesh_draw',
     'mesh_draw_vertices',
     'mesh_draw_edges',
@@ -46,12 +46,14 @@ __all__ = [
     'mesh_draw_vertex_labels',
     'mesh_draw_edge_labels',
     'mesh_draw_face_labels',
+
     'mesh_select_vertices',
     'mesh_select_vertex',
     'mesh_select_edges',
     'mesh_select_edge',
     'mesh_select_faces',
     'mesh_select_face',
+
     'mesh_update_vertex_attributes',
     'mesh_update_edge_attributes',
     'mesh_update_face_attributes',
@@ -672,68 +674,6 @@ def mesh_draw_face_labels(mesh,
     artist.redraw()
 
 
-# def mesh_draw_vertex_normals(mesh,
-#                              display=True,
-#                              layer=None,
-#                              scale=1.0,
-#                              color=(0, 0, 255)):
-#     """"""
-#     guids = compas_rhino.get_objects(name='{0}.vertex.normal.*'.format(mesh.attributes['name']))
-#     compas_rhino.delete_objects(guids)
-
-#     if not display:
-#         return
-
-#     lines = []
-
-#     for key in mesh.vertices():
-#         normal = mesh.vertex_normal(key)
-#         start  = mesh.vertex_coordinates(key)
-#         end    = [start[axis] + normal[axis] for axis in range(3)]
-#         name   = '{0}.vertex.normal.{1}'.format(mesh.attributes['name'], key)
-
-#         lines.append({
-#             'start': start,
-#             'end'  : end,
-#             'name' : name,
-#             'color': color,
-#             'arrow': 'end',
-#         })
-
-#     compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
-
-
-# def mesh_draw_face_normals(mesh,
-#                            display=True,
-#                            layer=None,
-#                            scale=1.0,
-#                            color=(0, 0, 255)):
-#     """"""
-#     guids = compas_rhino.get_objects(name='{0}.face.normal.*'.format(mesh.attributes['name']))
-#     compas_rhino.delete_objects(guids)
-
-#     if not display:
-#         return
-
-#     lines = []
-
-#     for fkey in mesh.faces():
-#         normal = mesh.face_normal(fkey)
-#         start  = mesh.face_center(fkey)
-#         end    = [start[axis] + normal[axis] for axis in range(3)]
-#         name   = '{0}.face.normal.{1}'.format(mesh.attributes['name'], fkey)
-
-#         lines.append({
-#             'start' : start,
-#             'end'   : end,
-#             'name'  : name,
-#             'color' : color,
-#             'arrow' : 'end',
-#         })
-
-#     compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
-
-
 # ==============================================================================
 # selections
 # ==============================================================================
@@ -1020,11 +960,11 @@ def mesh_update_face_attributes(mesh, fkeys, names=None):
 # ==============================================================================
 
 
-def mesh_identify_vertices(mesh, points, precision):
+def mesh_identify_vertices(mesh, points, precision=None):
     keys = []
     gkey_key = {geometric_key(mesh.vertex_coordinates(key), precision): key for key in mesh.vertices()}
     for xyz in points:
-        gkey = geometric_key(xyz, '1f')
+        gkey = geometric_key(xyz, precision)
         if gkey in gkey_key:
             key = gkey_key[gkey]
             keys.append(key)
@@ -1039,15 +979,10 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Mesh
-    from compas_rhino.helpers import mesh_draw
-    from compas_rhino.helpers import mesh_select_vertex
-    from compas_rhino.helpers import mesh_move_vertex
+    from compas_rhino import mesh_draw
+    from compas_rhino import mesh_select_vertex
+    from compas_rhino import mesh_move_vertex
 
     mesh = Mesh.from_obj(compas.get_data('quadmesh_planar.obj'))
 
     mesh_draw(mesh, layer='test', clear_layer=True)
-
-#    key = mesh_select_vertex(mesh)
-#
-#    if mesh_move_vertex(mesh, key):
-#        mesh_draw(mesh, layer='test', clear_layer=True)

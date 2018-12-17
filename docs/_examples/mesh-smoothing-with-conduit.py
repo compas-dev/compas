@@ -57,6 +57,7 @@ lines = [[vertices[u], vertices[v]] for u, v in edges]
 
 conduit = LinesConduit(lines, refreshrate=5)
 
+
 def callback(k, args):
     conduit.lines = [[vertices[u], vertices[v]] for u, v in iter(edges)]
     conduit.redraw(k)

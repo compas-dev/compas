@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 try:
-    import ghpythonlib.components as ghcomp
     from Rhino.Geometry import Transform
 except ImportError:
     import platform
@@ -44,19 +43,27 @@ def xform_from_transformation_matrix(transformation_matrix):
     return transform
 
 
-def xtransform(geo, transformation, copy=False):
-    """Transforms any Rhino Geometry object with a :class:`Transformation`.
+def xtransform(geo, transformation):
+    """Transforms the Rhino Geometry object with a :class:`Transformation`.
 
     Args:
-        geo (:class:`Rhino.Geometry`): a geometry of Rhino Geometry
+        geo (:class:`Rhino.Geometry.GeometryBase`): a Rhino Geometry object
+        transformation (:class:`Transformation`): the transformation.
+    """
+    T = xform_from_transformation(transformation)
+    geo.Transform(T)
+
+def xtransformed(geo, transformation):
+    """Returns a copy of the transformed Rhino Geometry object.
+
+    Args:
+        geo (:class:`Rhino.Geometry.GeometryBase`): a Rhino Geometry object
         transformation (:class:`Transformation`): the transformation.
 
     Returns:
-        (:class:`Rhino.Geometry`): the transformed geometry
+        (:class:`Rhino.Geometry.GeometryBase`): the transformed geometry
     """
     T = xform_from_transformation(transformation)
-    if copy:
-        return ghcomp.Transform(geo, T)
-    else:
-        geo.Transform(T)
-        return geo
+    geo_copy = geo.Duplicate()
+    geo_copy.Transform(T)
+    return geo_copy

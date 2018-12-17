@@ -3,10 +3,41 @@
 compas.topology
 ********************************************************************************
 
-.. module:: compas.topology
+.. currentmodule:: compas.topology
 
+conway_operators
+-------------
 
-combinatorial
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    conway_dual
+    conway_join
+    conway_ambo
+    conway_kis
+    conway_needle
+    conway_zip
+    conway_truncate
+    conway_ortho
+    conway_expand
+    conway_gyro
+    conway_snub
+    conway_meta
+    conway_bevel
+
+connectivity
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    adjacency_from_edges
+    connectivity_from_edges
+    join_lines_to_polylines
+
+combinatorics
 -------------
 
 .. autosummary::
@@ -14,6 +45,29 @@ combinatorial
     :nosignatures:
 
     vertex_coloring
+    connected_components
+    mesh_is_connected
+    network_is_connected
+
+complementarity
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    network_complement
+
+duality
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    mesh_dual
+    network_dual
+    network_find_faces
 
 orientation
 -----------
@@ -22,6 +76,9 @@ orientation
     :toctree: generated/
     :nosignatures:
 
+    face_adjacency
+    flip_cycles
+    mesh_face_adjacency
     mesh_flip_cycles
     mesh_unify_cycles
 
@@ -49,8 +106,11 @@ subdivision
 
     mesh_subdivide
     mesh_subdivide_tri
+    mesh_subdivide_corner
+    mesh_subdivide_quad
     mesh_subdivide_catmullclark
     mesh_subdivide_doosabin
+    trimesh_subdivide_loop   
 
 traversal
 ---------
@@ -82,25 +142,17 @@ triangulation
 
 
 """
+from __future__ import absolute_import, division, print_function
 
 from .traversal import *
-
-from .combinatorial import *
+from .combinatorics import *
 from .duality import *
 from .orientation import *
 from .planarity import *
 from .subdivision import *
 from .triangulation import *
 from .connectivity import *
+from .conway import *
+from .complementarity import *
 
-from .combinatorial import __all__ as a
-from .duality import __all__ as b
-from .orientation import __all__ as c
-from .planarity import __all__ as d
-from .subdivision import __all__ as e
-from .traversal import __all__ as f
-from .triangulation import __all__ as g
-from .connectivity import __all__ as h
-
-
-__all__ = a + b + c + d + e + f + g + h
+__all__ = [name for name in dir() if not name.startswith('_')]

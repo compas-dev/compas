@@ -1,10 +1,8 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from compas.utilities import geometric_key
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -15,6 +13,8 @@ __all__ = [
 
 
 class VertexMappings(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     def key_index(self):
         """Returns a dictionary that maps vertex dictionary keys to the
@@ -48,7 +48,7 @@ class VertexMappings(object):
         """
         return dict(enumerate(self.vertices()))
 
-    def key_gkey(self, precision='3f'):
+    def key_gkey(self, precision=None):
         """Returns a dictionary that maps vertex dictionary keys to the corresponding
         *geometric key* up to a certain precision.
 
@@ -72,7 +72,7 @@ class VertexMappings(object):
         xyz = self.vertex_coordinates
         return {key: gkey(xyz(key), precision) for key in self.vertices()}
 
-    def gkey_key(self, precision='3f'):
+    def gkey_key(self, precision=None):
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the keys of the corresponding vertices.
 
@@ -98,6 +98,8 @@ class VertexMappings(object):
 
 
 class EdgeMappings(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     def uv_index(self):
         """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
@@ -133,7 +135,8 @@ class EdgeMappings(object):
 
 
 class FaceMappings(object):
-    pass
+
+    __module__ = 'compas.datastructures._mixins'
 
 
 # ==============================================================================

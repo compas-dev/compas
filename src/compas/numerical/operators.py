@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
+import compas
 
 try:
     from numpy import arange
@@ -14,18 +15,11 @@ try:
     from scipy.sparse import coo_matrix
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 from compas.numerical.linalg import normrow
 from compas.numerical.linalg import normalizerow
 from compas.numerical.linalg import rot90
-
-
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [

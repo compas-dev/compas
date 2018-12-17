@@ -5,23 +5,11 @@ from __future__ import division
 import struct
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'PLY',
-    'PLYreader',
-    'PLYparser',
-    'PLYcomposer',
-    'PLYwriter'
+    'PLYReader',
+    'PLYParser',
 ]
-
-
-def ply_binascii(ply):
-    pass
 
 
 class PLY(object):
@@ -31,12 +19,13 @@ class PLY(object):
     --------
     * http://paulbourke.net/dataformats/ply/
 
-
     """
-    pass
+    def __init__(self, filepath, precision=None):
+        self.reader = PLYReader(filepath)
+        self.parser = PLYParser(self.reader, precision=precision)
 
 
-class PLYreader(object):
+class PLYReader(object):
     """"""
 
     keywords = ['ply', 'format', 'comment', 'element', 'property', 'end_header']
@@ -53,21 +42,21 @@ class PLYreader(object):
     }
 
     binary_property_types = {
-        # 'int8'   : 'i1',
+        'int8'   : 'i1',
         'char'   : 'i1',
-        # 'uint8'  : 'u1',
+        'uint8'  : 'u1',
         'uchar'  : 'u1',
-        # 'int16'  : 'i2',
+        'int16'  : 'i2',
         'short'  : 'i2',
-        # 'uint16' : 'u2',
+        'uint16' : 'u2',
         'ushort' : 'u2',
-        # 'int32'  : 'i4',
+        'int32'  : 'i4',
         'int'    : 'i4',
-        # 'uint32' : 'u4',
+        'uint32' : 'u4',
         'uint'   : 'u4',
-        # 'float32': 'f4',
+        'float32': 'f4',
         'float'  : 'f4',
-        # 'float64': 'f8',
+        'float64': 'f8',
         'double' : 'f8'
     }
 
@@ -95,8 +84,8 @@ class PLYreader(object):
 
     binary_byte_order = {'binary_big_endian': '>', 'binary_little_endian': '<'}
 
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, filepath):
+        self.filepath = filepath
         self.file = None
         self.format = None
         self.comments = []
@@ -113,6 +102,7 @@ class PLYreader(object):
         self.vertices = []
         self.edges = []
         self.faces = []
+        self.read()
 
     def is_valid(self):
         self.read_header()
@@ -148,7 +138,7 @@ class PLYreader(object):
         # read it as text
         # otherwise file.tell() can't be used reliably
         # to figure out where the header ends
-        with open(self.filename) as file:
+        with open(self.filepath) as file:
             file.seek(0)
 
             line = file.readline().rstrip()
@@ -231,7 +221,7 @@ class PLYreader(object):
     def read_data(self):
         if not self.end_header:
             raise Exception('header has not been read, or the file is not valid')
-        with open(self.filename) as self.file:
+        with open(self.filepath) as self.file:
             self.file.seek(self.end_header)
             for section in self.sections:
                 if section == 'vertex':
@@ -247,7 +237,7 @@ class PLYreader(object):
     def read_data_binary(self):
         if not self.end_header:
             raise Exception('header has not been read, or the file is not valid')
-        with open(self.filename, 'rb') as self.file:
+        with open(self.filepath, 'rb') as self.file:
             self.file.seek(self.end_header)
             for section in self.sections:
                 if section == 'vertex':
@@ -414,16 +404,20 @@ class PLYreader(object):
             self.faces.append(face)
 
 
-class PLYparser(object):
-    pass
+class PLYParser(object):
+    """"""
 
+    def __init__(self, reader, precision=None):
+        self.precision = precision
+        self.reader    = reader
+        self.vertices  = None
+        self.edges     = None
+        self.faces     = None
+        self.parse()
 
-class PLYcomposer(object):
-    pass
-
-
-class PLYwriter(object):
-    pass
+    def parse(self):
+        self.vertices = [(vertex['x'], vertex['y'], vertex['z']) for vertex in self.reader.vertices]
+        self.faces = [face['vertex_indices'] for face in self.reader.faces]
 
 
 # ==============================================================================
@@ -435,22 +429,10 @@ if __name__ == "__main__":
     import os
     import compas
 
-    from compas.datastructures.mesh import Mesh
+    from compas.datastructures import Mesh
 
-    filename = os.path.join(compas.get('stanford/bunny/reconstruction/bun_zipper.ply'))
-    filename = os.path.join(compas.get('stanford/dragon_recon/dragon_vrip.ply'))
-    filename = os.path.join(compas.get('stanford/Armadillo.ply'))
+    ply = PLY(compas.get_bunny())
 
-    reader = PLYreader(filename)
+    mesh = Mesh.from_vertices_and_faces(ply.parser.vertices, ply.parser.faces)
 
-    reader.read()
-
-    for line in reader.header:
-        print(line)
-
-    vertices = [(vertex['x'], vertex['y'], vertex['z']) for vertex in reader.vertices]
-    faces = [face['vertex_indices'] for face in reader.faces]
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    print(mesh)
+    print(mesh.summary())

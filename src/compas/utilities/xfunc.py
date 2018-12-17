@@ -5,26 +5,31 @@ from __future__ import division
 import os
 import sys
 import json
+import tempfile
+
 import compas
+import compas._os
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
 
 try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
+try:
     from subprocess import Popen
     from subprocess import PIPE
+
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
+    if compas.is_windows():
+        compas.raise_if_not_ironpython()
+    elif not compas.is_mono():
         raise
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['XFunc', ]
+__all__ = ['XFunc']
 
 
 WRAPPER = """
@@ -33,6 +38,11 @@ import sys
 import importlib
 
 import json
+
+try:
+    import cPickle as pickle
+except Exception:
+    import pickle
 
 try:
     from cStringIO import StringIO
@@ -46,13 +56,18 @@ import traceback
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
 
-basedir  = sys.argv[1]
-funcname = sys.argv[2]
-ipath    = sys.argv[3]
-opath    = sys.argv[4]
+basedir    = sys.argv[1]
+funcname   = sys.argv[2]
+ipath      = sys.argv[3]
+opath      = sys.argv[4]
+serializer = sys.argv[5]
 
-with open(ipath, 'r') as fp:
-    idict = json.load(fp, cls=DataDecoder)
+if serializer == 'json':
+    with open(ipath, 'r') as fo:
+        idict = json.load(fo, cls=DataDecoder)
+else:
+    with open(ipath, 'rb') as fo:
+        idict = pickle.load(fo)
 
 try:
     args   = idict['args']
@@ -94,8 +109,13 @@ else:
     odict['data']       = r
     odict['profile']    = stream.getvalue()
 
-with open(opath, 'w+') as fp:
-    json.dump(odict, fp, cls=DataEncoder)
+if serializer == 'json':
+    with open(opath, 'w+') as fo:
+        json.dump(odict, fo, cls=DataEncoder)
+else:
+    with open(opath, 'wb+') as fo:
+        # pickle.dump(odict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(odict, fo, protocol=2)
 
 """
 
@@ -127,6 +147,17 @@ class XFunc(object):
     callback_args : tuple, optional
         Additional parameter for the callback function.
         Default is ``None``.
+    python : str, optional
+        The Python executable.
+        This can be a path to a specific executable (e.g. ``'/opt/local/bin/python'``)
+        or the name of an executable registered on the system ``PATH`` (e.g. ``'pythonw'``).
+        Default is ``'pythonw'``.
+    paths : list, optional
+        A list of paths to be added to the ``PYTHONPATH`` by the subprocess.
+        Default is ``None``.
+    serializer : {'json', 'pickle'}, optional
+        The serialisation mechnanism to be used to pass data between the caller and the subprocess.
+        Default is ``'json'``.
 
     Attributes
     ----------
@@ -148,15 +179,16 @@ class XFunc(object):
 
     Notes
     -----
-    ...
+    To use the Python executable of a virtual environment, simply assign the path
+    to that executable to the ``python`` parameter. For example
 
-    References
-    ----------
-    ...
+    .. code-block:: python
+
+        fd_numpy = XFunc('compas.numerical.fd_numpy', python='/Users/brg/environments/py2/python')
 
     Examples
     --------
-    `compas.numerical` provides an implementation of the Force Desnity Method that
+    `compas.numerical` provides an implementation of the Force Density Method that
     is based on Numpy and Scipy. This implementation is not directly available in
     Rhino because Numpy and Scipy are not available for IronPython.
 
@@ -168,9 +200,12 @@ class XFunc(object):
         import compas
         import compas_rhino
 
-        from compas_rhino.helpers import MeshArtist
+        from compas_rhino.artists import MeshArtist
         from compas.datastructures import Mesh
         from compas.utilities import XFunc
+
+        # make the function available as a wrapped function with the same call signature and return value as the original.
+        fd_numpy = XFunc('compas.numerical.fd_numpy')
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -187,7 +222,7 @@ class XFunc(object):
         q         = mesh.get_edges_attribute('q', 1.0)
         loads     = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
 
-        xyz, q, f, l, r = XFunc('compas.numerical.fd_numpy')(vertices, edges, fixed, q, loads)
+        xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
 
         for key, attr in mesh.vertices(True):
             attr['x'] = xyz[key][0]
@@ -200,44 +235,31 @@ class XFunc(object):
 
     """
 
-    def __init__(self, funcname, basedir='.', tmpdir='.', delete_files=True,
-                 verbose=True, callback=None, callback_args=None, python='pythonw'):
-        self._basedir      = None
-        self._tmpdir       = None
-        self._callback     = None
-        self._python       = None
-        self.funcname      = funcname
-        self.basedir       = basedir
-        self.tmpdir        = tmpdir
-        self.delete_files  = delete_files
-        self.verbose       = verbose
-        self.callback      = callback
-        self.callback_args = callback_args
-        self.python        = python
-        self.data          = None
-        self.profile       = None
-        self.error         = None
-
-    def __call__(self, *args, **kwargs):
-        """Make a call to the wrapped function.
-
-        Parameters
-        ----------
-        args : list
-            Positional arguments to be passed to the wrapped function.
-            Default is ``[]``.
-        kwargs : dict
-            Named arguments to be passed to the wrapped function.
-            Default is ``{}``.
-
-        Returns
-        -------
-        object
-            The data returned by the wrapped call.
-            This is ``None`` if something went wrong.
-
-        """
-        return self._xecute(*args, **kwargs)
+    def __init__(self, funcname, basedir='.', tmpdir=None, delete_files=True,
+                 verbose=True, callback=None, callback_args=None, python=None,
+                 paths=None, serializer='json',
+                 argtypes=None, kwargtypes=None, restypes=None):
+        self._basedir       = None
+        self._tmpdir        = None
+        self._callback      = None
+        self._python        = None
+        self._serializer    = None
+        self.funcname       = funcname
+        self.basedir        = basedir
+        self.tmpdir         = tmpdir or tempfile.mkdtemp('compas_xfunc')
+        self.delete_files   = delete_files
+        self.verbose        = verbose
+        self.callback       = callback
+        self.callback_args  = callback_args
+        self.python         = compas._os.select_python(python)
+        self.paths          = paths or []
+        self.serializer     = serializer
+        self.argtypes       = argtypes
+        self.kwargtypes     = kwargtypes
+        self.restypes       = restypes
+        self.data           = None
+        self.profile        = None
+        self.error          = None
 
     @property
     def basedir(self):
@@ -281,6 +303,17 @@ class XFunc(object):
         self._python = python
 
     @property
+    def serializer(self):
+        """{'json', 'pickle'}: Which serialisation mechanism to use."""
+        return self._serializer
+
+    @serializer.setter
+    def serializer(self, serializer):
+        if not serializer in ('json', 'pickle'):
+            raise Exception("*serializer* should be one of {'json', 'pickle'}.")
+        self._serializer = serializer
+
+    @property
     def ipath(self):
         return os.path.join(self.tmpdir, '%s.in' % self.funcname)
 
@@ -288,13 +321,47 @@ class XFunc(object):
     def opath(self):
         return os.path.join(self.tmpdir, '%s.out' % self.funcname)
 
-    def _xecute(self, *args, **kwargs):
-        """Execute a function with optional positional and named arguments.
-        """
-        idict = {'args': args, 'kwargs': kwargs}
+    def __call__(self, *args, **kwargs):
+        """Make a call to the wrapped function.
 
-        with open(self.ipath, 'w+') as fh:
-            json.dump(idict, fh, cls=DataEncoder)
+        Parameters
+        ----------
+        args : list
+            Positional arguments to be passed to the wrapped function.
+            Default is ``[]``.
+        kwargs : dict
+            Named arguments to be passed to the wrapped function.
+            Default is ``{}``.
+
+        Returns
+        -------
+        result: object or None
+            The data returned by the wrapped call.
+            The type of the return value depends on the implementation of the wrapped function.
+            If something went wrong the value is ``None``.
+            In this case, check the ``error`` attribute for more information.
+
+        """
+        # if self.argtypes:
+        #     args = [arg for arg in args]
+
+        # if self.kwargtypes:
+        #     kwargs = {name: value for name, value in kwargs.items()}
+
+        idict = {
+            'args': args,
+            'kwargs': kwargs,
+            # 'argtypes': self.argtypes,
+            # 'kwargtypes': self.kwargtypes,
+            # 'restypes': self.restypes
+        }
+
+        if self.serializer == 'json':
+            with open(self.ipath, 'w+') as fo:
+                json.dump(idict, fo, cls=DataEncoder)
+        else:
+            with open(self.ipath, 'wb+') as fo:
+                pickle.dump(idict, fo, protocol=2)
 
         with open(self.opath, 'w+') as fh:
             fh.write('')
@@ -306,7 +373,8 @@ class XFunc(object):
                         self.basedir,
                         self.funcname,
                         self.ipath,
-                        self.opath]
+                        self.opath,
+                        self.serializer]
 
         process = Popen(process_args, stderr=PIPE, stdout=PIPE)
 
@@ -317,12 +385,16 @@ class XFunc(object):
             if self.verbose:
                 print(line)
 
-        with open(self.opath, 'r') as fh:
-            odict = json.load(fh, cls=DataDecoder)
+        if self.serializer == 'json':
+            with open(self.opath, 'r') as fo:
+                odict = json.load(fo, cls=DataDecoder)
+        else:
+            with open(self.opath, 'rb') as fo:
+                odict = pickle.load(fo)
 
-            self.data    = odict['data']
-            self.profile = odict['profile']
-            self.error   = odict['error']
+        self.data    = odict['data']
+        self.profile = odict['profile']
+        self.error   = odict['error']
 
         if self.delete_files:
             try:
@@ -346,27 +418,76 @@ class XFunc(object):
 
 if __name__ == '__main__':
 
-    import compas
+    import random
 
+    import compas
     from compas.datastructures import Mesh
     from compas.utilities import XFunc
+    from compas_rhino.artists import MeshArtist
 
-    fd_numpy = XFunc('compas.numerical.fd_numpy')
+    dr = XFunc('compas.numerical.dr.dr_numpy.dr_numpy')
+
+    dva = {
+        'is_fixed': False,
+        'x': 0.0,
+        'y': 0.0,
+        'z': 0.0,
+        'px': 0.0,
+        'py': 0.0,
+        'pz': 0.0,
+        'rx': 0.0,
+        'ry': 0.0,
+        'rz': 0.0,
+    }
+
+    dea = {
+        'qpre': 1.0,
+        'fpre': 0.0,
+        'lpre': 0.0,
+        'linit': 0.0,
+        'E': 0.0,
+        'radius': 0.0,
+    }
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    vertices = mesh.get_vertices_attributes('xyz')
-    edges    = list(mesh.edges())
-    fixed    = list([key for key in mesh.vertices() if mesh.vertex_degree(key) == 2])
-    q        = mesh.get_edges_attribute('q', 1.0)
-    loads    = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
-
-    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
+    mesh.update_default_vertex_attributes(dva)
+    mesh.update_default_edge_attributes(dea)
 
     for key, attr in mesh.vertices(True):
-        attr['x'] = xyz[key][0]
-        attr['y'] = xyz[key][1]
-        attr['z'] = xyz[key][2]
+        attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
-    print(fd_numpy.profile)
+    for u, v, attr in mesh.edges(True):
+        attr['qpre'] = 1.0 * random.randint(1, 7)
+
+    k_i = mesh.key_index()
+
+    vertices = mesh.get_vertices_attributes(('x', 'y', 'z'))
+    edges    = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
+    fixed    = [k_i[key] for key in mesh.vertices_where({'is_fixed': True})]
+    loads    = mesh.get_vertices_attributes(('px', 'py', 'pz'))
+    qpre     = mesh.get_edges_attribute('qpre')
+    fpre     = mesh.get_edges_attribute('fpre')
+    lpre     = mesh.get_edges_attribute('lpre')
+    linit    = mesh.get_edges_attribute('linit')
+    E        = mesh.get_edges_attribute('E')
+    radius   = mesh.get_edges_attribute('radius')
+
+    xyz, q, f, l, r = dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius, kmax=100)
+
+    for key, attr in mesh.vertices(True):
+        index = k_i[key]
+        attr['x'] = xyz[index][0]
+        attr['y'] = xyz[index][1]
+        attr['z'] = xyz[index][2]
+
+    artist = MeshArtist(mesh, layer="XFunc::Mesh")
+
+    artist.clear_layer()
+
+    artist.draw_vertices()
+    artist.draw_edges()
+    artist.draw_faces()
+
+    artist.redraw()
 

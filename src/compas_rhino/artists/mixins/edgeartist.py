@@ -1,12 +1,10 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from compas.utilities import color_to_colordict
 
 import compas_rhino
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = ['EdgeArtist']
@@ -14,7 +12,18 @@ __all__ = ['EdgeArtist']
 
 class EdgeArtist(object):
 
+    __module__ = "compas_rhino.artists.mixins"
+
     def clear_edges(self, keys=None):
+        """Clear all edges previously drawn by the ``EdgeArtist``.
+
+        Parameters
+        ----------
+        keys : list, optional
+            The keys of a specific set of edges that should be cleared.
+            Default is to clear all edges.
+
+        """
         if not keys:
             name = '{}.edge.*'.format(self.datastructure.name)
             guids = compas_rhino.get_objects(name=name)
@@ -27,6 +36,15 @@ class EdgeArtist(object):
         compas_rhino.delete_objects(guids)
 
     def clear_edgelabels(self, keys=None):
+        """Clear all edge labels previously drawn by the ``EdgeArtist``.
+
+        Parameters
+        ----------
+        keys : list, optional
+            The keys of a specific set of edges of which the labels should be cleared.
+            Default is to clear all edge labels.
+
+        """
         if not keys:
             name = '{}.edge.label.*'.format(self.datastructure.name)
             guids = compas_rhino.get_objects(name=name)
@@ -39,7 +57,7 @@ class EdgeArtist(object):
         compas_rhino.delete_objects(guids)
 
     def draw_edges(self, keys=None, color=None):
-        """Draw a selection of edges of the network.
+        """Draw a selection of edges.
 
         Parameters
         ----------
@@ -50,32 +68,24 @@ class EdgeArtist(object):
             The color specififcation for the edges.
             Colors should be specified in the form of a string (hex colors) or
             as a tuple of RGB components.
-            To apply the same color to all faces, provide a single color
+            To apply the same color to all edges, provide a single color
             specification. Individual colors can be assigned using a dictionary
             of key-color pairs. Missing keys will be assigned the default face
-            color (``self.defaults['face.color']``).
-            The default is ``None``, in which case all faces are assigned the
+            color (``self.defaults['edge.color']``).
+            The default is ``None``, in which case all edges are assigned the
             default edge color.
 
         Notes
         -----
         All edges are named using the following template:
         ``"{}.edge.{}-{}".fromat(self.datastructure.name, u, v)``.
-        This name is used afterwards to identify edges of the network in the Rhino model.
-
-        Examples
-        --------
-        >>> artist.draw_edges()
-        >>> artist.draw_edges(color='#ff0000')
-        >>> artist.draw_edges(color=(255, 0, 0))
-        >>> artist.draw_edges(keys=self.datastructure.edges_xxx())
-        >>> artist.draw_edges(color={(u, v): '#00ff00' for u, v in self.datastructure.edges_xxx()})
+        This name is used afterwards to identify edges in the Rhino model.
 
         """
         keys = keys or list(self.datastructure.edges())
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.datastructure.attributes.get('color.edge'),
+                                       default=self.defaults.get('color.edge'),
                                        colorformat='rgb',
                                        normalize=False)
         lines = []
@@ -87,35 +97,31 @@ class EdgeArtist(object):
                 'name' : self.datastructure.edge_name(u, v),
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
+
         return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
-        """Draw labels for selected edges of the network.
+        """Draw labels for a selection of edges.
 
         Parameters
         ----------
         text : dict
             A dictionary of edge labels as key-text pairs.
-            The default value is ``None``, in which case every edge of the network
-            will be labelled with its key.
+            The default value is ``None``, in which case every edge will be labelled with its key.
         color : str, tuple, dict
             The color sepcification of the labels.
             String values are interpreted as hex colors (e.g. ``'#ff0000'`` for red).
             Tuples are interpreted as RGB component specifications (e.g. ``(255, 0, 0) for red``.
-            If a dictionary of specififcations is provided, the keys of the
-            should refer to edge keys in the network and the values should be color
-            specifications in the form of strings or tuples.
-            The default value is ``None``, in which case the labels are assigned
-            the default edge color (``self.defaults['color.edge']``).
+            Individual colors can be assigned using a dictionary
+            of key-color pairs. Missing keys will be assigned the default face
+            color (``self.defaults['edge.color']``).
+            The default is ``None``, in which case all edges are assigned the
+            default edge color.
 
         Notes
         -----
         All labels are assigned a name using the folling template:
         ``"{}.edge.{}".format(self.datastructure.name, key)``.
-
-        Examples
-        --------
-        >>>
 
         """
         if text is None:
@@ -127,7 +133,7 @@ class EdgeArtist(object):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.datastructure.attributes.get('color.edge'),
+                                       default=self.defaults.get('color.edge'),
                                        colorformat='rgb',
                                        normalize=False)
         labels = []

@@ -4,6 +4,7 @@ from __future__ import division
 
 from math import pi
 from math import fabs
+from random import sample
 
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import cross_vectors
@@ -16,17 +17,12 @@ from compas.geometry.distance import distance_point_plane
 from compas.geometry.distance import distance_point_line
 from compas.geometry.distance import distance_point_line_xy
 from compas.geometry.distance import closest_point_on_segment
+from compas.geometry.distance import closest_point_on_segment_xy
 
 from compas.geometry.size import area_triangle
 
 from compas.geometry.angles import angle_vectors
-from compas.geometry.average import center_of_mass_polygon
-
-
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+from compas.geometry.average import centroid_polygon
 
 
 __all__ = [
@@ -43,12 +39,14 @@ __all__ = [
     'is_point_on_segment',
     'is_point_on_segment_xy',
     'is_point_on_polyline',
+    'is_point_on_polyline_xy',
     'is_point_in_triangle',
     'is_point_in_triangle_xy',
     'is_point_in_polygon_xy',
     'is_point_in_convex_polygon_xy',
     'is_point_in_circle',
     'is_point_in_circle_xy',
+    'is_polygon_in_polygon_xy',
     'is_intersection_line_line',
     'is_intersection_line_line_xy',
     'is_intersection_segment_segment',
@@ -61,7 +59,7 @@ __all__ = [
 
 
 def is_ccw_xy(a, b, c, colinear=False):
-    """Verify if c is on the left of ab when looking from a to b,
+    """Determine if c is on the left of ab when looking from a to b,
     and assuming that all points lie in the XY plane.
 
     Parameters
@@ -117,7 +115,7 @@ def is_ccw_xy(a, b, c, colinear=False):
 
 
 def is_colinear(a, b, c):
-    """Verify if three points are colinear.
+    """Determine if three points are colinear.
 
     Parameters
     ----------
@@ -139,7 +137,7 @@ def is_colinear(a, b, c):
 
 
 def is_colinear_xy(a, b, c):
-    """Verify if three points are colinear in the XY plane.
+    """Determine if three points are colinear in the XY plane.
 
     Parameters
     ----------
@@ -166,7 +164,7 @@ def is_colinear_xy(a, b, c):
 
 
 def is_coplanar(points, tol=0.01):
-    """Verify if the points are coplanar.
+    """Determine if the points are coplanar.
 
     Parameters
     ----------
@@ -204,11 +202,13 @@ def is_coplanar(points, tol=0.01):
     # len(points) > 4
     # compare length of cross product vector to tolerance
 
-    u = subtract_vectors(points[1], points[0])
-    v = subtract_vectors(points[2], points[1])
+    a, b, c = sample(points, 3)
+
+    u = subtract_vectors(b, a)
+    v = subtract_vectors(c, a)
     w = cross_vectors(u, v)
 
-    for i in range(1, len(points) - 2):
+    for i in range(0, len(points) - 2):
         u = v
         v = subtract_vectors(points[i + 2], points[i + 1])
         wuv = cross_vectors(w, cross_vectors(u, v))
@@ -220,7 +220,7 @@ def is_coplanar(points, tol=0.01):
 
 
 def is_polygon_convex(polygon):
-    """Verify if a polygon is convex.
+    """Determine if a polygon is convex.
 
     Parameters
     ----------
@@ -237,7 +237,7 @@ def is_polygon_convex(polygon):
     is_polygon_convex_xy
 
     """
-    c = center_of_mass_polygon(polygon)
+    c = centroid_polygon(polygon)
 
     for i in range(-1, len(polygon) - 1):
         p0 = polygon[i]
@@ -255,7 +255,7 @@ def is_polygon_convex(polygon):
 
 
 def is_polygon_convex_xy(polygon, colinear=False):
-    """Verify if the polygon is convex in the XY-plane.
+    """Determine if the polygon is convex in the XY-plane.
 
     Parameters
     ----------
@@ -287,7 +287,7 @@ def is_polygon_convex_xy(polygon, colinear=False):
 
 
 def is_point_on_plane(point, plane, tol=0.0):
-    """Verify if a point lies in a plane.
+    """Determine if a point lies in a plane.
 
     Parameters
     ----------
@@ -309,7 +309,7 @@ def is_point_on_plane(point, plane, tol=0.0):
 
 
 def is_point_infront_plane(point, plane):
-    """Verify if a point lies in front of a plane.
+    """Determine if a point lies in front of a plane.
 
     Parameters
     ----------
@@ -330,7 +330,7 @@ def is_point_infront_plane(point, plane):
 
 
 def is_point_on_line(point, line, tol=0.0):
-    """Verify if a point lies on a line.
+    """Determine if a point lies on a line.
 
     Parameters
     ----------
@@ -352,7 +352,7 @@ def is_point_on_line(point, line, tol=0.0):
 
 
 def is_point_on_line_xy(point, line, tol=0.0):
-    """Verify if a point lies on a line in the XY-plane.
+    """Determine if a point lies on a line in the XY-plane.
 
     Parameters
     ----------
@@ -375,7 +375,7 @@ def is_point_on_line_xy(point, line, tol=0.0):
 
 
 def is_point_on_segment(point, segment, tol=0.0):
-    """Verify if a point lies on a given line segment.
+    """Determine if a point lies on a given line segment.
 
     Parameters
     ----------
@@ -411,7 +411,7 @@ def is_point_on_segment(point, segment, tol=0.0):
 
 
 def is_point_on_segment_xy(point, segment, tol=0.0):
-    """Verify if a point lies on a given line segment in the XY-plane.
+    """Determine if a point lies on a given line segment in the XY-plane.
 
     Parameters
     ----------
@@ -447,7 +447,7 @@ def is_point_on_segment_xy(point, segment, tol=0.0):
 
 
 # def is_closest_point_on_segment(point, segment, tol=0.0, return_point=False):
-#     """Verify if the closest point on the line of a segment is on the segment.
+#     """Determine if the closest point on the line of a segment is on the segment.
 
 #     Parameters
 #     ----------
@@ -487,7 +487,7 @@ def is_point_on_segment_xy(point, segment, tol=0.0):
 
 
 def is_point_on_polyline(point, polyline, tol=0.0):
-    """Verify if a point is on a polyline.
+    """Determine if a point is on a polyline.
 
     Parameters
     ----------
@@ -517,8 +517,39 @@ def is_point_on_polyline(point, polyline, tol=0.0):
     return False
 
 
+def is_point_on_polyline_xy(point, polyline, tol=0.0):
+    """Determine if a point is on a polyline in the XY plane.
+
+    Parameters
+    ----------
+    point : sequence of float
+        XY(Z) coordinates.
+    polyline : sequence of sequence of float
+        XY(Z) coordinates of the points of the polyline.
+    tol : float, optional
+        The tolerance.
+        Default is ``0.0``.
+
+    Returns
+    -------
+    bool
+        ``True`` if the point is on the polyline.
+        ``False`` otherwise.
+
+    """
+    for i in range(len(polyline) - 1):
+        a = polyline[i]
+        b = polyline[i + 1]
+        c = closest_point_on_segment_xy(point, (a, b))
+
+        if distance_point_point_xy(point, c) <= tol:
+            return True
+
+    return False
+
+
 def is_point_in_triangle(point, triangle):
-    """Verify if a point is in the interior of a triangle.
+    """Determine if a point is in the interior of a triangle.
 
     Parameters
     ----------
@@ -564,7 +595,7 @@ def is_point_in_triangle(point, triangle):
 
 
 def is_point_in_triangle_xy(point, triangle, colinear=False):
-    """Verify if a point is in the interior of a triangle lying in the XY-plane.
+    """Determine if a point is in the interior of a triangle lying in the XY-plane.
 
     Parameters
     ----------
@@ -596,7 +627,7 @@ def is_point_in_triangle_xy(point, triangle, colinear=False):
 
 
 def is_point_in_convex_polygon_xy(point, polygon):
-    """Verify if a point is in the interior of a convex polygon lying in the XY-plane.
+    """Determine if a point is in the interior of a convex polygon lying in the XY-plane.
 
     Parameters
     ----------
@@ -631,21 +662,27 @@ def is_point_in_convex_polygon_xy(point, polygon):
 
 
 def is_point_in_polygon_xy(point, polygon):
-    """Verify if a point is in the interior of a polygon lying in the XY-plane.
+    """Determine if a point is in the interior of a polygon lying in the XY-plane.
 
-    Parameters:
-        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-        polygon (sequence) : A sequence of XY(Z) coordinates of 2D or 3D points
-        (Z will be ignored) representing the locations of the corners of a polygon.
-        The vertices are assumed to be in order. The polygon is assumed to be closed:
-        the first and last vertex in the sequence should not be the same.
+    Parameters
+    ----------
+    point : sequence of float
+        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+    polygon : sequence
+        A sequence of XY(Z) coordinates of 2D or 3D points (Z will be ignored) representing the locations of the corners of a polygon.
+        The vertices are assumed to be in order.
+        The polygon is assumed to be closed.
+        The first and last vertex in the sequence should not be the same.
 
-    Warning:
-        A boundary check is not yet implemented.
-        This should include a tolerance value.
+    Warning
+    -------
+    A boundary check is not yet implemented. This should include a tolerance value.
 
-    Returns:
-        bool: True if the point is in the polygon, False otherwise.
+    Returns
+    -------
+    bool
+        True if the point is in the polygon, False otherwise.
+
     """
     x, y = point[0], point[1]
     polygon = [(p[0], p[1]) for p in polygon]  # make 2D
@@ -664,7 +701,7 @@ def is_point_in_polygon_xy(point, polygon):
 
 
 def is_point_in_circle(point, circle):
-    """Verify if a point lies in a circle.
+    """Determine if a point lies in a circle.
 
     Parameters:
         point (sequence of float): XYZ coordinates of a 3D point.
@@ -681,7 +718,7 @@ def is_point_in_circle(point, circle):
 
 
 def is_point_in_circle_xy(point, circle):
-    """Verify if a point lies in a circle lying in the XY plane.
+    """Determine if a point lies in a circle lying in the XY plane.
 
     Parameters:
         point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
@@ -696,6 +733,45 @@ def is_point_in_circle_xy(point, circle):
         return True
     return False
 
+
+def is_polygon_in_polygon_xy(polygon1, polygon2):
+    """Determine if a polygon is in the interior of another polygon, both lying in the XY-plane.
+
+    Parameters
+    ----------
+    polygon1 : list
+        List of XY(Z) coordinates of 2D or 3D points
+        (Z will be ignored) representing the locations of the corners of the exterior polygon.
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
+    polygon2 : list
+        List of XY(Z) coordinates of 2D or 3D points
+        (Z will be ignored) representing the locations of the corners of the interior polygon.
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
+
+    Returns
+    -------
+    bool
+        True if polygon2 is inside polygon1, False otherwise.
+
+    """
+    if is_polygon_convex_xy(polygon1) and is_polygon_convex_xy(polygon2):
+        for pt in polygon2:
+            if not is_point_in_convex_polygon_xy(pt, polygon1):
+                return False
+        return True
+    else:
+        for i in range(len(polygon1)):
+            line = [polygon1[-i], polygon1[-i - 1]]
+            for j in range(len(polygon2)):
+                line_ = [polygon2[-j], polygon2[j - 1]]
+                if is_intersection_segment_segment_xy(line, line_):
+                    return False
+        for pt in polygon2:
+            if is_point_in_polygon_xy(pt, polygon1):
+                return True
+        return False
 
 # ==============================================================================
 # intersections
@@ -734,7 +810,7 @@ def is_intersection_line_line(l1, l2, epsilon=1e-6):
 
 
 def is_intersection_line_line_xy(l1, l2):
-    """Verify if two lines intersect in 2d lying in the XY plane.
+    """Determine if two lines intersect in 2d lying in the XY plane.
 
     Parameters:
         l1 (tuple):
@@ -752,7 +828,7 @@ def is_intersection_segment_segment():
 
 
 def is_intersection_segment_segment_xy(ab, cd):
-    """Verify if two the segments ab and cd intersect?
+    """Determine if two the segments ab and cd intersect?
 
     Two segments a-b and c-d intersect, if both of the following conditions are true:
 
@@ -844,7 +920,7 @@ def is_intersection_line_triangle(line, triangle, epsilon=1e-6):
 
 
 def is_intersection_line_plane(line, plane, epsilon=1e-6):
-    """Verify if a line (continuous ray) intersects with a plane.
+    """Determine if a line (continuous ray) intersects with a plane.
 
     Parameters:
         line (tuple): Two points defining the line.
@@ -866,7 +942,7 @@ def is_intersection_line_plane(line, plane, epsilon=1e-6):
 
 
 def is_intersection_segment_plane(segment, plane, epsilon=1e-6):
-    """Verify if a line segment intersects with a plane.
+    """Determine if a line segment intersects with a plane.
 
     Parameters:
         segment (tuple): Two points defining the line segment.
@@ -909,12 +985,20 @@ def is_intersection_plane_plane(plane1, plane2, epsilon=1e-6):
     return True
 
 
-
-
-
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    import os
+    import compas
+
+    from compas.datastructures import Mesh
+
+    mesh = Mesh.from_json(os.path.join(compas.TEMP, 'm11.json'))
+
+    xyz = mesh.get_vertices_attributes('xyz')
+    xyz = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [3.0, 1.0, 0.5]]
+
+    print(is_coplanar(xyz))

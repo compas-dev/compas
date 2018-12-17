@@ -4,26 +4,28 @@ from __future__ import division
 
 from compas.geometry.objects import Vector
 
-from compas.geometry import distance_point_point
-from compas.geometry import distance_point_line
-from compas.geometry import distance_point_plane
-from compas.geometry import project_point_plane
-from compas.geometry import project_point_line
-from compas.geometry import is_point_in_triangle
-from compas.geometry import transform
+from compas.geometry.distance import distance_point_point
+from compas.geometry.distance import distance_point_line
+from compas.geometry.distance import distance_point_plane
 
+from compas.geometry.queries import is_point_on_line
+from compas.geometry.queries import is_point_on_segment
+from compas.geometry.queries import is_point_on_polyline
+from compas.geometry.queries import is_point_in_triangle
+from compas.geometry.queries import is_point_in_circle
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'GNU - General Public License'
-__email__      = 'vanmelet@ethz.ch'
+from compas.geometry.queries import is_polygon_convex_xy
+from compas.geometry.queries import is_point_in_polygon_xy
+from compas.geometry.queries import is_point_in_convex_polygon_xy
+
+from compas.geometry.transformations import transform_points
 
 
 __all__ = ['Point']
 
 
 class Point(object):
-    """A three-dimensional location in space.
+    """A point is defined by XYZ coordinates.
 
     Parameters
     ----------
@@ -34,15 +36,9 @@ class Point(object):
     z : float, optional
         The Z coordinate of the point.
         Default is ``0.0``.
-
-    Attributes
-    ----------
-    x : float
-        The X coordinate of the point.
-    y : float
-        The Y coordinate of the point.
-    z : float
-        The Z coordinate of the point.
+    precision : integer, optional
+        The number of fractional digits used in the representation of the coordinates of the point.
+        Default is ``3``.
 
     Examples
     --------
@@ -93,16 +89,17 @@ class Point(object):
 
     """
 
-    __slots__ = ['_x', '_y', '_z', 'precision']
+    __slots__ = ['_x', '_y', '_z', '_precision']
 
-    def __init__(self, x, y, z=0.0):
+    def __init__(self, x, y, z=0.0, precision=None):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
+        self._precision = 3
         self.x = x
         self.y = y
         self.z = z
-        self.precision = '3f'
+        self.precision = precision
 
     # ==========================================================================
     # factory
@@ -114,6 +111,7 @@ class Point(object):
 
     @property
     def x(self):
+        """float: The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -122,6 +120,7 @@ class Point(object):
 
     @property
     def y(self):
+        """float: The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -130,18 +129,29 @@ class Point(object):
 
     @property
     def z(self):
+        """float: The Z coordinate of the point."""
         return self._z
 
     @z.setter
     def z(self, z):
         self._z = float(z)
 
+    @property
+    def precision(self):
+        """int: The number of fractional digits used in the representation of the coordinates of the point."""
+        return self._precision
+
+    @precision.setter
+    def precision(self, value):
+        if isinstance(value, int) and value > 0:
+            self._precision = value
+
     # ==========================================================================
     # representation
     # ==========================================================================
 
     def __repr__(self):
-        return 'Point({0:.{3}}, {1:.{3}}, {2:.{3}})'.format(self.x, self.y, self.z, self.precision)
+        return 'Point({0:.{3}f}, {1:.{3}f}, {2:.{3}f})'.format(self.x, self.y, self.z, self.precision)
 
     def __len__(self):
         return 3
@@ -183,16 +193,20 @@ class Point(object):
     # ==========================================================================
 
     def __eq__(self, other):
-        """Is this point equal to the other point? Tow points are considered
+        """Is this point equal to the other point? Two points are considered
         equal if their XYZ coordinates are identical.
 
-        Notes:
-            Perhaps it makes sense to add a *precision* attribute to the point
-            class. This would allow comparisons to be made up to a certain
-            tolerance.
+        Parameters
+        ----------
+        other : point
+            The point to compare.
 
-        Parameters:
-            other (sequence, Point): The point to compare.
+        Returns
+        -------
+        bool
+            True if the points are equal.
+            False otherwise.
+
         """
         return self.x == other[0] and self.y == other[1] and self.z == other[2]
 
@@ -201,16 +215,35 @@ class Point(object):
     # ==========================================================================
 
     def __add__(self, other):
+        """Return a ``Point`` that is the sum of this ``Point`` and another point.
+
+        Parameters
+        ----------
+        other : point
+            The point to add.
+
+        Returns
+        -------
+        Point
+            The resulting new point.
+
+        """
         return Point(self.x + other[0], self.y + other[1], self.z + other[2])
 
     def __sub__(self, other):
-        """Create a vector from other to self.
+        """Return a ``Vector`` that is the the difference between this ``Point``
+        and another point.
 
-        Parameters:
-            other (sequence, Point): The point to subtract.
+        Parameters
+        ----------
+        other : point
+            The point to subtract.
 
-        Returns:
-            Vector: A vector from other to self
+        Returns
+        -------
+        Vector
+            A vector from other to self.
+
         """
         x = self.x - other[0]
         y = self.y - other[1]
@@ -218,9 +251,54 @@ class Point(object):
         return Vector(x, y, z)
 
     def __mul__(self, n):
+        """Create a ``Point`` from the coordinates of the current ``Point`` multiplied
+        by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+
+        Returns
+        -------
+        Point
+            The resulting new ``Point``.
+
+        """
         return Point(n * self.x, n * self.y, n * self.z)
+    
+    def __truediv__(self, n):
+        """Create a ``Point`` from the coordinates of the current ``Point`` 
+        divided by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+
+        Returns
+        -------
+        Point
+            The resulting new ``Point``.
+
+        """
+        return Point(self.x / n, self.y / n, self.z / n)
 
     def __pow__(self, n):
+        """Create a ``Point`` from the coordinates of the current ``Point`` raised
+        to the given power.
+
+        Parameters
+        ----------
+        n : float
+            The power.
+
+        Returns
+        -------
+        Point
+            A new point with raised coordinates.
+
+        """
         return Point(self.x ** n, self.y ** n, self.z ** n)
 
     # ==========================================================================
@@ -228,49 +306,279 @@ class Point(object):
     # ==========================================================================
 
     def __iadd__(self, other):
+        """Add the coordinates of the other point to this ``Point``.
+
+        Parameters
+        ----------
+        other : point
+            The point to add.
+
+        """
         self.x += other[0]
         self.y += other[1]
         self.z += other[2]
         return self
 
     def __isub__(self, other):
+        """Subtract the coordinates of the other point from this ``Point``.
+
+        Parameters
+        ----------
+        other : point
+            The point to subtract.
+
+        """
         self.x -= other[0]
         self.y -= other[1]
         self.z -= other[2]
         return self
 
     def __imul__(self, n):
+        """Multiply the coordinates of this ``Point`` by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+
+        """
         self.x *= n
         self.y *= n
         self.z *= n
         return self
 
+    def __itruediv__(self, n):
+        """Divide the coordinates of this ``Point`` by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+
+        """
+        self.x /= n
+        self.y /= n
+        self.z /= n
+        return self
+
     def __ipow__(self, n):
+        """Raise the coordinates of this ``Point`` to the given power.
+
+        Parameters
+        ----------
+        n : float
+            The power.
+
+        """
         self.x **= n
         self.y **= n
         self.z **= n
         return self
 
     # ==========================================================================
-    # methods: other
+    # helpers
+    # ==========================================================================
+
+    def copy(self):
+        """Make a copy of this ``Point``.
+
+        Returns
+        -------
+        Point
+            The copy.
+
+        """
+        cls = type(self)
+        return cls(self.x, self.y, self.z, self.precision)
+
+    # ==========================================================================
+    # methods
     # ==========================================================================
 
     def distance_to_point(self, point):
+        """Compute the distance to another point.
+
+        Parameters
+        ----------
+        point : point
+            The other point.
+
+        Returns
+        -------
+        float
+            The distance.
+
+        """
         return distance_point_point(self, point)
 
     def distance_to_line(self, line):
+        """Compute the distance to a line.
+
+        Parameters
+        ----------
+        line : line
+            The line.
+
+        Returns
+        -------
+        float
+            The distance.
+
+        """
         return distance_point_line(self, line)
 
     def distance_to_plane(self, plane):
+        """Compute the distance to a plane.
+
+        Parameters
+        ----------
+        plane : plane
+            The plane.
+
+        Returns
+        -------
+        float
+            The distance.
+
+        """
         return distance_point_plane(self, plane)
 
+    def on_line(self, line):
+        """Determine if the point lies on the given line.
+
+        Parameters
+        ----------
+        line : line
+            The line.
+
+        Returns
+        -------
+        bool
+            True, if the point lies on the line.
+            False, otherwise.
+
+        """
+        return is_point_on_line(self, line)
+
+    def on_segment(self, segment):
+        """Determine if the point lies on the given segment.
+
+        Parameters
+        ----------
+        segment : segment
+            The segment.
+
+        Returns
+        -------
+        bool
+            True, if the point lies on the segment.
+            False, otherwise.
+
+        """
+        return is_point_on_segment(self, segment)
+
+    def on_polyline(self, polyline):
+        """Determine if the point lies on the given polyline.
+
+        Parameters
+        ----------
+        polyline : polyline
+            The polyline.
+
+        Returns
+        -------
+        bool
+            True, if the point lies on the polyline.
+            False, otherwise.
+
+        """
+        return is_point_on_polyline(self, polyline)
+
+    def on_circle(self, circle):
+        """Determine if the point lies on the given circle.
+
+        Parameters
+        ----------
+        circle : circle
+            The circle.
+
+        Returns
+        -------
+        bool
+            True, if the point lies on the circle.
+            False, otherwise.
+
+        """
+        raise NotImplementedError
+
     def in_triangle(self, triangle):
+        """Determine if the point lies in the given triangle.
+
+        Parameters
+        ----------
+        triangle : triangle
+            The triangle.
+
+        Returns
+        -------
+        bool
+            True, if the point lies in the triangle.
+            False, otherwise.
+
+        """
         return is_point_in_triangle(self, triangle)
 
     def in_polygon(self, polygon):
-        raise NotImplementedError
+        """Determine if the point lies in the given polygon.
+
+        Parameters
+        ----------
+        polyline : polyline
+            The polyline.
+
+        Returns
+        -------
+        bool
+            True, if the point lies on the polyline.
+            False, otherwise.
+
+        """
+        if is_polygon_convex_xy(polygon):
+            return is_point_in_convex_polygon_xy(self, polygon)
+        return is_point_in_polygon_xy(self, polygon)
+
+    def in_circle(self, circle):
+        """Determine if the point lies on the given polyline.
+
+        Parameters
+        ----------
+        polyline : polyline
+            The polyline.
+
+        Returns
+        -------
+        bool
+            True, if the point lies on the polyline.
+            False, otherwise.
+
+        """
+        return is_point_in_circle(self, circle)
 
     def in_polyhedron(self, polyhedron):
+        """Determine if the point lies on the given polyline.
+
+        Parameters
+        ----------
+        polyline : polyline
+            The polyline.
+
+        Returns
+        -------
+        bool
+            True, if the point lies on the polyline.
+            False, otherwise.
+
+        """
         raise NotImplementedError
 
     # ==========================================================================
@@ -278,23 +586,36 @@ class Point(object):
     # ==========================================================================
 
     def transform(self, matrix):
-        points = transform([self, ], matrix)
-        self.x = points[0][0]
-        self.y = points[0][1]
-        self.z = points[0][2]
+        """Transform this ``Point`` using a given transformation matrix.
 
-    def translate(self, vector):
-        self.x += vector.x
-        self.y += vector.y
-        self.z += vector.z
-        return self
+        Parameters
+        ----------
+        matrix : list of list
+            The transformation matrix.
 
-    def project_to_line(self, line):
-        pass
+        """
+        point = transform_points([self], matrix)[0]
+        self.x = point[0]
+        self.y = point[1]
+        self.z = point[2]
 
-    def project_to_plane(self, plane):
-        plane = (plane.point, plane.normal)
-        return project_point_plane(self, plane)
+    def transformed(self, matrix):
+        """Return a transformed copy of this ``Point`` using a given transformation matrix.
+
+        Parameters
+        ----------
+        matrix : list of list
+            The transformation matrix.
+
+        Returns
+        -------
+        Point
+            The transformed copy.
+
+        """
+        point = self.copy()
+        point.transform(matrix)
+        return point
 
 
 # ==============================================================================
@@ -303,21 +624,32 @@ class Point(object):
 
 if __name__ == '__main__':
 
+    from math import pi
+
     from compas.geometry import Point
     from compas.geometry import Vector
     from compas.geometry import Plane
     from compas.geometry import Line
     from compas.geometry import Polygon
 
+    from compas.geometry import matrix_from_axis_and_angle
+
+
+    M = matrix_from_axis_and_angle([0, 0, 1], pi / 2)
+
 
     point    = Point(0.0, 0.0, 0.0)
     normal   = Vector(0.0, 0.0, 1.0)
-    plane    = Plane.from_point_and_normal(point, normal)
+    plane    = Plane(point, normal)
     line     = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
     triangle = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
     polygon  = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
 
     p = Point(1.0, 1.0, 1.0)
+
+    p.transform(M)
+
+    print(*p)
 
     print(repr(p))
 

@@ -3,12 +3,10 @@ from __future__ import absolute_import
 from __future__ import division
 
 import abc
+import functools
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+__all__ = ['memoize']
 
 
 def add_metaclass(metaclass):
@@ -23,6 +21,20 @@ class abstractstatic(staticmethod):
         function.__isabstractmethod__ = True
 
     __isabstractmethod__ = True
+
+
+def memoize(func, *args, **kwargs):
+    """Decorator to wrap a function with a memoizing callable."""
+    cache = func.cache = {}
+
+    @functools.wraps(func)
+    def memoized_func(*args, **kwargs):
+        key = str(args) + str(kwargs)
+        if key not in cache:
+            cache[key] = func(*args, **kwargs)
+        return cache[key]
+
+    return memoized_func
 
 
 # ==============================================================================

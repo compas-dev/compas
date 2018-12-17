@@ -7,23 +7,22 @@ from math import cos
 from math import sqrt
 from math import pi
 
-from compas.geometry import *
+from compas.geometry.basic import length_vector
+from compas.geometry.basic import cross_vectors
+from compas.geometry.basic import subtract_vectors
+from compas.geometry.basic import dot_vectors
+from compas.geometry.angles import angle_vectors
+from compas.geometry.angles import angle_vectors_signed
+from compas.geometry.angles import angles_vectors
 
-
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+from compas.geometry.transformations import transform_vectors
 
 
 __all__ = ['Vector']
 
 
 class Vector(object):
-    """A vector object represents a vector in three-dimensional space.
-
-    The vector is defined as the difference vector between the start and end
-    point. The start point is optional and defaults to the origin [0, 0, 0].
+    """A vector is defined by XYZ components and a homogenisation factor.
 
     Parameters
     ----------
@@ -33,23 +32,9 @@ class Vector(object):
         The Y component of the vector.
     z : float
         The Z component of the vector.
-    w : float, optional
-        Homogenisation factor.
-        Default is ``1.0``.
-    unitize : bool, optional
-        Unitize the vector.
-        Default is ``False``.
-
-    Attributes
-    ----------
-    x : float
-        The X component of the vector.
-    y : float
-        The Y component of the vector.
-    z : float
-        The Z component of the vector.
-    length : float, **read-only**
-        The length of the vector.
+    precision : integer, optional
+        The number of fractional digits used in the representation of the coordinates of the vector.
+        Default is ``3``.
 
     Examples
     --------
@@ -78,19 +63,17 @@ class Vector(object):
 
     """
 
-    __slots__ = ['_x', '_y', '_z', '_w']
+    __slots__ = ['_x', '_y', '_z', '_precision']
 
-    def __init__(self, x, y, z, w=1.0, unitize=False):
+    def __init__(self, x, y, z, precision=None):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
-        self._w = 1.0
+        self._precision = 3
         self.x = x
         self.y = y
         self.z = z
-        self.w = w
-        if unitize:
-            self.unitize()
+        self.precision = precision
 
     # ==========================================================================
     # factory
@@ -98,6 +81,21 @@ class Vector(object):
 
     @classmethod
     def from_start_end(cls, start, end):
+        """Construct a ``Vector`` from start and end points.
+
+        Parameters
+        ----------
+        start : point
+            The start point.
+        end : point
+            The end point.
+
+        Returns
+        -------
+        Vector
+            The vector from start to end.
+
+        """
         v = subtract_vectors(end, start)
         return cls(*v)
 
@@ -107,6 +105,7 @@ class Vector(object):
 
     @property
     def x(self):
+        """float: The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -115,6 +114,7 @@ class Vector(object):
 
     @property
     def y(self):
+        """float: The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -123,6 +123,7 @@ class Vector(object):
 
     @property
     def z(self):
+        """float: The Z coordinate of the point."""
         return self._z
 
     @z.setter
@@ -130,19 +131,24 @@ class Vector(object):
         self._z = float(z)
 
     @property
-    def w(self):
-        return self._w
+    def precision(self):
+        """int: The number of fractional digits used in the representation of the coordinates of the point."""
+        return self._precision
 
-    @w.setter
-    def w(self, w):
-        self._w = float(w)
+    @precision.setter
+    def precision(self, value):
+        if isinstance(value, int) and value > 0:
+            self._precision = value
 
     # ==========================================================================
     # representation
     # ==========================================================================
 
     def __repr__(self):
-        return '[{0}, {1}, {2}]'.format(self.x, self.y, self.z)
+        return 'Vector({0:.{3}f}, {1:.{3}f}, {2:.{3}f})'.format(self.x, self.y, self.z, self.precision)
+
+    def __len__(self):
+        return 3
 
     # ==========================================================================
     # access
@@ -180,48 +186,107 @@ class Vector(object):
     # comparison
     # ==========================================================================
 
+    def __eq__(self, other):
+        """Is this vector equal to the other vector? Two vectors are considered
+        equal if their XYZ components are identical.
+
+        Parameters
+        ----------
+        other : vector
+            The vector to compare.
+
+        Returns
+        -------
+        bool
+            True if the vectors are equal.
+            False otherwise.
+
+        """
+        return self.x == other[0] and self.y == other[1] and self.z == other[2]
+
     # ==========================================================================
     # operators
     # ==========================================================================
 
     def __add__(self, other):
-        """Compute the sum of this ``Vector`` and another ``Vector``.
+        """Return a ``Vector`` that is the the sum of this ``Vector`` and another vector.
 
-        Parameters:
-            other (tuple, list, Vector): The vector to add.
+        Parameters
+        ----------
+        other : vector
+            The vector to add.
 
-        Returns:
-            Vector: The vector sum.
+        Returns
+        -------
+        Vector
+            The resulting new ``Vector``.
+
         """
         return Vector(self.x + other[0], self.y + other[1], self.z + other[2])
 
     def __sub__(self, other):
-        """Compute the difference between this ``Vector`` and another ``Vector``.
+        """Return a ``Vector`` that is the the difference between this ``Vector`` and another ``Vector``.
 
-        Parameters:
-            other (tuple, list, Vector): The vector to subtract.
+        Parameters
+        ----------
+        other : vector
+            The vector to subtract.
 
-        Returns:
-            Vector: The vector difference.
+        Returns
+        -------
+        Vector
+            The resulting new ``Vector``.
+
         """
         return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
 
     def __mul__(self, n):
-        """Scale this ``Vector`` by a factor.
+        """Return a ``Vector`` that is the scaled version of this ``Vector``.
 
-        Parameters:
-            n (int, float): The scaling factor.
+        Parameters
+        ----------
+        n : float
+            The scaling factor.
 
-        Returns:
-            Vector: The scaled vector.
+        Returns
+        -------
+        Vector
+            The resulting new ``Vector``.
 
-        Examples:
-            >>> u = Vector([1, 0, 0])
-            >>> v = u * 2
         """
         return Vector(self.x * n, self.y * n, self.z * n)
 
+    def __truediv__(self, n):
+        """Return a ``Vector`` that is the scaled version of this ``Vector``.
+
+        Parameters
+        ----------
+        n : float
+            The scaling factor.
+
+        Returns
+        -------
+        Vector
+            The resulting new ``Vector``.
+
+        """
+        return Vector(self.x / n, self.y / n, self.z / n)
+
     def __pow__(self, n):
+        """Create a ``Vector`` from the components of the current ``Vector`` raised
+        to the given power.
+
+        Parameters
+        ----------
+        n : float
+            The power.
+
+        Returns
+        -------
+        Vector
+            A new point with raised coordinates.
+
+        """
         return Vector(self.x ** n, self.y ** n, self.z ** n)
 
     # ==========================================================================
@@ -229,40 +294,82 @@ class Vector(object):
     # ==========================================================================
 
     def __iadd__(self, other):
+        """Add the components of the other vector to this ``Vector``.
+
+        Parameters
+        ----------
+        other : vector
+            The vector to add.
+
+        """
         self.x += other[0]
         self.y += other[1]
         self.z += other[2]
         return self
 
     def __isub__(self, other):
+        """Subtract the components of the other vector from this ``Vector``.
+
+        Parameters
+        ----------
+        other : vector
+            The vector to subtract.
+
+        """
         self.x -= other[0]
         self.y -= other[1]
         self.z -= other[2]
         return self
 
     def __imul__(self, n):
+        """Multiply the components of this ``Vector`` by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+
+        """
         self.x *= n
         self.y *= n
         self.z *= n
         return self
 
+    def __itruediv__(self, n):
+        """Divide the components of this ``Vector`` by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+
+        """
+        self.x /= n
+        self.y /= n
+        self.z /= n
+        return self
+
     def __ipow__(self, n):
+        """Raise the components of this ``Vector`` to the given power.
+
+        Parameters
+        ----------
+        n : float
+            The power.
+
+        """
         self.x **= n
         self.y **= n
         self.z **= n
         return self
 
     # ==========================================================================
-    # methods: static
+    # static methods
     # ==========================================================================
 
     @staticmethod
     def length_vectors(vectors):
         return [length_vector(vector) for vector in vectors]
-
-    @staticmethod
-    def norm_vectors(vectors):
-        return [norm_vector(vector) for vector in vectors]
 
     @staticmethod
     def sum_vectors(vectors):
@@ -283,6 +390,10 @@ class Vector(object):
     @staticmethod
     def angle_vectors(left, right):
         return [angle_vectors(u, v) for u, v in zip(left, right)]
+    
+    @staticmethod
+    def angle_vectors_signed(left, right, normal):
+        return [angle_vectors_signed(u, v, normal) for u, v in zip(left, right)]
 
     @staticmethod
     def homogenise_vectors(vectors):
@@ -293,7 +404,7 @@ class Vector(object):
         pass
 
     @staticmethod
-    def orthonormalise_vectors(vectors):
+    def orthonormalize_vectors(vectors):
         pass
 
     # ==========================================================================
@@ -302,10 +413,7 @@ class Vector(object):
 
     @property
     def length(self):
-        return length_vector(self)
-
-    @property
-    def norm(self):
+        """float: The length of this ``Vector``."""
         return length_vector(self)
 
     # ==========================================================================
@@ -313,122 +421,158 @@ class Vector(object):
     # ==========================================================================
 
     def copy(self):
-        return Vector(self.x, self.y, self.z)
+        """Make a copy of this ``Vector``.
+
+        Returns
+        -------
+        Vector
+            The copy.
+
+        """
+        cls = type(self)
+        return cls(self.x, self.y, self.z, self.precision)
 
     # ==========================================================================
-    # methods: none
+    # methods
     # ==========================================================================
 
     def unitize(self):
+        """Scale this ``Vector`` to unit length."""
         l = self.length
         self.x = self.x / l
         self.y = self.y / l
         self.z = self.z / l
 
-    def homogenise(self, w=1.0):
-        self.x = self.x / w
-        self.y = self.y / w
-        self.z = self.z / w
-        self.w = w
-
-    def dehomogenise(self):
-        self.x *= self.w
-        self.y *= self.w
-        self.z *= self.w
-
-    def reverse(self):
-        self.x = - self.x
-        self.y = - self.y
-        self.z = - self.z
-
-    # ==========================================================================
-    # methods: float
-    # ==========================================================================
-
     def scale(self, n):
-        r"""Scale this vector by a factor n.
+        """Scale this ``Vector`` by a factor n.
 
-        Parameters:
-            n (int, float): The scaling factor.
+        Parameters
+        ----------
+        n : float
+            The scaling factor.
 
-        Notes:
-            This is an alias for self *= n
         """
-        self *= n
-
-    # ==========================================================================
-    # methods: other
-    # ==========================================================================
+        self.x *= n
+        self.y *= n
+        self.z *= n
 
     def dot(self, other):
-        """The dot product of this ``Vector`` and another ``Vector``.
+        """The dot product of this ``Vector`` and another vector.
 
-        Parameters:
-            other (tuple, list, Vector): The vector to dot.
+        Parameters
+        ----------
+        other : vector
+            The other vector.
 
-        Returns:
-            float: The dot product.
+        Returns
+        -------
+        float
+            The dot product.
+
         """
         return dot_vectors(self, other)
 
     def cross(self, other):
-        """The cross product of this ``Vector`` and another ``Vector``.
+        """The cross product of this ``Vector`` and another vector.
 
-        Parameters:
-            other (tuple, list, Vector): The vector to cross.
+        Parameters
+        ----------
+        other : vector
+            The other vector.
 
-        Returns:
-            Vector: The cross product.
+        Returns
+        -------
+        Vector
+            The cross product.
+
         """
         return Vector(* cross_vectors(self, other))
 
     def angle(self, other):
-        return angle_vectors(self, other)
-
-    def angles(self, other):
-        return angles_vectors(self, other)
-
-    # ==========================================================================
-    # methods: misc
-    # ==========================================================================
-
-    def transform(self, matrix):
-        points = transform([self, ], matrix)
-        self.x = points[0][0]
-        self.y = points[0][1]
-        self.z = points[0][2]
-
-    def rotate(self, angle, axis=None, origin=None):
-        """Rotate a vector u over an angle a around an axis k.
+        """Compute the smallest angle between this ``Vector`` and another vector.
 
         Parameters
         ----------
-        angle : float
-            The rotation angle in radians.
-        axis : list, Vector
-            The rotation axis.
-            Default is the Z axis (``[0.0, 0.0, 1.0]``).
-        origin : list, Point
-            The origin of the rotation axis.
-            Default is ``[0.0, 0.0, 0.0]``.
+        other : vector
+            The other vector.
+
+        Returns
+        -------
+        float
+            The smallest angle between the two vectors.
 
         """
-        if axis is None:
-            axis = [0.0, 0.0, 1.0]
-        if origin is None:
-            origin = [0.0, 0.0, 0.0]
+        return angle_vectors(self, other)
+    
+    def angle_signed(self, other, normal):
+        """Compute the signed angle between this ``Vector`` and another vector.
 
-        points = rotate_points([self], axis, angle, origin)
+        Parameters
+        ----------
+        other : vector
+            The other vector.
+        normal : vector
+            The plane's normal spanned by this and the other vector.
 
-        self.x = points[0][0]
-        self.y = points[0][1]
-        self.z = points[0][2]
+        Returns
+        -------
+        float
+            The signed angle between the two vectors.
 
-    def project(self):
-        pass
+        """
+        return angle_vectors_signed(self, other, normal)
 
-    def reflect(self):
-        pass
+    def angles(self, other):
+        """Compute both angles between this ``Vector`` and another vector.
+
+        Parameters
+        ----------
+        other : vector
+            The other vector.
+
+        Returns
+        -------
+        tuple of float
+            The angles between the two vectors, with the snalles angle first.
+
+        """
+        return angles_vectors(self, other)
+
+    # ==========================================================================
+    # transformations
+    # ==========================================================================
+
+    def transform(self, matrix):
+        """Transform this ``Vector`` using a given transformation matrix.
+
+        Parameters
+        ----------
+        matrix : list of list
+            The transformation matrix.
+
+        """
+        point = transform_vectors([self], matrix)[0]
+        self.x = point[0]
+        self.y = point[1]
+        self.z = point[2]
+
+    def transformed(self, matrix):
+        """Return a transformed copy of this ``Vector`` using a given transformation matrix.
+
+        Parameters
+        ----------
+        matrix : list of list
+            The transformation matrix.
+
+        Returns
+        -------
+        Vector
+            The transformed copy.
+
+        """
+        vector = self.copy()
+        vector.transform(matrix)
+        return vector
 
 
 # ==============================================================================
@@ -442,6 +586,15 @@ if __name__ == '__main__':
     u = Vector(0.0, 0.0, 1.0)
     v = Vector(1.0, 0.0, 0.0)
 
-    u.rotate(pi / 4, v)
+    print(u.angle(v))
+    print(3.14159 / 2)
+
+    w = Vector.from_start_end(u, v)
+
+    print(w)
+
+    M = matrix_from_axis_and_angle(v, pi / 4)
+
+    u.transform(M)
 
     print(u)

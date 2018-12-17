@@ -1,5 +1,8 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
+import compas
 from compas_rhino.forms import Form
 
 try:
@@ -12,18 +15,11 @@ try:
     from System.Windows.Forms import TrackBar
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
+    if compas.is_ironpython() and compas.is_windows():
         raise
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['SliderForm', ]
+__all__ = ['SliderForm']
 
 
 class SliderForm(Form):

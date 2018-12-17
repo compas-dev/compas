@@ -3,12 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = []
 
 
@@ -21,7 +15,32 @@ class LAS(object):
 
 
     """
-    pass
+    def __init__(self, filepath, precision=None):
+        self.reader = LASReader(filepath)
+        self.parser = LASParser(self.reader, precision=precision)
+
+
+class LASReader(object):
+    """"""
+
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.read()
+
+    def read(self):
+        pass
+
+
+class LASParser(object):
+    """"""
+
+    def __init__(self, reader, precision):
+        self.reader = reader
+        self.precision = precision
+        self.parse()
+
+    def parse(self):
+        pass
 
 
 # ==============================================================================

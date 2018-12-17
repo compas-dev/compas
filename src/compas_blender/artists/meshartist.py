@@ -29,9 +29,9 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
         self.mesh = mesh
         self.defaults.update({
-            'color.vertex': (255, 255, 255),
-            'color.edge':   (0, 0, 0),
-            'color.face':   (210, 210, 210),
+            'color.vertex': [255, 255, 255],
+            'color.edge':   [0, 0, 0],
+            'color.face':   [110, 110, 110],
         })
 
 
@@ -70,32 +70,21 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh
 
 
-    # from compas_rhino.artists.meshartist import MeshArtist
+    poly = Polyhedron.generate(12)
 
-    # poly = Polyhedron.generate(12)
+    mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
 
-    # mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
+    artist = MeshArtist(mesh)
 
-    # artist = MeshArtist(mesh)
+    #artist.clear()
 
-    # artist.clear()
+    artist.draw_vertices(radius=0.01)
+    artist.draw_vertexlabels()
 
-    # artist.draw_vertices()
-    # artist.redraw(0.0)
+    artist.draw_edges(width=0.01)
+    artist.draw_edgelabels()
 
-    # artist.draw_vertexlabels()
-    # artist.redraw(1.0)
+    artist.draw_faces()
+    artist.draw_facelabels()
 
-    # artist.draw_faces()
-    # artist.redraw(1.0)
-
-    # artist.draw_facelabels()
-    # artist.redraw(1.0)
-
-    # artist.draw_edges()
-    # artist.redraw(1.0)
-
-    # artist.draw_edgelabels()
-    # artist.redraw(1.0)
-
-    # print(artist.save(os.path.join(compas.TEMP, 'test4.png')))
+    artist.redraw()

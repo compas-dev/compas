@@ -3,25 +3,17 @@ from __future__ import absolute_import
 from __future__ import division
 
 import sys
+import compas
 
 try:
     from numpy import asarray
     from scipy.linalg import svd
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>']
-__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-__all__ = [
-    'pca_numpy'
-]
+__all__ = ['pca_numpy']
 
 
 def pca_numpy(data):
@@ -59,7 +51,7 @@ def pca_numpy(data):
         import matplotlib.pyplot as plt
 
         from compas.geometry import matrix_from_axis_and_angle
-        from compas.geometry import transform_numpy
+        from compas.geometry import transform_points_numpy
 
         from compas.plotters import Axes3D
         from compas.plotters import Cloud3D
@@ -81,7 +73,7 @@ def pca_numpy(data):
 
         R = Rz.dot(Ry)
 
-        data = transform_numpy(data, R)
+        data = transform_points_numpy(data, R)
 
         average, vectors, values = pca_numpy(data)
 
@@ -126,7 +118,7 @@ def pca_numpy(data):
 
     # eigenvectors
     # ------------
-    # note: the eigenvectors are normalised
+    # note: the eigenvectors are normalized
     # note: vT is exactly what it says it will be => the transposed eigenvectors
     # => take the rows of vT, or the columns of v
     # the right-singular vectors of C (the columns of V or the rows of Vt)

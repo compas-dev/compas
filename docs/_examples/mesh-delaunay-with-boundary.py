@@ -1,17 +1,16 @@
-"""Delaunay triangulation with boundary"""
+"""Delaunay triangulation with boundary.
+
+author : Matthias Rippmann
+email  : rippmann@arch.ethz.ch
+
+"""
 
 import compas_rhino
 
 from compas.datastructures import Mesh
 from compas.topology import delaunay_from_points
 
-from compas_rhino.helpers import MeshArtist
-
-
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
+from compas_rhino.artists import MeshArtist
 
 
 # select the points
@@ -40,3 +39,4 @@ mesh = Mesh.from_vertices_and_faces(points, faces)
 
 artist = MeshArtist(mesh)
 artist.draw_faces(join_faces=True)
+artist.redraw()

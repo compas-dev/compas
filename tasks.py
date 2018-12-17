@@ -13,6 +13,8 @@ try:
     input = raw_input
 except NameError:
     pass
+
+
 BASE_FOLDER = os.path.dirname(__file__)
 
 
@@ -80,7 +82,7 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
     folders = []
 
     if docs:
-        folders.append('docs/reference/generated')
+        folders.append('docs/api/generated')
 
     folders.append('dist/')
 
@@ -122,11 +124,11 @@ def check(ctx):
     log.write('Checking metadata...')
     ctx.run('python setup.py check --strict --metadata')
 
-    log.write('Running flake8 python linter...')
-    ctx.run('flake8 src tests setup.py')
+    # log.write('Running flake8 python linter...')
+    # ctx.run('flake8 src tests setup.py')
 
-    log.write('Checking python imports...')
-    ctx.run('isort --check-only --diff --recursive src tests setup.py')
+    # log.write('Checking python imports...')
+    # ctx.run('isort --check-only --diff --recursive src tests setup.py')
 
 
 @task(help={
@@ -150,12 +152,16 @@ def release(ctx, release_type):
     if release_type not in ('patch', 'minor', 'major'):
         raise Exit('The release type parameter is invalid.\nMust be one of: major, minor, patch')
 
+    # Run checks
+    ctx.run('invoke check test')
+
     # Bump version and git tag it
     ctx.run('bumpversion %s --verbose' % release_type)
-    ctx.run('invoke docs test')
-    ctx.run('python setup.py clean --all sdist bdist_wheel')
-    # TODO: Add github release upload if required
 
+    # Build project
+    ctx.run('python setup.py clean --all sdist bdist_wheel')
+
+    # Upload to pypi
     if confirm('You are about to upload the release to pypi.org. Are you sure? [y/N]'):
         files = ['dist/*.whl', 'dist/*.gz', 'dist/*.zip']
         dist_files = ' '.join([pattern for f in files for pattern in glob.glob(f)])

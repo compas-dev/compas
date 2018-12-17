@@ -7,7 +7,7 @@ compas_hpc
 
 This package provides GPU-accelerated and compiled versions of many geometry,
 numerical and topological functions and algorithms. The package is built around
-`Numba`_, C, `PyCuda`_ and `PyOpenCL`_.
+`Numba`_, `PyCuda`_ and `PyOpenCL`_.
 
 .. _Numba: https://numba.pydata.org/
 .. _PyCuda: https://mathema.tician.de/software/pycuda/
@@ -28,6 +28,50 @@ algorithms
     :nosignatures:
 
     drx_numba
+
+
+linalg
+======
+
+linalg_numba
+------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    rotate_x_numba
+    rotate_y_numba
+    rotate_z_numba
+    trace_numba
+    diag_numba
+    diag_complex_numba
+    diag_fill_numba
+    diag_fill_complex_numba
+    scale_matrix_numba
+    scale_matrix_complex_numba
+    multiply_matrices_numba
+    multiply_matrices_complex_numba
+    divide_matrices_numba
+    divide_matrices_complex_numba
+    dot_numba
+    dotv_numba
+    transpose_numba
+
+linalg_cuda
+-----------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+
+linalg_cl
+---------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
 
 core
@@ -61,16 +105,6 @@ opencl
     ones_cl
     zeros_cl
     vstack_cl
-
-
-euler
------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    EulerSSH
 
 
 geometry
@@ -116,13 +150,13 @@ basic
     dot_vectors_xy_numba
     vector_component_numba
     vector_component_xy_numba
-    orthonormalise_vectors_numba
+    orthonormalize_vectors_numba
     plane_from_points_numba
     circle_from_points_numba
     circle_from_points_xy_numba
 
-average
--------
+average_numba
+-------------
 
 .. autosummary::
     :toctree: generated/
@@ -135,6 +169,16 @@ average
     center_of_mass_polyline_numba
     center_of_mass_polyline_xy_numba
 
+
+spatial_numba
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    distance_matrix_numba
+    closest_distance_field_numba
 
 """
 

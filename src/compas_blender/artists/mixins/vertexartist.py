@@ -21,8 +21,8 @@ __all__ = [
 class VertexArtist(object):
 
     __module__ = "compas_blender.artists.mixins"
-    
-    
+
+
     def clear_vertices(self, keys=None):
 
         pass
@@ -34,7 +34,7 @@ class VertexArtist(object):
 
 
     def draw_vertices(self, radius=0.05, keys=None):
-        
+
         self.clear_vertices()
         self.clear_vertexlabels()
 
@@ -65,4 +65,4 @@ class VertexArtist(object):
 if __name__ == "__main__":
 
         pass
-    
+

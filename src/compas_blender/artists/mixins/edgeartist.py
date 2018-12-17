@@ -33,17 +33,17 @@ class EdgeArtist(object):
 
 
     def draw_edges(self, width=0.05, keys=None, colors=None):
-        
+
         self.clear_edges()
         self.clear_edgelabels()
 
         keys = keys or list(self.datastructure.edges())
-        
+
         if colors is None:
             colors = {key: self.defaults['color.line'] for key in keys}
 
         lines = [0] * len(keys)
-        
+
         for c, (u, v) in enumerate(keys):
             lines[c] = {
                 'start': self.datastructure.vertex_coordinates(u),
@@ -53,7 +53,7 @@ class EdgeArtist(object):
                 'width': width,
                 'layer': self.layer,
             }
-            
+
         self.edge_objects = xdraw_lines(lines=lines)
 
 

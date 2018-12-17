@@ -10,12 +10,6 @@ except ImportError:
     pass
 
 
-__author__    = ['Matthias Rippmann', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'rippmann@arch.ethz.ch'
-
-
 __all__ = ['gif_from_images']
 
 

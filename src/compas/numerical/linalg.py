@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
+import compas
 
 from functools import wraps
 
@@ -32,18 +33,12 @@ try:
     from scipy.sparse.linalg import spsolve
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
+
 else:
     old_settings = seterr(all='ignore')
 
 from subprocess import Popen
-
-
-__author__    = ['Tom Van Mele <vanmelet@ethz.ch>', 'Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -597,7 +592,7 @@ def normalizerow(A, do_nan_to_num=True):
     Returns
     -------
     array
-        Matrix of normalised row vectors (m x n).
+        Matrix of normalized row vectors (m x n).
 
     Notes
     -----

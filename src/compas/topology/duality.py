@@ -4,14 +4,10 @@ from __future__ import division
 
 from math import pi
 
+from itertools import combinations
+
 from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
-
-
-__author__     = 'Tom Van Mele'
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -115,7 +111,7 @@ def network_dual(network, cls=None):
     Warning:
         A network (or a graph) has a dual if, and only if, it is planar.
         Constructing the dual relies on the information about the faces of the
-        network, or, in other words, about the ordering of neighbouring vertices
+        network, or, in other words, about the ordering of neighboring vertices
         around a vertex. To determine the faces of the network (using :func:`find_network_faces`)
         the network should be embedded in the plane, i.e drawn such that it is a
         proper cell decomposition of the plane (it divides the plane in non-overlapping
@@ -187,7 +183,6 @@ def network_dual(network, cls=None):
 
     return dual
 
-
 def network_find_faces(network, breakpoints=None):
     """Find the faces of a network.
 
@@ -207,7 +202,7 @@ def network_find_faces(network, breakpoints=None):
     Warning:
         This algorithms is essentially a wall follower (a type of maze-solving algorithm).
         It relies on the geometry of the network to be repesented as a planar,
-        straight-line embedding. It determines an ordering of the neighbouring vertices
+        straight-line embedding. It determines an ordering of the neighboring vertices
         around each vertex, and then follows the *walls* of the network, always
         taking turns in the same direction.
 
@@ -295,7 +290,7 @@ def network_find_faces(network, breakpoints=None):
         network.halfedge[u][v] = None
         network.halfedge[v][u] = None
 
-    _sort_neighbours(network)
+    _sort_neighbors(network)
 
     leaves = list(network.leaves())
 
@@ -304,7 +299,7 @@ def network_find_faces(network, breakpoints=None):
     else:
         u = sorted(network.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
 
-    v = _find_first_neighbour(u, network)
+    v = _find_first_neighbor(u, network)
 
     _find_edge_face(u, v, network)
 
@@ -319,7 +314,7 @@ def network_find_faces(network, breakpoints=None):
     return network.face
 
 
-def _find_first_neighbour(key, network):
+def _find_first_neighbor(key, network):
     nbrs = list(network.halfedge[key].keys())
     if len(nbrs) == 1:
         return nbrs[0]
@@ -337,18 +332,18 @@ def _find_first_neighbour(key, network):
     return nbrs[angles.index(min(angles))]
 
 
-def _sort_neighbours(network, ccw=True):
-    sorted_neighbours = {}
+def _sort_neighbors(network, ccw=True):
+    sorted_neighbors = {}
     xyz = {key: network.vertex_coordinates(key) for key in network.vertices()}
     for key in network.vertices():
-        nbrs = network.vertex_neighbours(key)
-        sorted_neighbours[key] = _sort_vertex_neighbours(key, nbrs, xyz, ccw=ccw)
-    for key, nbrs in sorted_neighbours.items():
-        network.vertex[key]['sorted_neighbours'] = nbrs[::-1]
-    return sorted_neighbours
+        nbrs = network.vertex_neighbors(key)
+        sorted_neighbors[key] = _sort_vertex_neighbors(key, nbrs, xyz, ccw=ccw)
+    for key, nbrs in sorted_neighbors.items():
+        network.vertex[key]['sorted_neighbors'] = nbrs[::-1]
+    return sorted_neighbors
 
 
-def _sort_vertex_neighbours(key, nbrs, xyz, ccw=True):
+def _sort_vertex_neighbors(key, nbrs, xyz, ccw=True):
     if len(nbrs) == 1:
         return nbrs
     ordered = nbrs[0:1]
@@ -381,7 +376,7 @@ def _find_edge_face(u, v, network):
     cycle = [u]
     while True:
         cycle.append(v)
-        nbrs = network.vertex[v]['sorted_neighbours']
+        nbrs = network.vertex[v]['sorted_neighbors']
         nbr = nbrs[nbrs.index(u) - 1]
         u, v = v, nbr
         if v == cycle[0]:

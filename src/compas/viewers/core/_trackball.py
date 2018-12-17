@@ -5,9 +5,9 @@ from __future__ import division
 from math import sqrt
 
 
-__author__     = ['Mark Kilgard (?)', ]
+__author__     = ['Mark Kilgard (?)']
 __link__       = 'http://svn.red-bean.com/pyobjc/other/PyOpenGL-2.0.2.01/OpenGL/trackball.py'
-__see__        = ['https://github.com/markkilgard/glut/blob/master/progs/examples/trackball.c', ]
+__see__        = ['https://github.com/markkilgard/glut/blob/master/progs/examples/trackball.c']
 __doc__        = """A module which implements a trackball class."""
 
 

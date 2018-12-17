@@ -201,10 +201,13 @@ def xdraw_cubes(cubes, **kwargs):
     return _link_objects(objects)
 
 
-def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], **kwargs):
+def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], centroid=True, **kwargs):
 
     edges = [] if edges is None else edges
     faces = [] if faces is None else faces
+
+    mp = centroid_points(vertices) if centroid else [0, 0, 0]
+    vertices = [subtract_vectors(i, mp) for i in vertices]
 
     mesh = bpy.data.meshes.new(name)
     mesh.from_pydata(vertices, edges, faces)
@@ -214,6 +217,7 @@ def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], *
     bpy.context.collection.objects.link(object)
     object.show_wire = True
     object.data.materials.append(create_material(color=color))
+    object.location = mp
     # layer
 
     set_deselect(objects=[object])
@@ -234,6 +238,8 @@ def xdraw_faces(faces, **kwargs):
 
 
 def xdraw_pointcloud(points):
+
+    objects = [0] * len(points)
 
     for data in points:
 

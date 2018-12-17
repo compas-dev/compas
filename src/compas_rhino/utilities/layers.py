@@ -2,6 +2,8 @@ from __future__ import print_function
 
 from collections import deque
 
+import compas
+
 try:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
@@ -9,21 +11,13 @@ try:
     find_object = sc.doc.Objects.Find
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 else:
     try:
         purge_object = sc.doc.Objects.Purge
     except AttributeError:
         purge_object = None
-
-
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -156,7 +150,8 @@ def clear_layers(layers, include_children=True, include_hidden=True):
     rs.EnableRedraw(False)
     to_delete = []
     for name in layers:
-        to_delete += find_objects_on_layer(name, include_hidden, include_children)
+        if rs.IsLayer(name):
+            to_delete += find_objects_on_layer(name, include_hidden, include_children)
     for guid in to_delete:
         obj = find_object(guid)
         if not obj:
@@ -196,6 +191,7 @@ def delete_layers(layers):
 
 
 # ==============================================================================
+# Main
 # ==============================================================================
 
 if __name__ == "__main__":

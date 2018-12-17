@@ -3,10 +3,7 @@
 compas.interop
 ********************************************************************************
 
-.. module:: compas.interop
-
-This package includes utility functions for seamless integration of C
-and C++ code, and wrappers for external libraries.
+.. currentmodule:: compas.interop
 
 .. warning::
 
@@ -14,31 +11,41 @@ and C++ code, and wrappers for external libraries.
     For now, don't use it for anything important :)
 
 
-ShapeOp
+C++
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    cpp.xdarray.Array1D
+    cpp.xdarray.Array2D
+    cpp.xdarray.Array3D
+    cpp.xdarray.shape
+    cpp.xdarray.zeros
+    cpp.xdarray.ones
+    cpp.xdarray.eye
+
+
+CSharp
+======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+
+Fortran
 =======
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    shapeop.ShapeOpSolver
-
-
-Core
-====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    core.cpp.xdarray.Array1D
-    core.cpp.xdarray.Array2D
-    core.cpp.xdarray.Array3D
-    core.cpp.xdarray.shape
-    core.cpp.xdarray.zeros
-    core.cpp.xdarray.ones
-    core.cpp.xdarray.eye
-
 """
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 __all__ = []
