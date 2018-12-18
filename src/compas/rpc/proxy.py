@@ -220,10 +220,13 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas.utilities import print_profile
     from compas.rpc import Proxy
 
     from compas_rhino.artists import MeshArtist
+
+    # this is not how a server proxy should be used
+    # the server should be started somewhere independently
+    # and then used in real-time
 
     numerical = Proxy('compas.numerical')
 

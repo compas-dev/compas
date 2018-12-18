@@ -287,7 +287,7 @@ def voronoi_from_points_numpy(points):
         plotter.draw_arrows(arrows)
         plotter.draw_vertices(radius=0.02)
         plotter.draw_faces()
-        plotter.show()    
+        plotter.show()
 
     """
     from numpy import asarray
@@ -647,8 +647,11 @@ def trimesh_remesh(mesh,
 
 if __name__ == "__main__":
 
+    import compas
+    import os
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
+    from compas.utilities import pairwise
 
     from triangle import triangulate
 
@@ -665,9 +668,33 @@ if __name__ == "__main__":
         [5.2909301507195865, 6.342692886748852, 0.0]
     ]
 
+    points = [
+        [0.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+        [1.0, 1.0, 0.0],
+        [2.0, 1.0, 0.0],
+        [3.0, 1.0, 0.0],
+        [4.0, 1.0, 0.0],
+        [5.0, 1.0, 0.0],
+        [6.0, 1.0, 0.0],
+        [7.0, 1.0, 0.0],
+        [8.0, 1.0, 0.0],
+        [9.0, 1.0, 0.0],
+        [10.0, 1.0, 0.0],
+        [10.0, 0.0, 0.0],
+        [11.0, 0.0, 0.0],
+        [11.0, 1.0, 0.0],
+        [10.5, 1.0, 0.0],
+        [10.5, 2.0, 0.0],
+        [5.5, 2.0, 0.0],
+        [0.5, 2.0, 0.0],
+        [0.5, 1.0, 0.0],
+        [0.0, 1.0, 0.0]
+    ]
+
     data = {
         'vertices': [point[0:2] for point in points],
-        'segments': [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 0]]
+        'segments': list(pairwise(list(range(len(points))) + [0]))
     }
 
     res = triangulate(data, opts='p')
@@ -679,7 +706,7 @@ if __name__ == "__main__":
     plotter = MeshPlotter(mesh)
     plotter.draw_faces()
     plotter.draw_vertices(text='key')
-    plotter.show()
+    plotter.save(os.path.join(compas.TEMP, 'anjali.png'))
 
     # testrun = 2
 
