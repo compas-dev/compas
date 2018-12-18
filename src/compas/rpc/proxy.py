@@ -41,23 +41,18 @@ class Proxy(object):
         Default is `None`, in which case a full path to function calls should be provided.
     python : string, optional
         The python executable that should be used to execute the code.
-        Default is `'pythonw'`.
+        Default is ``'pythonw'``.
     url : string, optional
         The server address.
-        Default is `'http://127.0.0.1'`.
+        Default is ``'http://127.0.0.1'``.
     port : int, optional
         The port number on the remote server.
-        Default is `1753`.
-
-    Attributes
-    ----------
-    profile : string
-        A time profile of the executed code.
+        Default is ``1753``.
 
     Notes
     -----
     If the server is your *localhost*, which will often be the case, it is better
-    to specify the address explicitly (`'http://127.0.0.1'`) because resolving
+    to specify the address explicitly (``'http://127.0.0.1'``) because resolving
     *localhost* takes a surprisingly significant amount of time.
 
     Examples
@@ -141,6 +136,7 @@ class Proxy(object):
 
     @property
     def profile(self):
+        """A profile of the executed code."""
         return self._profile
 
     @profile.setter
@@ -149,6 +145,7 @@ class Proxy(object):
 
     @property
     def package(self):
+        """The base package from which functionality will be called."""
         return self._package
 
     @package.setter
