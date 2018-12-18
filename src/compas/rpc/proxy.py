@@ -73,14 +73,6 @@ class Proxy(object):
 
     .. code-block:: python
 
-        # startserver.py
-
-        server = Proxy()
-
-    .. code-block:: python
-
-        # main.py
-
         import compas
         import time
 
@@ -116,13 +108,6 @@ class Proxy(object):
         for index, (u, v, attr) in enumerate(mesh.edges(True)):
             attr['f'] = f[index][0]
             attr['l'] = l[index][0]
-
-    .. code-block:: python
-
-        # stopserver.py
-
-        server = Proxy()
-        server.stop_server()
 
     """
 
@@ -353,5 +338,3 @@ if __name__ == "__main__":
     artist.draw_faces()
 
     artist.redraw()
-
-    numerical.stop_server()
