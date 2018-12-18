@@ -28,6 +28,12 @@ __all__ = ['Proxy']
 class Proxy(object):
     """Create a proxy object as intermediary between client code and remote functionality.
 
+    This class is a context manager, so when used in a ``with`` statement,
+    it ensures the remote proxy server is stopped and disposed correctly.
+
+    However, if the proxy server is left open, it can be re-used for a follow-up connection,
+    saving start up time.
+
     Parameters
     ----------
     package : string, optional
@@ -56,6 +62,20 @@ class Proxy(object):
 
     Examples
     --------
+
+    Minimal example showing connection to the proxy server, and ensuring the
+    server is disposed after using it:
+
+    .. code-block:: python
+
+        from compas.rpc import Proxy
+
+        with Proxy('compas.numerical') as numerical:
+            pass
+
+    Complete example demonstrating use of the force density method in the
+    numerical package to compute equilibrium of axial force networks.
+
     .. code-block:: python
 
         import compas
@@ -102,17 +122,40 @@ class Proxy(object):
         self._url = url
         self._port = port
         self._process = None
-        self._server = None
         self._function = None
         self.profile = None
-        self.stop_server()
-        self.start_server()
+        self._server = self.try_reconnect() or self.start_server()
 
-    def __del__(self):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
         self.stop_server()
+
+    def try_reconnect(self):
+        """Try and reconnect to an existing proxy server.
+
+        Returns
+        -------
+        ServerProxy
+            Instance of the proxy if reconnection succeeded,
+            otherwise ``None``.
+        """
+        server = ServerProxy(self.address)
+        try:
+            server.ping()
+        except:
+            return None
+
+        return server
 
     def start_server(self):
         """Start the remote server.
+
+        Returns
+        -------
+        ServerProxy
+            Instance of the proxy, if the connection was successful.
 
         Raises
         ------
@@ -123,16 +166,15 @@ class Proxy(object):
         """
         python = self._python
         args = [python, '-m', 'compas.rpc.services.default', str(self._port)]
-        address = "{}:{}".format(self._url, self._port)
 
         self._process = Popen(args, stdout=PIPE, stderr=STDOUT)
-        self._server = ServerProxy(address)
+        server = ServerProxy(self.address)
 
         success = False
         count = 100
         while count:
             try:
-                self._server.ping()
+                server.ping()
             except:
                 time.sleep(0.01)
                 count -= 1
@@ -142,6 +184,8 @@ class Proxy(object):
         if not success:
             raise RPCServerError("The server is no available.")
 
+        return server
+
     def stop_server(self):
         """Stop the remote server and terminate/kill the python process that was used to start it.
         """
@@ -149,6 +193,18 @@ class Proxy(object):
             self._server.remote_shutdown()
         except:
             pass
+
+        self._terminate_process()
+
+    def _terminate_process(self):
+        """Attempts to terminate the python process hosting the proxy server.
+
+        The process reference might not be present, e.g. in the case
+        of reusing an existing connection. In that case, this is a no-op.
+        """
+        if not self._process:
+            return
+
         try:
             self._process.terminate()
         except:
@@ -209,6 +265,10 @@ class Proxy(object):
         self.profile = result['profile']
 
         return result['data']
+
+    @property
+    def address(self):
+        return "{}:{}".format(self._url, self._port)
 
 
 # ==============================================================================
