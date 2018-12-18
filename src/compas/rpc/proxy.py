@@ -117,20 +117,43 @@ class Proxy(object):
     """
 
     def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753):
-        self._package = package
+        self._package = None
         self._python = compas._os.select_python(python)
         self._url = url
         self._port = port
         self._process = None
         self._function = None
-        self.profile = None
-        self._server = self.try_reconnect() or self.start_server()
+        self._profile = None
+        self.package = package
+        self._server = self.try_reconnect()
+        if self._server is None:
+            self._server = self.start_server()
 
     def __enter__(self):
         return self
 
     def __exit__(self, *args):
         self.stop_server()
+
+    @property
+    def address(self):
+        return "{}:{}".format(self._url, self._port)
+
+    @property
+    def profile(self):
+        return self._profile
+
+    @profile.setter
+    def profile(self, profile):
+        self._profile = profile
+
+    @property
+    def package(self):
+        return self._package
+
+    @package.setter
+    def package(self, package):
+        self._package = package
 
     def try_reconnect(self):
         """Try and reconnect to an existing proxy server.
@@ -146,7 +169,6 @@ class Proxy(object):
             server.ping()
         except:
             return None
-
         return server
 
     def start_server(self):
@@ -193,7 +215,6 @@ class Proxy(object):
             self._server.remote_shutdown()
         except:
             pass
-
         self._terminate_process()
 
     def _terminate_process(self):
@@ -215,8 +236,8 @@ class Proxy(object):
             pass
 
     def __getattr__(self, name):
-        if self._package:
-            name = "{}.{}".format(self._package, name)
+        if self.package:
+            name = "{}.{}".format(self.package, name)
         try:
             self._function = getattr(self._server, name)
         except:
@@ -265,10 +286,6 @@ class Proxy(object):
         self.profile = result['profile']
 
         return result['data']
-
-    @property
-    def address(self):
-        return "{}:{}".format(self._url, self._port)
 
 
 # ==============================================================================
