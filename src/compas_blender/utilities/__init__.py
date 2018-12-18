@@ -20,6 +20,11 @@ document
 .. autosummary::
     :toctree: generated/
 
+    get_document_name
+    get_document_filename
+    get_document_path
+    get_document_dirname
+
 
 layers
 ======
@@ -34,12 +39,65 @@ misc
 .. autosummary::
     :toctree: generated/
 
+    get_tolerance
+    screenshot_current_view
+    wait
+    browse_for_folder
+    browse_for_file
+    display_message
+    display_text
+    display_image
+    display_html
+    update_settings
+    update_attributes
+    update_named_values
+
 
 objects
 =======
 
 .. autosummary::
     :toctree: generated/
+
+    delete_object
+    delete_objects
+    delete_object_by_name
+    delete_objects_by_names
+    get_object_by_name
+    get_objects_by_names
+    get_objects
+    get_object_name
+    get_objects_names
+    get_objects_layers
+    get_objects_types
+    get_objects_coordinates
+    get_object_property
+    get_objects_property
+    get_points
+    get_curves
+    get_meshes
+    get_points_coordinates
+    get_curves_coordinates
+    select_object
+    select_objects
+    select_point
+    select_points
+    select_curve
+    select_curves
+    select_surface
+    select_surfaces
+    select_mesh
+    select_meshes
+    set_select
+    set_deselect
+    set_objects_layer
+    set_objects_coordinates
+    set_objects_rotations
+    set_objects_scales
+    set_objects_show_names
+    set_objects_visible
+    set_object_property
+    set_objects_property
 
 
 drawing
@@ -49,36 +107,25 @@ drawing
     :toctree: generated/
 
 
-geometry
-========
-
-.. autosummary::
-    :toctree: generated/
-
 """
 from __future__ import absolute_import
 
+from .objects import *
 from .document import *
 from .layers import *
 from .misc import *
-from .objects import *
 from .drawing import *
-from .geometry import *
 
+from . import objects
 from . import document
 from . import layers
-from . import objects
 from . import misc
 from . import drawing
-from . import geometry
-#from . import modifiers
 
 __all__ = []
 
+__all__ += objects.__all__
 __all__ += document.__all__
 __all__ += layers.__all__
-__all__ += objects.__all__
 __all__ += misc.__all__
 __all__ += drawing.__all__
-__all__ += geometry.__all__
-#__all__ += modifiers.__all__

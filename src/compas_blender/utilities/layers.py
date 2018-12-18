@@ -3,6 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas_blender.utilities import delete_objects
+from compas_blender.utilities import get_objects
+
 try:
     import bpy
 except ImportError:
@@ -67,7 +70,7 @@ def create_layers_from_dict(layers):
 
 def clear_layer(layer):
 
-    raise NotImplementedError
+    delete_objects(objects=get_objects(layer=layer))
 
 
 def clear_layers(layers):
@@ -103,5 +106,5 @@ def delete_layers(layers):
 if __name__ == "__main__":
 
     create_layer(layer='Collection 2')
-    
+
     print(list(bpy.data.collections))
