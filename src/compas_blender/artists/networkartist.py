@@ -23,6 +23,7 @@ class NetworkArtist(EdgeArtist, VertexArtist, Artist):
 
     __module__ = "compas_blender.artists"
 
+
     def __init__(self, network, layer=None):
         super(NetworkArtist, self).__init__(layer=layer)
 
@@ -71,11 +72,11 @@ if __name__ == "__main__":
 
     artist = NetworkArtist(network=network)
 
-    #artist.clear_layer()
+    # artist.clear_layer()
 
-    artist.draw_vertices(radius=0.05)
+    artist.draw_vertices(radius=0.1)
     artist.draw_vertexlabels()
-    #artist.clear_vertexlabels()
+    # artist.clear_vertexlabels()
 
     artist.draw_edges(width=0.01)
     artist.draw_edgelabels()

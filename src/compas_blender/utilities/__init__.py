@@ -32,6 +32,17 @@ layers
 .. autosummary::
     :toctree: generated/
 
+    create_layer
+    create_layers
+    create_layers_from_path
+    create_layers_from_paths
+    create_layers_from_dict
+    clear_layer
+    clear_layers
+    clear_current_layer
+    delete_layer
+    delete_layers
+
 
 misc
 ====
@@ -106,8 +117,23 @@ drawing
 .. autosummary::
     :toctree: generated/
 
+    create_material
+    xdraw_points
+    xdraw_lines
+    xdraw_geodesics
+    xdraw_breps
+    xdraw_cylinders
+    xdraw_pipes
+    xdraw_forces
+    xdraw_spheres
+    xdraw_cubes
+    xdraw_mesh
+    xdraw_faces
+    xdraw_pointcloud
+    xdraw_texts
 
 """
+
 from __future__ import absolute_import
 
 from .objects import *

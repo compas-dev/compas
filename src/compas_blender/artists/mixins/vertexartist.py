@@ -28,7 +28,7 @@ class VertexArtist(object):
         pass
 
 
-    def clear_vertexlabels(self, keys=None):
+    def clear_vertexlabels(self):
 
         set_objects_show_names(objects=self.vertex_objects, show=False)
 
@@ -38,15 +38,14 @@ class VertexArtist(object):
         self.clear_vertices()
         self.clear_vertexlabels()
 
-        keys = keys or list(self.datastructure.vertices())
-
+        keys   = keys or list(self.datastructure.vertices())
         points = [0] * len(keys)
 
         for c, key in enumerate(keys):
             points[c] = {
                 'pos':    self.datastructure.vertex_coordinates(key),
-                'name':   'V{0}'.format(key),
                 'layer':  self.layer,
+                'name':   'V{0}'.format(key),
                 'radius': radius
             }
 
@@ -65,4 +64,3 @@ class VertexArtist(object):
 if __name__ == "__main__":
 
         pass
-

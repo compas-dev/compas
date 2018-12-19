@@ -22,12 +22,13 @@ class EdgeArtist(object):
 
     __module__ = "compas_blender.artists.mixins"
 
+
     def clear_edges(self, keys=None):
 
         pass
 
 
-    def clear_edgelabels(self, keys=None):
+    def clear_edgelabels(self):
 
         set_objects_show_names(objects=self.edge_objects, show=False)
 
@@ -37,21 +38,20 @@ class EdgeArtist(object):
         self.clear_edges()
         self.clear_edgelabels()
 
-        keys = keys or list(self.datastructure.edges())
+        keys  = keys or list(self.datastructure.edges())
+        lines = [0] * len(keys)
 
         if colors is None:
             colors = {key: self.defaults['color.line'] for key in keys}
-
-        lines = [0] * len(keys)
 
         for c, (u, v) in enumerate(keys):
             lines[c] = {
                 'start': self.datastructure.vertex_coordinates(u),
                 'end':   self.datastructure.vertex_coordinates(v),
-                'color': colors[(u, v)],
-                'name':  'E{}-{}'.format(u, v),
-                'width': width,
                 'layer': self.layer,
+                'color': colors[(u, v)],
+                'width': width,
+                'name':  'E{}-{}'.format(u, v),
             }
 
         self.edge_objects = xdraw_lines(lines=lines)

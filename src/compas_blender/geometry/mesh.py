@@ -45,7 +45,7 @@ class BlenderMesh(BlenderGeometry):
 
     def get_vertices_coordinates(self):
 
-        xyzs = [list(i.co) for i in self.geometry.vertices]
+        xyzs = [vertex.co for vertex in self.geometry.vertices]
 
         return {vertex: add_vectors(self.location, xyz) for vertex, xyz in enumerate(xyzs)}
 
@@ -59,7 +59,7 @@ class BlenderMesh(BlenderGeometry):
     def get_vertices_colors(self, vertices=None):
 
         colors = {}
-        col    = self.geometry.vertex_colors.active
+        col = self.geometry.vertex_colors.active
 
         if col:
 
@@ -233,14 +233,13 @@ class BlenderMesh(BlenderGeometry):
     # ------------------------------------------------------------------------------------
     # Modifiers
     # ------------------------------------------------------------------------------------
-    
+
     def bevel(self, width=0.2, segments=1, only_vertices=False):
 
         self.object.modifiers.new('bevel', type='BEVEL')
         self.object.modifiers['bevel'].width = width
         self.object.modifiers['bevel'].segments = segments
         self.object.modifiers['bevel'].use_only_vertices = only_vertices
-
         self.refresh()
 
 
@@ -249,17 +248,15 @@ class BlenderMesh(BlenderGeometry):
         self.object.modifiers.new('subdivision', type='SUBSURF')
         self.object.modifiers['subdivision'].levels = levels
         self.object.modifiers['subdivision'].subdivision_type = type  # or 'CATMULL_CLARK'
-        
         self.refresh()
 
 
     def triangulate(self):
 
         self.object.modifiers.new('triangulate', type='TRIANGULATE')
-        
         self.refresh()
-    
-    
+
+
     # ------------------------------------------------------------------------------------
     # Misc
     # ------------------------------------------------------------------------------------
@@ -314,32 +311,29 @@ if __name__ == '__main__':
     print(mesh.name)
     print(mesh.location)
 
-    #mesh.set_vertices_coordinates({0: [0, 0, 0], 1: [-1, -1, 0]})
-    #mesh.set_vertices_colors(colors={0: [1, 0, 0], 1: [0, 0, 1], 2: [0, 1, 0]})
-    #mesh.unset_vertices_colors()
-    #mesh.refresh()
+    print(mesh.get_vertex_coordinates(vertex=0))
+    print(mesh.get_vertices_coordinates())
+    # mesh.set_vertices_coordinates({0: [0, 0, 0], 1: [1, 1, 0]})
 
-    #print(mesh.get_vertices_coordinates())
-    #print(mesh.get_vertices_colors())
-    #print(mesh.get_vertex_coordinates(vertex=0))
+    mesh.set_vertices_colors(colors={0: [1, 0, 0], 1: [0, 0, 1], 2: [0, 1, 0]})
+    print(mesh.get_vertices_colors())
+    mesh.unset_vertices_colors()
 
-    #print(mesh.get_edge_vertex_indices(edge=4))
-    #print(mesh.get_edges_vertex_indices(edges=[3, 4]))
-    #print(mesh.edge_length(edge=2))
-    #print(mesh.edges_lengths())
+    print(mesh.get_edge_vertex_indices(edge=4))
+    print(mesh.get_edges_vertex_indices())
+    print(mesh.edge_length(edge=2))
+    print(mesh.edges_lengths())
 
-    #print(mesh.get_face_vertex_indices(face=4))
-    #print(mesh.get_faces_vertex_indices())
-    #print(mesh.face_normal(face=2))
-    #print(mesh.faces_normals())
-    #print(mesh.face_area(face=2))
-    #print(mesh.faces_areas())
-    #print(mesh.get_vertices_and_faces())
+    print(mesh.get_face_vertex_indices(face=4))
+    print(mesh.get_faces_vertex_indices())
+    print(mesh.face_normal(face=2))
+    print(mesh.faces_normals())
+    print(mesh.face_area(face=2))
+    print(mesh.faces_areas())
 
-    #datastructure = mesh.to_datastructure()
-    
-    #mesh.triangulate()
-    #mesh.subdivide(levels=2, type='CATMULL_CLARK')
-    #mesh.bevel(width=0.2, segments=1, only_vertices=False)
-    
-    #print(datastructure)
+    print(mesh.get_vertices_and_faces())
+    print(mesh.to_datastructure())
+
+    mesh.bevel(width=0.2, segments=1, only_vertices=False)
+    mesh.subdivide(levels=2, type='CATMULL_CLARK')
+    mesh.triangulate()

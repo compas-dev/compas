@@ -105,6 +105,6 @@ def delete_layers(layers):
 
 if __name__ == "__main__":
 
-    create_layer(layer='Collection 2')
+    clear_layer(layer='Collection 1')
 
     print(list(bpy.data.collections))

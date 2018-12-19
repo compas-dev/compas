@@ -22,39 +22,37 @@ class FaceArtist(object):
 
     __module__ = "compas_blender.artists.mixins"
 
+
     def clear_faces(self, keys=None):
 
         pass
 
 
-    def clear_facelabels(self, keys=None):
+    def clear_facelabels(self):
 
         set_objects_show_names(objects=self.face_objects, show=False)
 
 
-    def draw_faces(self, keys=None, colors=None, join_faces=False):
+    def draw_faces(self, keys=None, colors=None):
 
         self.clear_faces()
         self.clear_facelabels()
 
-        keys = keys or list(self.datastructure.faces())
+        keys    = keys or list(self.datastructure.faces())
+        objects = [0] * len(keys)
 
         if colors is None:
             colors = {key: self.defaults['color.face'] for key in keys}
 
-        objects = [0] * len(keys)
-
         for c, key in enumerate(keys):
 
-            mesh = xdraw_mesh(
-                name='F{0}'.format(key),
-                vertices=[self.datastructure.vertex_coordinates(i) for i in self.datastructure.face[key]],
-                faces=[list(range(len(self.datastructure.face[key])))],
-                color=colors[key],
-                layer=self.layer,
+            objects[c] = xdraw_mesh(
+                vertices = [self.datastructure.vertex_coordinates(i) for i in self.datastructure.face[key]],
+                layer    = self.layer,
+                faces    = [list(range(len(self.datastructure.face[key])))],
+                color    = colors[key],
+                name     = 'F{0}'.format(key),
             )
-
-            objects[c] = mesh
 
         self.face_objects = objects
 

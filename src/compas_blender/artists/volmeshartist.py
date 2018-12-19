@@ -24,11 +24,15 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
     __module__ = "compas_blender.artists"
 
+
     def __init__(self, volmesh, layer=None):
         super(VolMeshArtist, self).__init__(layer=layer)
 
         self.volmesh = volmesh
         self.defaults.update({
+            'color.vertex': [255, 255, 255],
+            'color.edge':   [0, 0, 0],
+            'color.face':   [110, 110, 110],
         })
 
 
@@ -67,26 +71,20 @@ if __name__ == "__main__":
     from compas.datastructures import VolMesh
 
 
-    # volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
+    volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 
-    # artist = VolMeshArtist(volmesh, layer='VolMeshArtist')
+    artist = VolMeshArtist(volmesh, layer='VolMeshArtist')
 
     # artist.clear_layer()
 
-    # artist.draw_vertices()
-    # artist.redraw(0.0)
+    artist.draw_vertices()
+    artist.draw_vertexlabels()
+    # artist.clear_vertexlabels()
 
-    # artist.draw_vertexlabels()
-    # artist.redraw(1.0)
+    artist.draw_edges()
+    artist.draw_edgelabels()
+    # artist.clear_edgelabels()
 
     # artist.draw_faces()
-    # artist.redraw(1.0)
-
     # artist.draw_facelabels()
-    # artist.redraw(1.0)
-
-    # artist.draw_edges()
-    # artist.redraw(1.0)
-
-    # artist.draw_edgelabels()
-    # artist.redraw(1.0)
+    # artist.clear_facelabels()

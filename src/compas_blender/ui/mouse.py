@@ -44,19 +44,6 @@ class Mouse(object):
 
     def xyz(self):
 
-        """ Returns the spatial co-ordinates of the cursor.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        list:
-            [x, y and z] position of the cursor.
-
-        """
-
         return list(bpy.context.scene.cursor_location.copy())
 
 

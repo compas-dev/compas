@@ -336,9 +336,10 @@ def set_objects_property(objects, property, value):
 
 if __name__ == '__main__':
 
-    # delete_objects_by_names(['Cube', 'Cylinder'])
     objects = get_objects(layer='Collection 1')
-    points  = get_points()
+    delete_objects(objects=objects)
+    # delete_objects(['Cube', 'Cylinder'])
+    # points  = get_points()
 
     # print(get_objects(names=['Plane', 'Sphere']))
     # print(get_object_by_name(name='Plane'))
@@ -369,4 +370,4 @@ if __name__ == '__main__':
     # set_objects_visible(objects=objects, visible=1)
 
     # set_object_property(object=objects[1], property='ex', value=[1, 2, 3])
-    set_objects_property(objects=objects, property='ex', value=[1, 2, 3])
+    # set_objects_property(objects=objects, property='ex', value=[1, 2, 3])

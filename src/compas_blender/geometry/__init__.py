@@ -29,11 +29,11 @@ class BlenderGeometry(object):
 
     def __init__(self, obj):
 
-        self.name       = obj.name
         self.object     = obj
+        self.name       = obj.name
         self.geometry   = obj.data
-        self.attributes = {}
         self.otype      = obj.type
+        self.attributes = {}
 
 
     @property

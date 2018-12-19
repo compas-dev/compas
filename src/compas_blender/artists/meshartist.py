@@ -65,26 +65,25 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
 if __name__ == "__main__":
 
-    from compas.geometry import Polyhedron
+    import compas
 
     from compas.datastructures import Mesh
 
 
-    poly = Polyhedron.generate(12)
-
-    mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
+    mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
 
     artist = MeshArtist(mesh)
 
-    #artist.clear()
+    # artist.clear()
 
-    artist.draw_vertices(radius=0.01)
-    artist.draw_vertexlabels()
+    # artist.draw_vertices(radius=0.01)
+    # artist.draw_vertexlabels()
+    # artist.clear_vertexlabels()
 
-    artist.draw_edges(width=0.01)
-    artist.draw_edgelabels()
+    # artist.draw_edges(width=0.01)
+    # artist.draw_edgelabels()
+    # artist.clear_edgelabels()
 
     artist.draw_faces()
-    artist.draw_facelabels()
-
-    artist.redraw()
+    # artist.draw_facelabels()
+    # artist.clear_facelabels()

@@ -37,18 +37,6 @@ class Artist(object):
         self.face_objects   = []
 
 
-#    @property
-#    def layer(self):
-
-#        return self.layer
-
-
-#    @layer.setter
-#    def layer(self, value):
-
-#        self.layer = value
-
-
     def redraw(self, timeout=None):
 
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
