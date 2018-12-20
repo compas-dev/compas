@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.datastructures.network import Network
+from compas.datastructures.network.network import Network
 
 from compas.utilities import pairwise
 from compas.utilities import geometric_key
