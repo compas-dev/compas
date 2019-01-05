@@ -2,6 +2,19 @@
 Working in Rhino
 ********************************************************************************
 
+.. TODO
+
+   * Running scripts
+   * Running scripts from an external editor
+   * Adding custom commands
+   * Making plug-ins
+   * Creating toolbars
+   * Using CPython packages
+   * Using C/C++ code
+   * Warning: instructions fro RhinoMac coming soon
+   * Warning: Rhino 5 vs. Rhino 6
+
+
 .. highlight:: bash
 
 .. warning::

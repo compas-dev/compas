@@ -36,9 +36,6 @@ To verify your setup, start Python from the command line and run the following:
 
 ```
 
-Alternatively, you can also install from source. Check the [documentation for more details](https://compas-dev.github.io/main/devguide.html).
-
-
 ## First Steps
 
 * https://compas-dev.github.io/main/examples.html
@@ -59,7 +56,7 @@ If you find a bug, please help us solve it by [filing a report](https://github.c
 
 ## Contributing
 
-If you want to contribute, check out our [developer guidelines](https://compas-dev.github.io/main/devguide.html).
+If you want to contribute, check out the [contribution guidelines](https://compas-dev.github.io/main/contributions.html).
 
 
 ## License
