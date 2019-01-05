@@ -23,7 +23,7 @@ from __future__ import print_function
 from .utilities import *
 
 
-__version__ = '0.3.4'
+__version__ = '0.3.5'
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
