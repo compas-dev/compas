@@ -17,10 +17,13 @@ compas_blender
 
 """
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from .utilities import *
-from . import utilities
 
-__all__ = []
 
-__all__ += utilities.__all__
+__version__ = '0.3.4'
+
+
+__all__ = [name for name in dir() if not name.startswith('_')]

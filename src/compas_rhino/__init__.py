@@ -30,6 +30,7 @@ import compas
 from .utilities import *
 from . import utilities
 
+
 __version__ = '0.3.4'
 
 

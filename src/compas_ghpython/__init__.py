@@ -69,3 +69,6 @@ utilities
 """
 from .utilities import *
 from .helpers import *
+
+
+__version__ = '0.3.4'

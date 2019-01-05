@@ -14,8 +14,9 @@ import compas
 project          = 'COMPAS'
 copyright        = '2017, Block Research Group - ETH Zurich'
 author           = 'Tom Van Mele'
-release          = '0.3.4'
-version          = '.'.join(release.split('.')[0:2])
+
+release = '0.3.4'
+version = '.'.join(release.split('.')[0:2])
 
 master_doc       = 'index'
 source_suffix    = ['.rst', ]

@@ -30,11 +30,12 @@ import sys
 import compas._os
 
 
-__author__    = 'Tom Van Mele and many others (see CONTRIBUTORS.md)'
-__copyright__ = 'Copyright 2014-2018 - Block Research Group, ETH Zurich'
+__author__    = 'Tom Van Mele and many others (see AUTHORS.md)'
+__copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
-__version__   = '0.3.4'
+
+__version__ = '0.3.4'
 
 
 PY3 = sys.version_info[0] == 3
@@ -304,4 +305,3 @@ def requirements():
     with open(os.path.join(HERE, '../requirements.txt')) as f:
         for line in f:
             print(line.strip())
-

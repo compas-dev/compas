@@ -5,12 +5,16 @@ prune docs
 prune libs
 prune tests
 prune temp
+prune .github
 
 include LICENSE
 include README.md
-include CONTRIBUTORS.md
+include AUTHORS.md
 include requirements.txt
 
-exclude requirements-dev.txt pytest.ini .bumpversion.cfg .editorconfig tasks.py
+exclude requirements-dev.txt 
+exclude pytest.ini .bumpversion.cfg .editorconfig
+exclude tasks.py
+exclude CODE_OF_CONDUCT.md CONTRIBUTING.md
 
 global-exclude *.py[cod] __pycache__ *.dylib *.nb[ic] .DS_Store
