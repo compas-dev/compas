@@ -120,6 +120,8 @@ temp/**
 src/.build/**
 
 data/bunny
+data/models
+data/ctralie
 *.ply
 *.tar.gz
 
