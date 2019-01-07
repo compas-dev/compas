@@ -75,4 +75,4 @@ from .image import ImageForm
 from .slider import SliderForm
 from .text import TextForm
 
-__all__ = ['BrowserForm', 'ChartForm', 'ImageForm', 'SliderForm', 'TextForm']
+__all__ = [name for name in dir() if not name.startswith('_')]

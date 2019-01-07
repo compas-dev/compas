@@ -1,6 +1,10 @@
+from __future__ import absolute_import
+from __future__ import division
 from __future__ import print_function
 
 from functools import wraps
+
+import compas
 
 try:
     import rhinoscriptsyntax as rs
@@ -30,12 +34,7 @@ try:
     TOL = sc.doc.ModelAbsoluteTolerance
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
-
-__author__ = ['Romana Rust']
-__email__ = 'rust@arch.ethz.ch'
+    compas.raise_if_ironpython()
 
 
 __all__ = [

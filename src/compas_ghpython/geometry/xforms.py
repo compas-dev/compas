@@ -1,13 +1,22 @@
+from __future__ import absolute_import
+from __future__ import division
 from __future__ import print_function
+
+import compas
 
 try:
     from Rhino.Geometry import Transform
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
+    compas.raise_if_ironpython()
 
 # TODO: This file should actually move to compas_rhino
+
+__all__ = [
+    'xform_from_transformation',
+    'xform_from_transformation_matrix',
+    'xtransform',
+    'xtransformed'
+]
 
 
 def xform_from_transformation(transformation):

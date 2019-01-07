@@ -256,4 +256,4 @@ from .mesh import RhinoMesh
 from .surface import RhinoSurface
 
 
-__all__ = ['RhinoGeometry', 'RhinoPoint', 'RhinoCurve', 'RhinoMesh', 'RhinoSurface']
+__all__ = [name for name in dir() if not name.startswith('_')]

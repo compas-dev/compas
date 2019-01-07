@@ -16,10 +16,4 @@ from __future__ import absolute_import
 from .meshinspector import *
 from .networkinspector import *
 
-from . import meshinspector
-from . import networkinspector
-
-__all__ = []
-
-__all__ += meshinspector.__all__
-__all__ += networkinspector.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

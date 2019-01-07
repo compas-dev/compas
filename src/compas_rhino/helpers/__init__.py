@@ -94,8 +94,4 @@ from .mesh import *
 from .network import *
 from .volmesh import *
 
-from . import mesh
-from . import network
-from . import volmesh
-
-__all__ = mesh.__all__ + network.__all__ + volmesh.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

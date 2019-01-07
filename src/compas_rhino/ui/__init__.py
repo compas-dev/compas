@@ -16,9 +16,4 @@ from .command import *
 from .controller import *
 from .mouse import *
 
-from .button import __all__ as a
-from .command import __all__ as b
-from .controller import __all__ as c
-from .mouse import __all__ as d
-
-__all__ = a + b + c + d
+__all__ = [name for name in dir() if not name.startswith('_')]

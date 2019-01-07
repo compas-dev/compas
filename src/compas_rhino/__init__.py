@@ -58,5 +58,4 @@ def _get_ironpython_lib_path(version):
     return ironpython_lib_path
 
 
-__all__  = ['__version__', 'PURGE_ON_DELETE']
-__all__ += utilities.__all__
+__all__ = ['__version__'] + [name for name in dir() if not name.startswith('_')]

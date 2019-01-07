@@ -19,12 +19,4 @@ from .edgeselector import *
 from .faceselector import *
 from .vertexselector import *
 
-from . import edgeselector
-from . import faceselector
-from . import vertexselector
-
-__all__ = []
-
-__all__ += edgeselector.__all__
-__all__ += faceselector.__all__
-__all__ += vertexselector.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

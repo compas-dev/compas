@@ -20,13 +20,4 @@ from .facemodifier import *
 from .modifier import *
 from .vertexmodifier import *
 
-from . import edgemodifier
-from . import facemodifier
-from . import modifier
-from . import vertexmodifier
-
-__all__ = []
-
-__all__ += edgemodifier.__all__
-__all__ += facemodifier.__all__
-__all__ += vertexmodifier.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

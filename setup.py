@@ -13,15 +13,6 @@ from setuptools.command.install import install
 here = path.abspath(path.dirname(__file__))
 
 
-class PostInstallCommand(install):
-    def run(self):
-        # add Rhino paths
-        # check system paths
-        # check ironpython version
-        # do ther stuff
-        install.run(self)
-
-
 def read(*names, **kwargs):
     return io.open(
         path.join(here, *names),
@@ -71,26 +62,17 @@ setup(
         "Repository": "https://github.com/compas-dev/compas",
         "Issues": "https://github.com/compas-dev/compas/issues",
     },
-
     packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', ],
     package_dir={'': 'src'},
     package_data={},
     data_files=[],
     include_package_data=True,
-
     zip_safe=False,
-
     install_requires=requirements,
     python_requires='>=2.7',
     extras_require=optional_requirements,
-
     entry_points={
         'console_scripts': ['install_compas_rhino=compas_rhino.install:install'],
     },
-
-    ext_modules=[],
-
-    # cmdclass={
-    #     'install': PostInstallCommand,
-    # }
+    ext_modules=[]
 )
