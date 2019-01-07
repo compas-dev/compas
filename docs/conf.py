@@ -9,6 +9,8 @@ import os
 
 import compas
 
+import sphinx_compas_theme
+
 # -- General configuration ------------------------------------------------
 
 project          = 'COMPAS'
@@ -180,7 +182,7 @@ intersphinx_mapping = {
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = 'compas'
-html_theme_path = ['../../sphinx_compas_theme/sphinx_compas_theme', '../temp/sphinx_compas_theme/sphinx_compas_theme']
+html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
     'navbar_active' : 'main',
 }
